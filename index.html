@@ -87,6 +87,18 @@
       background-size: 28px 28px;
     }
   </style>
+  <!-- Google Analytics 4 -->
+  <!-- Replace G-50XR3XER7B with your real GA4 Measurement ID -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-50XR3XER7B"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-50XR3XER7B', {
+      send_page_view: true
+    });
+  </script>
+
 </head>
 <body class="bg-white text-secondary antialiased">
 
@@ -765,6 +777,15 @@
                 <a href="mailto:terajuciptabina@gmail.com" class="text-sm text-slate-600 mt-1 hover:text-accent transition-colors">terajuciptabina@gmail.com</a>
               </div>
             </div>
+            <div class="flex items-start gap-4">
+              <div class="w-11 h-11 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                <i class="fab fa-whatsapp text-primary"></i>
+              </div>
+              <div>
+                <div class="font-semibold text-secondary text-sm">WhatsApp</div>
+                <a href="https://wa.me/60145002652?text=Hi%20Teraju%20Ciptabina%2C%20I%20would%20like%20to%20discuss%20a%20project." target="_blank" rel="noopener noreferrer" class="text-sm text-slate-600 mt-1 hover:text-accent transition-colors">Chat with us on WhatsApp</a>
+              </div>
+            </div>
           </div>
         </div>
         <div class="bg-slateSoft rounded-2xl p-8 border border-slate-100 shadow-sm">
@@ -957,6 +978,11 @@
         const result = await response.json();
   
         if (result.success) {
+          // Confirmed conversion: Web3Forms accepted the enquiry.
+          if (typeof window.trackTerajuLead === 'function') {
+            window.trackTerajuLead(form.querySelector('#service')?.value || 'Not specified');
+          }
+
           alertBox.className = 'mt-4 p-4 rounded-lg text-sm font-medium bg-emerald-50 text-primary border border-emerald-200';
           alertBox.innerHTML = '<i class="fas fa-check-circle mr-2"></i>Thank you! Your enquiry has been sent successfully. We will contact you shortly.';
           alertBox.classList.remove('hidden');
@@ -980,5 +1006,77 @@
       }, 7000);
     });
   </script>
+
+  <!-- Teraju Ciptabina Analytics & Conversion Tracking -->
+  <script>
+    (function () {
+      function trackEvent(name, params) {
+        if (typeof window.gtag === 'function') {
+          window.gtag('event', name, params || {});
+        }
+      }
+
+      // Track phone, email, WhatsApp, social and consultation CTA clicks.
+      document.addEventListener('click', function (event) {
+        const link = event.target.closest('a[href]');
+        if (!link) return;
+
+        const href = link.getAttribute('href') || '';
+        const text = (link.innerText || link.getAttribute('aria-label') || '').trim().slice(0, 100);
+
+        if (href.startsWith('tel:')) {
+          trackEvent('phone_click', {
+            link_url: href,
+            link_text: text
+          });
+          return;
+        }
+
+        if (href.startsWith('mailto:')) {
+          trackEvent('email_click', {
+            link_url: href.split('?')[0],
+            link_text: text
+          });
+          return;
+        }
+
+        if (/whatsapp|wa\.me/i.test(href)) {
+          trackEvent('whatsapp_click', {
+            link_url: href,
+            link_text: text
+          });
+          return;
+        }
+
+        if (/facebook\.com|instagram\.com|threads\.com|linkedin\.com/i.test(href)) {
+          trackEvent('social_click', {
+            platform: /facebook\.com/i.test(href) ? 'facebook' :
+                      /instagram\.com/i.test(href) ? 'instagram' :
+                      /threads\.com/i.test(href) ? 'threads' : 'linkedin',
+            link_url: href
+          });
+          return;
+        }
+
+        if (href === '#contact' || href.endsWith('index.html#contact')) {
+          trackEvent('cta_click', {
+            cta_name: text || 'Contact / Consultation',
+            destination: '#contact'
+          });
+        }
+      });
+
+      // Track successful website enquiries as a real lead conversion.
+      // IMPORTANT: this fires only after Web3Forms confirms success, not merely on submit.
+      window.trackTerajuLead = function (service) {
+        trackEvent('generate_lead', {
+          currency: 'MYR',
+          lead_source: 'website',
+          service_requested: service || 'Not specified'
+        });
+      };
+    })();
+  </script>
+
 </body>
 </html>
