@@ -8,7 +8,6 @@
 
   <!-- Google Analytics 4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-50XR3XER7B"></script>
-
   <script>
     window.dataLayer = window.dataLayer || [];
 
@@ -17,7 +16,6 @@
     }
 
     gtag('js', new Date());
-
     gtag('config', 'G-50XR3XER7B');
   </script>
 
@@ -68,6 +66,99 @@
     .whatsapp-button {
       display: block;
       width: 100%;
+      padding: 15px 20px;
+      box-sizing: border-box;
+      background: #25D366;
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 17px;
+      font-weight: 600;
+      border-radius: 10px;
+      margin-bottom: 15px;
+    }
+
+    .web-button {
+      display: block;
+      width: 100%;
+      padding: 13px 20px;
+      box-sizing: border-box;
+      background: #eeeeee;
+      color: #333333;
+      text-decoration: none;
+      font-size: 15px;
+      border-radius: 10px;
+    }
+
+    .small {
+      margin-top: 20px;
+      font-size: 12px;
+      color: #999;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="box">
+
+    <img
+      src="../images/logo.png"
+      alt="Teraju Ciptabina"
+      class="logo"
+      onerror="this.style.display='none';"
+    >
+
+    <h1>WhatsApp Teraju Ciptabina</h1>
+
+    <p>
+      Klik butang di bawah untuk terus berhubung dengan kami melalui WhatsApp.
+    </p>
+
+    <a
+      id="whatsappButton"
+      class="whatsapp-button"
+      href="https://wa.me/60145002652?text=Hi%20Teraju%2C%20saya%20datang%20dari%20Facebook."
+    >
+      💬 Open WhatsApp
+    </a>
+
+    <a
+      class="web-button"
+      href="https://web.whatsapp.com/send?phone=60145002652&text=Hi%20Teraju%2C%20saya%20datang%20dari%20Facebook."
+    >
+      Open WhatsApp Web
+    </a>
+
+    <div class="small">
+      Teraju Ciptabina Resources<br>
+      Reka • Rancang • Bina
+    </div>
+
+  </div>
+
+  <script>
+
+    /*
+     * TRACK ONLY WHEN USER ACTUALLY CLICKS
+     * THE WHATSAPP BUTTON
+     */
+
+    document
+      .getElementById('whatsappButton')
+      .addEventListener('click', function () {
+
+        gtag('event', 'whatsapp_click', {
+          source: 'facebook',
+          platform: 'facebook',
+          destination: 'whatsapp'
+        });
+
+      });
+
+  </script>
+
+</body>
+</html>      width: 100%;
       padding: 15px 20px;
       box-sizing: border-box;
       background: #25D366;
