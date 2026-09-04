@@ -4,10 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Teraju Ciptabina - WhatsApp</title>
+  <title>WhatsApp Teraju Ciptabina</title>
 
   <!-- Google Analytics 4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-50XR3XER7B"></script>
+
   <script>
     window.dataLayer = window.dataLayer || [];
 
@@ -20,17 +21,19 @@
   </script>
 
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       min-height: 100vh;
+      background: #f7f7f7;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: #f7f7f7;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
-      text-align: center;
       padding: 20px;
-      box-sizing: border-box;
     }
 
     .box {
@@ -39,8 +42,8 @@
       background: #ffffff;
       padding: 35px 25px;
       border-radius: 18px;
+      text-align: center;
       box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
-      box-sizing: border-box;
     }
 
     .logo {
@@ -51,37 +54,40 @@
     }
 
     h1 {
-      font-size: 22px;
-      margin: 0 0 10px;
-      color: #222;
+      margin: 0 0 12px;
+      font-size: 24px;
+      line-height: 1.2;
+      color: #222222;
     }
 
     p {
-      font-size: 15px;
-      line-height: 1.5;
-      color: #666;
       margin: 0 0 25px;
+      font-size: 16px;
+      line-height: 1.5;
+      color: #666666;
     }
 
     .whatsapp-button {
       display: block;
       width: 100%;
-      padding: 15px 20px;
-      box-sizing: border-box;
+      padding: 16px 20px;
       background: #25D366;
       color: #ffffff;
       text-decoration: none;
-      font-size: 17px;
+      font-size: 18px;
       font-weight: 600;
       border-radius: 10px;
       margin-bottom: 15px;
     }
 
+    .whatsapp-button:active {
+      opacity: 0.85;
+    }
+
     .web-button {
       display: block;
       width: 100%;
-      padding: 13px 20px;
-      box-sizing: border-box;
+      padding: 14px 20px;
       background: #eeeeee;
       color: #333333;
       text-decoration: none;
@@ -89,10 +95,11 @@
       border-radius: 10px;
     }
 
-    .small {
-      margin-top: 20px;
+    .footer {
+      margin-top: 25px;
       font-size: 12px;
-      color: #999;
+      line-height: 1.5;
+      color: #999999;
     }
   </style>
 </head>
@@ -103,9 +110,8 @@
 
     <img
       src="../images/logo.png"
-      alt="Teraju Ciptabina"
+      alt="Teraju Ciptabina Resources"
       class="logo"
-      onerror="this.style.display='none';"
     >
 
     <h1>WhatsApp Teraju Ciptabina</h1>
@@ -113,6 +119,14 @@
     <p>
       Klik butang di bawah untuk terus berhubung dengan kami melalui WhatsApp.
     </p>
+
+    <!--
+      FACEBOOK WHATSAPP LINK
+
+      Important:
+      This is a normal user-click link.
+      No automatic JavaScript redirect.
+    -->
 
     <a
       id="whatsappButton"
@@ -122,6 +136,8 @@
       💬 Open WhatsApp
     </a>
 
+    <!-- Desktop / browser fallback -->
+
     <a
       class="web-button"
       href="https://web.whatsapp.com/send?phone=60145002652&text=Hi%20Teraju%2C%20saya%20datang%20dari%20Facebook."
@@ -129,19 +145,17 @@
       Open WhatsApp Web
     </a>
 
-    <div class="small">
+    <div class="footer">
       Teraju Ciptabina Resources<br>
       Reka • Rancang • Bina
     </div>
 
   </div>
 
-  <script>
 
-    /*
-     * TRACK ONLY WHEN USER ACTUALLY CLICKS
-     * THE WHATSAPP BUTTON
-     */
+  <!-- GA4 WhatsApp click tracking -->
+
+  <script>
 
     document
       .getElementById('whatsappButton')
@@ -154,155 +168,6 @@
         });
 
       });
-
-  </script>
-
-</body>
-</html>      width: 100%;
-      padding: 15px 20px;
-      box-sizing: border-box;
-      background: #25D366;
-      color: #ffffff;
-      text-decoration: none;
-      font-size: 17px;
-      font-weight: 600;
-      border-radius: 10px;
-      margin-bottom: 15px;
-    }
-
-    .web-button {
-      display: block;
-      width: 100%;
-      padding: 13px 20px;
-      box-sizing: border-box;
-      background: #eeeeee;
-      color: #333333;
-      text-decoration: none;
-      font-size: 15px;
-      border-radius: 10px;
-    }
-
-    .small {
-      margin-top: 20px;
-      font-size: 12px;
-      color: #999;
-    }
-  </style>
-</head>
-
-<body>
-
-  <div class="box">
-
-    <img
-      src="../images/logo.png"
-      alt="Teraju Ciptabina"
-      class="logo"
-      onerror="this.style.display='none';"
-    >
-
-    <h1>WhatsApp Teraju Ciptabina</h1>
-
-    <p>
-      Klik butang di bawah untuk terus berhubung dengan kami melalui WhatsApp.
-    </p>
-
-    <!-- Main WhatsApp button -->
-    <a
-      id="whatsappButton"
-      class="whatsapp-button"
-      href="https://wa.me/60145002652?text=Hi%20Teraju%2C%20saya%20datang%20dari%20Facebook."
-    >
-      💬 Open WhatsApp
-    </a>
-
-    <!-- Browser fallback -->
-    <a
-      id="webButton"
-      class="web-button"
-      href="https://web.whatsapp.com/send?phone=60145002652&text=Hi%20Teraju%2C%20saya%20datang%20dari%20Facebook."
-    >
-      Open WhatsApp Web
-    </a>
-
-    <div class="small">
-      Teraju Ciptabina Resources<br>
-      Reka • Rancang • Bina
-    </div>
-
-  </div>
-
-  <script>
-
-    /*
-      ==========================================
-      FACEBOOK WHATSAPP TRACKING
-      ==========================================
-    */
-
-    gtag('event', 'whatsapp_click', {
-      source: 'facebook',
-      platform: 'facebook',
-      destination: 'whatsapp'
-    });
-
-
-    /*
-      ==========================================
-      DEVICE DETECTION
-      ==========================================
-    */
-
-    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-
-    const isIOS =
-      /iPad|iPhone|iPod/.test(userAgent) ||
-      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-
-    const isAndroid =
-      /Android/i.test(userAgent);
-
-
-    /*
-      ==========================================
-      WHATSAPP BUTTON
-      ==========================================
-    */
-
-    const whatsappButton =
-      document.getElementById('whatsappButton');
-
-    const webButton =
-      document.getElementById('webButton');
-
-
-    /*
-      On iPhone / Android:
-      Use normal wa.me link.
-      Because the user taps the button directly,
-      the browser has a much better chance of
-      handing the link to the WhatsApp app.
-    */
-
-    whatsappButton.addEventListener('click', function () {
-
-      gtag('event', 'whatsapp_open', {
-        source: 'facebook',
-        platform: isIOS ? 'ios' : (isAndroid ? 'android' : 'other'),
-        destination: 'whatsapp'
-      });
-
-    });
-
-
-    /*
-      Desktop:
-      WhatsApp Web is the more appropriate fallback.
-    */
-
-    if (!isIOS && !isAndroid) {
-      whatsappButton.textContent = '💬 Open WhatsApp';
-    }
 
   </script>
 
