@@ -13,7 +13,6 @@
     }
 
     gtag('js', new Date());
-
     gtag('config', 'G-50XR3XER7B');
   </script>
 
@@ -22,27 +21,20 @@
 
 <body>
 
-<script>
-  function goToWhatsApp() {
-    window.location.href =
-      "https://wa.me/60145002652?text=Hi%20Teraju%2C%20saya%20datang%20dari%20Facebook.";
-  }
+<p>Opening WhatsApp...</p>
 
+<script>
   gtag('event', 'whatsapp_click', {
     source: 'facebook',
     platform: 'facebook',
-    destination: 'whatsapp',
-    transport_type: 'beacon',
-
-    event_callback: goToWhatsApp,
-    event_timeout: 1000
+    destination: 'whatsapp'
   });
 
-  // Fallback
-  setTimeout(goToWhatsApp, 1200);
+  setTimeout(function () {
+    window.location.href =
+      'https://wa.me/60145002652?text=Hi%20Teraju%2C%20saya%20datang%20dari%20Facebook.';
+  }, 2000);
 </script>
-
-<p>Redirecting to WhatsApp...</p>
 
 </body>
 </html>
