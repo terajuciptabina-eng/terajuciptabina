@@ -1,15 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Renovation Budget Estimator | Teraju Ciptabina</title>
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>
+    Renovation Budget Estimator | Teraju Ciptabina
+  </title>
 
   <script src="https://cdn.tailwindcss.com"></script>
 
   <style>
+
     @media print {
+
       .no-print {
         display: none !important;
       }
@@ -22,17 +32,42 @@
         box-shadow: none !important;
         border: none !important;
       }
+
+      input,
+      select {
+        border: none !important;
+        padding: 0 !important;
+        appearance: none;
+        background: transparent !important;
+      }
+
+      .room-card {
+        break-inside: avoid;
+      }
+
     }
+
   </style>
+
 </head>
+
 
 <body class="bg-gray-100 text-gray-800">
 
-  <!-- HEADER -->
+
+  <!-- ==========================================
+       HEADER
+       ========================================== -->
+
   <header class="bg-white border-b">
-    <div class="max-w-6xl mx-auto px-6 py-5 flex items-center justify-between">
+
+    <div
+      class="max-w-6xl mx-auto px-6 py-5
+             flex items-center justify-between"
+    >
 
       <div class="flex items-center gap-4">
+
         <img
           src="../images/logo.png"
           alt="Teraju Ciptabina"
@@ -40,6 +75,7 @@
         >
 
         <div>
+
           <h1 class="font-bold text-xl">
             TERAJU CIPTABINA
           </h1>
@@ -47,49 +83,101 @@
           <p class="text-sm text-gray-500">
             Renovation Budget Estimator
           </p>
+
         </div>
+
       </div>
+
 
       <button
         onclick="window.print()"
-        class="no-print bg-gray-900 text-white px-5 py-2 rounded-lg hover:bg-gray-700"
+        class="
+          no-print
+          bg-gray-900
+          text-white
+          px-5
+          py-2.5
+          rounded-lg
+          hover:bg-gray-700
+        "
       >
         Print / Save PDF
       </button>
 
     </div>
+
   </header>
 
 
-  <!-- MAIN -->
+
+  <!-- ==========================================
+       MAIN
+       ========================================== -->
+
   <main class="max-w-6xl mx-auto px-6 py-10">
 
+
     <!-- INTRO -->
+
     <section class="mb-8">
+
+      <p
+        class="
+          text-sm
+          font-semibold
+          tracking-wide
+          text-gray-500
+          uppercase
+          mb-2
+        "
+      >
+        TERAJU CIPTABINA
+      </p>
 
       <h2 class="text-3xl font-bold mb-3">
         Renovation Budget Estimator
       </h2>
 
       <p class="text-gray-600 max-w-3xl">
-        Get a preliminary renovation budget based on your room type
-        and estimated floor area.
+
+        Get a preliminary renovation budget based on
+        your room type and estimated floor area.
+
       </p>
 
     </section>
 
 
-    <!-- CLIENT INFORMATION -->
-    <section class="bg-white rounded-2xl shadow-sm p-6 mb-6">
+
+    <!-- ==========================================
+         PROJECT INFORMATION
+         ========================================== -->
+
+    <section
+      class="
+        bg-white
+        rounded-2xl
+        shadow-sm
+        p-6
+        mb-6
+      "
+    >
 
       <h3 class="text-xl font-bold mb-5">
         Project Information
       </h3>
 
+
       <div class="grid md:grid-cols-2 gap-5">
 
+
+        <!-- CUSTOMER -->
+
         <div>
-          <label class="block text-sm font-medium mb-2">
+
+          <label
+            class="block text-sm font-medium mb-2"
+          >
             Customer Name
           </label>
 
@@ -97,13 +185,29 @@
             id="customerName"
             type="text"
             placeholder="Enter customer name"
-            class="w-full border rounded-lg px-4 py-3"
+            class="
+              w-full
+              border
+              rounded-lg
+              px-4
+              py-3
+              focus:outline-none
+              focus:ring-2
+              focus:ring-gray-300
+            "
           >
+
         </div>
 
 
+
+        <!-- LOCATION -->
+
         <div>
-          <label class="block text-sm font-medium mb-2">
+
+          <label
+            class="block text-sm font-medium mb-2"
+          >
             Project Location
           </label>
 
@@ -111,20 +215,43 @@
             id="projectLocation"
             type="text"
             placeholder="e.g. Puchong, Selangor"
-            class="w-full border rounded-lg px-4 py-3"
+            class="
+              w-full
+              border
+              rounded-lg
+              px-4
+              py-3
+              focus:outline-none
+              focus:ring-2
+              focus:ring-gray-300
+            "
           >
+
         </div>
 
 
+
+        <!-- PROJECT TYPE -->
+
         <div class="md:col-span-2">
 
-          <label class="block text-sm font-medium mb-2">
+          <label
+            class="block text-sm font-medium mb-2"
+          >
             Project Type
           </label>
 
           <select
             id="projectType"
-            class="w-full border rounded-lg px-4 py-3"
+            class="
+              w-full
+              border
+              rounded-lg
+              px-4
+              py-3
+              bg-white
+            "
+            onchange="calculateEstimate()"
           >
 
             <option value="renovation">
@@ -139,17 +266,39 @@
 
         </div>
 
+
       </div>
 
     </section>
 
 
-    <!-- ROOMS -->
-    <section class="bg-white rounded-2xl shadow-sm p-6 mb-6">
 
-      <div class="flex items-center justify-between mb-5">
+    <!-- ==========================================
+         ROOMS
+         ========================================== -->
+
+    <section
+      class="
+        bg-white
+        rounded-2xl
+        shadow-sm
+        p-6
+        mb-6
+      "
+    >
+
+
+      <div
+        class="
+          flex
+          items-center
+          justify-between
+          mb-5
+        "
+      >
 
         <div>
+
           <h3 class="text-xl font-bold">
             Areas / Rooms
           </h3>
@@ -157,11 +306,21 @@
           <p class="text-sm text-gray-500">
             Enter the estimated floor area for each room.
           </p>
+
         </div>
+
 
         <button
           onclick="addRoom()"
-          class="no-print bg-black text-white px-4 py-2 rounded-lg"
+          class="
+            no-print
+            bg-black
+            text-white
+            px-4
+            py-2
+            rounded-lg
+            hover:bg-gray-800
+          "
         >
           + Add Room
         </button>
@@ -169,25 +328,61 @@
       </div>
 
 
-      <div id="roomsContainer" class="space-y-4"></div>
+      <div
+        id="roomsContainer"
+        class="space-y-4"
+      ></div>
+
 
     </section>
 
 
-    <!-- ESTIMATE -->
-    <section class="bg-white rounded-2xl shadow-sm p-6 print-card">
 
-      <div class="flex justify-between items-start mb-6">
+    <!-- ==========================================
+         ESTIMATE
+         ========================================== -->
+
+    <section
+      class="
+        bg-white
+        rounded-2xl
+        shadow-sm
+        p-6
+        print-card
+      "
+    >
+
+
+      <!-- ESTIMATE HEADER -->
+
+      <div
+        class="
+          flex
+          justify-between
+          items-start
+          mb-6
+        "
+      >
 
         <div>
-          <p class="text-sm text-gray-500">
-            PRELIMINARY ESTIMATE
+
+          <p
+            class="
+              text-sm
+              text-gray-500
+              uppercase
+              tracking-wide
+            "
+          >
+            Preliminary Estimate
           </p>
 
           <h3 class="text-2xl font-bold">
             Renovation Budget
           </h3>
+
         </div>
+
 
         <div class="text-right">
 
@@ -198,32 +393,68 @@
           <p
             id="estimateNumber"
             class="font-bold"
-          ></p>
+          >
+          </p>
 
         </div>
 
       </div>
 
 
-      <!-- SUMMARY -->
+
+      <!-- CUSTOMER SUMMARY -->
+
+      <div
+        id="customerSummary"
+        class="
+          grid
+          md:grid-cols-2
+          gap-4
+          mb-6
+          text-sm
+        "
+      >
+      </div>
+
+
+
+      <!-- ESTIMATE TABLE -->
+
       <div
         id="estimateContent"
         class="overflow-x-auto"
       >
+
         <p class="text-gray-500">
           Add room areas to generate estimate.
         </p>
+
       </div>
 
 
-      <!-- TOTAL -->
-      <div class="border-t mt-6 pt-6">
 
-        <div class="flex justify-between items-center">
+      <!-- TOTAL -->
+
+      <div
+        class="
+          border-t
+          mt-6
+          pt-6
+        "
+      >
+
+        <div
+          class="
+            flex
+            justify-between
+            items-center
+          "
+        >
 
           <span class="text-lg font-semibold">
             Estimated Total
           </span>
+
 
           <span
             id="grandTotal"
@@ -234,49 +465,101 @@
 
         </div>
 
-        <p class="text-sm text-gray-500 mt-2">
-          * Preliminary estimate only. Final quotation is subject
-          to site inspection, design, drawings, specifications,
+
+        <p
+          class="
+            text-sm
+            text-gray-500
+            mt-3
+          "
+        >
+
+          * This is a preliminary renovation estimate only.
+          Final quotation is subject to site inspection,
+          drawings, specifications, material selection,
           authority requirements and confirmation of scope.
+
         </p>
 
       </div>
 
+
     </section>
 
 
-    <!-- CTA -->
-    <section class="mt-8 bg-gray-900 text-white rounded-2xl p-8 text-center no-print">
+
+    <!-- ==========================================
+         CTA
+         ========================================== -->
+
+    <section
+      class="
+        mt-8
+        bg-gray-900
+        text-white
+        rounded-2xl
+        p-8
+        text-center
+        no-print
+      "
+    >
 
       <h3 class="text-2xl font-bold mb-3">
+
         Want an Official Quotation?
+
       </h3>
 
-      <p class="text-gray-300 mb-6">
-        Submit your renovation details and our team can arrange
-        a site visit and prepare a proper quotation.
+
+      <p
+        class="
+          text-gray-300
+          mb-6
+          max-w-2xl
+          mx-auto
+        "
+      >
+
+        Submit your renovation details and our team
+        can arrange a site visit and prepare a proper quotation.
+
       </p>
+
 
       <a
         href="../index.html#contact"
-        class="inline-block bg-white text-black px-6 py-3 rounded-lg font-semibold"
+        class="
+          inline-block
+          bg-white
+          text-black
+          px-6
+          py-3
+          rounded-lg
+          font-semibold
+          hover:bg-gray-200
+        "
       >
         Request Site Visit
       </a>
 
     </section>
 
+
   </main>
 
 
+
+  <!-- ==========================================
+       JAVASCRIPT
+       ========================================== -->
+
   <script>
 
-    /*
-    ==========================================
-    TERaju Ciptabina RATE BOOK
-    Based on existing quotation sample
-    ==========================================
-    */
+
+    /* ==========================================
+       RATE BOOK
+       Based on Teraju Ciptabina quotation sample
+       ========================================== */
 
     const RATES = {
 
@@ -314,16 +597,19 @@
 
       preliminaries: 8500,
 
-      demolition: 9000
+      demolition: 9000,
+
+      curtainBoxLED: 300,
+
+      barLamp: 500
 
     };
 
 
-    /*
-    ==========================================
-    ROOM DEFINITIONS
-    ==========================================
-    */
+
+    /* ==========================================
+       ROOM TYPES
+       ========================================== */
 
     const ROOM_TYPES = {
 
@@ -354,7 +640,7 @@
 
       carPorch: {
         name: "Car Porch",
-        defaultArea: 836
+        defaultArea: 200
       },
 
       balcony: {
@@ -375,104 +661,174 @@
     };
 
 
+
+    /* ==========================================
+       ROOM COUNTER
+       ========================================== */
+
     let roomCounter = 0;
 
 
-    /*
-    ==========================================
-    FORMAT MONEY
-    ==========================================
-    */
+
+    /* ==========================================
+       MONEY FORMAT
+       ========================================== */
 
     function money(value) {
 
-      return new Intl.NumberFormat("en-MY", {
-        style: "currency",
-        currency: "MYR",
-        minimumFractionDigits: 0
-      }).format(value);
+      return new Intl.NumberFormat(
+        "en-MY",
+        {
+          style: "currency",
+          currency: "MYR",
+          minimumFractionDigits: 0
+        }
+      ).format(value);
 
     }
 
 
-    /*
-    ==========================================
-    GENERATE ESTIMATE NUMBER
-    ==========================================
-    */
+
+    /* ==========================================
+       ESTIMATE NUMBER
+       ========================================== */
 
     function generateEstimateNumber() {
 
-      let number = localStorage.getItem("terajuEstimateNumber");
+      let number =
+        localStorage.getItem(
+          "terajuEstimateNumber"
+        );
+
 
       if (!number) {
+
         number = 1;
+
       } else {
-        number = parseInt(number) + 1;
+
+        number =
+          parseInt(number) + 1;
+
       }
+
 
       localStorage.setItem(
         "terajuEstimateNumber",
         number
       );
 
-      return "EST-" +
-        String(number).padStart(4, "0");
+
+      return (
+        "EST-" +
+        String(number).padStart(4, "0")
+      );
 
     }
 
 
+
     document.getElementById(
       "estimateNumber"
-    ).textContent = generateEstimateNumber();
+    ).textContent =
+      generateEstimateNumber();
 
 
-    /*
-    ==========================================
-    ADD ROOM
-    ==========================================
-    */
 
-    function addRoom(type = "living", area = "") {
+    /* ==========================================
+       ADD ROOM
+       ========================================== */
+
+    function addRoom(
+      type = "living",
+      area = ""
+    ) {
 
       roomCounter++;
 
-      const roomId = "room-" + roomCounter;
+
+      const roomId =
+        "room-" + roomCounter;
+
 
       const container =
-        document.getElementById("roomsContainer");
+        document.getElementById(
+          "roomsContainer"
+        );
 
 
-      const room = document.createElement("div");
+      const room =
+        document.createElement("div");
+
 
       room.className =
-        "border rounded-xl p-4 bg-gray-50";
+        `
+        room-card
+        border
+        rounded-xl
+        p-4
+        bg-gray-50
+        `;
+
 
       room.id = roomId;
 
 
       room.innerHTML = `
 
-        <div class="grid md:grid-cols-12 gap-3 items-end">
+        <div
+          class="
+            grid
+            md:grid-cols-12
+            gap-3
+            items-end
+          "
+        >
 
           <div class="md:col-span-5">
 
-            <label class="block text-sm font-medium mb-2">
+            <label
+              class="
+                block
+                text-sm
+                font-medium
+                mb-2
+              "
+            >
               Room / Area
             </label>
 
+
             <select
-              class="room-type w-full border rounded-lg px-4 py-3 bg-white"
+              class="
+                room-type
+                w-full
+                border
+                rounded-lg
+                px-4
+                py-3
+                bg-white
+              "
               onchange="calculateEstimate()"
             >
 
               ${Object.entries(ROOM_TYPES)
-                .map(([key, room]) => `
-                  <option value="${key}"
-                    ${key === type ? "selected" : ""}>
-                    ${room.name}
-                  </option>
-                `)
+                .map(
+                  ([key, room]) => `
+
+                    <option
+                      value="${key}"
+                      ${
+                        key === type
+                          ? "selected"
+                          : ""
+                      }
+                    >
+                      ${room.name}
+                    </option>
+
+                  `
+                )
                 .join("")}
 
             </select>
@@ -480,29 +836,56 @@
           </div>
 
 
+
           <div class="md:col-span-4">
 
-            <label class="block text-sm font-medium mb-2">
+            <label
+              class="
+                block
+                text-sm
+                font-medium
+                mb-2
+              "
+            >
               Area (sqft)
             </label>
+
 
             <input
               type="number"
               min="1"
               value="${area}"
-              placeholder="e.g. 540"
-              class="room-area w-full border rounded-lg px-4 py-3"
+              placeholder="e.g. 200"
+              class="
+                room-area
+                w-full
+                border
+                rounded-lg
+                px-4
+                py-3
+              "
               oninput="calculateEstimate()"
             >
 
           </div>
 
 
+
           <div class="md:col-span-3">
 
             <button
               onclick="removeRoom('${roomId}')"
-              class="no-print w-full border border-red-300 text-red-600 rounded-lg px-4 py-3 hover:bg-red-50"
+              class="
+                no-print
+                w-full
+                border
+                border-red-300
+                text-red-600
+                rounded-lg
+                px-4
+                py-3
+                hover:bg-red-50
+              "
             >
               Remove
             </button>
@@ -519,31 +902,33 @@
     }
 
 
-    /*
-    ==========================================
-    REMOVE ROOM
-    ==========================================
-    */
+
+    /* ==========================================
+       REMOVE ROOM
+       ========================================== */
 
     function removeRoom(id) {
 
       const room =
         document.getElementById(id);
 
+
       if (room) {
+
         room.remove();
+
       }
+
 
       calculateEstimate();
 
     }
 
 
-    /*
-    ==========================================
-    CALCULATE ROOM
-    ==========================================
-    */
+
+    /* ==========================================
+       CALCULATE ROOM ITEMS
+       ========================================== */
 
     function calculateRoom(
       type,
@@ -553,25 +938,45 @@
       let items = [];
 
 
-      /*
-      LIVING / DINING
-      */
+
+      /* ========================================
+         LIVING / DINING
+         ======================================== */
 
       if (type === "living") {
 
         items.push({
-          description: "Plaster ceiling + paint",
+
+          description:
+            "Plaster ceiling + paint",
+
           qty: area,
+
           unit: "sqft",
+
           rate: RATES.ceiling
+
         });
 
+
         items.push({
-          description: "SPC flooring",
+
+          description:
+            "SPC flooring",
+
           qty: area,
+
           unit: "sqft",
+
           rate: RATES.spcFlooring
+
         });
+
+
+        /*
+        1 downlight / 70 sqft
+        Minimum 4
+        */
 
         const lights =
           Math.max(
@@ -579,49 +984,90 @@
             Math.ceil(area / 70)
           );
 
+
         items.push({
-          description: "Downlights",
+
+          description:
+            "Downlights",
+
           qty: lights,
+
           unit: "unit",
+
           rate: RATES.downlight
+
         });
 
+
         items.push({
-          description: "Ceiling fan",
+
+          description:
+            "Ceiling fan",
+
           qty: 1,
+
           unit: "unit",
+
           rate: RATES.ceilingFan
+
         });
 
+
         items.push({
-          description: "Curtain box LED",
+
+          description:
+            "Curtain box LED",
+
           qty: 1,
+
           unit: "ls",
-          rate: 300
+
+          rate: RATES.curtainBoxLED
+
         });
 
       }
 
 
-      /*
-      BEDROOM
-      */
+
+      /* ========================================
+         BEDROOM
+         ======================================== */
 
       if (type === "bedroom") {
 
         items.push({
-          description: "Plaster ceiling + paint",
+
+          description:
+            "Plaster ceiling + paint",
+
           qty: area,
+
           unit: "sqft",
+
           rate: RATES.ceiling
+
         });
 
+
         items.push({
-          description: "SPC flooring",
+
+          description:
+            "SPC flooring",
+
           qty: area,
+
           unit: "sqft",
+
           rate: RATES.spcFlooring
+
         });
+
+
+        /*
+        1 downlight / 70 sqft
+        Minimum 4
+        */
 
         const lights =
           Math.max(
@@ -629,312 +1075,648 @@
             Math.ceil(area / 70)
           );
 
+
         items.push({
-          description: "Downlights",
+
+          description:
+            "Downlights",
+
           qty: lights,
+
           unit: "unit",
+
           rate: RATES.downlight
+
         });
 
+
         items.push({
-          description: "Ceiling fan",
+
+          description:
+            "Ceiling fan",
+
           qty: 1,
+
           unit: "unit",
+
           rate: RATES.ceilingFan
+
         });
 
+
         items.push({
-          description: "Curtain box LED",
+
+          description:
+            "Curtain box LED",
+
           qty: 1,
+
           unit: "ls",
-          rate: 300
+
+          rate: RATES.curtainBoxLED
+
         });
 
       }
 
 
-      /*
-      DRY KITCHEN
-      */
+
+      /* ========================================
+         DRY KITCHEN
+         ======================================== */
 
       if (type === "dryKitchen") {
 
         items.push({
-          description: "Plaster ceiling + paint",
+
+          description:
+            "Plaster ceiling + paint",
+
           qty: area,
+
           unit: "sqft",
+
           rate: RATES.ceiling
+
         });
 
+
         items.push({
-          description: "SPC flooring",
+
+          description:
+            "SPC flooring",
+
           qty: area,
+
           unit: "sqft",
+
           rate: RATES.spcFlooring
+
         });
 
+
         items.push({
-          description: "Architectural frame",
+
+          description:
+            "Architectural frame",
+
           qty: 1,
+
           unit: "ls",
+
           rate: RATES.kitchenFrame
+
         });
 
+
         items.push({
-          description: "Making good wall",
+
+          description:
+            "Making good wall",
+
           qty: 1,
+
           unit: "ls",
+
           rate: RATES.kitchenMakingGood
+
         });
 
+
         items.push({
-          description: "Glass door",
+
+          description:
+            "Glass door",
+
           qty: 1,
+
           unit: "ls",
+
           rate: RATES.kitchenGlassDoor
+
         });
 
+
+        /*
+        1 downlight / 45 sqft
+        Minimum 4
+        */
+
+        const lights =
+          Math.max(
+            4,
+            Math.ceil(area / 45)
+          );
+
+
         items.push({
-          description: "Downlights",
-          qty: Math.max(4, Math.ceil(area / 45)),
+
+          description:
+            "Downlights",
+
+          qty: lights,
+
           unit: "unit",
+
           rate: RATES.downlight
+
         });
 
-        items.push({
-          description: "Bar lamp",
-          qty: 1,
-          unit: "unit",
-          rate: 500
-        });
 
         items.push({
-          description: "Ceiling fan",
+
+          description:
+            "Bar lamp",
+
           qty: 1,
+
           unit: "unit",
+
+          rate: RATES.barLamp
+
+        });
+
+
+        items.push({
+
+          description:
+            "Ceiling fan",
+
+          qty: 1,
+
+          unit: "unit",
+
           rate: RATES.ceilingFan
+
         });
 
       }
 
 
-      /*
-      WET KITCHEN
-      */
+
+      /* ========================================
+         WET KITCHEN
+         ======================================== */
 
       if (type === "wetKitchen") {
 
         items.push({
-          description: "Floor tiles + waterproofing",
+
+          description:
+            "Floor tiles + waterproofing",
+
           qty: area,
+
           unit: "sqft",
+
           rate: RATES.floorTiles
+
         });
 
+
+        /*
+        Wall tile allowance:
+        2 × floor area
+        */
+
         items.push({
-          description: "Wall tiles",
+
+          description:
+            "Wall tiles",
+
           qty: area * 2,
+
           unit: "sqft",
+
           rate: RATES.wallTiles
+
         });
 
+
         items.push({
-          description: "Plaster ceiling + paint",
+
+          description:
+            "Plaster ceiling + paint",
+
           qty: area,
+
           unit: "sqft",
+
           rate: RATES.ceiling
+
         });
 
+
+        /*
+        1 downlight / 45 sqft
+        Minimum 4
+        */
+
+        const lights =
+          Math.max(
+            4,
+            Math.ceil(area / 45)
+          );
+
+
         items.push({
-          description: "Downlights",
-          qty: Math.max(4, Math.ceil(area / 45)),
+
+          description:
+            "Downlights",
+
+          qty: lights,
+
           unit: "unit",
+
           rate: RATES.downlight
+
         });
 
       }
 
 
-      /*
-      BATHROOM
-      */
+
+      /* ========================================
+         BATHROOM
+         ======================================== */
 
       if (type === "bathroom") {
 
         items.push({
-          description: "Floor tiles + waterproofing",
+
+          description:
+            "Floor tiles + waterproofing",
+
           qty: area,
+
           unit: "sqft",
+
           rate: RATES.floorTiles
+
         });
 
+
+        /*
+        Wall tile allowance:
+        6 × floor area
+        */
+
         items.push({
-          description: "Wall tiles",
+
+          description:
+            "Wall tiles",
+
           qty: area * 6,
+
           unit: "sqft",
+
           rate: RATES.wallTiles
+
         });
 
+
         items.push({
-          description: "Plaster ceiling + paint",
+
+          description:
+            "Plaster ceiling + paint",
+
           qty: area,
+
           unit: "sqft",
+
           rate: RATES.ceiling
+
         });
 
+
         items.push({
-          description: "Sanitary fittings",
+
+          description:
+            "Sanitary fittings",
+
           qty: 1,
+
           unit: "ls",
-          rate: RATES.bathroomSanitary
+
+          rate:
+            RATES.bathroomSanitary
+
         });
 
+
         items.push({
-          description: "Toilet door",
+
+          description:
+            "Toilet door",
+
           qty: 1,
+
           unit: "unit",
-          rate: RATES.bathroomDoor
+
+          rate:
+            RATES.bathroomDoor
+
         });
 
+
         items.push({
-          description: "Downlights",
+
+          description:
+            "Downlights",
+
           qty: 4,
+
           unit: "unit",
-          rate: RATES.downlight
+
+          rate:
+            RATES.downlight
+
         });
 
+
         items.push({
-          description: "Exhaust fan",
+
+          description:
+            "Exhaust fan",
+
           qty: 1,
+
           unit: "unit",
-          rate: RATES.exhaustFan
+
+          rate:
+            RATES.exhaustFan
+
         });
 
       }
 
 
-      /*
-      CAR PORCH
-      */
+
+      /* ========================================
+         CAR PORCH
+         ======================================== */
 
       if (type === "carPorch") {
 
         items.push({
-          description: "Floor tiles",
+
+          description:
+            "Floor tiles",
+
           qty: area,
+
           unit: "sqft",
-          rate: RATES.floorTiles
+
+          rate:
+            RATES.floorTiles
+
         });
 
+
         items.push({
-          description: "Plaster ceiling + paint",
+
+          description:
+            "Plaster ceiling + paint",
+
           qty: area,
+
           unit: "sqft",
-          rate: RATES.ceiling
+
+          rate:
+            RATES.ceiling
+
         });
 
-        items.push({
-          description: "Automatic main gate motor",
-          qty: 1,
-          unit: "ls",
-          rate: 6400
-        });
+
+        /*
+        =========================================
+        CAR PORCH DOWNLIGHT RULE
+
+        200 sqft = 4 units
+        400 sqft = 8 units
+        600 sqft = 12 units
+        800 sqft = 16 units
+
+        Formula:
+        1 unit / 50 sqft
+        Minimum 4 units
+        =========================================
+        */
+
+        const lights =
+          Math.max(
+            4,
+            Math.ceil(area / 50)
+          );
+
 
         items.push({
-          description: "Brickwall divider",
-          qty: 1,
-          unit: "ls",
-          rate: 2800
-        });
 
-        items.push({
-          description: "Front fence brickwall",
-          qty: 1,
-          unit: "ls",
-          rate: 5500
-        });
+          description:
+            "Downlights",
 
-        items.push({
-          description: "Downlights",
-          qty: Math.max(4, Math.ceil(area / 100)),
+          qty: lights,
+
           unit: "unit",
-          rate: RATES.downlight
+
+          rate:
+            RATES.downlight
+
+        });
+
+
+        /*
+        Fixed car porch items
+        based on sample quotation
+        */
+
+        items.push({
+
+          description:
+            "Automatic main gate motor",
+
+          qty: 1,
+
+          unit: "ls",
+
+          rate: 6400
+
+        });
+
+
+        items.push({
+
+          description:
+            "Brickwall divider",
+
+          qty: 1,
+
+          unit: "ls",
+
+          rate: 2800
+
+        });
+
+
+        items.push({
+
+          description:
+            "Front fence brickwall",
+
+          qty: 1,
+
+          unit: "ls",
+
+          rate: 5500
+
         });
 
       }
 
 
-      /*
-      BALCONY
-      */
+
+      /* ========================================
+         BALCONY
+         ======================================== */
 
       if (type === "balcony") {
 
         items.push({
-          description: "Floor tiles + waterproofing",
+
+          description:
+            "Floor tiles + waterproofing",
+
           qty: area,
+
           unit: "sqft",
-          rate: RATES.floorTiles
+
+          rate:
+            RATES.floorTiles
+
         });
 
+
+        /*
+        Facade wall allowance
+        */
+
         items.push({
-          description: "Facade wall",
+
+          description:
+            "Facade wall",
+
           qty: area * 1.33,
+
           unit: "sqft",
-          rate: RATES.facadeWall
+
+          rate:
+            RATES.facadeWall
+
         });
 
+
         items.push({
-          description: "Wall lights",
+
+          description:
+            "Wall lights",
+
           qty: 4,
+
           unit: "unit",
-          rate: RATES.wallLight
+
+          rate:
+            RATES.wallLight
+
         });
 
       }
 
 
-      /*
-      EXTENSION KITCHEN
-      */
+
+      /* ========================================
+         NEW EXTENSION KITCHEN
+         ======================================== */
 
       if (type === "extensionKitchen") {
 
         items.push({
-          description: "New extension kitchen building works",
+
+          description:
+            "New extension kitchen building works",
+
           qty: area,
+
           unit: "sqft",
-          rate: RATES.extensionKitchen
+
+          rate:
+            RATES.extensionKitchen
+
         });
 
+
+        /*
+        1 downlight / 45 sqft
+        Minimum 4
+        */
+
+        const lights =
+          Math.max(
+            4,
+            Math.ceil(area / 45)
+          );
+
+
         items.push({
-          description: "Downlights",
-          qty: Math.max(4, Math.ceil(area / 45)),
+
+          description:
+            "Downlights",
+
+          qty: lights,
+
           unit: "unit",
-          rate: RATES.downlight
+
+          rate:
+            RATES.downlight
+
         });
 
       }
 
 
-      /*
-      EXTENSION TOILET
-      */
+
+      /* ========================================
+         NEW EXTENSION TOILET
+         ======================================== */
 
       if (type === "extensionToilet") {
 
         items.push({
-          description: "New extension toilet building works",
+
+          description:
+            "New extension toilet building works",
+
           qty: area,
+
           unit: "sqft",
-          rate: RATES.extensionToilet
+
+          rate:
+            RATES.extensionToilet
+
         });
 
+
         items.push({
-          description: "Downlights",
+
+          description:
+            "Downlights",
+
           qty: 2,
+
           unit: "unit",
-          rate: RATES.downlight
+
+          rate:
+            RATES.downlight
+
         });
 
       }
@@ -945,13 +1727,97 @@
     }
 
 
-    /*
-    ==========================================
-    MAIN CALCULATION
-    ==========================================
-    */
+
+    /* ==========================================
+       MAIN ESTIMATE CALCULATION
+       ========================================== */
 
     function calculateEstimate() {
+
+
+      /* ----------------------------------------
+         UPDATE CUSTOMER SUMMARY
+         ---------------------------------------- */
+
+      const customer =
+        document.getElementById(
+          "customerName"
+        ).value;
+
+
+      const location =
+        document.getElementById(
+          "projectLocation"
+        ).value;
+
+
+      const projectType =
+        document.getElementById(
+          "projectType"
+        );
+
+
+      const projectTypeText =
+        projectType.options[
+          projectType.selectedIndex
+        ].text;
+
+
+      document.getElementById(
+        "customerSummary"
+      ).innerHTML = `
+
+        <div>
+
+          <span class="text-gray-500">
+            Customer
+          </span>
+
+          <div class="font-semibold">
+            ${
+              customer ||
+              "Not specified"
+            }
+          </div>
+
+        </div>
+
+
+        <div>
+
+          <span class="text-gray-500">
+            Location
+          </span>
+
+          <div class="font-semibold">
+            ${
+              location ||
+              "Not specified"
+            }
+          </div>
+
+        </div>
+
+
+        <div>
+
+          <span class="text-gray-500">
+            Project Type
+          </span>
+
+          <div class="font-semibold">
+            ${projectTypeText}
+          </div>
+
+        </div>
+
+      `;
+
+
+
+      /* ----------------------------------------
+         GET ROOMS
+         ---------------------------------------- */
 
       const rooms =
         document.querySelectorAll(
@@ -964,19 +1830,35 @@
       let subtotal = 0;
 
 
+
+      /* ----------------------------------------
+         CALCULATE EVERY ROOM
+         ---------------------------------------- */
+
       rooms.forEach(room => {
 
+
         const type =
-          room.querySelector(".room-type").value;
+          room.querySelector(
+            ".room-type"
+          ).value;
+
 
         const area =
           parseFloat(
-            room.querySelector(".room-area").value
+            room.querySelector(
+              ".room-area"
+            ).value
           );
 
 
-        if (!area || area <= 0) {
+        if (
+          !area ||
+          area <= 0
+        ) {
+
           return;
+
         }
 
 
@@ -993,10 +1875,14 @@
 
         items.forEach(item => {
 
+
           const amount =
-            item.qty * item.rate;
+            item.qty *
+            item.rate;
+
 
           subtotal += amount;
+
 
           allItems.push({
 
@@ -1014,11 +1900,15 @@
       });
 
 
-      /*
-      PRELIMINARY PROJECT COSTS
-      */
 
-      if (subtotal > 0) {
+      /* ----------------------------------------
+         PRELIMINARIES
+         ---------------------------------------- */
+
+      if (
+        subtotal > 0
+      ) {
+
 
         allItems.unshift({
 
@@ -1031,9 +1921,11 @@
 
           unit: "ls",
 
-          rate: RATES.preliminaries,
+          rate:
+            RATES.preliminaries,
 
-          amount: RATES.preliminaries
+          amount:
+            RATES.preliminaries
 
         });
 
@@ -1044,40 +1936,58 @@
       }
 
 
-      /*
-      CONTINGENCY
-      */
+
+      /* ----------------------------------------
+         CONTINGENCY
+         ---------------------------------------- */
 
       const contingency =
-        subtotal * 0.05;
+        subtotal *
+        0.05;
 
 
       const total =
-        subtotal + contingency;
+        subtotal +
+        contingency;
 
+
+
+      /* ----------------------------------------
+         DISPLAY
+         ---------------------------------------- */
 
       renderEstimate(
+
         allItems,
+
         subtotal,
+
         contingency,
+
         total
+
       );
 
     }
 
 
-    /*
-    ==========================================
-    DISPLAY ESTIMATE
-    ==========================================
-    */
+
+    /* ==========================================
+       RENDER ESTIMATE
+       ========================================== */
 
     function renderEstimate(
+
       items,
+
       subtotal,
+
       contingency,
+
       total
+
     ) {
+
 
       const container =
         document.getElementById(
@@ -1085,48 +1995,112 @@
         );
 
 
-      if (items.length === 0) {
+
+      /* ----------------------------------------
+         NO DATA
+         ---------------------------------------- */
+
+      if (
+        items.length === 0
+      ) {
+
 
         container.innerHTML = `
+
           <p class="text-gray-500">
+
             Add room areas to generate estimate.
+
           </p>
+
         `;
+
 
         document.getElementById(
           "grandTotal"
-        ).textContent = "RM 0";
+        ).textContent =
+          "RM 0";
+
 
         return;
 
       }
 
 
+
+      /* ----------------------------------------
+         TABLE
+         ---------------------------------------- */
+
       let html = `
 
-        <table class="w-full text-sm">
+        <table
+          class="
+            w-full
+            text-sm
+          "
+        >
 
           <thead>
 
-            <tr class="border-b">
+            <tr
+              class="
+                border-b
+                bg-gray-50
+              "
+            >
 
-              <th class="text-left py-3">
+              <th
+                class="
+                  text-left
+                  py-3
+                  px-2
+                "
+              >
                 Area
               </th>
 
-              <th class="text-left py-3">
+
+              <th
+                class="
+                  text-left
+                  py-3
+                  px-2
+                "
+              >
                 Description
               </th>
 
-              <th class="text-right py-3">
+
+              <th
+                class="
+                  text-right
+                  py-3
+                  px-2
+                "
+              >
                 Qty
               </th>
 
-              <th class="text-right py-3">
+
+              <th
+                class="
+                  text-right
+                  py-3
+                  px-2
+                "
+              >
                 Rate
               </th>
 
-              <th class="text-right py-3">
+
+              <th
+                class="
+                  text-right
+                  py-3
+                  px-2
+                "
+              >
                 Amount
               </th>
 
@@ -1134,35 +2108,88 @@
 
           </thead>
 
+
           <tbody>
+
       `;
 
 
+
+      /* ----------------------------------------
+         TABLE ITEMS
+         ---------------------------------------- */
+
       items.forEach(item => {
+
 
         html += `
 
           <tr class="border-b">
 
-            <td class="py-3">
+            <td
+              class="
+                py-3
+                px-2
+              "
+            >
               ${item.room}
             </td>
 
-            <td class="py-3">
+
+            <td
+              class="
+                py-3
+                px-2
+              "
+            >
               ${item.description}
             </td>
 
-            <td class="py-3 text-right">
-              ${Number(item.qty).toFixed(0)}
+
+            <td
+              class="
+                py-3
+                px-2
+                text-right
+              "
+            >
+
+              ${Number(item.qty).toLocaleString(
+                "en-MY",
+                {
+                  maximumFractionDigits: 2
+                }
+              )}
+
               ${item.unit}
+
             </td>
 
-            <td class="py-3 text-right">
+
+            <td
+              class="
+                py-3
+                px-2
+                text-right
+              "
+            >
+
               ${money(item.rate)}
+
             </td>
 
-            <td class="py-3 text-right font-medium">
+
+            <td
+              class="
+                py-3
+                px-2
+                text-right
+                font-medium
+              "
+            >
+
               ${money(item.amount)}
+
             </td>
 
           </tr>
@@ -1172,45 +2199,96 @@
       });
 
 
+
+      /* ----------------------------------------
+         TABLE FOOTER
+         ---------------------------------------- */
+
       html += `
 
           </tbody>
 
+
           <tfoot>
 
+
             <tr>
-              <td colspan="4"
-                  class="pt-5 text-right font-semibold">
+
+              <td
+                colspan="4"
+                class="
+                  pt-5
+                  text-right
+                  font-semibold
+                  px-2
+                "
+              >
+
                 Subtotal
+
               </td>
 
-              <td class="pt-5 text-right font-semibold">
+
+              <td
+                class="
+                  pt-5
+                  text-right
+                  font-semibold
+                  px-2
+                "
+              >
+
                 ${money(subtotal)}
+
               </td>
+
             </tr>
+
 
 
             <tr>
 
-              <td colspan="4"
-                  class="pt-3 text-right">
+              <td
+                colspan="4"
+                class="
+                  pt-3
+                  text-right
+                  px-2
+                "
+              >
+
                 Contingency 5%
+
               </td>
 
-              <td class="pt-3 text-right">
+
+              <td
+                class="
+                  pt-3
+                  text-right
+                  px-2
+                "
+              >
+
                 ${money(contingency)}
+
               </td>
 
             </tr>
+
 
           </tfoot>
+
 
         </table>
 
       `;
 
 
-      container.innerHTML = html;
+
+      container.innerHTML =
+        html;
+
 
 
       document.getElementById(
@@ -1221,19 +2299,50 @@
     }
 
 
-    /*
-    ==========================================
-    INITIAL ROOMS
-    ==========================================
-    */
 
-    addRoom("living", 540);
+    /* ==========================================
+       LIVE CUSTOMER CALCULATION
+       ========================================== */
 
-    addRoom("bedroom", 160);
+    document
+      .getElementById("customerName")
+      .addEventListener(
+        "input",
+        calculateEstimate
+      );
+
+
+    document
+      .getElementById("projectLocation")
+      .addEventListener(
+        "input",
+        calculateEstimate
+      );
+
+
+
+    /* ==========================================
+       INITIAL ROOMS
+       ========================================== */
+
+    addRoom(
+      "living",
+      540
+    );
+
+
+    addRoom(
+      "bedroom",
+      160
+    );
+
 
     calculateEstimate();
 
+
   </script>
 
+
 </body>
+
 </html>
