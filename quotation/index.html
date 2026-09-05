@@ -49,6 +49,11 @@
         break-inside: avoid;
       }
 
+      .quotation-document {
+        box-shadow: none !important;
+        border: none !important;
+      }
+
     }
 
   </style>
@@ -527,6 +532,108 @@
 
   </section>
 
+
+
+  <!-- =========================================================
+       QUOTATION GENERATOR
+       ========================================================= -->
+
+  <section
+    class="
+      no-print
+      bg-white
+      rounded-2xl
+      shadow-sm
+      p-6
+      mt-6
+    "
+  >
+
+    <div class="mb-5">
+      <h3 class="font-bold text-lg">Generate Quotation</h3>
+      <p class="text-sm text-gray-500">
+        Choose how much pricing detail you want to show in the quotation.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-4">
+
+      <label class="border rounded-xl p-4 cursor-pointer hover:bg-gray-50">
+        <div class="flex items-start gap-3">
+          <input
+            type="radio"
+            name="quotationType"
+            value="simple"
+            checked
+            class="mt-1 h-4 w-4"
+          >
+          <div>
+            <p class="font-semibold">Simple Quotation</p>
+            <p class="text-sm text-gray-500 mt-1">
+              Shows the work description by room / area, with only one total price for each room / area.
+            </p>
+          </div>
+        </div>
+      </label>
+
+      <label class="border rounded-xl p-4 cursor-pointer hover:bg-gray-50">
+        <div class="flex items-start gap-3">
+          <input
+            type="radio"
+            name="quotationType"
+            value="detail"
+            class="mt-1 h-4 w-4"
+          >
+          <div>
+            <p class="font-semibold">Detailed Quotation</p>
+            <p class="text-sm text-gray-500 mt-1">
+              Shows item-by-item quantity, unit, rate and amount under each room / area.
+            </p>
+          </div>
+        </div>
+      </label>
+
+    </div>
+
+    <div class="mt-5 flex flex-wrap gap-3">
+      <button
+        type="button"
+        onclick="generateQuotation()"
+        class="bg-black text-white px-5 py-3 rounded-lg font-semibold hover:bg-gray-800"
+      >
+        Generate Quotation
+      </button>
+
+      <button
+        type="button"
+        onclick="printQuotation()"
+        class="border px-5 py-3 rounded-lg font-semibold hover:bg-gray-50"
+      >
+        Print / Save Quotation PDF
+      </button>
+    </div>
+
+  </section>
+
+
+  <!-- =========================================================
+       GENERATED QUOTATION
+       ========================================================= -->
+
+  <section
+    id="quotationDocument"
+    class="
+      hidden
+      bg-white
+      rounded-2xl
+      shadow-sm
+      p-8
+      mt-6
+      quotation-document
+    "
+  >
+    <div id="quotationContent"></div>
+  </section>
 
 
   <!-- =========================================================
@@ -1272,6 +1379,287 @@ function excludeItem(itemId) {
 function restoreAllItems() {
   excludedItems.clear();
   updateEstimate();
+}
+
+let quotationNumber = null;
+
+function generateQuotationNumber() {
+  let number = localStorage.getItem("terajuQuotationNumber");
+  if (!number) number = 1;
+  else number = parseInt(number, 10) + 1;
+  localStorage.setItem("terajuQuotationNumber", number);
+  return "QO" + String(number).padStart(3, "0");
+}
+
+function getSelectedQuotationType() {
+  return document.querySelector('input[name="quotationType"]:checked')?.value || "simple";
+}
+
+function getCurrentQuotationData() {
+  const allItems = getAllItems().filter(item => !excludedItems.has(item.id));
+  const roomGroups = getRoomGroups();
+  const hasAnyArea = roomGroups.some(room => room.area > 0);
+
+  const prelimRate = customRates.has("project-preliminaries")
+    ? customRates.get("project-preliminaries")
+    : RATES.preliminaries;
+
+  const projectPreliminaries =
+    hasAnyArea && !excludedItems.has("project-preliminaries")
+      ? prelimRate
+      : 0;
+
+  const itemsByRoom = {};
+  const roomSubtotals = {};
+
+  roomGroups.forEach(room => {
+    itemsByRoom[room.roomId] = [];
+    roomSubtotals[room.roomId] = 0;
+  });
+
+  allItems.forEach(item => {
+    if (!itemsByRoom[item.roomId]) itemsByRoom[item.roomId] = [];
+    itemsByRoom[item.roomId].push(item);
+    roomSubtotals[item.roomId] =
+      (roomSubtotals[item.roomId] || 0) + item.amount;
+  });
+
+  const roomTotal = Object.values(roomSubtotals)
+    .reduce((sum, value) => sum + value, 0);
+
+  return {
+    allItems,
+    roomGroups,
+    itemsByRoom,
+    roomSubtotals,
+    projectPreliminaries,
+    total: projectPreliminaries + roomTotal
+  };
+}
+
+function quotationDescriptionList(items) {
+  if (!items.length) return "No selected works";
+  return items.map(item => escapeHtml(item.description)).join("<br>");
+}
+
+function generateQuotation() {
+  const data = getCurrentQuotationData();
+
+  if (!data.roomGroups.some(room => room.area > 0)) {
+    window.alert("Please add at least one area with a valid sqft before generating the quotation.");
+    return;
+  }
+
+  quotationNumber = generateQuotationNumber();
+
+  const type = getSelectedQuotationType();
+  const customer = document.getElementById("customerName")?.value || "Not specified";
+  const location = document.getElementById("projectLocation")?.value || "Not specified";
+  const today = new Intl.DateTimeFormat("en-MY", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric"
+  }).format(new Date());
+
+  const content = document.getElementById("quotationContent");
+
+  let body = "";
+
+  body += `
+    <div class="flex justify-between items-start gap-6 border-b pb-5 mb-6">
+      <div>
+        <div class="flex items-center gap-4 mb-4">
+          <img src="../images/logo.png" alt="Teraju Ciptabina Logo" class="h-14 w-auto">
+          <div>
+            <h1 class="text-xl font-bold">TERAJU CIPTABINA RESOURCES</h1>
+            <p class="text-xs text-gray-500">No 10A, Jalan PP 2/1, Taman Putra Prima, 47100 Puchong, Selangor</p>
+          </div>
+        </div>
+        <h2 class="text-2xl font-bold uppercase">Quotation</h2>
+      </div>
+      <div class="text-right text-sm">
+        <p><span class="text-gray-500">Quotation No.</span><br><strong>${escapeHtml(quotationNumber)}</strong></p>
+        <p class="mt-2"><span class="text-gray-500">Date</span><br><strong>${escapeHtml(today)}</strong></p>
+      </div>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-6 mb-7 text-sm">
+      <div>
+        <p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Customer</p>
+        <p class="font-semibold">${escapeHtml(customer)}</p>
+      </div>
+      <div>
+        <p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Project Location</p>
+        <p class="font-semibold">${escapeHtml(location)}</p>
+      </div>
+    </div>
+  `;
+
+  body += `
+    <div class="mb-5">
+      <p class="text-sm text-gray-600">
+        Renovation works as described below. Final quotation is subject to site inspection,
+        approved drawings, actual site conditions, specifications, material selection and confirmation of final scope of works.
+      </p>
+    </div>
+  `;
+
+  if (type === "simple") {
+    body += `
+      <div class="overflow-x-auto">
+        <table class="w-full border-collapse text-sm">
+          <thead>
+            <tr class="border-b-2 text-left">
+              <th class="py-3 px-2 w-10">No.</th>
+              <th class="py-3 px-2">Area / Room</th>
+              <th class="py-3 px-2">Description of Works</th>
+              <th class="py-3 px-2 text-right">Amount (RM)</th>
+            </tr>
+          </thead>
+          <tbody>
+    `;
+
+    let no = 1;
+    if (data.projectPreliminaries > 0) {
+      body += `
+        <tr class="border-b align-top">
+          <td class="py-3 px-2">${no++}</td>
+          <td class="py-3 px-2 font-semibold">Project</td>
+          <td class="py-3 px-2">Preliminaries / Project arrangement</td>
+          <td class="py-3 px-2 text-right font-medium">${money(data.projectPreliminaries)}</td>
+        </tr>`;
+    }
+
+    data.roomGroups.forEach(room => {
+      if (room.area <= 0) return;
+      body += `
+        <tr class="border-b align-top">
+          <td class="py-3 px-2">${no++}</td>
+          <td class="py-3 px-2 font-semibold">
+            ${escapeHtml(room.label)}<br>
+            <span class="font-normal text-gray-500">${formatQty(room.area)} sqft</span>
+          </td>
+          <td class="py-3 px-2 leading-6">${quotationDescriptionList(data.itemsByRoom[room.roomId] || [])}</td>
+          <td class="py-3 px-2 text-right font-semibold">${money(data.roomSubtotals[room.roomId] || 0)}</td>
+        </tr>`;
+    });
+
+    body += `
+          </tbody>
+          <tfoot>
+            <tr class="border-t-2">
+              <td colspan="3" class="py-4 px-2 text-right font-bold">TOTAL</td>
+              <td class="py-4 px-2 text-right font-bold text-lg">${money(data.total)}</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    `;
+  } else {
+    body += `
+      <div class="overflow-x-auto">
+        <table class="w-full border-collapse text-sm">
+          <thead>
+            <tr class="border-b-2 text-left">
+              <th class="py-3 px-2">Area / Room</th>
+              <th class="py-3 px-2">Description</th>
+              <th class="py-3 px-2 text-right">Qty</th>
+              <th class="py-3 px-2">Unit</th>
+              <th class="py-3 px-2 text-right">Rate (RM)</th>
+              <th class="py-3 px-2 text-right">Amount (RM)</th>
+            </tr>
+          </thead>
+          <tbody>
+    `;
+
+    if (data.projectPreliminaries > 0) {
+      body += `
+        <tr class="border-b bg-gray-50">
+          <td class="py-3 px-2 font-semibold">Project</td>
+          <td class="py-3 px-2">Preliminaries / Project arrangement</td>
+          <td class="py-3 px-2 text-right">1</td>
+          <td class="py-3 px-2">ls</td>
+          <td class="py-3 px-2 text-right">${money(data.projectPreliminaries)}</td>
+          <td class="py-3 px-2 text-right font-semibold">${money(data.projectPreliminaries)}</td>
+        </tr>`;
+    }
+
+    data.roomGroups.forEach(room => {
+      if (room.area <= 0) return;
+      const roomItems = data.itemsByRoom[room.roomId] || [];
+
+      body += `
+        <tr class="bg-gray-100 border-b">
+          <td colspan="6" class="py-3 px-2 font-bold">
+            ${escapeHtml(room.label)}
+            <span class="font-normal text-gray-500">(${formatQty(room.area)} sqft)</span>
+          </td>
+        </tr>`;
+
+      roomItems.forEach(item => {
+        body += `
+          <tr class="border-b align-top">
+            <td class="py-3 px-2 font-medium">${escapeHtml(item.room)}</td>
+            <td class="py-3 px-2">${escapeHtml(item.description)}</td>
+            <td class="py-3 px-2 text-right">${formatQty(item.qty)}</td>
+            <td class="py-3 px-2">${escapeHtml(item.unit)}</td>
+            <td class="py-3 px-2 text-right">${money(item.rate)}</td>
+            <td class="py-3 px-2 text-right font-medium">${money(item.amount)}</td>
+          </tr>`;
+      });
+
+      body += `
+        <tr class="border-b">
+          <td colspan="5" class="py-3 px-2 text-right font-bold">${escapeHtml(room.label)} Subtotal</td>
+          <td class="py-3 px-2 text-right font-bold">${money(data.roomSubtotals[room.roomId] || 0)}</td>
+        </tr>`;
+    });
+
+    body += `
+          </tbody>
+          <tfoot>
+            <tr class="border-t-2">
+              <td colspan="5" class="py-4 px-2 text-right font-bold">TOTAL</td>
+              <td class="py-4 px-2 text-right font-bold text-lg">${money(data.total)}</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    `;
+  }
+
+  body += `
+    <div class="mt-8 pt-5 border-t text-sm">
+      <p class="font-semibold mb-2">Terms / Notes</p>
+      <ul class="list-disc pl-5 space-y-1 text-gray-600">
+        <li>This quotation is based on the selected scope and estimated area provided.</li>
+        <li>Final scope, specifications and pricing are subject to site inspection and confirmation.</li>
+        <li>Any additional works not stated above will be quoted separately.</li>
+      </ul>
+    </div>
+
+    <div class="mt-12 text-sm">
+      <p>Your sincerely,</p>
+      <p class="font-bold mt-8">TERAJU CIPTABINA RESOURCES</p>
+    </div>
+  `;
+
+  content.innerHTML = body;
+  document.getElementById("quotationDocument").classList.remove("hidden");
+  document.getElementById("quotationDocument").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function printQuotation() {
+  const quotation = document.getElementById("quotationDocument");
+  if (quotation.classList.contains("hidden")) {
+    window.alert("Please generate the quotation first.");
+    return;
+  }
+
+  const originalTitle = document.title;
+  document.title = quotationNumber ? `Quotation ${quotationNumber}` : "Quotation";
+  window.print();
+  document.title = originalTitle;
 }
 
 /* Start with one empty area */
