@@ -592,10 +592,9 @@
      ========================================================= -->
 
 <script>
-
-
 /* ============================================================
-   RATE BOOK
+   TERaju CIPTABINA RENOVATION BUDGET ESTIMATOR
+   Room-based calculation engine
    ============================================================ */
 
 const RATES = {
@@ -624,27 +623,10 @@ const RATES = {
   extensionToilet: 584
 };
 
-
-/* ============================================================
-   UNIVERSAL RULES
-   ============================================================ */
-
 const RULES = {
   downlightPerSqft: 50,
-  minimumDownlights: 4,
-  exhaustFanPerSqft: 50,
-  minimumExhaustFans: 1,
-  balconyWallLightPerSqft: 70,
-  minimumBalconyWallLights: 2,
-  wetKitchenWallTileMultiplier: 2,
-  bathroomWallTileMultiplier: 6,
-  balconyFacadeMultiplier: 1.33
+  minimumDownlights: 4
 };
-
-
-/* ============================================================
-   ROOM TYPES
-   ============================================================ */
 
 const ROOM_TYPES = {
   living: "Living / Dining",
@@ -658,1298 +640,53 @@ const ROOM_TYPES = {
   extensionToilet: "New Extension – Toilet"
 };
 
+/*
+  Optional scopes are ALWAYS attached to the individual room/area.
+  Fixed rates use the rate book. Custom items require a rate entered
+  by the estimator because the reference quotations do not provide
+  a universal room-by-room rate.
+*/
+const OPTIONAL_SCOPES = [
+  { key:"demolition", label:"Demolition / hacking works", unit:"ls", rate:null, custom:true },
+  { key:"painting", label:"Painting works", unit:"ls", rate:null, custom:true },
+  { key:"glassDoor", label:"Additional swing glass door", unit:"unit", rate:RATES.kitchenGlassDoor },
+  { key:"brickwallDivider", label:"Additional brickwall divider", unit:"ls", rate:RATES.brickwallDivider },
+  { key:"frontFence", label:"Additional front fence brickwall", unit:"ls", rate:RATES.frontFence },
+  { key:"windows", label:"Additional windows", unit:"unit", rate:null, custom:true },
+  { key:"electrical", label:"Additional electrical works", unit:"ls", rate:null, custom:true }
+];
 
-/* ============================================================
-   ROOM TEMPLATES
-   ------------------------------------------------------------
-   Business rule:
-   Room / Area → Items → Quantity → Rate → Amount → Subtotal
-   ============================================================ */
-
-const ROOM_TEMPLATES = {
-
-  living: (area, roomId) => [
-    areaItem(roomId, "ceiling", "Plaster ceiling + paint", area, "sqft", RATES.ceiling),
-    areaItem(roomId, "spc", "SPC flooring", area, "sqft", RATES.spc),
-    unitItem(roomId, "downlight", "Downlights", calculateDownlights(area), RATES.downlight),
-    unitItem(roomId, "fan", "Ceiling fan", 1, RATES.ceilingFan),
-    lsItem(roomId, "curtain", "Curtain box LED", 1, RATES.curtainBoxLED)
-  ],
-
-  bedroom: (area, roomId) => [
-    areaItem(roomId, "ceiling", "Plaster ceiling + paint", area, "sqft", RATES.ceiling),
-    areaItem(roomId, "spc", "SPC flooring", area, "sqft", RATES.spc),
-    unitItem(roomId, "downlight", "Downlights", calculateDownlights(area), RATES.downlight),
-    unitItem(roomId, "fan", "Ceiling fan", 1, RATES.ceilingFan),
-    lsItem(roomId, "curtain", "Curtain box LED", 1, RATES.curtainBoxLED)
-  ],
-
-  dryKitchen: (area, roomId) => [
-    areaItem(roomId, "ceiling", "Plaster ceiling + paint", area, "sqft", RATES.ceiling),
-    areaItem(roomId, "spc", "SPC flooring", area, "sqft", RATES.spc),
-    unitItem(roomId, "downlight", "Downlights", calculateDownlights(area), RATES.downlight),
-    unitItem(roomId, "barlamp", "Bar lamp", 1, RATES.barLamp),
-    unitItem(roomId, "fan", "Baby ceiling fan", 1, RATES.ceilingFan),
-    lsItem(roomId, "frame", "Laminated arch frame", 1, RATES.kitchenFrame),
-    lsItem(roomId, "makinggood", "Making good wall after demolition", 1, RATES.kitchenMakingGood),
-    lsItem(roomId, "glassdoor", "Swing glass door", 1, RATES.kitchenGlassDoor)
-  ],
-
-  wetKitchen: (area, roomId) => [
-    areaItem(roomId, "floor", "Floor tiles + waterproofing", area, "sqft", RATES.floorTile),
-    areaItem(roomId, "walltile", "Wall tiles", area * RULES.wetKitchenWallTileMultiplier, "sqft", RATES.wallTile),
-    areaItem(roomId, "ceiling", "Plaster ceiling + paint", area, "sqft", RATES.ceiling),
-    unitItem(roomId, "downlight", "Downlights", calculateDownlights(area), RATES.downlight),
-    unitItem(roomId, "fan", "Ceiling fan", 1, RATES.ceilingFan),
-    lsItem(roomId, "lamp", "Kitchen lighting allowance", 1, RATES.barLamp)
-  ],
-
-  bathroom: (area, roomId) => [
-    areaItem(roomId, "floor", "Floor tiles + waterproofing", area, "sqft", RATES.floorTile),
-    areaItem(roomId, "walltile", "Wall tiles", area * RULES.bathroomWallTileMultiplier, "sqft", RATES.wallTile),
-    areaItem(roomId, "ceiling", "Plaster ceiling + paint", area, "sqft", RATES.ceiling),
-    lsItem(roomId, "sanitary", "Toilet sanitary accessories", 1, RATES.bathroomSanitary),
-    unitItem(roomId, "door", "Toilet swing door", 1, RATES.bathroomDoor),
-    unitItem(roomId, "downlight", "Downlights", calculateDownlights(area), RATES.downlight),
-    unitItem(roomId, "exhaust", "Exhaust fan", calculateExhaustFans(area), RATES.exhaustFan)
-  ],
-
-  carPorch: (area, roomId) => [
-    areaItem(roomId, "floor", "Floor tiles", area, "sqft", RATES.floorTile),
-    areaItem(roomId, "ceiling", "Plaster ceiling + paint", area, "sqft", RATES.ceiling),
-    unitItem(roomId, "downlight", "Downlights", calculateDownlights(area), RATES.downlight),
-    lsItem(roomId, "gate", "Automatic main gate motor", 1, RATES.gateMotor),
-    lsItem(roomId, "divider", "Brickwall divider", 1, RATES.brickwallDivider),
-    lsItem(roomId, "fence", "Front fence brickwall", 1, RATES.frontFence)
-  ],
-
-  balcony: (area, roomId) => [
-    areaItem(roomId, "floor", "Floor tiles + waterproofing", area, "sqft", RATES.floorTile),
-    areaItem(roomId, "facade", "Facade wall", area * RULES.balconyFacadeMultiplier, "sqft", RATES.facadeWall),
-    unitItem(roomId, "walllight", "Wall lights", calculateBalconyWallLights(area), RATES.wallLight)
-  ],
-
-  extensionKitchen: (area, roomId) => [
-    areaItem(roomId, "extension", "New extension kitchen building works", area, "sqft", RATES.extensionKitchen),
-    unitItem(roomId, "downlight", "Downlights", calculateDownlights(area), RATES.downlight)
-  ],
-
-  extensionToilet: (area, roomId) => [
-    areaItem(roomId, "extension", "New extension toilet building works", area, "sqft", RATES.extensionToilet),
-    unitItem(roomId, "downlight", "Downlights", calculateDownlights(area), RATES.downlight),
-    unitItem(roomId, "exhaust", "Exhaust fan", calculateExhaustFans(area), RATES.exhaustFan)
-  ]
-};
-
-
-/* ============================================================
-   OPTIONAL SCOPE BY ROOM
-   ------------------------------------------------------------
-   IMPORTANT:
-   Optional works belong to the specific room/card where they
-   are selected. They are never treated as one project-level
-   bucket.
-
-   Reference quotation data supports fixed reference rates for
-   glass door / brickwall / fence. Demolition, painting,
-   windows and additional electrical do NOT have a reliable
-   universal per-room rate in the supplied quotation, so those
-   require a custom rate.
-   ============================================================ */
-
-const ROOM_OPTIONAL_SCOPES = {
-  demolition: {
-    description: "Demolition / hacking works for this area",
-    qty: 1,
-    unit: "ls",
-    rate: 0,
-    custom: true
-  },
-
-  painting: {
-    description: "Painting works for this area",
-    qty: 1,
-    unit: "ls",
-    rate: 0,
-    custom: true
-  },
-
-  glassDoor: {
-    description: "Additional swing glass door",
-    qty: 1,
-    unit: "unit",
-    rate: RATES.kitchenGlassDoor,
-    custom: false
-  },
-
-  brickwall: {
-    description: "Additional brickwall divider",
-    qty: 1,
-    unit: "ls",
-    rate: RATES.brickwallDivider,
-    custom: false
-  },
-
-  fence: {
-    description: "Additional front fence brickwall",
-    qty: 1,
-    unit: "ls",
-    rate: RATES.frontFence,
-    custom: false
-  },
-
-  windows: {
-    description: "Additional windows",
-    qty: 1,
-    unit: "unit",
-    rate: 0,
-    custom: true
-  },
-
-  electrical: {
-    description: "Additional electrical works",
-    qty: 1,
-    unit: "ls",
-    rate: 0,
-    custom: true
-  }
-};
-
-const roomOptionalSelections = {};
-const roomOptionalCustomValues = {};
-
-// Items removed by the user are kept here so they stay excluded
-// after every recalculation.
+let roomCounter = 0;
 const excludedItems = new Set();
-
-
-function getRoomOptionalKeys(roomType) {
-
-  const keys = [
-    "demolition",
-    "painting",
-    "windows",
-    "electrical"
-  ];
-
-  if (
-    [
-      "living",
-      "bedroom",
-      "dryKitchen",
-      "wetKitchen",
-      "bathroom"
-    ].includes(roomType)
-  ) {
-    keys.push("glassDoor");
-  }
-
-  if (roomType === "carPorch") {
-    keys.push("brickwall");
-    keys.push("fence");
-  }
-
-  return keys;
-}
-
-
-function getOptionalLabel(key) {
-
-  const labels = {
-    demolition: "Demolition / hacking",
-    painting: "Painting",
-    glassDoor: "Additional swing glass door",
-    brickwall: "Additional brickwall divider",
-    fence: "Additional front fence brickwall",
-    windows: "Additional windows",
-    electrical: "Additional electrical works"
-  };
-
-  return labels[key] || key;
-}
-
-
-function ensureRoomOptionalState(roomId) {
-
-  if (!roomOptionalSelections[roomId]) {
-    roomOptionalSelections[roomId] = new Set();
-  }
-
-  if (!roomOptionalCustomValues[roomId]) {
-    roomOptionalCustomValues[roomId] = {};
-  }
-}
-
-
-function renderRoomOptionalScope(roomId) {
-
-  const room = document.getElementById(roomId);
-  if (!room) return;
-
-  const container =
-    room.querySelector(".room-optional-scope");
-
-  if (!container) return;
-
-  ensureRoomOptionalState(roomId);
-
-  const roomType =
-    room.querySelector(".room-type").value;
-
-  const keys = getRoomOptionalKeys(roomType);
-  const selections = roomOptionalSelections[roomId];
-  const customValues = roomOptionalCustomValues[roomId];
-
-  let html = `
-    <div class="border-t mt-4 pt-4">
-      <div class="text-sm font-semibold text-gray-700">
-        Optional works for this area / room
-      </div>
-
-      <div class="text-xs text-gray-500 mt-1 mb-3">
-        Select only if required. Custom-rate items are not priced automatically.
-      </div>
-
-      <div class="space-y-2">
-  `;
-
-  keys.forEach(key => {
-
-    const option = ROOM_OPTIONAL_SCOPES[key];
-    const selected = selections.has(key);
-    const custom = option.custom === true;
-
-    const customQty =
-      customValues[key]?.qty ?? option.qty;
-
-    const customRate =
-      customValues[key]?.rate ?? "";
-
-    const amount =
-      custom
-        ? (Number(customQty) || 0) * (Number(customRate) || 0)
-        : option.qty * option.rate;
-
-    html += `
-      <div class="border rounded-lg p-3 bg-white">
-
-        <label class="flex items-start gap-3 cursor-pointer">
-
-          <input
-            type="checkbox"
-            class="mt-1 h-4 w-4"
-            ${selected ? "checked" : ""}
-            onchange="toggleRoomOptionalScope('${roomId}', '${key}', this.checked)"
-          >
-
-          <div class="flex-1">
-
-            <div class="font-medium text-sm">
-              ${escapeHtml(getOptionalLabel(key))}
-            </div>
-
-            <div class="text-xs text-gray-500 mt-1">
-              ${
-                custom
-                  ? "Custom rate required"
-                  : `${escapeHtml(option.unit)} @ ${money(option.rate)}`
-              }
-            </div>
-
-          </div>
-
-          <div class="text-right text-sm font-semibold">
-            ${
-              selected
-                ? money(amount)
-                : "Not included"
-            }
-          </div>
-
-        </label>
-
-        ${
-          selected && custom
-            ? `
-              <div class="grid md:grid-cols-2 gap-3 mt-3 ml-7">
-
-                <div>
-                  <label class="block text-xs font-medium mb-1">
-                    Quantity
-                  </label>
-
-                  <input
-                    type="number"
-                    min="0"
-                    step="1"
-                    value="${escapeHtml(customQty)}"
-                    class="w-full border rounded-lg px-3 py-2 bg-white"
-                    oninput="setRoomOptionalCustom('${roomId}', '${key}', 'qty', this.value)"
-                  >
-                </div>
-
-                <div>
-                  <label class="block text-xs font-medium mb-1">
-                    Rate (RM)
-                  </label>
-
-                  <input
-                    type="number"
-                    min="0"
-                    step="1"
-                    value="${escapeHtml(customRate)}"
-                    placeholder="Enter rate"
-                    class="w-full border rounded-lg px-3 py-2 bg-white"
-                    oninput="setRoomOptionalCustom('${roomId}', '${key}', 'rate', this.value)"
-                  >
-                </div>
-
-              </div>
-            `
-            : ""
-        }
-
-      </div>
-    `;
-  });
-
-  html += `
-      </div>
-    </div>
-  `;
-
-  container.innerHTML = html;
-}
-
-
-function toggleRoomOptionalScope(roomId, key, checked) {
-
-  ensureRoomOptionalState(roomId);
-
-  if (checked) {
-    roomOptionalSelections[roomId].add(key);
-  } else {
-    roomOptionalSelections[roomId].delete(key);
-  }
-
-  renderRoomOptionalScope(roomId);
-  updateEstimate();
-}
-
-
-function setRoomOptionalCustom(roomId, key, field, value) {
-
-  ensureRoomOptionalState(roomId);
-
-  if (!roomOptionalCustomValues[roomId][key]) {
-    roomOptionalCustomValues[roomId][key] = {};
-  }
-
-  roomOptionalCustomValues[roomId][key][field] = value;
-
-  renderRoomOptionalScope(roomId);
-  updateEstimate();
-}
-
-
-function getOptionalItems() {
-
-  const items = [];
-
-  const rooms =
-    document.querySelectorAll("#roomsContainer .room-card");
-
-  const typeCounts = {};
-  const typeSeen = {};
-
-  rooms.forEach(room => {
-    const roomType =
-      room.querySelector(".room-type").value;
-
-    typeCounts[roomType] =
-      (typeCounts[roomType] || 0) + 1;
-  });
-
-  rooms.forEach(room => {
-
-    const roomId = room.id;
-
-    ensureRoomOptionalState(roomId);
-
-    const roomType =
-      room.querySelector(".room-type").value;
-
-    const roomArea =
-      parseFloat(
-        room.querySelector(".room-area").value
-      ) || 0;
-
-    typeSeen[roomType] =
-      (typeSeen[roomType] || 0) + 1;
-
-    const baseName =
-      ROOM_TYPES[roomType] || roomType;
-
-    const roomLabel =
-      typeCounts[roomType] > 1
-        ? `${baseName} ${typeSeen[roomType]}`
-        : baseName;
-
-    const allowedKeys =
-      getRoomOptionalKeys(roomType);
-
-    allowedKeys.forEach(key => {
-
-      if (!roomOptionalSelections[roomId].has(key)) {
-        return;
-      }
-
-      const option =
-        ROOM_OPTIONAL_SCOPES[key];
-
-      if (!option) return;
-
-      let qty = option.qty;
-      let rate = option.rate;
-
-      if (option.custom) {
-
-        qty =
-          Number(
-            roomOptionalCustomValues[roomId][key]?.qty
-          ) || 0;
-
-        rate =
-          Number(
-            roomOptionalCustomValues[roomId][key]?.rate
-          ) || 0;
-      }
-
-      items.push({
-        id: roomId + "-optional-" + key,
-        description: option.description,
-        qty,
-        unit: option.unit,
-        rate,
-        amount: qty * rate,
-        room: roomLabel,
-        roomId,
-        roomArea,
-        isOptional: true
-      });
-
-    });
-
-  });
-
-  return items;
-}
-
-
-/* ============================================================
-   ESTIMATE NUMBER
-   ============================================================ */
 
 function generateEstimateNumber() {
   let number = localStorage.getItem("terajuEstimateNumber");
-
-  if (!number) {
-    number = 1;
-  } else {
-    number = parseInt(number) + 1;
-  }
-
+  if (!number) number = 1;
+  else number = parseInt(number, 10) + 1;
   localStorage.setItem("terajuEstimateNumber", number);
-
   return "EST-" + String(number).padStart(4, "0");
 }
 
-document.getElementById("estimateNumber").textContent =
-  generateEstimateNumber();
-
-
-/* ============================================================
-   MONEY
-   ============================================================ */
+document.getElementById("estimateNumber").textContent = generateEstimateNumber();
 
 function money(value) {
   return new Intl.NumberFormat("en-MY", {
     style: "currency",
     currency: "MYR",
     minimumFractionDigits: 0
-  }).format(value);
+  }).format(Number(value) || 0);
 }
-
-
-/* ============================================================
-   STANDARD QUANTITY RULES
-   ============================================================ */
 
 function calculateDownlights(area) {
   if (!area || area <= 0) return 0;
-
   return Math.max(
     RULES.minimumDownlights,
     Math.ceil(area / RULES.downlightPerSqft)
   );
 }
 
-function calculateExhaustFans(area) {
-  if (!area || area <= 0) return 0;
-
-  return Math.max(
-    RULES.minimumExhaustFans,
-    Math.ceil(area / RULES.exhaustFanPerSqft)
-  );
-}
-
-function calculateBalconyWallLights(area) {
-  if (!area || area <= 0) return 0;
-
-  return Math.max(
-    RULES.minimumBalconyWallLights,
-    Math.ceil(area / RULES.balconyWallLightPerSqft)
-  );
-}
-
-
-/* ============================================================
-   ROOM SELECT OPTIONS
-   ============================================================ */
-
-function roomOptions() {
-  let html = "";
-
-  Object.entries(ROOM_TYPES).forEach(([key, name]) => {
-    html += `
-      <option value="${key}">
-        ${name}
-      </option>
-    `;
-  });
-
-  return html;
-}
-
-
-/* ============================================================
-   ADD ROOM
-   ============================================================ */
-
-function addRoom(defaultType = "living", defaultArea = "") {
-
-  roomCounter++;
-
-  const id = "room-" + roomCounter;
-  const container = document.getElementById("roomsContainer");
-
-  const div = document.createElement("div");
-
-  div.id = id;
-  div.className = `
-    room-card
-    border
-    rounded-xl
-    p-4
-    bg-gray-50
-  `;
-
-  div.innerHTML = `
-    <div class="
-      grid
-      md:grid-cols-[1fr_1fr_auto]
-      gap-4
-      items-end
-    ">
-
-      <div>
-        <label class="
-          block
-          text-sm
-          font-medium
-          mb-2
-        ">
-          Area / Room
-        </label>
-
-        <select class="
-          room-type
-          w-full
-          border
-          rounded-lg
-          px-4
-          py-3
-          bg-white
-        ">
-          ${roomOptions()}
-        </select>
-      </div>
-
-      <div>
-        <label class="
-          block
-          text-sm
-          font-medium
-          mb-2
-        ">
-          Area (sqft)
-        </label>
-
-        <input
-          type="number"
-          min="1"
-          step="1"
-          value="${defaultArea}"
-          placeholder="e.g. 200"
-          class="
-            room-area
-            w-full
-            border
-            rounded-lg
-            px-4
-            py-3
-            bg-white
-          "
-        >
-      </div>
-
-      <button
-        type="button"
-        onclick="removeRoom('${id}')"
-        class="
-          no-print
-          border
-          border-red-300
-          text-red-600
-          rounded-lg
-          px-5
-          py-3
-          hover:bg-red-50
-        "
-      >
-        Remove
-      </button>
-
-    </div>
-
-    <div class="room-optional-scope"></div>
-  `;
-
-  container.appendChild(div);
-
-  div.querySelector(".room-type").value = defaultType;
-
-  ensureRoomOptionalState(id);
-  renderRoomOptionalScope(id);
-
-  div.querySelector(".room-type").addEventListener(
-    "change",
-    () => {
-      ensureRoomOptionalState(id);
-      renderRoomOptionalScope(id);
-      updateEstimate();
-    }
-  );
-
-  div.querySelector(".room-area").addEventListener(
-    "input",
-    updateEstimate
-  );
-
-  updateEstimate();
-}
-
-
-/* ============================================================
-   REMOVE ROOM
-   ============================================================ */
-
-function removeRoom(id) {
-  const room = document.getElementById(id);
-
-  if (room) {
-    room.remove();
-  }
-
-  delete roomOptionalSelections[id];
-  delete roomOptionalCustomValues[id];
-
-  updateEstimate();
-}
-
-
-/* ============================================================
-   PROJECT INFO
-   ============================================================ */
-
-function toggleProjectInfo() {
-  const info = document.getElementById("projectInfo");
-  const arrow = document.getElementById("projectArrow");
-
-  info.classList.toggle("hidden");
-
-  arrow.textContent =
-    info.classList.contains("hidden")
-      ? "▼"
-      : "▲";
-}
-
-
-/* ============================================================
-   GENERATE ITEMS FOR ROOM
-   ============================================================ */
-
-function generateRoomItems(roomType, area, roomId) {
-
-  if (!area || area <= 0) {
-    return [];
-  }
-
-  const template = ROOM_TEMPLATES[roomType];
-
-  if (!template) {
-    return [];
-  }
-
-  const roomName = ROOM_TYPES[roomType];
-
-  return template(area, roomId).map(item => ({
-    ...item,
-    room: roomName,
-    roomId: roomId,
-    roomArea: area,
-    amount: item.qty * item.rate
-  }));
-}
-
-
-/* ============================================================
-   GET ALL ITEMS
-   ============================================================ */
-
-function getAllItems() {
-
-  const rooms = document.querySelectorAll("#roomsContainer .room-card");
-  const allItems = [];
-  const typeCounts = {};
-  const typeSeen = {};
-
-  rooms.forEach(room => {
-    const type = room.querySelector(".room-type")?.value;
-    if (type) typeCounts[type] = (typeCounts[type] || 0) + 1;
-  });
-
-  rooms.forEach(room => {
-    const roomId = room.id;
-    const roomType = room.querySelector(".room-type")?.value;
-    const area = parseFloat(room.querySelector(".room-area")?.value) || 0;
-    if (!roomType) return;
-
-    typeSeen[roomType] = (typeSeen[roomType] || 0) + 1;
-    const baseName = ROOM_TYPES[roomType] || roomType;
-    const roomLabel = typeCounts[roomType] > 1
-      ? `${baseName} ${typeSeen[roomType]}`
-      : baseName;
-
-    const items = generateRoomItems(roomType, area, roomId).map(item => ({
-      ...item,
-      room: roomLabel,
-      roomId,
-      roomArea: area
-    }));
-
-    allItems.push(...items);
-  });
-
-  return allItems;
-}
-
-
-function groupItemsByRoom(items) {
-
-  // Group by the unique room/card ID so duplicate room types stay separate.
-  const grouped = {};
-
-  items.forEach(item => {
-    const key = item.roomId;
-    if (!key) return;
-
-    if (!grouped[key]) {
-      grouped[key] = {
-        roomName: item.room,
-        area: item.roomArea || 0,
-        items: []
-      };
-    }
-
-    grouped[key].items.push(item);
-  });
-
-  return grouped;
-}
-
-
-function updateEstimate() {
-
-  const roomItems = getAllItems();
-  const optionalItems = getOptionalItems();
-
-  const activeRoomItems = roomItems.filter(
-    item => !excludedItems.has(item.id)
-  );
-
-  const activeOptionalItems = optionalItems.filter(
-    item => !excludedItems.has(item.id)
-  );
-
-  const hasAreas =
-    document.querySelectorAll("#roomsContainer .room-card").length > 0 &&
-    Array.from(
-      document.querySelectorAll("#roomsContainer .room-card")
-    ).some(room => {
-      const area =
-        parseFloat(room.querySelector(".room-area")?.value) || 0;
-      return area > 0;
-    });
-
-  const prelimIncluded =
-    hasAreas &&
-    !excludedItems.has("project-preliminaries");
-
-  let roomWorksTotal = 0;
-  activeRoomItems.forEach(item => {
-    item.amount = item.qty * item.rate;
-    roomWorksTotal += item.amount;
-  });
-
-  let optionalTotal = 0;
-  activeOptionalItems.forEach(item => {
-    item.amount = item.qty * item.rate;
-    optionalTotal += item.amount;
-  });
-
-  const subtotal =
-    roomWorksTotal +
-    optionalTotal +
-    (prelimIncluded ? RATES.preliminaries : 0);
-
-  const total = subtotal;
-
-  renderEstimate(
-    activeRoomItems,
-    activeOptionalItems,
-    subtotal,
-    total,
-    prelimIncluded
-  );
-}
-
-
-
-/* ============================================================
-   RENDER ESTIMATE
-   ------------------------------------------------------------
-   Each room is rendered as its own quotation section.
-   ============================================================ */
-
-function renderEstimate(
-  items,
-  optionalItems,
-  subtotal,
-  total,
-  prelimIncluded
-) {
-
-  const container =
-    document.getElementById("estimateContent");
-
-  const customer =
-    document.getElementById("customerName").value ||
-    "Not specified";
-
-  const location =
-    document.getElementById("projectLocation").value ||
-    "Not specified";
-
-  document.getElementById("customerSummary").innerHTML = `
-    <div>
-      <p class="text-gray-500">Customer</p>
-      <p class="font-medium">
-        ${escapeHtml(customer)}
-      </p>
-    </div>
-
-    <div>
-      <p class="text-gray-500">Location</p>
-      <p class="font-medium">
-        ${escapeHtml(location)}
-      </p>
-    </div>
-
-    <div>
-      <p class="text-gray-500">Estimate Type</p>
-      <p class="font-medium">
-        Preliminary Renovation Estimate
-      </p>
-    </div>
-  `;
-
-
-  if (items.length === 0 && optionalItems.length === 0 && !prelimIncluded) {
-
-    container.innerHTML = `
-      <div class="
-        border
-        rounded-xl
-        p-8
-        text-center
-        text-gray-500
-      ">
-        Add an area above to generate
-        the renovation breakdown.
-      </div>
-    `;
-
-    document.getElementById("grandTotal").textContent =
-      money(0);
-
-    return;
-  }
-
-
-  const grouped = groupItemsByRoom([
-    ...items,
-    ...optionalItems
-  ]);
-
-  let html = `
-    <table class="
-      w-full
-      border-collapse
-      text-sm
-    ">
-
-      <thead>
-        <tr class="border-b-2 text-left">
-
-          <th class="py-3 px-2">
-            Area
-          </th>
-
-          <th class="py-3 px-2">
-            Description
-          </th>
-
-          <th class="py-3 px-2 text-right">
-            Qty
-          </th>
-
-          <th class="py-3 px-2">
-            Unit
-          </th>
-
-          <th class="py-3 px-2 text-right">
-            Rate
-          </th>
-
-          <th class="py-3 px-2 text-right">
-            Amount
-          </th>
-
-          <th class="
-            no-print
-            py-3
-            px-2
-            text-center
-          ">
-            Action
-          </th>
-
-        </tr>
-      </thead>
-
-      <tbody>
-  `;
-
-
-  /* PROJECT PRELIMINARIES */
-
-  if (prelimIncluded) {
-
-    html += `
-      <tr class="border-b bg-gray-50">
-
-        <td class="py-3 px-2 font-medium">
-          Project
-        </td>
-
-        <td class="py-3 px-2">
-          Preliminaries / Project arrangement
-        </td>
-
-        <td class="py-3 px-2 text-right">
-          1
-        </td>
-
-        <td class="py-3 px-2">
-          ls
-        </td>
-
-        <td class="py-3 px-2 text-right">
-          ${money(RATES.preliminaries)}
-        </td>
-
-        <td class="py-3 px-2 text-right font-medium">
-          ${money(RATES.preliminaries)}
-        </td>
-
-        <td class="
-          no-print
-          py-3
-          px-2
-          text-center
-        ">
-          <button
-            onclick="excludeItem('project-preliminaries')"
-            class="
-              text-red-600
-              text-xs
-              border
-              border-red-200
-              rounded
-              px-3
-              py-1.5
-              hover:bg-red-50
-            "
-          >
-            Delete
-          </button>
-        </td>
-
-      </tr>
-    `;
-  }
-
-
-  /* ROOM-BY-ROOM BREAKDOWN */
-
-  Object.values(grouped).forEach(
-    roomGroup => {
-
-      const roomName = roomGroup.roomName;
-      const roomArea = roomGroup.area;
-      const roomItems = roomGroup.items;
-
-      /*
-        Each room/card gets its OWN subtotal.
-        This is deliberately calculated from that room's
-        active line items only.
-      */
-      const roomSubtotal =
-        roomItems.reduce(
-          (sum, item) => sum + item.amount,
-          0
-        );
-
-      html += `
-        <tr class="bg-gray-100 border-b">
-
-          <td
-            colspan="7"
-            class="
-              py-3
-              px-2
-              font-bold
-              text-gray-900
-            "
-          >
-            ${escapeHtml(roomName)} — ${formatQty(roomArea)} sqft
-          </td>
-
-        </tr>
-      `;
-
-      roomItems.forEach(item => {
-
-        html += `
-          <tr class="border-b hover:bg-gray-50">
-
-            <td class="py-3 px-2 font-medium">
-              ${escapeHtml(item.room)}
-            </td>
-
-            <td class="py-3 px-2">
-              ${escapeHtml(item.description)}
-            </td>
-
-            <td class="py-3 px-2 text-right">
-              ${formatQty(item.qty)}
-            </td>
-
-            <td class="py-3 px-2">
-              ${escapeHtml(item.unit)}
-            </td>
-
-            <td class="py-3 px-2 text-right">
-              ${money(item.rate)}
-            </td>
-
-            <td class="
-              py-3
-              px-2
-              text-right
-              font-medium
-            ">
-              ${money(item.amount)}
-            </td>
-
-            <td class="
-              no-print
-              py-3
-              px-2
-              text-center
-            ">
-
-              <button
-                onclick="excludeItem('${item.id}')"
-                class="
-                  text-red-600
-                  text-xs
-                  border
-                  border-red-200
-                  rounded
-                  px-3
-                  py-1.5
-                  hover:bg-red-50
-                "
-              >
-                Delete
-              </button>
-
-            </td>
-
-          </tr>
-        `;
-      });
-
-
-      html += `
-        <tr class="border-b-2">
-
-          <td
-            colspan="5"
-            class="
-              py-3
-              px-2
-              text-right
-              font-semibold
-            "
-          >
-            ${escapeHtml(roomName)} — ${formatQty(roomArea)} sqft Subtotal
-          </td>
-
-          <td class="
-            py-3
-            px-2
-            text-right
-            font-bold
-          ">
-            ${money(roomSubtotal)}
-          </td>
-
-          <td class="no-print"></td>
-
-        </tr>
-      `;
-    }
-  );
-
-
-  html += `
-      </tbody>
-
-      <tfoot>
-
-        <tr>
-
-          <td
-            colspan="5"
-            class="
-              py-4
-              px-2
-              text-right
-              font-semibold
-            "
-          >
-            Overall Subtotal
-          </td>
-
-          <td class="
-            py-4
-            px-2
-            text-right
-            font-bold
-          ">
-            ${money(subtotal)}
-          </td>
-
-          <td class="no-print"></td>
-
-        </tr>
-
-      </tfoot>
-
-    </table>
-  `;
-
-  container.innerHTML = html;
-
-  document.getElementById("grandTotal").textContent =
-    money(total);
-}
-
-
-/* ============================================================
-   DELETE / EXCLUDE ITEM
-   ============================================================ */
-
-function excludeItem(itemId) {
-  excludedItems.add(itemId);
-  updateEstimate();
-}
-
-
-/* ============================================================
-   RESTORE ALL
-   ============================================================ */
-
-function restoreAllItems() {
-  excludedItems.clear();
-  updateEstimate();
-}
-
-
-/* ============================================================
-   QUANTITY FORMAT
-   ============================================================ */
-
-function formatQty(value) {
-
-  if (Number.isInteger(value)) {
-    return value;
-  }
-
-  return value.toFixed(1);
-}
-
-
-/* ============================================================
-   HTML ESCAPE
-   ============================================================ */
-
 function escapeHtml(value) {
-
-  return String(value)
+  return String(value ?? "")
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
@@ -1957,13 +694,483 @@ function escapeHtml(value) {
     .replace(/'/g, "&#039;");
 }
 
+function formatQty(value) {
+  return Number.isInteger(value) ? value : Number(value).toFixed(1);
+}
 
-/* ============================================================
-   START WITH ONE AREA
-   ============================================================ */
+function roomOptions() {
+  return Object.entries(ROOM_TYPES)
+    .map(([key, name]) => `<option value="${key}">${escapeHtml(name)}</option>`)
+    .join("");
+}
 
+function getRoomLabel(roomId, roomType) {
+  const rooms = [...document.querySelectorAll("#roomsContainer .room-card")];
+  const sameType = rooms.filter(r =>
+    r.querySelector(".room-type")?.value === roomType
+  );
+  const base = ROOM_TYPES[roomType] || "Area";
+  return sameType.length > 1
+    ? `${base} ${sameType.indexOf(document.getElementById(roomId)) + 1}`
+    : base;
+}
+
+function optionalScopeHtml() {
+  return OPTIONAL_SCOPES.map(scope => {
+    const fixed = scope.rate !== null;
+    return `
+      <div class="optional-scope border rounded-lg p-3 bg-white" data-scope="${scope.key}">
+        <div class="flex items-center gap-3">
+          <input
+            type="checkbox"
+            class="optional-check h-4 w-4"
+            data-scope="${scope.key}"
+          >
+          <div class="flex-1">
+            <label class="text-sm font-medium cursor-pointer">
+              ${escapeHtml(scope.label)}
+            </label>
+            <p class="text-xs text-gray-500">
+              ${fixed ? `Standard rate: ${money(scope.rate)} / ${scope.unit}` : "Enter a room-specific rate if required"}
+            </p>
+          </div>
+          ${fixed ? `
+            <div class="text-sm font-semibold whitespace-nowrap">
+              ${money(scope.rate)}
+            </div>
+          ` : `
+            <input
+              type="number"
+              min="0"
+              step="1"
+              value=""
+              placeholder="Rate"
+              class="optional-rate w-28 border rounded-lg px-3 py-2 text-sm"
+            >
+          `}
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+function addRoom(defaultType = "living", defaultArea = "") {
+  roomCounter++;
+  const id = "room-" + roomCounter;
+  const container = document.getElementById("roomsContainer");
+  const div = document.createElement("div");
+
+  div.id = id;
+  div.className = "room-card border rounded-xl p-4 bg-gray-50";
+
+  div.innerHTML = `
+    <div class="grid md:grid-cols-[1fr_1fr_auto] gap-4 items-end">
+      <div>
+        <label class="block text-sm font-medium mb-2">Area / Room</label>
+        <select class="room-type w-full border rounded-lg px-4 py-3 bg-white">
+          ${roomOptions()}
+        </select>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium mb-2">Area (sqft)</label>
+        <input
+          type="number"
+          min="1"
+          step="1"
+          value="${escapeHtml(defaultArea)}"
+          placeholder="e.g. 200"
+          class="room-area w-full border rounded-lg px-4 py-3 bg-white"
+        >
+      </div>
+
+      <button
+        type="button"
+        onclick="removeRoom('${id}')"
+        class="no-print border border-red-300 text-red-600 rounded-lg px-5 py-3 hover:bg-red-50"
+      >
+        Remove
+      </button>
+    </div>
+
+    <div class="mt-4 border-t pt-4">
+      <div class="flex items-center justify-between mb-3">
+        <div>
+          <h4 class="font-semibold text-sm">Optional Works for This Area / Room</h4>
+          <p class="text-xs text-gray-500">
+            Select only additional works required for this specific area.
+          </p>
+        </div>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-3 optional-scopes">
+        ${optionalScopeHtml()}
+      </div>
+    </div>
+  `;
+
+  container.appendChild(div);
+  div.querySelector(".room-type").value = defaultType;
+
+  div.querySelector(".room-type").addEventListener("change", updateEstimate);
+  div.querySelector(".room-area").addEventListener("input", updateEstimate);
+
+  div.querySelectorAll(".optional-check").forEach(el => {
+    el.addEventListener("change", updateEstimate);
+  });
+
+  div.querySelectorAll(".optional-rate").forEach(el => {
+    el.addEventListener("input", updateEstimate);
+  });
+
+  updateEstimate();
+}
+
+function removeRoom(id) {
+  document.getElementById(id)?.remove();
+  updateEstimate();
+}
+
+function toggleProjectInfo() {
+  const info = document.getElementById("projectInfo");
+  const arrow = document.getElementById("projectArrow");
+  info.classList.toggle("hidden");
+  arrow.textContent = info.classList.contains("hidden") ? "▼" : "▲";
+}
+
+function pushItem(items, roomId, roomLabel, key, description, qty, unit, rate, optional=false) {
+  items.push({
+    id: `${roomId}-${key}`,
+    roomId,
+    room: roomLabel,
+    description,
+    qty: Number(qty) || 0,
+    unit,
+    rate: Number(rate) || 0,
+    optional
+  });
+}
+
+function generateStandardRoomItems(roomType, area, roomId, roomLabel) {
+  const items = [];
+  if (!area || area <= 0) return items;
+
+  if (roomType === "living" || roomType === "bedroom") {
+    pushItem(items, roomId, roomLabel, "ceiling", "Plaster ceiling + paint", area, "sqft", RATES.ceiling);
+    pushItem(items, roomId, roomLabel, "spc", "SPC flooring", area, "sqft", RATES.spc);
+    pushItem(items, roomId, roomLabel, "downlight", "Downlights", calculateDownlights(area), "unit", RATES.downlight);
+    pushItem(items, roomId, roomLabel, "fan", "Ceiling fan", 1, "unit", RATES.ceilingFan);
+    pushItem(items, roomId, roomLabel, "curtain", "Curtain box LED", 1, "ls", RATES.curtainBoxLED);
+  }
+
+  if (roomType === "dryKitchen") {
+    pushItem(items, roomId, roomLabel, "ceiling", "Plaster ceiling + paint", area, "sqft", RATES.ceiling);
+    pushItem(items, roomId, roomLabel, "spc", "SPC flooring", area, "sqft", RATES.spc);
+    pushItem(items, roomId, roomLabel, "downlight", "Downlights", calculateDownlights(area), "unit", RATES.downlight);
+    pushItem(items, roomId, roomLabel, "barlamp", "Bar lamp", 1, "unit", RATES.barLamp);
+    pushItem(items, roomId, roomLabel, "fan", "Baby ceiling fan", 1, "unit", RATES.ceilingFan);
+    pushItem(items, roomId, roomLabel, "frame", "Laminated arch frame", 1, "ls", RATES.kitchenFrame);
+    pushItem(items, roomId, roomLabel, "makinggood", "Making good wall after demolition", 1, "ls", RATES.kitchenMakingGood);
+    pushItem(items, roomId, roomLabel, "glassdoor", "Swing glass door", 1, "ls", RATES.kitchenGlassDoor);
+  }
+
+  if (roomType === "wetKitchen") {
+    pushItem(items, roomId, roomLabel, "floor", "Floor tiles + waterproofing", area, "sqft", RATES.floorTile);
+    pushItem(items, roomId, roomLabel, "walltile", "Wall tiles", area * 2, "sqft", RATES.wallTile);
+    pushItem(items, roomId, roomLabel, "ceiling", "Plaster ceiling + paint", area, "sqft", RATES.ceiling);
+    pushItem(items, roomId, roomLabel, "downlight", "Downlights", calculateDownlights(area), "unit", RATES.downlight);
+    pushItem(items, roomId, roomLabel, "fan", "Ceiling fan", 1, "unit", RATES.ceilingFan);
+    pushItem(items, roomId, roomLabel, "lamp", "Kitchen lighting allowance", 1, "ls", RATES.barLamp);
+  }
+
+  if (roomType === "bathroom") {
+    pushItem(items, roomId, roomLabel, "floor", "Floor tiles + waterproofing", area, "sqft", RATES.floorTile);
+    pushItem(items, roomId, roomLabel, "walltile", "Wall tiles", area * 6, "sqft", RATES.wallTile);
+    pushItem(items, roomId, roomLabel, "ceiling", "Plaster ceiling + paint", area, "sqft", RATES.ceiling);
+    pushItem(items, roomId, roomLabel, "sanitary", "Toilet sanitary accessories", 1, "ls", RATES.bathroomSanitary);
+    pushItem(items, roomId, roomLabel, "door", "Toilet swing door", 1, "unit", RATES.bathroomDoor);
+    pushItem(items, roomId, roomLabel, "downlight", "Downlights", calculateDownlights(area), "unit", RATES.downlight);
+    pushItem(items, roomId, roomLabel, "exhaust", "Exhaust fan", Math.max(1, Math.ceil(area / 50)), "unit", RATES.exhaustFan);
+  }
+
+  if (roomType === "carPorch") {
+    pushItem(items, roomId, roomLabel, "floor", "Floor tiles", area, "sqft", RATES.floorTile);
+    pushItem(items, roomId, roomLabel, "ceiling", "Plaster ceiling + paint", area, "sqft", RATES.ceiling);
+    pushItem(items, roomId, roomLabel, "downlight", "Downlights", calculateDownlights(area), "unit", RATES.downlight);
+    pushItem(items, roomId, roomLabel, "gate", "Automatic main gate motor", 1, "ls", RATES.gateMotor);
+    pushItem(items, roomId, roomLabel, "divider", "Brickwall divider", 1, "ls", RATES.brickwallDivider);
+    pushItem(items, roomId, roomLabel, "fence", "Front fence brickwall", 1, "ls", RATES.frontFence);
+  }
+
+  if (roomType === "balcony") {
+    pushItem(items, roomId, roomLabel, "floor", "Floor tiles + waterproofing", area, "sqft", RATES.floorTile);
+    pushItem(items, roomId, roomLabel, "facade", "Facade wall", area * 1.33, "sqft", RATES.facadeWall);
+    pushItem(items, roomId, roomLabel, "walllight", "Wall lights", Math.max(2, Math.ceil(area / 70)), "unit", RATES.wallLight);
+  }
+
+  if (roomType === "extensionKitchen") {
+    pushItem(items, roomId, roomLabel, "extension", "New extension kitchen building works", area, "sqft", RATES.extensionKitchen);
+    pushItem(items, roomId, roomLabel, "downlight", "Downlights", calculateDownlights(area), "unit", RATES.downlight);
+  }
+
+  if (roomType === "extensionToilet") {
+    pushItem(items, roomId, roomLabel, "extension", "New extension toilet building works", area, "sqft", RATES.extensionToilet);
+    pushItem(items, roomId, roomLabel, "downlight", "Downlights", calculateDownlights(area), "unit", RATES.downlight);
+    pushItem(items, roomId, roomLabel, "exhaust", "Exhaust fan", Math.max(1, Math.ceil(area / 50)), "unit", RATES.exhaustFan);
+  }
+
+  return items;
+}
+
+function generateOptionalRoomItems(room, roomLabel) {
+  const items = [];
+  const roomId = room.id;
+
+  room.querySelectorAll(".optional-scope").forEach(scopeEl => {
+    const checkbox = scopeEl.querySelector(".optional-check");
+    if (!checkbox?.checked) return;
+
+    const key = scopeEl.dataset.scope;
+    const definition = OPTIONAL_SCOPES.find(s => s.key === key);
+    if (!definition) return;
+
+    let rate = definition.rate;
+    if (definition.custom) {
+      rate = parseFloat(scopeEl.querySelector(".optional-rate")?.value) || 0;
+      if (rate <= 0) return;
+    }
+
+    pushItem(
+      items,
+      roomId,
+      roomLabel,
+      `optional-${key}`,
+      definition.label,
+      1,
+      definition.unit,
+      rate,
+      true
+    );
+  });
+
+  return items;
+}
+
+function getAllItems() {
+  const rooms = [...document.querySelectorAll("#roomsContainer .room-card")];
+
+  const typeCounts = {};
+  rooms.forEach(room => {
+    const type = room.querySelector(".room-type")?.value || "living";
+    typeCounts[type] = (typeCounts[type] || 0) + 1;
+  });
+
+  const typeIndexes = {};
+  const allItems = [];
+
+  rooms.forEach(room => {
+    const roomId = room.id;
+    const roomType = room.querySelector(".room-type")?.value || "living";
+    const area = parseFloat(room.querySelector(".room-area")?.value) || 0;
+
+    typeIndexes[roomType] = (typeIndexes[roomType] || 0) + 1;
+    const base = ROOM_TYPES[roomType] || "Area";
+    const roomLabel = typeCounts[roomType] > 1
+      ? `${base} ${typeIndexes[roomType]}`
+      : base;
+
+    const standard = generateStandardRoomItems(roomType, area, roomId, roomLabel);
+    const optional = generateOptionalRoomItems(room, roomLabel);
+
+    allItems.push(...standard, ...optional);
+  });
+
+  return allItems;
+}
+
+function updateEstimate() {
+  const allItems = getAllItems();
+
+  allItems.forEach(item => {
+    item.amount = item.qty * item.rate;
+  });
+
+  const activeItems = allItems.filter(item => !excludedItems.has(item.id));
+  const hasAnyRoomItem = activeItems.length > 0 || allItems.length > 0;
+
+  let projectPreliminaries = hasAnyRoomItem && !excludedItems.has("project-preliminaries")
+    ? RATES.preliminaries
+    : 0;
+
+  const roomSubtotals = {};
+  activeItems.forEach(item => {
+    roomSubtotals[item.roomId] = (roomSubtotals[item.roomId] || 0) + item.amount;
+  });
+
+  const total = projectPreliminaries +
+    Object.values(roomSubtotals).reduce((sum, value) => sum + value, 0);
+
+  renderEstimate(activeItems, roomSubtotals, projectPreliminaries, total);
+}
+
+function renderEstimate(items, roomSubtotals, projectPreliminaries, total) {
+  const container = document.getElementById("estimateContent");
+
+  const customer = document.getElementById("customerName")?.value || "Not specified";
+  const location = document.getElementById("projectLocation")?.value || "Not specified";
+
+  document.getElementById("customerSummary").innerHTML = `
+    <div>
+      <p class="text-gray-500">Customer</p>
+      <p class="font-medium">${escapeHtml(customer)}</p>
+    </div>
+    <div>
+      <p class="text-gray-500">Location</p>
+      <p class="font-medium">${escapeHtml(location)}</p>
+    </div>
+    <div>
+      <p class="text-gray-500">Estimate Type</p>
+      <p class="font-medium">Preliminary Renovation Estimate</p>
+    </div>
+  `;
+
+  if (items.length === 0) {
+    container.innerHTML = `
+      <div class="border rounded-xl p-8 text-center text-gray-500">
+        Add an area above to generate the renovation breakdown.
+      </div>
+    `;
+    document.getElementById("grandTotal").textContent = money(0);
+    return;
+  }
+
+  const roomOrder = [];
+  const roomMap = {};
+
+  items.forEach(item => {
+    if (!roomMap[item.roomId]) {
+      roomMap[item.roomId] = {
+        label: item.room,
+        items: []
+      };
+      roomOrder.push(item.roomId);
+    }
+    roomMap[item.roomId].items.push(item);
+  });
+
+  let html = `
+    <div class="overflow-x-auto">
+      <table class="w-full border-collapse text-sm">
+        <thead>
+          <tr class="border-b-2 text-left">
+            <th class="py-3 px-2">Area</th>
+            <th class="py-3 px-2">Description</th>
+            <th class="py-3 px-2 text-right">Qty</th>
+            <th class="py-3 px-2">Unit</th>
+            <th class="py-3 px-2 text-right">Rate</th>
+            <th class="py-3 px-2 text-right">Amount</th>
+            <th class="no-print py-3 px-2 text-center">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+  `;
+
+  if (projectPreliminaries > 0) {
+    html += `
+      <tr class="border-b bg-gray-50">
+        <td class="py-3 px-2 font-medium">Project</td>
+        <td class="py-3 px-2">Preliminaries / Project arrangement</td>
+        <td class="py-3 px-2 text-right">1</td>
+        <td class="py-3 px-2">ls</td>
+        <td class="py-3 px-2 text-right">${money(RATES.preliminaries)}</td>
+        <td class="py-3 px-2 text-right font-medium">${money(RATES.preliminaries)}</td>
+        <td class="no-print py-3 px-2 text-center">
+          <button
+            onclick="excludeItem('project-preliminaries')"
+            class="text-red-600 text-xs border border-red-200 rounded px-3 py-1.5 hover:bg-red-50"
+          >Delete</button>
+        </td>
+      </tr>
+    `;
+  }
+
+  roomOrder.forEach(roomId => {
+    const group = roomMap[roomId];
+    html += `
+      <tr class="bg-gray-100 border-b">
+        <td colspan="7" class="py-3 px-2 font-bold">
+          ${escapeHtml(group.label)}
+        </td>
+      </tr>
+    `;
+
+    group.items.forEach(item => {
+      html += `
+        <tr class="border-b hover:bg-gray-50">
+          <td class="py-3 px-2 font-medium">${escapeHtml(item.room)}</td>
+          <td class="py-3 px-2">${escapeHtml(item.description)}</td>
+          <td class="py-3 px-2 text-right">${formatQty(item.qty)}</td>
+          <td class="py-3 px-2">${escapeHtml(item.unit)}</td>
+          <td class="py-3 px-2 text-right">${money(item.rate)}</td>
+          <td class="py-3 px-2 text-right font-medium">${money(item.amount)}</td>
+          <td class="no-print py-3 px-2 text-center">
+            <button
+              onclick="excludeItem('${item.id}')"
+              class="text-red-600 text-xs border border-red-200 rounded px-3 py-1.5 hover:bg-red-50"
+            >Delete</button>
+          </td>
+        </tr>
+      `;
+    });
+
+    html += `
+      <tr class="border-b">
+        <td colspan="5" class="py-3 px-2 text-right font-semibold">
+          ${escapeHtml(group.label)} Subtotal
+        </td>
+        <td class="py-3 px-2 text-right font-bold">
+          ${money(roomSubtotals[roomId] || 0)}
+        </td>
+        <td class="no-print"></td>
+      </tr>
+    `;
+  });
+
+  const roomTotal = Object.values(roomSubtotals).reduce((sum, value) => sum + value, 0);
+
+  html += `
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="5" class="py-4 px-2 text-right font-semibold">
+              Overall Subtotal
+            </td>
+            <td class="py-4 px-2 text-right font-bold">
+              ${money(projectPreliminaries + roomTotal)}
+            </td>
+            <td class="no-print"></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  `;
+
+  container.innerHTML = html;
+  document.getElementById("grandTotal").textContent = money(total);
+}
+
+function excludeItem(itemId) {
+  excludedItems.add(itemId);
+  updateEstimate();
+}
+
+function restoreAllItems() {
+  excludedItems.clear();
+  updateEstimate();
+}
+
+/* Start with one empty area */
 addRoom("living", "");
-
 </script>
 
 
