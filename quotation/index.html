@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -57,35 +56,33 @@
       .optional-scope label { display: block; line-height: 1.45; }
       .optional-scope .optional-rate { width: 90px !important; min-width: 90px !important; flex: 0 0 90px; }
       #customerSummary { grid-template-columns: minmax(0, 1fr) !important; gap: 12px !important; }
-      #estimateContent { width: calc(100% + 8px); margin-left: -4px; margin-right: -4px; padding-bottom: 8px; overflow-x: auto; -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain; }
+      #estimateContent { width: calc(100% + 8px); margin-left: -4px; margin-right: -4px; padding-bottom: 8px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
       #estimateContent > div, #estimateContent table { min-width: 760px; }
       #estimateContent table th, #estimateContent table td { padding: 10px 8px !important; }
       #estimateContent textarea { min-width: 260px !important; max-width: 320px; }
       #estimateContent input[type="number"], #estimateContent input[type="text"] { min-height: 42px; }
-      .print-card > div:first-child { gap: 16px; }
-      #estimateNumber { white-space: nowrap; }
       #grandTotal { font-size: 26px !important; white-space: nowrap; }
       input[name="quotationType"] { min-height: 20px; width: 20px; flex-shrink: 0; }
       .quotation-option { width: 100%; }
-      #quotationDocument { width: 100%; max-width: 100%; padding: 16px !important; overflow: hidden; }
-      #quotationContent { width: 100%; max-width: 100%; min-width: 0; overflow: hidden; }
+      #quotationDocument { width: 100%; max-width: 100%; padding: 16px !important; }
+      #quotationContent { width: 100%; max-width: 100%; min-width: 0; }
       #quotationContent > div:first-child { flex-direction: column !important; gap: 16px !important; }
-      #quotationContent > div:first-child > div:first-child { width: 100%; min-width: 0; }
-      #quotationContent > div:first-child > div:last-child { width: 100%; text-align: left !important; }
+      #quotationContent > div:first-child > div:first-child,
+      #quotationContent > div:first-child > div:last-child { width: 100%; }
+      #quotationContent > div:first-child > div:last-child { text-align: left !important; }
       #quotationContent > div:first-child img { height: 48px !important; max-width: 150px; }
-      #quotationContent > div:first-child h1 { font-size: 16px !important; line-height: 1.25; }
+      #quotationContent > div:first-child h1 { font-size: 16px !important; }
       #quotationContent > div:first-child h2 { font-size: 22px !important; }
       #quotationContent > div:nth-child(2) { grid-template-columns: minmax(0, 1fr) !important; }
-      #quotationContent .overflow-x-auto { width: 100%; max-width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain; padding-bottom: 8px; }
+      #quotationContent .overflow-x-auto { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
       #quotationContent table { min-width: 680px; }
       #quotationContent table th, #quotationContent table td { padding: 9px 7px !important; }
       #quotationPrintActions { width: 100%; justify-content: stretch !important; }
       #quotationPrintActions button { width: 100%; min-height: 48px; }
       main > section:last-child { padding: 24px 16px !important; }
-      main > section:last-child h3 { font-size: 22px !important; line-height: 1.3; }
+      main > section:last-child h3 { font-size: 22px !important; }
       main > section:last-child a { width: 100%; text-align: center; min-height: 48px; display: flex; align-items: center; justify-content: center; }
       input, select, textarea { font-size: 16px !important; }
-      button { font-size: 15px; }
       body { padding-bottom: env(safe-area-inset-bottom); }
     }
 
@@ -94,74 +91,19 @@
       main > section { padding: 14px !important; }
       main > section:first-child h2 { font-size: 24px !important; }
       #grandTotal { font-size: 23px !important; }
-      header > div { padding-left: 12px !important; padding-right: 12px !important; }
       header img { height: 36px !important; }
       header h1 { font-size: 14px !important; }
-      #quotationDocument { padding: 12px !important; }
     }
 
     .detailed-quotation-table { width: 100%; table-layout: fixed; }
 
     /* =========================================================
-       A4 PREVIEW (SCREEN + PRINT) — SAME STRUCTURE
-       ========================================================= */
-    #quotationContent.a4-paginated {
-      width: 100%;
-      max-width: none;
-      overflow: visible;
-    }
-
-    .quotation-page {
-      width: 210mm;
-      height: 297mm;
-      box-sizing: border-box;
-      padding: 10mm 11mm;
-      margin: 0 auto 16px;
-      background: #fff;
-      box-shadow: 0 2px 12px rgba(0,0,0,.12);
-      overflow: hidden;
-      position: relative;
-    }
-
-    .quotation-page:last-child { margin-bottom: 0; }
-
-    .quotation-page-body {
-      width: 100%;
-      height: calc(100% - 8mm);
-      box-sizing: border-box;
-    }
-
-    .quotation-page-continuation {
-      font-size: 9px;
-      color: #6b7280;
-      margin: -2mm 0 4mm;
-      padding-bottom: 2mm;
-      border-bottom: 1px solid #d1d5db;
-    }
-
-    .quotation-page-number {
-      position: absolute;
-      bottom: 5mm;
-      right: 11mm;
-      font-size: 8px;
-      color: #6b7280;
-    }
-
-    @media screen {
-      #quotationDocument.a4-preview-document {
-        background: #e5e7eb !important;
-        padding: 24px 0 !important;
-        overflow: visible !important;
-      }
-    }
-
-    /* =========================================================
-       PRINT — KEEP THE SAME A4 PAGES
+       PRINT — CLEAN CONTINUOUS FLOW (NO EMPTY PAGES)
        ========================================================= */
     @media print {
       @page {
         size: A4 portrait;
-        margin: 0;
+        margin: 12mm 12mm;
       }
 
       html, body {
@@ -169,7 +111,6 @@
         margin: 0 !important;
         padding: 0 !important;
         background: #fff !important;
-        overflow: visible !important;
         -webkit-print-color-adjust: exact !important;
         print-color-adjust: exact !important;
       }
@@ -191,7 +132,6 @@
 
       body.print-quotation #quotationDocument {
         display: block !important;
-        position: static !important;
         width: 100% !important;
         max-width: none !important;
         margin: 0 !important;
@@ -200,57 +140,18 @@
         box-shadow: none !important;
         border: none !important;
         border-radius: 0 !important;
-        overflow: visible !important;
-      }
-
-      .quotation-page {
-        width: 210mm !important;
-        height: 297mm !important;
-        min-height: 297mm !important;
-        max-height: 297mm !important;
-        box-sizing: border-box !important;
-        margin: 0 !important;
-        padding: 10mm 11mm !important;
-        background: #fff !important;
-        box-shadow: none !important;
-        overflow: hidden !important;
-        page-break-after: always !important;
-        break-after: page !important;
-        position: relative !important;
-      }
-
-      .quotation-page:last-child {
-        page-break-after: auto !important;
-        break-after: auto !important;
-      }
-
-      .quotation-page-body {
-        width: 100% !important;
-        height: calc(100% - 8mm) !important;
-        overflow: hidden !important;
-      }
-
-      .quotation-page-number {
-        display: block !important;
-      }
-
-      .quotation-page-continuation {
-        display: block !important;
       }
 
       #quotationContent {
         width: 100% !important;
-        max-width: none !important;
-        overflow: visible !important;
         font-size: 9.5px !important;
-        line-height: 1.3 !important;
+        line-height: 1.35 !important;
       }
 
       #quotationContent table {
         width: 100% !important;
-        min-width: 0 !important;
         font-size: 9.5px !important;
-        line-height: 1.3 !important;
+        line-height: 1.35 !important;
         table-layout: fixed !important;
         border-collapse: collapse !important;
       }
@@ -258,19 +159,21 @@
       #quotationContent .overflow-x-auto {
         overflow: visible !important;
         width: 100% !important;
-        max-width: none !important;
-        padding-bottom: 0 !important;
       }
 
-      #quotationContent table thead { display: table-header-group !important; }
-      #quotationContent table tr { break-inside: avoid !important; page-break-inside: avoid !important; }
+      #quotationContent table thead {
+        display: table-header-group !important;
+      }
+
+      #quotationContent table tr {
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+      }
 
       #quotationContent table th,
       #quotationContent table td {
-        padding: 4px 4px !important;
-        line-height: 1.3 !important;
+        padding: 5px 4px !important;
         vertical-align: top !important;
-        overflow-wrap: break-word !important;
       }
 
       .detailed-quotation-table col:nth-child(1) { width: 48% !important; }
@@ -279,17 +182,9 @@
       .detailed-quotation-table col:nth-child(4) { width: 16% !important; }
       .detailed-quotation-table col:nth-child(5) { width: 16% !important; }
 
-      #quotationContent .mb-5 { margin-bottom: 6px !important; }
-      #quotationContent .mt-8 { margin-top: 12px !important; }
-      #quotationContent .mt-12 { margin-top: 16px !important; }
-      #quotationContent .pt-5 { padding-top: 6px !important; }
-      #quotationContent .py-3 { padding-top: 3px !important; padding-bottom: 3px !important; }
-      #quotationContent .py-4 { padding-top: 4px !important; padding-bottom: 4px !important; }
-
-      #quotationContent tfoot,
       #quotationContent .mt-8,
       #quotationContent .mt-12,
-      #quotationContent .break-inside-avoid {
+      #quotationContent tfoot {
         break-inside: avoid !important;
         page-break-inside: avoid !important;
       }
@@ -324,6 +219,7 @@
     </p>
   </section>
 
+  <!-- Project Information -->
   <section class="bg-white rounded-2xl shadow-sm p-6 mb-6">
     <div class="flex justify-between items-center cursor-pointer" onclick="toggleProjectInfo()">
       <div class="min-w-0">
@@ -370,6 +266,7 @@
     </datalist>
   </section>
 
+  <!-- Areas -->
   <section class="bg-white rounded-2xl shadow-sm p-6 mb-6">
     <div class="flex justify-between items-center mb-5 gap-4">
       <div class="min-w-0">
@@ -383,12 +280,12 @@
     </div>
     <div class="no-print bg-gray-50 border rounded-xl p-4 mb-5 text-sm text-gray-600">
       <strong class="text-gray-800">Simple input:</strong>
-      Select the room type and enter the area.
-      Quantities such as downlights, fans and other standard items will be calculated automatically.
+      Select the room type and enter the area. Quantities such as downlights, fans and other standard items will be calculated automatically.
     </div>
     <div id="roomsContainer" class="space-y-4"></div>
   </section>
 
+  <!-- Estimate -->
   <section class="bg-white rounded-2xl shadow-sm p-6 print-card">
     <div class="flex justify-between items-start mb-6 gap-4">
       <div class="min-w-0">
@@ -420,6 +317,7 @@
     </div>
   </section>
 
+  <!-- Quotation Generator -->
   <section class="no-print bg-white rounded-2xl shadow-sm p-6 mt-6">
     <div class="mb-5">
       <h3 class="font-bold text-lg">Generate Quotation</h3>
@@ -457,7 +355,8 @@
     </div>
   </section>
 
-  <section id="quotationDocument" class="hidden bg-white rounded-2xl shadow-sm p-8 mt-6 quotation-document">
+  <!-- Generated Quotation -->
+  <section id="quotationDocument" class="hidden bg-white rounded-2xl shadow-sm p-8 mt-6">
     <div id="quotationContent"></div>
     <div id="quotationPrintActions" class="no-print mt-6 pt-5 border-t flex flex-wrap justify-end gap-3">
       <button type="button" onclick="printQuotation()"
@@ -467,6 +366,7 @@
     </div>
   </section>
 
+  <!-- CTA -->
   <section class="no-print bg-gray-900 text-white rounded-2xl p-8 mt-8 text-center">
     <h3 class="text-2xl font-bold mb-3">Need an Official Quotation?</h3>
     <p class="text-gray-300 max-w-2xl mx-auto mb-6">
@@ -990,124 +890,6 @@ function quotationDescriptionList(items) {
   return items.map(item => escapeHtml(item.description)).join("<br>");
 }
 
-/* ============================================================
-   A4 PAGINATION — SAME FOR SCREEN AND PRINT
-   ============================================================ */
-function paginateQuotationA4() {
-  const content = document.getElementById("quotationContent");
-  const documentEl = document.getElementById("quotationDocument");
-  if (!content || !documentEl) return;
-
-  const originalChildren = Array.from(content.children);
-  if (!originalChildren.length) return;
-
-  const tableWrap = originalChildren.find(el => el.querySelector("table"));
-  const table = tableWrap?.querySelector("table");
-  if (!table) return;
-
-  const headerBlock = originalChildren[0];
-  const customerBlock = originalChildren[1];
-  const introBlock = originalChildren[2];
-  const termsBlock = originalChildren[originalChildren.length - 2];
-  const signBlock = originalChildren[originalChildren.length - 1];
-
-  const rows = Array.from(table.querySelectorAll("tbody > tr"));
-  const thead = table.querySelector("thead");
-  const tfoot = table.querySelector("tfoot");
-
-  content.classList.add("a4-paginated");
-  documentEl.classList.add("a4-preview-document");
-  content.innerHTML = "";
-
-  const pages = [];
-
-  function createPage(isFirst) {
-    const page = document.createElement("div");
-    page.className = "quotation-page";
-    const body = document.createElement("div");
-    body.className = "quotation-page-body";
-    page.appendChild(body);
-    if (isFirst) {
-      [headerBlock, customerBlock, introBlock].forEach(el => { if (el) body.appendChild(el.cloneNode(true)); });
-    } else {
-      const cont = document.createElement("div");
-      cont.className = "quotation-page-continuation";
-      cont.textContent = `Quotation ${quotationNumber || ""} — Continued`;
-      body.appendChild(cont);
-    }
-    content.appendChild(page);
-    pages.push(page);
-    return page;
-  }
-
-  function createTableShell() {
-    const wrap = document.createElement("div");
-    wrap.className = tableWrap.className || "overflow-x-auto";
-    wrap.style.overflow = "visible";
-    wrap.style.width = "100%";
-    const newTable = table.cloneNode(false);
-    if (table.querySelector("colgroup")) newTable.appendChild(table.querySelector("colgroup").cloneNode(true));
-    if (thead) newTable.appendChild(thead.cloneNode(true));
-    const tbody = document.createElement("tbody");
-    newTable.appendChild(tbody);
-    wrap.appendChild(newTable);
-    return { wrap, table: newTable, tbody };
-  }
-
-  let page = createPage(true);
-  let shell = createTableShell();
-  page.querySelector(".quotation-page-body").appendChild(shell.wrap);
-
-  rows.forEach(row => {
-    const clone = row.cloneNode(true);
-    shell.tbody.appendChild(clone);
-    const body = page.querySelector(".quotation-page-body");
-    // Slightly more aggressive packing (0.98) to reduce empty space
-    if (body.scrollHeight > body.clientHeight * 0.98 && shell.tbody.children.length > 1) {
-      shell.tbody.removeChild(clone);
-      page = createPage(false);
-      shell = createTableShell();
-      page.querySelector(".quotation-page-body").appendChild(shell.wrap);
-      shell.tbody.appendChild(clone);
-    }
-  });
-
-  if (tfoot) {
-    let finalPage = pages[pages.length - 1];
-    let finalBody = finalPage.querySelector(".quotation-page-body");
-    let finalTable = finalBody.querySelector("table");
-    finalTable.appendChild(tfoot.cloneNode(true));
-    if (finalBody.scrollHeight > finalBody.clientHeight * 0.98) {
-      finalTable.removeChild(finalTable.querySelector("tfoot"));
-      finalPage = createPage(false);
-      finalBody = finalPage.querySelector(".quotation-page-body");
-      shell = createTableShell();
-      finalBody.appendChild(shell.wrap);
-      shell.table.appendChild(tfoot.cloneNode(true));
-    }
-  }
-
-  let lastPage = pages[pages.length - 1];
-  let lastBody = lastPage.querySelector(".quotation-page-body");
-  if (termsBlock) lastBody.appendChild(termsBlock.cloneNode(true));
-  if (signBlock) lastBody.appendChild(signBlock.cloneNode(true));
-  if (lastBody.scrollHeight > lastBody.clientHeight * 0.98) {
-    if (termsBlock) lastBody.removeChild(lastBody.lastElementChild);
-    if (signBlock) lastBody.removeChild(lastBody.lastElementChild);
-    lastPage = createPage(false);
-    lastBody = lastPage.querySelector(".quotation-page-body");
-    if (termsBlock) lastBody.appendChild(termsBlock.cloneNode(true));
-    if (signBlock) lastBody.appendChild(signBlock.cloneNode(true));
-  }
-
-  pages.forEach((p, i) => {
-    const marker = document.createElement("div");
-    marker.className = "quotation-page-number";
-    marker.textContent = `Page ${i + 1} of ${pages.length}`;
-    p.appendChild(marker);
-  });
-}
-
 function generateQuotation() {
   const data = getCurrentQuotationData();
   if (!data.roomGroups.some(room => room.area > 0)) {
@@ -1263,7 +1045,7 @@ function generateQuotation() {
   }
 
   body += `
-    <div class="mt-8 pt-5 border-t text-sm break-inside-avoid">
+    <div class="mt-8 pt-5 border-t text-sm">
       <p class="font-semibold mb-2">Terms / Notes</p>
       <ul class="list-disc pl-5 space-y-1 text-gray-600">
         <li>This quotation is based on the selected scope and estimated area provided.</li>
@@ -1271,13 +1053,12 @@ function generateQuotation() {
         <li>Any additional works not stated above will be quoted separately.</li>
       </ul>
     </div>
-    <div class="mt-12 text-sm break-inside-avoid">
+    <div class="mt-12 text-sm">
       <p>Your sincerely,</p>
       <p class="font-bold mt-8">TERAJU CIPTABINA RESOURCES</p>
     </div>`;
 
   content.innerHTML = body;
-  requestAnimationFrame(() => paginateQuotationA4());
 
   document.getElementById("quotationDocument").classList.remove("hidden");
   document.getElementById("quotationPrintActions").classList.remove("hidden");
