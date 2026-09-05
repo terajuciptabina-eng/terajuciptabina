@@ -818,6 +818,10 @@ const ROOM_OPTIONAL_SCOPES = {
 const roomOptionalSelections = {};
 const roomOptionalCustomValues = {};
 
+// Items removed by the user are kept here so they stay excluded
+// after every recalculation.
+const excludedItems = new Set();
+
 
 function getRoomOptionalKeys(roomType) {
 
