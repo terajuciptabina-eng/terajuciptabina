@@ -33,14 +33,6 @@
         border: none !important;
       }
 
-      input,
-      select {
-        border: none !important;
-        padding: 0 !important;
-        appearance: none;
-        background: transparent !important;
-      }
-
       .room-card {
         break-inside: avoid;
       }
@@ -55,15 +47,22 @@
 <body class="bg-gray-100 text-gray-800">
 
 
-  <!-- ==========================================
+  <!-- ==================================================
        HEADER
-       ========================================== -->
+       ================================================== -->
 
   <header class="bg-white border-b">
 
     <div
-      class="max-w-6xl mx-auto px-6 py-5
-             flex items-center justify-between"
+      class="
+        max-w-6xl
+        mx-auto
+        px-6
+        py-5
+        flex
+        items-center
+        justify-between
+      "
     >
 
       <div class="flex items-center gap-4">
@@ -110,9 +109,9 @@
 
 
 
-  <!-- ==========================================
+  <!-- ==================================================
        MAIN
-       ========================================== -->
+       ================================================== -->
 
   <main class="max-w-6xl mx-auto px-6 py-10">
 
@@ -134,9 +133,11 @@
         TERAJU CIPTABINA
       </p>
 
+
       <h2 class="text-3xl font-bold mb-3">
         Renovation Budget Estimator
       </h2>
+
 
       <p class="text-gray-600 max-w-3xl">
 
@@ -149,9 +150,9 @@
 
 
 
-    <!-- ==========================================
+    <!-- ==================================================
          PROJECT INFORMATION
-         ========================================== -->
+         ================================================== -->
 
     <section
       class="
@@ -171,8 +172,6 @@
       <div class="grid md:grid-cols-2 gap-5">
 
 
-        <!-- CUSTOMER -->
-
         <div>
 
           <label
@@ -180,6 +179,7 @@
           >
             Customer Name
           </label>
+
 
           <input
             id="customerName"
@@ -191,17 +191,12 @@
               rounded-lg
               px-4
               py-3
-              focus:outline-none
-              focus:ring-2
-              focus:ring-gray-300
             "
           >
 
         </div>
 
 
-
-        <!-- LOCATION -->
 
         <div>
 
@@ -210,6 +205,7 @@
           >
             Project Location
           </label>
+
 
           <input
             id="projectLocation"
@@ -221,17 +217,12 @@
               rounded-lg
               px-4
               py-3
-              focus:outline-none
-              focus:ring-2
-              focus:ring-gray-300
             "
           >
 
         </div>
 
 
-
-        <!-- PROJECT TYPE -->
 
         <div class="md:col-span-2">
 
@@ -240,6 +231,7 @@
           >
             Project Type
           </label>
+
 
           <select
             id="projectType"
@@ -251,7 +243,6 @@
               py-3
               bg-white
             "
-            onchange="calculateEstimate()"
           >
 
             <option value="renovation">
@@ -266,16 +257,15 @@
 
         </div>
 
-
       </div>
 
     </section>
 
 
 
-    <!-- ==========================================
+    <!-- ==================================================
          ROOMS
-         ========================================== -->
+         ================================================== -->
 
     <section
       class="
@@ -286,7 +276,6 @@
         mb-6
       "
     >
-
 
       <div
         class="
@@ -333,14 +322,13 @@
         class="space-y-4"
       ></div>
 
-
     </section>
 
 
 
-    <!-- ==========================================
+    <!-- ==================================================
          ESTIMATE
-         ========================================== -->
+         ================================================== -->
 
     <section
       class="
@@ -352,8 +340,6 @@
       "
     >
 
-
-      <!-- ESTIMATE HEADER -->
 
       <div
         class="
@@ -376,6 +362,7 @@
           >
             Preliminary Estimate
           </p>
+
 
           <h3 class="text-2xl font-bold">
             Renovation Budget
@@ -408,7 +395,7 @@
         id="customerSummary"
         class="
           grid
-          md:grid-cols-2
+          md:grid-cols-3
           gap-4
           mb-6
           text-sm
@@ -474,23 +461,22 @@
           "
         >
 
-          * This is a preliminary renovation estimate only.
-          Final quotation is subject to site inspection,
-          drawings, specifications, material selection,
-          authority requirements and confirmation of scope.
+          * Preliminary estimate only. Final quotation is
+          subject to site inspection, drawings, specifications,
+          material selection, authority requirements and
+          confirmation of scope.
 
         </p>
 
       </div>
 
-
     </section>
 
 
 
-    <!-- ==========================================
+    <!-- ==================================================
          CTA
-         ========================================== -->
+         ================================================== -->
 
     <section
       class="
@@ -505,9 +491,7 @@
     >
 
       <h3 class="text-2xl font-bold mb-3">
-
         Want an Official Quotation?
-
       </h3>
 
 
@@ -544,22 +528,42 @@
 
     </section>
 
-
   </main>
 
 
 
-  <!-- ==========================================
-       JAVASCRIPT
-       ========================================== -->
+  <!-- ==================================================
+       CALCULATION ENGINE
+       ================================================== -->
 
   <script>
 
 
-    /* ==========================================
-       RATE BOOK
-       Based on Teraju Ciptabina quotation sample
-       ========================================== */
+    /* ==================================================
+       GLOBAL CALCULATION RULES
+
+       IMPORTANT:
+
+       These rules apply across ALL rooms.
+
+       Downlight:
+       1 unit / 50 sqft
+       Minimum 4 units
+       ================================================== */
+
+    const GLOBAL_RULES = {
+
+      downlightPerSqft: 50,
+
+      minimumDownlights: 4
+
+    };
+
+
+
+    /* ==================================================
+       TERaju CIPTABINA RATE BOOK
+       ================================================== */
 
     const RATES = {
 
@@ -607,72 +611,101 @@
 
 
 
-    /* ==========================================
+    /* ==================================================
        ROOM TYPES
-       ========================================== */
+       ================================================== */
 
     const ROOM_TYPES = {
 
       living: {
-        name: "Living / Dining",
-        defaultArea: 540
+        name: "Living / Dining"
       },
 
       bedroom: {
-        name: "Bedroom",
-        defaultArea: 160
+        name: "Bedroom"
       },
 
       dryKitchen: {
-        name: "Dry Kitchen",
-        defaultArea: 120
+        name: "Dry Kitchen"
       },
 
       wetKitchen: {
-        name: "Wet Kitchen",
-        defaultArea: 120
+        name: "Wet Kitchen"
       },
 
       bathroom: {
-        name: "Bathroom",
-        defaultArea: 72
+        name: "Bathroom"
       },
 
       carPorch: {
-        name: "Car Porch",
-        defaultArea: 200
+        name: "Car Porch"
       },
 
       balcony: {
-        name: "Balcony",
-        defaultArea: 252
+        name: "Balcony"
       },
 
       extensionKitchen: {
-        name: "New Extension – Kitchen",
-        defaultArea: 220
+        name: "New Extension – Kitchen"
       },
 
       extensionToilet: {
-        name: "New Extension – Toilet",
-        defaultArea: 24
+        name: "New Extension – Toilet"
       }
 
     };
 
 
 
-    /* ==========================================
-       ROOM COUNTER
-       ========================================== */
+    /* ==================================================
+       UNIVERSAL DOWNLIGHT CALCULATOR
+       ================================================== */
+
+    function calculateDownlights(area) {
+
+      if (!area || area <= 0) {
+
+        return 0;
+
+      }
+
+
+      return Math.max(
+
+        GLOBAL_RULES.minimumDownlights,
+
+        Math.ceil(
+          area /
+          GLOBAL_RULES.downlightPerSqft
+        )
+
+      );
+
+    }
+
+
+
+    /* ==================================================
+       EXAMPLES OF UNIVERSAL RULE
+
+       200 sqft = 4
+       400 sqft = 8
+       600 sqft = 12
+       800 sqft = 16
+
+       Every room that uses downlights calls
+       calculateDownlights(area).
+       ================================================== */
+
+
 
     let roomCounter = 0;
 
 
 
-    /* ==========================================
+    /* ==================================================
        MONEY FORMAT
-       ========================================== */
+       ================================================== */
 
     function money(value) {
 
@@ -689,9 +722,9 @@
 
 
 
-    /* ==========================================
+    /* ==================================================
        ESTIMATE NUMBER
-       ========================================== */
+       ================================================== */
 
     function generateEstimateNumber() {
 
@@ -727,7 +760,6 @@
     }
 
 
-
     document.getElementById(
       "estimateNumber"
     ).textContent =
@@ -735,9 +767,9 @@
 
 
 
-    /* ==========================================
+    /* ==================================================
        ADD ROOM
-       ========================================== */
+       ================================================== */
 
     function addRoom(
       type = "living",
@@ -903,9 +935,9 @@
 
 
 
-    /* ==========================================
+    /* ==================================================
        REMOVE ROOM
-       ========================================== */
+       ================================================== */
 
     function removeRoom(id) {
 
@@ -926,25 +958,26 @@
 
 
 
-    /* ==========================================
-       CALCULATE ROOM ITEMS
-       ========================================== */
+    /* ==================================================
+       ROOM CALCULATION
+       ================================================== */
 
     function calculateRoom(
       type,
       area
     ) {
 
-      let items = [];
+      const items = [];
 
 
 
-      /* ========================================
+      /* ==================================================
          LIVING / DINING
-         ======================================== */
+         ================================================== */
 
       if (type === "living") {
 
+
         items.push({
 
           description:
@@ -954,7 +987,8 @@
 
           unit: "sqft",
 
-          rate: RATES.ceiling
+          rate:
+            RATES.ceiling
 
         });
 
@@ -968,21 +1002,10 @@
 
           unit: "sqft",
 
-          rate: RATES.spcFlooring
+          rate:
+            RATES.spcFlooring
 
         });
-
-
-        /*
-        1 downlight / 70 sqft
-        Minimum 4
-        */
-
-        const lights =
-          Math.max(
-            4,
-            Math.ceil(area / 70)
-          );
 
 
         items.push({
@@ -990,11 +1013,13 @@
           description:
             "Downlights",
 
-          qty: lights,
+          qty:
+            calculateDownlights(area),
 
           unit: "unit",
 
-          rate: RATES.downlight
+          rate:
+            RATES.downlight
 
         });
 
@@ -1008,7 +1033,8 @@
 
           unit: "unit",
 
-          rate: RATES.ceilingFan
+          rate:
+            RATES.ceilingFan
 
         });
 
@@ -1022,7 +1048,8 @@
 
           unit: "ls",
 
-          rate: RATES.curtainBoxLED
+          rate:
+            RATES.curtainBoxLED
 
         });
 
@@ -1030,12 +1057,13 @@
 
 
 
-      /* ========================================
+      /* ==================================================
          BEDROOM
-         ======================================== */
+         ================================================== */
 
       if (type === "bedroom") {
 
+
         items.push({
 
           description:
@@ -1045,7 +1073,8 @@
 
           unit: "sqft",
 
-          rate: RATES.ceiling
+          rate:
+            RATES.ceiling
 
         });
 
@@ -1059,21 +1088,10 @@
 
           unit: "sqft",
 
-          rate: RATES.spcFlooring
+          rate:
+            RATES.spcFlooring
 
         });
-
-
-        /*
-        1 downlight / 70 sqft
-        Minimum 4
-        */
-
-        const lights =
-          Math.max(
-            4,
-            Math.ceil(area / 70)
-          );
 
 
         items.push({
@@ -1081,11 +1099,13 @@
           description:
             "Downlights",
 
-          qty: lights,
+          qty:
+            calculateDownlights(area),
 
           unit: "unit",
 
-          rate: RATES.downlight
+          rate:
+            RATES.downlight
 
         });
 
@@ -1099,7 +1119,8 @@
 
           unit: "unit",
 
-          rate: RATES.ceilingFan
+          rate:
+            RATES.ceilingFan
 
         });
 
@@ -1113,7 +1134,8 @@
 
           unit: "ls",
 
-          rate: RATES.curtainBoxLED
+          rate:
+            RATES.curtainBoxLED
 
         });
 
@@ -1121,11 +1143,12 @@
 
 
 
-      /* ========================================
+      /* ==================================================
          DRY KITCHEN
-         ======================================== */
+         ================================================== */
 
       if (type === "dryKitchen") {
+
 
         items.push({
 
@@ -1136,7 +1159,8 @@
 
           unit: "sqft",
 
-          rate: RATES.ceiling
+          rate:
+            RATES.ceiling
 
         });
 
@@ -1150,7 +1174,8 @@
 
           unit: "sqft",
 
-          rate: RATES.spcFlooring
+          rate:
+            RATES.spcFlooring
 
         });
 
@@ -1164,7 +1189,8 @@
 
           unit: "ls",
 
-          rate: RATES.kitchenFrame
+          rate:
+            RATES.kitchenFrame
 
         });
 
@@ -1178,7 +1204,8 @@
 
           unit: "ls",
 
-          rate: RATES.kitchenMakingGood
+          rate:
+            RATES.kitchenMakingGood
 
         });
 
@@ -1192,21 +1219,10 @@
 
           unit: "ls",
 
-          rate: RATES.kitchenGlassDoor
+          rate:
+            RATES.kitchenGlassDoor
 
         });
-
-
-        /*
-        1 downlight / 45 sqft
-        Minimum 4
-        */
-
-        const lights =
-          Math.max(
-            4,
-            Math.ceil(area / 45)
-          );
 
 
         items.push({
@@ -1214,11 +1230,13 @@
           description:
             "Downlights",
 
-          qty: lights,
+          qty:
+            calculateDownlights(area),
 
           unit: "unit",
 
-          rate: RATES.downlight
+          rate:
+            RATES.downlight
 
         });
 
@@ -1232,7 +1250,8 @@
 
           unit: "unit",
 
-          rate: RATES.barLamp
+          rate:
+            RATES.barLamp
 
         });
 
@@ -1246,7 +1265,8 @@
 
           unit: "unit",
 
-          rate: RATES.ceilingFan
+          rate:
+            RATES.ceilingFan
 
         });
 
@@ -1254,11 +1274,12 @@
 
 
 
-      /* ========================================
+      /* ==================================================
          WET KITCHEN
-         ======================================== */
+         ================================================== */
 
       if (type === "wetKitchen") {
+
 
         items.push({
 
@@ -1269,15 +1290,11 @@
 
           unit: "sqft",
 
-          rate: RATES.floorTiles
+          rate:
+            RATES.floorTiles
 
         });
 
-
-        /*
-        Wall tile allowance:
-        2 × floor area
-        */
 
         items.push({
 
@@ -1288,7 +1305,8 @@
 
           unit: "sqft",
 
-          rate: RATES.wallTiles
+          rate:
+            RATES.wallTiles
 
         });
 
@@ -1302,21 +1320,10 @@
 
           unit: "sqft",
 
-          rate: RATES.ceiling
+          rate:
+            RATES.ceiling
 
         });
-
-
-        /*
-        1 downlight / 45 sqft
-        Minimum 4
-        */
-
-        const lights =
-          Math.max(
-            4,
-            Math.ceil(area / 45)
-          );
 
 
         items.push({
@@ -1324,11 +1331,13 @@
           description:
             "Downlights",
 
-          qty: lights,
+          qty:
+            calculateDownlights(area),
 
           unit: "unit",
 
-          rate: RATES.downlight
+          rate:
+            RATES.downlight
 
         });
 
@@ -1336,11 +1345,12 @@
 
 
 
-      /* ========================================
+      /* ==================================================
          BATHROOM
-         ======================================== */
+         ================================================== */
 
       if (type === "bathroom") {
+
 
         items.push({
 
@@ -1351,15 +1361,11 @@
 
           unit: "sqft",
 
-          rate: RATES.floorTiles
+          rate:
+            RATES.floorTiles
 
         });
 
-
-        /*
-        Wall tile allowance:
-        6 × floor area
-        */
 
         items.push({
 
@@ -1370,7 +1376,8 @@
 
           unit: "sqft",
 
-          rate: RATES.wallTiles
+          rate:
+            RATES.wallTiles
 
         });
 
@@ -1384,7 +1391,8 @@
 
           unit: "sqft",
 
-          rate: RATES.ceiling
+          rate:
+            RATES.ceiling
 
         });
 
@@ -1424,7 +1432,8 @@
           description:
             "Downlights",
 
-          qty: 4,
+          qty:
+            calculateDownlights(area),
 
           unit: "unit",
 
@@ -1452,11 +1461,12 @@
 
 
 
-      /* ========================================
+      /* ==================================================
          CAR PORCH
-         ======================================== */
+         ================================================== */
 
       if (type === "carPorch") {
+
 
         items.push({
 
@@ -1489,33 +1499,21 @@
 
 
         /*
-        =========================================
-        CAR PORCH DOWNLIGHT RULE
+        UNIVERSAL DOWNLIGHT RULE
 
-        200 sqft = 4 units
-        400 sqft = 8 units
-        600 sqft = 12 units
-        800 sqft = 16 units
-
-        Formula:
-        1 unit / 50 sqft
-        Minimum 4 units
-        =========================================
+        200 sqft → 4
+        400 sqft → 8
+        600 sqft → 12
+        800 sqft → 16
         */
-
-        const lights =
-          Math.max(
-            4,
-            Math.ceil(area / 50)
-          );
-
 
         items.push({
 
           description:
             "Downlights",
 
-          qty: lights,
+          qty:
+            calculateDownlights(area),
 
           unit: "unit",
 
@@ -1524,11 +1522,6 @@
 
         });
 
-
-        /*
-        Fixed car porch items
-        based on sample quotation
-        */
 
         items.push({
 
@@ -1575,11 +1568,12 @@
 
 
 
-      /* ========================================
+      /* ==================================================
          BALCONY
-         ======================================== */
+         ================================================== */
 
       if (type === "balcony") {
+
 
         items.push({
 
@@ -1596,10 +1590,6 @@
         });
 
 
-        /*
-        Facade wall allowance
-        */
-
         items.push({
 
           description:
@@ -1611,6 +1601,22 @@
 
           rate:
             RATES.facadeWall
+
+        });
+
+
+        items.push({
+
+          description:
+            "Downlights",
+
+          qty:
+            calculateDownlights(area),
+
+          unit: "unit",
+
+          rate:
+            RATES.downlight
 
         });
 
@@ -1633,11 +1639,12 @@
 
 
 
-      /* ========================================
+      /* ==================================================
          NEW EXTENSION KITCHEN
-         ======================================== */
+         ================================================== */
 
       if (type === "extensionKitchen") {
+
 
         items.push({
 
@@ -1654,24 +1661,13 @@
         });
 
 
-        /*
-        1 downlight / 45 sqft
-        Minimum 4
-        */
-
-        const lights =
-          Math.max(
-            4,
-            Math.ceil(area / 45)
-          );
-
-
         items.push({
 
           description:
             "Downlights",
 
-          qty: lights,
+          qty:
+            calculateDownlights(area),
 
           unit: "unit",
 
@@ -1684,11 +1680,12 @@
 
 
 
-      /* ========================================
+      /* ==================================================
          NEW EXTENSION TOILET
-         ======================================== */
+         ================================================== */
 
       if (type === "extensionToilet") {
+
 
         items.push({
 
@@ -1710,12 +1707,28 @@
           description:
             "Downlights",
 
-          qty: 2,
+          qty:
+            calculateDownlights(area),
 
           unit: "unit",
 
           rate:
             RATES.downlight
+
+        });
+
+
+        items.push({
+
+          description:
+            "Exhaust fan",
+
+          qty: 1,
+
+          unit: "unit",
+
+          rate:
+            RATES.exhaustFan
 
         });
 
@@ -1728,16 +1741,14 @@
 
 
 
-    /* ==========================================
-       MAIN ESTIMATE CALCULATION
-       ========================================== */
+    /* ==================================================
+       MAIN CALCULATION
+       ================================================== */
 
     function calculateEstimate() {
 
 
-      /* ----------------------------------------
-         UPDATE CUSTOMER SUMMARY
-         ---------------------------------------- */
+      /* CUSTOMER */
 
       const customer =
         document.getElementById(
@@ -1762,6 +1773,9 @@
           projectType.selectedIndex
         ].text;
 
+
+
+      /* CUSTOMER SUMMARY */
 
       document.getElementById(
         "customerSummary"
@@ -1815,9 +1829,7 @@
 
 
 
-      /* ----------------------------------------
-         GET ROOMS
-         ---------------------------------------- */
+      /* ROOMS */
 
       const rooms =
         document.querySelectorAll(
@@ -1830,10 +1842,6 @@
       let subtotal = 0;
 
 
-
-      /* ----------------------------------------
-         CALCULATE EVERY ROOM
-         ---------------------------------------- */
 
       rooms.forEach(room => {
 
@@ -1901,13 +1909,9 @@
 
 
 
-      /* ----------------------------------------
-         PRELIMINARIES
-         ---------------------------------------- */
+      /* PRELIMINARIES */
 
-      if (
-        subtotal > 0
-      ) {
+      if (subtotal > 0) {
 
 
         allItems.unshift({
@@ -1937,13 +1941,10 @@
 
 
 
-      /* ----------------------------------------
-         CONTINGENCY
-         ---------------------------------------- */
+      /* CONTINGENCY */
 
       const contingency =
-        subtotal *
-        0.05;
+        subtotal * 0.05;
 
 
       const total =
@@ -1951,10 +1952,6 @@
         contingency;
 
 
-
-      /* ----------------------------------------
-         DISPLAY
-         ---------------------------------------- */
 
       renderEstimate(
 
@@ -1972,9 +1969,9 @@
 
 
 
-    /* ==========================================
+    /* ==================================================
        RENDER ESTIMATE
-       ========================================== */
+       ================================================== */
 
     function renderEstimate(
 
@@ -1994,11 +1991,6 @@
           "estimateContent"
         );
 
-
-
-      /* ----------------------------------------
-         NO DATA
-         ---------------------------------------- */
 
       if (
         items.length === 0
@@ -2028,27 +2020,13 @@
 
 
 
-      /* ----------------------------------------
-         TABLE
-         ---------------------------------------- */
-
       let html = `
 
-        <table
-          class="
-            w-full
-            text-sm
-          "
-        >
+        <table class="w-full text-sm">
 
           <thead>
 
-            <tr
-              class="
-                border-b
-                bg-gray-50
-              "
-            >
+            <tr class="border-b bg-gray-50">
 
               <th
                 class="
@@ -2115,10 +2093,6 @@
 
 
 
-      /* ----------------------------------------
-         TABLE ITEMS
-         ---------------------------------------- */
-
       items.forEach(item => {
 
 
@@ -2126,53 +2100,33 @@
 
           <tr class="border-b">
 
-            <td
-              class="
-                py-3
-                px-2
-              "
-            >
+            <td class="py-3 px-2">
               ${item.room}
             </td>
 
 
-            <td
-              class="
-                py-3
-                px-2
-              "
-            >
+            <td class="py-3 px-2">
               ${item.description}
             </td>
 
 
-            <td
-              class="
-                py-3
-                px-2
-                text-right
-              "
-            >
+            <td class="py-3 px-2 text-right">
 
-              ${Number(item.qty).toLocaleString(
-                "en-MY",
-                {
-                  maximumFractionDigits: 2
-                }
-              )}
+              ${
+                Number(item.qty).toLocaleString(
+                  "en-MY",
+                  {
+                    maximumFractionDigits: 2
+                  }
+                )
+              }
 
               ${item.unit}
 
             </td>
 
 
-            <td
-              class="
-                py-3
-                px-2
-                text-right
-              "
-            >
+            <td class="py-3 px-2 text-right">
 
               ${money(item.rate)}
 
@@ -2200,10 +2154,6 @@
 
 
 
-      /* ----------------------------------------
-         TABLE FOOTER
-         ---------------------------------------- */
-
       html += `
 
           </tbody>
@@ -2223,9 +2173,7 @@
                   px-2
                 "
               >
-
                 Subtotal
-
               </td>
 
 
@@ -2243,7 +2191,6 @@
               </td>
 
             </tr>
-
 
 
             <tr>
@@ -2279,16 +2226,13 @@
 
           </tfoot>
 
-
         </table>
 
       `;
 
 
-
       container.innerHTML =
         html;
-
 
 
       document.getElementById(
@@ -2300,9 +2244,9 @@
 
 
 
-    /* ==========================================
-       LIVE CUSTOMER CALCULATION
-       ========================================== */
+    /* ==================================================
+       LIVE UPDATE
+       ================================================== */
 
     document
       .getElementById("customerName")
@@ -2320,10 +2264,18 @@
       );
 
 
+    document
+      .getElementById("projectType")
+      .addEventListener(
+        "change",
+        calculateEstimate
+      );
 
-    /* ==========================================
+
+
+    /* ==================================================
        INITIAL ROOMS
-       ========================================== */
+       ================================================== */
 
     addRoom(
       "living",
