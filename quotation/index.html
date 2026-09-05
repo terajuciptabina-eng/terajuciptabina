@@ -957,14 +957,9 @@ function generateOptionalRoomItems(room, roomLabel) {
   return items;
 }
 
+
 function getAllItems() {
   const rooms = [...document.querySelectorAll("#roomsContainer .room-card")];
-
-  const typeCounts = {};
-  rooms.forEach(room => {
-    const type = room.querySelector(".room-type")?.value || "living";
-    typeCounts[type] = (typeCounts[type] || 0) + 1;
-  });
 
   const typeIndexes = {};
   const allItems = [];
@@ -976,15 +971,21 @@ function getAllItems() {
 
     typeIndexes[roomType] = (typeIndexes[roomType] || 0) + 1;
     const base = ROOM_TYPES[roomType] || "Area";
-    const roomLabel = typeCounts[roomType] > 1
-      ? `${base} ${typeIndexes[roomType]}`
-      : base;
+    const roomLabel = `${base} ${typeIndexes[roomType]}`;
 
-    const standard = generateStandardRoomItems(roomType, area, roomId, roomLabel);
-    const optional = generateOptionalRoomItems(room, roomLabel);
+    const standard = generateStandardRoomItems(
+      roomType, area, roomId, roomLabel
+    );
+
+    const optional = generateOptionalRoomItems(
+      room, roomLabel
+    );
 
     [...standard, ...optional].forEach(item => {
-      if (customRates.has(item.id)) item.rate = customRates.get(item.id);
+      if (customRates.has(item.id)) {
+        item.rate = customRates.get(item.id);
+      }
+      item.amount = item.qty * item.rate;
     });
 
     allItems.push(...standard, ...optional);
@@ -993,40 +994,94 @@ function getAllItems() {
   return allItems;
 }
 
+function getRoomGroups() {
+  const rooms = [...document.querySelectorAll("#roomsContainer .room-card")];
+  const typeIndexes = {};
+  const groups = [];
+
+  rooms.forEach(room => {
+    const roomId = room.id;
+    const roomType = room.querySelector(".room-type")?.value || "living";
+    const area = parseFloat(room.querySelector(".room-area")?.value) || 0;
+
+    typeIndexes[roomType] = (typeIndexes[roomType] || 0) + 1;
+    const base = ROOM_TYPES[roomType] || "Area";
+    const label = `${base} ${typeIndexes[roomType]}`;
+
+    groups.push({
+      roomId,
+      roomType,
+      label,
+      area
+    });
+  });
+
+  return groups;
+}
+
 function updateEstimate() {
   const allItems = getAllItems();
+  const roomGroups = getRoomGroups();
 
   allItems.forEach(item => {
     item.amount = item.qty * item.rate;
   });
 
-  const activeItems = allItems.filter(item => !excludedItems.has(item.id));
-  const hasAnyRoomItem = activeItems.length > 0 || allItems.length > 0;
+  const activeItems = allItems.filter(
+    item => !excludedItems.has(item.id)
+  );
 
-  const prelimRate = customRates.has("project-preliminaries")
-    ? customRates.get("project-preliminaries")
-    : RATES.preliminaries;
+  const hasAnyArea = roomGroups.some(room => room.area > 0);
 
-  let projectPreliminaries = hasAnyRoomItem && !excludedItems.has("project-preliminaries")
-    ? prelimRate
-    : 0;
+  const projectPreliminaries =
+    hasAnyArea && !excludedItems.has("project-preliminaries")
+      ? (
+          customRates.has("project-preliminaries")
+            ? customRates.get("project-preliminaries")
+            : RATES.preliminaries
+        )
+      : 0;
 
   const roomSubtotals = {};
-  activeItems.forEach(item => {
-    roomSubtotals[item.roomId] = (roomSubtotals[item.roomId] || 0) + item.amount;
+  roomGroups.forEach(room => {
+    roomSubtotals[room.roomId] = 0;
   });
 
-  const total = projectPreliminaries +
-    Object.values(roomSubtotals).reduce((sum, value) => sum + value, 0);
+  activeItems.forEach(item => {
+    roomSubtotals[item.roomId] =
+      (roomSubtotals[item.roomId] || 0) + item.amount;
+  });
 
-  renderEstimate(activeItems, roomSubtotals, projectPreliminaries, total);
+  const roomTotal = Object.values(roomSubtotals)
+    .reduce((sum, value) => sum + value, 0);
+
+  const total = projectPreliminaries + roomTotal;
+
+  renderEstimate(
+    activeItems,
+    roomGroups,
+    roomSubtotals,
+    projectPreliminaries,
+    total
+  );
 }
 
-function renderEstimate(items, roomSubtotals, projectPreliminaries, total) {
+function renderEstimate(
+  items,
+  roomGroups,
+  roomSubtotals,
+  projectPreliminaries,
+  total
+) {
   const container = document.getElementById("estimateContent");
 
-  const customer = document.getElementById("customerName")?.value || "Not specified";
-  const location = document.getElementById("projectLocation")?.value || "Not specified";
+  const customer =
+    document.getElementById("customerName")?.value ||
+    "Not specified";
+
+  const location =
+    document.getElementById("projectLocation")?.value ||
+    "Not specified";
 
   document.getElementById("customerSummary").innerHTML = `
     <div>
@@ -1043,28 +1098,12 @@ function renderEstimate(items, roomSubtotals, projectPreliminaries, total) {
     </div>
   `;
 
-  if (items.length === 0) {
-    container.innerHTML = `
-      <div class="border rounded-xl p-8 text-center text-gray-500">
-        Add an area above to generate the renovation breakdown.
-      </div>
-    `;
-    document.getElementById("grandTotal").textContent = money(0);
-    return;
-  }
-
-  const roomOrder = [];
-  const roomMap = {};
-
+  const itemsByRoom = {};
   items.forEach(item => {
-    if (!roomMap[item.roomId]) {
-      roomMap[item.roomId] = {
-        label: item.room,
-        items: []
-      };
-      roomOrder.push(item.roomId);
+    if (!itemsByRoom[item.roomId]) {
+      itemsByRoom[item.roomId] = [];
     }
-    roomMap[item.roomId].items.push(item);
+    itemsByRoom[item.roomId].push(item);
   });
 
   let html = `
@@ -1085,6 +1124,10 @@ function renderEstimate(items, roomSubtotals, projectPreliminaries, total) {
   `;
 
   if (projectPreliminaries > 0) {
+    const prelimRate = customRates.has("project-preliminaries")
+      ? customRates.get("project-preliminaries")
+      : RATES.preliminaries;
+
     html += `
       <tr class="border-b bg-gray-50">
         <td class="py-3 px-2 font-medium">Project</td>
@@ -1094,12 +1137,19 @@ function renderEstimate(items, roomSubtotals, projectPreliminaries, total) {
         <td class="py-3 px-2 text-right">
           <div class="flex items-center justify-end gap-2">
             <span>${money(prelimRate)}</span>
-            <button type="button" onclick="editItemRate('project-preliminaries', ${prelimRate})" class="no-print text-xs border rounded px-2 py-1 hover:bg-gray-50">Edit</button>
+            <button
+              type="button"
+              onclick="editItemRate('project-preliminaries', ${prelimRate})"
+              class="no-print text-xs border rounded px-2 py-1 hover:bg-gray-50"
+            >Edit</button>
           </div>
         </td>
-        <td class="py-3 px-2 text-right font-medium">${money(prelimRate)}</td>
+        <td class="py-3 px-2 text-right font-medium">
+          ${money(prelimRate)}
+        </td>
         <td class="no-print py-3 px-2 text-center">
           <button
+            type="button"
             onclick="excludeItem('project-preliminaries')"
             class="text-red-600 text-xs border border-red-200 rounded px-3 py-1.5 hover:bg-red-50"
           >Delete</button>
@@ -1108,34 +1158,53 @@ function renderEstimate(items, roomSubtotals, projectPreliminaries, total) {
     `;
   }
 
-  roomOrder.forEach(roomId => {
-    const group = roomMap[roomId];
+  roomGroups.forEach(room => {
+    const roomItems = itemsByRoom[room.roomId] || [];
+
     html += `
       <tr class="bg-gray-100 border-b">
         <td colspan="7" class="py-3 px-2 font-bold">
-          ${escapeHtml(group.label)}
+          ${escapeHtml(room.label)}
+          ${room.area > 0 ? `<span class="font-normal text-gray-500">(${formatQty(room.area)} sqft)</span>` : ""}
         </td>
       </tr>
     `;
 
-    group.items.forEach(item => {
+    roomItems.forEach(item => {
+      const editable = item.unit === "ls";
+
       html += `
         <tr class="border-b hover:bg-gray-50">
-          <td class="py-3 px-2 font-medium">${escapeHtml(item.room)}</td>
-          <td class="py-3 px-2">${escapeHtml(item.description)}</td>
-          <td class="py-3 px-2 text-right">${formatQty(item.qty)}</td>
-          <td class="py-3 px-2">${escapeHtml(item.unit)}</td>
+          <td class="py-3 px-2 font-medium">
+            ${escapeHtml(item.room)}
+          </td>
+          <td class="py-3 px-2">
+            ${escapeHtml(item.description)}
+          </td>
           <td class="py-3 px-2 text-right">
-            ${item.unit === "ls" ? `
+            ${formatQty(item.qty)}
+          </td>
+          <td class="py-3 px-2">
+            ${escapeHtml(item.unit)}
+          </td>
+          <td class="py-3 px-2 text-right">
+            ${editable ? `
               <div class="flex items-center justify-end gap-2">
                 <span>${money(item.rate)}</span>
-                <button type="button" onclick="editItemRate('${item.id}', ${item.rate})" class="no-print text-xs border rounded px-2 py-1 hover:bg-gray-50">Edit</button>
+                <button
+                  type="button"
+                  onclick="editItemRate('${item.id}', ${item.rate})"
+                  class="no-print text-xs border rounded px-2 py-1 hover:bg-gray-50"
+                >Edit</button>
               </div>
             ` : money(item.rate)}
           </td>
-          <td class="py-3 px-2 text-right font-medium">${money(item.amount)}</td>
+          <td class="py-3 px-2 text-right font-medium">
+            ${money(item.amount)}
+          </td>
           <td class="no-print py-3 px-2 text-center">
             <button
+              type="button"
               onclick="excludeItem('${item.id}')"
               class="text-red-600 text-xs border border-red-200 rounded px-3 py-1.5 hover:bg-red-50"
             >Delete</button>
@@ -1147,22 +1216,23 @@ function renderEstimate(items, roomSubtotals, projectPreliminaries, total) {
     html += `
       <tr class="border-b">
         <td colspan="5" class="py-3 px-2 text-right font-semibold">
-          ${escapeHtml(group.label)} Subtotal
+          ${escapeHtml(room.label)} Subtotal
         </td>
         <td class="py-3 px-2 text-right font-bold">
-          ${money(roomSubtotals[roomId] || 0)}
+          ${money(roomSubtotals[room.roomId] || 0)}
         </td>
         <td class="no-print"></td>
       </tr>
     `;
   });
 
-  const roomTotal = Object.values(roomSubtotals).reduce((sum, value) => sum + value, 0);
+  const roomTotal = Object.values(roomSubtotals)
+    .reduce((sum, value) => sum + value, 0);
 
   html += `
         </tbody>
         <tfoot>
-          <tr>
+          <tr class="border-t-2">
             <td colspan="5" class="py-4 px-2 text-right font-semibold">
               Overall Subtotal
             </td>
@@ -1183,11 +1253,13 @@ function renderEstimate(items, roomSubtotals, projectPreliminaries, total) {
 function editItemRate(itemId, currentRate) {
   const value = window.prompt("Enter lump sum rate (RM):", currentRate);
   if (value === null) return;
+
   const rate = parseFloat(value);
   if (!Number.isFinite(rate) || rate < 0) {
     window.alert("Please enter a valid amount.");
     return;
   }
+
   customRates.set(itemId, rate);
   updateEstimate();
 }
