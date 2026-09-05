@@ -2,448 +2,109 @@
 <html lang="en">
 
 <head>
-
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#ffffff">
-
   <title>Renovation Planner | Teraju Ciptabina</title>
-
   <script src="https://cdn.tailwindcss.com"></script>
 
   <style>
-
-    /* =========================================================
-       BASE
-       ========================================================= */
-
-    * {
-      box-sizing: border-box;
-    }
-
-    html,
-    body {
-      max-width: 100%;
-      overflow-x: hidden;
-    }
-
+    * { box-sizing: border-box; }
+    html, body { max-width: 100%; overflow-x: hidden; }
     body {
       font-family: Arial, Helvetica, sans-serif;
       -webkit-text-size-adjust: 100%;
       text-rendering: optimizeLegibility;
     }
-
-    button,
-    input,
-    select,
-    textarea {
-      font: inherit;
-    }
-
-    button,
-    input,
-    select {
-      min-height: 44px;
-    }
-
-    textarea {
-      min-height: 88px;
-    }
-
-    button,
-    a,
-    input,
-    select,
-    textarea {
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    button {
-      touch-action: manipulation;
-    }
-
+    button, input, select, textarea { font: inherit; }
+    button, input, select { min-height: 44px; }
+    textarea { min-height: 88px; }
+    button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
+    button { touch-action: manipulation; }
     input[type="number"]::-webkit-inner-spin-button,
-    input[type="number"]::-webkit-outer-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
-    }
+    input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+    input[type="number"] { -moz-appearance: textfield; appearance: textfield; }
 
-    input[type="number"] {
-      -moz-appearance: textfield;
-      appearance: textfield;
-    }
-
-
-    /* =========================================================
-       MOBILE RESPONSIVE
-       ========================================================= */
-
+    /* Mobile */
     @media (max-width: 767px) {
-
-      html,
-      body {
-        width: 100%;
-        max-width: 100%;
-        overflow-x: hidden;
-      }
-
-      main {
-        width: 100%;
-        max-width: 100% !important;
-        padding: 16px !important;
-      }
-
-      header > div {
-        width: 100%;
-        padding-left: 16px !important;
-        padding-right: 16px !important;
-      }
-
-      header img {
-        height: 40px !important;
-        max-width: 160px;
-      }
-
-      header h1 {
-        font-size: 15px !important;
-      }
-
-      main > section {
-        width: 100%;
-        max-width: 100%;
-        padding: 16px !important;
-        border-radius: 16px !important;
-      }
-
-      main > section:first-child {
-        padding: 4px 0 10px !important;
-        background: transparent;
-        box-shadow: none;
-      }
-
-      main > section:first-child h2 {
-        font-size: 28px !important;
-        line-height: 1.2;
-      }
-
-      main > section:first-child p {
-        font-size: 14px;
-        line-height: 1.5;
-      }
-
-      .grid.md\:grid-cols-2,
-      .grid.md\:grid-cols-3,
-      .grid.md\:grid-cols-\[1fr_1fr_1fr_auto\] {
+      html, body { width: 100%; max-width: 100%; overflow-x: hidden; }
+      main { width: 100%; max-width: 100% !important; padding: 16px !important; }
+      header > div { width: 100%; padding-left: 16px !important; padding-right: 16px !important; }
+      header img { height: 40px !important; max-width: 160px; }
+      header h1 { font-size: 15px !important; }
+      main > section { width: 100%; max-width: 100%; padding: 16px !important; border-radius: 16px !important; }
+      main > section:first-child { padding: 4px 0 10px !important; background: transparent; box-shadow: none; }
+      main > section:first-child h2 { font-size: 28px !important; line-height: 1.2; }
+      main > section:first-child p { font-size: 14px; line-height: 1.5; }
+      .grid.md\:grid-cols-2, .grid.md\:grid-cols-3, .grid.md\:grid-cols-\[1fr_1fr_1fr_auto\] {
         grid-template-columns: minmax(0, 1fr) !important;
       }
-
-      #projectInfo {
-        width: 100%;
-      }
-
-      #projectInfo input {
-        width: 100%;
-      }
-
-      #roomsContainer {
-        width: 100%;
-      }
-
-      .room-card {
-        width: 100%;
-        max-width: 100%;
-        padding: 14px !important;
-        overflow: hidden;
-      }
-
-      .room-card > div:first-child {
-        grid-template-columns: minmax(0, 1fr) !important;
-        gap: 12px !important;
-      }
-
-      .room-card input,
-      .room-card select {
-        width: 100%;
-        max-width: 100%;
-      }
-
-      .room-card .room-name,
-      .room-card .room-type,
-      .room-card .room-area {
-        min-width: 0;
-      }
-
-      .room-card .no-print.flex {
-        display: grid !important;
-        grid-template-columns: 1fr 1fr;
-        gap: 8px;
-        width: 100%;
-      }
-
-      .room-card .no-print.flex button {
-        width: 100%;
-        min-width: 0;
-      }
-
-      .room-card .no-print.flex button:last-child {
-        grid-column: 1 / -1;
-      }
-
-      main > section:nth-of-type(3) > div:first-child {
-        align-items: flex-start !important;
-        gap: 12px;
-      }
-
-      main > section:nth-of-type(3) > div:first-child > button {
-        flex-shrink: 0;
-      }
-
-      .optional-scopes {
-        grid-template-columns: minmax(0, 1fr) !important;
-      }
-
-      .optional-scope {
-        width: 100%;
-        max-width: 100%;
-        padding: 12px !important;
-        overflow: hidden;
-      }
-
-      .optional-scope > div {
-        align-items: flex-start !important;
-      }
-
-      .optional-scope .optional-check {
-        flex-shrink: 0;
-        margin-top: 2px;
-      }
-
-      .optional-scope label {
-        display: block;
-        line-height: 1.45;
-      }
-
-      .optional-scope .optional-rate {
-        width: 90px !important;
-        min-width: 90px !important;
-        flex: 0 0 90px;
-      }
-
-      #customerSummary {
-        grid-template-columns: minmax(0, 1fr) !important;
-        gap: 12px !important;
-      }
-
-      #estimateContent {
-        width: calc(100% + 8px);
-        margin-left: -4px;
-        margin-right: -4px;
-        padding-bottom: 8px;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        overscroll-behavior-x: contain;
-      }
-
-      #estimateContent > div,
-      #estimateContent table {
-        min-width: 760px;
-      }
-
-      #estimateContent table th,
-      #estimateContent table td {
-        padding: 10px 8px !important;
-      }
-
-      #estimateContent textarea {
-        min-width: 260px !important;
-        max-width: 320px;
-      }
-
-      #estimateContent input[type="number"],
-      #estimateContent input[type="text"] {
-        min-height: 42px;
-      }
-
-      .print-card > div:first-child {
-        gap: 16px;
-      }
-
-      #estimateNumber {
-        white-space: nowrap;
-      }
-
-      #grandTotal {
-        font-size: 26px !important;
-        white-space: nowrap;
-      }
-
-      input[name="quotationType"] {
-        min-height: 20px;
-        width: 20px;
-        flex-shrink: 0;
-      }
-
-      .quotation-option {
-        width: 100%;
-      }
-
-      #quotationDocument {
-        width: 100%;
-        max-width: 100%;
-        padding: 16px !important;
-        overflow: hidden;
-      }
-
-      #quotationContent {
-        width: 100%;
-        max-width: 100%;
-        min-width: 0;
-        overflow: hidden;
-      }
-
-      #quotationContent > div:first-child {
-        flex-direction: column !important;
-        gap: 16px !important;
-      }
-
-      #quotationContent > div:first-child > div:first-child {
-        width: 100%;
-        min-width: 0;
-      }
-
-      #quotationContent > div:first-child > div:last-child {
-        width: 100%;
-        text-align: left !important;
-      }
-
-      #quotationContent > div:first-child img {
-        height: 48px !important;
-        max-width: 150px;
-      }
-
-      #quotationContent > div:first-child h1 {
-        font-size: 16px !important;
-        line-height: 1.25;
-      }
-
-      #quotationContent > div:first-child h2 {
-        font-size: 22px !important;
-      }
-
-      #quotationContent > div:nth-child(2) {
-        grid-template-columns: minmax(0, 1fr) !important;
-      }
-
-      #quotationContent .overflow-x-auto {
-        width: 100%;
-        max-width: 100%;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        overscroll-behavior-x: contain;
-        padding-bottom: 8px;
-      }
-
-      #quotationContent table {
-        min-width: 680px;
-      }
-
-      #quotationContent table th,
-      #quotationContent table td {
-        padding: 9px 7px !important;
-      }
-
-      #quotationPrintActions {
-        width: 100%;
-        justify-content: stretch !important;
-      }
-
-      #quotationPrintActions button {
-        width: 100%;
-        min-height: 48px;
-      }
-
-      main > section:last-child {
-        padding: 24px 16px !important;
-      }
-
-      main > section:last-child h3 {
-        font-size: 22px !important;
-        line-height: 1.3;
-      }
-
-      main > section:last-child a {
-        width: 100%;
-        text-align: center;
-        min-height: 48px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      input,
-      select,
-      textarea {
-        font-size: 16px !important;
-      }
-
-      button {
-        font-size: 15px;
-      }
-
-      body {
-        padding-bottom: env(safe-area-inset-bottom);
-      }
-
+      #projectInfo, #projectInfo input { width: 100%; }
+      #roomsContainer { width: 100%; }
+      .room-card { width: 100%; max-width: 100%; padding: 14px !important; overflow: hidden; }
+      .room-card > div:first-child { grid-template-columns: minmax(0, 1fr) !important; gap: 12px !important; }
+      .room-card input, .room-card select { width: 100%; max-width: 100%; }
+      .room-card .room-name, .room-card .room-type, .room-card .room-area { min-width: 0; }
+      .room-card .no-print.flex { display: grid !important; grid-template-columns: 1fr 1fr; gap: 8px; width: 100%; }
+      .room-card .no-print.flex button { width: 100%; min-width: 0; }
+      .room-card .no-print.flex button:last-child { grid-column: 1 / -1; }
+      main > section:nth-of-type(3) > div:first-child { align-items: flex-start !important; gap: 12px; }
+      main > section:nth-of-type(3) > div:first-child > button { flex-shrink: 0; }
+      .optional-scopes { grid-template-columns: minmax(0, 1fr) !important; }
+      .optional-scope { width: 100%; max-width: 100%; padding: 12px !important; overflow: hidden; }
+      .optional-scope > div { align-items: flex-start !important; }
+      .optional-scope .optional-check { flex-shrink: 0; margin-top: 2px; }
+      .optional-scope label { display: block; line-height: 1.45; }
+      .optional-scope .optional-rate { width: 90px !important; min-width: 90px !important; flex: 0 0 90px; }
+      #customerSummary { grid-template-columns: minmax(0, 1fr) !important; gap: 12px !important; }
+      #estimateContent { width: calc(100% + 8px); margin-left: -4px; margin-right: -4px; padding-bottom: 8px; overflow-x: auto; -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain; }
+      #estimateContent > div, #estimateContent table { min-width: 760px; }
+      #estimateContent table th, #estimateContent table td { padding: 10px 8px !important; }
+      #estimateContent textarea { min-width: 260px !important; max-width: 320px; }
+      #estimateContent input[type="number"], #estimateContent input[type="text"] { min-height: 42px; }
+      .print-card > div:first-child { gap: 16px; }
+      #estimateNumber { white-space: nowrap; }
+      #grandTotal { font-size: 26px !important; white-space: nowrap; }
+      input[name="quotationType"] { min-height: 20px; width: 20px; flex-shrink: 0; }
+      .quotation-option { width: 100%; }
+      #quotationDocument { width: 100%; max-width: 100%; padding: 16px !important; overflow: hidden; }
+      #quotationContent { width: 100%; max-width: 100%; min-width: 0; overflow: hidden; }
+      #quotationContent > div:first-child { flex-direction: column !important; gap: 16px !important; }
+      #quotationContent > div:first-child > div:first-child { width: 100%; min-width: 0; }
+      #quotationContent > div:first-child > div:last-child { width: 100%; text-align: left !important; }
+      #quotationContent > div:first-child img { height: 48px !important; max-width: 150px; }
+      #quotationContent > div:first-child h1 { font-size: 16px !important; line-height: 1.25; }
+      #quotationContent > div:first-child h2 { font-size: 22px !important; }
+      #quotationContent > div:nth-child(2) { grid-template-columns: minmax(0, 1fr) !important; }
+      #quotationContent .overflow-x-auto { width: 100%; max-width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain; padding-bottom: 8px; }
+      #quotationContent table { min-width: 680px; }
+      #quotationContent table th, #quotationContent table td { padding: 9px 7px !important; }
+      #quotationPrintActions { width: 100%; justify-content: stretch !important; }
+      #quotationPrintActions button { width: 100%; min-height: 48px; }
+      main > section:last-child { padding: 24px 16px !important; }
+      main > section:last-child h3 { font-size: 22px !important; line-height: 1.3; }
+      main > section:last-child a { width: 100%; text-align: center; min-height: 48px; display: flex; align-items: center; justify-content: center; }
+      input, select, textarea { font-size: 16px !important; }
+      button { font-size: 15px; }
+      body { padding-bottom: env(safe-area-inset-bottom); }
     }
-
 
     @media (max-width: 380px) {
-
-      main {
-        padding: 12px !important;
-      }
-
-      main > section {
-        padding: 14px !important;
-      }
-
-      main > section:first-child h2 {
-        font-size: 24px !important;
-      }
-
-      #grandTotal {
-        font-size: 23px !important;
-      }
-
-      header > div {
-        padding-left: 12px !important;
-        padding-right: 12px !important;
-      }
-
-      header img {
-        height: 36px !important;
-      }
-
-      header h1 {
-        font-size: 14px !important;
-      }
-
-      #quotationDocument {
-        padding: 12px !important;
-      }
-
+      main { padding: 12px !important; }
+      main > section { padding: 14px !important; }
+      main > section:first-child h2 { font-size: 24px !important; }
+      #grandTotal { font-size: 23px !important; }
+      header > div { padding-left: 12px !important; padding-right: 12px !important; }
+      header img { height: 36px !important; }
+      header h1 { font-size: 14px !important; }
+      #quotationDocument { padding: 12px !important; }
     }
 
-
-    .detailed-quotation-table {
-      width: 100%;
-      table-layout: fixed;
-    }
+    .detailed-quotation-table { width: 100%; table-layout: fixed; }
 
     /* =========================================================
-       A4 SCREEN PREVIEW
+       A4 PREVIEW (SCREEN + PRINT) — SAME STRUCTURE
        ========================================================= */
-
     #quotationContent.a4-paginated {
       width: 100%;
       max-width: none;
@@ -462,9 +123,7 @@
       position: relative;
     }
 
-    .quotation-page:last-child {
-      margin-bottom: 0;
-    }
+    .quotation-page:last-child { margin-bottom: 0; }
 
     .quotation-page-body {
       width: 100%;
@@ -497,18 +156,15 @@
     }
 
     /* =========================================================
-       PRINT — CONTINUOUS FLOW (NO BIG GAPS)
+       PRINT — KEEP THE SAME A4 PAGES
        ========================================================= */
-
     @media print {
-
       @page {
         size: A4 portrait;
-        margin: 12mm 12mm;
+        margin: 0;
       }
 
-      html,
-      body {
+      html, body {
         width: 210mm !important;
         margin: 0 !important;
         padding: 0 !important;
@@ -538,8 +194,6 @@
         position: static !important;
         width: 100% !important;
         max-width: none !important;
-        min-height: 0 !important;
-        height: auto !important;
         margin: 0 !important;
         padding: 0 !important;
         background: #fff !important;
@@ -549,47 +203,56 @@
         overflow: visible !important;
       }
 
-      /* Important: remove the A4 page boxes during print */
-      .quotation-page,
-      .quotation-page-body {
-        width: 100% !important;
-        height: auto !important;
-        min-height: 0 !important;
-        max-height: none !important;
+      .quotation-page {
+        width: 210mm !important;
+        height: 297mm !important;
+        min-height: 297mm !important;
+        max-height: 297mm !important;
+        box-sizing: border-box !important;
         margin: 0 !important;
-        padding: 0 !important;
+        padding: 10mm 11mm !important;
+        background: #fff !important;
         box-shadow: none !important;
-        overflow: visible !important;
+        overflow: hidden !important;
+        page-break-after: always !important;
+        break-after: page !important;
+        position: relative !important;
+      }
+
+      .quotation-page:last-child {
         page-break-after: auto !important;
         break-after: auto !important;
-        position: static !important;
+      }
+
+      .quotation-page-body {
+        width: 100% !important;
+        height: calc(100% - 8mm) !important;
+        overflow: hidden !important;
       }
 
       .quotation-page-number {
-        display: none !important;
+        display: block !important;
       }
 
       .quotation-page-continuation {
-        display: none !important; /* continuous flow does not need "Continued" headers */
+        display: block !important;
       }
 
       #quotationContent {
         width: 100% !important;
         max-width: none !important;
-        min-width: 0 !important;
         overflow: visible !important;
         font-size: 9.5px !important;
-        line-height: 1.35 !important;
+        line-height: 1.3 !important;
       }
 
       #quotationContent table {
         width: 100% !important;
         min-width: 0 !important;
         font-size: 9.5px !important;
-        line-height: 1.35 !important;
+        line-height: 1.3 !important;
         table-layout: fixed !important;
         border-collapse: collapse !important;
-        page-break-inside: auto !important;
       }
 
       #quotationContent .overflow-x-auto {
@@ -599,26 +262,15 @@
         padding-bottom: 0 !important;
       }
 
-      #quotationContent table thead {
-        display: table-header-group !important;
-      }
-
-      #quotationContent table tfoot {
-        display: table-footer-group !important;
-      }
-
-      #quotationContent table tr {
-        break-inside: avoid !important;
-        page-break-inside: avoid !important;
-      }
+      #quotationContent table thead { display: table-header-group !important; }
+      #quotationContent table tr { break-inside: avoid !important; page-break-inside: avoid !important; }
 
       #quotationContent table th,
       #quotationContent table td {
-        padding: 5px 4px !important;
-        line-height: 1.35 !important;
+        padding: 4px 4px !important;
+        line-height: 1.3 !important;
         vertical-align: top !important;
         overflow-wrap: break-word !important;
-        word-break: normal !important;
       }
 
       .detailed-quotation-table col:nth-child(1) { width: 48% !important; }
@@ -627,12 +279,12 @@
       .detailed-quotation-table col:nth-child(4) { width: 16% !important; }
       .detailed-quotation-table col:nth-child(5) { width: 16% !important; }
 
-      #quotationContent .mb-5 { margin-bottom: 8px !important; }
-      #quotationContent .mt-8 { margin-top: 14px !important; }
-      #quotationContent .mt-12 { margin-top: 18px !important; }
-      #quotationContent .pt-5 { padding-top: 8px !important; }
-      #quotationContent .py-3 { padding-top: 4px !important; padding-bottom: 4px !important; }
-      #quotationContent .py-4 { padding-top: 5px !important; padding-bottom: 5px !important; }
+      #quotationContent .mb-5 { margin-bottom: 6px !important; }
+      #quotationContent .mt-8 { margin-top: 12px !important; }
+      #quotationContent .mt-12 { margin-top: 16px !important; }
+      #quotationContent .pt-5 { padding-top: 6px !important; }
+      #quotationContent .py-3 { padding-top: 3px !important; padding-bottom: 3px !important; }
+      #quotationContent .py-4 { padding-top: 4px !important; padding-bottom: 4px !important; }
 
       #quotationContent tfoot,
       #quotationContent .mt-8,
@@ -645,18 +297,11 @@
       #quotationContent tfoot td:last-child {
         white-space: nowrap !important;
       }
-
     }
-
   </style>
-
 </head>
 
 <body class="bg-gray-100 text-gray-800">
-
-<!-- =========================================================
-     HEADER
-     ========================================================= -->
 
 <header class="bg-white border-b">
   <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
@@ -669,13 +314,8 @@
   </div>
 </header>
 
-<!-- =========================================================
-     MAIN
-     ========================================================= -->
-
 <main class="max-w-6xl mx-auto px-6 py-8">
 
-  <!-- TITLE -->
   <section class="mb-7">
     <h2 class="text-3xl font-bold mb-2">Renovation Planner</h2>
     <p class="text-gray-600">
@@ -684,16 +324,14 @@
     </p>
   </section>
 
-  <!-- PROJECT INFORMATION -->
   <section class="bg-white rounded-2xl shadow-sm p-6 mb-6">
     <div class="flex justify-between items-center cursor-pointer" onclick="toggleProjectInfo()">
       <div class="min-w-0">
         <h3 class="font-bold text-lg">Project Information</h3>
         <p class="text-sm text-gray-500">Enter the project details used for the estimate and quotation.</p>
       </div>
-      <span id="projectArrow" class="text-gray-500 text-sm ml-4 flex-shrink-0" aria-hidden="true">▲</span>
+      <span id="projectArrow" class="text-gray-500 text-sm ml-4 flex-shrink-0">▲</span>
     </div>
-
     <div id="projectInfo" class="mt-5">
       <div class="grid md:grid-cols-2 gap-5">
         <div>
@@ -711,47 +349,27 @@
         </div>
       </div>
     </div>
-
     <datalist id="projectLocationSuggestions">
-      <option value="Kuala Lumpur">
-      <option value="Putrajaya">
-      <option value="Cyberjaya">
-      <option value="Petaling Jaya, Selangor">
-      <option value="Shah Alam, Selangor">
-      <option value="Subang Jaya, Selangor">
-      <option value="Puchong, Selangor">
-      <option value="Seri Kembangan, Selangor">
-      <option value="Kajang, Selangor">
-      <option value="Bangi, Selangor">
-      <option value="Semenyih, Selangor">
-      <option value="Ampang, Selangor">
-      <option value="Cheras, Selangor">
-      <option value="Rawang, Selangor">
-      <option value="Klang, Selangor">
-      <option value="Kapar, Selangor">
-      <option value="Kota Damansara, Selangor">
-      <option value="Ara Damansara, Selangor">
-      <option value="Setia Alam, Selangor">
-      <option value="Bandar Kinrara, Puchong, Selangor">
-      <option value="Taman Putra Prima, Puchong, Selangor">
-      <option value="Johor Bahru, Johor">
-      <option value="Iskandar Puteri, Johor">
-      <option value="Pasir Gudang, Johor">
-      <option value="Melaka">
-      <option value="Seremban, Negeri Sembilan">
-      <option value="Ipoh, Perak">
-      <option value="Penang / George Town, Penang">
-      <option value="Butterworth, Penang">
-      <option value="Alor Setar, Kedah">
-      <option value="Kota Bharu, Kelantan">
-      <option value="Kuantan, Pahang">
-      <option value="Kuala Terengganu, Terengganu">
-      <option value="Kota Kinabalu, Sabah">
-      <option value="Kuching, Sarawak">
+      <option value="Kuala Lumpur"><option value="Putrajaya"><option value="Cyberjaya">
+      <option value="Petaling Jaya, Selangor"><option value="Shah Alam, Selangor">
+      <option value="Subang Jaya, Selangor"><option value="Puchong, Selangor">
+      <option value="Seri Kembangan, Selangor"><option value="Kajang, Selangor">
+      <option value="Bangi, Selangor"><option value="Semenyih, Selangor">
+      <option value="Ampang, Selangor"><option value="Cheras, Selangor">
+      <option value="Rawang, Selangor"><option value="Klang, Selangor">
+      <option value="Kapar, Selangor"><option value="Kota Damansara, Selangor">
+      <option value="Ara Damansara, Selangor"><option value="Setia Alam, Selangor">
+      <option value="Bandar Kinrara, Puchong, Selangor"><option value="Taman Putra Prima, Puchong, Selangor">
+      <option value="Johor Bahru, Johor"><option value="Iskandar Puteri, Johor">
+      <option value="Pasir Gudang, Johor"><option value="Melaka">
+      <option value="Seremban, Negeri Sembilan"><option value="Ipoh, Perak">
+      <option value="Penang / George Town, Penang"><option value="Butterworth, Penang">
+      <option value="Alor Setar, Kedah"><option value="Kota Bharu, Kelantan">
+      <option value="Kuantan, Pahang"><option value="Kuala Terengganu, Terengganu">
+      <option value="Kota Kinabalu, Sabah"><option value="Kuching, Sarawak">
     </datalist>
   </section>
 
-  <!-- AREAS -->
   <section class="bg-white rounded-2xl shadow-sm p-6 mb-6">
     <div class="flex justify-between items-center mb-5 gap-4">
       <div class="min-w-0">
@@ -763,18 +381,14 @@
         + Add Area
       </button>
     </div>
-
     <div class="no-print bg-gray-50 border rounded-xl p-4 mb-5 text-sm text-gray-600">
       <strong class="text-gray-800">Simple input:</strong>
       Select the room type and enter the area.
-      Quantities such as downlights, fans and other
-      standard items will be calculated automatically.
+      Quantities such as downlights, fans and other standard items will be calculated automatically.
     </div>
-
     <div id="roomsContainer" class="space-y-4"></div>
   </section>
 
-  <!-- ESTIMATE -->
   <section class="bg-white rounded-2xl shadow-sm p-6 print-card">
     <div class="flex justify-between items-start mb-6 gap-4">
       <div class="min-w-0">
@@ -786,17 +400,13 @@
         <p id="estimateNumber" class="font-bold"></p>
       </div>
     </div>
-
     <div id="customerSummary" class="grid md:grid-cols-3 gap-5 mb-6 text-sm"></div>
     <div id="estimateContent" class="overflow-x-auto"></div>
-
     <div class="no-print mt-5 flex justify-end">
-      <button type="button" onclick="restoreAllItems()"
-        class="border px-4 py-2 rounded-lg text-sm hover:bg-gray-50">
+      <button type="button" onclick="restoreAllItems()" class="border px-4 py-2 rounded-lg text-sm hover:bg-gray-50">
         Restore All Items
       </button>
     </div>
-
     <div class="border-t mt-6 pt-6">
       <div class="flex justify-between items-center gap-4">
         <span class="font-semibold text-lg">Estimated Total</span>
@@ -804,56 +414,41 @@
       </div>
       <p class="text-xs text-gray-500 mt-3">
         * This is a preliminary renovation estimate only.
-        Final quotation is subject to site inspection,
-        approved drawings, actual site conditions,
-        specifications, material selection and confirmation
-        of final scope of works.
+        Final quotation is subject to site inspection, approved drawings, actual site conditions,
+        specifications, material selection and confirmation of final scope of works.
       </p>
     </div>
   </section>
 
-  <!-- QUOTATION GENERATOR -->
   <section class="no-print bg-white rounded-2xl shadow-sm p-6 mt-6">
     <div class="mb-5">
       <h3 class="font-bold text-lg">Generate Quotation</h3>
       <p class="text-sm text-gray-500">Choose how much pricing detail you want to show in the quotation.</p>
     </div>
-
     <div class="grid md:grid-cols-2 gap-4">
       <label class="quotation-option border rounded-xl p-4 cursor-pointer hover:bg-gray-50">
         <div class="flex items-start gap-3">
           <input type="radio" name="quotationType" value="simple" checked class="mt-1 h-4 w-4 flex-shrink-0">
           <div>
             <p class="font-semibold">Simple Quotation</p>
-            <p class="text-sm text-gray-500 mt-1">
-              Shows the work description by room / area,
-              with only one total price for each room / area.
-            </p>
+            <p class="text-sm text-gray-500 mt-1">Shows the work description by room / area, with only one total price for each room / area.</p>
           </div>
         </div>
       </label>
-
       <label class="quotation-option border rounded-xl p-4 cursor-pointer hover:bg-gray-50">
         <div class="flex items-start gap-3">
           <input type="radio" name="quotationType" value="detail" class="mt-1 h-4 w-4 flex-shrink-0">
           <div>
             <p class="font-semibold">Detailed Quotation</p>
-            <p class="text-sm text-gray-500 mt-1">
-              Shows item-by-item quantity, unit, rate and amount
-              under each room / area.
-            </p>
+            <p class="text-sm text-gray-500 mt-1">Shows item-by-item quantity, unit, rate and amount under each room / area.</p>
           </div>
         </div>
       </label>
     </div>
-
     <div class="mt-5 p-4 rounded-xl bg-gray-50 border text-sm text-gray-600">
       <strong class="text-gray-800">Review before generating:</strong>
-      Edit the Room / Area Name, Quantity and Rate directly
-      in the estimate table above. The quotation will use
-      your final edited values.
+      Edit the Room / Area Name, Quantity and Rate directly in the estimate table above. The quotation will use your final edited values.
     </div>
-
     <div class="mt-5 flex flex-wrap gap-3">
       <button type="button" onclick="generateQuotation()"
         class="bg-black text-white px-5 py-3 rounded-lg font-semibold hover:bg-gray-800">
@@ -862,10 +457,8 @@
     </div>
   </section>
 
-  <!-- GENERATED QUOTATION -->
   <section id="quotationDocument" class="hidden bg-white rounded-2xl shadow-sm p-8 mt-6 quotation-document">
     <div id="quotationContent"></div>
-
     <div id="quotationPrintActions" class="no-print mt-6 pt-5 border-t flex flex-wrap justify-end gap-3">
       <button type="button" onclick="printQuotation()"
         class="bg-black text-white px-5 py-3 rounded-lg font-semibold hover:bg-gray-800">
@@ -874,118 +467,45 @@
     </div>
   </section>
 
-  <!-- CTA -->
   <section class="no-print bg-gray-900 text-white rounded-2xl p-8 mt-8 text-center">
     <h3 class="text-2xl font-bold mb-3">Need an Official Quotation?</h3>
     <p class="text-gray-300 max-w-2xl mx-auto mb-6">
-      Let Teraju Ciptabina inspect your property
-      and prepare a detailed quotation based on
-      the actual site condition and requirements.
+      Let Teraju Ciptabina inspect your property and prepare a detailed quotation based on the actual site condition and requirements.
     </p>
-    <a href="../index.html#contact"
-      class="inline-block bg-white text-black px-6 py-3 rounded-lg font-semibold hover:bg-gray-200">
+    <a href="../index.html#contact" class="inline-block bg-white text-black px-6 py-3 rounded-lg font-semibold hover:bg-gray-200">
       Request Site Visit
     </a>
   </section>
-
 </main>
 
 <script>
-
-/* ============================================================
-   TERAJU CIPTABINA RENOVATION PLANNER
-   ============================================================ */
-
 const RATES = {
-  ceiling: 12,
-  spc: 14,
-  floorTile: 22,
-  wallTile: 22,
-  facadeWall: 60,
-  downlight: 200,
-  wallLight: 250,
-  ceilingFan: 550,
-  exhaustFan: 200,
-  curtainBoxLED: 300,
-  barLamp: 500,
-  diningLamp: 600,
-  kitchenFrame: 1200,
-  kitchenMakingGood: 1000,
-  kitchenGlassDoor: 1200,
-  bathroomSanitary: 3000,
-  bathroomDoor: 1200,
-  gateMotor: 6400,
-  brickwallDivider: 2800,
-  frontFence: 5500,
-  preliminaries: 8500,
-  extensionKitchen: 250,
-  extensionToilet: 584
+  ceiling: 12, spc: 14, floorTile: 22, wallTile: 22, facadeWall: 60,
+  downlight: 200, wallLight: 250, ceilingFan: 550, exhaustFan: 200,
+  curtainBoxLED: 300, barLamp: 500, diningLamp: 600,
+  kitchenFrame: 1200, kitchenMakingGood: 1000, kitchenGlassDoor: 1200,
+  bathroomSanitary: 3000, bathroomDoor: 1200,
+  gateMotor: 6400, brickwallDivider: 2800, frontFence: 5500,
+  preliminaries: 8500, extensionKitchen: 250, extensionToilet: 584
 };
 
-const RULES = {
-  downlightPerSqft: 50,
-  minimumDownlights: 4
-};
+const RULES = { downlightPerSqft: 50, minimumDownlights: 4 };
 
 const ROOM_TYPES = {
-  living: "Living / Dining",
-  bedroom: "Bedroom",
-  dryKitchen: "Dry Kitchen",
-  wetKitchen: "Wet Kitchen",
-  bathroom: "Bathroom",
-  carPorch: "Car Porch",
-  balcony: "Balcony",
-  extensionKitchen: "New Extension – Kitchen",
+  living: "Living / Dining", bedroom: "Bedroom", dryKitchen: "Dry Kitchen",
+  wetKitchen: "Wet Kitchen", bathroom: "Bathroom", carPorch: "Car Porch",
+  balcony: "Balcony", extensionKitchen: "New Extension – Kitchen",
   extensionToilet: "New Extension – Toilet"
 };
 
 const OPTIONAL_SCOPES = [
-  {
-    key: "demolition",
-    label: "Demolition works based on designer proposal, including careful removal, disposal, and site clearing, completed in a safe and professional manner",
-    unit: "ls",
-    rate: null,
-    custom: true
-  },
-  {
-    key: "painting",
-    label: "Supply labour, materials, tools, and equipment to carry out internal and external painting works, including surface preparation, minor repairs, sealer where required, two coats of premium quality paint, cleaning and touch-up upon completion",
-    unit: "ls",
-    rate: null,
-    custom: true
-  },
-  {
-    key: "glassDoor",
-    label: "To supply and install additional swing glass door",
-    unit: "unit",
-    rate: RATES.kitchenGlassDoor
-  },
-  {
-    key: "brickwallDivider",
-    label: "To build additional side brickwall divider c/w plaster and paint",
-    unit: "ls",
-    rate: RATES.brickwallDivider
-  },
-  {
-    key: "frontFence",
-    label: "To build additional front fence brickwall based on designer proposal",
-    unit: "ls",
-    rate: RATES.frontFence
-  },
-  {
-    key: "windows",
-    label: "To supply and install additional windows",
-    unit: "unit",
-    rate: null,
-    custom: true
-  },
-  {
-    key: "electrical",
-    label: "Additional electrical and wiring works based on confirmed site requirements",
-    unit: "ls",
-    rate: null,
-    custom: true
-  }
+  { key: "demolition", label: "Demolition works based on designer proposal, including careful removal, disposal, and site clearing, completed in a safe and professional manner", unit: "ls", rate: null, custom: true },
+  { key: "painting", label: "Supply labour, materials, tools, and equipment to carry out internal and external painting works, including surface preparation, minor repairs, sealer where required, two coats of premium quality paint, cleaning and touch-up upon completion", unit: "ls", rate: null, custom: true },
+  { key: "glassDoor", label: "To supply and install additional swing glass door", unit: "unit", rate: RATES.kitchenGlassDoor },
+  { key: "brickwallDivider", label: "To build additional side brickwall divider c/w plaster and paint", unit: "ls", rate: RATES.brickwallDivider },
+  { key: "frontFence", label: "To build additional front fence brickwall based on designer proposal", unit: "ls", rate: RATES.frontFence },
+  { key: "windows", label: "To supply and install additional windows", unit: "unit", rate: null, custom: true },
+  { key: "electrical", label: "Additional electrical and wiring works based on confirmed site requirements", unit: "ls", rate: null, custom: true }
 ];
 
 let roomCounter = 0;
@@ -997,23 +517,16 @@ const customRoomLabels = new Map();
 
 function generateEstimateNumber() {
   let number = localStorage.getItem("terajuEstimateNumber");
-  if (!number) {
-    number = 1;
-  } else {
-    number = parseInt(number, 10) + 1;
-  }
+  number = number ? parseInt(number, 10) + 1 : 1;
   localStorage.setItem("terajuEstimateNumber", number);
   return "EST-" + String(number).padStart(4, "0");
 }
-
 document.getElementById("estimateNumber").textContent = generateEstimateNumber();
 
 function money(value, decimals = 0) {
   return new Intl.NumberFormat("en-MY", {
-    style: "currency",
-    currency: "MYR",
-    minimumFractionDigits: decimals,
-    maximumFractionDigits: decimals
+    style: "currency", currency: "MYR",
+    minimumFractionDigits: decimals, maximumFractionDigits: decimals
   }).format(Number(value) || 0);
 }
 
@@ -1024,21 +537,15 @@ function calculateDownlights(area) {
 
 function escapeHtml(value) {
   return String(value ?? "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;").replace(/'/g, "&#039;");
 }
 
-function formatQty(value) {
-  return Math.round(Number(value) || 0);
-}
+function formatQty(value) { return Math.round(Number(value) || 0); }
 
 function roomOptions() {
   return Object.entries(ROOM_TYPES)
-    .map(([key, name]) => `<option value="${key}">${escapeHtml(name)}</option>`)
-    .join("");
+    .map(([key, name]) => `<option value="${key}">${escapeHtml(name)}</option>`).join("");
 }
 
 function optionalScopeHtml() {
@@ -1056,12 +563,9 @@ function optionalScopeHtml() {
           </div>
           ${fixed
             ? `<div class="text-sm font-semibold whitespace-nowrap flex-shrink-0">${money(scope.rate)}</div>`
-            : `<input type="number" min="0" step="1" value="" placeholder="Rate"
-                class="optional-rate w-28 border rounded-lg px-3 py-2 text-sm flex-shrink-0">`
-          }
+            : `<input type="number" min="0" step="1" value="" placeholder="Rate" class="optional-rate w-28 border rounded-lg px-3 py-2 text-sm flex-shrink-0">`}
         </div>
-      </div>
-    `;
+      </div>`;
   }).join("");
 }
 
@@ -1077,33 +581,24 @@ function addRoom(defaultType = "living", defaultArea = "") {
     <div class="grid md:grid-cols-[1fr_1fr_1fr_auto] gap-4 items-end">
       <div>
         <label class="block text-sm font-medium mb-2">Room / Area Name</label>
-        <input type="text"
-          value="${escapeHtml(customRoomLabels.get(id) || ROOM_TYPES[defaultType] || "Area")}"
-          placeholder="e.g. Living Area"
-          class="room-name w-full border rounded-lg px-4 py-3 bg-white">
+        <input type="text" value="${escapeHtml(customRoomLabels.get(id) || ROOM_TYPES[defaultType] || "Area")}"
+          placeholder="e.g. Living Area" class="room-name w-full border rounded-lg px-4 py-3 bg-white">
       </div>
       <div>
         <label class="block text-sm font-medium mb-2">Room Type</label>
-        <select class="room-type w-full border rounded-lg px-4 py-3 bg-white">
-          ${roomOptions()}
-        </select>
+        <select class="room-type w-full border rounded-lg px-4 py-3 bg-white">${roomOptions()}</select>
       </div>
       <div>
         <label class="block text-sm font-medium mb-2">Area (sqft)</label>
         <input type="number" min="1" step="1" value="${escapeHtml(defaultArea)}"
-          placeholder="e.g. 200"
-          class="room-area w-full border rounded-lg px-4 py-3 bg-white">
+          placeholder="e.g. 200" class="room-area w-full border rounded-lg px-4 py-3 bg-white">
       </div>
       <div class="no-print flex gap-2">
-        <button type="button" onclick="moveRoom('${id}', -1)" title="Move up"
-          class="border rounded-lg px-3 py-3 hover:bg-gray-100">▲</button>
-        <button type="button" onclick="moveRoom('${id}', 1)" title="Move down"
-          class="border rounded-lg px-3 py-3 hover:bg-gray-100">▼</button>
-        <button type="button" onclick="removeRoom('${id}')"
-          class="border border-red-300 text-red-600 rounded-lg px-4 py-3 hover:bg-red-50">Remove</button>
+        <button type="button" onclick="moveRoom('${id}', -1)" title="Move up" class="border rounded-lg px-3 py-3 hover:bg-gray-100">▲</button>
+        <button type="button" onclick="moveRoom('${id}', 1)" title="Move down" class="border rounded-lg px-3 py-3 hover:bg-gray-100">▼</button>
+        <button type="button" onclick="removeRoom('${id}')" class="border border-red-300 text-red-600 rounded-lg px-4 py-3 hover:bg-red-50">Remove</button>
       </div>
     </div>
-
     <div class="mt-4 border-t pt-4">
       <button type="button" class="optional-toggle w-full flex items-center justify-between text-left py-1 no-print"
         onclick="toggleOptionalWorks('${id}')" aria-expanded="false">
@@ -1114,31 +609,23 @@ function addRoom(defaultType = "living", defaultArea = "") {
         <span id="${id}-optional-arrow" class="text-gray-500 text-sm ml-4 flex-shrink-0">▼</span>
       </button>
       <div id="${id}-optional" class="hidden mt-3">
-        <div class="grid md:grid-cols-2 gap-3 optional-scopes">
-          ${optionalScopeHtml()}
-        </div>
+        <div class="grid md:grid-cols-2 gap-3 optional-scopes">${optionalScopeHtml()}</div>
       </div>
-    </div>
-  `;
+    </div>`;
 
   container.appendChild(div);
   div.querySelector(".room-type").value = defaultType;
 
-  div.querySelector(".room-name").addEventListener("change", event => {
-    editRoomLabel(id, event.target.value);
-  });
-
+  div.querySelector(".room-name").addEventListener("change", e => editRoomLabel(id, e.target.value));
   div.querySelector(".room-type").addEventListener("change", () => {
     if (!customRoomLabels.has(id)) {
       div.querySelector(".room-name").value = ROOM_TYPES[div.querySelector(".room-type").value] || "Area";
     }
     updateEstimate();
   });
-
   div.querySelector(".room-area").addEventListener("input", updateEstimate);
   div.querySelectorAll(".optional-check").forEach(el => el.addEventListener("change", updateEstimate));
   div.querySelectorAll(".optional-rate").forEach(el => el.addEventListener("input", updateEstimate));
-
   updateEstimate();
 }
 
@@ -1152,10 +639,9 @@ function moveRoom(id, direction) {
   const room = document.getElementById(id);
   const container = document.getElementById("roomsContainer");
   if (!room || !container) return;
-
   if (direction < 0) {
-    const previous = room.previousElementSibling;
-    if (previous) container.insertBefore(room, previous);
+    const prev = room.previousElementSibling;
+    if (prev) container.insertBefore(room, prev);
   } else {
     const next = room.nextElementSibling;
     if (next) container.insertBefore(next, room);
@@ -1167,36 +653,23 @@ function toggleOptionalWorks(roomId) {
   const panel = document.getElementById(`${roomId}-optional`);
   const arrow = document.getElementById(`${roomId}-optional-arrow`);
   if (!panel || !arrow) return;
-
   panel.classList.toggle("hidden");
   const expanded = !panel.classList.contains("hidden");
   arrow.textContent = expanded ? "▲" : "▼";
-
-  const toggle = document.querySelector(`.optional-toggle[onclick="toggleOptionalWorks('${roomId}')"]`);
-  toggle?.setAttribute("aria-expanded", String(expanded));
+  document.querySelector(`.optional-toggle[onclick="toggleOptionalWorks('${roomId}')"]`)
+    ?.setAttribute("aria-expanded", String(expanded));
 }
 
 function toggleProjectInfo() {
   const info = document.getElementById("projectInfo");
   const arrow = document.getElementById("projectArrow");
   if (!info) return;
-
   info.classList.toggle("hidden");
-  const isHidden = info.classList.contains("hidden");
-  if (arrow) arrow.textContent = isHidden ? "▼" : "▲";
+  if (arrow) arrow.textContent = info.classList.contains("hidden") ? "▼" : "▲";
 }
 
 function pushItem(items, roomId, roomLabel, key, description, qty, unit, rate, optional = false) {
-  items.push({
-    id: `${roomId}-${key}`,
-    roomId,
-    room: roomLabel,
-    description,
-    qty: Number(qty) || 0,
-    unit,
-    rate: Number(rate) || 0,
-    optional
-  });
+  items.push({ id: `${roomId}-${key}`, roomId, room: roomLabel, description, qty: Number(qty) || 0, unit, rate: Number(rate) || 0, optional });
 }
 
 function generateStandardRoomItems(roomType, area, roomId, roomLabel) {
@@ -1210,7 +683,6 @@ function generateStandardRoomItems(roomType, area, roomId, roomLabel) {
     pushItem(items, roomId, roomLabel, "fan", "To supply and install 1 unit ceiling fan c/w wiring", 1, "unit", RATES.ceilingFan);
     pushItem(items, roomId, roomLabel, "curtain", "To supply and install led light for curtain box 1 set c/w wiring", 1, "ls", RATES.curtainBoxLED);
   }
-
   if (roomType === "dryKitchen") {
     pushItem(items, roomId, roomLabel, "ceiling", "To supply and install plaster ceiling flat c/w paint", area, "sqft", RATES.ceiling);
     pushItem(items, roomId, roomLabel, "spc", "To supply and install spc flooring c/w skirting and floor mat", area, "sqft", RATES.spc);
@@ -1221,7 +693,6 @@ function generateStandardRoomItems(roomType, area, roomId, roomLabel) {
     pushItem(items, roomId, roomLabel, "makinggood", "To making good wall after demolish existing toilet", 1, "ls", RATES.kitchenMakingGood);
     pushItem(items, roomId, roomLabel, "glassdoor", "To supply and install swing glass door", 1, "ls", RATES.kitchenGlassDoor);
   }
-
   if (roomType === "wetKitchen") {
     pushItem(items, roomId, roomLabel, "floor", "To supply and install floor tiles c/w water proofing", area, "sqft", RATES.floorTile);
     pushItem(items, roomId, roomLabel, "walltile", "To supply and install wall tiles", area * 2, "sqft", RATES.wallTile);
@@ -1230,7 +701,6 @@ function generateStandardRoomItems(roomType, area, roomId, roomLabel) {
     pushItem(items, roomId, roomLabel, "fan", "To supply and install 1 unit ceiling fan c/w wiring", 1, "unit", RATES.ceilingFan);
     pushItem(items, roomId, roomLabel, "lamp", "To supply and install kitchen lighting c/w wiring", 1, "ls", RATES.barLamp);
   }
-
   if (roomType === "bathroom") {
     pushItem(items, roomId, roomLabel, "floor", "To supply and install floor tiles c/w water proofing", area, "sqft", RATES.floorTile);
     pushItem(items, roomId, roomLabel, "walltile", "Wall tiles", area * 6, "sqft", RATES.wallTile);
@@ -1240,7 +710,6 @@ function generateStandardRoomItems(roomType, area, roomId, roomLabel) {
     pushItem(items, roomId, roomLabel, "downlight", `To supply and install ${calculateDownlights(area)} unit downlight c/w wiring`, calculateDownlights(area), "unit", RATES.downlight);
     pushItem(items, roomId, roomLabel, "exhaust", `To supply and install ${Math.max(1, Math.ceil(area / 50))} unit exhaust fan c/w wiring`, Math.max(1, Math.ceil(area / 50)), "unit", RATES.exhaustFan);
   }
-
   if (roomType === "carPorch") {
     pushItem(items, roomId, roomLabel, "floor", "To supply and install floor tiles", area, "sqft", RATES.floorTile);
     pushItem(items, roomId, roomLabel, "ceiling", "To supply and install plaster ceiling flat c/w paint", area, "sqft", RATES.ceiling);
@@ -1249,48 +718,38 @@ function generateStandardRoomItems(roomType, area, roomId, roomLabel) {
     pushItem(items, roomId, roomLabel, "divider", "To build 1 side brickwall divider c/w plaster and paint", 1, "ls", RATES.brickwallDivider);
     pushItem(items, roomId, roomLabel, "fence", "To build new front fence brickwall based on designer proposal", 1, "ls", RATES.frontFence);
   }
-
   if (roomType === "balcony") {
     pushItem(items, roomId, roomLabel, "floor", "To supply and install floor tiles c/w water proofing", area, "sqft", RATES.floorTile);
     pushItem(items, roomId, roomLabel, "facade", "Facade wall", area * 1.33, "sqft", RATES.facadeWall);
     pushItem(items, roomId, roomLabel, "walllight", `To supply and install ${Math.max(2, Math.ceil(area / 70))} unit wall light c/w wiring`, Math.max(2, Math.ceil(area / 70)), "unit", RATES.wallLight);
   }
-
   if (roomType === "extensionKitchen") {
     pushItem(items, roomId, roomLabel, "extension", `To build concrete foundation for new kitchen, including excavation, reinforcement and concreting works, complete with tiles finishing, safety door, casement window, accessories and concrete roof slab based on designer’s proposal. Total area ${formatQty(area)}sqft`, area, "sqft", RATES.extensionKitchen);
     pushItem(items, roomId, roomLabel, "downlight", `To supply and install ${calculateDownlights(area)} unit downlight c/w wiring`, calculateDownlights(area), "unit", RATES.downlight);
   }
-
   if (roomType === "extensionToilet") {
     pushItem(items, roomId, roomLabel, "extension", `To build concrete foundation for new toilet, including excavation, reinforcement and concreting works, complete with tiles finishing, safety door, casement window, toilet accessories and concrete roof slab based on designer’s proposal. Total area ${formatQty(area)}sqft`, area, "sqft", RATES.extensionToilet);
     pushItem(items, roomId, roomLabel, "downlight", `To supply and install ${calculateDownlights(area)} unit downlight c/w wiring`, calculateDownlights(area), "unit", RATES.downlight);
     pushItem(items, roomId, roomLabel, "exhaust", `To supply and install ${Math.max(1, Math.ceil(area / 50))} unit exhaust fan c/w wiring`, Math.max(1, Math.ceil(area / 50)), "unit", RATES.exhaustFan);
   }
-
   return items;
 }
 
 function generateOptionalRoomItems(room, roomLabel) {
   const items = [];
-  const roomId = room.id;
-
   room.querySelectorAll(".optional-scope").forEach(scopeEl => {
     const checkbox = scopeEl.querySelector(".optional-check");
     if (!checkbox?.checked) return;
-
     const key = scopeEl.dataset.scope;
     const definition = OPTIONAL_SCOPES.find(s => s.key === key);
     if (!definition) return;
-
     let rate = definition.rate;
     if (definition.custom) {
       rate = parseFloat(scopeEl.querySelector(".optional-rate")?.value) || 0;
       if (rate <= 0) return;
     }
-
-    pushItem(items, roomId, roomLabel, `optional-${key}`, definition.label, 1, definition.unit, rate, true);
+    pushItem(items, room.id, roomLabel, `optional-${key}`, definition.label, 1, definition.unit, rate, true);
   });
-
   return items;
 }
 
@@ -1298,30 +757,24 @@ function getAllItems() {
   const rooms = [...document.querySelectorAll("#roomsContainer .room-card")];
   const typeIndexes = {};
   const allItems = [];
-
   rooms.forEach(room => {
     const roomId = room.id;
     const roomType = room.querySelector(".room-type")?.value || "living";
     const area = parseFloat(room.querySelector(".room-area")?.value) || 0;
-
     typeIndexes[roomType] = (typeIndexes[roomType] || 0) + 1;
     const base = ROOM_TYPES[roomType] || "Area";
     const autoLabel = typeIndexes[roomType] > 1 ? `${base} ${typeIndexes[roomType]}` : base;
     const roomLabel = customRoomLabels.has(roomId) ? customRoomLabels.get(roomId) : autoLabel;
-
     const standard = generateStandardRoomItems(roomType, area, roomId, roomLabel);
     const optional = generateOptionalRoomItems(room, roomLabel);
-
     [...standard, ...optional].forEach(item => {
       if (customRates.has(item.id)) item.rate = customRates.get(item.id);
       if (customQuantities.has(item.id)) item.qty = customQuantities.get(item.id);
       if (customDescriptions.has(item.id)) item.description = customDescriptions.get(item.id);
       item.amount = item.qty * item.rate;
     });
-
     allItems.push(...standard, ...optional);
   });
-
   return allItems;
 }
 
@@ -1329,49 +782,32 @@ function getRoomGroups() {
   const rooms = [...document.querySelectorAll("#roomsContainer .room-card")];
   const typeIndexes = {};
   const groups = [];
-
   rooms.forEach(room => {
     const roomId = room.id;
     const roomType = room.querySelector(".room-type")?.value || "living";
     const area = parseFloat(room.querySelector(".room-area")?.value) || 0;
-
     typeIndexes[roomType] = (typeIndexes[roomType] || 0) + 1;
     const base = ROOM_TYPES[roomType] || "Area";
     const autoLabel = typeIndexes[roomType] > 1 ? `${base} ${typeIndexes[roomType]}` : base;
     const label = customRoomLabels.has(roomId) ? customRoomLabels.get(roomId) : autoLabel;
-
     groups.push({ roomId, roomType, label, area });
   });
-
   return groups;
 }
 
 function updateEstimate() {
   const allItems = getAllItems();
   const roomGroups = getRoomGroups();
-
-  allItems.forEach(item => {
-    item.amount = item.qty * item.rate;
-  });
-
+  allItems.forEach(item => item.amount = item.qty * item.rate);
   const activeItems = allItems.filter(item => !excludedItems.has(item.id));
   const hasAnyArea = roomGroups.some(room => room.area > 0);
-
   const projectPreliminaries = hasAnyArea && !excludedItems.has("project-preliminaries")
-    ? (customRates.has("project-preliminaries") ? customRates.get("project-preliminaries") : RATES.preliminaries)
-    : 0;
-
+    ? (customRates.has("project-preliminaries") ? customRates.get("project-preliminaries") : RATES.preliminaries) : 0;
   const roomSubtotals = {};
-  roomGroups.forEach(room => { roomSubtotals[room.roomId] = 0; });
-
-  activeItems.forEach(item => {
-    roomSubtotals[item.roomId] = (roomSubtotals[item.roomId] || 0) + item.amount;
-  });
-
-  const roomTotal = Object.values(roomSubtotals).reduce((sum, value) => sum + value, 0);
-  const total = projectPreliminaries + roomTotal;
-
-  renderEstimate(activeItems, roomGroups, roomSubtotals, projectPreliminaries, total);
+  roomGroups.forEach(room => roomSubtotals[room.roomId] = 0);
+  activeItems.forEach(item => roomSubtotals[item.roomId] = (roomSubtotals[item.roomId] || 0) + item.amount);
+  const roomTotal = Object.values(roomSubtotals).reduce((s, v) => s + v, 0);
+  renderEstimate(activeItems, roomGroups, roomSubtotals, projectPreliminaries, projectPreliminaries + roomTotal);
 }
 
 function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, total) {
@@ -1380,19 +816,9 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
   const location = document.getElementById("projectLocation")?.value || "Not specified";
 
   document.getElementById("customerSummary").innerHTML = `
-    <div>
-      <p class="text-gray-500">Customer</p>
-      <p class="font-medium">${escapeHtml(customer)}</p>
-    </div>
-    <div>
-      <p class="text-gray-500">Location</p>
-      <p class="font-medium">${escapeHtml(location)}</p>
-    </div>
-    <div>
-      <p class="text-gray-500">Estimate Type</p>
-      <p class="font-medium">Preliminary Renovation Estimate</p>
-    </div>
-  `;
+    <div><p class="text-gray-500">Customer</p><p class="font-medium">${escapeHtml(customer)}</p></div>
+    <div><p class="text-gray-500">Location</p><p class="font-medium">${escapeHtml(location)}</p></div>
+    <div><p class="text-gray-500">Estimate Type</p><p class="font-medium">Preliminary Renovation Estimate</p></div>`;
 
   const itemsByRoom = {};
   items.forEach(item => {
@@ -1413,29 +839,20 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
             <th class="no-print py-3 px-2 text-center">Action</th>
           </tr>
         </thead>
-        <tbody>
-  `;
+        <tbody>`;
 
   if (projectPreliminaries > 0) {
-    const prelimRate = customRates.has("project-preliminaries")
-      ? customRates.get("project-preliminaries")
-      : RATES.preliminaries;
-
+    const prelimRate = customRates.has("project-preliminaries") ? customRates.get("project-preliminaries") : RATES.preliminaries;
     html += `
-      <tr class="bg-gray-100 border-b">
-        <td colspan="6" class="py-3 px-2 font-bold">Project / Preliminaries</td>
-      </tr>
+      <tr class="bg-gray-100 border-b"><td colspan="6" class="py-3 px-2 font-bold">Project / Preliminaries</td></tr>
       <tr class="border-b">
-        <td class="py-3 px-2">
-          Submission of Renovation Permit Application and Engineer's Drawings to the Local Authority
-        </td>
+        <td class="py-3 px-2">Submission of Renovation Permit Application and Engineer's Drawings to the Local Authority</td>
         <td class="py-3 px-2">ls</td>
         <td class="py-3 px-2 text-right">1</td>
         <td class="py-3 px-2 text-right">
           <input type="number" min="0" step="0.01" value="${Number(prelimRate).toFixed(2)}"
             onchange="editItemRate('project-preliminaries', this.value)"
-            class="no-print w-32 border rounded-lg px-2 py-1.5 text-right bg-white"
-            aria-label="Project / Preliminaries rate">
+            class="no-print w-32 border rounded-lg px-2 py-1.5 text-right bg-white">
           <span class="hidden print:inline">${money(prelimRate, 2)}</span>
         </td>
         <td class="py-3 px-2 text-right font-medium">${money(prelimRate)}</td>
@@ -1443,32 +860,26 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
           <button type="button" onclick="excludeItem('project-preliminaries')"
             class="text-red-600 text-xs border border-red-200 rounded px-3 py-1.5 hover:bg-red-50">Delete</button>
         </td>
-      </tr>
-    `;
+      </tr>`;
   }
 
   roomGroups.forEach(room => {
     const roomItems = itemsByRoom[room.roomId] || [];
     if (room.area <= 0) return;
-
     html += `
       <tr class="bg-gray-100 border-b">
         <td colspan="6" class="py-3 px-2">
           <div class="flex flex-wrap items-center gap-3">
             <label class="text-xs font-semibold uppercase tracking-wide text-gray-500">Room / Area Name</label>
-            <input type="text" value="${escapeHtml(room.label)}"
-              onchange="editRoomLabel('${room.roomId}', this.value)"
+            <input type="text" value="${escapeHtml(room.label)}" onchange="editRoomLabel('${room.roomId}', this.value)"
               class="no-print flex-1 min-w-[220px] border rounded-lg px-3 py-2 bg-white font-semibold">
             <span class="font-normal text-gray-500">${formatQty(room.area)} sqft</span>
           </div>
           <div class="hidden print:block font-bold">
-            ${escapeHtml(room.label)}
-            <span class="font-normal text-gray-500">(${formatQty(room.area)} sqft)</span>
+            ${escapeHtml(room.label)} <span class="font-normal text-gray-500">(${formatQty(room.area)} sqft)</span>
           </div>
         </td>
-      </tr>
-    `;
-
+      </tr>`;
     roomItems.forEach(item => {
       html += `
         <tr class="border-b hover:bg-gray-50">
@@ -1479,14 +890,12 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
           </td>
           <td class="py-3 px-2">${escapeHtml(item.unit)}</td>
           <td class="py-3 px-2 text-right">
-            <input type="number" min="0" step="1" value="${formatQty(item.qty)}"
-              onchange="editItemQuantity('${item.id}', this.value)"
+            <input type="number" min="0" step="1" value="${formatQty(item.qty)}" onchange="editItemQuantity('${item.id}', this.value)"
               class="no-print w-24 border rounded-lg px-2 py-1.5 text-right bg-white">
             <span class="hidden print:inline">${formatQty(item.qty)}</span>
           </td>
           <td class="py-3 px-2 text-right">
-            <input type="number" min="0" step="0.01" value="${Number(item.rate).toFixed(2)}"
-              onchange="editItemRate('${item.id}', this.value)"
+            <input type="number" min="0" step="0.01" value="${Number(item.rate).toFixed(2)}" onchange="editItemRate('${item.id}', this.value)"
               class="no-print w-28 border rounded-lg px-2 py-1.5 text-right bg-white">
             <span class="hidden print:inline">${money(item.rate, 2)}</span>
           </td>
@@ -1495,21 +904,17 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
             <button type="button" onclick="excludeItem('${item.id}')"
               class="text-red-600 text-xs border border-red-200 rounded px-3 py-1.5 hover:bg-red-50">Delete</button>
           </td>
-        </tr>
-      `;
+        </tr>`;
     });
-
     html += `
       <tr class="border-b">
         <td colspan="4" class="py-3 px-2 text-right font-semibold">${escapeHtml(room.label)} Subtotal</td>
         <td class="py-3 px-2 text-right font-bold">${money(roomSubtotals[room.roomId] || 0, 2)}</td>
         <td class="no-print"></td>
-      </tr>
-    `;
+      </tr>`;
   });
 
-  const roomTotal = Object.values(roomSubtotals).reduce((sum, value) => sum + value, 0);
-
+  const roomTotal = Object.values(roomSubtotals).reduce((s, v) => s + v, 0);
   html += `
         </tbody>
         <tfoot>
@@ -1520,80 +925,45 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
           </tr>
         </tfoot>
       </table>
-    </div>
-  `;
-
+    </div>`;
   container.innerHTML = html;
   document.getElementById("grandTotal").textContent = money(total, 2);
 }
 
 function editRoomLabel(roomId, value) {
   const label = String(value || "").trim();
-  if (!label) {
-    window.alert("Please enter a room / area name.");
-    updateEstimate();
-    return;
-  }
+  if (!label) { alert("Please enter a room / area name."); updateEstimate(); return; }
   customRoomLabels.set(roomId, label);
   updateEstimate();
 }
-
 function editItemDescription(itemId, value) {
   const description = String(value || "").trim();
-  if (!description) {
-    window.alert("Please enter a description.");
-    updateEstimate();
-    return;
-  }
+  if (!description) { alert("Please enter a description."); updateEstimate(); return; }
   customDescriptions.set(itemId, description);
   updateEstimate();
 }
-
 function editItemQuantity(itemId, value) {
   const qty = parseFloat(value);
-  if (!Number.isFinite(qty) || qty < 0) {
-    window.alert("Please enter a valid quantity.");
-    updateEstimate();
-    return;
-  }
+  if (!Number.isFinite(qty) || qty < 0) { alert("Please enter a valid quantity."); updateEstimate(); return; }
   customQuantities.set(itemId, qty);
   updateEstimate();
 }
-
 function editItemRate(itemId, value) {
   const rate = parseFloat(value);
-  if (!Number.isFinite(rate) || rate < 0) {
-    window.alert("Please enter a valid rate.");
-    updateEstimate();
-    return;
-  }
+  if (!Number.isFinite(rate) || rate < 0) { alert("Please enter a valid rate."); updateEstimate(); return; }
   customRates.set(itemId, rate);
   updateEstimate();
 }
-
-function excludeItem(itemId) {
-  excludedItems.add(itemId);
-  updateEstimate();
-}
-
-function restoreAllItems() {
-  excludedItems.clear();
-  updateEstimate();
-}
+function excludeItem(itemId) { excludedItems.add(itemId); updateEstimate(); }
+function restoreAllItems() { excludedItems.clear(); updateEstimate(); }
 
 let quotationNumber = null;
-
 function generateQuotationNumber() {
   let number = localStorage.getItem("terajuQuotationNumber");
-  if (!number) {
-    number = 1;
-  } else {
-    number = parseInt(number, 10) + 1;
-  }
+  number = number ? parseInt(number, 10) + 1 : 1;
   localStorage.setItem("terajuQuotationNumber", number);
   return "QO" + String(number).padStart(3, "0");
 }
-
 function getSelectedQuotationType() {
   return document.querySelector('input[name="quotationType"]:checked')?.value || "simple";
 }
@@ -1602,37 +972,17 @@ function getCurrentQuotationData() {
   const allItems = getAllItems().filter(item => !excludedItems.has(item.id));
   const roomGroups = getRoomGroups();
   const hasAnyArea = roomGroups.some(room => room.area > 0);
-
-  const prelimRate = customRates.has("project-preliminaries")
-    ? customRates.get("project-preliminaries")
-    : RATES.preliminaries;
-
+  const prelimRate = customRates.has("project-preliminaries") ? customRates.get("project-preliminaries") : RATES.preliminaries;
   const projectPreliminaries = hasAnyArea && !excludedItems.has("project-preliminaries") ? prelimRate : 0;
-
-  const itemsByRoom = {};
-  const roomSubtotals = {};
-
-  roomGroups.forEach(room => {
-    itemsByRoom[room.roomId] = [];
-    roomSubtotals[room.roomId] = 0;
-  });
-
+  const itemsByRoom = {}, roomSubtotals = {};
+  roomGroups.forEach(room => { itemsByRoom[room.roomId] = []; roomSubtotals[room.roomId] = 0; });
   allItems.forEach(item => {
     if (!itemsByRoom[item.roomId]) itemsByRoom[item.roomId] = [];
     itemsByRoom[item.roomId].push(item);
     roomSubtotals[item.roomId] = (roomSubtotals[item.roomId] || 0) + item.amount;
   });
-
-  const roomTotal = Object.values(roomSubtotals).reduce((sum, value) => sum + value, 0);
-
-  return {
-    allItems,
-    roomGroups,
-    itemsByRoom,
-    roomSubtotals,
-    projectPreliminaries,
-    total: projectPreliminaries + roomTotal
-  };
+  const roomTotal = Object.values(roomSubtotals).reduce((s, v) => s + v, 0);
+  return { allItems, roomGroups, itemsByRoom, roomSubtotals, projectPreliminaries, total: projectPreliminaries + roomTotal };
 }
 
 function quotationDescriptionList(items) {
@@ -1641,12 +991,11 @@ function quotationDescriptionList(items) {
 }
 
 /* ============================================================
-   A4 PAGINATION — SCREEN PREVIEW ONLY
+   A4 PAGINATION — SAME FOR SCREEN AND PRINT
    ============================================================ */
 function paginateQuotationA4() {
   const content = document.getElementById("quotationContent");
   const documentEl = document.getElementById("quotationDocument");
-
   if (!content || !documentEl) return;
 
   const originalChildren = Array.from(content.children);
@@ -1666,9 +1015,6 @@ function paginateQuotationA4() {
   const thead = table.querySelector("thead");
   const tfoot = table.querySelector("tfoot");
 
-  // Store continuous version for printing
-  content.dataset.originalHtml = content.innerHTML;
-
   content.classList.add("a4-paginated");
   documentEl.classList.add("a4-preview-document");
   content.innerHTML = "";
@@ -1681,18 +1027,14 @@ function paginateQuotationA4() {
     const body = document.createElement("div");
     body.className = "quotation-page-body";
     page.appendChild(body);
-
     if (isFirst) {
-      [headerBlock, customerBlock, introBlock].forEach(el => {
-        if (el) body.appendChild(el.cloneNode(true));
-      });
+      [headerBlock, customerBlock, introBlock].forEach(el => { if (el) body.appendChild(el.cloneNode(true)); });
     } else {
-      const continuation = document.createElement("div");
-      continuation.className = "quotation-page-continuation";
-      continuation.textContent = `Quotation ${quotationNumber || ""} — Continued`;
-      body.appendChild(continuation);
+      const cont = document.createElement("div");
+      cont.className = "quotation-page-continuation";
+      cont.textContent = `Quotation ${quotationNumber || ""} — Continued`;
+      body.appendChild(cont);
     }
-
     content.appendChild(page);
     pages.push(page);
     return page;
@@ -1703,13 +1045,9 @@ function paginateQuotationA4() {
     wrap.className = tableWrap.className || "overflow-x-auto";
     wrap.style.overflow = "visible";
     wrap.style.width = "100%";
-
     const newTable = table.cloneNode(false);
-    if (table.querySelector("colgroup")) {
-      newTable.appendChild(table.querySelector("colgroup").cloneNode(true));
-    }
+    if (table.querySelector("colgroup")) newTable.appendChild(table.querySelector("colgroup").cloneNode(true));
     if (thead) newTable.appendChild(thead.cloneNode(true));
-
     const tbody = document.createElement("tbody");
     newTable.appendChild(tbody);
     wrap.appendChild(newTable);
@@ -1723,9 +1061,9 @@ function paginateQuotationA4() {
   rows.forEach(row => {
     const clone = row.cloneNode(true);
     shell.tbody.appendChild(clone);
-
     const body = page.querySelector(".quotation-page-body");
-    if (body.scrollHeight > body.clientHeight && shell.tbody.children.length > 1) {
+    // Slightly more aggressive packing (0.98) to reduce empty space
+    if (body.scrollHeight > body.clientHeight * 0.98 && shell.tbody.children.length > 1) {
       shell.tbody.removeChild(clone);
       page = createPage(false);
       shell = createTableShell();
@@ -1739,8 +1077,7 @@ function paginateQuotationA4() {
     let finalBody = finalPage.querySelector(".quotation-page-body");
     let finalTable = finalBody.querySelector("table");
     finalTable.appendChild(tfoot.cloneNode(true));
-
-    if (finalBody.scrollHeight > finalBody.clientHeight) {
+    if (finalBody.scrollHeight > finalBody.clientHeight * 0.98) {
       finalTable.removeChild(finalTable.querySelector("tfoot"));
       finalPage = createPage(false);
       finalBody = finalPage.querySelector(".quotation-page-body");
@@ -1752,11 +1089,9 @@ function paginateQuotationA4() {
 
   let lastPage = pages[pages.length - 1];
   let lastBody = lastPage.querySelector(".quotation-page-body");
-
   if (termsBlock) lastBody.appendChild(termsBlock.cloneNode(true));
   if (signBlock) lastBody.appendChild(signBlock.cloneNode(true));
-
-  if (lastBody.scrollHeight > lastBody.clientHeight) {
+  if (lastBody.scrollHeight > lastBody.clientHeight * 0.98) {
     if (termsBlock) lastBody.removeChild(lastBody.lastElementChild);
     if (signBlock) lastBody.removeChild(lastBody.lastElementChild);
     lastPage = createPage(false);
@@ -1765,19 +1100,18 @@ function paginateQuotationA4() {
     if (signBlock) lastBody.appendChild(signBlock.cloneNode(true));
   }
 
-  pages.forEach((p, index) => {
+  pages.forEach((p, i) => {
     const marker = document.createElement("div");
     marker.className = "quotation-page-number";
-    marker.textContent = `Page ${index + 1} of ${pages.length}`;
+    marker.textContent = `Page ${i + 1} of ${pages.length}`;
     p.appendChild(marker);
   });
 }
 
 function generateQuotation() {
   const data = getCurrentQuotationData();
-
   if (!data.roomGroups.some(room => room.area > 0)) {
-    window.alert("Please add at least one area with a valid sqft before generating the quotation.");
+    alert("Please add at least one area with a valid sqft before generating the quotation.");
     return;
   }
 
@@ -1785,17 +1119,10 @@ function generateQuotation() {
   const type = getSelectedQuotationType();
   const customer = document.getElementById("customerName")?.value || "Not specified";
   const location = document.getElementById("projectLocation")?.value || "Not specified";
-  const today = new Intl.DateTimeFormat("en-MY", {
-    day: "2-digit",
-    month: "long",
-    year: "numeric"
-  }).format(new Date());
-
+  const today = new Intl.DateTimeFormat("en-MY", { day: "2-digit", month: "long", year: "numeric" }).format(new Date());
   const content = document.getElementById("quotationContent");
-  let body = "";
 
-  // Header
-  body += `
+  let body = `
     <div class="flex justify-between items-start gap-6 border-b pb-5 mb-6">
       <div class="min-w-0">
         <div class="flex items-center gap-4 mb-4">
@@ -1812,7 +1139,6 @@ function generateQuotation() {
         <p class="mt-2"><span class="text-gray-500">Date</span><br><strong>${escapeHtml(today)}</strong></p>
       </div>
     </div>
-
     <div class="grid md:grid-cols-2 gap-6 mb-7 text-sm">
       <div>
         <p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Customer</p>
@@ -1823,22 +1149,13 @@ function generateQuotation() {
         <p class="font-semibold">${escapeHtml(location)}</p>
       </div>
     </div>
-  `;
-
-  // Intro
-  body += `
     <div class="mb-5">
       <p class="text-sm text-gray-600">
-        Renovation works as described below.
-        Final quotation is subject to site inspection,
-        approved drawings, actual site conditions,
-        specifications, material selection and confirmation
-        of final scope of works.
+        Renovation works as described below. Final quotation is subject to site inspection,
+        approved drawings, actual site conditions, specifications, material selection and confirmation of final scope of works.
       </p>
-    </div>
-  `;
+    </div>`;
 
-  // Simple or Detailed
   if (type === "simple") {
     body += `
       <div class="overflow-x-auto">
@@ -1851,11 +1168,8 @@ function generateQuotation() {
               <th class="py-3 px-2 text-right">Amount (RM)</th>
             </tr>
           </thead>
-          <tbody>
-    `;
-
+          <tbody>`;
     let no = 1;
-
     if (data.projectPreliminaries > 0) {
       body += `
         <tr class="border-b align-top">
@@ -1863,25 +1177,18 @@ function generateQuotation() {
           <td class="py-3 px-2 font-semibold">Project</td>
           <td class="py-3 px-2">Submission of Renovation Permit Application and Engineer’s Drawings to the Local Authority</td>
           <td class="py-3 px-2 text-right font-medium">${money(data.projectPreliminaries, 2)}</td>
-        </tr>
-      `;
+        </tr>`;
     }
-
     data.roomGroups.forEach(room => {
       if (room.area <= 0) return;
       body += `
         <tr class="border-b align-top">
           <td class="py-3 px-2">${no++}</td>
-          <td class="py-3 px-2 font-semibold">
-            ${escapeHtml(room.label)}<br>
-            <span class="font-normal text-gray-500">${formatQty(room.area)} sqft</span>
-          </td>
+          <td class="py-3 px-2 font-semibold">${escapeHtml(room.label)}<br><span class="font-normal text-gray-500">${formatQty(room.area)} sqft</span></td>
           <td class="py-3 px-2 leading-6">${quotationDescriptionList(data.itemsByRoom[room.roomId] || [])}</td>
           <td class="py-3 px-2 text-right font-semibold">${money(data.roomSubtotals[room.roomId] || 0, 2)}</td>
-        </tr>
-      `;
+        </tr>`;
     });
-
     body += `
           </tbody>
           <tfoot>
@@ -1891,18 +1198,13 @@ function generateQuotation() {
             </tr>
           </tfoot>
         </table>
-      </div>
-    `;
+      </div>`;
   } else {
     body += `
       <div class="overflow-x-auto">
         <table class="w-full border-collapse text-sm detailed-quotation-table">
           <colgroup>
-            <col style="width:50%">
-            <col style="width:10%">
-            <col style="width:10%">
-            <col style="width:15%">
-            <col style="width:15%">
+            <col style="width:50%"><col style="width:10%"><col style="width:10%"><col style="width:15%"><col style="width:15%">
           </colgroup>
           <thead>
             <tr class="border-b-2 text-left">
@@ -1913,37 +1215,25 @@ function generateQuotation() {
               <th class="py-3 px-2 text-right">Amount (RM)</th>
             </tr>
           </thead>
-          <tbody>
-    `;
-
+          <tbody>`;
     if (data.projectPreliminaries > 0) {
       body += `
-        <tr class="bg-gray-100 border-b">
-          <td colspan="5" class="py-3 px-2 font-bold">Project / Preliminaries</td>
-        </tr>
+        <tr class="bg-gray-100 border-b"><td colspan="5" class="py-3 px-2 font-bold">Project / Preliminaries</td></tr>
         <tr class="border-b align-top">
           <td class="py-3 px-2">Submission of Renovation Permit Application and Engineer's Drawings to the Local Authority</td>
           <td class="py-3 px-2">ls</td>
           <td class="py-3 px-2 text-right">1</td>
           <td class="py-3 px-2 text-right">${money(data.projectPreliminaries, 2)}</td>
           <td class="py-3 px-2 text-right font-semibold">${money(data.projectPreliminaries, 2)}</td>
-        </tr>
-      `;
+        </tr>`;
     }
-
     data.roomGroups.forEach(room => {
       if (room.area <= 0) return;
       const roomItems = data.itemsByRoom[room.roomId] || [];
-
       body += `
         <tr class="bg-gray-100 border-b">
-          <td colspan="5" class="py-3 px-2 font-bold">
-            ${escapeHtml(room.label)}
-            <span class="font-normal text-gray-500">(${formatQty(room.area)} sqft)</span>
-          </td>
-        </tr>
-      `;
-
+          <td colspan="5" class="py-3 px-2 font-bold">${escapeHtml(room.label)} <span class="font-normal text-gray-500">(${formatQty(room.area)} sqft)</span></td>
+        </tr>`;
       roomItems.forEach(item => {
         body += `
           <tr class="border-b align-top">
@@ -1952,18 +1242,14 @@ function generateQuotation() {
             <td class="py-3 px-2 text-right">${formatQty(item.qty)}</td>
             <td class="py-3 px-2 text-right">${money(item.rate, 2)}</td>
             <td class="py-3 px-2 text-right font-medium">${money(item.amount, 2)}</td>
-          </tr>
-        `;
+          </tr>`;
       });
-
       body += `
         <tr class="border-b">
           <td colspan="4" class="py-3 px-2 text-right font-bold">${escapeHtml(room.label)} Subtotal</td>
           <td class="py-3 px-2 text-right font-bold">${money(data.roomSubtotals[room.roomId] || 0, 2)}</td>
-        </tr>
-      `;
+        </tr>`;
     });
-
     body += `
           </tbody>
           <tfoot>
@@ -1973,11 +1259,9 @@ function generateQuotation() {
             </tr>
           </tfoot>
         </table>
-      </div>
-    `;
+      </div>`;
   }
 
-  // Terms
   body += `
     <div class="mt-8 pt-5 border-t text-sm break-inside-avoid">
       <p class="font-semibold mb-2">Terms / Notes</p>
@@ -1990,72 +1274,37 @@ function generateQuotation() {
     <div class="mt-12 text-sm break-inside-avoid">
       <p>Your sincerely,</p>
       <p class="font-bold mt-8">TERAJU CIPTABINA RESOURCES</p>
-    </div>
-  `;
+    </div>`;
 
   content.innerHTML = body;
-
-  // Build nice A4 preview for screen
-  requestAnimationFrame(() => {
-    paginateQuotationA4();
-  });
+  requestAnimationFrame(() => paginateQuotationA4());
 
   document.getElementById("quotationDocument").classList.remove("hidden");
   document.getElementById("quotationPrintActions").classList.remove("hidden");
   document.getElementById("quotationDocument").scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
-/* ============================================================
-   PRINT — SWITCH TO CONTINUOUS FLOW (NO BIG GAPS)
-   ============================================================ */
 function printQuotation() {
   const quotation = document.getElementById("quotationDocument");
-  const content = document.getElementById("quotationContent");
-
   if (quotation.classList.contains("hidden")) {
-    window.alert("Please generate the quotation first.");
+    alert("Please generate the quotation first.");
     return;
   }
-
   const originalTitle = document.title;
   document.title = quotationNumber ? `Quotation ${quotationNumber}` : "Quotation";
-
-  // Save current paginated view
-  const paginatedHTML = content.innerHTML;
-  const wasPaginated = content.classList.contains("a4-paginated");
-
-  // Switch to continuous version for clean printing
-  if (wasPaginated && content.dataset.originalHtml) {
-    content.innerHTML = content.dataset.originalHtml;
-    content.classList.remove("a4-paginated");
-    quotation.classList.remove("a4-preview-document");
-  }
-
   document.body.classList.add("print-quotation");
 
   const cleanup = () => {
-    // Restore the nice A4 screen preview
-    if (wasPaginated) {
-      content.innerHTML = paginatedHTML;
-      content.classList.add("a4-paginated");
-      quotation.classList.add("a4-preview-document");
-    }
     document.body.classList.remove("print-quotation");
     document.title = originalTitle;
     window.removeEventListener("afterprint", cleanup);
   };
-
   window.addEventListener("afterprint", cleanup);
   window.print();
   setTimeout(cleanup, 1500);
 }
 
-/* ============================================================
-   START
-   ============================================================ */
 addRoom("living", "");
-
 </script>
-
 </body>
 </html>
