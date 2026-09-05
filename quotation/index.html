@@ -1425,53 +1425,33 @@ function generateRoomItems(roomType, area, roomId) {
 
 function getAllItems() {
 
-  const rooms = document.querySelectorAll(
-    "#roomsContainer .room-card"
-  );
-
-  let allItems = [];
-
+  const rooms = document.querySelectorAll("#roomsContainer .room-card");
+  const allItems = [];
   const typeCounts = {};
   const typeSeen = {};
 
   rooms.forEach(room => {
-    const roomType =
-      room.querySelector(".room-type").value;
-
-    typeCounts[roomType] =
-      (typeCounts[roomType] || 0) + 1;
+    const type = room.querySelector(".room-type")?.value;
+    if (type) typeCounts[type] = (typeCounts[type] || 0) + 1;
   });
 
   rooms.forEach(room => {
-
     const roomId = room.id;
+    const roomType = room.querySelector(".room-type")?.value;
+    const area = parseFloat(room.querySelector(".room-area")?.value) || 0;
+    if (!roomType) return;
 
-    const roomType =
-      room.querySelector(".room-type").value;
+    typeSeen[roomType] = (typeSeen[roomType] || 0) + 1;
+    const baseName = ROOM_TYPES[roomType] || roomType;
+    const roomLabel = typeCounts[roomType] > 1
+      ? `${baseName} ${typeSeen[roomType]}`
+      : baseName;
 
-    const area =
-      parseFloat(
-        room.querySelector(".room-area").value
-      ) || 0;
-
-    typeSeen[roomType] =
-      (typeSeen[roomType] || 0) + 1;
-
-    const baseName =
-      ROOM_TYPES[roomType] || roomType;
-
-    const roomLabel =
-      typeCounts[roomType] > 1
-        ? `${baseName} ${typeSeen[roomType]}`
-        : baseName;
-
-    const items = generateRoomItems(
-      roomType,
-      area,
-      roomId
-    ).map(item => ({
+    const items = generateRoomItems(roomType, area, roomId).map(item => ({
       ...item,
-      room: roomLabel
+      room: roomLabel,
+      roomId,
+      roomArea: area
     }));
 
     allItems.push(...items);
@@ -1481,29 +1461,14 @@ function getAllItems() {
 }
 
 
-/* ============================================================
-   GROUP ITEMS BY ROOM
-   ============================================================ */
-
 function groupItemsByRoom(items) {
 
-  /*
-    IMPORTANT:
-    Group by the actual room/card ID, NOT by room name.
-
-    Example:
-      Bedroom (100 sqft) = Bedroom 1
-      Bedroom (120 sqft) = Bedroom 2
-
-    They must remain separate even though both use
-    the same room type/name.
-  */
-
+  // Group by the unique room/card ID so duplicate room types stay separate.
   const grouped = {};
 
   items.forEach(item => {
-
     const key = item.roomId;
+    if (!key) return;
 
     if (!grouped[key]) {
       grouped[key] = {
@@ -1519,10 +1484,6 @@ function groupItemsByRoom(items) {
   return grouped;
 }
 
-
-/* ============================================================
-   UPDATE ESTIMATE
-   ============================================================ */
 
 function updateEstimate() {
 
