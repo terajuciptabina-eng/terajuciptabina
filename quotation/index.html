@@ -754,13 +754,13 @@ const ROOM_TYPES = {
   a universal room-by-room rate.
 */
 const OPTIONAL_SCOPES = [
-  { key:"demolition", label:"Demolition / hacking works", unit:"ls", rate:null, custom:true },
-  { key:"painting", label:"Painting works", unit:"ls", rate:null, custom:true },
-  { key:"glassDoor", label:"Additional swing glass door", unit:"unit", rate:RATES.kitchenGlassDoor },
-  { key:"brickwallDivider", label:"Additional brickwall divider", unit:"ls", rate:RATES.brickwallDivider },
-  { key:"frontFence", label:"Additional front fence brickwall", unit:"ls", rate:RATES.frontFence },
-  { key:"windows", label:"Additional windows", unit:"unit", rate:null, custom:true },
-  { key:"electrical", label:"Additional electrical works", unit:"ls", rate:null, custom:true }
+  { key:"demolition", label:"Demolition works based on designer proposal, including careful removal, disposal, and site clearing, completed in a safe and professional manner", unit:"ls", rate:null, custom:true },
+  { key:"painting", label:"Supply labour, materials, tools, and equipment to carry out internal and external painting works, including surface preparation, minor repairs, sealer where required, two coats of premium quality paint, cleaning and touch-up upon completion", unit:"ls", rate:null, custom:true },
+  { key:"glassDoor", label:"To supply and install additional swing glass door", unit:"unit", rate:RATES.kitchenGlassDoor },
+  { key:"brickwallDivider", label:"To build additional side brickwall divider c/w plaster and paint", unit:"ls", rate:RATES.brickwallDivider },
+  { key:"frontFence", label:"To build additional front fence brickwall based on designer proposal", unit:"ls", rate:RATES.frontFence },
+  { key:"windows", label:"To supply and install additional windows", unit:"unit", rate:null, custom:true },
+  { key:"electrical", label:"Additional electrical and wiring works based on confirmed site requirements", unit:"ls", rate:null, custom:true }
 ];
 
 let roomCounter = 0;
@@ -964,67 +964,67 @@ function generateStandardRoomItems(roomType, area, roomId, roomLabel) {
   if (!area || area <= 0) return items;
 
   if (roomType === "living" || roomType === "bedroom") {
-    pushItem(items, roomId, roomLabel, "ceiling", "Plaster ceiling + paint", area, "sqft", RATES.ceiling);
-    pushItem(items, roomId, roomLabel, "spc", "SPC flooring", area, "sqft", RATES.spc);
-    pushItem(items, roomId, roomLabel, "downlight", "Downlights", calculateDownlights(area), "unit", RATES.downlight);
-    pushItem(items, roomId, roomLabel, "fan", "Ceiling fan", 1, "unit", RATES.ceilingFan);
-    pushItem(items, roomId, roomLabel, "curtain", "Curtain box LED", 1, "ls", RATES.curtainBoxLED);
+    pushItem(items, roomId, roomLabel, "ceiling", "To supply and install plaster ceiling flat c/w paint", area, "sqft", RATES.ceiling);
+    pushItem(items, roomId, roomLabel, "spc", "To supply and install spc flooring c/w skirting and floor mat", area, "sqft", RATES.spc);
+    pushItem(items, roomId, roomLabel, "downlight", `To supply and install ${calculateDownlights(area)} unit downlight c/w wiring`, calculateDownlights(area), "unit", RATES.downlight);
+    pushItem(items, roomId, roomLabel, "fan", "To supply and install 1 unit ceiling fan c/w wiring", 1, "unit", RATES.ceilingFan);
+    pushItem(items, roomId, roomLabel, "curtain", "To supply and install led light for curtain box 1 set c/w wiring", 1, "ls", RATES.curtainBoxLED);
   }
 
   if (roomType === "dryKitchen") {
-    pushItem(items, roomId, roomLabel, "ceiling", "Plaster ceiling + paint", area, "sqft", RATES.ceiling);
-    pushItem(items, roomId, roomLabel, "spc", "SPC flooring", area, "sqft", RATES.spc);
-    pushItem(items, roomId, roomLabel, "downlight", "Downlights", calculateDownlights(area), "unit", RATES.downlight);
-    pushItem(items, roomId, roomLabel, "barlamp", "Bar lamp", 1, "unit", RATES.barLamp);
-    pushItem(items, roomId, roomLabel, "fan", "Baby ceiling fan", 1, "unit", RATES.ceilingFan);
-    pushItem(items, roomId, roomLabel, "frame", "Laminated arch frame", 1, "ls", RATES.kitchenFrame);
-    pushItem(items, roomId, roomLabel, "makinggood", "Making good wall after demolition", 1, "ls", RATES.kitchenMakingGood);
-    pushItem(items, roomId, roomLabel, "glassdoor", "Swing glass door", 1, "ls", RATES.kitchenGlassDoor);
+    pushItem(items, roomId, roomLabel, "ceiling", "To supply and install plaster ceiling flat c/w paint", area, "sqft", RATES.ceiling);
+    pushItem(items, roomId, roomLabel, "spc", "To supply and install spc flooring c/w skirting and floor mat", area, "sqft", RATES.spc);
+    pushItem(items, roomId, roomLabel, "downlight", `To supply and install ${calculateDownlights(area)} unit downlight c/w wiring`, calculateDownlights(area), "unit", RATES.downlight);
+    pushItem(items, roomId, roomLabel, "barlamp", "To supply and install bar lamp c/w wiring", 1, "unit", RATES.barLamp);
+    pushItem(items, roomId, roomLabel, "fan", "To supply and install baby ceiling fan c/w wiring", 1, "unit", RATES.ceilingFan);
+    pushItem(items, roomId, roomLabel, "frame", "To supply and install laminated arce frame 1 unit", 1, "ls", RATES.kitchenFrame);
+    pushItem(items, roomId, roomLabel, "makinggood", "To making good wall after demolish existing toilet", 1, "ls", RATES.kitchenMakingGood);
+    pushItem(items, roomId, roomLabel, "glassdoor", "To supply and install swing glass door", 1, "ls", RATES.kitchenGlassDoor);
   }
 
   if (roomType === "wetKitchen") {
-    pushItem(items, roomId, roomLabel, "floor", "Floor tiles + waterproofing", area, "sqft", RATES.floorTile);
-    pushItem(items, roomId, roomLabel, "walltile", "Wall tiles", area * 2, "sqft", RATES.wallTile);
-    pushItem(items, roomId, roomLabel, "ceiling", "Plaster ceiling + paint", area, "sqft", RATES.ceiling);
-    pushItem(items, roomId, roomLabel, "downlight", "Downlights", calculateDownlights(area), "unit", RATES.downlight);
-    pushItem(items, roomId, roomLabel, "fan", "Ceiling fan", 1, "unit", RATES.ceilingFan);
-    pushItem(items, roomId, roomLabel, "lamp", "Kitchen lighting allowance", 1, "ls", RATES.barLamp);
+    pushItem(items, roomId, roomLabel, "floor", "To supply and install floor tiles c/w water proofing", area, "sqft", RATES.floorTile);
+    pushItem(items, roomId, roomLabel, "walltile", "To supply and install wall tiles", area * 2, "sqft", RATES.wallTile);
+    pushItem(items, roomId, roomLabel, "ceiling", "To supply and install plaster ceiling flat c/w paint", area, "sqft", RATES.ceiling);
+    pushItem(items, roomId, roomLabel, "downlight", `To supply and install ${calculateDownlights(area)} unit downlight c/w wiring`, calculateDownlights(area), "unit", RATES.downlight);
+    pushItem(items, roomId, roomLabel, "fan", "To supply and install 1 unit ceiling fan c/w wiring", 1, "unit", RATES.ceilingFan);
+    pushItem(items, roomId, roomLabel, "lamp", "To supply and install kitchen lighting c/w wiring", 1, "ls", RATES.barLamp);
   }
 
   if (roomType === "bathroom") {
-    pushItem(items, roomId, roomLabel, "floor", "Floor tiles + waterproofing", area, "sqft", RATES.floorTile);
+    pushItem(items, roomId, roomLabel, "floor", "To supply and install floor tiles c/w water proofing", area, "sqft", RATES.floorTile);
     pushItem(items, roomId, roomLabel, "walltile", "Wall tiles", area * 6, "sqft", RATES.wallTile);
-    pushItem(items, roomId, roomLabel, "ceiling", "Plaster ceiling + paint", area, "sqft", RATES.ceiling);
-    pushItem(items, roomId, roomLabel, "sanitary", "Toilet sanitary accessories", 1, "ls", RATES.bathroomSanitary);
-    pushItem(items, roomId, roomLabel, "door", "Toilet swing door", 1, "unit", RATES.bathroomDoor);
-    pushItem(items, roomId, roomLabel, "downlight", "Downlights", calculateDownlights(area), "unit", RATES.downlight);
-    pushItem(items, roomId, roomLabel, "exhaust", "Exhaust fan", Math.max(1, Math.ceil(area / 50)), "unit", RATES.exhaustFan);
+    pushItem(items, roomId, roomLabel, "ceiling", "To supply and install plaster ceiling flat c/w paint", area, "sqft", RATES.ceiling);
+    pushItem(items, roomId, roomLabel, "sanitary", "To supply and install toilet accessories (water closet, bidet, sink and cabinet)", 1, "ls", RATES.bathroomSanitary);
+    pushItem(items, roomId, roomLabel, "door", "To supply and install toilet swing door", 1, "unit", RATES.bathroomDoor);
+    pushItem(items, roomId, roomLabel, "downlight", `To supply and install ${calculateDownlights(area)} unit downlight c/w wiring`, calculateDownlights(area), "unit", RATES.downlight);
+    pushItem(items, roomId, roomLabel, "exhaust", `To supply and install ${Math.max(1, Math.ceil(area / 50))} unit exhaust fan c/w wiring`, Math.max(1, Math.ceil(area / 50)), "unit", RATES.exhaustFan);
   }
 
   if (roomType === "carPorch") {
-    pushItem(items, roomId, roomLabel, "floor", "Floor tiles", area, "sqft", RATES.floorTile);
-    pushItem(items, roomId, roomLabel, "ceiling", "Plaster ceiling + paint", area, "sqft", RATES.ceiling);
-    pushItem(items, roomId, roomLabel, "downlight", "Downlights", calculateDownlights(area), "unit", RATES.downlight);
-    pushItem(items, roomId, roomLabel, "gate", "Automatic main gate motor", 1, "ls", RATES.gateMotor);
-    pushItem(items, roomId, roomLabel, "divider", "Brickwall divider", 1, "ls", RATES.brickwallDivider);
-    pushItem(items, roomId, roomLabel, "fence", "Front fence brickwall", 1, "ls", RATES.frontFence);
+    pushItem(items, roomId, roomLabel, "floor", "To supply and install floor tiles", area, "sqft", RATES.floorTile);
+    pushItem(items, roomId, roomLabel, "ceiling", "To supply and install plaster ceiling flat c/w paint", area, "sqft", RATES.ceiling);
+    pushItem(items, roomId, roomLabel, "downlight", `To supply and install ${calculateDownlights(area)} unit downlight c/w wiring`, calculateDownlights(area), "unit", RATES.downlight);
+    pushItem(items, roomId, roomLabel, "gate", "To supply and install main gate c/w automatic motor 4000mm (L) x 1830mm (H)", 1, "ls", RATES.gateMotor);
+    pushItem(items, roomId, roomLabel, "divider", "To build 1 side brickwall divider c/w plaster and paint", 1, "ls", RATES.brickwallDivider);
+    pushItem(items, roomId, roomLabel, "fence", "To build new front fence brickwall based on designer proposal", 1, "ls", RATES.frontFence);
   }
 
   if (roomType === "balcony") {
-    pushItem(items, roomId, roomLabel, "floor", "Floor tiles + waterproofing", area, "sqft", RATES.floorTile);
+    pushItem(items, roomId, roomLabel, "floor", "To supply and install floor tiles c/w water proofing", area, "sqft", RATES.floorTile);
     pushItem(items, roomId, roomLabel, "facade", "Facade wall", area * 1.33, "sqft", RATES.facadeWall);
-    pushItem(items, roomId, roomLabel, "walllight", "Wall lights", Math.max(2, Math.ceil(area / 70)), "unit", RATES.wallLight);
+    pushItem(items, roomId, roomLabel, "walllight", `To supply and install ${Math.max(2, Math.ceil(area / 70))} unit wall light c/w wiring`, Math.max(2, Math.ceil(area / 70)), "unit", RATES.wallLight);
   }
 
   if (roomType === "extensionKitchen") {
-    pushItem(items, roomId, roomLabel, "extension", "New extension kitchen building works", area, "sqft", RATES.extensionKitchen);
-    pushItem(items, roomId, roomLabel, "downlight", "Downlights", calculateDownlights(area), "unit", RATES.downlight);
+    pushItem(items, roomId, roomLabel, "extension", `To build concrete foundation for new kitchen, including excavation, reinforcement and concreting works, complete with tiles finishing, safety door, casement window, accessories and concrete roof slab based on designer’s proposal. Total area ${formatQty(area)}sqft`, area, "sqft", RATES.extensionKitchen);
+    pushItem(items, roomId, roomLabel, "downlight", `To supply and install ${calculateDownlights(area)} unit downlight c/w wiring`, calculateDownlights(area), "unit", RATES.downlight);
   }
 
   if (roomType === "extensionToilet") {
-    pushItem(items, roomId, roomLabel, "extension", "New extension toilet building works", area, "sqft", RATES.extensionToilet);
-    pushItem(items, roomId, roomLabel, "downlight", "Downlights", calculateDownlights(area), "unit", RATES.downlight);
-    pushItem(items, roomId, roomLabel, "exhaust", "Exhaust fan", Math.max(1, Math.ceil(area / 50)), "unit", RATES.exhaustFan);
+    pushItem(items, roomId, roomLabel, "extension", `To build concrete foundation for new toilet, including excavation, reinforcement and concreting works, complete with tiles finishing, safety door, casement window, toilet accessories and concrete roof slab based on designer’s proposal. Total area ${formatQty(area)}sqft`, area, "sqft", RATES.extensionToilet);
+    pushItem(items, roomId, roomLabel, "downlight", `To supply and install ${calculateDownlights(area)} unit downlight c/w wiring`, calculateDownlights(area), "unit", RATES.downlight);
+    pushItem(items, roomId, roomLabel, "exhaust", `To supply and install ${Math.max(1, Math.ceil(area / 50))} unit exhaust fan c/w wiring`, Math.max(1, Math.ceil(area / 50)), "unit", RATES.exhaustFan);
   }
 
   return items;
@@ -1238,7 +1238,7 @@ function renderEstimate(
     html += `
       <tr class="border-b bg-gray-50">
         <td class="py-3 px-2 font-medium">Project</td>
-        <td class="py-3 px-2">Preliminaries / Project arrangement</td>
+        <td class="py-3 px-2">Submission of Renovation Permit Application and Engineer’s Drawings to the Local Authority</td>
         <td class="py-3 px-2 text-right">1</td>
         <td class="py-3 px-2">ls</td>
         <td class="py-3 px-2 text-right">
@@ -1525,7 +1525,7 @@ function generateQuotation() {
         <tr class="border-b align-top">
           <td class="py-3 px-2">${no++}</td>
           <td class="py-3 px-2 font-semibold">Project</td>
-          <td class="py-3 px-2">Preliminaries / Project arrangement</td>
+          <td class="py-3 px-2">Submission of Renovation Permit Application and Engineer’s Drawings to the Local Authority</td>
           <td class="py-3 px-2 text-right font-medium">${money(data.projectPreliminaries)}</td>
         </tr>`;
     }
@@ -1576,7 +1576,7 @@ function generateQuotation() {
       body += `
         <tr class="border-b bg-gray-50">
           <td class="py-3 px-2 font-semibold">Project</td>
-          <td class="py-3 px-2">Preliminaries / Project arrangement</td>
+          <td class="py-3 px-2">Submission of Renovation Permit Application and Engineer’s Drawings to the Local Authority</td>
           <td class="py-3 px-2 text-right">1</td>
           <td class="py-3 px-2">ls</td>
           <td class="py-3 px-2 text-right">${money(data.projectPreliminaries)}</td>
@@ -1599,7 +1599,7 @@ function generateQuotation() {
       roomItems.forEach(item => {
         body += `
           <tr class="border-b align-top">
-            <td class="py-3 px-2 font-medium">${escapeHtml(item.room)}</td>
+            <td class="py-3 px-2"></td>
             <td class="py-3 px-2">${escapeHtml(item.description)}</td>
             <td class="py-3 px-2 text-right">${formatQty(item.qty)}</td>
             <td class="py-3 px-2">${escapeHtml(item.unit)}</td>
