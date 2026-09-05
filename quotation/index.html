@@ -743,37 +743,402 @@ const ROOM_TEMPLATES = {
 
 
 /* ============================================================
-   STATE
+   OPTIONAL SCOPE BY ROOM
+   ------------------------------------------------------------
+   IMPORTANT:
+   Optional works belong to the specific room/card where they
+   are selected. They are never treated as one project-level
+   bucket.
+
+   Reference quotation data supports fixed reference rates for
+   glass door / brickwall / fence. Demolition, painting,
+   windows and additional electrical do NOT have a reliable
+   universal per-room rate in the supplied quotation, so those
+   require a custom rate.
    ============================================================ */
 
-let roomCounter = 0;
-const excludedItems = new Set();
+const ROOM_OPTIONAL_SCOPES = {
+  demolition: {
+    description: "Demolition / hacking works for this area",
+    qty: 1,
+    unit: "ls",
+    rate: 0,
+    custom: true
+  },
+
+  painting: {
+    description: "Painting works for this area",
+    qty: 1,
+    unit: "ls",
+    rate: 0,
+    custom: true
+  },
+
+  glassDoor: {
+    description: "Additional swing glass door",
+    qty: 1,
+    unit: "unit",
+    rate: RATES.kitchenGlassDoor,
+    custom: false
+  },
+
+  brickwall: {
+    description: "Additional brickwall divider",
+    qty: 1,
+    unit: "ls",
+    rate: RATES.brickwallDivider,
+    custom: false
+  },
+
+  fence: {
+    description: "Additional front fence brickwall",
+    qty: 1,
+    unit: "ls",
+    rate: RATES.frontFence,
+    custom: false
+  },
+
+  windows: {
+    description: "Additional windows",
+    qty: 1,
+    unit: "unit",
+    rate: 0,
+    custom: true
+  },
+
+  electrical: {
+    description: "Additional electrical works",
+    qty: 1,
+    unit: "ls",
+    rate: 0,
+    custom: true
+  }
+};
+
+const roomOptionalSelections = {};
+const roomOptionalCustomValues = {};
 
 
-/* ============================================================
-   ITEM FACTORIES
-   ============================================================ */
+function getRoomOptionalKeys(roomType) {
 
-function baseItem(roomId, key, description, qty, unit, rate) {
-  return {
-    id: roomId + "-" + key,
-    description,
-    qty,
-    unit,
-    rate
+  const keys = [
+    "demolition",
+    "painting",
+    "windows",
+    "electrical"
+  ];
+
+  if (
+    [
+      "living",
+      "bedroom",
+      "dryKitchen",
+      "wetKitchen",
+      "bathroom"
+    ].includes(roomType)
+  ) {
+    keys.push("glassDoor");
+  }
+
+  if (roomType === "carPorch") {
+    keys.push("brickwall");
+    keys.push("fence");
+  }
+
+  return keys;
+}
+
+
+function getOptionalLabel(key) {
+
+  const labels = {
+    demolition: "Demolition / hacking",
+    painting: "Painting",
+    glassDoor: "Additional swing glass door",
+    brickwall: "Additional brickwall divider",
+    fence: "Additional front fence brickwall",
+    windows: "Additional windows",
+    electrical: "Additional electrical works"
   };
+
+  return labels[key] || key;
 }
 
-function areaItem(roomId, key, description, qty, unit, rate) {
-  return baseItem(roomId, key, description, qty, unit, rate);
+
+function ensureRoomOptionalState(roomId) {
+
+  if (!roomOptionalSelections[roomId]) {
+    roomOptionalSelections[roomId] = new Set();
+  }
+
+  if (!roomOptionalCustomValues[roomId]) {
+    roomOptionalCustomValues[roomId] = {};
+  }
 }
 
-function unitItem(roomId, key, description, qty, rate) {
-  return baseItem(roomId, key, description, qty, "unit", rate);
+
+function renderRoomOptionalScope(roomId) {
+
+  const room = document.getElementById(roomId);
+  if (!room) return;
+
+  const container =
+    room.querySelector(".room-optional-scope");
+
+  if (!container) return;
+
+  ensureRoomOptionalState(roomId);
+
+  const roomType =
+    room.querySelector(".room-type").value;
+
+  const keys = getRoomOptionalKeys(roomType);
+  const selections = roomOptionalSelections[roomId];
+  const customValues = roomOptionalCustomValues[roomId];
+
+  let html = `
+    <div class="border-t mt-4 pt-4">
+      <div class="text-sm font-semibold text-gray-700">
+        Optional works for this area / room
+      </div>
+
+      <div class="text-xs text-gray-500 mt-1 mb-3">
+        Select only if required. Custom-rate items are not priced automatically.
+      </div>
+
+      <div class="space-y-2">
+  `;
+
+  keys.forEach(key => {
+
+    const option = ROOM_OPTIONAL_SCOPES[key];
+    const selected = selections.has(key);
+    const custom = option.custom === true;
+
+    const customQty =
+      customValues[key]?.qty ?? option.qty;
+
+    const customRate =
+      customValues[key]?.rate ?? "";
+
+    const amount =
+      custom
+        ? (Number(customQty) || 0) * (Number(customRate) || 0)
+        : option.qty * option.rate;
+
+    html += `
+      <div class="border rounded-lg p-3 bg-white">
+
+        <label class="flex items-start gap-3 cursor-pointer">
+
+          <input
+            type="checkbox"
+            class="mt-1 h-4 w-4"
+            ${selected ? "checked" : ""}
+            onchange="toggleRoomOptionalScope('${roomId}', '${key}', this.checked)"
+          >
+
+          <div class="flex-1">
+
+            <div class="font-medium text-sm">
+              ${escapeHtml(getOptionalLabel(key))}
+            </div>
+
+            <div class="text-xs text-gray-500 mt-1">
+              ${
+                custom
+                  ? "Custom rate required"
+                  : `${escapeHtml(option.unit)} @ ${money(option.rate)}`
+              }
+            </div>
+
+          </div>
+
+          <div class="text-right text-sm font-semibold">
+            ${
+              selected
+                ? money(amount)
+                : "Not included"
+            }
+          </div>
+
+        </label>
+
+        ${
+          selected && custom
+            ? `
+              <div class="grid md:grid-cols-2 gap-3 mt-3 ml-7">
+
+                <div>
+                  <label class="block text-xs font-medium mb-1">
+                    Quantity
+                  </label>
+
+                  <input
+                    type="number"
+                    min="0"
+                    step="1"
+                    value="${escapeHtml(customQty)}"
+                    class="w-full border rounded-lg px-3 py-2 bg-white"
+                    oninput="setRoomOptionalCustom('${roomId}', '${key}', 'qty', this.value)"
+                  >
+                </div>
+
+                <div>
+                  <label class="block text-xs font-medium mb-1">
+                    Rate (RM)
+                  </label>
+
+                  <input
+                    type="number"
+                    min="0"
+                    step="1"
+                    value="${escapeHtml(customRate)}"
+                    placeholder="Enter rate"
+                    class="w-full border rounded-lg px-3 py-2 bg-white"
+                    oninput="setRoomOptionalCustom('${roomId}', '${key}', 'rate', this.value)"
+                  >
+                </div>
+
+              </div>
+            `
+            : ""
+        }
+
+      </div>
+    `;
+  });
+
+  html += `
+      </div>
+    </div>
+  `;
+
+  container.innerHTML = html;
 }
 
-function lsItem(roomId, key, description, qty, rate) {
-  return baseItem(roomId, key, description, qty, "ls", rate);
+
+function toggleRoomOptionalScope(roomId, key, checked) {
+
+  ensureRoomOptionalState(roomId);
+
+  if (checked) {
+    roomOptionalSelections[roomId].add(key);
+  } else {
+    roomOptionalSelections[roomId].delete(key);
+  }
+
+  renderRoomOptionalScope(roomId);
+  updateEstimate();
+}
+
+
+function setRoomOptionalCustom(roomId, key, field, value) {
+
+  ensureRoomOptionalState(roomId);
+
+  if (!roomOptionalCustomValues[roomId][key]) {
+    roomOptionalCustomValues[roomId][key] = {};
+  }
+
+  roomOptionalCustomValues[roomId][key][field] = value;
+
+  renderRoomOptionalScope(roomId);
+  updateEstimate();
+}
+
+
+function getOptionalItems() {
+
+  const items = [];
+
+  const rooms =
+    document.querySelectorAll("#roomsContainer .room-card");
+
+  const typeCounts = {};
+  const typeSeen = {};
+
+  rooms.forEach(room => {
+    const roomType =
+      room.querySelector(".room-type").value;
+
+    typeCounts[roomType] =
+      (typeCounts[roomType] || 0) + 1;
+  });
+
+  rooms.forEach(room => {
+
+    const roomId = room.id;
+
+    ensureRoomOptionalState(roomId);
+
+    const roomType =
+      room.querySelector(".room-type").value;
+
+    const roomArea =
+      parseFloat(
+        room.querySelector(".room-area").value
+      ) || 0;
+
+    typeSeen[roomType] =
+      (typeSeen[roomType] || 0) + 1;
+
+    const baseName =
+      ROOM_TYPES[roomType] || roomType;
+
+    const roomLabel =
+      typeCounts[roomType] > 1
+        ? `${baseName} ${typeSeen[roomType]}`
+        : baseName;
+
+    const allowedKeys =
+      getRoomOptionalKeys(roomType);
+
+    allowedKeys.forEach(key => {
+
+      if (!roomOptionalSelections[roomId].has(key)) {
+        return;
+      }
+
+      const option =
+        ROOM_OPTIONAL_SCOPES[key];
+
+      if (!option) return;
+
+      let qty = option.qty;
+      let rate = option.rate;
+
+      if (option.custom) {
+
+        qty =
+          Number(
+            roomOptionalCustomValues[roomId][key]?.qty
+          ) || 0;
+
+        rate =
+          Number(
+            roomOptionalCustomValues[roomId][key]?.rate
+          ) || 0;
+      }
+
+      items.push({
+        id: roomId + "-optional-" + key,
+        description: option.description,
+        qty,
+        unit: option.unit,
+        rate,
+        amount: qty * rate,
+        room: roomLabel,
+        roomId,
+        roomArea,
+        isOptional: true
+      });
+
+    });
+
+  });
+
+  return items;
 }
 
 
@@ -962,15 +1327,24 @@ function addRoom(defaultType = "living", defaultArea = "") {
       </button>
 
     </div>
+
+    <div class="room-optional-scope"></div>
   `;
 
   container.appendChild(div);
 
   div.querySelector(".room-type").value = defaultType;
 
+  ensureRoomOptionalState(id);
+  renderRoomOptionalScope(id);
+
   div.querySelector(".room-type").addEventListener(
     "change",
-    updateEstimate
+    () => {
+      ensureRoomOptionalState(id);
+      renderRoomOptionalScope(id);
+      updateEstimate();
+    }
   );
 
   div.querySelector(".room-area").addEventListener(
@@ -992,6 +1366,9 @@ function removeRoom(id) {
   if (room) {
     room.remove();
   }
+
+  delete roomOptionalSelections[id];
+  delete roomOptionalCustomValues[id];
 
   updateEstimate();
 }
@@ -1054,6 +1431,17 @@ function getAllItems() {
 
   let allItems = [];
 
+  const typeCounts = {};
+  const typeSeen = {};
+
+  rooms.forEach(room => {
+    const roomType =
+      room.querySelector(".room-type").value;
+
+    typeCounts[roomType] =
+      (typeCounts[roomType] || 0) + 1;
+  });
+
   rooms.forEach(room => {
 
     const roomId = room.id;
@@ -1066,11 +1454,25 @@ function getAllItems() {
         room.querySelector(".room-area").value
       ) || 0;
 
+    typeSeen[roomType] =
+      (typeSeen[roomType] || 0) + 1;
+
+    const baseName =
+      ROOM_TYPES[roomType] || roomType;
+
+    const roomLabel =
+      typeCounts[roomType] > 1
+        ? `${baseName} ${typeSeen[roomType]}`
+        : baseName;
+
     const items = generateRoomItems(
       roomType,
       area,
       roomId
-    );
+    ).map(item => ({
+      ...item,
+      room: roomLabel
+    }));
 
     allItems.push(...items);
   });
@@ -1124,43 +1526,59 @@ function groupItemsByRoom(items) {
 
 function updateEstimate() {
 
-  const allItems = getAllItems();
+  const roomItems = getAllItems();
+  const optionalItems = getOptionalItems();
 
-  const activeItems = allItems.filter(
+  const activeRoomItems = roomItems.filter(
     item => !excludedItems.has(item.id)
   );
 
-  const hasAreas = allItems.length > 0;
+  const activeOptionalItems = optionalItems.filter(
+    item => !excludedItems.has(item.id)
+  );
+
+  const hasAreas =
+    document.querySelectorAll("#roomsContainer .room-card").length > 0 &&
+    Array.from(
+      document.querySelectorAll("#roomsContainer .room-card")
+    ).some(room => {
+      const area =
+        parseFloat(room.querySelector(".room-area")?.value) || 0;
+      return area > 0;
+    });
 
   const prelimIncluded =
     hasAreas &&
     !excludedItems.has("project-preliminaries");
 
-  /*
-    Calculate room works separately first.
-    Project preliminaries are added ONCE at project level.
-    This makes the final total exactly: \n      Sum of every room subtotal + preliminaries (if active).
-  */
   let roomWorksTotal = 0;
-
-  activeItems.forEach(item => {
+  activeRoomItems.forEach(item => {
     item.amount = item.qty * item.rate;
     roomWorksTotal += item.amount;
   });
 
+  let optionalTotal = 0;
+  activeOptionalItems.forEach(item => {
+    item.amount = item.qty * item.rate;
+    optionalTotal += item.amount;
+  });
+
   const subtotal =
     roomWorksTotal +
+    optionalTotal +
     (prelimIncluded ? RATES.preliminaries : 0);
 
   const total = subtotal;
 
   renderEstimate(
-    activeItems,
+    activeRoomItems,
+    activeOptionalItems,
     subtotal,
     total,
     prelimIncluded
   );
 }
+
 
 
 /* ============================================================
@@ -1171,6 +1589,7 @@ function updateEstimate() {
 
 function renderEstimate(
   items,
+  optionalItems,
   subtotal,
   total,
   prelimIncluded
@@ -1211,7 +1630,7 @@ function renderEstimate(
   `;
 
 
-  if (items.length === 0 && !prelimIncluded) {
+  if (items.length === 0 && optionalItems.length === 0 && !prelimIncluded) {
 
     container.innerHTML = `
       <div class="
@@ -1233,7 +1652,10 @@ function renderEstimate(
   }
 
 
-  const grouped = groupItemsByRoom(items);
+  const grouped = groupItemsByRoom([
+    ...items,
+    ...optionalItems
+  ]);
 
   let html = `
     <table class="
