@@ -245,6 +245,44 @@
             oninput="updateEstimate()"
           >
 
+          <datalist id="projectLocationSuggestions">
+            <option value="Kuala Lumpur">
+            <option value="Putrajaya">
+            <option value="Cyberjaya">
+            <option value="Petaling Jaya, Selangor">
+            <option value="Shah Alam, Selangor">
+            <option value="Subang Jaya, Selangor">
+            <option value="Puchong, Selangor">
+            <option value="Seri Kembangan, Selangor">
+            <option value="Kajang, Selangor">
+            <option value="Bangi, Selangor">
+            <option value="Semenyih, Selangor">
+            <option value="Ampang, Selangor">
+            <option value="Cheras, Selangor">
+            <option value="Rawang, Selangor">
+            <option value="Klang, Selangor">
+            <option value="Kapar, Selangor">
+            <option value="Kota Damansara, Selangor">
+            <option value="Ara Damansara, Selangor">
+            <option value="Setia Alam, Selangor">
+            <option value="Bandar Kinrara, Puchong, Selangor">
+            <option value="Taman Putra Prima, Puchong, Selangor">
+            <option value="Johor Bahru, Johor">
+            <option value="Iskandar Puteri, Johor">
+            <option value="Pasir Gudang, Johor">
+            <option value="Melaka">
+            <option value="Seremban, Negeri Sembilan">
+            <option value="Ipoh, Perak">
+            <option value="Penang / George Town, Penang">
+            <option value="Butterworth, Penang">
+            <option value="Alor Setar, Kedah">
+            <option value="Kota Bharu, Kelantan">
+            <option value="Kuantan, Pahang">
+            <option value="Kuala Terengganu, Terengganu">
+            <option value="Kota Kinabalu, Sabah">
+            <option value="Kuching, Sarawak">
+          </datalist>
+
         </div>
 
 
@@ -257,7 +295,9 @@
           <input
             id="projectLocation"
             type="text"
-            placeholder="Optional"
+            list="projectLocationSuggestions"
+            placeholder="Start typing location..."
+            autocomplete="off"
             class="
               w-full
               border
