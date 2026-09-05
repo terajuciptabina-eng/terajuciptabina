@@ -1035,6 +1035,8 @@ function generateRoomItems(roomType, area, roomId) {
   return template(area, roomId).map(item => ({
     ...item,
     room: roomName,
+    roomId: roomId,
+    roomArea: area,
     amount: item.qty * item.rate
   }));
 }
@@ -1083,15 +1085,33 @@ function getAllItems() {
 
 function groupItemsByRoom(items) {
 
+  /*
+    IMPORTANT:
+    Group by the actual room/card ID, NOT by room name.
+
+    Example:
+      Bedroom (100 sqft) = Bedroom 1
+      Bedroom (120 sqft) = Bedroom 2
+
+    They must remain separate even though both use
+    the same room type/name.
+  */
+
   const grouped = {};
 
   items.forEach(item => {
 
-    if (!grouped[item.room]) {
-      grouped[item.room] = [];
+    const key = item.roomId;
+
+    if (!grouped[key]) {
+      grouped[key] = {
+        roomName: item.room,
+        area: item.roomArea || 0,
+        items: []
+      };
     }
 
-    grouped[item.room].push(item);
+    grouped[key].items.push(item);
   });
 
   return grouped;
@@ -1116,21 +1136,28 @@ function updateEstimate() {
     hasAreas &&
     !excludedItems.has("project-preliminaries");
 
-  let subtotal = 0;
-
-  if (prelimIncluded) {
-    subtotal += RATES.preliminaries;
-  }
+  /*
+    Calculate room works separately first.
+    Project preliminaries are added ONCE at project level.
+    This makes the final total exactly: \n      Sum of every room subtotal + preliminaries (if active).
+  */
+  let roomWorksTotal = 0;
 
   activeItems.forEach(item => {
     item.amount = item.qty * item.rate;
-    subtotal += item.amount;
+    roomWorksTotal += item.amount;
   });
+
+  const subtotal =
+    roomWorksTotal +
+    (prelimIncluded ? RATES.preliminaries : 0);
+
+  const total = subtotal;
 
   renderEstimate(
     activeItems,
     subtotal,
-    subtotal,
+    total,
     prelimIncluded
   );
 }
@@ -1319,9 +1346,18 @@ function renderEstimate(
 
   /* ROOM-BY-ROOM BREAKDOWN */
 
-  Object.entries(grouped).forEach(
-    ([roomName, roomItems]) => {
+  Object.values(grouped).forEach(
+    roomGroup => {
 
+      const roomName = roomGroup.roomName;
+      const roomArea = roomGroup.area;
+      const roomItems = roomGroup.items;
+
+      /*
+        Each room/card gets its OWN subtotal.
+        This is deliberately calculated from that room's
+        active line items only.
+      */
       const roomSubtotal =
         roomItems.reduce(
           (sum, item) => sum + item.amount,
@@ -1340,7 +1376,7 @@ function renderEstimate(
               text-gray-900
             "
           >
-            ${escapeHtml(roomName)}
+            ${escapeHtml(roomName)} — ${formatQty(roomArea)} sqft
           </td>
 
         </tr>
@@ -1422,7 +1458,7 @@ function renderEstimate(
               font-semibold
             "
           >
-            ${escapeHtml(roomName)} Subtotal
+            ${escapeHtml(roomName)} — ${formatQty(roomArea)} sqft Subtotal
           </td>
 
           <td class="
