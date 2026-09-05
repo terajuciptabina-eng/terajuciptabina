@@ -618,14 +618,14 @@
     }
 
     /* =========================================================
-       PRINT — DEDICATED A4 QUOTATION LAYOUT
+       PRINT — CLEAN A4 QUOTATION LAYOUT (FIXED)
        ========================================================= */
 
     @media print {
 
       @page {
         size: A4 portrait;
-        margin: 0;
+        margin: 10mm 11mm;
       }
 
       html,
@@ -671,17 +671,19 @@
         overflow: visible !important;
       }
 
+      /* CRITICAL FIX: do NOT force fixed height on print.
+         Let content flow naturally → no blank pages. */
       .quotation-page {
-        width: 210mm !important;
-        height: 297mm !important;
-        min-height: 297mm !important;
-        max-height: 297mm !important;
+        width: 100% !important;
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
         box-sizing: border-box !important;
         margin: 0 !important;
-        padding: 10mm 11mm !important;
+        padding: 0 !important;
         background: #fff !important;
         box-shadow: none !important;
-        overflow: hidden !important;
+        overflow: visible !important;
         page-break-after: always !important;
         break-after: page !important;
         position: relative !important;
@@ -694,12 +696,17 @@
 
       .quotation-page-body {
         width: 100% !important;
-        height: calc(100% - 8mm) !important;
-        overflow: hidden !important;
+        height: auto !important;
+        overflow: visible !important;
       }
 
       .quotation-page-number {
+        display: none !important; /* browser will add its own page numbers if needed */
+      }
+
+      .quotation-page-continuation {
         display: block !important;
+        margin-bottom: 6px !important;
       }
 
       #quotationContent {
@@ -707,15 +714,15 @@
         max-width: none !important;
         min-width: 0 !important;
         overflow: visible !important;
-        font-size: 9px !important;
-        line-height: 1.25 !important;
+        font-size: 9.5px !important;
+        line-height: 1.3 !important;
       }
 
       #quotationContent table {
         width: 100% !important;
         min-width: 0 !important;
-        font-size: 9px !important;
-        line-height: 1.25 !important;
+        font-size: 9.5px !important;
+        line-height: 1.3 !important;
         table-layout: fixed !important;
         border-collapse: collapse !important;
       }
@@ -743,19 +750,26 @@
 
       #quotationContent table th,
       #quotationContent table td {
-        padding: 4px 4px !important;
-        line-height: 1.25 !important;
+        padding: 5px 4px !important;
+        line-height: 1.3 !important;
         vertical-align: top !important;
         overflow-wrap: break-word !important;
         word-break: normal !important;
       }
+
+      /* Keep column proportions stable in PDF */
+      .detailed-quotation-table col:nth-child(1) { width: 48% !important; }
+      .detailed-quotation-table col:nth-child(2) { width: 10% !important; }
+      .detailed-quotation-table col:nth-child(3) { width: 10% !important; }
+      .detailed-quotation-table col:nth-child(4) { width: 16% !important; }
+      .detailed-quotation-table col:nth-child(5) { width: 16% !important; }
 
       #quotationContent .mb-5 {
         margin-bottom: 8px !important;
       }
 
       #quotationContent .mt-8 {
-        margin-top: 12px !important;
+        margin-top: 14px !important;
       }
 
       #quotationContent .mt-12 {
@@ -776,7 +790,10 @@
         padding-bottom: 5px !important;
       }
 
-      #quotationContent .break-inside-avoid {
+      #quotationContent .break-inside-avoid,
+      #quotationContent tfoot,
+      #quotationContent .mt-8,
+      #quotationContent .mt-12 {
         break-inside: avoid !important;
         page-break-inside: avoid !important;
       }
@@ -4737,13 +4754,8 @@ function quotationDescriptionList(
 
 
 /* ============================================================
-   GENERATE QUOTATION
-   ============================================================ */
-
-/* ============================================================
-   A4 PAGINATION — QUOTATION SCREEN PREVIEW + PRINT
-   Splits long quotation tables into physical A4 sheets and
-   repeats the table heading on every continuation page.
+   A4 PAGINATION — SCREEN PREVIEW ONLY
+   (Print now uses natural flow → no blank pages)
    ============================================================ */
 function paginateQuotationA4() {
 
@@ -4894,6 +4906,8 @@ function paginateQuotationA4() {
   });
 
 }
+
+
 
 function generateQuotation() {
 
@@ -5803,6 +5817,7 @@ function generateQuotation() {
         pt-5
         border-t
         text-sm
+        break-inside-avoid
       "
     >
 
@@ -5849,6 +5864,7 @@ function generateQuotation() {
       class="
         mt-12
         text-sm
+        break-inside-avoid
       "
     >
 
@@ -5874,7 +5890,7 @@ function generateQuotation() {
     body;
 
 
-  /* Build the on-screen quotation as real A4 pages. */
+  /* Build the on-screen quotation as real A4 pages (screen only). */
   requestAnimationFrame(() => {
     paginateQuotationA4();
   });
