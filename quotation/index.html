@@ -23,20 +23,35 @@
     }
 
     @media print {
-
-      .no-print {
-        display: none !important;
+      @page {
+        margin: 12mm;
       }
 
       body {
         background: white !important;
       }
 
-      header {
-        border-bottom: 1px solid #ddd !important;
+      body.print-quotation > header,
+      body.print-quotation > main > section:not(#quotationDocument) {
+        display: none !important;
       }
 
-      .print-card {
+      body.print-quotation #quotationDocument {
+        display: block !important;
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        box-shadow: none !important;
+        border: none !important;
+      }
+
+      body.print-quotation .no-print {
+        display: none !important;
+      }
+
+      .print-card,
+      .quotation-document {
         box-shadow: none !important;
         border: none !important;
       }
@@ -47,11 +62,6 @@
 
       .break-inside-avoid {
         break-inside: avoid;
-      }
-
-      .quotation-document {
-        box-shadow: none !important;
-        border: none !important;
       }
 
     }
@@ -105,22 +115,7 @@
     </div>
 
 
-    <button
-      onclick="window.print()"
-      class="
-        no-print
-        bg-gray-900
-        text-white
-        px-5
-        py-2.5
-        rounded-lg
-        text-sm
-        font-medium
-        hover:bg-gray-700
-      "
-    >
-      Print / Save PDF
-    </button>
+
 
   </div>
 
@@ -603,14 +598,6 @@
       >
         Generate Quotation
       </button>
-
-      <button
-        type="button"
-        onclick="printQuotation()"
-        class="border px-5 py-3 rounded-lg font-semibold hover:bg-gray-50"
-      >
-        Print / Save Quotation PDF
-      </button>
     </div>
 
   </section>
@@ -633,6 +620,16 @@
     "
   >
     <div id="quotationContent"></div>
+
+    <div id="quotationPrintActions" class="no-print mt-6 pt-5 border-t flex flex-wrap justify-end gap-3">
+      <button
+        type="button"
+        onclick="printQuotation()"
+        class="bg-black text-white px-5 py-3 rounded-lg font-semibold hover:bg-gray-800"
+      >
+        Print / Save Quotation PDF
+      </button>
+    </div>
   </section>
 
 
@@ -902,17 +899,25 @@ function addRoom(defaultType = "living", defaultArea = "") {
     </div>
 
     <div class="mt-4 border-t pt-4">
-      <div class="flex items-center justify-between mb-3">
+      <button
+        type="button"
+        class="optional-toggle w-full flex items-center justify-between text-left py-1 no-print"
+        onclick="toggleOptionalWorks('${id}')"
+        aria-expanded="false"
+      >
         <div>
-          <h4 class="font-semibold text-sm">Optional Works for This Area / Room</h4>
+          <h4 class="font-semibold text-sm">Optional Works</h4>
           <p class="text-xs text-gray-500">
-            Select only additional works required for this specific area.
+            Expand only if additional works are required for this area.
           </p>
         </div>
-      </div>
+        <span id="${id}-optional-arrow" class="text-gray-500 text-sm">▼</span>
+      </button>
 
-      <div class="grid md:grid-cols-2 gap-3 optional-scopes">
-        ${optionalScopeHtml()}
+      <div id="${id}-optional" class="hidden mt-3">
+        <div class="grid md:grid-cols-2 gap-3 optional-scopes">
+          ${optionalScopeHtml()}
+        </div>
       </div>
     </div>
   `;
@@ -937,6 +942,21 @@ function addRoom(defaultType = "living", defaultArea = "") {
 function removeRoom(id) {
   document.getElementById(id)?.remove();
   updateEstimate();
+}
+
+function toggleOptionalWorks(roomId) {
+  const panel = document.getElementById(`${roomId}-optional`);
+  const arrow = document.getElementById(`${roomId}-optional-arrow`);
+  if (!panel || !arrow) return;
+
+  panel.classList.toggle("hidden");
+  const expanded = !panel.classList.contains("hidden");
+  arrow.textContent = expanded ? "▲" : "▼";
+
+  const toggle = document.querySelector(
+    `.optional-toggle[onclick="toggleOptionalWorks('${roomId}')"]`
+  );
+  toggle?.setAttribute("aria-expanded", String(expanded));
 }
 
 function toggleProjectInfo() {
@@ -1642,6 +1662,7 @@ function generateQuotation() {
 
   content.innerHTML = body;
   document.getElementById("quotationDocument").classList.remove("hidden");
+  document.getElementById("quotationPrintActions").classList.remove("hidden");
   document.getElementById("quotationDocument").scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
@@ -1654,8 +1675,17 @@ function printQuotation() {
 
   const originalTitle = document.title;
   document.title = quotationNumber ? `Quotation ${quotationNumber}` : "Quotation";
+  document.body.classList.add("print-quotation");
+
+  const cleanup = () => {
+    document.body.classList.remove("print-quotation");
+    document.title = originalTitle;
+    window.removeEventListener("afterprint", cleanup);
+  };
+
+  window.addEventListener("afterprint", cleanup);
   window.print();
-  document.title = originalTitle;
+  setTimeout(cleanup, 1000);
 }
 
 /* Start with one empty area */
