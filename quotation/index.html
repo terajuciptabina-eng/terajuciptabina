@@ -96,6 +96,7 @@
     }
 
     .detailed-quotation-table { width: 100%; table-layout: fixed; }
+    .simple-quotation-table { width: 100%; table-layout: fixed; }
 
     /* =========================================================
        PRINT — CLEAN CONTINUOUS FLOW (NO EMPTY PAGES)
@@ -148,6 +149,33 @@
         line-height: 1.35 !important;
       }
 
+      /* Header: logo kiri, Quotation No / Date kanan (ikut web) */
+      #quotationContent > div:first-child {
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: space-between !important;
+        align-items: flex-start !important;
+        gap: 16px !important;
+        width: 100% !important;
+      }
+      #quotationContent > div:first-child > div:first-child {
+        width: auto !important;
+        flex: 1 1 auto !important;
+      }
+      #quotationContent > div:first-child > div:last-child {
+        width: auto !important;
+        flex: 0 0 auto !important;
+        text-align: right !important;
+      }
+
+      /* Customer + Location: 2 kolum (ikut web) */
+      #quotationContent > div:nth-child(2) {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 16px !important;
+        width: 100% !important;
+      }
+
       #quotationContent table {
         width: 100% !important;
         font-size: 9.5px !important;
@@ -165,6 +193,10 @@
         display: table-header-group !important;
       }
 
+      #quotationContent table tfoot {
+        display: table-footer-group !important;
+      }
+
       #quotationContent table tr {
         break-inside: avoid !important;
         page-break-inside: avoid !important;
@@ -176,14 +208,51 @@
         vertical-align: top !important;
       }
 
+      /* Simple quotation — lebar & alignment ikut web */
+      .simple-quotation-table col:nth-child(1) { width: 6% !important; }
+      .simple-quotation-table col:nth-child(2) { width: 18% !important; }
+      .simple-quotation-table col:nth-child(3) { width: 56% !important; }
+      .simple-quotation-table col:nth-child(4) { width: 20% !important; }
+
+      .simple-quotation-table th:nth-child(1),
+      .simple-quotation-table td:nth-child(1) {
+        text-align: left !important;
+        width: 6% !important;
+      }
+      .simple-quotation-table th:nth-child(2),
+      .simple-quotation-table td:nth-child(2) {
+        text-align: left !important;
+        width: 18% !important;
+      }
+      .simple-quotation-table th:nth-child(3),
+      .simple-quotation-table td:nth-child(3) {
+        text-align: left !important;
+        width: 56% !important;
+      }
+      .simple-quotation-table th:nth-child(4),
+      .simple-quotation-table td:nth-child(4) {
+        text-align: right !important;
+        width: 20% !important;
+        white-space: nowrap !important;
+      }
+
       .detailed-quotation-table col:nth-child(1) { width: 48% !important; }
       .detailed-quotation-table col:nth-child(2) { width: 10% !important; }
       .detailed-quotation-table col:nth-child(3) { width: 10% !important; }
       .detailed-quotation-table col:nth-child(4) { width: 16% !important; }
       .detailed-quotation-table col:nth-child(5) { width: 16% !important; }
 
-      #quotationContent .mt-8,
-      #quotationContent .mt-12,
+      /* Elak halaman kosong */
+      #quotationContent .mt-8 {
+        margin-top: 16px !important;
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+      }
+      #quotationContent .mt-12 {
+        margin-top: 24px !important;
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+      }
       #quotationContent tfoot {
         break-inside: avoid !important;
         page-break-inside: avoid !important;
@@ -948,10 +1017,16 @@ function generateQuotation() {
   if (type === "simple") {
     body += `
       <div class="overflow-x-auto">
-        <table class="w-full border-collapse text-sm">
+        <table class="w-full border-collapse text-sm simple-quotation-table">
+          <colgroup>
+            <col style="width:6%">
+            <col style="width:18%">
+            <col style="width:56%">
+            <col style="width:20%">
+          </colgroup>
           <thead>
             <tr class="border-b-2 text-left">
-              <th class="py-3 px-2 w-10">No.</th>
+              <th class="py-3 px-2">No.</th>
               <th class="py-3 px-2">Area / Room</th>
               <th class="py-3 px-2">Description of Works</th>
               <th class="py-3 px-2 text-right">Amount (RM)</th>
