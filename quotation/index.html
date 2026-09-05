@@ -22,6 +22,19 @@
       font-family: Arial, Helvetica, sans-serif;
     }
 
+    /* Hide browser spinner arrows on all editable number inputs.
+       Quantity and rate remain editable by typing or using the keyboard. */
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    input[type="number"] {
+      -moz-appearance: textfield;
+      appearance: textfield;
+    }
+
     @media print {
       @page {
         margin: 12mm;
@@ -189,30 +202,22 @@
 
         <h3 class="font-bold text-lg">
           Project Information
-          <span class="text-xs text-gray-400 font-normal">
-            (Optional)
-          </span>
         </h3>
 
         <p class="text-sm text-gray-500">
-          Optional details for the estimate.
+          Enter the project details used for the estimate and quotation.
         </p>
 
       </div>
 
-      <span
-        id="projectArrow"
-        class="text-gray-500"
-      >
-        ▼
-      </span>
+
 
     </div>
 
 
     <div
       id="projectInfo"
-      class="hidden mt-5"
+      class="mt-5"
     >
 
       <div class="grid md:grid-cols-2 gap-5">
@@ -590,6 +595,10 @@
 
     </div>
 
+    <div class="mt-5 p-4 rounded-xl bg-gray-50 border text-sm text-gray-600">
+      <strong class="text-gray-800">Review before generating:</strong> Edit the Room / Area Name, Quantity and Rate directly in the estimate table above. The quotation will use your final edited values.
+    </div>
+
     <div class="mt-5 flex flex-wrap gap-3">
       <button
         type="button"
@@ -763,6 +772,9 @@ const OPTIONAL_SCOPES = [
 let roomCounter = 0;
 const excludedItems = new Set();
 const customRates = new Map();
+const customQuantities = new Map();
+const customDescriptions = new Map();
+const customRoomLabels = new Map();
 
 function generateEstimateNumber() {
   let number = localStorage.getItem("terajuEstimateNumber");
@@ -774,11 +786,12 @@ function generateEstimateNumber() {
 
 document.getElementById("estimateNumber").textContent = generateEstimateNumber();
 
-function money(value) {
+function money(value, decimals = 0) {
   return new Intl.NumberFormat("en-MY", {
     style: "currency",
     currency: "MYR",
-    minimumFractionDigits: 0
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals
   }).format(Number(value) || 0);
 }
 
@@ -800,7 +813,7 @@ function escapeHtml(value) {
 }
 
 function formatQty(value) {
-  return Number.isInteger(value) ? value : Number(value).toFixed(1);
+  return Math.round(Number(value) || 0);
 }
 
 function roomOptions() {
@@ -869,9 +882,19 @@ function addRoom(defaultType = "living", defaultArea = "") {
   div.className = "room-card border rounded-xl p-4 bg-gray-50";
 
   div.innerHTML = `
-    <div class="grid md:grid-cols-[1fr_1fr_auto] gap-4 items-end">
+    <div class="grid md:grid-cols-[1fr_1fr_1fr_auto] gap-4 items-end">
       <div>
-        <label class="block text-sm font-medium mb-2">Area / Room</label>
+        <label class="block text-sm font-medium mb-2">Room / Area Name</label>
+        <input
+          type="text"
+          value="${escapeHtml(customRoomLabels.get(id) || ROOM_TYPES[defaultType] || "Area")}"
+          placeholder="e.g. Living Area"
+          class="room-name w-full border rounded-lg px-4 py-3 bg-white"
+        >
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium mb-2">Room Type</label>
         <select class="room-type w-full border rounded-lg px-4 py-3 bg-white">
           ${roomOptions()}
         </select>
@@ -889,13 +912,11 @@ function addRoom(defaultType = "living", defaultArea = "") {
         >
       </div>
 
-      <button
-        type="button"
-        onclick="removeRoom('${id}')"
-        class="no-print border border-red-300 text-red-600 rounded-lg px-5 py-3 hover:bg-red-50"
-      >
-        Remove
-      </button>
+      <div class="no-print flex gap-2">
+        <button type="button" onclick="moveRoom('${id}', -1)" title="Move up" class="border rounded-lg px-3 py-3 hover:bg-gray-100">▲</button>
+        <button type="button" onclick="moveRoom('${id}', 1)" title="Move down" class="border rounded-lg px-3 py-3 hover:bg-gray-100">▼</button>
+        <button type="button" onclick="removeRoom('${id}')" class="border border-red-300 text-red-600 rounded-lg px-4 py-3 hover:bg-red-50">Remove</button>
+      </div>
     </div>
 
     <div class="mt-4 border-t pt-4">
@@ -925,7 +946,15 @@ function addRoom(defaultType = "living", defaultArea = "") {
   container.appendChild(div);
   div.querySelector(".room-type").value = defaultType;
 
-  div.querySelector(".room-type").addEventListener("change", updateEstimate);
+  div.querySelector(".room-name").addEventListener("change", event => {
+    editRoomLabel(id, event.target.value);
+  });
+  div.querySelector(".room-type").addEventListener("change", () => {
+    if (!customRoomLabels.has(id)) {
+      div.querySelector(".room-name").value = ROOM_TYPES[div.querySelector(".room-type").value] || "Area";
+    }
+    updateEstimate();
+  });
   div.querySelector(".room-area").addEventListener("input", updateEstimate);
 
   div.querySelectorAll(".optional-check").forEach(el => {
@@ -941,6 +970,23 @@ function addRoom(defaultType = "living", defaultArea = "") {
 
 function removeRoom(id) {
   document.getElementById(id)?.remove();
+  customRoomLabels.delete(id);
+  updateEstimate();
+}
+
+function moveRoom(id, direction) {
+  const room = document.getElementById(id);
+  const container = document.getElementById("roomsContainer");
+  if (!room || !container) return;
+
+  if (direction < 0) {
+    const previous = room.previousElementSibling;
+    if (previous) container.insertBefore(room, previous);
+  } else {
+    const next = room.nextElementSibling;
+    if (next) container.insertBefore(next, room);
+  }
+
   updateEstimate();
 }
 
@@ -1098,7 +1144,12 @@ function getAllItems() {
 
     typeIndexes[roomType] = (typeIndexes[roomType] || 0) + 1;
     const base = ROOM_TYPES[roomType] || "Area";
-    const roomLabel = `${base} ${typeIndexes[roomType]}`;
+    const autoLabel = typeIndexes[roomType] > 1
+      ? `${base} ${typeIndexes[roomType]}`
+      : base;
+    const roomLabel = customRoomLabels.has(roomId)
+      ? customRoomLabels.get(roomId)
+      : autoLabel;
 
     const standard = generateStandardRoomItems(
       roomType, area, roomId, roomLabel
@@ -1111,6 +1162,12 @@ function getAllItems() {
     [...standard, ...optional].forEach(item => {
       if (customRates.has(item.id)) {
         item.rate = customRates.get(item.id);
+      }
+      if (customQuantities.has(item.id)) {
+        item.qty = customQuantities.get(item.id);
+      }
+      if (customDescriptions.has(item.id)) {
+        item.description = customDescriptions.get(item.id);
       }
       item.amount = item.qty * item.rate;
     });
@@ -1133,7 +1190,12 @@ function getRoomGroups() {
 
     typeIndexes[roomType] = (typeIndexes[roomType] || 0) + 1;
     const base = ROOM_TYPES[roomType] || "Area";
-    const label = `${base} ${typeIndexes[roomType]}`;
+    const autoLabel = typeIndexes[roomType] > 1
+      ? `${base} ${typeIndexes[roomType]}`
+      : base;
+    const label = customRoomLabels.has(roomId)
+      ? customRoomLabels.get(roomId)
+      : autoLabel;
 
     groups.push({
       roomId,
@@ -1265,14 +1327,16 @@ function renderEstimate(
         <td class="py-3 px-2">ls</td>
         <td class="py-3 px-2 text-right">1</td>
         <td class="py-3 px-2 text-right">
-          <div class="flex items-center justify-end gap-2">
-            <span>${money(prelimRate)}</span>
-            <button
-              type="button"
-              onclick="editItemRate('project-preliminaries', ${prelimRate})"
-              class="no-print text-xs border rounded px-2 py-1 hover:bg-gray-50"
-            >Edit</button>
-          </div>
+          <input
+            type="number"
+            min="0"
+            step="0.01"
+            value="${Number(prelimRate).toFixed(2)}"
+            onchange="editItemRate('project-preliminaries', this.value)"
+            class="no-print w-32 border rounded-lg px-2 py-1.5 text-right bg-white"
+            aria-label="Project / Preliminaries rate"
+          >
+          <span class="hidden print:inline">${money(prelimRate, 2)}</span>
         </td>
         <td class="py-3 px-2 text-right font-medium">${money(prelimRate)}</td>
         <td class="no-print py-3 px-2 text-center">
@@ -1293,9 +1357,21 @@ function renderEstimate(
 
     html += `
       <tr class="bg-gray-100 border-b">
-        <td colspan="6" class="py-3 px-2 font-bold">
-          ${escapeHtml(room.label)}
-          <span class="font-normal text-gray-500">(${formatQty(room.area)} sqft)</span>
+        <td colspan="6" class="py-3 px-2">
+          <div class="flex flex-wrap items-center gap-3">
+            <label class="text-xs font-semibold uppercase tracking-wide text-gray-500">Room / Area Name</label>
+            <input
+              type="text"
+              value="${escapeHtml(room.label)}"
+              onchange="editRoomLabel('${room.roomId}', this.value)"
+              class="no-print flex-1 min-w-[220px] border rounded-lg px-3 py-2 bg-white font-semibold"
+            >
+            <span class="font-normal text-gray-500">${formatQty(room.area)} sqft</span>
+          </div>
+          <div class="hidden print:block font-bold">
+            ${escapeHtml(room.label)}
+            <span class="font-normal text-gray-500">(${formatQty(room.area)} sqft)</span>
+          </div>
         </td>
       </tr>
     `;
@@ -1305,24 +1381,38 @@ function renderEstimate(
 
       html += `
         <tr class="border-b hover:bg-gray-50">
-          <td class="py-3 px-2">
-            ${escapeHtml(item.description)}
+          <td class="py-3 px-2 align-top">
+            <textarea
+              rows="2"
+              onchange="editItemDescription('${item.id}', this.value)"
+              class="no-print w-full min-w-[280px] border rounded-lg px-3 py-2 bg-white leading-5 resize-y"
+            >${escapeHtml(item.description)}</textarea>
+            <div class="hidden print:block leading-6">${escapeHtml(item.description)}</div>
           </td>
           <td class="py-3 px-2">${escapeHtml(item.unit)}</td>
-          <td class="py-3 px-2 text-right">${formatQty(item.qty)}</td>
           <td class="py-3 px-2 text-right">
-            ${editable ? `
-              <div class="flex items-center justify-end gap-2">
-                <span>${money(item.rate)}</span>
-                <button
-                  type="button"
-                  onclick="editItemRate('${item.id}', ${item.rate})"
-                  class="no-print text-xs border rounded px-2 py-1 hover:bg-gray-50"
-                >Edit</button>
-              </div>
-            ` : money(item.rate)}
+            <input
+              type="number"
+              min="0"
+              step="1"
+              value="${formatQty(item.qty)}"
+              onchange="editItemQuantity('${item.id}', this.value)"
+              class="no-print w-24 border rounded-lg px-2 py-1.5 text-right bg-white"
+            >
+            <span class="hidden print:inline">${formatQty(item.qty)}</span>
           </td>
-          <td class="py-3 px-2 text-right font-medium">${money(item.amount)}</td>
+          <td class="py-3 px-2 text-right">
+            <input
+              type="number"
+              min="0"
+              step="0.01"
+              value="${Number(item.rate).toFixed(2)}"
+              onchange="editItemRate('${item.id}', this.value)"
+              class="no-print w-28 border rounded-lg px-2 py-1.5 text-right bg-white"
+            >
+            <span class="hidden print:inline">${money(item.rate)}</span>
+          </td>
+          <td class="py-3 px-2 text-right font-medium">${money(item.amount, 2)}</td>
           <td class="no-print py-3 px-2 text-center">
             <button
               type="button"
@@ -1340,7 +1430,7 @@ function renderEstimate(
           ${escapeHtml(room.label)} Subtotal
         </td>
         <td class="py-3 px-2 text-right font-bold">
-          ${money(roomSubtotals[room.roomId] || 0)}
+          ${money(roomSubtotals[room.roomId] || 0, 2)}
         </td>
         <td class="no-print"></td>
       </tr>
@@ -1358,7 +1448,7 @@ function renderEstimate(
               Overall Subtotal
             </td>
             <td class="py-4 px-2 text-right font-bold">
-              ${money(projectPreliminaries + roomTotal)}
+              ${money(projectPreliminaries + roomTotal, 2)}
             </td>
             <td class="no-print"></td>
           </tr>
@@ -1368,16 +1458,50 @@ function renderEstimate(
   `;
 
   container.innerHTML = html;
-  document.getElementById("grandTotal").textContent = money(total);
+  document.getElementById("grandTotal").textContent = money(total, 2);
 }
 
-function editItemRate(itemId, currentRate) {
-  const value = window.prompt("Enter lump sum rate (RM):", currentRate);
-  if (value === null) return;
+function editRoomLabel(roomId, value) {
+  const label = String(value || "").trim();
+  if (!label) {
+    window.alert("Please enter a room / area name.");
+    updateEstimate();
+    return;
+  }
 
+  customRoomLabels.set(roomId, label);
+  updateEstimate();
+}
+
+function editItemDescription(itemId, value) {
+  const description = String(value || "").trim();
+  if (!description) {
+    window.alert("Please enter a description.");
+    updateEstimate();
+    return;
+  }
+
+  customDescriptions.set(itemId, description);
+  updateEstimate();
+}
+
+function editItemQuantity(itemId, value) {
+  const qty = parseFloat(value);
+  if (!Number.isFinite(qty) || qty < 0) {
+    window.alert("Please enter a valid quantity.");
+    updateEstimate();
+    return;
+  }
+
+  customQuantities.set(itemId, qty);
+  updateEstimate();
+}
+
+function editItemRate(itemId, value) {
   const rate = parseFloat(value);
   if (!Number.isFinite(rate) || rate < 0) {
-    window.alert("Please enter a valid amount.");
+    window.alert("Please enter a valid rate.");
+    updateEstimate();
     return;
   }
 
@@ -1540,7 +1664,7 @@ function generateQuotation() {
           <td class="py-3 px-2">${no++}</td>
           <td class="py-3 px-2 font-semibold">Project</td>
           <td class="py-3 px-2">Submission of Renovation Permit Application and Engineer’s Drawings to the Local Authority</td>
-          <td class="py-3 px-2 text-right font-medium">${money(data.projectPreliminaries)}</td>
+          <td class="py-3 px-2 text-right font-medium">${money(data.projectPreliminaries, 2)}</td>
         </tr>`;
     }
 
@@ -1554,7 +1678,7 @@ function generateQuotation() {
             <span class="font-normal text-gray-500">${formatQty(room.area)} sqft</span>
           </td>
           <td class="py-3 px-2 leading-6">${quotationDescriptionList(data.itemsByRoom[room.roomId] || [])}</td>
-          <td class="py-3 px-2 text-right font-semibold">${money(data.roomSubtotals[room.roomId] || 0)}</td>
+          <td class="py-3 px-2 text-right font-semibold">${money(data.roomSubtotals[room.roomId] || 0, 2)}</td>
         </tr>`;
     });
 
@@ -1563,7 +1687,7 @@ function generateQuotation() {
           <tfoot>
             <tr class="border-t-2">
               <td colspan="3" class="py-4 px-2 text-right font-bold">TOTAL</td>
-              <td class="py-4 px-2 text-right font-bold text-lg">${money(data.total)}</td>
+              <td class="py-4 px-2 text-right font-bold text-lg">${money(data.total, 2)}</td>
             </tr>
           </tfoot>
         </table>
@@ -1596,8 +1720,8 @@ function generateQuotation() {
           </td>
           <td class="py-3 px-2">ls</td>
           <td class="py-3 px-2 text-right">1</td>
-          <td class="py-3 px-2 text-right">${money(data.projectPreliminaries)}</td>
-          <td class="py-3 px-2 text-right font-semibold">${money(data.projectPreliminaries)}</td>
+          <td class="py-3 px-2 text-right">${money(data.projectPreliminaries, 2)}</td>
+          <td class="py-3 px-2 text-right font-semibold">${money(data.projectPreliminaries, 2)}</td>
         </tr>`;
     }
 
@@ -1620,14 +1744,14 @@ function generateQuotation() {
             <td class="py-3 px-2">${escapeHtml(item.unit)}</td>
             <td class="py-3 px-2 text-right">${formatQty(item.qty)}</td>
             <td class="py-3 px-2 text-right">${money(item.rate)}</td>
-            <td class="py-3 px-2 text-right font-medium">${money(item.amount)}</td>
+            <td class="py-3 px-2 text-right font-medium">${money(item.amount, 2)}</td>
           </tr>`;
       });
 
       body += `
         <tr class="border-b">
           <td colspan="4" class="py-3 px-2 text-right font-bold">${escapeHtml(room.label)} Subtotal</td>
-          <td class="py-3 px-2 text-right font-bold">${money(data.roomSubtotals[room.roomId] || 0)}</td>
+          <td class="py-3 px-2 text-right font-bold">${money(data.roomSubtotals[room.roomId] || 0, 2)}</td>
         </tr>`;
     });
 
@@ -1636,7 +1760,7 @@ function generateQuotation() {
           <tfoot>
             <tr class="border-t-2">
               <td colspan="4" class="py-4 px-2 text-right font-bold">TOTAL</td>
-              <td class="py-4 px-2 text-right font-bold text-lg">${money(data.total)}</td>
+              <td class="py-4 px-2 text-right font-bold text-lg">${money(data.total, 2)}</td>
             </tr>
           </tfoot>
         </table>
