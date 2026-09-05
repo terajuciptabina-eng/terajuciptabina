@@ -52,12 +52,24 @@
 
       body.print-quotation > header,
       body.print-quotation > main > section:not(#quotationDocument),
-      body.print-quotation .no-print {
+      body.print-quotation .no-print,
+      body.print-quotation #quotationPrintActions {
         display: none !important;
+      }
+
+      body.print-quotation > main {
+        display: block !important;
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
       }
 
       body.print-quotation #quotationDocument {
         display: block !important;
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
         width: 210mm !important;
         max-width: none !important;
         min-height: 0 !important;
