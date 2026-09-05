@@ -4,20 +4,10 @@
 <head>
 
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-  >
-
-  <meta
-    name="theme-color"
-    content="#ffffff"
-  >
-
-  <title>
-    Renovation Planner | Teraju Ciptabina
-  </title>
+  <title>Renovation Planner | Teraju Ciptabina</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
 
@@ -72,7 +62,6 @@
       touch-action: manipulation;
     }
 
-    /* Hide browser spinner arrows on editable number inputs */
     input[type="number"]::-webkit-inner-spin-button,
     input[type="number"]::-webkit-outer-spin-button {
       -webkit-appearance: none;
@@ -87,7 +76,6 @@
 
     /* =========================================================
        MOBILE RESPONSIVE
-       Optimised for iPhone & Android
        ========================================================= */
 
     @media (max-width: 767px) {
@@ -120,16 +108,12 @@
         font-size: 15px !important;
       }
 
-      /* Cards */
-
       main > section {
         width: 100%;
         max-width: 100%;
         padding: 16px !important;
         border-radius: 16px !important;
       }
-
-      /* Page title */
 
       main > section:first-child {
         padding: 4px 0 10px !important;
@@ -147,21 +131,11 @@
         line-height: 1.5;
       }
 
-
-      /* =======================================================
-         FORCE GRIDS TO ONE COLUMN
-         ======================================================= */
-
       .grid.md\:grid-cols-2,
       .grid.md\:grid-cols-3,
       .grid.md\:grid-cols-\[1fr_1fr_1fr_auto\] {
         grid-template-columns: minmax(0, 1fr) !important;
       }
-
-
-      /* =======================================================
-         PROJECT INFORMATION
-         ======================================================= */
 
       #projectInfo {
         width: 100%;
@@ -170,11 +144,6 @@
       #projectInfo input {
         width: 100%;
       }
-
-
-      /* =======================================================
-         AREAS / ROOMS
-         ======================================================= */
 
       #roomsContainer {
         width: 100%;
@@ -204,9 +173,6 @@
         min-width: 0;
       }
 
-
-      /* Move / Down / Remove buttons */
-
       .room-card .no-print.flex {
         display: grid !important;
         grid-template-columns: 1fr 1fr;
@@ -223,9 +189,6 @@
         grid-column: 1 / -1;
       }
 
-
-      /* Add Area button */
-
       main > section:nth-of-type(3) > div:first-child {
         align-items: flex-start !important;
         gap: 12px;
@@ -234,11 +197,6 @@
       main > section:nth-of-type(3) > div:first-child > button {
         flex-shrink: 0;
       }
-
-
-      /* =======================================================
-         OPTIONAL WORKS
-         ======================================================= */
 
       .optional-scopes {
         grid-template-columns: minmax(0, 1fr) !important;
@@ -271,11 +229,6 @@
         flex: 0 0 90px;
       }
 
-
-      /* =======================================================
-         ESTIMATE
-         ======================================================= */
-
       #customerSummary {
         grid-template-columns: minmax(0, 1fr) !important;
         gap: 12px !important;
@@ -290,11 +243,6 @@
         -webkit-overflow-scrolling: touch;
         overscroll-behavior-x: contain;
       }
-
-      /*
-        Keep estimate table readable.
-        Swipe horizontally on phone.
-      */
 
       #estimateContent > div,
       #estimateContent table {
@@ -311,18 +259,10 @@
         max-width: 320px;
       }
 
-      #estimateContent input[type="number"] {
-        min-height: 42px;
-      }
-
+      #estimateContent input[type="number"],
       #estimateContent input[type="text"] {
         min-height: 42px;
       }
-
-
-      /* =======================================================
-         ESTIMATE HEADING
-         ======================================================= */
 
       .print-card > div:first-child {
         gap: 16px;
@@ -332,20 +272,10 @@
         white-space: nowrap;
       }
 
-
-      /* =======================================================
-         ESTIMATED TOTAL
-         ======================================================= */
-
       #grandTotal {
         font-size: 26px !important;
         white-space: nowrap;
       }
-
-
-      /* =======================================================
-         QUOTATION GENERATOR
-         ======================================================= */
 
       input[name="quotationType"] {
         min-height: 20px;
@@ -356,11 +286,6 @@
       .quotation-option {
         width: 100%;
       }
-
-
-      /* =======================================================
-         GENERATED QUOTATION
-         ======================================================= */
 
       #quotationDocument {
         width: 100%;
@@ -375,11 +300,6 @@
         min-width: 0;
         overflow: hidden;
       }
-
-      /*
-        Quotation header becomes vertical
-        on small screens.
-      */
 
       #quotationContent > div:first-child {
         flex-direction: column !important;
@@ -414,12 +334,6 @@
         grid-template-columns: minmax(0, 1fr) !important;
       }
 
-
-      /*
-        Quotation tables remain readable.
-        Swipe horizontally on phone.
-      */
-
       #quotationContent .overflow-x-auto {
         width: 100%;
         max-width: 100%;
@@ -433,20 +347,10 @@
         min-width: 680px;
       }
 
-      /*
-        Simple quotation has fewer columns,
-        so a slightly smaller minimum width is enough.
-      */
-
       #quotationContent table th,
       #quotationContent table td {
         padding: 9px 7px !important;
       }
-
-
-      /* =======================================================
-         PRINT / SAVE BUTTON
-         ======================================================= */
 
       #quotationPrintActions {
         width: 100%;
@@ -457,11 +361,6 @@
         width: 100%;
         min-height: 48px;
       }
-
-
-      /* =======================================================
-         CTA
-         ======================================================= */
 
       main > section:last-child {
         padding: 24px 16px !important;
@@ -481,11 +380,6 @@
         justify-content: center;
       }
 
-
-      /* =======================================================
-         TOUCH-FRIENDLY FORM ELEMENTS
-         ======================================================= */
-
       input,
       select,
       textarea {
@@ -496,22 +390,12 @@
         font-size: 15px;
       }
 
-
-      /* =======================================================
-         MOBILE SAFE AREA
-         ======================================================= */
-
       body {
         padding-bottom: env(safe-area-inset-bottom);
       }
 
     }
 
-
-    /* =========================================================
-       VERY SMALL PHONES
-       iPhone SE / small Android
-       ========================================================= */
 
     @media (max-width: 380px) {
 
@@ -551,20 +435,15 @@
     }
 
 
-    /* ========================================================
-       DETAILED QUOTATION COLUMN WIDTHS
-       Description 50% | Unit 10% | Quantity 10% | Rate 15% | Amount 15%
-       ======================================================== */
     .detailed-quotation-table {
       width: 100%;
       table-layout: fixed;
     }
 
     /* =========================================================
-       A4 PAGINATED QUOTATION PREVIEW
-       Screen view uses real A4-sized sheets so the on-screen
-       quotation matches the browser Print / Save as PDF output.
+       A4 SCREEN PREVIEW
        ========================================================= */
+
     #quotationContent.a4-paginated {
       width: 100%;
       max-width: none;
@@ -618,14 +497,14 @@
     }
 
     /* =========================================================
-       PRINT — CLEAN A4 QUOTATION LAYOUT (FIXED)
+       PRINT — CONTINUOUS FLOW (NO BIG GAPS)
        ========================================================= */
 
     @media print {
 
       @page {
         size: A4 portrait;
-        margin: 10mm 11mm;
+        margin: 12mm 12mm;
       }
 
       html,
@@ -635,6 +514,8 @@
         padding: 0 !important;
         background: #fff !important;
         overflow: visible !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
       }
 
       body.print-quotation > header,
@@ -659,54 +540,37 @@
         max-width: none !important;
         min-height: 0 !important;
         height: auto !important;
-        box-sizing: border-box !important;
         margin: 0 !important;
         padding: 0 !important;
         background: #fff !important;
         box-shadow: none !important;
         border: none !important;
         border-radius: 0 !important;
-        page-break-after: auto !important;
-        break-after: auto !important;
         overflow: visible !important;
       }
 
-      /* CRITICAL FIX: do NOT force fixed height on print.
-         Let content flow naturally → no blank pages. */
-      .quotation-page {
+      /* Important: remove the A4 page boxes during print */
+      .quotation-page,
+      .quotation-page-body {
         width: 100% !important;
         height: auto !important;
         min-height: 0 !important;
         max-height: none !important;
-        box-sizing: border-box !important;
         margin: 0 !important;
         padding: 0 !important;
-        background: #fff !important;
         box-shadow: none !important;
         overflow: visible !important;
-        page-break-after: always !important;
-        break-after: page !important;
-        position: relative !important;
-      }
-
-      .quotation-page:last-child {
         page-break-after: auto !important;
         break-after: auto !important;
-      }
-
-      .quotation-page-body {
-        width: 100% !important;
-        height: auto !important;
-        overflow: visible !important;
+        position: static !important;
       }
 
       .quotation-page-number {
-        display: none !important; /* browser will add its own page numbers if needed */
+        display: none !important;
       }
 
       .quotation-page-continuation {
-        display: block !important;
-        margin-bottom: 6px !important;
+        display: none !important; /* continuous flow does not need "Continued" headers */
       }
 
       #quotationContent {
@@ -715,21 +579,17 @@
         min-width: 0 !important;
         overflow: visible !important;
         font-size: 9.5px !important;
-        line-height: 1.3 !important;
+        line-height: 1.35 !important;
       }
 
       #quotationContent table {
         width: 100% !important;
         min-width: 0 !important;
         font-size: 9.5px !important;
-        line-height: 1.3 !important;
+        line-height: 1.35 !important;
         table-layout: fixed !important;
         border-collapse: collapse !important;
-      }
-
-      #quotationContent .detailed-quotation-table th.no-print,
-      #quotationContent .detailed-quotation-table td.no-print {
-        display: none !important;
+        page-break-inside: auto !important;
       }
 
       #quotationContent .overflow-x-auto {
@@ -743,6 +603,10 @@
         display: table-header-group !important;
       }
 
+      #quotationContent table tfoot {
+        display: table-footer-group !important;
+      }
+
       #quotationContent table tr {
         break-inside: avoid !important;
         page-break-inside: avoid !important;
@@ -751,51 +615,35 @@
       #quotationContent table th,
       #quotationContent table td {
         padding: 5px 4px !important;
-        line-height: 1.3 !important;
+        line-height: 1.35 !important;
         vertical-align: top !important;
         overflow-wrap: break-word !important;
         word-break: normal !important;
       }
 
-      /* Keep column proportions stable in PDF */
       .detailed-quotation-table col:nth-child(1) { width: 48% !important; }
       .detailed-quotation-table col:nth-child(2) { width: 10% !important; }
       .detailed-quotation-table col:nth-child(3) { width: 10% !important; }
       .detailed-quotation-table col:nth-child(4) { width: 16% !important; }
       .detailed-quotation-table col:nth-child(5) { width: 16% !important; }
 
-      #quotationContent .mb-5 {
-        margin-bottom: 8px !important;
-      }
+      #quotationContent .mb-5 { margin-bottom: 8px !important; }
+      #quotationContent .mt-8 { margin-top: 14px !important; }
+      #quotationContent .mt-12 { margin-top: 18px !important; }
+      #quotationContent .pt-5 { padding-top: 8px !important; }
+      #quotationContent .py-3 { padding-top: 4px !important; padding-bottom: 4px !important; }
+      #quotationContent .py-4 { padding-top: 5px !important; padding-bottom: 5px !important; }
 
-      #quotationContent .mt-8 {
-        margin-top: 14px !important;
-      }
-
-      #quotationContent .mt-12 {
-        margin-top: 18px !important;
-      }
-
-      #quotationContent .pt-5 {
-        padding-top: 8px !important;
-      }
-
-      #quotationContent .py-3 {
-        padding-top: 4px !important;
-        padding-bottom: 4px !important;
-      }
-
-      #quotationContent .py-4 {
-        padding-top: 5px !important;
-        padding-bottom: 5px !important;
-      }
-
-      #quotationContent .break-inside-avoid,
       #quotationContent tfoot,
       #quotationContent .mt-8,
-      #quotationContent .mt-12 {
+      #quotationContent .mt-12,
+      #quotationContent .break-inside-avoid {
         break-inside: avoid !important;
         page-break-inside: avoid !important;
+      }
+
+      #quotationContent tfoot td:last-child {
+        white-space: nowrap !important;
       }
 
     }
@@ -804,51 +652,22 @@
 
 </head>
 
-
 <body class="bg-gray-100 text-gray-800">
-
 
 <!-- =========================================================
      HEADER
      ========================================================= -->
 
 <header class="bg-white border-b">
-
-  <div
-    class="
-      max-w-6xl
-      mx-auto
-      px-6
-      py-4
-      flex
-      items-center
-      justify-between
-    "
-  >
-
+  <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
     <div class="flex items-center gap-4 min-w-0">
-
-      <img
-        src="../images/logo.png"
-        alt="Teraju Ciptabina Logo"
-        class="h-12 w-auto flex-shrink-0"
-      >
-
+      <img src="../images/logo.png" alt="Teraju Ciptabina Logo" class="h-12 w-auto flex-shrink-0">
       <div class="min-w-0">
-
-        <h1 class="font-bold text-lg">
-          TERAJU CIPTABINA
-        </h1>
-
+        <h1 class="font-bold text-lg">TERAJU CIPTABINA</h1>
       </div>
-
     </div>
-
   </div>
-
 </header>
-
-
 
 <!-- =========================================================
      MAIN
@@ -856,137 +675,44 @@
 
 <main class="max-w-6xl mx-auto px-6 py-8">
 
-
   <!-- TITLE -->
-
   <section class="mb-7">
-
-    <h2 class="text-3xl font-bold mb-2">
-      Renovation Planner
-    </h2>
-
+    <h2 class="text-3xl font-bold mb-2">Renovation Planner</h2>
     <p class="text-gray-600">
       Select the area type and enter the estimated floor area.
       The system will automatically generate the renovation breakdown.
     </p>
-
   </section>
 
-
-
-  <!-- =========================================================
-       PROJECT INFORMATION
-       ========================================================= -->
-
-  <section
-    class="
-      bg-white
-      rounded-2xl
-      shadow-sm
-      p-6
-      mb-6
-    "
-  >
-
-    <div
-      class="
-        flex
-        justify-between
-        items-center
-        cursor-pointer
-      "
-      onclick="toggleProjectInfo()"
-    >
-
+  <!-- PROJECT INFORMATION -->
+  <section class="bg-white rounded-2xl shadow-sm p-6 mb-6">
+    <div class="flex justify-between items-center cursor-pointer" onclick="toggleProjectInfo()">
       <div class="min-w-0">
-
-        <h3 class="font-bold text-lg">
-          Project Information
-        </h3>
-
-        <p class="text-sm text-gray-500">
-          Enter the project details used for the estimate and quotation.
-        </p>
-
+        <h3 class="font-bold text-lg">Project Information</h3>
+        <p class="text-sm text-gray-500">Enter the project details used for the estimate and quotation.</p>
       </div>
-
-      <!-- Fixed missing projectArrow -->
-      <span
-        id="projectArrow"
-        class="text-gray-500 text-sm ml-4 flex-shrink-0"
-        aria-hidden="true"
-      >▲</span>
-
+      <span id="projectArrow" class="text-gray-500 text-sm ml-4 flex-shrink-0" aria-hidden="true">▲</span>
     </div>
 
-
-    <div
-      id="projectInfo"
-      class="mt-5"
-    >
-
+    <div id="projectInfo" class="mt-5">
       <div class="grid md:grid-cols-2 gap-5">
-
         <div>
-
-          <label class="block text-sm font-medium mb-2">
-            Customer Name
-          </label>
-
-          <input
-            id="customerName"
-            type="text"
-            placeholder="Optional"
-            class="
-              w-full
-              border
-              rounded-lg
-              px-4
-              py-3
-              outline-none
-              focus:ring-2
-              focus:ring-gray-300
-            "
-            oninput="updateEstimate()"
-          >
-
+          <label class="block text-sm font-medium mb-2">Customer Name</label>
+          <input id="customerName" type="text" placeholder="Optional"
+            class="w-full border rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-gray-300"
+            oninput="updateEstimate()">
         </div>
-
-
         <div>
-
-          <label class="block text-sm font-medium mb-2">
-            Project Location
-          </label>
-
-          <input
-            id="projectLocation"
-            type="text"
-            list="projectLocationSuggestions"
-            placeholder="Start typing location..."
-            autocomplete="off"
-            class="
-              w-full
-              border
-              rounded-lg
-              px-4
-              py-3
-              outline-none
-              focus:ring-2
-              focus:ring-gray-300
-            "
-            oninput="updateEstimate()"
-          >
-
+          <label class="block text-sm font-medium mb-2">Project Location</label>
+          <input id="projectLocation" type="text" list="projectLocationSuggestions"
+            placeholder="Start typing location..." autocomplete="off"
+            class="w-full border rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-gray-300"
+            oninput="updateEstimate()">
         </div>
-
       </div>
-
     </div>
-
 
     <datalist id="projectLocationSuggestions">
-
       <option value="Kuala Lumpur">
       <option value="Putrajaya">
       <option value="Cyberjaya">
@@ -1022,598 +748,186 @@
       <option value="Kuala Terengganu, Terengganu">
       <option value="Kota Kinabalu, Sabah">
       <option value="Kuching, Sarawak">
-
     </datalist>
-
   </section>
 
-
-
-  <!-- =========================================================
-       AREAS
-       ========================================================= -->
-
-  <section
-    class="
-      bg-white
-      rounded-2xl
-      shadow-sm
-      p-6
-      mb-6
-    "
-  >
-
-    <div
-      class="
-        flex
-        justify-between
-        items-center
-        mb-5
-        gap-4
-      "
-    >
-
+  <!-- AREAS -->
+  <section class="bg-white rounded-2xl shadow-sm p-6 mb-6">
+    <div class="flex justify-between items-center mb-5 gap-4">
       <div class="min-w-0">
-
-        <h3 class="font-bold text-lg">
-          Areas / Rooms
-        </h3>
-
-        <p class="text-sm text-gray-500">
-          Only select the area type and enter the sqft.
-        </p>
-
+        <h3 class="font-bold text-lg">Areas / Rooms</h3>
+        <p class="text-sm text-gray-500">Only select the area type and enter the sqft.</p>
       </div>
-
-
-      <button
-        type="button"
-        onclick="addRoom()"
-        class="
-          no-print
-          bg-black
-          text-white
-          px-4
-          py-2
-          rounded-lg
-          text-sm
-          font-medium
-          hover:bg-gray-800
-          flex-shrink-0
-        "
-      >
+      <button type="button" onclick="addRoom()"
+        class="no-print bg-black text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-800 flex-shrink-0">
         + Add Area
       </button>
-
     </div>
 
-
-    <div
-      class="
-        no-print
-        bg-gray-50
-        border
-        rounded-xl
-        p-4
-        mb-5
-        text-sm
-        text-gray-600
-      "
-    >
-
-      <strong class="text-gray-800">
-        Simple input:
-      </strong>
-
+    <div class="no-print bg-gray-50 border rounded-xl p-4 mb-5 text-sm text-gray-600">
+      <strong class="text-gray-800">Simple input:</strong>
       Select the room type and enter the area.
       Quantities such as downlights, fans and other
       standard items will be calculated automatically.
-
     </div>
 
-
-    <div
-      id="roomsContainer"
-      class="space-y-4"
-    ></div>
-
+    <div id="roomsContainer" class="space-y-4"></div>
   </section>
 
-
-
-  <!-- =========================================================
-       ESTIMATE
-       ========================================================= -->
-
-  <section
-    class="
-      bg-white
-      rounded-2xl
-      shadow-sm
-      p-6
-      print-card
-    "
-  >
-
-    <div
-      class="
-        flex
-        justify-between
-        items-start
-        mb-6
-        gap-4
-      "
-    >
-
+  <!-- ESTIMATE -->
+  <section class="bg-white rounded-2xl shadow-sm p-6 print-card">
+    <div class="flex justify-between items-start mb-6 gap-4">
       <div class="min-w-0">
-
-        <p
-          class="
-            text-xs
-            uppercase
-            tracking-wider
-            text-gray-500
-          "
-        >
-          Preliminary Estimate
-        </p>
-
-        <h3 class="text-2xl font-bold">
-          Renovation Budget
-        </h3>
-
+        <p class="text-xs uppercase tracking-wider text-gray-500">Preliminary Estimate</p>
+        <h3 class="text-2xl font-bold">Renovation Budget</h3>
       </div>
-
-
       <div class="text-right flex-shrink-0">
-
-        <p class="text-xs text-gray-500">
-          Estimate No.
-        </p>
-
-        <p
-          id="estimateNumber"
-          class="font-bold"
-        >
-        </p>
-
+        <p class="text-xs text-gray-500">Estimate No.</p>
+        <p id="estimateNumber" class="font-bold"></p>
       </div>
-
     </div>
 
+    <div id="customerSummary" class="grid md:grid-cols-3 gap-5 mb-6 text-sm"></div>
+    <div id="estimateContent" class="overflow-x-auto"></div>
 
-
-    <!-- Customer summary -->
-
-    <div
-      id="customerSummary"
-      class="
-        grid
-        md:grid-cols-3
-        gap-5
-        mb-6
-        text-sm
-      "
-    ></div>
-
-
-
-    <!-- Breakdown -->
-
-    <div
-      id="estimateContent"
-      class="overflow-x-auto"
-    ></div>
-
-
-
-    <!-- Restore -->
-
-    <div
-      class="
-        no-print
-        mt-5
-        flex
-        justify-end
-      "
-    >
-
-      <button
-        type="button"
-        onclick="restoreAllItems()"
-        class="
-          border
-          px-4
-          py-2
-          rounded-lg
-          text-sm
-          hover:bg-gray-50
-        "
-      >
+    <div class="no-print mt-5 flex justify-end">
+      <button type="button" onclick="restoreAllItems()"
+        class="border px-4 py-2 rounded-lg text-sm hover:bg-gray-50">
         Restore All Items
       </button>
-
     </div>
 
-
-
-    <!-- Total -->
-
     <div class="border-t mt-6 pt-6">
-
-      <div
-        class="
-          flex
-          justify-between
-          items-center
-          gap-4
-        "
-      >
-
-        <span class="font-semibold text-lg">
-          Estimated Total
-        </span>
-
-        <span
-          id="grandTotal"
-          class="font-bold text-3xl"
-        >
-          RM 0
-        </span>
-
+      <div class="flex justify-between items-center gap-4">
+        <span class="font-semibold text-lg">Estimated Total</span>
+        <span id="grandTotal" class="font-bold text-3xl">RM 0</span>
       </div>
-
-
-      <p
-        class="
-          text-xs
-          text-gray-500
-          mt-3
-        "
-      >
-
+      <p class="text-xs text-gray-500 mt-3">
         * This is a preliminary renovation estimate only.
         Final quotation is subject to site inspection,
         approved drawings, actual site conditions,
         specifications, material selection and confirmation
         of final scope of works.
-
       </p>
-
     </div>
-
   </section>
 
-
-
-  <!-- =========================================================
-       QUOTATION GENERATOR
-       ========================================================= -->
-
-  <section
-    class="
-      no-print
-      bg-white
-      rounded-2xl
-      shadow-sm
-      p-6
-      mt-6
-    "
-  >
-
+  <!-- QUOTATION GENERATOR -->
+  <section class="no-print bg-white rounded-2xl shadow-sm p-6 mt-6">
     <div class="mb-5">
-
-      <h3 class="font-bold text-lg">
-        Generate Quotation
-      </h3>
-
-      <p class="text-sm text-gray-500">
-        Choose how much pricing detail you want to show in the quotation.
-      </p>
-
+      <h3 class="font-bold text-lg">Generate Quotation</h3>
+      <p class="text-sm text-gray-500">Choose how much pricing detail you want to show in the quotation.</p>
     </div>
 
-
     <div class="grid md:grid-cols-2 gap-4">
-
-      <label
-        class="
-          quotation-option
-          border
-          rounded-xl
-          p-4
-          cursor-pointer
-          hover:bg-gray-50
-        "
-      >
-
+      <label class="quotation-option border rounded-xl p-4 cursor-pointer hover:bg-gray-50">
         <div class="flex items-start gap-3">
-
-          <input
-            type="radio"
-            name="quotationType"
-            value="simple"
-            checked
-            class="mt-1 h-4 w-4 flex-shrink-0"
-          >
-
+          <input type="radio" name="quotationType" value="simple" checked class="mt-1 h-4 w-4 flex-shrink-0">
           <div>
-
-            <p class="font-semibold">
-              Simple Quotation
-            </p>
-
+            <p class="font-semibold">Simple Quotation</p>
             <p class="text-sm text-gray-500 mt-1">
               Shows the work description by room / area,
               with only one total price for each room / area.
             </p>
-
           </div>
-
         </div>
-
       </label>
 
-
-      <label
-        class="
-          quotation-option
-          border
-          rounded-xl
-          p-4
-          cursor-pointer
-          hover:bg-gray-50
-        "
-      >
-
+      <label class="quotation-option border rounded-xl p-4 cursor-pointer hover:bg-gray-50">
         <div class="flex items-start gap-3">
-
-          <input
-            type="radio"
-            name="quotationType"
-            value="detail"
-            class="mt-1 h-4 w-4 flex-shrink-0"
-          >
-
+          <input type="radio" name="quotationType" value="detail" class="mt-1 h-4 w-4 flex-shrink-0">
           <div>
-
-            <p class="font-semibold">
-              Detailed Quotation
-            </p>
-
+            <p class="font-semibold">Detailed Quotation</p>
             <p class="text-sm text-gray-500 mt-1">
               Shows item-by-item quantity, unit, rate and amount
               under each room / area.
             </p>
-
           </div>
-
         </div>
-
       </label>
-
     </div>
 
-
-    <div
-      class="
-        mt-5
-        p-4
-        rounded-xl
-        bg-gray-50
-        border
-        text-sm
-        text-gray-600
-      "
-    >
-
-      <strong class="text-gray-800">
-        Review before generating:
-      </strong>
-
+    <div class="mt-5 p-4 rounded-xl bg-gray-50 border text-sm text-gray-600">
+      <strong class="text-gray-800">Review before generating:</strong>
       Edit the Room / Area Name, Quantity and Rate directly
       in the estimate table above. The quotation will use
       your final edited values.
-
     </div>
-
 
     <div class="mt-5 flex flex-wrap gap-3">
-
-      <button
-        type="button"
-        onclick="generateQuotation()"
-        class="
-          bg-black
-          text-white
-          px-5
-          py-3
-          rounded-lg
-          font-semibold
-          hover:bg-gray-800
-        "
-      >
+      <button type="button" onclick="generateQuotation()"
+        class="bg-black text-white px-5 py-3 rounded-lg font-semibold hover:bg-gray-800">
         Generate Quotation
       </button>
-
     </div>
-
   </section>
 
-
-
-  <!-- =========================================================
-       GENERATED QUOTATION
-       ========================================================= -->
-
-  <section
-    id="quotationDocument"
-    class="
-      hidden
-      bg-white
-      rounded-2xl
-      shadow-sm
-      p-8
-      mt-6
-      quotation-document
-    "
-  >
-
+  <!-- GENERATED QUOTATION -->
+  <section id="quotationDocument" class="hidden bg-white rounded-2xl shadow-sm p-8 mt-6 quotation-document">
     <div id="quotationContent"></div>
 
-
-    <div
-      id="quotationPrintActions"
-      class="
-        no-print
-        mt-6
-        pt-5
-        border-t
-        flex
-        flex-wrap
-        justify-end
-        gap-3
-      "
-    >
-
-      <button
-        type="button"
-        onclick="printQuotation()"
-        class="
-          bg-black
-          text-white
-          px-5
-          py-3
-          rounded-lg
-          font-semibold
-          hover:bg-gray-800
-        "
-      >
+    <div id="quotationPrintActions" class="no-print mt-6 pt-5 border-t flex flex-wrap justify-end gap-3">
+      <button type="button" onclick="printQuotation()"
+        class="bg-black text-white px-5 py-3 rounded-lg font-semibold hover:bg-gray-800">
         Print / Save Quotation PDF
       </button>
-
     </div>
-
   </section>
 
-
-
-  <!-- =========================================================
-       CTA
-       ========================================================= -->
-
-  <section
-    class="
-      no-print
-      bg-gray-900
-      text-white
-      rounded-2xl
-      p-8
-      mt-8
-      text-center
-    "
-  >
-
-    <h3 class="text-2xl font-bold mb-3">
-      Need an Official Quotation?
-    </h3>
-
-    <p
-      class="
-        text-gray-300
-        max-w-2xl
-        mx-auto
-        mb-6
-      "
-    >
-
+  <!-- CTA -->
+  <section class="no-print bg-gray-900 text-white rounded-2xl p-8 mt-8 text-center">
+    <h3 class="text-2xl font-bold mb-3">Need an Official Quotation?</h3>
+    <p class="text-gray-300 max-w-2xl mx-auto mb-6">
       Let Teraju Ciptabina inspect your property
       and prepare a detailed quotation based on
       the actual site condition and requirements.
-
     </p>
-
-
-    <a
-      href="../index.html#contact"
-      class="
-        inline-block
-        bg-white
-        text-black
-        px-6
-        py-3
-        rounded-lg
-        font-semibold
-        hover:bg-gray-200
-      "
-    >
+    <a href="../index.html#contact"
+      class="inline-block bg-white text-black px-6 py-3 rounded-lg font-semibold hover:bg-gray-200">
       Request Site Visit
     </a>
-
   </section>
 
 </main>
-
-
-
-<!-- =========================================================
-     JAVASCRIPT
-     ========================================================= -->
 
 <script>
 
 /* ============================================================
    TERAJU CIPTABINA RENOVATION PLANNER
-   Room-based calculation engine
    ============================================================ */
 
-
 const RATES = {
-
   ceiling: 12,
   spc: 14,
   floorTile: 22,
   wallTile: 22,
   facadeWall: 60,
-
   downlight: 200,
   wallLight: 250,
   ceilingFan: 550,
   exhaustFan: 200,
-
   curtainBoxLED: 300,
   barLamp: 500,
   diningLamp: 600,
-
   kitchenFrame: 1200,
   kitchenMakingGood: 1000,
   kitchenGlassDoor: 1200,
-
   bathroomSanitary: 3000,
   bathroomDoor: 1200,
-
   gateMotor: 6400,
   brickwallDivider: 2800,
   frontFence: 5500,
-
   preliminaries: 8500,
-
   extensionKitchen: 250,
   extensionToilet: 584
-
 };
-
 
 const RULES = {
-
   downlightPerSqft: 50,
   minimumDownlights: 4
-
 };
 
-
 const ROOM_TYPES = {
-
   living: "Living / Dining",
   bedroom: "Bedroom",
   dryKitchen: "Dry Kitchen",
@@ -1623,16 +937,9 @@ const ROOM_TYPES = {
   balcony: "Balcony",
   extensionKitchen: "New Extension – Kitchen",
   extensionToilet: "New Extension – Toilet"
-
 };
 
-
-/*
-  Optional scopes are attached to individual room / area.
-*/
-
 const OPTIONAL_SCOPES = [
-
   {
     key: "demolition",
     label: "Demolition works based on designer proposal, including careful removal, disposal, and site clearing, completed in a safe and professional manner",
@@ -1640,7 +947,6 @@ const OPTIONAL_SCOPES = [
     rate: null,
     custom: true
   },
-
   {
     key: "painting",
     label: "Supply labour, materials, tools, and equipment to carry out internal and external painting works, including surface preparation, minor repairs, sealer where required, two coats of premium quality paint, cleaning and touch-up upon completion",
@@ -1648,28 +954,24 @@ const OPTIONAL_SCOPES = [
     rate: null,
     custom: true
   },
-
   {
     key: "glassDoor",
     label: "To supply and install additional swing glass door",
     unit: "unit",
     rate: RATES.kitchenGlassDoor
   },
-
   {
     key: "brickwallDivider",
     label: "To build additional side brickwall divider c/w plaster and paint",
     unit: "ls",
     rate: RATES.brickwallDivider
   },
-
   {
     key: "frontFence",
     label: "To build additional front fence brickwall based on designer proposal",
     unit: "ls",
     rate: RATES.frontFence
   },
-
   {
     key: "windows",
     label: "To supply and install additional windows",
@@ -1677,7 +979,6 @@ const OPTIONAL_SCOPES = [
     rate: null,
     custom: true
   },
-
   {
     key: "electrical",
     label: "Additional electrical and wiring works based on confirmed site requirements",
@@ -1685,3080 +986,664 @@ const OPTIONAL_SCOPES = [
     rate: null,
     custom: true
   }
-
 ];
 
-
 let roomCounter = 0;
-
 const excludedItems = new Set();
-
 const customRates = new Map();
-
 const customQuantities = new Map();
-
 const customDescriptions = new Map();
-
 const customRoomLabels = new Map();
 
-
-
-/* ============================================================
-   ESTIMATE NUMBER
-   ============================================================ */
-
 function generateEstimateNumber() {
-
-  let number =
-    localStorage.getItem("terajuEstimateNumber");
-
+  let number = localStorage.getItem("terajuEstimateNumber");
   if (!number) {
-
     number = 1;
-
   } else {
-
-    number =
-      parseInt(number, 10) + 1;
-
+    number = parseInt(number, 10) + 1;
   }
-
-  localStorage.setItem(
-    "terajuEstimateNumber",
-    number
-  );
-
-  return "EST-" +
-    String(number).padStart(4, "0");
-
+  localStorage.setItem("terajuEstimateNumber", number);
+  return "EST-" + String(number).padStart(4, "0");
 }
 
-
-document.getElementById(
-  "estimateNumber"
-).textContent =
-  generateEstimateNumber();
-
-
-
-/* ============================================================
-   MONEY
-   ============================================================ */
+document.getElementById("estimateNumber").textContent = generateEstimateNumber();
 
 function money(value, decimals = 0) {
-
-  return new Intl.NumberFormat(
-    "en-MY",
-    {
-      style: "currency",
-      currency: "MYR",
-      minimumFractionDigits: decimals,
-      maximumFractionDigits: decimals
-    }
-  ).format(Number(value) || 0);
-
+  return new Intl.NumberFormat("en-MY", {
+    style: "currency",
+    currency: "MYR",
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals
+  }).format(Number(value) || 0);
 }
-
-
-
-/* ============================================================
-   DOWNLIGHT CALCULATION
-   ============================================================ */
 
 function calculateDownlights(area) {
-
-  if (!area || area <= 0) {
-    return 0;
-  }
-
-  return Math.max(
-    RULES.minimumDownlights,
-    Math.ceil(
-      area / RULES.downlightPerSqft
-    )
-  );
-
+  if (!area || area <= 0) return 0;
+  return Math.max(RULES.minimumDownlights, Math.ceil(area / RULES.downlightPerSqft));
 }
 
-
-
-/* ============================================================
-   ESCAPE HTML
-   ============================================================ */
-
 function escapeHtml(value) {
-
   return String(value ?? "")
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
-
 }
-
-
-
-/* ============================================================
-   FORMAT QUANTITY
-   ============================================================ */
 
 function formatQty(value) {
-
-  return Math.round(
-    Number(value) || 0
-  );
-
+  return Math.round(Number(value) || 0);
 }
-
-
-
-/* ============================================================
-   ROOM OPTIONS
-   ============================================================ */
 
 function roomOptions() {
-
   return Object.entries(ROOM_TYPES)
-    .map(
-      ([key, name]) =>
-        `<option value="${key}">
-          ${escapeHtml(name)}
-        </option>`
-    )
+    .map(([key, name]) => `<option value="${key}">${escapeHtml(name)}</option>`)
     .join("");
-
 }
-
-
-
-/* ============================================================
-   ROOM LABEL
-   ============================================================ */
-
-function getRoomLabel(roomId, roomType) {
-
-  const rooms = [
-    ...document.querySelectorAll(
-      "#roomsContainer .room-card"
-    )
-  ];
-
-  const sameType =
-    rooms.filter(
-      room =>
-        room.querySelector(".room-type")?.value === roomType
-    );
-
-  const base =
-    ROOM_TYPES[roomType] || "Area";
-
-  return sameType.length > 1
-    ? `${base} ${
-        sameType.indexOf(
-          document.getElementById(roomId)
-        ) + 1
-      }`
-    : base;
-
-}
-
-
-
-/* ============================================================
-   OPTIONAL WORKS HTML
-   ============================================================ */
 
 function optionalScopeHtml() {
-
-  return OPTIONAL_SCOPES
-    .map(scope => {
-
-      const fixed =
-        scope.rate !== null;
-
-      return `
-
-        <div
-          class="
-            optional-scope
-            border
-            rounded-lg
-            p-3
-            bg-white
-          "
-          data-scope="${scope.key}"
-        >
-
-          <div
-            class="
-              flex
-              items-start
-              gap-3
-            "
-          >
-
-            <input
-              type="checkbox"
-              class="optional-check h-4 w-4"
-              data-scope="${scope.key}"
-            >
-
-            <div class="flex-1 min-w-0">
-
-              <label
-                class="
-                  text-sm
-                  font-medium
-                  cursor-pointer
-                "
-              >
-                ${escapeHtml(scope.label)}
-              </label>
-
-              <p class="text-xs text-gray-500 mt-1">
-
-                ${
-                  fixed
-                    ? `Standard rate: ${money(scope.rate)} / ${scope.unit}`
-                    : "Enter a room-specific rate if required"
-                }
-
-              </p>
-
-            </div>
-
-            ${
-              fixed
-                ? `
-                  <div
-                    class="
-                      text-sm
-                      font-semibold
-                      whitespace-nowrap
-                      flex-shrink-0
-                    "
-                  >
-                    ${money(scope.rate)}
-                  </div>
-                `
-                : `
-                  <input
-                    type="number"
-                    min="0"
-                    step="1"
-                    value=""
-                    placeholder="Rate"
-                    class="
-                      optional-rate
-                      w-28
-                      border
-                      rounded-lg
-                      px-3
-                      py-2
-                      text-sm
-                      flex-shrink-0
-                    "
-                  >
-                `
-            }
-
+  return OPTIONAL_SCOPES.map(scope => {
+    const fixed = scope.rate !== null;
+    return `
+      <div class="optional-scope border rounded-lg p-3 bg-white" data-scope="${scope.key}">
+        <div class="flex items-start gap-3">
+          <input type="checkbox" class="optional-check h-4 w-4" data-scope="${scope.key}">
+          <div class="flex-1 min-w-0">
+            <label class="text-sm font-medium cursor-pointer">${escapeHtml(scope.label)}</label>
+            <p class="text-xs text-gray-500 mt-1">
+              ${fixed ? `Standard rate: ${money(scope.rate)} / ${scope.unit}` : "Enter a room-specific rate if required"}
+            </p>
           </div>
-
+          ${fixed
+            ? `<div class="text-sm font-semibold whitespace-nowrap flex-shrink-0">${money(scope.rate)}</div>`
+            : `<input type="number" min="0" step="1" value="" placeholder="Rate"
+                class="optional-rate w-28 border rounded-lg px-3 py-2 text-sm flex-shrink-0">`
+          }
         </div>
-
-      `;
-
-    })
-    .join("");
-
+      </div>
+    `;
+  }).join("");
 }
 
-
-
-/* ============================================================
-   ADD ROOM
-   ============================================================ */
-
-function addRoom(
-  defaultType = "living",
-  defaultArea = ""
-) {
-
+function addRoom(defaultType = "living", defaultArea = "") {
   roomCounter++;
-
-  const id =
-    "room-" + roomCounter;
-
-  const container =
-    document.getElementById(
-      "roomsContainer"
-    );
-
-  const div =
-    document.createElement("div");
-
+  const id = "room-" + roomCounter;
+  const container = document.getElementById("roomsContainer");
+  const div = document.createElement("div");
   div.id = id;
-
-  div.className =
-    "room-card border rounded-xl p-4 bg-gray-50";
-
+  div.className = "room-card border rounded-xl p-4 bg-gray-50";
 
   div.innerHTML = `
-
-    <div
-      class="
-        grid
-        md:grid-cols-[1fr_1fr_1fr_auto]
-        gap-4
-        items-end
-      "
-    >
-
+    <div class="grid md:grid-cols-[1fr_1fr_1fr_auto] gap-4 items-end">
       <div>
-
-        <label
-          class="
-            block
-            text-sm
-            font-medium
-            mb-2
-          "
-        >
-          Room / Area Name
-        </label>
-
-        <input
-          type="text"
-          value="${escapeHtml(
-            customRoomLabels.get(id) ||
-            ROOM_TYPES[defaultType] ||
-            "Area"
-          )}"
+        <label class="block text-sm font-medium mb-2">Room / Area Name</label>
+        <input type="text"
+          value="${escapeHtml(customRoomLabels.get(id) || ROOM_TYPES[defaultType] || "Area")}"
           placeholder="e.g. Living Area"
-          class="
-            room-name
-            w-full
-            border
-            rounded-lg
-            px-4
-            py-3
-            bg-white
-          "
-        >
-
+          class="room-name w-full border rounded-lg px-4 py-3 bg-white">
       </div>
-
-
       <div>
-
-        <label
-          class="
-            block
-            text-sm
-            font-medium
-            mb-2
-          "
-        >
-          Room Type
-        </label>
-
-        <select
-          class="
-            room-type
-            w-full
-            border
-            rounded-lg
-            px-4
-            py-3
-            bg-white
-          "
-        >
-
+        <label class="block text-sm font-medium mb-2">Room Type</label>
+        <select class="room-type w-full border rounded-lg px-4 py-3 bg-white">
           ${roomOptions()}
-
         </select>
-
       </div>
-
-
       <div>
-
-        <label
-          class="
-            block
-            text-sm
-            font-medium
-            mb-2
-          "
-        >
-          Area (sqft)
-        </label>
-
-        <input
-          type="number"
-          min="1"
-          step="1"
-          value="${escapeHtml(defaultArea)}"
+        <label class="block text-sm font-medium mb-2">Area (sqft)</label>
+        <input type="number" min="1" step="1" value="${escapeHtml(defaultArea)}"
           placeholder="e.g. 200"
-          class="
-            room-area
-            w-full
-            border
-            rounded-lg
-            px-4
-            py-3
-            bg-white
-          "
-        >
-
+          class="room-area w-full border rounded-lg px-4 py-3 bg-white">
       </div>
-
-
-      <div
-        class="
-          no-print
-          flex
-          gap-2
-        "
-      >
-
-        <button
-          type="button"
-          onclick="moveRoom('${id}', -1)"
-          title="Move up"
-          class="
-            border
-            rounded-lg
-            px-3
-            py-3
-            hover:bg-gray-100
-          "
-        >
-          ▲
-        </button>
-
-        <button
-          type="button"
-          onclick="moveRoom('${id}', 1)"
-          title="Move down"
-          class="
-            border
-            rounded-lg
-            px-3
-            py-3
-            hover:bg-gray-100
-          "
-        >
-          ▼
-        </button>
-
-        <button
-          type="button"
-          onclick="removeRoom('${id}')"
-          class="
-            border
-            border-red-300
-            text-red-600
-            rounded-lg
-            px-4
-            py-3
-            hover:bg-red-50
-          "
-        >
-          Remove
-        </button>
-
+      <div class="no-print flex gap-2">
+        <button type="button" onclick="moveRoom('${id}', -1)" title="Move up"
+          class="border rounded-lg px-3 py-3 hover:bg-gray-100">▲</button>
+        <button type="button" onclick="moveRoom('${id}', 1)" title="Move down"
+          class="border rounded-lg px-3 py-3 hover:bg-gray-100">▼</button>
+        <button type="button" onclick="removeRoom('${id}')"
+          class="border border-red-300 text-red-600 rounded-lg px-4 py-3 hover:bg-red-50">Remove</button>
       </div>
-
     </div>
 
-
-    <div
-      class="
-        mt-4
-        border-t
-        pt-4
-      "
-    >
-
-      <button
-        type="button"
-        class="
-          optional-toggle
-          w-full
-          flex
-          items-center
-          justify-between
-          text-left
-          py-1
-          no-print
-        "
-        onclick="toggleOptionalWorks('${id}')"
-        aria-expanded="false"
-      >
-
+    <div class="mt-4 border-t pt-4">
+      <button type="button" class="optional-toggle w-full flex items-center justify-between text-left py-1 no-print"
+        onclick="toggleOptionalWorks('${id}')" aria-expanded="false">
         <div class="min-w-0">
-
-          <h4 class="font-semibold text-sm">
-            Optional Works
-          </h4>
-
-          <p class="text-xs text-gray-500 mt-1">
-            Expand only if additional works are required for this area.
-          </p>
-
+          <h4 class="font-semibold text-sm">Optional Works</h4>
+          <p class="text-xs text-gray-500 mt-1">Expand only if additional works are required for this area.</p>
         </div>
-
-        <span
-          id="${id}-optional-arrow"
-          class="
-            text-gray-500
-            text-sm
-            ml-4
-            flex-shrink-0
-          "
-        >
-          ▼
-        </span>
-
+        <span id="${id}-optional-arrow" class="text-gray-500 text-sm ml-4 flex-shrink-0">▼</span>
       </button>
-
-
-      <div
-        id="${id}-optional"
-        class="hidden mt-3"
-      >
-
-        <div
-          class="
-            grid
-            md:grid-cols-2
-            gap-3
-            optional-scopes
-          "
-        >
-
+      <div id="${id}-optional" class="hidden mt-3">
+        <div class="grid md:grid-cols-2 gap-3 optional-scopes">
           ${optionalScopeHtml()}
-
         </div>
-
       </div>
-
     </div>
-
   `;
-
 
   container.appendChild(div);
+  div.querySelector(".room-type").value = defaultType;
 
-
-  div.querySelector(
-    ".room-type"
-  ).value =
-    defaultType;
-
-
-  div.querySelector(
-    ".room-name"
-  ).addEventListener(
-    "change",
-    event => {
-
-      editRoomLabel(
-        id,
-        event.target.value
-      );
-
-    }
-  );
-
-
-  div.querySelector(
-    ".room-type"
-  ).addEventListener(
-    "change",
-    () => {
-
-      if (!customRoomLabels.has(id)) {
-
-        div.querySelector(
-          ".room-name"
-        ).value =
-          ROOM_TYPES[
-            div.querySelector(
-              ".room-type"
-            ).value
-          ] || "Area";
-
-      }
-
-      updateEstimate();
-
-    }
-  );
-
-
-  div.querySelector(
-    ".room-area"
-  ).addEventListener(
-    "input",
-    updateEstimate
-  );
-
-
-  div.querySelectorAll(
-    ".optional-check"
-  ).forEach(
-    el =>
-      el.addEventListener(
-        "change",
-        updateEstimate
-      )
-  );
-
-
-  div.querySelectorAll(
-    ".optional-rate"
-  ).forEach(
-    el =>
-      el.addEventListener(
-        "input",
-        updateEstimate
-      )
-  );
-
-
-  updateEstimate();
-
-}
-
-
-
-/* ============================================================
-   REMOVE ROOM
-   ============================================================ */
-
-function removeRoom(id) {
-
-  document
-    .getElementById(id)
-    ?.remove();
-
-  customRoomLabels.delete(id);
-
-  updateEstimate();
-
-}
-
-
-
-/* ============================================================
-   MOVE ROOM
-   ============================================================ */
-
-function moveRoom(
-  id,
-  direction
-) {
-
-  const room =
-    document.getElementById(id);
-
-  const container =
-    document.getElementById(
-      "roomsContainer"
-    );
-
-  if (!room || !container) {
-    return;
-  }
-
-
-  if (direction < 0) {
-
-    const previous =
-      room.previousElementSibling;
-
-    if (previous) {
-
-      container.insertBefore(
-        room,
-        previous
-      );
-
-    }
-
-  } else {
-
-    const next =
-      room.nextElementSibling;
-
-    if (next) {
-
-      container.insertBefore(
-        next,
-        room
-      );
-
-    }
-
-  }
-
-
-  updateEstimate();
-
-}
-
-
-
-/* ============================================================
-   OPTIONAL WORKS TOGGLE
-   ============================================================ */
-
-function toggleOptionalWorks(
-  roomId
-) {
-
-  const panel =
-    document.getElementById(
-      `${roomId}-optional`
-    );
-
-  const arrow =
-    document.getElementById(
-      `${roomId}-optional-arrow`
-    );
-
-  if (!panel || !arrow) {
-    return;
-  }
-
-
-  panel.classList.toggle(
-    "hidden"
-  );
-
-
-  const expanded =
-    !panel.classList.contains(
-      "hidden"
-    );
-
-
-  arrow.textContent =
-    expanded ? "▲" : "▼";
-
-
-  const toggle =
-    document.querySelector(
-      `.optional-toggle[onclick="toggleOptionalWorks('${roomId}')"]`
-    );
-
-
-  toggle?.setAttribute(
-    "aria-expanded",
-    String(expanded)
-  );
-
-}
-
-
-
-/* ============================================================
-   PROJECT INFORMATION TOGGLE
-   ============================================================ */
-
-function toggleProjectInfo() {
-
-  const info =
-    document.getElementById(
-      "projectInfo"
-    );
-
-  const arrow =
-    document.getElementById(
-      "projectArrow"
-    );
-
-
-  if (!info) {
-    return;
-  }
-
-
-  info.classList.toggle(
-    "hidden"
-  );
-
-
-  const isHidden =
-    info.classList.contains(
-      "hidden"
-    );
-
-
-  if (arrow) {
-
-    arrow.textContent =
-      isHidden ? "▼" : "▲";
-
-  }
-
-}
-
-
-
-/* ============================================================
-   PUSH ITEM
-   ============================================================ */
-
-function pushItem(
-  items,
-  roomId,
-  roomLabel,
-  key,
-  description,
-  qty,
-  unit,
-  rate,
-  optional = false
-) {
-
-  items.push({
-
-    id:
-      `${roomId}-${key}`,
-
-    roomId,
-
-    room:
-      roomLabel,
-
-    description,
-
-    qty:
-      Number(qty) || 0,
-
-    unit,
-
-    rate:
-      Number(rate) || 0,
-
-    optional
-
+  div.querySelector(".room-name").addEventListener("change", event => {
+    editRoomLabel(id, event.target.value);
   });
 
-}
-
-
-
-/* ============================================================
-   STANDARD ROOM ITEMS
-   ============================================================ */
-
-function generateStandardRoomItems(
-  roomType,
-  area,
-  roomId,
-  roomLabel
-) {
-
-  const items = [];
-
-
-  if (!area || area <= 0) {
-    return items;
-  }
-
-
-  /* Living / Bedroom */
-
-  if (
-    roomType === "living" ||
-    roomType === "bedroom"
-  ) {
-
-    pushItem(
-      items,
-      roomId,
-      roomLabel,
-      "ceiling",
-      "To supply and install plaster ceiling flat c/w paint",
-      area,
-      "sqft",
-      RATES.ceiling
-    );
-
-
-    pushItem(
-      items,
-      roomId,
-      roomLabel,
-      "spc",
-      "To supply and install spc flooring c/w skirting and floor mat",
-      area,
-      "sqft",
-      RATES.spc
-    );
-
-
-    pushItem(
-      items,
-      roomId,
-      roomLabel,
-      "downlight",
-      `To supply and install ${calculateDownlights(area)} unit downlight c/w wiring`,
-      calculateDownlights(area),
-      "unit",
-      RATES.downlight
-    );
-
-
-    pushItem(
-      items,
-      roomId,
-      roomLabel,
-      "fan",
-      "To supply and install 1 unit ceiling fan c/w wiring",
-      1,
-      "unit",
-      RATES.ceilingFan
-    );
-
-
-    pushItem(
-      items,
-      roomId,
-      roomLabel,
-      "curtain",
-      "To supply and install led light for curtain box 1 set c/w wiring",
-      1,
-      "ls",
-      RATES.curtainBoxLED
-    );
-
-  }
-
-
-  /* Dry Kitchen */
-
-  if (
-    roomType === "dryKitchen"
-  ) {
-
-    pushItem(
-      items,
-      roomId,
-      roomLabel,
-      "ceiling",
-      "To supply and install plaster ceiling flat c/w paint",
-      area,
-      "sqft",
-      RATES.ceiling
-    );
-
-
-    pushItem(
-      items,
-      roomId,
-      roomLabel,
-      "spc",
-      "To supply and install spc flooring c/w skirting and floor mat",
-      area,
-      "sqft",
-      RATES.spc
-    );
-
-
-    pushItem(
-      items,
-      roomId,
-      roomLabel,
-      "downlight",
-      `To supply and install ${calculateDownlights(area)} unit downlight c/w wiring`,
-      calculateDownlights(area),
-      "unit",
-      RATES.downlight
-    );
-
-
-    pushItem(
-      items,
-      roomId,
-      roomLabel,
-      "barlamp",
-      "To supply and install bar lamp c/w wiring",
-      1,
-      "unit",
-      RATES.barLamp
-    );
-
-
-    pushItem(
-      items,
-      roomId,
-      roomLabel,
-      "fan",
-      "To supply and install baby ceiling fan c/w wiring",
-      1,
-      "unit",
-      RATES.ceilingFan
-    );
-
-
-    pushItem(
-      items,
-      roomId,
-      roomLabel,
-      "frame",
-      "To supply and install laminated arce frame 1 unit",
-      1,
-      "ls",
-      RATES.kitchenFrame
-    );
-
-
-    pushItem(
-      items,
-      roomId,
-      roomLabel,
-      "makinggood",
-      "To making good wall after demolish existing toilet",
-      1,
-      "ls",
-      RATES.kitchenMakingGood
-    );
-
-
-    pushItem(
-      items,
-      roomId,
-      roomLabel,
-      "glassdoor",
-      "To supply and install swing glass door",
-      1,
-      "ls",
-      RATES.kitchenGlassDoor
-    );
-
-  }
-
-
-  /* Wet Kitchen */
-
-  if (
-    roomType === "wetKitchen"
-  ) {
-
-    pushItem(
-      items,
-      roomId,
-      roomLabel,
-      "floor",
-      "To supply and install floor tiles c/w water proofing",
-      area,
-      "sqft",
-      RATES.floorTile
-    );
-
-
-    pushItem(
-      items,
-      roomId,
-      roomLabel,
-      "walltile",
-      "To supply and install wall tiles",
-      area * 2,
-      "sqft",
-      RATES.wallTile
-    );
-
-
-    pushItem(
-      items,
-      roomId,
-      roomLabel,
-      "ceiling",
-      "To supply and install plaster ceiling flat c/w paint",
-      area,
-      "sqft",
-      RATES.ceiling
-    );
-
-
-    pushItem(
-      items,
-      roomId,
-      roomLabel,
-      "downlight",
-      `To supply and install ${calculateDownlights(area)} unit downlight c/w wiring`,
-      calculateDownlights(area),
-      "unit",
-      RATES.downlight
-    );
-
-
-    pushItem(
-      items,
-      roomId,
-      roomLabel,
-      "fan",
-      "To supply and install 1 unit ceiling fan c/w wiring",
-      1,
-      "unit",
-      RATES.ceilingFan
-    );
-
-
-    pushItem(
-      items,
-      roomId,
-      roomLabel,
-      "lamp",
-      "To supply and install kitchen lighting c/w wiring",
-      1,
-      "ls",
-      RATES.barLamp
-    );
-
-  }
-
-
-  /* Bathroom */
-
-  if (
-    roomType === "bathroom"
-  ) {
-
-    pushItem(
-      items,
-      roomId,
-      roomLabel,
-      "floor",
-      "To supply and install floor tiles c/w water proofing",
-      area,
-      "sqft",
-      RATES.floorTile
-    );
-
-
-    pushItem(
-      items,
-      roomId,
-      roomLabel,
-      "walltile",
-      "Wall tiles",
-      area * 6,
-      "sqft",
-      RATES.wallTile
-    );
-
-
-    pushItem(
-      items,
-      roomId,
-      roomLabel,
-      "ceiling",
-      "To supply and install plaster ceiling flat c/w paint",
-      area,
-      "sqft",
-      RATES.ceiling
-    );
-
-
-    pushItem(
-      items,
-      roomId,
-      roomLabel,
-      "sanitary",
-      "To supply and install toilet accessories (water closet, bidet, sink and cabinet)",
-      1,
-      "ls",
-      RATES.bathroomSanitary
-    );
-
-
-    pushItem(
-      items,
-      roomId,
-      roomLabel,
-      "door",
-      "To supply and install toilet swing door",
-      1,
-      "unit",
-      RATES.bathroomDoor
-    );
-
-
-    pushItem(
-      items,
-      roomId,
-      roomLabel,
-      "downlight",
-      `To supply and install ${calculateDownlights(area)} unit downlight c/w wiring`,
-      calculateDownlights(area),
-      "unit",
-      RATES.downlight
-    );
-
-
-    pushItem(
-      items,
-      roomId,
-      roomLabel,
-      "exhaust",
-      `To supply and install ${Math.max(
-        1,
-        Math.ceil(area / 50)
-      )} unit exhaust fan c/w wiring`,
-      Math.max(
-        1,
-        Math.ceil(area / 50)
-      ),
-      "unit",
-      RATES.exhaustFan
-    );
-
-  }
-
-
-  /* Car Porch */
-
-  if (
-    roomType === "carPorch"
-  ) {
-
-    pushItem(
-      items,
-      roomId,
-      roomLabel,
-      "floor",
-      "To supply and install floor tiles",
-      area,
-      "sqft",
-      RATES.floorTile
-    );
-
-
-    pushItem(
-      items,
-      roomId,
-      roomLabel,
-      "ceiling",
-      "To supply and install plaster ceiling flat c/w paint",
-      area,
-      "sqft",
-      RATES.ceiling
-    );
-
-
-    pushItem(
-      items,
-      roomId,
-      roomLabel,
-      "downlight",
-      `To supply and install ${calculateDownlights(area)} unit downlight c/w wiring`,
-      calculateDownlights(area),
-      "unit",
-      RATES.downlight
-    );
-
-
-    pushItem(
-      items,
-      roomId,
-      roomLabel,
-      "gate",
-      "To supply and install main gate c/w automatic motor 4000mm (L) x 1830mm (H)",
-      1,
-      "ls",
-      RATES.gateMotor
-    );
-
-
-    pushItem(
-      items,
-      roomId,
-      roomLabel,
-      "divider",
-      "To build 1 side brickwall divider c/w plaster and paint",
-      1,
-      "ls",
-      RATES.brickwallDivider
-    );
-
-
-    pushItem(
-      items,
-      roomId,
-      roomLabel,
-      "fence",
-      "To build new front fence brickwall based on designer proposal",
-      1,
-      "ls",
-      RATES.frontFence
-    );
-
-  }
-
-
-  /* Balcony */
-
-  if (
-    roomType === "balcony"
-  ) {
-
-    pushItem(
-      items,
-      roomId,
-      roomLabel,
-      "floor",
-      "To supply and install floor tiles c/w water proofing",
-      area,
-      "sqft",
-      RATES.floorTile
-    );
-
-
-    pushItem(
-      items,
-      roomId,
-      roomLabel,
-      "facade",
-      "Facade wall",
-      area * 1.33,
-      "sqft",
-      RATES.facadeWall
-    );
-
-
-    pushItem(
-      items,
-      roomId,
-      roomLabel,
-      "walllight",
-      `To supply and install ${Math.max(
-        2,
-        Math.ceil(area / 70)
-      )} unit wall light c/w wiring`,
-      Math.max(
-        2,
-        Math.ceil(area / 70)
-      ),
-      "unit",
-      RATES.wallLight
-    );
-
-  }
-
-
-  /* Extension Kitchen */
-
-  if (
-    roomType === "extensionKitchen"
-  ) {
-
-    pushItem(
-      items,
-      roomId,
-      roomLabel,
-      "extension",
-      `To build concrete foundation for new kitchen, including excavation, reinforcement and concreting works, complete with tiles finishing, safety door, casement window, accessories and concrete roof slab based on designer’s proposal. Total area ${formatQty(area)}sqft`,
-      area,
-      "sqft",
-      RATES.extensionKitchen
-    );
-
-
-    pushItem(
-      items,
-      roomId,
-      roomLabel,
-      "downlight",
-      `To supply and install ${calculateDownlights(area)} unit downlight c/w wiring`,
-      calculateDownlights(area),
-      "unit",
-      RATES.downlight
-    );
-
-  }
-
-
-  /* Extension Toilet */
-
-  if (
-    roomType === "extensionToilet"
-  ) {
-
-    pushItem(
-      items,
-      roomId,
-      roomLabel,
-      "extension",
-      `To build concrete foundation for new toilet, including excavation, reinforcement and concreting works, complete with tiles finishing, safety door, casement window, toilet accessories and concrete roof slab based on designer’s proposal. Total area ${formatQty(area)}sqft`,
-      area,
-      "sqft",
-      RATES.extensionToilet
-    );
-
-
-    pushItem(
-      items,
-      roomId,
-      roomLabel,
-      "downlight",
-      `To supply and install ${calculateDownlights(area)} unit downlight c/w wiring`,
-      calculateDownlights(area),
-      "unit",
-      RATES.downlight
-    );
-
-
-    pushItem(
-      items,
-      roomId,
-      roomLabel,
-      "exhaust",
-      `To supply and install ${Math.max(
-        1,
-        Math.ceil(area / 50)
-      )} unit exhaust fan c/w wiring`,
-      Math.max(
-        1,
-        Math.ceil(area / 50)
-      ),
-      "unit",
-      RATES.exhaustFan
-    );
-
-  }
-
-
-  return items;
-
-}
-
-
-
-/* ============================================================
-   OPTIONAL ROOM ITEMS
-   ============================================================ */
-
-function generateOptionalRoomItems(
-  room,
-  roomLabel
-) {
-
-  const items = [];
-
-  const roomId =
-    room.id;
-
-
-  room.querySelectorAll(
-    ".optional-scope"
-  ).forEach(
-    scopeEl => {
-
-      const checkbox =
-        scopeEl.querySelector(
-          ".optional-check"
-        );
-
-
-      if (!checkbox?.checked) {
-        return;
-      }
-
-
-      const key =
-        scopeEl.dataset.scope;
-
-
-      const definition =
-        OPTIONAL_SCOPES.find(
-          s => s.key === key
-        );
-
-
-      if (!definition) {
-        return;
-      }
-
-
-      let rate =
-        definition.rate;
-
-
-      if (definition.custom) {
-
-        rate =
-          parseFloat(
-            scopeEl.querySelector(
-              ".optional-rate"
-            )?.value
-          ) || 0;
-
-
-        if (rate <= 0) {
-          return;
-        }
-
-      }
-
-
-      pushItem(
-        items,
-        roomId,
-        roomLabel,
-        `optional-${key}`,
-        definition.label,
-        1,
-        definition.unit,
-        rate,
-        true
-      );
-
+  div.querySelector(".room-type").addEventListener("change", () => {
+    if (!customRoomLabels.has(id)) {
+      div.querySelector(".room-name").value = ROOM_TYPES[div.querySelector(".room-type").value] || "Area";
     }
-  );
+    updateEstimate();
+  });
 
+  div.querySelector(".room-area").addEventListener("input", updateEstimate);
+  div.querySelectorAll(".optional-check").forEach(el => el.addEventListener("change", updateEstimate));
+  div.querySelectorAll(".optional-rate").forEach(el => el.addEventListener("input", updateEstimate));
 
-  return items;
-
+  updateEstimate();
 }
 
+function removeRoom(id) {
+  document.getElementById(id)?.remove();
+  customRoomLabels.delete(id);
+  updateEstimate();
+}
 
+function moveRoom(id, direction) {
+  const room = document.getElementById(id);
+  const container = document.getElementById("roomsContainer");
+  if (!room || !container) return;
 
-/* ============================================================
-   GET ALL ITEMS
-   ============================================================ */
+  if (direction < 0) {
+    const previous = room.previousElementSibling;
+    if (previous) container.insertBefore(room, previous);
+  } else {
+    const next = room.nextElementSibling;
+    if (next) container.insertBefore(next, room);
+  }
+  updateEstimate();
+}
+
+function toggleOptionalWorks(roomId) {
+  const panel = document.getElementById(`${roomId}-optional`);
+  const arrow = document.getElementById(`${roomId}-optional-arrow`);
+  if (!panel || !arrow) return;
+
+  panel.classList.toggle("hidden");
+  const expanded = !panel.classList.contains("hidden");
+  arrow.textContent = expanded ? "▲" : "▼";
+
+  const toggle = document.querySelector(`.optional-toggle[onclick="toggleOptionalWorks('${roomId}')"]`);
+  toggle?.setAttribute("aria-expanded", String(expanded));
+}
+
+function toggleProjectInfo() {
+  const info = document.getElementById("projectInfo");
+  const arrow = document.getElementById("projectArrow");
+  if (!info) return;
+
+  info.classList.toggle("hidden");
+  const isHidden = info.classList.contains("hidden");
+  if (arrow) arrow.textContent = isHidden ? "▼" : "▲";
+}
+
+function pushItem(items, roomId, roomLabel, key, description, qty, unit, rate, optional = false) {
+  items.push({
+    id: `${roomId}-${key}`,
+    roomId,
+    room: roomLabel,
+    description,
+    qty: Number(qty) || 0,
+    unit,
+    rate: Number(rate) || 0,
+    optional
+  });
+}
+
+function generateStandardRoomItems(roomType, area, roomId, roomLabel) {
+  const items = [];
+  if (!area || area <= 0) return items;
+
+  if (roomType === "living" || roomType === "bedroom") {
+    pushItem(items, roomId, roomLabel, "ceiling", "To supply and install plaster ceiling flat c/w paint", area, "sqft", RATES.ceiling);
+    pushItem(items, roomId, roomLabel, "spc", "To supply and install spc flooring c/w skirting and floor mat", area, "sqft", RATES.spc);
+    pushItem(items, roomId, roomLabel, "downlight", `To supply and install ${calculateDownlights(area)} unit downlight c/w wiring`, calculateDownlights(area), "unit", RATES.downlight);
+    pushItem(items, roomId, roomLabel, "fan", "To supply and install 1 unit ceiling fan c/w wiring", 1, "unit", RATES.ceilingFan);
+    pushItem(items, roomId, roomLabel, "curtain", "To supply and install led light for curtain box 1 set c/w wiring", 1, "ls", RATES.curtainBoxLED);
+  }
+
+  if (roomType === "dryKitchen") {
+    pushItem(items, roomId, roomLabel, "ceiling", "To supply and install plaster ceiling flat c/w paint", area, "sqft", RATES.ceiling);
+    pushItem(items, roomId, roomLabel, "spc", "To supply and install spc flooring c/w skirting and floor mat", area, "sqft", RATES.spc);
+    pushItem(items, roomId, roomLabel, "downlight", `To supply and install ${calculateDownlights(area)} unit downlight c/w wiring`, calculateDownlights(area), "unit", RATES.downlight);
+    pushItem(items, roomId, roomLabel, "barlamp", "To supply and install bar lamp c/w wiring", 1, "unit", RATES.barLamp);
+    pushItem(items, roomId, roomLabel, "fan", "To supply and install baby ceiling fan c/w wiring", 1, "unit", RATES.ceilingFan);
+    pushItem(items, roomId, roomLabel, "frame", "To supply and install laminated arce frame 1 unit", 1, "ls", RATES.kitchenFrame);
+    pushItem(items, roomId, roomLabel, "makinggood", "To making good wall after demolish existing toilet", 1, "ls", RATES.kitchenMakingGood);
+    pushItem(items, roomId, roomLabel, "glassdoor", "To supply and install swing glass door", 1, "ls", RATES.kitchenGlassDoor);
+  }
+
+  if (roomType === "wetKitchen") {
+    pushItem(items, roomId, roomLabel, "floor", "To supply and install floor tiles c/w water proofing", area, "sqft", RATES.floorTile);
+    pushItem(items, roomId, roomLabel, "walltile", "To supply and install wall tiles", area * 2, "sqft", RATES.wallTile);
+    pushItem(items, roomId, roomLabel, "ceiling", "To supply and install plaster ceiling flat c/w paint", area, "sqft", RATES.ceiling);
+    pushItem(items, roomId, roomLabel, "downlight", `To supply and install ${calculateDownlights(area)} unit downlight c/w wiring`, calculateDownlights(area), "unit", RATES.downlight);
+    pushItem(items, roomId, roomLabel, "fan", "To supply and install 1 unit ceiling fan c/w wiring", 1, "unit", RATES.ceilingFan);
+    pushItem(items, roomId, roomLabel, "lamp", "To supply and install kitchen lighting c/w wiring", 1, "ls", RATES.barLamp);
+  }
+
+  if (roomType === "bathroom") {
+    pushItem(items, roomId, roomLabel, "floor", "To supply and install floor tiles c/w water proofing", area, "sqft", RATES.floorTile);
+    pushItem(items, roomId, roomLabel, "walltile", "Wall tiles", area * 6, "sqft", RATES.wallTile);
+    pushItem(items, roomId, roomLabel, "ceiling", "To supply and install plaster ceiling flat c/w paint", area, "sqft", RATES.ceiling);
+    pushItem(items, roomId, roomLabel, "sanitary", "To supply and install toilet accessories (water closet, bidet, sink and cabinet)", 1, "ls", RATES.bathroomSanitary);
+    pushItem(items, roomId, roomLabel, "door", "To supply and install toilet swing door", 1, "unit", RATES.bathroomDoor);
+    pushItem(items, roomId, roomLabel, "downlight", `To supply and install ${calculateDownlights(area)} unit downlight c/w wiring`, calculateDownlights(area), "unit", RATES.downlight);
+    pushItem(items, roomId, roomLabel, "exhaust", `To supply and install ${Math.max(1, Math.ceil(area / 50))} unit exhaust fan c/w wiring`, Math.max(1, Math.ceil(area / 50)), "unit", RATES.exhaustFan);
+  }
+
+  if (roomType === "carPorch") {
+    pushItem(items, roomId, roomLabel, "floor", "To supply and install floor tiles", area, "sqft", RATES.floorTile);
+    pushItem(items, roomId, roomLabel, "ceiling", "To supply and install plaster ceiling flat c/w paint", area, "sqft", RATES.ceiling);
+    pushItem(items, roomId, roomLabel, "downlight", `To supply and install ${calculateDownlights(area)} unit downlight c/w wiring`, calculateDownlights(area), "unit", RATES.downlight);
+    pushItem(items, roomId, roomLabel, "gate", "To supply and install main gate c/w automatic motor 4000mm (L) x 1830mm (H)", 1, "ls", RATES.gateMotor);
+    pushItem(items, roomId, roomLabel, "divider", "To build 1 side brickwall divider c/w plaster and paint", 1, "ls", RATES.brickwallDivider);
+    pushItem(items, roomId, roomLabel, "fence", "To build new front fence brickwall based on designer proposal", 1, "ls", RATES.frontFence);
+  }
+
+  if (roomType === "balcony") {
+    pushItem(items, roomId, roomLabel, "floor", "To supply and install floor tiles c/w water proofing", area, "sqft", RATES.floorTile);
+    pushItem(items, roomId, roomLabel, "facade", "Facade wall", area * 1.33, "sqft", RATES.facadeWall);
+    pushItem(items, roomId, roomLabel, "walllight", `To supply and install ${Math.max(2, Math.ceil(area / 70))} unit wall light c/w wiring`, Math.max(2, Math.ceil(area / 70)), "unit", RATES.wallLight);
+  }
+
+  if (roomType === "extensionKitchen") {
+    pushItem(items, roomId, roomLabel, "extension", `To build concrete foundation for new kitchen, including excavation, reinforcement and concreting works, complete with tiles finishing, safety door, casement window, accessories and concrete roof slab based on designer’s proposal. Total area ${formatQty(area)}sqft`, area, "sqft", RATES.extensionKitchen);
+    pushItem(items, roomId, roomLabel, "downlight", `To supply and install ${calculateDownlights(area)} unit downlight c/w wiring`, calculateDownlights(area), "unit", RATES.downlight);
+  }
+
+  if (roomType === "extensionToilet") {
+    pushItem(items, roomId, roomLabel, "extension", `To build concrete foundation for new toilet, including excavation, reinforcement and concreting works, complete with tiles finishing, safety door, casement window, toilet accessories and concrete roof slab based on designer’s proposal. Total area ${formatQty(area)}sqft`, area, "sqft", RATES.extensionToilet);
+    pushItem(items, roomId, roomLabel, "downlight", `To supply and install ${calculateDownlights(area)} unit downlight c/w wiring`, calculateDownlights(area), "unit", RATES.downlight);
+    pushItem(items, roomId, roomLabel, "exhaust", `To supply and install ${Math.max(1, Math.ceil(area / 50))} unit exhaust fan c/w wiring`, Math.max(1, Math.ceil(area / 50)), "unit", RATES.exhaustFan);
+  }
+
+  return items;
+}
+
+function generateOptionalRoomItems(room, roomLabel) {
+  const items = [];
+  const roomId = room.id;
+
+  room.querySelectorAll(".optional-scope").forEach(scopeEl => {
+    const checkbox = scopeEl.querySelector(".optional-check");
+    if (!checkbox?.checked) return;
+
+    const key = scopeEl.dataset.scope;
+    const definition = OPTIONAL_SCOPES.find(s => s.key === key);
+    if (!definition) return;
+
+    let rate = definition.rate;
+    if (definition.custom) {
+      rate = parseFloat(scopeEl.querySelector(".optional-rate")?.value) || 0;
+      if (rate <= 0) return;
+    }
+
+    pushItem(items, roomId, roomLabel, `optional-${key}`, definition.label, 1, definition.unit, rate, true);
+  });
+
+  return items;
+}
 
 function getAllItems() {
-
-  const rooms = [
-    ...document.querySelectorAll(
-      "#roomsContainer .room-card"
-    )
-  ];
-
-
+  const rooms = [...document.querySelectorAll("#roomsContainer .room-card")];
   const typeIndexes = {};
-
   const allItems = [];
 
+  rooms.forEach(room => {
+    const roomId = room.id;
+    const roomType = room.querySelector(".room-type")?.value || "living";
+    const area = parseFloat(room.querySelector(".room-area")?.value) || 0;
 
-  rooms.forEach(
-    room => {
+    typeIndexes[roomType] = (typeIndexes[roomType] || 0) + 1;
+    const base = ROOM_TYPES[roomType] || "Area";
+    const autoLabel = typeIndexes[roomType] > 1 ? `${base} ${typeIndexes[roomType]}` : base;
+    const roomLabel = customRoomLabels.has(roomId) ? customRoomLabels.get(roomId) : autoLabel;
 
-      const roomId =
-        room.id;
+    const standard = generateStandardRoomItems(roomType, area, roomId, roomLabel);
+    const optional = generateOptionalRoomItems(room, roomLabel);
 
+    [...standard, ...optional].forEach(item => {
+      if (customRates.has(item.id)) item.rate = customRates.get(item.id);
+      if (customQuantities.has(item.id)) item.qty = customQuantities.get(item.id);
+      if (customDescriptions.has(item.id)) item.description = customDescriptions.get(item.id);
+      item.amount = item.qty * item.rate;
+    });
 
-      const roomType =
-        room.querySelector(
-          ".room-type"
-        )?.value ||
-        "living";
-
-
-      const area =
-        parseFloat(
-          room.querySelector(
-            ".room-area"
-          )?.value
-        ) || 0;
-
-
-      typeIndexes[roomType] =
-        (typeIndexes[roomType] || 0) + 1;
-
-
-      const base =
-        ROOM_TYPES[roomType] ||
-        "Area";
-
-
-      const autoLabel =
-        typeIndexes[roomType] > 1
-          ? `${base} ${typeIndexes[roomType]}`
-          : base;
-
-
-      const roomLabel =
-        customRoomLabels.has(roomId)
-          ? customRoomLabels.get(roomId)
-          : autoLabel;
-
-
-      const standard =
-        generateStandardRoomItems(
-          roomType,
-          area,
-          roomId,
-          roomLabel
-        );
-
-
-      const optional =
-        generateOptionalRoomItems(
-          room,
-          roomLabel
-        );
-
-
-      [
-        ...standard,
-        ...optional
-      ].forEach(
-        item => {
-
-          if (
-            customRates.has(item.id)
-          ) {
-
-            item.rate =
-              customRates.get(
-                item.id
-              );
-
-          }
-
-
-          if (
-            customQuantities.has(
-              item.id
-            )
-          ) {
-
-            item.qty =
-              customQuantities.get(
-                item.id
-              );
-
-          }
-
-
-          if (
-            customDescriptions.has(
-              item.id
-            )
-          ) {
-
-            item.description =
-              customDescriptions.get(
-                item.id
-              );
-
-          }
-
-
-          item.amount =
-            item.qty *
-            item.rate;
-
-        }
-      );
-
-
-      allItems.push(
-        ...standard,
-        ...optional
-      );
-
-    }
-  );
-
+    allItems.push(...standard, ...optional);
+  });
 
   return allItems;
-
 }
-
-
-
-/* ============================================================
-   ROOM GROUPS
-   ============================================================ */
 
 function getRoomGroups() {
-
-  const rooms = [
-    ...document.querySelectorAll(
-      "#roomsContainer .room-card"
-    )
-  ];
-
-
+  const rooms = [...document.querySelectorAll("#roomsContainer .room-card")];
   const typeIndexes = {};
-
   const groups = [];
 
+  rooms.forEach(room => {
+    const roomId = room.id;
+    const roomType = room.querySelector(".room-type")?.value || "living";
+    const area = parseFloat(room.querySelector(".room-area")?.value) || 0;
 
-  rooms.forEach(
-    room => {
+    typeIndexes[roomType] = (typeIndexes[roomType] || 0) + 1;
+    const base = ROOM_TYPES[roomType] || "Area";
+    const autoLabel = typeIndexes[roomType] > 1 ? `${base} ${typeIndexes[roomType]}` : base;
+    const label = customRoomLabels.has(roomId) ? customRoomLabels.get(roomId) : autoLabel;
 
-      const roomId =
-        room.id;
-
-
-      const roomType =
-        room.querySelector(
-          ".room-type"
-        )?.value ||
-        "living";
-
-
-      const area =
-        parseFloat(
-          room.querySelector(
-            ".room-area"
-          )?.value
-        ) || 0;
-
-
-      typeIndexes[roomType] =
-        (typeIndexes[roomType] || 0) + 1;
-
-
-      const base =
-        ROOM_TYPES[roomType] ||
-        "Area";
-
-
-      const autoLabel =
-        typeIndexes[roomType] > 1
-          ? `${base} ${typeIndexes[roomType]}`
-          : base;
-
-
-      const label =
-        customRoomLabels.has(roomId)
-          ? customRoomLabels.get(roomId)
-          : autoLabel;
-
-
-      groups.push({
-
-        roomId,
-
-        roomType,
-
-        label,
-
-        area
-
-      });
-
-    }
-  );
-
+    groups.push({ roomId, roomType, label, area });
+  });
 
   return groups;
-
 }
-
-
-
-/* ============================================================
-   UPDATE ESTIMATE
-   ============================================================ */
 
 function updateEstimate() {
+  const allItems = getAllItems();
+  const roomGroups = getRoomGroups();
 
-  const allItems =
-    getAllItems();
+  allItems.forEach(item => {
+    item.amount = item.qty * item.rate;
+  });
 
+  const activeItems = allItems.filter(item => !excludedItems.has(item.id));
+  const hasAnyArea = roomGroups.some(room => room.area > 0);
 
-  const roomGroups =
-    getRoomGroups();
-
-
-  allItems.forEach(
-    item => {
-
-      item.amount =
-        item.qty *
-        item.rate;
-
-    }
-  );
-
-
-  const activeItems =
-    allItems.filter(
-      item =>
-        !excludedItems.has(
-          item.id
-        )
-    );
-
-
-  const hasAnyArea =
-    roomGroups.some(
-      room =>
-        room.area > 0
-    );
-
-
-  const projectPreliminaries =
-    hasAnyArea &&
-    !excludedItems.has(
-      "project-preliminaries"
-    )
-      ? (
-          customRates.has(
-            "project-preliminaries"
-          )
-            ? customRates.get(
-                "project-preliminaries"
-              )
-            : RATES.preliminaries
-        )
-      : 0;
-
+  const projectPreliminaries = hasAnyArea && !excludedItems.has("project-preliminaries")
+    ? (customRates.has("project-preliminaries") ? customRates.get("project-preliminaries") : RATES.preliminaries)
+    : 0;
 
   const roomSubtotals = {};
+  roomGroups.forEach(room => { roomSubtotals[room.roomId] = 0; });
 
+  activeItems.forEach(item => {
+    roomSubtotals[item.roomId] = (roomSubtotals[item.roomId] || 0) + item.amount;
+  });
 
-  roomGroups.forEach(
-    room => {
+  const roomTotal = Object.values(roomSubtotals).reduce((sum, value) => sum + value, 0);
+  const total = projectPreliminaries + roomTotal;
 
-      roomSubtotals[
-        room.roomId
-      ] = 0;
-
-    }
-  );
-
-
-  activeItems.forEach(
-    item => {
-
-      roomSubtotals[
-        item.roomId
-      ] =
-        (
-          roomSubtotals[
-            item.roomId
-          ] || 0
-        ) +
-        item.amount;
-
-    }
-  );
-
-
-  const roomTotal =
-    Object.values(
-      roomSubtotals
-    ).reduce(
-      (sum, value) =>
-        sum + value,
-      0
-    );
-
-
-  const total =
-    projectPreliminaries +
-    roomTotal;
-
-
-  renderEstimate(
-    activeItems,
-    roomGroups,
-    roomSubtotals,
-    projectPreliminaries,
-    total
-  );
-
+  renderEstimate(activeItems, roomGroups, roomSubtotals, projectPreliminaries, total);
 }
 
+function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, total) {
+  const container = document.getElementById("estimateContent");
+  const customer = document.getElementById("customerName")?.value || "Not specified";
+  const location = document.getElementById("projectLocation")?.value || "Not specified";
 
-
-/* ============================================================
-   RENDER ESTIMATE
-   ============================================================ */
-
-function renderEstimate(
-  items,
-  roomGroups,
-  roomSubtotals,
-  projectPreliminaries,
-  total
-) {
-
-  const container =
-    document.getElementById(
-      "estimateContent"
-    );
-
-
-  const customer =
-    document.getElementById(
-      "customerName"
-    )?.value ||
-    "Not specified";
-
-
-  const location =
-    document.getElementById(
-      "projectLocation"
-    )?.value ||
-    "Not specified";
-
-
-  document.getElementById(
-    "customerSummary"
-  ).innerHTML = `
-
+  document.getElementById("customerSummary").innerHTML = `
     <div>
-
-      <p class="text-gray-500">
-        Customer
-      </p>
-
-      <p class="font-medium">
-        ${escapeHtml(customer)}
-      </p>
-
+      <p class="text-gray-500">Customer</p>
+      <p class="font-medium">${escapeHtml(customer)}</p>
     </div>
-
-
     <div>
-
-      <p class="text-gray-500">
-        Location
-      </p>
-
-      <p class="font-medium">
-        ${escapeHtml(location)}
-      </p>
-
+      <p class="text-gray-500">Location</p>
+      <p class="font-medium">${escapeHtml(location)}</p>
     </div>
-
-
     <div>
-
-      <p class="text-gray-500">
-        Estimate Type
-      </p>
-
-      <p class="font-medium">
-        Preliminary Renovation Estimate
-      </p>
-
+      <p class="text-gray-500">Estimate Type</p>
+      <p class="font-medium">Preliminary Renovation Estimate</p>
     </div>
-
   `;
-
 
   const itemsByRoom = {};
-
-
-  items.forEach(
-    item => {
-
-      if (
-        !itemsByRoom[
-          item.roomId
-        ]
-      ) {
-
-        itemsByRoom[
-          item.roomId
-        ] = [];
-
-      }
-
-
-      itemsByRoom[
-        item.roomId
-      ].push(item);
-
-    }
-  );
-
+  items.forEach(item => {
+    if (!itemsByRoom[item.roomId]) itemsByRoom[item.roomId] = [];
+    itemsByRoom[item.roomId].push(item);
+  });
 
   let html = `
-
     <div class="overflow-x-auto">
-
-      <table
-        class="
-          w-full
-          border-collapse
-          text-sm
-        "
-      >
-
+      <table class="w-full border-collapse text-sm">
         <thead>
-
           <tr class="border-b-2 text-left">
-
-            <th class="py-3 px-2">
-              Description
-            </th>
-
-            <th class="py-3 px-2">
-              Unit
-            </th>
-
-            <th class="py-3 px-2 text-right">
-              Quantity
-            </th>
-
-            <th class="py-3 px-2 text-right">
-              Rate (RM)
-            </th>
-
-            <th class="py-3 px-2 text-right">
-              Amount (RM)
-            </th>
-
-            <th class="no-print py-3 px-2 text-center">
-              Action
-            </th>
-
+            <th class="py-3 px-2">Description</th>
+            <th class="py-3 px-2">Unit</th>
+            <th class="py-3 px-2 text-right">Quantity</th>
+            <th class="py-3 px-2 text-right">Rate (RM)</th>
+            <th class="py-3 px-2 text-right">Amount (RM)</th>
+            <th class="no-print py-3 px-2 text-center">Action</th>
           </tr>
-
         </thead>
-
         <tbody>
-
   `;
 
-
-  /* Project preliminaries */
-
-  if (
-    projectPreliminaries > 0
-  ) {
-
-    const prelimRate =
-      customRates.has(
-        "project-preliminaries"
-      )
-        ? customRates.get(
-            "project-preliminaries"
-          )
-        : RATES.preliminaries;
-
+  if (projectPreliminaries > 0) {
+    const prelimRate = customRates.has("project-preliminaries")
+      ? customRates.get("project-preliminaries")
+      : RATES.preliminaries;
 
     html += `
-
       <tr class="bg-gray-100 border-b">
-
-        <td
-          colspan="6"
-          class="
-            py-3
-            px-2
-            font-bold
-          "
-        >
-          Project / Preliminaries
-        </td>
-
+        <td colspan="6" class="py-3 px-2 font-bold">Project / Preliminaries</td>
       </tr>
-
-
       <tr class="border-b">
-
         <td class="py-3 px-2">
-
-          Submission of Renovation Permit
-          Application and Engineer's Drawings
-          to the Local Authority
-
+          Submission of Renovation Permit Application and Engineer's Drawings to the Local Authority
         </td>
-
-
-        <td class="py-3 px-2">
-          ls
-        </td>
-
-
+        <td class="py-3 px-2">ls</td>
+        <td class="py-3 px-2 text-right">1</td>
         <td class="py-3 px-2 text-right">
-          1
+          <input type="number" min="0" step="0.01" value="${Number(prelimRate).toFixed(2)}"
+            onchange="editItemRate('project-preliminaries', this.value)"
+            class="no-print w-32 border rounded-lg px-2 py-1.5 text-right bg-white"
+            aria-label="Project / Preliminaries rate">
+          <span class="hidden print:inline">${money(prelimRate, 2)}</span>
         </td>
-
-
-        <td class="py-3 px-2 text-right">
-
-          <input
-            type="number"
-            min="0"
-            step="0.01"
-            value="${Number(
-              prelimRate
-            ).toFixed(2)}"
-            onchange="
-              editItemRate(
-                'project-preliminaries',
-                this.value
-              )
-            "
-            class="
-              no-print
-              w-32
-              border
-              rounded-lg
-              px-2
-              py-1.5
-              text-right
-              bg-white
-            "
-            aria-label="Project / Preliminaries rate"
-          >
-
-          <span
-            class="hidden print:inline"
-          >
-            ${money(prelimRate, 2)}
-          </span>
-
+        <td class="py-3 px-2 text-right font-medium">${money(prelimRate)}</td>
+        <td class="no-print py-3 px-2 text-center">
+          <button type="button" onclick="excludeItem('project-preliminaries')"
+            class="text-red-600 text-xs border border-red-200 rounded px-3 py-1.5 hover:bg-red-50">Delete</button>
         </td>
-
-
-        <td
-          class="
-            py-3
-            px-2
-            text-right
-            font-medium
-          "
-        >
-          ${money(prelimRate)}
-        </td>
-
-
-        <td
-          class="
-            no-print
-            py-3
-            px-2
-            text-center
-          "
-        >
-
-          <button
-            type="button"
-            onclick="
-              excludeItem(
-                'project-preliminaries'
-              )
-            "
-            class="
-              text-red-600
-              text-xs
-              border
-              border-red-200
-              rounded
-              px-3
-              py-1.5
-              hover:bg-red-50
-            "
-          >
-            Delete
-          </button>
-
-        </td>
-
       </tr>
+    `;
+  }
 
+  roomGroups.forEach(room => {
+    const roomItems = itemsByRoom[room.roomId] || [];
+    if (room.area <= 0) return;
+
+    html += `
+      <tr class="bg-gray-100 border-b">
+        <td colspan="6" class="py-3 px-2">
+          <div class="flex flex-wrap items-center gap-3">
+            <label class="text-xs font-semibold uppercase tracking-wide text-gray-500">Room / Area Name</label>
+            <input type="text" value="${escapeHtml(room.label)}"
+              onchange="editRoomLabel('${room.roomId}', this.value)"
+              class="no-print flex-1 min-w-[220px] border rounded-lg px-3 py-2 bg-white font-semibold">
+            <span class="font-normal text-gray-500">${formatQty(room.area)} sqft</span>
+          </div>
+          <div class="hidden print:block font-bold">
+            ${escapeHtml(room.label)}
+            <span class="font-normal text-gray-500">(${formatQty(room.area)} sqft)</span>
+          </div>
+        </td>
+      </tr>
     `;
 
-  }
-
-
-
-  /* Room groups */
-
-  roomGroups.forEach(
-    room => {
-
-      const roomItems =
-        itemsByRoom[
-          room.roomId
-        ] || [];
-
-
-      if (room.area <= 0) {
-        return;
-      }
-
-
+    roomItems.forEach(item => {
       html += `
-
-        <tr
-          class="
-            bg-gray-100
-            border-b
-          "
-        >
-
-          <td
-            colspan="6"
-            class="py-3 px-2"
-          >
-
-            <div
-              class="
-                flex
-                flex-wrap
-                items-center
-                gap-3
-              "
-            >
-
-              <label
-                class="
-                  text-xs
-                  font-semibold
-                  uppercase
-                  tracking-wide
-                  text-gray-500
-                "
-              >
-                Room / Area Name
-              </label>
-
-
-              <input
-                type="text"
-                value="${escapeHtml(
-                  room.label
-                )}"
-                onchange="
-                  editRoomLabel(
-                    '${room.roomId}',
-                    this.value
-                  )
-                "
-                class="
-                  no-print
-                  flex-1
-                  min-w-[220px]
-                  border
-                  rounded-lg
-                  px-3
-                  py-2
-                  bg-white
-                  font-semibold
-                "
-              >
-
-
-              <span
-                class="
-                  font-normal
-                  text-gray-500
-                "
-              >
-                ${formatQty(
-                  room.area
-                )} sqft
-              </span>
-
-            </div>
-
-
-            <div
-              class="
-                hidden
-                print:block
-                font-bold
-              "
-            >
-
-              ${escapeHtml(
-                room.label
-              )}
-
-              <span
-                class="
-                  font-normal
-                  text-gray-500
-                "
-              >
-                (${formatQty(
-                  room.area
-                )} sqft)
-              </span>
-
-            </div>
-
+        <tr class="border-b hover:bg-gray-50">
+          <td class="py-3 px-2 align-top">
+            <textarea rows="2" onchange="editItemDescription('${item.id}', this.value)"
+              class="no-print w-full min-w-[280px] border rounded-lg px-3 py-2 bg-white leading-5 resize-y">${escapeHtml(item.description)}</textarea>
+            <div class="hidden print:block leading-6">${escapeHtml(item.description)}</div>
           </td>
-
+          <td class="py-3 px-2">${escapeHtml(item.unit)}</td>
+          <td class="py-3 px-2 text-right">
+            <input type="number" min="0" step="1" value="${formatQty(item.qty)}"
+              onchange="editItemQuantity('${item.id}', this.value)"
+              class="no-print w-24 border rounded-lg px-2 py-1.5 text-right bg-white">
+            <span class="hidden print:inline">${formatQty(item.qty)}</span>
+          </td>
+          <td class="py-3 px-2 text-right">
+            <input type="number" min="0" step="0.01" value="${Number(item.rate).toFixed(2)}"
+              onchange="editItemRate('${item.id}', this.value)"
+              class="no-print w-28 border rounded-lg px-2 py-1.5 text-right bg-white">
+            <span class="hidden print:inline">${money(item.rate, 2)}</span>
+          </td>
+          <td class="py-3 px-2 text-right font-medium">${money(item.amount, 2)}</td>
+          <td class="no-print py-3 px-2 text-center">
+            <button type="button" onclick="excludeItem('${item.id}')"
+              class="text-red-600 text-xs border border-red-200 rounded px-3 py-1.5 hover:bg-red-50">Delete</button>
+          </td>
         </tr>
-
       `;
+    });
 
+    html += `
+      <tr class="border-b">
+        <td colspan="4" class="py-3 px-2 text-right font-semibold">${escapeHtml(room.label)} Subtotal</td>
+        <td class="py-3 px-2 text-right font-bold">${money(roomSubtotals[room.roomId] || 0, 2)}</td>
+        <td class="no-print"></td>
+      </tr>
+    `;
+  });
 
-      roomItems.forEach(
-        item => {
-
-          html += `
-
-            <tr
-              class="
-                border-b
-                hover:bg-gray-50
-              "
-            >
-
-              <td
-                class="
-                  py-3
-                  px-2
-                  align-top
-                "
-              >
-
-                <textarea
-                  rows="2"
-                  onchange="
-                    editItemDescription(
-                      '${item.id}',
-                      this.value
-                    )
-                  "
-                  class="
-                    no-print
-                    w-full
-                    min-w-[280px]
-                    border
-                    rounded-lg
-                    px-3
-                    py-2
-                    bg-white
-                    leading-5
-                    resize-y
-                  "
-                >${escapeHtml(
-                  item.description
-                )}</textarea>
-
-
-                <div
-                  class="
-                    hidden
-                    print:block
-                    leading-6
-                  "
-                >
-                  ${escapeHtml(
-                    item.description
-                  )}
-                </div>
-
-              </td>
-
-
-              <td class="py-3 px-2">
-
-                ${escapeHtml(
-                  item.unit
-                )}
-
-              </td>
-
-
-              <td
-                class="
-                  py-3
-                  px-2
-                  text-right
-                "
-              >
-
-                <input
-                  type="number"
-                  min="0"
-                  step="1"
-                  value="${formatQty(
-                    item.qty
-                  )}"
-                  onchange="
-                    editItemQuantity(
-                      '${item.id}',
-                      this.value
-                    )
-                  "
-                  class="
-                    no-print
-                    w-24
-                    border
-                    rounded-lg
-                    px-2
-                    py-1.5
-                    text-right
-                    bg-white
-                  "
-                >
-
-
-                <span
-                  class="
-                    hidden
-                    print:inline
-                  "
-                >
-                  ${formatQty(
-                    item.qty
-                  )}
-                </span>
-
-              </td>
-
-
-              <td
-                class="
-                  py-3
-                  px-2
-                  text-right
-                "
-              >
-
-                <input
-                  type="number"
-                  min="0"
-                  step="0.01"
-                  value="${Number(
-                    item.rate
-                  ).toFixed(2)}"
-                  onchange="
-                    editItemRate(
-                      '${item.id}',
-                      this.value
-                    )
-                  "
-                  class="
-                    no-print
-                    w-28
-                    border
-                    rounded-lg
-                    px-2
-                    py-1.5
-                    text-right
-                    bg-white
-                  "
-                >
-
-
-                <span
-                  class="
-                    hidden
-                    print:inline
-                  "
-                >
-                  ${money(
-                    item.rate,
-                    2
-                  )}
-                </span>
-
-              </td>
-
-
-              <td
-                class="
-                  py-3
-                  px-2
-                  text-right
-                  font-medium
-                "
-              >
-                ${money(
-                  item.amount,
-                  2
-                )}
-              </td>
-
-
-              <td
-                class="
-                  no-print
-                  py-3
-                  px-2
-                  text-center
-                "
-              >
-
-                <button
-                  type="button"
-                  onclick="
-                    excludeItem(
-                      '${item.id}'
-                    )
-                  "
-                  class="
-                    text-red-600
-                    text-xs
-                    border
-                    border-red-200
-                    rounded
-                    px-3
-                    py-1.5
-                    hover:bg-red-50
-                  "
-                >
-                  Delete
-                </button>
-
-              </td>
-
-            </tr>
-
-          `;
-
-        }
-      );
-
-
-      html += `
-
-        <tr class="border-b">
-
-          <td
-            colspan="4"
-            class="
-              py-3
-              px-2
-              text-right
-              font-semibold
-            "
-          >
-            ${escapeHtml(
-              room.label
-            )} Subtotal
-          </td>
-
-
-          <td
-            class="
-              py-3
-              px-2
-              text-right
-              font-bold
-            "
-          >
-            ${money(
-              roomSubtotals[
-                room.roomId
-              ] || 0,
-              2
-            )}
-          </td>
-
-
-          <td class="no-print"></td>
-
-        </tr>
-
-      `;
-
-    }
-  );
-
-
-  const roomTotal =
-    Object.values(
-      roomSubtotals
-    ).reduce(
-      (sum, value) =>
-        sum + value,
-      0
-    );
-
+  const roomTotal = Object.values(roomSubtotals).reduce((sum, value) => sum + value, 0);
 
   html += `
-
         </tbody>
-
-
         <tfoot>
-
           <tr class="border-t-2">
-
-            <td
-              colspan="4"
-              class="
-                py-4
-                px-2
-                text-right
-                font-semibold
-              "
-            >
-              Overall Subtotal
-            </td>
-
-
-            <td
-              class="
-                py-4
-                px-2
-                text-right
-                font-bold
-              "
-            >
-              ${money(
-                projectPreliminaries +
-                roomTotal,
-                2
-              )}
-            </td>
-
-
+            <td colspan="4" class="py-4 px-2 text-right font-semibold">Overall Subtotal</td>
+            <td class="py-4 px-2 text-right font-bold">${money(projectPreliminaries + roomTotal, 2)}</td>
             <td class="no-print"></td>
-
           </tr>
-
         </tfoot>
-
-
       </table>
-
     </div>
-
   `;
 
-
-  container.innerHTML =
-    html;
-
-
-  document.getElementById(
-    "grandTotal"
-  ).textContent =
-    money(total, 2);
-
+  container.innerHTML = html;
+  document.getElementById("grandTotal").textContent = money(total, 2);
 }
 
-
-
-/* ============================================================
-   EDIT ROOM LABEL
-   ============================================================ */
-
-function editRoomLabel(
-  roomId,
-  value
-) {
-
-  const label =
-    String(
-      value || ""
-    ).trim();
-
-
+function editRoomLabel(roomId, value) {
+  const label = String(value || "").trim();
   if (!label) {
-
-    window.alert(
-      "Please enter a room / area name."
-    );
-
+    window.alert("Please enter a room / area name.");
     updateEstimate();
-
     return;
-
   }
-
-
-  customRoomLabels.set(
-    roomId,
-    label
-  );
-
-
+  customRoomLabels.set(roomId, label);
   updateEstimate();
-
 }
 
-
-
-/* ============================================================
-   EDIT DESCRIPTION
-   ============================================================ */
-
-function editItemDescription(
-  itemId,
-  value
-) {
-
-  const description =
-    String(
-      value || ""
-    ).trim();
-
-
+function editItemDescription(itemId, value) {
+  const description = String(value || "").trim();
   if (!description) {
-
-    window.alert(
-      "Please enter a description."
-    );
-
+    window.alert("Please enter a description.");
     updateEstimate();
-
     return;
-
   }
-
-
-  customDescriptions.set(
-    itemId,
-    description
-  );
-
-
+  customDescriptions.set(itemId, description);
   updateEstimate();
-
 }
 
-
-
-/* ============================================================
-   EDIT QUANTITY
-   ============================================================ */
-
-function editItemQuantity(
-  itemId,
-  value
-) {
-
-  const qty =
-    parseFloat(value);
-
-
-  if (
-    !Number.isFinite(qty) ||
-    qty < 0
-  ) {
-
-    window.alert(
-      "Please enter a valid quantity."
-    );
-
+function editItemQuantity(itemId, value) {
+  const qty = parseFloat(value);
+  if (!Number.isFinite(qty) || qty < 0) {
+    window.alert("Please enter a valid quantity.");
     updateEstimate();
-
     return;
-
   }
-
-
-  customQuantities.set(
-    itemId,
-    qty
-  );
-
-
+  customQuantities.set(itemId, qty);
   updateEstimate();
-
 }
 
-
-
-/* ============================================================
-   EDIT RATE
-   ============================================================ */
-
-function editItemRate(
-  itemId,
-  value
-) {
-
-  const rate =
-    parseFloat(value);
-
-
-  if (
-    !Number.isFinite(rate) ||
-    rate < 0
-  ) {
-
-    window.alert(
-      "Please enter a valid rate."
-    );
-
+function editItemRate(itemId, value) {
+  const rate = parseFloat(value);
+  if (!Number.isFinite(rate) || rate < 0) {
+    window.alert("Please enter a valid rate.");
     updateEstimate();
-
     return;
-
   }
-
-
-  customRates.set(
-    itemId,
-    rate
-  );
-
-
+  customRates.set(itemId, rate);
   updateEstimate();
-
 }
 
-
-
-/* ============================================================
-   EXCLUDE ITEM
-   ============================================================ */
-
-function excludeItem(
-  itemId
-) {
-
-  excludedItems.add(
-    itemId
-  );
-
+function excludeItem(itemId) {
+  excludedItems.add(itemId);
   updateEstimate();
-
 }
-
-
-
-/* ============================================================
-   RESTORE ITEMS
-   ============================================================ */
 
 function restoreAllItems() {
-
   excludedItems.clear();
-
   updateEstimate();
-
 }
-
-
-
-/* ============================================================
-   QUOTATION
-   ============================================================ */
 
 let quotationNumber = null;
 
-
-
 function generateQuotationNumber() {
-
-  let number =
-    localStorage.getItem(
-      "terajuQuotationNumber"
-    );
-
-
+  let number = localStorage.getItem("terajuQuotationNumber");
   if (!number) {
-
     number = 1;
-
   } else {
-
-    number =
-      parseInt(
-        number,
-        10
-      ) + 1;
-
+    number = parseInt(number, 10) + 1;
   }
-
-
-  localStorage.setItem(
-    "terajuQuotationNumber",
-    number
-  );
-
-
-  return "QO" +
-    String(number).padStart(
-      3,
-      "0"
-    );
-
+  localStorage.setItem("terajuQuotationNumber", number);
+  return "QO" + String(number).padStart(3, "0");
 }
-
-
-
-/* ============================================================
-   SELECT QUOTATION TYPE
-   ============================================================ */
 
 function getSelectedQuotationType() {
-
-  return document.querySelector(
-    'input[name="quotationType"]:checked'
-  )?.value ||
-  "simple";
-
+  return document.querySelector('input[name="quotationType"]:checked')?.value || "simple";
 }
-
-
-
-/* ============================================================
-   CURRENT QUOTATION DATA
-   ============================================================ */
 
 function getCurrentQuotationData() {
+  const allItems = getAllItems().filter(item => !excludedItems.has(item.id));
+  const roomGroups = getRoomGroups();
+  const hasAnyArea = roomGroups.some(room => room.area > 0);
 
-  const allItems =
-    getAllItems().filter(
-      item =>
-        !excludedItems.has(
-          item.id
-        )
-    );
+  const prelimRate = customRates.has("project-preliminaries")
+    ? customRates.get("project-preliminaries")
+    : RATES.preliminaries;
 
-
-  const roomGroups =
-    getRoomGroups();
-
-
-  const hasAnyArea =
-    roomGroups.some(
-      room =>
-        room.area > 0
-    );
-
-
-  const prelimRate =
-    customRates.has(
-      "project-preliminaries"
-    )
-      ? customRates.get(
-          "project-preliminaries"
-        )
-      : RATES.preliminaries;
-
-
-  const projectPreliminaries =
-    hasAnyArea &&
-    !excludedItems.has(
-      "project-preliminaries"
-    )
-      ? prelimRate
-      : 0;
-
+  const projectPreliminaries = hasAnyArea && !excludedItems.has("project-preliminaries") ? prelimRate : 0;
 
   const itemsByRoom = {};
-
   const roomSubtotals = {};
 
+  roomGroups.forEach(room => {
+    itemsByRoom[room.roomId] = [];
+    roomSubtotals[room.roomId] = 0;
+  });
 
-  roomGroups.forEach(
-    room => {
+  allItems.forEach(item => {
+    if (!itemsByRoom[item.roomId]) itemsByRoom[item.roomId] = [];
+    itemsByRoom[item.roomId].push(item);
+    roomSubtotals[item.roomId] = (roomSubtotals[item.roomId] || 0) + item.amount;
+  });
 
-      itemsByRoom[
-        room.roomId
-      ] = [];
-
-      roomSubtotals[
-        room.roomId
-      ] = 0;
-
-    }
-  );
-
-
-  allItems.forEach(
-    item => {
-
-      if (
-        !itemsByRoom[
-          item.roomId
-        ]
-      ) {
-
-        itemsByRoom[
-          item.roomId
-        ] = [];
-
-      }
-
-
-      itemsByRoom[
-        item.roomId
-      ].push(item);
-
-
-      roomSubtotals[
-        item.roomId
-      ] =
-        (
-          roomSubtotals[
-            item.roomId
-          ] || 0
-        ) +
-        item.amount;
-
-    }
-  );
-
-
-  const roomTotal =
-    Object.values(
-      roomSubtotals
-    ).reduce(
-      (sum, value) =>
-        sum + value,
-      0
-    );
-
+  const roomTotal = Object.values(roomSubtotals).reduce((sum, value) => sum + value, 0);
 
   return {
-
     allItems,
-
     roomGroups,
-
     itemsByRoom,
-
     roomSubtotals,
-
     projectPreliminaries,
-
-    total:
-      projectPreliminaries +
-      roomTotal
-
+    total: projectPreliminaries + roomTotal
   };
-
 }
 
-
-
-/* ============================================================
-   DESCRIPTION LIST
-   ============================================================ */
-
-function quotationDescriptionList(
-  items
-) {
-
-  if (!items.length) {
-
-    return "No selected works";
-
-  }
-
-
-  return items
-    .map(
-      item =>
-        escapeHtml(
-          item.description
-        )
-    )
-    .join("<br>");
-
+function quotationDescriptionList(items) {
+  if (!items.length) return "No selected works";
+  return items.map(item => escapeHtml(item.description)).join("<br>");
 }
-
-
 
 /* ============================================================
    A4 PAGINATION — SCREEN PREVIEW ONLY
-   (Print now uses natural flow → no blank pages)
    ============================================================ */
 function paginateQuotationA4() {
-
   const content = document.getElementById("quotationContent");
   const documentEl = document.getElementById("quotationDocument");
 
@@ -4769,8 +1654,6 @@ function paginateQuotationA4() {
 
   const tableWrap = originalChildren.find(el => el.querySelector("table"));
   const table = tableWrap?.querySelector("table");
-
-  /* If there is no quotation table, keep the normal content. */
   if (!table) return;
 
   const headerBlock = originalChildren[0];
@@ -4783,10 +1666,11 @@ function paginateQuotationA4() {
   const thead = table.querySelector("thead");
   const tfoot = table.querySelector("tfoot");
 
+  // Store continuous version for printing
+  content.dataset.originalHtml = content.innerHTML;
+
   content.classList.add("a4-paginated");
   documentEl.classList.add("a4-preview-document");
-
-  /* Clear the original continuous flow. */
   content.innerHTML = "";
 
   const pages = [];
@@ -4794,7 +1678,6 @@ function paginateQuotationA4() {
   function createPage(isFirst) {
     const page = document.createElement("div");
     page.className = "quotation-page";
-
     const body = document.createElement("div");
     body.className = "quotation-page-body";
     page.appendChild(body);
@@ -4822,7 +1705,6 @@ function paginateQuotationA4() {
     wrap.style.width = "100%";
 
     const newTable = table.cloneNode(false);
-
     if (table.querySelector("colgroup")) {
       newTable.appendChild(table.querySelector("colgroup").cloneNode(true));
     }
@@ -4830,7 +1712,6 @@ function paginateQuotationA4() {
 
     const tbody = document.createElement("tbody");
     newTable.appendChild(tbody);
-
     wrap.appendChild(newTable);
     return { wrap, table: newTable, tbody };
   }
@@ -4839,19 +1720,13 @@ function paginateQuotationA4() {
   let shell = createTableShell();
   page.querySelector(".quotation-page-body").appendChild(shell.wrap);
 
-  /* Add rows one by one. If a row makes the page overflow,
-     move it to a fresh A4 page. */
   rows.forEach(row => {
     const clone = row.cloneNode(true);
     shell.tbody.appendChild(clone);
 
     const body = page.querySelector(".quotation-page-body");
-    const pageHeight = body.clientHeight;
-    const usedHeight = body.scrollHeight;
-
-    if (usedHeight > pageHeight && shell.tbody.children.length > 1) {
+    if (body.scrollHeight > body.clientHeight && shell.tbody.children.length > 1) {
       shell.tbody.removeChild(clone);
-
       page = createPage(false);
       shell = createTableShell();
       page.querySelector(".quotation-page-body").appendChild(shell.wrap);
@@ -4859,16 +1734,12 @@ function paginateQuotationA4() {
     }
   });
 
-  /* Put the TOTAL footer on the final page. */
   if (tfoot) {
     let finalPage = pages[pages.length - 1];
     let finalBody = finalPage.querySelector(".quotation-page-body");
     let finalTable = finalBody.querySelector("table");
-
     finalTable.appendChild(tfoot.cloneNode(true));
 
-    /* If TOTAL causes overflow, move it to a new page with the
-       table heading repeated. */
     if (finalBody.scrollHeight > finalBody.clientHeight) {
       finalTable.removeChild(finalTable.querySelector("tfoot"));
       finalPage = createPage(false);
@@ -4876,11 +1747,9 @@ function paginateQuotationA4() {
       shell = createTableShell();
       finalBody.appendChild(shell.wrap);
       shell.table.appendChild(tfoot.cloneNode(true));
-      finalTable = shell.table;
     }
   }
 
-  /* Terms and signature stay together at the end where possible. */
   let lastPage = pages[pages.length - 1];
   let lastBody = lastPage.querySelector(".quotation-page-body");
 
@@ -4890,548 +1759,144 @@ function paginateQuotationA4() {
   if (lastBody.scrollHeight > lastBody.clientHeight) {
     if (termsBlock) lastBody.removeChild(lastBody.lastElementChild);
     if (signBlock) lastBody.removeChild(lastBody.lastElementChild);
-
     lastPage = createPage(false);
     lastBody = lastPage.querySelector(".quotation-page-body");
     if (termsBlock) lastBody.appendChild(termsBlock.cloneNode(true));
     if (signBlock) lastBody.appendChild(signBlock.cloneNode(true));
   }
 
-  /* Add page numbers after the final page count is known. */
   pages.forEach((p, index) => {
     const marker = document.createElement("div");
     marker.className = "quotation-page-number";
     marker.textContent = `Page ${index + 1} of ${pages.length}`;
     p.appendChild(marker);
   });
-
 }
 
-
-
 function generateQuotation() {
+  const data = getCurrentQuotationData();
 
-  const data =
-    getCurrentQuotationData();
-
-
-  if (
-    !data.roomGroups.some(
-      room =>
-        room.area > 0
-    )
-  ) {
-
-    window.alert(
-      "Please add at least one area with a valid sqft before generating the quotation."
-    );
-
+  if (!data.roomGroups.some(room => room.area > 0)) {
+    window.alert("Please add at least one area with a valid sqft before generating the quotation.");
     return;
-
   }
 
+  quotationNumber = generateQuotationNumber();
+  const type = getSelectedQuotationType();
+  const customer = document.getElementById("customerName")?.value || "Not specified";
+  const location = document.getElementById("projectLocation")?.value || "Not specified";
+  const today = new Intl.DateTimeFormat("en-MY", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric"
+  }).format(new Date());
 
-  quotationNumber =
-    generateQuotationNumber();
-
-
-  const type =
-    getSelectedQuotationType();
-
-
-  const customer =
-    document.getElementById(
-      "customerName"
-    )?.value ||
-    "Not specified";
-
-
-  const location =
-    document.getElementById(
-      "projectLocation"
-    )?.value ||
-    "Not specified";
-
-
-  const today =
-    new Intl.DateTimeFormat(
-      "en-MY",
-      {
-        day: "2-digit",
-        month: "long",
-        year: "numeric"
-      }
-    ).format(
-      new Date()
-    );
-
-
-  const content =
-    document.getElementById(
-      "quotationContent"
-    );
-
-
+  const content = document.getElementById("quotationContent");
   let body = "";
 
-
-  /* ========================================================
-     QUOTATION HEADER
-     ======================================================== */
-
+  // Header
   body += `
-
-    <div
-      class="
-        flex
-        justify-between
-        items-start
-        gap-6
-        border-b
-        pb-5
-        mb-6
-      "
-    >
-
+    <div class="flex justify-between items-start gap-6 border-b pb-5 mb-6">
       <div class="min-w-0">
-
-        <div
-          class="
-            flex
-            items-center
-            gap-4
-            mb-4
-          "
-        >
-
-          <img
-            src="../images/logo.png"
-            alt="Teraju Ciptabina Logo"
-            class="h-14 w-auto flex-shrink-0"
-          >
-
-
+        <div class="flex items-center gap-4 mb-4">
+          <img src="../images/logo.png" alt="Teraju Ciptabina Logo" class="h-14 w-auto flex-shrink-0">
           <div class="min-w-0">
-
-            <h1 class="text-xl font-bold">
-              TERAJU CIPTABINA RESOURCES
-            </h1>
-
-            <p class="text-xs text-gray-500">
-              No 10A, Jalan PP 2/1, Taman Putra Prima,
-              47100 Puchong, Selangor
-            </p>
-
+            <h1 class="text-xl font-bold">TERAJU CIPTABINA RESOURCES</h1>
+            <p class="text-xs text-gray-500">No 10A, Jalan PP 2/1, Taman Putra Prima, 47100 Puchong, Selangor</p>
           </div>
-
         </div>
-
-
-        <h2 class="text-2xl font-bold uppercase">
-          Quotation
-        </h2>
-
+        <h2 class="text-2xl font-bold uppercase">Quotation</h2>
       </div>
-
-
-      <div
-        class="
-          text-right
-          text-sm
-          flex-shrink-0
-        "
-      >
-
-        <p>
-
-          <span class="text-gray-500">
-            Quotation No.
-          </span>
-
-          <br>
-
-          <strong>
-            ${escapeHtml(
-              quotationNumber
-            )}
-          </strong>
-
-        </p>
-
-
-        <p class="mt-2">
-
-          <span class="text-gray-500">
-            Date
-          </span>
-
-          <br>
-
-          <strong>
-            ${escapeHtml(
-              today
-            )}
-          </strong>
-
-        </p>
-
+      <div class="text-right text-sm flex-shrink-0">
+        <p><span class="text-gray-500">Quotation No.</span><br><strong>${escapeHtml(quotationNumber)}</strong></p>
+        <p class="mt-2"><span class="text-gray-500">Date</span><br><strong>${escapeHtml(today)}</strong></p>
       </div>
-
     </div>
 
-
-    <div
-      class="
-        grid
-        md:grid-cols-2
-        gap-6
-        mb-7
-        text-sm
-      "
-    >
-
+    <div class="grid md:grid-cols-2 gap-6 mb-7 text-sm">
       <div>
-
-        <p
-          class="
-            text-xs
-            uppercase
-            tracking-wide
-            text-gray-500
-            mb-1
-          "
-        >
-          Customer
-        </p>
-
-        <p class="font-semibold">
-          ${escapeHtml(
-            customer
-          )}
-        </p>
-
+        <p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Customer</p>
+        <p class="font-semibold">${escapeHtml(customer)}</p>
       </div>
-
-
       <div>
-
-        <p
-          class="
-            text-xs
-            uppercase
-            tracking-wide
-            text-gray-500
-            mb-1
-          "
-        >
-          Project Location
-        </p>
-
-        <p class="font-semibold">
-          ${escapeHtml(
-            location
-          )}
-        </p>
-
+        <p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Project Location</p>
+        <p class="font-semibold">${escapeHtml(location)}</p>
       </div>
-
     </div>
-
   `;
 
-
-  /* ========================================================
-     INTRO
-     ======================================================== */
-
+  // Intro
   body += `
-
     <div class="mb-5">
-
       <p class="text-sm text-gray-600">
-
         Renovation works as described below.
         Final quotation is subject to site inspection,
         approved drawings, actual site conditions,
         specifications, material selection and confirmation
         of final scope of works.
-
       </p>
-
     </div>
-
   `;
 
-
-
-  /* ========================================================
-     SIMPLE QUOTATION
-     ======================================================== */
-
-  if (
-    type === "simple"
-  ) {
-
+  // Simple or Detailed
+  if (type === "simple") {
     body += `
-
       <div class="overflow-x-auto">
-
-        <table
-          class="
-            w-full
-            border-collapse
-            text-sm
-          "
-        >
-
+        <table class="w-full border-collapse text-sm">
           <thead>
-
             <tr class="border-b-2 text-left">
-
-              <th class="py-3 px-2 w-10">
-                No.
-              </th>
-
-              <th class="py-3 px-2">
-                Area / Room
-              </th>
-
-              <th class="py-3 px-2">
-                Description of Works
-              </th>
-
-              <th
-                class="
-                  py-3
-                  px-2
-                  text-right
-                "
-              >
-                Amount (RM)
-              </th>
-
+              <th class="py-3 px-2 w-10">No.</th>
+              <th class="py-3 px-2">Area / Room</th>
+              <th class="py-3 px-2">Description of Works</th>
+              <th class="py-3 px-2 text-right">Amount (RM)</th>
             </tr>
-
           </thead>
-
-
           <tbody>
-
     `;
-
 
     let no = 1;
 
-
-    if (
-      data.projectPreliminaries > 0
-    ) {
-
+    if (data.projectPreliminaries > 0) {
       body += `
-
         <tr class="border-b align-top">
-
-          <td class="py-3 px-2">
-            ${no++}
-          </td>
-
-
-          <td
-            class="
-              py-3
-              px-2
-              font-semibold
-            "
-          >
-            Project
-          </td>
-
-
-          <td class="py-3 px-2">
-
-            Submission of Renovation Permit
-            Application and Engineer’s Drawings
-            to the Local Authority
-
-          </td>
-
-
-          <td
-            class="
-              py-3
-              px-2
-              text-right
-              font-medium
-            "
-          >
-            ${money(
-              data.projectPreliminaries,
-              2
-            )}
-          </td>
-
+          <td class="py-3 px-2">${no++}</td>
+          <td class="py-3 px-2 font-semibold">Project</td>
+          <td class="py-3 px-2">Submission of Renovation Permit Application and Engineer’s Drawings to the Local Authority</td>
+          <td class="py-3 px-2 text-right font-medium">${money(data.projectPreliminaries, 2)}</td>
         </tr>
-
       `;
-
     }
 
-
-    data.roomGroups.forEach(
-      room => {
-
-        if (room.area <= 0) {
-          return;
-        }
-
-
-        body += `
-
-          <tr class="border-b align-top">
-
-            <td class="py-3 px-2">
-              ${no++}
-            </td>
-
-
-            <td
-              class="
-                py-3
-                px-2
-                font-semibold
-              "
-            >
-
-              ${escapeHtml(
-                room.label
-              )}
-
-              <br>
-
-              <span
-                class="
-                  font-normal
-                  text-gray-500
-                "
-              >
-                ${formatQty(
-                  room.area
-                )} sqft
-              </span>
-
-            </td>
-
-
-            <td
-              class="
-                py-3
-                px-2
-                leading-6
-              "
-            >
-              ${quotationDescriptionList(
-                data.itemsByRoom[
-                  room.roomId
-                ] || []
-              )}
-            </td>
-
-
-            <td
-              class="
-                py-3
-                px-2
-                text-right
-                font-semibold
-              "
-            >
-              ${money(
-                data.roomSubtotals[
-                  room.roomId
-                ] || 0,
-                2
-              )}
-            </td>
-
-          </tr>
-
-        `;
-
-      }
-    );
-
+    data.roomGroups.forEach(room => {
+      if (room.area <= 0) return;
+      body += `
+        <tr class="border-b align-top">
+          <td class="py-3 px-2">${no++}</td>
+          <td class="py-3 px-2 font-semibold">
+            ${escapeHtml(room.label)}<br>
+            <span class="font-normal text-gray-500">${formatQty(room.area)} sqft</span>
+          </td>
+          <td class="py-3 px-2 leading-6">${quotationDescriptionList(data.itemsByRoom[room.roomId] || [])}</td>
+          <td class="py-3 px-2 text-right font-semibold">${money(data.roomSubtotals[room.roomId] || 0, 2)}</td>
+        </tr>
+      `;
+    });
 
     body += `
-
           </tbody>
-
-
           <tfoot>
-
             <tr class="border-t-2">
-
-              <td
-                colspan="3"
-                class="
-                  py-4
-                  px-2
-                  text-right
-                  font-bold
-                "
-              >
-                TOTAL
-              </td>
-
-
-              <td
-                class="
-                  py-4
-                  px-2
-                  text-right
-                  font-bold
-                  text-lg
-                "
-              >
-                ${money(
-                  data.total,
-                  2
-                )}
-              </td>
-
+              <td colspan="3" class="py-4 px-2 text-right font-bold">TOTAL</td>
+              <td class="py-4 px-2 text-right font-bold text-lg">${money(data.total, 2)}</td>
             </tr>
-
           </tfoot>
-
-
         </table>
-
       </div>
-
     `;
-
-  }
-
-
-
-  /* ========================================================
-     DETAILED QUOTATION
-     ======================================================== */
-
-  else {
-
+  } else {
     body += `
-
       <div class="overflow-x-auto">
-
-        <table
-          class="
-            w-full
-            border-collapse
-            text-sm
-            detailed-quotation-table
-          "
-        >
-
+        <table class="w-full border-collapse text-sm detailed-quotation-table">
           <colgroup>
             <col style="width:50%">
             <col style="width:10%">
@@ -5439,579 +1904,158 @@ function generateQuotation() {
             <col style="width:15%">
             <col style="width:15%">
           </colgroup>
-
           <thead>
-
             <tr class="border-b-2 text-left">
-
-              <th class="py-3 px-2">
-                Description
-              </th>
-
-              <th class="py-3 px-2">
-                Unit
-              </th>
-
-              <th
-                class="
-                  py-3
-                  px-2
-                  text-right
-                "
-              >
-                Quantity
-              </th>
-
-              <th
-                class="
-                  py-3
-                  px-2
-                  text-right
-                "
-              >
-                Rate (RM)
-              </th>
-
-              <th
-                class="
-                  py-3
-                  px-2
-                  text-right
-                "
-              >
-                Amount (RM)
-              </th>
-
+              <th class="py-3 px-2">Description</th>
+              <th class="py-3 px-2">Unit</th>
+              <th class="py-3 px-2 text-right">Quantity</th>
+              <th class="py-3 px-2 text-right">Rate (RM)</th>
+              <th class="py-3 px-2 text-right">Amount (RM)</th>
             </tr>
-
           </thead>
-
-
           <tbody>
-
     `;
 
-
-    if (
-      data.projectPreliminaries > 0
-    ) {
-
+    if (data.projectPreliminaries > 0) {
       body += `
-
         <tr class="bg-gray-100 border-b">
-
-          <td
-            colspan="5"
-            class="
-              py-3
-              px-2
-              font-bold
-            "
-          >
-            Project / Preliminaries
-          </td>
-
+          <td colspan="5" class="py-3 px-2 font-bold">Project / Preliminaries</td>
         </tr>
-
-
-        <tr
-          class="
-            border-b
-            align-top
-          "
-        >
-
-          <td class="py-3 px-2">
-
-            Submission of Renovation Permit
-            Application and Engineer's Drawings
-            to the Local Authority
-
-          </td>
-
-
-          <td class="py-3 px-2">
-            ls
-          </td>
-
-
-          <td class="py-3 px-2 text-right">
-            1
-          </td>
-
-
-          <td class="py-3 px-2 text-right">
-
-            ${money(
-              data.projectPreliminaries,
-              2
-            )}
-
-          </td>
-
-
-          <td
-            class="
-              py-3
-              px-2
-              text-right
-              font-semibold
-            "
-          >
-            ${money(
-              data.projectPreliminaries,
-              2
-            )}
-          </td>
-
+        <tr class="border-b align-top">
+          <td class="py-3 px-2">Submission of Renovation Permit Application and Engineer's Drawings to the Local Authority</td>
+          <td class="py-3 px-2">ls</td>
+          <td class="py-3 px-2 text-right">1</td>
+          <td class="py-3 px-2 text-right">${money(data.projectPreliminaries, 2)}</td>
+          <td class="py-3 px-2 text-right font-semibold">${money(data.projectPreliminaries, 2)}</td>
         </tr>
-
       `;
-
     }
 
+    data.roomGroups.forEach(room => {
+      if (room.area <= 0) return;
+      const roomItems = data.itemsByRoom[room.roomId] || [];
 
-    data.roomGroups.forEach(
-      room => {
+      body += `
+        <tr class="bg-gray-100 border-b">
+          <td colspan="5" class="py-3 px-2 font-bold">
+            ${escapeHtml(room.label)}
+            <span class="font-normal text-gray-500">(${formatQty(room.area)} sqft)</span>
+          </td>
+        </tr>
+      `;
 
-        if (room.area <= 0) {
-          return;
-        }
-
-
-        const roomItems =
-          data.itemsByRoom[
-            room.roomId
-          ] || [];
-
-
+      roomItems.forEach(item => {
         body += `
-
-          <tr class="bg-gray-100 border-b">
-
-            <td
-              colspan="5"
-              class="
-                py-3
-                px-2
-                font-bold
-              "
-            >
-
-              ${escapeHtml(
-                room.label
-              )}
-
-              <span
-                class="
-                  font-normal
-                  text-gray-500
-                "
-              >
-                (${formatQty(
-                  room.area
-                )} sqft)
-              </span>
-
-            </td>
-
+          <tr class="border-b align-top">
+            <td class="py-3 px-2">${escapeHtml(item.description)}</td>
+            <td class="py-3 px-2">${escapeHtml(item.unit)}</td>
+            <td class="py-3 px-2 text-right">${formatQty(item.qty)}</td>
+            <td class="py-3 px-2 text-right">${money(item.rate, 2)}</td>
+            <td class="py-3 px-2 text-right font-medium">${money(item.amount, 2)}</td>
           </tr>
-
         `;
+      });
 
-
-        roomItems.forEach(
-          item => {
-
-            body += `
-
-              <tr
-                class="
-                  border-b
-                  align-top
-                "
-              >
-
-                <td class="py-3 px-2">
-
-                  ${escapeHtml(
-                    item.description
-                  )}
-
-                </td>
-
-
-                <td class="py-3 px-2">
-
-                  ${escapeHtml(
-                    item.unit
-                  )}
-
-                </td>
-
-
-                <td
-                  class="
-                    py-3
-                    px-2
-                    text-right
-                  "
-                >
-
-                  ${formatQty(
-                    item.qty
-                  )}
-
-                </td>
-
-
-                <td
-                  class="
-                    py-3
-                    px-2
-                    text-right
-                  "
-                >
-
-                  ${money(
-                    item.rate,
-                    2
-                  )}
-
-                </td>
-
-
-                <td
-                  class="
-                    py-3
-                    px-2
-                    text-right
-                    font-medium
-                  "
-                >
-
-                  ${money(
-                    item.amount,
-                    2
-                  )}
-
-                </td>
-
-              </tr>
-
-            `;
-
-          }
-        );
-
-
-        body += `
-
-          <tr class="border-b">
-
-            <td
-              colspan="4"
-              class="
-                py-3
-                px-2
-                text-right
-                font-bold
-              "
-            >
-
-              ${escapeHtml(
-                room.label
-              )}
-              Subtotal
-
-            </td>
-
-
-            <td
-              class="
-                py-3
-                px-2
-                text-right
-                font-bold
-              "
-            >
-
-              ${money(
-                data.roomSubtotals[
-                  room.roomId
-                ] || 0,
-                2
-              )}
-
-            </td>
-
-          </tr>
-
-        `;
-
-      }
-    );
-
+      body += `
+        <tr class="border-b">
+          <td colspan="4" class="py-3 px-2 text-right font-bold">${escapeHtml(room.label)} Subtotal</td>
+          <td class="py-3 px-2 text-right font-bold">${money(data.roomSubtotals[room.roomId] || 0, 2)}</td>
+        </tr>
+      `;
+    });
 
     body += `
-
           </tbody>
-
-
           <tfoot>
-
             <tr class="border-t-2">
-
-              <td
-                colspan="4"
-                class="
-                  py-4
-                  px-2
-                  text-right
-                  font-bold
-                "
-              >
-                TOTAL
-              </td>
-
-
-              <td
-                class="
-                  py-4
-                  px-2
-                  text-right
-                  font-bold
-                  text-lg
-                "
-              >
-                ${money(
-                  data.total,
-                  2
-                )}
-              </td>
-
+              <td colspan="4" class="py-4 px-2 text-right font-bold">TOTAL</td>
+              <td class="py-4 px-2 text-right font-bold text-lg">${money(data.total, 2)}</td>
             </tr>
-
           </tfoot>
-
-
         </table>
-
       </div>
-
     `;
-
   }
 
-
-
-  /* ========================================================
-     TERMS / NOTES
-     ======================================================== */
-
+  // Terms
   body += `
-
-    <div
-      class="
-        mt-8
-        pt-5
-        border-t
-        text-sm
-        break-inside-avoid
-      "
-    >
-
-      <p
-        class="
-          font-semibold
-          mb-2
-        "
-      >
-        Terms / Notes
-      </p>
-
-
-      <ul
-        class="
-          list-disc
-          pl-5
-          space-y-1
-          text-gray-600
-        "
-      >
-
-        <li>
-          This quotation is based on the selected scope
-          and estimated area provided.
-        </li>
-
-        <li>
-          Final scope, specifications and pricing are
-          subject to site inspection and confirmation.
-        </li>
-
-        <li>
-          Any additional works not stated above will
-          be quoted separately.
-        </li>
-
+    <div class="mt-8 pt-5 border-t text-sm break-inside-avoid">
+      <p class="font-semibold mb-2">Terms / Notes</p>
+      <ul class="list-disc pl-5 space-y-1 text-gray-600">
+        <li>This quotation is based on the selected scope and estimated area provided.</li>
+        <li>Final scope, specifications and pricing are subject to site inspection and confirmation.</li>
+        <li>Any additional works not stated above will be quoted separately.</li>
       </ul>
-
     </div>
-
-
-    <div
-      class="
-        mt-12
-        text-sm
-        break-inside-avoid
-      "
-    >
-
-      <p>
-        Your sincerely,
-      </p>
-
-      <p
-        class="
-          font-bold
-          mt-8
-        "
-      >
-        TERAJU CIPTABINA RESOURCES
-      </p>
-
+    <div class="mt-12 text-sm break-inside-avoid">
+      <p>Your sincerely,</p>
+      <p class="font-bold mt-8">TERAJU CIPTABINA RESOURCES</p>
     </div>
-
   `;
 
+  content.innerHTML = body;
 
-  content.innerHTML =
-    body;
-
-
-  /* Build the on-screen quotation as real A4 pages (screen only). */
+  // Build nice A4 preview for screen
   requestAnimationFrame(() => {
     paginateQuotationA4();
   });
 
-
-  document.getElementById(
-    "quotationDocument"
-  ).classList.remove(
-    "hidden"
-  );
-
-
-  document.getElementById(
-    "quotationPrintActions"
-  ).classList.remove(
-    "hidden"
-  );
-
-
-  document.getElementById(
-    "quotationDocument"
-  ).scrollIntoView(
-    {
-      behavior: "smooth",
-      block: "start"
-    }
-  );
-
+  document.getElementById("quotationDocument").classList.remove("hidden");
+  document.getElementById("quotationPrintActions").classList.remove("hidden");
+  document.getElementById("quotationDocument").scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
-
-
 /* ============================================================
-   PRINT / SAVE QUOTATION PDF
+   PRINT — SWITCH TO CONTINUOUS FLOW (NO BIG GAPS)
    ============================================================ */
-
 function printQuotation() {
+  const quotation = document.getElementById("quotationDocument");
+  const content = document.getElementById("quotationContent");
 
-  const quotation =
-    document.getElementById(
-      "quotationDocument"
-    );
-
-
-  if (
-    quotation.classList.contains(
-      "hidden"
-    )
-  ) {
-
-    window.alert(
-      "Please generate the quotation first."
-    );
-
+  if (quotation.classList.contains("hidden")) {
+    window.alert("Please generate the quotation first.");
     return;
-
   }
 
+  const originalTitle = document.title;
+  document.title = quotationNumber ? `Quotation ${quotationNumber}` : "Quotation";
 
-  const originalTitle =
-    document.title;
+  // Save current paginated view
+  const paginatedHTML = content.innerHTML;
+  const wasPaginated = content.classList.contains("a4-paginated");
 
+  // Switch to continuous version for clean printing
+  if (wasPaginated && content.dataset.originalHtml) {
+    content.innerHTML = content.dataset.originalHtml;
+    content.classList.remove("a4-paginated");
+    quotation.classList.remove("a4-preview-document");
+  }
 
-  document.title =
-    quotationNumber
-      ? `Quotation ${quotationNumber}`
-      : "Quotation";
-
-
-  document.body.classList.add(
-    "print-quotation"
-  );
-
+  document.body.classList.add("print-quotation");
 
   const cleanup = () => {
-
-    document.body.classList.remove(
-      "print-quotation"
-    );
-
-    document.title =
-      originalTitle;
-
-    window.removeEventListener(
-      "afterprint",
-      cleanup
-    );
-
+    // Restore the nice A4 screen preview
+    if (wasPaginated) {
+      content.innerHTML = paginatedHTML;
+      content.classList.add("a4-paginated");
+      quotation.classList.add("a4-preview-document");
+    }
+    document.body.classList.remove("print-quotation");
+    document.title = originalTitle;
+    window.removeEventListener("afterprint", cleanup);
   };
 
-
-  window.addEventListener(
-    "afterprint",
-    cleanup
-  );
-
-
+  window.addEventListener("afterprint", cleanup);
   window.print();
-
-
-  setTimeout(
-    cleanup,
-    1000
-  );
-
+  setTimeout(cleanup, 1500);
 }
 
-
-
 /* ============================================================
-   START WITH ONE EMPTY AREA
+   START
    ============================================================ */
-
-addRoom(
-  "living",
-  ""
-);
+addRoom("living", "");
 
 </script>
 
-
 </body>
-
 </html>
