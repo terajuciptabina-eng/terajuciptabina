@@ -1218,12 +1218,11 @@ function renderEstimate(
       <table class="w-full border-collapse text-sm">
         <thead>
           <tr class="border-b-2 text-left">
-            <th class="py-3 px-2">Area</th>
             <th class="py-3 px-2">Description</th>
-            <th class="py-3 px-2 text-right">Qty</th>
             <th class="py-3 px-2">Unit</th>
-            <th class="py-3 px-2 text-right">Rate</th>
-            <th class="py-3 px-2 text-right">Amount</th>
+            <th class="py-3 px-2 text-right">Quantity</th>
+            <th class="py-3 px-2 text-right">Rate (RM)</th>
+            <th class="py-3 px-2 text-right">Amount (RM)</th>
             <th class="no-print py-3 px-2 text-center">Action</th>
           </tr>
         </thead>
@@ -1236,11 +1235,15 @@ function renderEstimate(
       : RATES.preliminaries;
 
     html += `
-      <tr class="border-b bg-gray-50">
-        <td class="py-3 px-2 font-medium">Project</td>
-        <td class="py-3 px-2">Submission of Renovation Permit Application and Engineer’s Drawings to the Local Authority</td>
-        <td class="py-3 px-2 text-right">1</td>
+      <tr class="bg-gray-100 border-b">
+        <td colspan="6" class="py-3 px-2 font-bold">Project / Preliminaries</td>
+      </tr>
+      <tr class="border-b">
+        <td class="py-3 px-2">
+          Submission of Renovation Permit Application and Engineer's Drawings to the Local Authority
+        </td>
         <td class="py-3 px-2">ls</td>
+        <td class="py-3 px-2 text-right">1</td>
         <td class="py-3 px-2 text-right">
           <div class="flex items-center justify-end gap-2">
             <span>${money(prelimRate)}</span>
@@ -1251,9 +1254,7 @@ function renderEstimate(
             >Edit</button>
           </div>
         </td>
-        <td class="py-3 px-2 text-right font-medium">
-          ${money(prelimRate)}
-        </td>
+        <td class="py-3 px-2 text-right font-medium">${money(prelimRate)}</td>
         <td class="no-print py-3 px-2 text-center">
           <button
             type="button"
@@ -1268,11 +1269,13 @@ function renderEstimate(
   roomGroups.forEach(room => {
     const roomItems = itemsByRoom[room.roomId] || [];
 
+    if (room.area <= 0) return;
+
     html += `
       <tr class="bg-gray-100 border-b">
-        <td colspan="7" class="py-3 px-2 font-bold">
+        <td colspan="6" class="py-3 px-2 font-bold">
           ${escapeHtml(room.label)}
-          ${room.area > 0 ? `<span class="font-normal text-gray-500">(${formatQty(room.area)} sqft)</span>` : ""}
+          <span class="font-normal text-gray-500">(${formatQty(room.area)} sqft)</span>
         </td>
       </tr>
     `;
@@ -1282,18 +1285,11 @@ function renderEstimate(
 
       html += `
         <tr class="border-b hover:bg-gray-50">
-          <td class="py-3 px-2 font-medium">
-            ${escapeHtml(item.room)}
-          </td>
           <td class="py-3 px-2">
             ${escapeHtml(item.description)}
           </td>
-          <td class="py-3 px-2 text-right">
-            ${formatQty(item.qty)}
-          </td>
-          <td class="py-3 px-2">
-            ${escapeHtml(item.unit)}
-          </td>
+          <td class="py-3 px-2">${escapeHtml(item.unit)}</td>
+          <td class="py-3 px-2 text-right">${formatQty(item.qty)}</td>
           <td class="py-3 px-2 text-right">
             ${editable ? `
               <div class="flex items-center justify-end gap-2">
@@ -1306,9 +1302,7 @@ function renderEstimate(
               </div>
             ` : money(item.rate)}
           </td>
-          <td class="py-3 px-2 text-right font-medium">
-            ${money(item.amount)}
-          </td>
+          <td class="py-3 px-2 text-right font-medium">${money(item.amount)}</td>
           <td class="no-print py-3 px-2 text-center">
             <button
               type="button"
@@ -1322,7 +1316,7 @@ function renderEstimate(
 
     html += `
       <tr class="border-b">
-        <td colspan="5" class="py-3 px-2 text-right font-semibold">
+        <td colspan="4" class="py-3 px-2 text-right font-semibold">
           ${escapeHtml(room.label)} Subtotal
         </td>
         <td class="py-3 px-2 text-right font-bold">
@@ -1340,7 +1334,7 @@ function renderEstimate(
         </tbody>
         <tfoot>
           <tr class="border-t-2">
-            <td colspan="5" class="py-4 px-2 text-right font-semibold">
+            <td colspan="4" class="py-4 px-2 text-right font-semibold">
               Overall Subtotal
             </td>
             <td class="py-4 px-2 text-right font-bold">
@@ -1561,10 +1555,9 @@ function generateQuotation() {
         <table class="w-full border-collapse text-sm">
           <thead>
             <tr class="border-b-2 text-left">
-              <th class="py-3 px-2">Area / Room</th>
               <th class="py-3 px-2">Description</th>
-              <th class="py-3 px-2 text-right">Qty</th>
               <th class="py-3 px-2">Unit</th>
+              <th class="py-3 px-2 text-right">Quantity</th>
               <th class="py-3 px-2 text-right">Rate (RM)</th>
               <th class="py-3 px-2 text-right">Amount (RM)</th>
             </tr>
@@ -1574,11 +1567,15 @@ function generateQuotation() {
 
     if (data.projectPreliminaries > 0) {
       body += `
-        <tr class="border-b bg-gray-50">
-          <td class="py-3 px-2 font-semibold">Project</td>
-          <td class="py-3 px-2">Submission of Renovation Permit Application and Engineer’s Drawings to the Local Authority</td>
-          <td class="py-3 px-2 text-right">1</td>
+        <tr class="bg-gray-100 border-b">
+          <td colspan="5" class="py-3 px-2 font-bold">Project / Preliminaries</td>
+        </tr>
+        <tr class="border-b align-top">
+          <td class="py-3 px-2">
+            Submission of Renovation Permit Application and Engineer's Drawings to the Local Authority
+          </td>
           <td class="py-3 px-2">ls</td>
+          <td class="py-3 px-2 text-right">1</td>
           <td class="py-3 px-2 text-right">${money(data.projectPreliminaries)}</td>
           <td class="py-3 px-2 text-right font-semibold">${money(data.projectPreliminaries)}</td>
         </tr>`;
@@ -1590,7 +1587,7 @@ function generateQuotation() {
 
       body += `
         <tr class="bg-gray-100 border-b">
-          <td colspan="6" class="py-3 px-2 font-bold">
+          <td colspan="5" class="py-3 px-2 font-bold">
             ${escapeHtml(room.label)}
             <span class="font-normal text-gray-500">(${formatQty(room.area)} sqft)</span>
           </td>
@@ -1599,10 +1596,9 @@ function generateQuotation() {
       roomItems.forEach(item => {
         body += `
           <tr class="border-b align-top">
-            <td class="py-3 px-2"></td>
             <td class="py-3 px-2">${escapeHtml(item.description)}</td>
-            <td class="py-3 px-2 text-right">${formatQty(item.qty)}</td>
             <td class="py-3 px-2">${escapeHtml(item.unit)}</td>
+            <td class="py-3 px-2 text-right">${formatQty(item.qty)}</td>
             <td class="py-3 px-2 text-right">${money(item.rate)}</td>
             <td class="py-3 px-2 text-right font-medium">${money(item.amount)}</td>
           </tr>`;
@@ -1610,7 +1606,7 @@ function generateQuotation() {
 
       body += `
         <tr class="border-b">
-          <td colspan="5" class="py-3 px-2 text-right font-bold">${escapeHtml(room.label)} Subtotal</td>
+          <td colspan="4" class="py-3 px-2 text-right font-bold">${escapeHtml(room.label)} Subtotal</td>
           <td class="py-3 px-2 text-right font-bold">${money(data.roomSubtotals[room.roomId] || 0)}</td>
         </tr>`;
     });
@@ -1619,7 +1615,7 @@ function generateQuotation() {
           </tbody>
           <tfoot>
             <tr class="border-t-2">
-              <td colspan="5" class="py-4 px-2 text-right font-bold">TOTAL</td>
+              <td colspan="4" class="py-4 px-2 text-right font-bold">TOTAL</td>
               <td class="py-4 px-2 text-right font-bold text-lg">${money(data.total)}</td>
             </tr>
           </tfoot>
