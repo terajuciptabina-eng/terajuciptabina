@@ -561,6 +561,63 @@
     }
 
     /* =========================================================
+       A4 PAGINATED QUOTATION PREVIEW
+       Screen view uses real A4-sized sheets so the on-screen
+       quotation matches the browser Print / Save as PDF output.
+       ========================================================= */
+    #quotationContent.a4-paginated {
+      width: 100%;
+      max-width: none;
+      overflow: visible;
+    }
+
+    .quotation-page {
+      width: 210mm;
+      height: 297mm;
+      box-sizing: border-box;
+      padding: 10mm 11mm;
+      margin: 0 auto 16px;
+      background: #fff;
+      box-shadow: 0 2px 12px rgba(0,0,0,.12);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .quotation-page:last-child {
+      margin-bottom: 0;
+    }
+
+    .quotation-page-body {
+      width: 100%;
+      height: calc(100% - 8mm);
+      box-sizing: border-box;
+    }
+
+    .quotation-page-continuation {
+      font-size: 9px;
+      color: #6b7280;
+      margin: -2mm 0 4mm;
+      padding-bottom: 2mm;
+      border-bottom: 1px solid #d1d5db;
+    }
+
+    .quotation-page-number {
+      position: absolute;
+      bottom: 5mm;
+      right: 11mm;
+      font-size: 8px;
+      color: #6b7280;
+    }
+
+    @media screen {
+      #quotationDocument.a4-preview-document {
+        background: #e5e7eb !important;
+        padding: 24px 0 !important;
+        overflow: visible !important;
+      }
+    }
+
+    /* =========================================================
        PRINT — DEDICATED A4 QUOTATION LAYOUT
        ========================================================= */
 
@@ -597,16 +654,14 @@
 
       body.print-quotation #quotationDocument {
         display: block !important;
-        position: absolute !important;
-        top: 0 !important;
-        left: 0 !important;
-        width: 210mm !important;
+        position: static !important;
+        width: 100% !important;
         max-width: none !important;
         min-height: 0 !important;
         height: auto !important;
         box-sizing: border-box !important;
         margin: 0 !important;
-        padding: 10mm 11mm !important;
+        padding: 0 !important;
         background: #fff !important;
         box-shadow: none !important;
         border: none !important;
@@ -614,6 +669,37 @@
         page-break-after: auto !important;
         break-after: auto !important;
         overflow: visible !important;
+      }
+
+      .quotation-page {
+        width: 210mm !important;
+        height: 297mm !important;
+        min-height: 297mm !important;
+        max-height: 297mm !important;
+        box-sizing: border-box !important;
+        margin: 0 !important;
+        padding: 10mm 11mm !important;
+        background: #fff !important;
+        box-shadow: none !important;
+        overflow: hidden !important;
+        page-break-after: always !important;
+        break-after: page !important;
+        position: relative !important;
+      }
+
+      .quotation-page:last-child {
+        page-break-after: auto !important;
+        break-after: auto !important;
+      }
+
+      .quotation-page-body {
+        width: 100% !important;
+        height: calc(100% - 8mm) !important;
+        overflow: hidden !important;
+      }
+
+      .quotation-page-number {
+        display: block !important;
       }
 
       #quotationContent {
@@ -4654,6 +4740,161 @@ function quotationDescriptionList(
    GENERATE QUOTATION
    ============================================================ */
 
+/* ============================================================
+   A4 PAGINATION — QUOTATION SCREEN PREVIEW + PRINT
+   Splits long quotation tables into physical A4 sheets and
+   repeats the table heading on every continuation page.
+   ============================================================ */
+function paginateQuotationA4() {
+
+  const content = document.getElementById("quotationContent");
+  const documentEl = document.getElementById("quotationDocument");
+
+  if (!content || !documentEl) return;
+
+  const originalChildren = Array.from(content.children);
+  if (!originalChildren.length) return;
+
+  const tableWrap = originalChildren.find(el => el.querySelector("table"));
+  const table = tableWrap?.querySelector("table");
+
+  /* If there is no quotation table, keep the normal content. */
+  if (!table) return;
+
+  const headerBlock = originalChildren[0];
+  const customerBlock = originalChildren[1];
+  const introBlock = originalChildren[2];
+  const termsBlock = originalChildren[originalChildren.length - 2];
+  const signBlock = originalChildren[originalChildren.length - 1];
+
+  const rows = Array.from(table.querySelectorAll("tbody > tr"));
+  const thead = table.querySelector("thead");
+  const tfoot = table.querySelector("tfoot");
+
+  content.classList.add("a4-paginated");
+  documentEl.classList.add("a4-preview-document");
+
+  /* Clear the original continuous flow. */
+  content.innerHTML = "";
+
+  const pages = [];
+
+  function createPage(isFirst) {
+    const page = document.createElement("div");
+    page.className = "quotation-page";
+
+    const body = document.createElement("div");
+    body.className = "quotation-page-body";
+    page.appendChild(body);
+
+    if (isFirst) {
+      [headerBlock, customerBlock, introBlock].forEach(el => {
+        if (el) body.appendChild(el.cloneNode(true));
+      });
+    } else {
+      const continuation = document.createElement("div");
+      continuation.className = "quotation-page-continuation";
+      continuation.textContent = `Quotation ${quotationNumber || ""} — Continued`;
+      body.appendChild(continuation);
+    }
+
+    content.appendChild(page);
+    pages.push(page);
+    return page;
+  }
+
+  function createTableShell() {
+    const wrap = document.createElement("div");
+    wrap.className = tableWrap.className || "overflow-x-auto";
+    wrap.style.overflow = "visible";
+    wrap.style.width = "100%";
+
+    const newTable = table.cloneNode(false);
+
+    if (table.querySelector("colgroup")) {
+      newTable.appendChild(table.querySelector("colgroup").cloneNode(true));
+    }
+    if (thead) newTable.appendChild(thead.cloneNode(true));
+
+    const tbody = document.createElement("tbody");
+    newTable.appendChild(tbody);
+
+    wrap.appendChild(newTable);
+    return { wrap, table: newTable, tbody };
+  }
+
+  let page = createPage(true);
+  let shell = createTableShell();
+  page.querySelector(".quotation-page-body").appendChild(shell.wrap);
+
+  /* Add rows one by one. If a row makes the page overflow,
+     move it to a fresh A4 page. */
+  rows.forEach(row => {
+    const clone = row.cloneNode(true);
+    shell.tbody.appendChild(clone);
+
+    const body = page.querySelector(".quotation-page-body");
+    const pageHeight = body.clientHeight;
+    const usedHeight = body.scrollHeight;
+
+    if (usedHeight > pageHeight && shell.tbody.children.length > 1) {
+      shell.tbody.removeChild(clone);
+
+      page = createPage(false);
+      shell = createTableShell();
+      page.querySelector(".quotation-page-body").appendChild(shell.wrap);
+      shell.tbody.appendChild(clone);
+    }
+  });
+
+  /* Put the TOTAL footer on the final page. */
+  if (tfoot) {
+    let finalPage = pages[pages.length - 1];
+    let finalBody = finalPage.querySelector(".quotation-page-body");
+    let finalTable = finalBody.querySelector("table");
+
+    finalTable.appendChild(tfoot.cloneNode(true));
+
+    /* If TOTAL causes overflow, move it to a new page with the
+       table heading repeated. */
+    if (finalBody.scrollHeight > finalBody.clientHeight) {
+      finalTable.removeChild(finalTable.querySelector("tfoot"));
+      finalPage = createPage(false);
+      finalBody = finalPage.querySelector(".quotation-page-body");
+      shell = createTableShell();
+      finalBody.appendChild(shell.wrap);
+      shell.table.appendChild(tfoot.cloneNode(true));
+      finalTable = shell.table;
+    }
+  }
+
+  /* Terms and signature stay together at the end where possible. */
+  let lastPage = pages[pages.length - 1];
+  let lastBody = lastPage.querySelector(".quotation-page-body");
+
+  if (termsBlock) lastBody.appendChild(termsBlock.cloneNode(true));
+  if (signBlock) lastBody.appendChild(signBlock.cloneNode(true));
+
+  if (lastBody.scrollHeight > lastBody.clientHeight) {
+    if (termsBlock) lastBody.removeChild(lastBody.lastElementChild);
+    if (signBlock) lastBody.removeChild(lastBody.lastElementChild);
+
+    lastPage = createPage(false);
+    lastBody = lastPage.querySelector(".quotation-page-body");
+    if (termsBlock) lastBody.appendChild(termsBlock.cloneNode(true));
+    if (signBlock) lastBody.appendChild(signBlock.cloneNode(true));
+  }
+
+  /* Add page numbers after the final page count is known. */
+  pages.forEach((p, index) => {
+    const marker = document.createElement("div");
+    marker.className = "quotation-page-number";
+    marker.textContent = `Page ${index + 1} of ${pages.length}`;
+    p.appendChild(marker);
+  });
+
+}
+
 function generateQuotation() {
 
   const data =
@@ -5183,7 +5424,6 @@ function generateQuotation() {
             <col style="width:10%">
             <col style="width:15%">
             <col style="width:15%">
-            <col style="width:0">
           </colgroup>
 
           <thead>
@@ -5632,6 +5872,12 @@ function generateQuotation() {
 
   content.innerHTML =
     body;
+
+
+  /* Build the on-screen quotation as real A4 pages. */
+  requestAnimationFrame(() => {
+    paginateQuotationA4();
+  });
 
 
   document.getElementById(
