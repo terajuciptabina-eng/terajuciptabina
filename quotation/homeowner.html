@@ -1,0 +1,214 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Homeowner | TER​AJU WORKS</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    body {
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system,
+        BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    .card {
+      transition: transform 0.2s ease, box-shadow 0.2s ease,
+        border-color 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 18px 45px rgba(15, 23, 42, 0.10);
+      border-color: #cbd5e1;
+    }
+  </style>
+</head>
+
+<body class="min-h-screen bg-slate-50 text-slate-900">
+
+  <!-- Header -->
+  <header class="border-b border-slate-200 bg-white">
+    <div class="mx-auto flex max-w-6xl items-center justify-between px-5 py-4 sm:px-6">
+
+      <a href="index.html" class="flex items-center gap-3">
+        <img
+          src="../images/logo.png"
+          alt="Teraju Ciptabina Logo"
+          class="h-10 w-auto"
+        >
+
+        <div class="hidden sm:block leading-tight">
+          <div class="text-sm font-bold tracking-wide text-slate-900">
+            TERAJU WORKS
+          </div>
+          <div class="text-[10px] font-medium tracking-[0.16em] text-slate-500">
+            CONSTRUCTION COSTING & QUOTATION
+          </div>
+        </div>
+      </a>
+
+      <a
+        href="index.html"
+        class="text-sm font-medium text-slate-500 transition hover:text-slate-900"
+      >
+        ← Change User Type
+      </a>
+
+    </div>
+  </header>
+
+
+  <!-- Main -->
+  <main class="mx-auto max-w-6xl px-5 py-12 sm:px-6 sm:py-16">
+
+    <!-- Intro -->
+    <div class="mx-auto max-w-3xl text-center">
+
+      <div
+        class="mb-4 inline-flex items-center rounded-full border border-slate-200 bg-white px-4 py-1.5 text-xs font-semibold tracking-wide text-slate-600 shadow-sm"
+      >
+        HOMEOWNER
+      </div>
+
+      <h1
+        class="text-3xl font-bold tracking-tight text-slate-950 sm:text-5xl"
+      >
+        What are you planning?
+      </h1>
+
+      <p class="mx-auto mt-4 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
+        Choose your project type to estimate your construction cost
+        and prepare a quotation.
+      </p>
+
+    </div>
+
+
+    <!-- Project Cards -->
+    <div class="mx-auto mt-10 grid max-w-4xl gap-6 md:grid-cols-2">
+
+      <!-- New Build -->
+      <div
+        class="card rounded-3xl border border-slate-200 bg-white p-7 shadow-sm sm:p-8"
+      >
+
+        <div
+          class="flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-100 text-2xl"
+        >
+          🏠
+        </div>
+
+        <div class="mt-6">
+          <h2 class="text-2xl font-bold text-slate-950">
+            Build a New House
+          </h2>
+
+          <p class="mt-3 text-sm leading-6 text-slate-600">
+            Planning to build a new house? Start with your basic project
+            information and get an estimated construction cost.
+          </p>
+        </div>
+
+        <div class="mt-6 flex flex-wrap gap-2">
+          <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600">
+            New Build
+          </span>
+
+          <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600">
+            Cost Estimate
+          </span>
+
+          <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600">
+            Quotation
+          </span>
+        </div>
+
+        <a
+          href="buildplanner.html?audience=homeowner"
+          class="mt-8 flex w-full items-center justify-center rounded-2xl bg-slate-950 px-5 py-3.5 text-sm font-semibold text-white transition hover:bg-slate-800"
+        >
+          Start New House Estimate
+          <span class="ml-2">→</span>
+        </a>
+
+      </div>
+
+
+      <!-- Renovation -->
+      <div
+        class="card rounded-3xl border border-slate-200 bg-white p-7 shadow-sm sm:p-8"
+      >
+
+        <div
+          class="flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-100 text-2xl"
+        >
+          🔨
+        </div>
+
+        <div class="mt-6">
+          <h2 class="text-2xl font-bold text-slate-950">
+            Renovate Existing House
+          </h2>
+
+          <p class="mt-3 text-sm leading-6 text-slate-600">
+            Renovating your existing home? Select the renovation works
+            you are planning and estimate your project cost.
+          </p>
+        </div>
+
+        <div class="mt-6 flex flex-wrap gap-2">
+          <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600">
+            Renovation
+          </span>
+
+          <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600">
+            Cost Estimate
+          </span>
+
+          <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600">
+            Quotation
+          </span>
+        </div>
+
+        <a
+          href="renovationplanner.html?audience=homeowner"
+          class="mt-8 flex w-full items-center justify-center rounded-2xl bg-slate-950 px-5 py-3.5 text-sm font-semibold text-white transition hover:bg-slate-800"
+        >
+          Start Renovation Estimate
+          <span class="ml-2">→</span>
+        </a>
+
+      </div>
+
+    </div>
+
+
+    <!-- Bottom Note -->
+    <div class="mx-auto mt-10 max-w-3xl">
+      <div
+        class="rounded-2xl border border-slate-200 bg-white px-5 py-4 text-center text-sm leading-6 text-slate-500"
+      >
+        You can review your estimated project cost before deciding
+        whether to generate a quotation.
+      </div>
+    </div>
+
+  </main>
+
+
+  <!-- Footer -->
+  <footer class="border-t border-slate-200 bg-white">
+    <div
+      class="mx-auto max-w-6xl px-5 py-6 text-center text-xs text-slate-500 sm:px-6"
+    >
+      TERAJU CIPTABINA RESOURCES · CONSTRUCTION COSTING & QUOTATION
+    </div>
+  </footer>
+
+</body>
+</html>
+```
