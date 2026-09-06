@@ -1,0 +1,38 @@
+name: Add location autocomplete
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  patch-location-fields:
+    if: "!contains(github.event.head_commit.message, '[location-autocomplete]')"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Add location autocomplete script to both planners
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          tag='<script src="location-autocomplete.js"></script>'
+          for name in ['quotation/renovationplanner.html','quotation/buildplanner.html']:
+              p=Path(name)
+              s=p.read_text(encoding='utf-8')
+              if tag not in s:
+                  s=s.replace('</body>', tag+'\n</body>')
+                  p.write_text(s,encoding='utf-8')
+          PY
+      - name: Commit planner updates
+        run: |
+          git config user.name 'Teraju Ciptabina Bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add quotation/renovationplanner.html quotation/buildplanner.html
+          if git diff --cached --quiet; then
+            echo 'No planner changes needed.'
+            exit 0
+          fi
+          git commit -m 'Add project location autocomplete [location-autocomplete]'
+          git push
