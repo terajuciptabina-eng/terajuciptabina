@@ -12,44 +12,49 @@
   function qty(v,u) { return typeof window.formatQty === 'function' ? window.formatQty(v,u) : Number(v||0).toLocaleString('en-MY',{maximumFractionDigits:2}); }
   function save(key,value){try{sessionStorage.setItem(key,JSON.stringify(value))}catch(e){}try{localStorage.setItem(key,JSON.stringify(value))}catch(e){}}
 
-  const STRUCTURE_HEADINGS = ['GROUND BEAM','GROUND FLOOR','COLUMN','ROOF BEAM','ROOF SLAB','STAIRCASE'];
+  // Structural headings must come from the Build Planner data itself.
+  // Do not invent or hard-code construction-element names here.
+  const LEVEL_FIELDS = [
+    ['mainHeading','main_heading','mainCategory','main_category','section','sectionName','section_name'],
+    ['subheading','subHeading','subcategory','subCategory','sub_category','category','categoryName','category_name','group','groupName','group_name','structure','structureType','element','elementType'],
+    ['subSubheading','subSubHeading','subsubcategory','subSubCategory','sub_subcategory','workType','work_type','itemGroup','item_group']
+  ];
 
-  function subheading(item) {
-    const raw = [item?.subheading,item?.subcategory,item?.subCategory,item?.category,item?.group,item?.structure,item?.element,item?.structureType,item?.workCategory,item?.areaType,item?.location,item?.name,item?.title].filter(Boolean).join(' ');
-    const text = `${raw} ${item?.description || ''}`.toLowerCase();
-    if (/ground\s*beam|ground\s*girder|tie\s*beam/.test(text)) return 'GROUND BEAM';
-    if (/ground\s*floor|ground\s*slab|floor\s*slab/.test(text)) return 'GROUND FLOOR';
-    if (/column|columns/.test(text)) return 'COLUMN';
-    if (/roof\s*beam|ring\s*beam/.test(text)) return 'ROOF BEAM';
-    if (/roof\s*slab/.test(text)) return 'ROOF SLAB';
-    if (/staircase|stair\s*case|stairs|stair/.test(text)) return 'STAIRCASE';
+  function firstValue(item, fields) {
+    for (const key of fields) {
+      const value = item?.[key];
+      if (typeof value === 'string' && value.trim()) return value.trim();
+      if (typeof value === 'number') return String(value);
+    }
     return '';
   }
 
-  function groupStructures(items) {
-    const groups = STRUCTURE_HEADINGS.map(name => ({name,items:[]}));
-    const unknown = [];
-    (items || []).forEach(item => {
-      const label = subheading(item);
-      if (label) groups[STRUCTURE_HEADINGS.indexOf(label)].items.push(item);
-      else unknown.push(item);
-    });
-
-    // The current Build Planner structural rate list is flat, so when no
-    // element label is carried by an item, keep the original schedule order
-    // and split it into the six construction-element groups.
-    if (unknown.length && groups.every(g => !g.items.length)) {
-      const chunk = Math.ceil(unknown.length / STRUCTURE_HEADINGS.length);
-      STRUCTURE_HEADINGS.forEach((name,i) => {
-        groups[i].items = unknown.slice(i * chunk, Math.min((i + 1) * chunk, unknown.length));
-      });
-    } else if (unknown.length) {
-      // Do not lose unlabelled rows when some labelled groups exist.
-      // Attach them to the nearest preceding structural group in schedule order.
-      const target = groups.find(g => g.items.length) || groups[0];
-      target.items.push(...unknown);
+  function structuralHierarchy(item) {
+    const levels = LEVEL_FIELDS.map(fields => firstValue(item, fields));
+    // If a generic category is present but there is no explicit main heading,
+    // keep it as the first available hierarchy level rather than inventing a label.
+    if (!levels[0] && !levels[1] && !levels[2]) return [];
+    if (!levels[0] && levels[1]) {
+      levels[0] = levels[1];
+      levels[1] = levels[2];
+      levels[2] = '';
     }
-    return groups.filter(g => g.items.length);
+    return levels.filter(Boolean);
+  }
+
+  function groupStructures(items) {
+    const groups = [];
+    let current = null;
+    (items || []).forEach(item => {
+      const hierarchy = structuralHierarchy(item);
+      const key = hierarchy.join(' › ');
+      if (!current || current.key !== key) {
+        current = { key, hierarchy, items: [] };
+        groups.push(current);
+      }
+      current.items.push(item);
+    });
+    return groups;
   }
 
   function installDetailedOverride() {
@@ -75,13 +80,17 @@
       let no = 1;
       const section = t => `<tr class="tc-q-section"><td colspan="5" class="py-3 px-2">${esc(t)}</td></tr>`;
       const room = r => `<tr class="tc-q-room"><td colspan="5" class="py-3 px-2">${esc(r.label)} <span class="font-normal text-gray-500">(${qty(r.area)} sqft)</span></td></tr>`;
-      const sub = t => `<tr class="tc-q-room quotation-subsection-row"><td colspan="5" class="py-2 px-2">${esc(t)}</td></tr>`;
+      const sub = (t,level=1) => `<tr class="tc-q-room quotation-subsection-row ${level>1?'tc-q-subsub':''}"><td colspan="5" class="py-2 px-2">${esc(t)}</td></tr>`;
       const rows = arr => (arr||[]).map(i=>`<tr class="border-b align-top"><td class="py-3 px-2">${no++}</td><td class="py-3 px-2 text-left">${esc(i.description)}</td><td class="py-3 px-2 text-right">${qty(i.qty,i.unit)}</td><td class="py-3 px-2 text-right">${money2(i.rate)}</td><td class="py-3 px-2 text-right font-medium">${money2(i.amount)}</td></tr>`).join('');
 
       if (data.prelim.length) html += section('A. PRELIMINARIES') + rows(data.prelim);
       if (data.structures.length) {
         html += section('B. STRUCTURAL WORKS');
-        groupStructures(data.structures).forEach(g => { html += sub(g.name) + rows(g.items); });
+        const groups = groupStructures(data.structures);
+        groups.forEach(g => {
+          g.hierarchy.forEach((name, index) => { html += sub(name, index + 1); });
+          html += rows(g.items);
+        });
       }
       const archRooms = rooms.filter(r=>Number(r.area)>0 && (data.archByRoom[r.roomId]||[]).length);
       if (archRooms.length) {
