@@ -176,7 +176,7 @@
       <h3 class="font-bold text-lg">Building Specification</h3>
       <p class="text-sm text-gray-500">Define the overall building parameters used to estimate structural works.</p>
     </div>
-    <div class="grid md:grid-cols-3 gap-5">
+    <div class="grid md:grid-cols-2 gap-5">
       <div>
         <label class="block text-sm font-medium mb-2">Total Built-up Area (sqft)</label>
         <input id="builtUpArea" type="number" min="100" step="1" value="600"
@@ -189,13 +189,6 @@
         <select id="numStoreys" class="w-full border rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-gray-300" onchange="updateEstimate()">
           <option value="1" selected>1 Storey</option>
           <option value="2">2 Storey</option>
-        </select>
-      </div>
-      <div>
-        <label class="block text-sm font-medium mb-2">Design Style</label>
-        <select id="packageStyle" class="w-full border rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-gray-300" onchange="updateEstimate()">
-          <option value="scandinavian" selected>Scandinavian</option>
-          <option value="modern">Modern Minimal</option>
         </select>
       </div>
     </div>
@@ -995,8 +988,7 @@ function generateQuotation() {
   const declared = parseFloat(document.getElementById("builtUpArea")?.value) || 0;
   const roomsArea = rooms.reduce((s, r) => s + (r.area || 0), 0);
   const storeys = document.getElementById("numStoreys")?.value || "1";
-  const style = document.getElementById("packageStyle")?.value || "scandinavian";
-  const styleLabel = style === "scandinavian" ? "Scandinavian" : "Modern Minimal";
+  
   const today = new Intl.DateTimeFormat("en-MY", { day: "2-digit", month: "long", year: "numeric" }).format(new Date());
   const content = document.getElementById("quotationContent");
 
@@ -1031,7 +1023,7 @@ function generateQuotation() {
       <div>
         <p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Built-up Area</p>
         <p class="font-semibold">${formatQty(declared)} sqft · ${storeys} storey<br>
-          <span class="font-normal text-gray-500">${formatQty(roomsArea)} sqft rooms · ${styleLabel}</span></p>
+          <span class="font-normal text-gray-500">${formatQty(roomsArea)} sqft rooms</span></p>
       </div>
     </div>
     <div class="mb-5">
