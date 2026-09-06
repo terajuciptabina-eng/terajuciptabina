@@ -214,6 +214,25 @@
     <div id="roomsContainer" class="space-y-4"></div>
   </section>
 
+  <!-- Rate Schedule -->
+  <section class="no-print bg-white rounded-2xl shadow-sm p-6 mb-6">
+    <div class="flex justify-between items-center cursor-pointer" onclick="toggleRateSchedule()">
+      <div class="min-w-0">
+        <h3 class="font-bold text-lg">Rate Schedule</h3>
+        <p class="text-sm text-gray-500">Review and amend unit rates. All estimates and quotations will follow the rates set here.</p>
+      </div>
+      <span id="rateScheduleArrow" class="text-gray-500 text-sm ml-4 flex-shrink-0">▼</span>
+    </div>
+    <div id="rateSchedulePanel" class="hidden mt-5">
+      <div class="mb-3 flex flex-wrap gap-2">
+        <button type="button" onclick="resetRatesToDefault()" class="border px-4 py-2 rounded-lg text-sm hover:bg-gray-50">
+          Reset to Default Rates
+        </button>
+      </div>
+      <div id="rateScheduleContent" class="overflow-x-auto"></div>
+    </div>
+  </section>
+
   <!-- Estimate -->
   <section class="bg-white rounded-2xl shadow-sm p-6 print-card">
     <div class="flex justify-between items-start mb-6 gap-4">
@@ -319,10 +338,8 @@
    ========================================================= */
 const BASE_AREA = 600;
 
-const RATES = {
-  // Structures (package, scale by area)
-  // Structures — concrete m³ & rebar kg retained; surface measures standardised to sqft
-  // (formwork / BRC / metal sheet rates converted from RM/m² ÷ 10.7639)
+/* Default rates — used for Reset. Working rates live in RATES (editable). */
+const DEFAULT_RATES = {
   footingConc: 550, footingFw: 4.18, footingRebar: 15,
   slabConc: 550, slabBrc: 6.50,
   beamConc: 350, beamFw: 4.18, beamRebar: 15,
@@ -330,43 +347,111 @@ const RATES = {
   flatRoofConc: 550, flatRoofFw: 4.18, flatRoofBrc: 6.50,
   cChannel: 4, metalSheet: 3.25,
   roofDesignConc: 550, roofDesignFw: 4.18, roofDesignRebar: 70,
-  apronConc: 350, apronFw: 4.18, apronBrc: 15,
+  apronConc: 350, apronFw: 13.72, apronBrc: 15,
   drainage: 25,
-  // Architecture — all area units standardised to sqft (rates converted from RM/m² ÷ 10.7639)
-  ceilingInt: 15,          // RM/sqft
-  ceilingExt: 20,          // RM/sqft
-  floorTileInt: 4.18,      // was RM 45/m²
-  floorTileExt: 5.57,      // was RM 60/m²
-  brickInt: 4.18,          // was RM 45/m²
-  brickExt: 4.18,          // was RM 45/m²
-  paintInt: 1.39,          // was RM 15/m²
-  paintExt: 2.32,          // was RM 25/m²
-  door: 600,               // per unit
-  window: 600,             // per unit
-  decoBlock: 13.94,        // was RM 150/m²
-  waterTank: 500,
-  septicTank: 1500,
-  // Bathroom — RM/sqft
-  bathWallTile: 4.18,      // was RM 45/m²
-  bathFloorTile: 4.18,     // was RM 45/m²
-  bathPiping: 1000,        // ls
-  bathShower: 120,
-  bathTap: 30,
-  bathWc: 500,
-  bathBasin: 400,
-  // Electrical package
-  dbBox: 1000,
-  wiring: 20,              // /m
-  powerPoint: 50,
-  switch: 50,
-  lighting: 250,
-  fan: 600,
-  aircond: 300,
-  earthing: 1500,
-  // Preliminaries
-  permit: 8500,
-  prelim: 12000
+  ceilingInt: 15, ceilingExt: 20,
+  floorTileInt: 4.18, floorTileExt: 5.57,
+  brickInt: 4.18, brickExt: 4.18,
+  paintInt: 1.39, paintExt: 2.32,
+  door: 600, window: 600, decoBlock: 13.94,
+  waterTank: 500, septicTank: 1500,
+  bathWallTile: 4.18, bathFloorTile: 4.18,
+  bathPiping: 1000, bathShower: 120, bathTap: 30, bathWc: 500, bathBasin: 400,
+  dbBox: 1000, wiring: 20, powerPoint: 50, switch: 50,
+  lighting: 250, fan: 600, aircond: 300, earthing: 1500,
+  permit: 8500, prelim: 12000
 };
+
+let RATES = { ...DEFAULT_RATES };
+
+/* Rate schedule display — groups for the editable table */
+const RATE_SCHEDULE = [
+  {
+    title: "Preliminaries",
+    rows: [
+      { key: "permit", label: "Building plan / permit & engineer’s drawings", unit: "ls" },
+      { key: "prelim", label: "Preliminaries, mobilisation & project management", unit: "ls" }
+    ]
+  },
+  {
+    title: "Structures – Concrete",
+    rows: [
+      { key: "footingConc", label: "Footing – Concrete G15", unit: "m3" },
+      { key: "slabConc", label: "Ground slab – Concrete G25", unit: "m3" },
+      { key: "beamConc", label: "Beam – Concrete G25", unit: "m3" },
+      { key: "colConc", label: "Column – Concrete G25", unit: "m3" },
+      { key: "flatRoofConc", label: "Flat roof – Concrete G25", unit: "m3" },
+      { key: "roofDesignConc", label: "Design roof structure – Concrete G25", unit: "m3" },
+      { key: "apronConc", label: "Apron – Concrete G15", unit: "m3" }
+    ]
+  },
+  {
+    title: "Structures – Formwork / BRC / Roofing",
+    rows: [
+      { key: "footingFw", label: "Formwork (footing / beam / column / flat roof)", unit: "sqft" },
+      { key: "beamFw", label: "Formwork (ground / roof beam)", unit: "sqft" },
+      { key: "colFw", label: "Formwork (column)", unit: "sqft" },
+      { key: "flatRoofFw", label: "Formwork (flat roof)", unit: "sqft" },
+      { key: "roofDesignFw", label: "Formwork (design roof structure)", unit: "sqft" },
+      { key: "slabBrc", label: "BRC A7 double layer (slab)", unit: "sqft" },
+      { key: "flatRoofBrc", label: "BRC A7 double layer (flat roof)", unit: "sqft" },
+      { key: "cChannel", label: "C-channel for roof structures", unit: "m" },
+      { key: "metalSheet", label: "Metal roofing sheet", unit: "sqft" },
+      { key: "apronFw", label: "Apron formwork", unit: "ft" },
+      { key: "drainage", label: "Scupper drain", unit: "ft" }
+    ]
+  },
+  {
+    title: "Structures – Rebar",
+    rows: [
+      { key: "footingRebar", label: "Rebar (footing)", unit: "kg" },
+      { key: "beamRebar", label: "Rebar (beam)", unit: "kg" },
+      { key: "colRebar", label: "Rebar (column)", unit: "kg" },
+      { key: "roofDesignRebar", label: "Rebar (design roof structure)", unit: "kg" },
+      { key: "apronBrc", label: "Rebar BRC (apron)", unit: "kg" }
+    ]
+  },
+  {
+    title: "Architecture",
+    rows: [
+      { key: "ceilingInt", label: "Internal ceiling", unit: "sqft" },
+      { key: "ceilingExt", label: "External ceiling", unit: "sqft" },
+      { key: "floorTileInt", label: "Internal floor tiles", unit: "sqft" },
+      { key: "floorTileExt", label: "External floor tiles", unit: "sqft" },
+      { key: "paintInt", label: "Internal painting", unit: "sqft" },
+      { key: "paintExt", label: "External painting", unit: "sqft" },
+      { key: "door", label: "Door", unit: "no" },
+      { key: "window", label: "Window", unit: "no" },
+      { key: "waterTank", label: "Water tank", unit: "no" },
+      { key: "septicTank", label: "Septic tank", unit: "no" }
+    ]
+  },
+  {
+    title: "Bathroom",
+    rows: [
+      { key: "bathFloorTile", label: "Bathroom floor tiles", unit: "sqft" },
+      { key: "bathWallTile", label: "Bathroom wall tiles", unit: "sqft" },
+      { key: "bathPiping", label: "Bathroom piping", unit: "ls" },
+      { key: "bathWc", label: "WC", unit: "no" },
+      { key: "bathBasin", label: "Basin", unit: "no" },
+      { key: "bathShower", label: "Shower rose", unit: "no" },
+      { key: "bathTap", label: "Tap", unit: "no" }
+    ]
+  },
+  {
+    title: "Electrical",
+    rows: [
+      { key: "dbBox", label: "DB box", unit: "no" },
+      { key: "wiring", label: "Wiring", unit: "m" },
+      { key: "powerPoint", label: "Power point", unit: "no" },
+      { key: "switch", label: "Switch", unit: "no" },
+      { key: "lighting", label: "Lighting", unit: "no" },
+      { key: "fan", label: "Ceiling fan", unit: "no" },
+      { key: "aircond", label: "Aircond point / provision", unit: "no" },
+      { key: "earthing", label: "Earthing", unit: "set" }
+    ]
+  }
+];
 
 /* Base structure quantities @ 600 sqft (from Excel) */
 /* Structure groups — each group has a title + items (qty @ 600 sqft base) */
@@ -375,76 +460,76 @@ const STRUCT_GROUPS = [
     key: "footing",
     title: "Footing",
     items: [
-      { id: "str-footing-conc", desc: "Concrete G15", unit: "m3", qty: 0.5, rate: RATES.footingConc },
-      { id: "str-footing-fw", desc: "Formwork", unit: "sqft", qty: 129.17, rate: RATES.footingFw },
-      { id: "str-footing-rebar", desc: "Rebar", unit: "kg", qty: 80.5, rate: RATES.footingRebar }
+      { id: "str-footing-conc", desc: "Concrete G15", unit: "m3", qty: 0.5, rateKey: "footingConc" },
+      { id: "str-footing-fw", desc: "Formwork", unit: "sqft", qty: 129.17, rateKey: "footingFw" },
+      { id: "str-footing-rebar", desc: "Rebar", unit: "kg", qty: 80.5, rateKey: "footingRebar" }
     ]
   },
   {
     key: "ground-slab",
     title: "Ground Slab",
     items: [
-      { id: "str-slab-conc", desc: "Concrete G25", unit: "m3", qty: 8.361, rate: RATES.slabConc },
-      { id: "str-slab-brc", desc: "Rebar BRC A7 double layer", unit: "sqft", qty: 1200.0, rate: RATES.slabBrc }
+      { id: "str-slab-conc", desc: "Concrete G25", unit: "m3", qty: 8.361, rateKey: "slabConc" },
+      { id: "str-slab-brc", desc: "Rebar BRC A7 double layer", unit: "sqft", qty: 1200.0, rateKey: "slabBrc" }
     ]
   },
   {
     key: "ground-beam",
     title: "Ground Beam",
     items: [
-      { id: "str-gb-conc", desc: "Concrete G25", unit: "m3", qty: 3.552, rate: RATES.beamConc },
-      { id: "str-gb-fw", desc: "Formwork", unit: "sqft", qty: 509.78, rate: RATES.beamFw },
-      { id: "str-gb-rebar", desc: "Rebar", unit: "kg", qty: 710.4, rate: RATES.beamRebar }
+      { id: "str-gb-conc", desc: "Concrete G25", unit: "m3", qty: 3.552, rateKey: "beamConc" },
+      { id: "str-gb-fw", desc: "Formwork", unit: "sqft", qty: 509.78, rateKey: "beamFw" },
+      { id: "str-gb-rebar", desc: "Rebar", unit: "kg", qty: 710.4, rateKey: "beamRebar" }
     ]
   },
   {
     key: "roof-beam",
     title: "Roof Beam",
     items: [
-      { id: "str-rb-conc", desc: "Concrete G25", unit: "m3", qty: 3.552, rate: RATES.beamConc },
-      { id: "str-rb-fw", desc: "Formwork", unit: "sqft", qty: 509.78, rate: RATES.beamFw },
-      { id: "str-rb-rebar", desc: "Rebar", unit: "kg", qty: 710.4, rate: RATES.beamRebar }
+      { id: "str-rb-conc", desc: "Concrete G25", unit: "m3", qty: 3.552, rateKey: "beamConc" },
+      { id: "str-rb-fw", desc: "Formwork", unit: "sqft", qty: 509.78, rateKey: "beamFw" },
+      { id: "str-rb-rebar", desc: "Rebar", unit: "kg", qty: 710.4, rateKey: "beamRebar" }
     ]
   },
   {
     key: "column",
     title: "Column",
     items: [
-      { id: "str-col-conc", desc: "Concrete G25", unit: "m3", qty: 0.945, rate: RATES.colConc },
-      { id: "str-col-fw", desc: "Formwork", unit: "sqft", qty: 271.25, rate: RATES.colFw },
-      { id: "str-col-rebar", desc: "Rebar", unit: "kg", qty: 189, rate: RATES.colRebar }
+      { id: "str-col-conc", desc: "Concrete G25", unit: "m3", qty: 0.945, rateKey: "colConc" },
+      { id: "str-col-fw", desc: "Formwork", unit: "sqft", qty: 271.25, rateKey: "colFw" },
+      { id: "str-col-rebar", desc: "Rebar", unit: "kg", qty: 189, rateKey: "colRebar" }
     ]
   },
   {
     key: "roof",
     title: "Flat Roof & Roofing",
     items: [
-      { id: "str-fr-conc", desc: "Flat roof – Concrete G25", unit: "m3", qty: 0.6315, rate: RATES.flatRoofConc },
-      { id: "str-fr-fw", desc: "Flat roof – Formwork", unit: "sqft", qty: 67.97, rate: RATES.flatRoofFw },
-      { id: "str-fr-brc", desc: "Flat roof – Rebar BRC A7 double layer", unit: "sqft", qty: 135.95, rate: RATES.flatRoofBrc },
-      { id: "str-roof-c", desc: "C-channel for roof structures", unit: "m", qty: 781.2, rate: RATES.cChannel },
-      { id: "str-roof-m", desc: "Metal roofing sheet", unit: "sqft", qty: 572.20, rate: RATES.metalSheet }
+      { id: "str-fr-conc", desc: "Flat roof – Concrete G25", unit: "m3", qty: 0.6315, rateKey: "flatRoofConc" },
+      { id: "str-fr-fw", desc: "Flat roof – Formwork", unit: "sqft", qty: 67.97, rateKey: "flatRoofFw" },
+      { id: "str-fr-brc", desc: "Flat roof – Rebar BRC A7 double layer", unit: "sqft", qty: 135.95, rateKey: "flatRoofBrc" },
+      { id: "str-roof-c", desc: "C-channel for roof structures", unit: "m", qty: 781.2, rateKey: "cChannel" },
+      { id: "str-roof-m", desc: "Metal roofing sheet", unit: "sqft", qty: 572.20, rateKey: "metalSheet" }
     ]
   },
   {
     key: "external",
     title: "Infrastructure / Outside Works",
     items: [
-      { id: "str-apron-c", desc: "Apron – Concrete G15", unit: "m3", qty: 0.90, rate: RATES.apronConc },
-      { id: "str-apron-f", desc: "Apron – Formwork", unit: "ft", qty: 62.01, rate: 13.72 },
-      { id: "str-apron-b", desc: "Apron – Rebar BRC A7", unit: "kg", qty: 62.99, rate: RATES.apronBrc },
-      { id: "str-drain", desc: "Drainage – small U-shape scupper drain", unit: "ft", qty: 100, rate: RATES.drainage },
-      { id: "arch-septik", desc: "Septic tank", unit: "no", qty: 1, rate: RATES.septicTank, scale: false },
-      { id: "arch-watertank", desc: "Water tank", unit: "no", qty: 1, rate: RATES.waterTank, scale: false }
+      { id: "str-apron-c", desc: "Apron – Concrete G15", unit: "m3", qty: 0.90, rateKey: "apronConc" },
+      { id: "str-apron-f", desc: "Apron – Formwork", unit: "ft", qty: 62.01, rateKey: "apronFw" },
+      { id: "str-apron-b", desc: "Apron – Rebar BRC A7", unit: "kg", qty: 62.99, rateKey: "apronBrc" },
+      { id: "str-drain", desc: "Drainage – small U-shape scupper drain", unit: "ft", qty: 100, rateKey: "drainage" },
+      { id: "arch-septik", desc: "Septic tank", unit: "no", qty: 1, rateKey: "septicTank", scale: false },
+      { id: "arch-watertank", desc: "Water tank", unit: "no", qty: 1, rateKey: "waterTank", scale: false }
     ]
   },
   {
     key: "special",
     title: "Special Item",
     items: [
-      { id: "str-roof-dc", desc: "Design roof structure (Scandinavian) – Concrete G25", unit: "m3", qty: 0.3, rate: RATES.roofDesignConc },
-      { id: "str-roof-df", desc: "Design roof structure (Scandinavian) – Formwork", unit: "sqft", qty: 161.46, rate: RATES.roofDesignFw },
-      { id: "str-roof-dr", desc: "Design roof structure (Scandinavian) – Rebar", unit: "kg", qty: 54, rate: RATES.roofDesignRebar }
+      { id: "str-roof-dc", desc: "Design roof structure – Concrete G25", unit: "m3", qty: 0.3, rateKey: "roofDesignConc" },
+      { id: "str-roof-df", desc: "Design roof structure – Formwork", unit: "sqft", qty: 161.46, rateKey: "roofDesignFw" },
+      { id: "str-roof-dr", desc: "Design roof structure – Rebar", unit: "kg", qty: 54, rateKey: "roofDesignRebar" }
     ]
   }
 ];
@@ -515,6 +600,68 @@ function toggleProjectInfo() {
   if (!info) return;
   info.classList.toggle("hidden");
   if (arrow) arrow.textContent = info.classList.contains("hidden") ? "▼" : "▲";
+}
+
+function toggleRateSchedule() {
+  const panel = document.getElementById("rateSchedulePanel");
+  const arrow = document.getElementById("rateScheduleArrow");
+  if (!panel) return;
+  panel.classList.toggle("hidden");
+  if (arrow) arrow.textContent = panel.classList.contains("hidden") ? "▼" : "▲";
+  if (!panel.classList.contains("hidden")) renderRateSchedule();
+}
+
+function renderRateSchedule() {
+  const container = document.getElementById("rateScheduleContent");
+  if (!container) return;
+  let html = `
+    <table class="w-full border-collapse text-sm">
+      <thead>
+        <tr class="border-b-2 text-left">
+          <th class="py-2 px-2">Description</th>
+          <th class="py-2 px-2">Unit</th>
+          <th class="py-2 px-2 text-right">Rate (RM)</th>
+        </tr>
+      </thead>
+      <tbody>`;
+  RATE_SCHEDULE.forEach(group => {
+    html += `<tr class="bg-gray-100 border-b"><td colspan="3" class="py-2 px-2 font-bold">${escapeHtml(group.title)}</td></tr>`;
+    group.rows.forEach(row => {
+      const val = RATES[row.key] ?? 0;
+      html += `
+        <tr class="border-b hover:bg-gray-50">
+          <td class="py-2 px-2">${escapeHtml(row.label)}</td>
+          <td class="py-2 px-2">${escapeHtml(row.unit)}</td>
+          <td class="py-2 px-2 text-right">
+            <input type="number" min="0" step="0.01" value="${Number(val).toFixed(2)}"
+              onchange="editScheduleRate('${row.key}', this.value)"
+              class="w-28 border rounded-lg px-2 py-1.5 text-right bg-white">
+          </td>
+        </tr>`;
+    });
+  });
+  html += `</tbody></table>`;
+  container.innerHTML = html;
+}
+
+function editScheduleRate(key, value) {
+  const rate = parseFloat(value);
+  if (!Number.isFinite(rate) || rate < 0) {
+    alert("Please enter a valid rate.");
+    renderRateSchedule();
+    return;
+  }
+  RATES[key] = rate;
+  // Clear item-level rate overrides so schedule rates take effect
+  customRates.clear();
+  updateEstimate();
+}
+
+function resetRatesToDefault() {
+  RATES = { ...DEFAULT_RATES };
+  customRates.clear();
+  renderRateSchedule();
+  updateEstimate();
 }
 
 function roomOptions() {
@@ -644,7 +791,8 @@ function generateStructureItems() {
       qty = roundQty(qty, s.unit);
       // Keep integer units at least 1 if original base was >= 1
       if (isIntegerUnit(s.unit) && s.qty >= 1 && qty < 1 && scale > 0) qty = 1;
-      pushItem(items, s.id, "project", "Project", "structures", s.desc, qty, s.unit, s.rate, group.key, group.title);
+      const rate = RATES[s.rateKey] ?? 0;
+      pushItem(items, s.id, "project", "Project", "structures", s.desc, qty, s.unit, rate, group.key, group.title);
     });
   });
 
