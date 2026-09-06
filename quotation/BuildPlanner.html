@@ -1,0 +1,1289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  <title>New Build Planner | Teraju Ciptabina</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { max-width: 100%; overflow-x: hidden; }
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      -webkit-text-size-adjust: 100%;
+      text-rendering: optimizeLegibility;
+    }
+    button, input, select, textarea { font: inherit; }
+    button, input, select { min-height: 44px; }
+    textarea { min-height: 88px; }
+    button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
+    button { touch-action: manipulation; }
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+    input[type="number"] { -moz-appearance: textfield; appearance: textfield; }
+
+    @media (max-width: 767px) {
+      html, body { width: 100%; max-width: 100%; overflow-x: hidden; }
+      main { width: 100%; max-width: 100% !important; padding: 16px !important; }
+      header > div { width: 100%; padding-left: 16px !important; padding-right: 16px !important; }
+      main > section { width: 100%; max-width: 100%; padding: 16px !important; border-radius: 16px !important; }
+      main > section:first-child { padding: 4px 0 10px !important; background: transparent; box-shadow: none; }
+      main > section:first-child h2 { font-size: 28px !important; line-height: 1.2; }
+      .grid.md\:grid-cols-2, .grid.md\:grid-cols-3, .grid.md\:grid-cols-4, .grid.md\:grid-cols-\[1fr_1fr_1fr_auto\] {
+        grid-template-columns: minmax(0, 1fr) !important;
+      }
+      .room-card { width: 100%; max-width: 100%; padding: 14px !important; overflow: hidden; }
+      .room-card > div:first-child { grid-template-columns: minmax(0, 1fr) !important; gap: 12px !important; }
+      .room-card .no-print.flex { display: grid !important; grid-template-columns: 1fr 1fr; gap: 8px; width: 100%; }
+      .room-card .no-print.flex button { width: 100%; min-width: 0; }
+      .room-card .no-print.flex button:last-child { grid-column: 1 / -1; }
+      #estimateContent { width: calc(100% + 8px); margin-left: -4px; margin-right: -4px; padding-bottom: 8px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+      #estimateContent > div, #estimateContent table { min-width: 760px; }
+      #estimateContent table th, #estimateContent table td { padding: 10px 8px !important; }
+      #estimateContent textarea { min-width: 260px !important; max-width: 320px; }
+      #grandTotal { font-size: 26px !important; white-space: nowrap; }
+      #quotationDocument { width: 100%; max-width: 100%; padding: 16px !important; }
+      #quotationContent > div:first-child { flex-direction: column !important; gap: 16px !important; }
+      #quotationContent > div:first-child > div:last-child { text-align: left !important; }
+      #quotationContent > div:nth-child(2) { grid-template-columns: minmax(0, 1fr) !important; }
+      #quotationContent table { min-width: 680px; }
+      #quotationPrintActions button { width: 100%; min-height: 48px; }
+      input, select, textarea { font-size: 16px !important; }
+      body { padding-bottom: env(safe-area-inset-bottom); }
+    }
+
+    .detailed-quotation-table, .simple-quotation-table { width: 100%; table-layout: fixed; }
+
+    @media print {
+      @page { size: A4 portrait; margin: 12mm 12mm; }
+      html, body {
+        width: 210mm !important; margin: 0 !important; padding: 0 !important;
+        background: #fff !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important;
+      }
+      body.print-quotation > header,
+      body.print-quotation > main > section:not(#quotationDocument),
+      body.print-quotation .no-print,
+      body.print-quotation #quotationPrintActions { display: none !important; }
+      body.print-quotation > main {
+        display: block !important; width: 100% !important; max-width: none !important;
+        margin: 0 !important; padding: 0 !important;
+      }
+      body.print-quotation #quotationDocument {
+        display: block !important; width: 100% !important; max-width: none !important;
+        margin: 0 !important; padding: 0 !important; background: #fff !important;
+        box-shadow: none !important; border: none !important; border-radius: 0 !important;
+      }
+      #quotationContent { width: 100% !important; font-size: 9.5px !important; line-height: 1.35 !important; }
+      #quotationContent > div:first-child {
+        display: flex !important; flex-direction: row !important; justify-content: space-between !important;
+        align-items: flex-start !important; gap: 16px !important; width: 100% !important;
+      }
+      #quotationContent > div:first-child > div:last-child { text-align: right !important; }
+      #quotationContent > div:nth-child(2) {
+        display: grid !important; grid-template-columns: 1fr 1fr 1fr !important; gap: 16px !important;
+      }
+      #quotationContent table {
+        width: 100% !important; font-size: 9.5px !important; table-layout: fixed !important; border-collapse: collapse !important;
+      }
+      #quotationContent .overflow-x-auto { overflow: visible !important; }
+      #quotationContent table thead { display: table-header-group !important; }
+      #quotationContent table tfoot { display: table-footer-group !important; }
+      #quotationContent table tr { break-inside: avoid !important; page-break-inside: avoid !important; }
+      #quotationContent table th, #quotationContent table td { padding: 5px 4px !important; vertical-align: top !important; }
+      .simple-quotation-table col:nth-child(1) { width: 6% !important; }
+      .simple-quotation-table col:nth-child(2) { width: 22% !important; }
+      .simple-quotation-table col:nth-child(3) { width: 52% !important; }
+      .simple-quotation-table col:nth-child(4) { width: 20% !important; }
+      .simple-quotation-table th:nth-child(4), .simple-quotation-table td:nth-child(4) { text-align: right !important; white-space: nowrap !important; }
+      .detailed-quotation-table col:nth-child(1) { width: 48% !important; }
+      .detailed-quotation-table col:nth-child(2) { width: 10% !important; }
+      .detailed-quotation-table col:nth-child(3) { width: 10% !important; }
+      .detailed-quotation-table col:nth-child(4) { width: 16% !important; }
+      .detailed-quotation-table col:nth-child(5) { width: 16% !important; }
+      #quotationContent .mt-8, #quotationContent .mt-12, #quotationContent tfoot { break-inside: avoid !important; page-break-inside: avoid !important; }
+      #quotationContent tfoot td { font-size: 11px !important; }
+      #quotationContent tfoot td:last-child { font-size: 12px !important; white-space: nowrap !important; text-align: right !important; }
+      .simple-quotation-table tfoot td { text-align: right !important; }
+    }
+  </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+<header class="bg-white border-b">
+  <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+    <div class="flex items-center gap-4 min-w-0">
+      <img src="../images/logo.png" alt="Teraju Ciptabina Logo" class="h-12 w-auto flex-shrink-0"
+        onerror="this.style.display='none'; var fb=this.nextElementSibling; if(fb) fb.style.display='flex';">
+      <div class="h-12 w-12 rounded-lg bg-gray-900 text-white items-center justify-center font-bold text-lg flex-shrink-0" style="display:none;">T|C</div>
+      <div class="min-w-0">
+        <h1 class="font-bold text-lg">TERAJU CIPTABINA</h1>
+        <p class="text-xs text-gray-500">New Build / Design & Build Planner</p>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="max-w-6xl mx-auto px-6 py-8">
+
+  <section class="mb-7">
+    <h2 class="text-3xl font-bold mb-2">New Build Planner</h2>
+    <p class="text-gray-600">
+      Enter building size and add rooms/areas. Structures scale by total built-up area.
+      Architecture (ceiling, tiles, painting, doors, windows, sanitary) is calculated <strong>per room</strong>
+      so door & window quantities are logical.
+    </p>
+  </section>
+
+  <!-- Project Information -->
+  <section class="bg-white rounded-2xl shadow-sm p-6 mb-6">
+    <div class="flex justify-between items-center cursor-pointer" onclick="toggleProjectInfo()">
+      <div class="min-w-0">
+        <h3 class="font-bold text-lg">Project Information</h3>
+        <p class="text-sm text-gray-500">Enter the project details used for the estimate and quotation.</p>
+      </div>
+      <span id="projectArrow" class="text-gray-500 text-sm ml-4 flex-shrink-0">▲</span>
+    </div>
+    <div id="projectInfo" class="mt-5">
+      <div class="grid md:grid-cols-2 gap-5">
+        <div>
+          <label class="block text-sm font-medium mb-2">Customer Name</label>
+          <input id="customerName" type="text" placeholder="Optional"
+            class="w-full border rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-gray-300"
+            oninput="updateEstimate()">
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-2">Project Location</label>
+          <input id="projectLocation" type="text" list="projectLocationSuggestions"
+            placeholder="Start typing location..." autocomplete="off"
+            class="w-full border rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-gray-300"
+            oninput="updateEstimate()">
+        </div>
+      </div>
+    </div>
+    <datalist id="projectLocationSuggestions">
+      <option value="Kuala Lumpur"><option value="Putrajaya"><option value="Cyberjaya">
+      <option value="Petaling Jaya, Selangor"><option value="Shah Alam, Selangor">
+      <option value="Subang Jaya, Selangor"><option value="Puchong, Selangor">
+      <option value="Kajang, Selangor"><option value="Johor Bahru, Johor">
+      <option value="Melaka"><option value="Ipoh, Perak"><option value="Penang">
+      <option value="Kota Kinabalu, Sabah"><option value="Kuching, Sarawak">
+    </datalist>
+  </section>
+
+  <!-- Building Specs (for Structures scaling) -->
+  <section class="bg-white rounded-2xl shadow-sm p-6 mb-6">
+    <div class="mb-5">
+      <h3 class="font-bold text-lg">Building Specification</h3>
+      <p class="text-sm text-gray-500">Used mainly for Structures package scaling. Architecture is driven by rooms below.</p>
+    </div>
+    <div class="grid md:grid-cols-3 gap-5">
+      <div>
+        <label class="block text-sm font-medium mb-2">Total Built-up Area (sqft)</label>
+        <input id="builtUpArea" type="number" min="100" step="1" value="600"
+          class="w-full border rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-gray-300"
+          oninput="updateEstimate()">
+        <p class="text-xs text-gray-500 mt-1">Should match sum of room areas as closely as possible.</p>
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-2">No. of Storeys</label>
+        <select id="numStoreys" class="w-full border rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-gray-300" onchange="updateEstimate()">
+          <option value="1" selected>1 Storey</option>
+          <option value="2">2 Storey</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-2">Package Style</label>
+        <select id="packageStyle" class="w-full border rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-gray-300" onchange="updateEstimate()">
+          <option value="scandinavian" selected>Scandinavian</option>
+          <option value="modern">Modern Minimal</option>
+        </select>
+      </div>
+    </div>
+  </section>
+
+  <!-- Rooms / Areas (Architecture driver) -->
+  <section class="bg-white rounded-2xl shadow-sm p-6 mb-6">
+    <div class="flex justify-between items-center mb-5 gap-4">
+      <div class="min-w-0">
+        <h3 class="font-bold text-lg">Rooms / Areas</h3>
+        <p class="text-sm text-gray-500">Add each room. Architecture cost (ceiling, tiles, painting, doors, windows, sanitary) is calculated per room.</p>
+      </div>
+      <button type="button" onclick="addRoom()"
+        class="no-print bg-black text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-800 flex-shrink-0">
+        + Add Room
+      </button>
+    </div>
+    <div class="no-print bg-gray-50 border rounded-xl p-4 mb-5 text-sm text-gray-600">
+      <strong class="text-gray-800">How it works:</strong>
+      Select room type + enter area (sqft). Doors & windows are auto-assigned by room type (e.g. Bedroom = 1 door + 1 window).
+      You can edit quantities later in the estimate table.
+    </div>
+    <div id="roomsContainer" class="space-y-4"></div>
+  </section>
+
+  <!-- Estimate -->
+  <section class="bg-white rounded-2xl shadow-sm p-6 print-card">
+    <div class="flex justify-between items-start mb-6 gap-4">
+      <div class="min-w-0">
+        <p class="text-xs uppercase tracking-wider text-gray-500">Preliminary Estimate</p>
+        <h3 class="text-2xl font-bold">New Build Budget</h3>
+      </div>
+      <div class="text-right flex-shrink-0">
+        <p class="text-xs text-gray-500">Estimate No.</p>
+        <p id="estimateNumber" class="font-bold"></p>
+      </div>
+    </div>
+    <div id="customerSummary" class="grid md:grid-cols-4 gap-5 mb-6 text-sm"></div>
+    <div id="estimateContent" class="overflow-x-auto"></div>
+    <div class="no-print mt-5 flex justify-end gap-3">
+      <button type="button" onclick="restoreAllItems()" class="border px-4 py-2 rounded-lg text-sm hover:bg-gray-50">
+        Restore All Items
+      </button>
+    </div>
+    <div class="border-t mt-6 pt-6">
+      <div class="flex justify-between items-center gap-4 mb-2">
+        <span class="font-semibold text-lg">Rooms Total Area</span>
+        <span id="roomsTotalArea" class="font-bold text-xl text-gray-700">0 sqft</span>
+      </div>
+      <div class="flex justify-between items-center gap-4 mb-2">
+        <span class="font-semibold text-lg">Declared Built-up Area</span>
+        <span id="totalBuiltArea" class="font-bold text-xl text-gray-700">600 sqft</span>
+      </div>
+      <div class="flex justify-between items-center gap-4">
+        <span class="font-semibold text-lg">Estimated Total</span>
+        <span id="grandTotal" class="font-bold text-3xl">RM 0</span>
+      </div>
+      <p class="text-xs text-gray-500 mt-3">
+        * Preliminary design & build estimate only. Final quotation subject to site inspection, soil investigation,
+        approved drawings, authority requirements and confirmation of final scope.
+      </p>
+    </div>
+  </section>
+
+  <!-- Quotation Generator -->
+  <section class="no-print bg-white rounded-2xl shadow-sm p-6 mt-6">
+    <div class="mb-5">
+      <h3 class="font-bold text-lg">Generate Quotation</h3>
+      <p class="text-sm text-gray-500">Choose how much pricing detail to show.</p>
+    </div>
+    <div class="grid md:grid-cols-2 gap-4">
+      <label class="quotation-option border rounded-xl p-4 cursor-pointer hover:bg-gray-50">
+        <div class="flex items-start gap-3">
+          <input type="radio" name="quotationType" value="simple" checked class="mt-1 h-4 w-4 flex-shrink-0">
+          <div>
+            <p class="font-semibold">Simple Quotation</p>
+            <p class="text-sm text-gray-500 mt-1">Preliminaries + Structures + one total per Room (Architecture) + Electrical.</p>
+          </div>
+        </div>
+      </label>
+      <label class="quotation-option border rounded-xl p-4 cursor-pointer hover:bg-gray-50">
+        <div class="flex items-start gap-3">
+          <input type="radio" name="quotationType" value="detail" class="mt-1 h-4 w-4 flex-shrink-0">
+          <div>
+            <p class="font-semibold">Detailed Quotation</p>
+            <p class="text-sm text-gray-500 mt-1">Item-by-item quantity, unit, rate and amount under each room / category.</p>
+          </div>
+        </div>
+      </label>
+    </div>
+    <div class="mt-5 p-4 rounded-xl bg-gray-50 border text-sm text-gray-600">
+      <strong class="text-gray-800">Review before generating:</strong>
+      Edit Description, Quantity and Rate in the table above. Quotation uses your final values.
+    </div>
+    <div class="mt-5">
+      <button type="button" onclick="generateQuotation()"
+        class="bg-black text-white px-5 py-3 rounded-lg font-semibold hover:bg-gray-800">
+        Generate Quotation
+      </button>
+    </div>
+  </section>
+
+  <!-- Generated Quotation -->
+  <section id="quotationDocument" class="hidden bg-white rounded-2xl shadow-sm p-8 mt-6">
+    <div id="quotationContent"></div>
+    <div id="quotationPrintActions" class="no-print mt-6 pt-5 border-t flex flex-wrap justify-end gap-3">
+      <button type="button" onclick="printQuotation()"
+        class="bg-black text-white px-5 py-3 rounded-lg font-semibold hover:bg-gray-800">
+        Print / Save Quotation PDF
+      </button>
+    </div>
+  </section>
+
+  <section class="no-print bg-gray-900 text-white rounded-2xl p-8 mt-8 text-center">
+    <h3 class="text-2xl font-bold mb-3">Need an Official Quotation?</h3>
+    <p class="text-gray-300 max-w-2xl mx-auto mb-6">
+      Let Teraju Ciptabina prepare a detailed design & build quotation based on your land and requirements.
+    </p>
+    <a href="#" class="inline-block bg-white text-black px-6 py-3 rounded-lg font-semibold hover:bg-gray-200">
+      Request Site Visit / Consultation
+    </a>
+  </section>
+</main>
+
+<script>
+/* =========================================================
+   RATES from Bungalow Scandinavian 600sqft package
+   ========================================================= */
+const BASE_AREA = 600;
+
+const RATES = {
+  // Structures (package, scale by area)
+  footingConc: 550, footingFw: 45, footingRebar: 15,
+  slabConc: 550, slabBrc: 70,
+  beamConc: 350, beamFw: 45, beamRebar: 15,
+  colConc: 550, colFw: 45, colRebar: 15,
+  flatRoofConc: 550, flatRoofFw: 45, flatRoofBrc: 70,
+  cChannel: 4, metalSheet: 35,
+  roofDesignConc: 550, roofDesignFw: 45, roofDesignRebar: 70,
+  apronConc: 350, apronFw: 45, apronBrc: 15,
+  drainage: 25,
+  // Architecture per room
+  ceilingInt: 15,          // RM/sqft
+  ceilingExt: 20,
+  floorTileInt: 45,        // RM/m2  (~4.18 sqft = 1 m2, we convert)
+  floorTileExt: 60,
+  brickInt: 45,            // RM/m2 wall
+  brickExt: 45,
+  paintInt: 15,            // RM/m2
+  paintExt: 25,
+  door: 600,               // per unit
+  window: 600,             // per unit
+  decoBlock: 150,          // RM/m2
+  waterTank: 500,
+  septicTank: 1500,
+  // Bathroom
+  bathWallTile: 45,        // m2
+  bathFloorTile: 45,
+  bathPiping: 1000,        // ls
+  bathShower: 120,
+  bathTap: 30,
+  bathWc: 500,
+  bathBasin: 400,
+  // Electrical package
+  dbBox: 1000,
+  wiring: 20,              // /m
+  powerPoint: 50,
+  switch: 50,
+  lighting: 250,
+  fan: 600,
+  aircond: 300,
+  earthing: 1500,
+  // Preliminaries
+  permit: 8500,
+  prelim: 12000
+};
+
+/* Base structure quantities @ 600 sqft (from Excel) */
+/* Structure groups — each group has a title + items (qty @ 600 sqft base) */
+const STRUCT_GROUPS = [
+  {
+    key: "footing",
+    title: "Footing",
+    items: [
+      { id: "str-footing-conc", desc: "Concrete G15", unit: "m3", qty: 0.5, rate: RATES.footingConc },
+      { id: "str-footing-fw", desc: "Formwork", unit: "m2", qty: 12, rate: RATES.footingFw },
+      { id: "str-footing-rebar", desc: "Rebar", unit: "kg", qty: 80.5, rate: RATES.footingRebar }
+    ]
+  },
+  {
+    key: "ground-slab",
+    title: "Ground Slab",
+    items: [
+      { id: "str-slab-conc", desc: "Concrete G25", unit: "m3", qty: 8.361, rate: RATES.slabConc },
+      { id: "str-slab-brc", desc: "Rebar BRC A7 double layer", unit: "m2", qty: 111.48, rate: RATES.slabBrc }
+    ]
+  },
+  {
+    key: "ground-beam",
+    title: "Ground Beam",
+    items: [
+      { id: "str-gb-conc", desc: "Concrete G25", unit: "m3", qty: 3.552, rate: RATES.beamConc },
+      { id: "str-gb-fw", desc: "Formwork", unit: "m2", qty: 47.36, rate: RATES.beamFw },
+      { id: "str-gb-rebar", desc: "Rebar", unit: "kg", qty: 710.4, rate: RATES.beamRebar }
+    ]
+  },
+  {
+    key: "roof-beam",
+    title: "Roof Beam",
+    items: [
+      { id: "str-rb-conc", desc: "Concrete G25", unit: "m3", qty: 3.552, rate: RATES.beamConc },
+      { id: "str-rb-fw", desc: "Formwork", unit: "m2", qty: 47.36, rate: RATES.beamFw },
+      { id: "str-rb-rebar", desc: "Rebar", unit: "kg", qty: 710.4, rate: RATES.beamRebar }
+    ]
+  },
+  {
+    key: "column",
+    title: "Column",
+    items: [
+      { id: "str-col-conc", desc: "Concrete G25", unit: "m3", qty: 0.945, rate: RATES.colConc },
+      { id: "str-col-fw", desc: "Formwork", unit: "m2", qty: 25.2, rate: RATES.colFw },
+      { id: "str-col-rebar", desc: "Rebar", unit: "kg", qty: 189, rate: RATES.colRebar }
+    ]
+  },
+  {
+    key: "roof",
+    title: "Flat Roof & Roofing",
+    items: [
+      { id: "str-fr-conc", desc: "Flat roof – Concrete G25", unit: "m3", qty: 0.6315, rate: RATES.flatRoofConc },
+      { id: "str-fr-fw", desc: "Flat roof – Formwork", unit: "m2", qty: 6.315, rate: RATES.flatRoofFw },
+      { id: "str-fr-brc", desc: "Flat roof – Rebar BRC A7 double layer", unit: "m2", qty: 12.63, rate: RATES.flatRoofBrc },
+      { id: "str-roof-c", desc: "C-channel for roof structures", unit: "m", qty: 781.2, rate: RATES.cChannel },
+      { id: "str-roof-m", desc: "Metal roofing sheet", unit: "m2", qty: 53.16, rate: RATES.metalSheet }
+    ]
+  },
+  {
+    key: "external",
+    title: "Infrastructure / Outside Works",
+    items: [
+      { id: "str-apron-c", desc: "Apron – Concrete G15", unit: "m3", qty: 0.90, rate: RATES.apronConc },
+      { id: "str-apron-f", desc: "Apron – Formwork", unit: "m", qty: 18.9, rate: RATES.apronFw },
+      { id: "str-apron-b", desc: "Apron – Rebar BRC A7", unit: "kg", qty: 62.99, rate: RATES.apronBrc },
+      { id: "str-drain", desc: "Drainage – small U-shape scupper drain", unit: "ft", qty: 100, rate: RATES.drainage },
+      { id: "arch-septik", desc: "Septic tank", unit: "no", qty: 1, rate: RATES.septicTank, scale: false },
+      { id: "arch-watertank", desc: "Water tank", unit: "no", qty: 1, rate: RATES.waterTank, scale: false }
+    ]
+  },
+  {
+    key: "special",
+    title: "Special Item",
+    items: [
+      { id: "str-roof-dc", desc: "Design roof structure (Scandinavian) – Concrete G25", unit: "m3", qty: 0.3, rate: RATES.roofDesignConc },
+      { id: "str-roof-df", desc: "Design roof structure (Scandinavian) – Formwork", unit: "m2", qty: 15, rate: RATES.roofDesignFw },
+      { id: "str-roof-dr", desc: "Design roof structure (Scandinavian) – Rebar", unit: "kg", qty: 54, rate: RATES.roofDesignRebar }
+    ]
+  }
+];
+
+const ROOM_TYPES = {
+  living: "Living / Family",
+  dining: "Dining",
+  bedroom: "Bedroom",
+  kitchen: "Kitchen",
+  store: "Store / Utility",
+  bathroom: "Bathroom",
+  porch: "Car Porch / Entrance",
+  other: "Other Area"
+};
+
+/* Default doors & windows per room type (logical) */
+const ROOM_DEFAULTS = {
+  living:   { doors: 1, windows: 2 },
+  dining:   { doors: 0, windows: 1 },
+  bedroom:  { doors: 1, windows: 1 },
+  kitchen:  { doors: 1, windows: 1 },
+  store:    { doors: 1, windows: 0 },
+  bathroom: { doors: 1, windows: 0 },
+  porch:    { doors: 0, windows: 0 },
+  other:    { doors: 0, windows: 1 }
+};
+
+const INTEGER_UNITS = new Set(["no", "set", "ls", "unit"]);
+
+let roomCounter = 0;
+const excludedItems = new Set();
+const customRates = new Map();
+const customQuantities = new Map();
+const customDescriptions = new Map();
+const customRoomLabels = new Map();
+
+function generateEstimateNumber() {
+  let n = localStorage.getItem("terajuNBEst");
+  n = n ? parseInt(n, 10) + 1 : 1;
+  localStorage.setItem("terajuNBEst", n);
+  return "NB-EST-" + String(n).padStart(4, "0");
+}
+document.getElementById("estimateNumber").textContent = generateEstimateNumber();
+
+function money(v, d = 0) {
+  return new Intl.NumberFormat("en-MY", { style: "currency", currency: "MYR", minimumFractionDigits: d, maximumFractionDigits: d }).format(Number(v) || 0);
+}
+function escapeHtml(v) {
+  return String(v ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");
+}
+function isIntegerUnit(u) { return INTEGER_UNITS.has(String(u || "").toLowerCase()); }
+function formatQty(v, unit) {
+  const n = Number(v) || 0;
+  if (isIntegerUnit(unit)) return Math.round(n);
+  if (Number.isInteger(n) || Math.abs(n - Math.round(n)) < 0.005) return Math.round(n);
+  return Math.round(n * 100) / 100;
+}
+function roundQty(v, unit) {
+  const n = Number(v) || 0;
+  if (isIntegerUnit(unit)) return Math.max(0, Math.round(n));
+  return Math.round(n * 100) / 100;
+}
+function sqftToM2(sqft) { return (Number(sqft) || 0) * 0.092903; }
+
+function toggleProjectInfo() {
+  const info = document.getElementById("projectInfo");
+  const arrow = document.getElementById("projectArrow");
+  if (!info) return;
+  info.classList.toggle("hidden");
+  if (arrow) arrow.textContent = info.classList.contains("hidden") ? "▼" : "▲";
+}
+
+function roomOptions() {
+  return Object.entries(ROOM_TYPES).map(([k, n]) => `<option value="${k}">${escapeHtml(n)}</option>`).join("");
+}
+
+function addRoom(defaultType = "bedroom", defaultArea = "") {
+  roomCounter++;
+  const id = "room-" + roomCounter;
+  const container = document.getElementById("roomsContainer");
+  const div = document.createElement("div");
+  div.id = id;
+  div.className = "room-card border rounded-xl p-4 bg-gray-50";
+
+  div.innerHTML = `
+    <div class="grid md:grid-cols-[1fr_1fr_1fr_auto] gap-4 items-end">
+      <div>
+        <label class="block text-sm font-medium mb-2">Room / Area Name</label>
+        <input type="text" value="${escapeHtml(ROOM_TYPES[defaultType] || "Area")}"
+          placeholder="e.g. Master Bedroom" class="room-name w-full border rounded-lg px-4 py-3 bg-white">
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-2">Room Type</label>
+        <select class="room-type w-full border rounded-lg px-4 py-3 bg-white">${roomOptions()}</select>
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-2">Area (sqft)</label>
+        <input type="number" min="1" step="1" value="${escapeHtml(defaultArea)}"
+          placeholder="e.g. 120" class="room-area w-full border rounded-lg px-4 py-3 bg-white">
+      </div>
+      <div class="no-print flex gap-2">
+        <button type="button" onclick="moveRoom('${id}', -1)" title="Move up" class="border rounded-lg px-3 py-3 hover:bg-gray-100">▲</button>
+        <button type="button" onclick="moveRoom('${id}', 1)" title="Move down" class="border rounded-lg px-3 py-3 hover:bg-gray-100">▼</button>
+        <button type="button" onclick="removeRoom('${id}')" class="border border-red-300 text-red-600 rounded-lg px-4 py-3 hover:bg-red-50">Remove</button>
+      </div>
+    </div>`;
+
+  container.appendChild(div);
+  div.querySelector(".room-type").value = defaultType;
+
+  div.querySelector(".room-name").addEventListener("change", e => {
+    const label = String(e.target.value || "").trim();
+    if (label) customRoomLabels.set(id, label);
+    updateEstimate();
+  });
+  div.querySelector(".room-type").addEventListener("change", () => {
+    if (!customRoomLabels.has(id)) {
+      div.querySelector(".room-name").value = ROOM_TYPES[div.querySelector(".room-type").value] || "Area";
+    }
+    updateEstimate();
+  });
+  div.querySelector(".room-area").addEventListener("input", updateEstimate);
+  updateEstimate();
+}
+
+function removeRoom(id) {
+  document.getElementById(id)?.remove();
+  customRoomLabels.delete(id);
+  updateEstimate();
+}
+function moveRoom(id, dir) {
+  const room = document.getElementById(id);
+  const container = document.getElementById("roomsContainer");
+  if (!room || !container) return;
+  if (dir < 0) {
+    const prev = room.previousElementSibling;
+    if (prev) container.insertBefore(room, prev);
+  } else {
+    const next = room.nextElementSibling;
+    if (next) container.insertBefore(next, room);
+  }
+  updateEstimate();
+}
+
+function getRoomGroups() {
+  const rooms = [...document.querySelectorAll("#roomsContainer .room-card")];
+  const typeIndexes = {};
+  return rooms.map(room => {
+    const roomId = room.id;
+    const roomType = room.querySelector(".room-type")?.value || "other";
+    const area = parseFloat(room.querySelector(".room-area")?.value) || 0;
+    typeIndexes[roomType] = (typeIndexes[roomType] || 0) + 1;
+    const base = ROOM_TYPES[roomType] || "Area";
+    const autoLabel = typeIndexes[roomType] > 1 ? `${base} ${typeIndexes[roomType]}` : base;
+    const label = customRoomLabels.has(roomId) ? customRoomLabels.get(roomId) : autoLabel;
+    return { roomId, roomType, label, area };
+  });
+}
+
+function getScaleFactor() {
+  const area = parseFloat(document.getElementById("builtUpArea")?.value) || BASE_AREA;
+  return Math.max(0.1, area / BASE_AREA);
+}
+
+function pushItem(items, id, roomId, roomLabel, category, description, qty, unit, rate, groupKey = null, groupTitle = null) {
+  let q = qty;
+  let r = rate;
+  let d = description;
+  if (customQuantities.has(id)) q = customQuantities.get(id);
+  if (customRates.has(id)) r = customRates.get(id);
+  if (customDescriptions.has(id)) d = customDescriptions.get(id);
+  if (isIntegerUnit(unit)) q = Math.max(0, Math.round(Number(q) || 0));
+  else q = Math.round((Number(q) || 0) * 100) / 100;
+  items.push({
+    id, roomId, room: roomLabel, category, description: d,
+    qty: Number(q) || 0, unit, rate: Number(r) || 0,
+    amount: (Number(q) || 0) * (Number(r) || 0),
+    groupKey, groupTitle
+  });
+}
+
+function generateStructureItems() {
+  const scale = getScaleFactor();
+  const items = [];
+
+  // Preliminaries
+  pushItem(items, "prelim-1", "project", "Project", "preliminaries",
+    "Submission of building plan / permit application and Engineer’s drawings to Local Authority", 1, "ls", RATES.permit);
+  pushItem(items, "prelim-2", "project", "Project", "preliminaries",
+    "Preliminaries, site mobilisation, temporary facilities, insurance and project management", 1, "ls", RATES.prelim);
+
+  // Structures by group
+  STRUCT_GROUPS.forEach(group => {
+    group.items.forEach(s => {
+      const shouldScale = s.scale !== false;
+      let qty = shouldScale ? s.qty * scale : s.qty;
+      qty = roundQty(qty, s.unit);
+      // Keep integer units at least 1 if original base was >= 1
+      if (isIntegerUnit(s.unit) && s.qty >= 1 && qty < 1 && scale > 0) qty = 1;
+      pushItem(items, s.id, "project", "Project", "structures", s.desc, qty, s.unit, s.rate, group.key, group.title);
+    });
+  });
+
+  return items;
+}
+
+function generateRoomArchitectureItems(room) {
+  const items = [];
+  if (!room.area || room.area <= 0) return items;
+  const { roomId, roomType, label, area } = room;
+  const areaM2 = sqftToM2(area);
+  const defs = ROOM_DEFAULTS[roomType] || ROOM_DEFAULTS.other;
+
+  // Ceiling (internal) – all rooms except porch
+  if (roomType !== "porch") {
+    pushItem(items, `${roomId}-ceiling`, roomId, label, "architecture",
+      `Plaster / skim ceiling c/w paint – ${label}`, area, "sqft", RATES.ceilingInt);
+  }
+
+  // Floor tiles
+  if (roomType === "bathroom") {
+    pushItem(items, `${roomId}-floortile`, roomId, label, "architecture",
+      `Floor tiles c/w waterproofing – ${label}`, roundQty(areaM2, "m2"), "m2", RATES.bathFloorTile);
+    // wall tiles ~6x floor area for bathroom (typical)
+    const wallM2 = roundQty(areaM2 * 6, "m2");
+    pushItem(items, `${roomId}-walltile`, roomId, label, "architecture",
+      `Wall tiles – ${label}`, wallM2, "m2", RATES.bathWallTile);
+    pushItem(items, `${roomId}-piping`, roomId, label, "architecture",
+      `Piping works – ${label}`, 1, "ls", RATES.bathPiping);
+    pushItem(items, `${roomId}-wc`, roomId, label, "architecture",
+      `WC – ${label}`, 1, "no", RATES.bathWc);
+    pushItem(items, `${roomId}-basin`, roomId, label, "architecture",
+      `Basin – ${label}`, 1, "no", RATES.bathBasin);
+    pushItem(items, `${roomId}-shower`, roomId, label, "architecture",
+      `Shower rose – ${label}`, 1, "no", RATES.bathShower);
+    pushItem(items, `${roomId}-tap`, roomId, label, "architecture",
+      `Tap – ${label}`, 1, "no", RATES.bathTap);
+  } else if (roomType === "porch") {
+    pushItem(items, `${roomId}-floortile`, roomId, label, "architecture",
+      `Floor tiles – ${label}`, roundQty(areaM2, "m2"), "m2", RATES.floorTileExt);
+  } else {
+    pushItem(items, `${roomId}-floortile`, roomId, label, "architecture",
+      `Floor tiles – ${label}`, roundQty(areaM2, "m2"), "m2", RATES.floorTileInt);
+  }
+
+  // Painting (internal walls) – approximate wall area ~2.5–3x floor for typical room height
+  if (roomType !== "porch" && roomType !== "bathroom") {
+    const wallM2 = roundQty(areaM2 * 2.8, "m2");
+    pushItem(items, `${roomId}-paint`, roomId, label, "architecture",
+      `Internal painting – ${label}`, wallM2, "m2", RATES.paintInt);
+  }
+
+  // Doors
+  if (defs.doors > 0) {
+    pushItem(items, `${roomId}-door`, roomId, label, "architecture",
+      `Door – ${label}`, defs.doors, "no", RATES.door);
+  }
+
+  // Windows
+  if (defs.windows > 0) {
+    pushItem(items, `${roomId}-window`, roomId, label, "architecture",
+      `Window – ${label}`, defs.windows, "no", RATES.window);
+  }
+
+  return items;
+}
+
+function generateElectricalItems(rooms) {
+  const items = [];
+  const scale = getScaleFactor();
+  const totalArea = rooms.reduce((s, r) => s + (r.area || 0), 0) || BASE_AREA;
+  const areaScale = Math.max(0.3, totalArea / BASE_AREA);
+
+  // Base counts from Excel @ 600sqft, scale logically
+  const lights = Math.max(4, Math.round(16 * areaScale));
+  const fans = Math.max(1, Math.round(4 * areaScale));
+  const pp = Math.max(4, Math.round(10 * areaScale));
+  const sw = Math.max(4, Math.round(10 * areaScale));
+  const ac = Math.max(1, Math.round(3 * areaScale));
+  const wiring = Math.max(100, Math.round(400 * areaScale));
+
+  pushItem(items, "elec-db", "project", "Project", "electrical", "DB box", 1, "no", RATES.dbBox);
+  pushItem(items, "elec-wiring", "project", "Project", "electrical", "Wirings", wiring, "m", RATES.wiring);
+  pushItem(items, "elec-pp", "project", "Project", "electrical", "Power point", pp, "no", RATES.powerPoint);
+  pushItem(items, "elec-switch", "project", "Project", "electrical", "Switch", sw, "no", RATES.switch);
+  pushItem(items, "elec-light", "project", "Project", "electrical", "Lighting", lights, "no", RATES.lighting);
+  pushItem(items, "elec-fan", "project", "Project", "electrical", "Ceiling fan", fans, "no", RATES.fan);
+  pushItem(items, "elec-ac", "project", "Project", "electrical", "Aircond point / provision", ac, "no", RATES.aircond);
+  pushItem(items, "elec-earth", "project", "Project", "electrical", "Earthing", 1, "set", RATES.earthing);
+
+  return items;
+}
+
+function getAllItems() {
+  const rooms = getRoomGroups();
+  const items = [];
+  items.push(...generateStructureItems());
+  rooms.forEach(room => items.push(...generateRoomArchitectureItems(room)));
+  items.push(...generateElectricalItems(rooms));
+  return items;
+}
+
+function updateEstimate() {
+  const allItems = getAllItems();
+  const active = allItems.filter(i => !excludedItems.has(i.id));
+  const rooms = getRoomGroups();
+  const roomsArea = rooms.reduce((s, r) => s + (r.area || 0), 0);
+  const declared = parseFloat(document.getElementById("builtUpArea")?.value) || 0;
+  const total = active.reduce((s, i) => s + i.amount, 0);
+  renderEstimate(active, rooms, total, roomsArea, declared);
+}
+
+function renderEstimate(items, rooms, total, roomsArea, declared) {
+  const container = document.getElementById("estimateContent");
+  const customer = document.getElementById("customerName")?.value || "Not specified";
+  const location = document.getElementById("projectLocation")?.value || "Not specified";
+  const storeys = document.getElementById("numStoreys")?.value || "1";
+
+  document.getElementById("customerSummary").innerHTML = `
+    <div><p class="text-gray-500">Customer</p><p class="font-medium">${escapeHtml(customer)}</p></div>
+    <div><p class="text-gray-500">Location</p><p class="font-medium">${escapeHtml(location)}</p></div>
+    <div><p class="text-gray-500">Built-up / Rooms</p><p class="font-medium">${formatQty(declared)} sqft declared · ${formatQty(roomsArea)} sqft rooms · ${storeys} storey</p></div>
+    <div><p class="text-gray-500">Estimate Type</p><p class="font-medium">Preliminary Design & Build</p></div>`;
+
+  // Group: Preliminaries, Structures, then each room architecture, then Electrical
+  const prelim = items.filter(i => i.category === "preliminaries");
+  const structures = items.filter(i => i.category === "structures");
+  const electrical = items.filter(i => i.category === "electrical");
+  const archByRoom = {};
+  rooms.forEach(r => archByRoom[r.roomId] = []);
+  items.filter(i => i.category === "architecture").forEach(i => {
+    if (!archByRoom[i.roomId]) archByRoom[i.roomId] = [];
+    archByRoom[i.roomId].push(i);
+  });
+
+  let html = `
+    <div class="overflow-x-auto">
+      <table class="w-full border-collapse text-sm">
+        <thead>
+          <tr class="border-b-2 text-left">
+            <th class="py-3 px-2">Description</th>
+            <th class="py-3 px-2">Unit</th>
+            <th class="py-3 px-2 text-right">Quantity</th>
+            <th class="py-3 px-2 text-right">Rate (RM)</th>
+            <th class="py-3 px-2 text-right">Amount (RM)</th>
+            <th class="no-print py-3 px-2 text-center">Action</th>
+          </tr>
+        </thead>
+        <tbody>`;
+
+  function renderItemRows(groupItems) {
+    let h = "";
+    groupItems.forEach(item => {
+      h += `
+        <tr class="border-b hover:bg-gray-50">
+          <td class="py-3 px-2 align-top">
+            <textarea rows="2" onchange="editItemDescription('${item.id}', this.value)"
+              class="no-print w-full min-w-[280px] border rounded-lg px-3 py-2 bg-white leading-5 resize-y">${escapeHtml(item.description)}</textarea>
+            <div class="hidden print:block leading-6">${escapeHtml(item.description)}</div>
+          </td>
+          <td class="py-3 px-2">${escapeHtml(item.unit)}</td>
+          <td class="py-3 px-2 text-right">
+            <input type="number" min="0" step="${isIntegerUnit(item.unit) ? '1' : '0.01'}" value="${formatQty(item.qty, item.unit)}"
+              onchange="editItemQuantity('${item.id}', this.value)"
+              class="no-print w-24 border rounded-lg px-2 py-1.5 text-right bg-white">
+            <span class="hidden print:inline">${formatQty(item.qty, item.unit)}</span>
+          </td>
+          <td class="py-3 px-2 text-right">
+            <input type="number" min="0" step="0.01" value="${Number(item.rate).toFixed(2)}"
+              onchange="editItemRate('${item.id}', this.value)"
+              class="no-print w-28 border rounded-lg px-2 py-1.5 text-right bg-white">
+            <span class="hidden print:inline">${money(item.rate, 2)}</span>
+          </td>
+          <td class="py-3 px-2 text-right font-medium">${money(item.amount, 2)}</td>
+          <td class="no-print py-3 px-2 text-center">
+            <button type="button" onclick="excludeItem('${item.id}')"
+              class="text-red-600 text-xs border border-red-200 rounded px-3 py-1.5 hover:bg-red-50">Delete</button>
+          </td>
+        </tr>`;
+    });
+    return h;
+  }
+
+  function renderGroup(title, groupItems) {
+    if (!groupItems.length) return "";
+    const sub = groupItems.reduce((s, i) => s + i.amount, 0);
+    let h = `<tr class="bg-gray-100 border-b"><td colspan="6" class="py-3 px-2 font-bold">${escapeHtml(title)}</td></tr>`;
+    h += renderItemRows(groupItems);
+    h += `
+      <tr class="border-b">
+        <td colspan="4" class="py-3 px-2 text-right font-semibold">${escapeHtml(title)} Subtotal</td>
+        <td class="py-3 px-2 text-right font-bold">${money(sub, 2)}</td>
+        <td class="no-print"></td>
+      </tr>`;
+    return h;
+  }
+
+  function sectionTotalRow(label, amount) {
+    return `
+      <tr class="border-b bg-gray-50">
+        <td colspan="4" class="py-3 px-2 text-right font-bold">${escapeHtml(label)}</td>
+        <td class="py-3 px-2 text-right font-bold">${money(amount, 2)}</td>
+        <td class="no-print"></td>
+      </tr>`;
+  }
+
+  // --- Preliminaries ---
+  if (prelim.length) {
+    html += `<tr class="bg-gray-900 text-white border-b"><td colspan="6" class="py-3 px-2 font-bold uppercase tracking-wide">Preliminaries & Authorities</td></tr>`;
+    html += renderItemRows(prelim);
+    html += sectionTotalRow("Preliminaries Total", prelim.reduce((s, i) => s + i.amount, 0));
+  }
+
+  // --- Structures ---
+  if (structures.length) {
+    html += `<tr class="bg-gray-900 text-white border-b"><td colspan="6" class="py-3 px-2 font-bold uppercase tracking-wide">Structures</td></tr>`;
+    STRUCT_GROUPS.forEach(group => {
+      const groupItems = structures.filter(i => i.groupKey === group.key);
+      if (!groupItems.length) return;
+      html += renderGroup(group.title, groupItems);
+    });
+    const ungrouped = structures.filter(i => !i.groupKey);
+    if (ungrouped.length) html += renderGroup("Other Structures", ungrouped);
+    html += sectionTotalRow("Structures Total", structures.reduce((s, i) => s + i.amount, 0));
+  }
+
+  // --- Architecture (by room) ---
+  const archItems = items.filter(i => i.category === "architecture");
+  if (archItems.length) {
+    html += `<tr class="bg-gray-900 text-white border-b"><td colspan="6" class="py-3 px-2 font-bold uppercase tracking-wide">Architecture</td></tr>`;
+    rooms.forEach(room => {
+      if (room.area <= 0) return;
+      const roomItems = archByRoom[room.roomId] || [];
+      if (!roomItems.length) return;
+      html += renderGroup(`${room.label} (${formatQty(room.area)} sqft)`, roomItems);
+    });
+    html += sectionTotalRow("Architecture Total", archItems.reduce((s, i) => s + i.amount, 0));
+  }
+
+  // --- Electrical ---
+  if (electrical.length) {
+    html += `<tr class="bg-gray-900 text-white border-b"><td colspan="6" class="py-3 px-2 font-bold uppercase tracking-wide">Electrical</td></tr>`;
+    html += renderItemRows(electrical);
+    html += sectionTotalRow("Electrical Total", electrical.reduce((s, i) => s + i.amount, 0));
+  }
+
+  html += `
+        </tbody>
+        <tfoot>
+          <tr class="border-t-2">
+            <td colspan="4" class="py-4 px-2 text-right font-semibold">Overall Subtotal</td>
+            <td class="py-4 px-2 text-right font-bold">${money(total, 2)}</td>
+            <td class="no-print"></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>`;
+
+  container.innerHTML = html;
+  document.getElementById("grandTotal").textContent = money(total, 2);
+  document.getElementById("totalBuiltArea").textContent = formatQty(declared) + " sqft";
+  document.getElementById("roomsTotalArea").textContent = formatQty(roomsArea) + " sqft";
+}
+
+function editItemDescription(id, value) {
+  const d = String(value || "").trim();
+  if (!d) { alert("Please enter a description."); updateEstimate(); return; }
+  customDescriptions.set(id, d);
+  updateEstimate();
+}
+function editItemQuantity(id, value) {
+  let qty = parseFloat(value);
+  if (!Number.isFinite(qty) || qty < 0) { alert("Please enter a valid quantity."); updateEstimate(); return; }
+  // Try find unit from current items
+  const all = getAllItems();
+  const found = all.find(i => i.id === id);
+  if (found && isIntegerUnit(found.unit)) qty = Math.round(qty);
+  customQuantities.set(id, qty);
+  updateEstimate();
+}
+function editItemRate(id, value) {
+  const rate = parseFloat(value);
+  if (!Number.isFinite(rate) || rate < 0) { alert("Please enter a valid rate."); updateEstimate(); return; }
+  customRates.set(id, rate);
+  updateEstimate();
+}
+function excludeItem(id) { excludedItems.add(id); updateEstimate(); }
+function restoreAllItems() {
+  excludedItems.clear();
+  customRates.clear();
+  customQuantities.clear();
+  customDescriptions.clear();
+  updateEstimate();
+}
+
+let quotationNumber = null;
+function generateQuotationNumber() {
+  let n = localStorage.getItem("terajuNBQO");
+  n = n ? parseInt(n, 10) + 1 : 1;
+  localStorage.setItem("terajuNBQO", n);
+  return "NB-QO" + String(n).padStart(3, "0");
+}
+function getSelectedQuotationType() {
+  return document.querySelector('input[name="quotationType"]:checked')?.value || "simple";
+}
+
+function getCurrentQuotationData() {
+  const allItems = getAllItems().filter(i => !excludedItems.has(i.id));
+  const rooms = getRoomGroups();
+  const prelim = allItems.filter(i => i.category === "preliminaries");
+  const structures = allItems.filter(i => i.category === "structures");
+  const electrical = allItems.filter(i => i.category === "electrical");
+  const archByRoom = {};
+  const roomSubtotals = {};
+  rooms.forEach(r => { archByRoom[r.roomId] = []; roomSubtotals[r.roomId] = 0; });
+  allItems.filter(i => i.category === "architecture").forEach(i => {
+    if (!archByRoom[i.roomId]) archByRoom[i.roomId] = [];
+    archByRoom[i.roomId].push(i);
+    roomSubtotals[i.roomId] = (roomSubtotals[i.roomId] || 0) + i.amount;
+  });
+  const total = allItems.reduce((s, i) => s + i.amount, 0);
+  return { allItems, rooms, prelim, structures, electrical, archByRoom, roomSubtotals, total };
+}
+
+function quotationDescriptionList(items) {
+  if (!items.length) return "No selected works";
+  return items.map(i => escapeHtml(i.description)).join("<br>");
+}
+
+function generateQuotation() {
+  const rooms = getRoomGroups();
+  if (!rooms.some(r => r.area > 0)) {
+    alert("Please add at least one room with a valid area before generating the quotation.");
+    return;
+  }
+  const data = getCurrentQuotationData();
+  quotationNumber = generateQuotationNumber();
+  const type = getSelectedQuotationType();
+  const customer = document.getElementById("customerName")?.value || "Not specified";
+  const location = document.getElementById("projectLocation")?.value || "Not specified";
+  const declared = parseFloat(document.getElementById("builtUpArea")?.value) || 0;
+  const roomsArea = rooms.reduce((s, r) => s + (r.area || 0), 0);
+  const storeys = document.getElementById("numStoreys")?.value || "1";
+  const style = document.getElementById("packageStyle")?.value || "scandinavian";
+  const styleLabel = style === "scandinavian" ? "Scandinavian" : "Modern Minimal";
+  const today = new Intl.DateTimeFormat("en-MY", { day: "2-digit", month: "long", year: "numeric" }).format(new Date());
+  const content = document.getElementById("quotationContent");
+
+  let body = `
+    <div class="flex justify-between items-start gap-6 border-b pb-5 mb-6">
+      <div class="min-w-0">
+        <div class="flex items-center gap-4 mb-4">
+          <img src="../images/logo.png" alt="Teraju Ciptabina Logo" class="h-14 w-auto flex-shrink-0"
+            onerror="this.style.display='none'; var fb=this.nextElementSibling; if(fb) fb.style.display='flex';">
+          <div class="h-14 w-14 rounded-lg bg-gray-900 text-white items-center justify-center font-bold text-xl flex-shrink-0" style="display:none;">T|C</div>
+          <div class="min-w-0">
+            <h1 class="text-xl font-bold">TERAJU CIPTABINA RESOURCES</h1>
+            <p class="text-xs text-gray-500">No 10A, Jalan PP 2/1, Taman Putra Prima, 47100 Puchong, Selangor</p>
+          </div>
+        </div>
+        <h2 class="text-2xl font-bold uppercase">Quotation</h2>
+      </div>
+      <div class="text-right text-sm flex-shrink-0">
+        <p><span class="text-gray-500">Quotation No.</span><br><strong>${escapeHtml(quotationNumber)}</strong></p>
+        <p class="mt-2"><span class="text-gray-500">Date</span><br><strong>${escapeHtml(today)}</strong></p>
+      </div>
+    </div>
+    <div class="grid md:grid-cols-3 gap-6 mb-7 text-sm">
+      <div>
+        <p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Customer</p>
+        <p class="font-semibold">${escapeHtml(customer)}</p>
+      </div>
+      <div>
+        <p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Project Location</p>
+        <p class="font-semibold">${escapeHtml(location)}</p>
+      </div>
+      <div>
+        <p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Built-up Area</p>
+        <p class="font-semibold">${formatQty(declared)} sqft · ${storeys} storey<br>
+          <span class="font-normal text-gray-500">${formatQty(roomsArea)} sqft rooms · ${styleLabel}</span></p>
+      </div>
+    </div>
+    <div class="mb-5">
+      <p class="text-sm text-gray-600">
+        Design & build works as described below. Final quotation is subject to site inspection, soil investigation,
+        approved drawings, actual site conditions, specifications and confirmation of final scope of works.
+      </p>
+    </div>`;
+
+  if (type === "simple") {
+    body += `
+      <div class="overflow-x-auto">
+        <table class="w-full border-collapse text-sm simple-quotation-table">
+          <colgroup>
+            <col style="width:6%"><col style="width:22%"><col style="width:52%"><col style="width:20%">
+          </colgroup>
+          <thead>
+            <tr class="border-b-2 text-left">
+              <th class="py-3 px-2">No.</th>
+              <th class="py-3 px-2">Category / Room</th>
+              <th class="py-3 px-2">Description of Works</th>
+              <th class="py-3 px-2 text-right">Amount (RM)</th>
+            </tr>
+          </thead>
+          <tbody>`;
+    let no = 1;
+
+    // PRELIMINARIES
+    if (data.prelim.length) {
+      body += `<tr class="bg-gray-900 text-white border-b"><td colspan="4" class="py-3 px-2 font-bold uppercase">Preliminaries & Authorities</td></tr>`;
+      const sub = data.prelim.reduce((s, i) => s + i.amount, 0);
+      body += `<tr class="border-b align-top"><td class="py-3 px-2">${no++}</td>
+        <td class="py-3 px-2 font-semibold">Preliminaries</td>
+        <td class="py-3 px-2 leading-6">${quotationDescriptionList(data.prelim)}</td>
+        <td class="py-3 px-2 text-right font-semibold">${money(sub, 2)}</td></tr>`;
+      body += `<tr class="border-b bg-gray-50"><td colspan="3" class="py-3 px-2 text-right font-bold">Preliminaries Total</td>
+        <td class="py-3 px-2 text-right font-bold">${money(sub, 2)}</td></tr>`;
+    }
+
+    // STRUCTURES
+    if (data.structures.length) {
+      body += `<tr class="bg-gray-900 text-white border-b"><td colspan="4" class="py-3 px-2 font-bold uppercase">Structures</td></tr>`;
+      STRUCT_GROUPS.forEach(group => {
+        const groupItems = data.structures.filter(i => i.groupKey === group.key);
+        if (!groupItems.length) return;
+        const sub = groupItems.reduce((s, i) => s + i.amount, 0);
+        body += `<tr class="border-b align-top"><td class="py-3 px-2">${no++}</td>
+          <td class="py-3 px-2 font-semibold">${escapeHtml(group.title)}</td>
+          <td class="py-3 px-2 leading-6">${quotationDescriptionList(groupItems)}</td>
+          <td class="py-3 px-2 text-right font-semibold">${money(sub, 2)}</td></tr>`;
+      });
+      const structTotal = data.structures.reduce((s, i) => s + i.amount, 0);
+      body += `<tr class="border-b bg-gray-50"><td colspan="3" class="py-3 px-2 text-right font-bold">Structures Total</td>
+        <td class="py-3 px-2 text-right font-bold">${money(structTotal, 2)}</td></tr>`;
+    }
+
+    // ARCHITECTURE
+    const archRows = [];
+    data.rooms.forEach(room => {
+      if (room.area <= 0) return;
+      const roomItems = data.archByRoom[room.roomId] || [];
+      if (!roomItems.length) return;
+      archRows.push({ room, roomItems, sub: data.roomSubtotals[room.roomId] || 0 });
+    });
+    if (archRows.length) {
+      body += `<tr class="bg-gray-900 text-white border-b"><td colspan="4" class="py-3 px-2 font-bold uppercase">Architecture</td></tr>`;
+      archRows.forEach(({ room, roomItems, sub }) => {
+        body += `<tr class="border-b align-top"><td class="py-3 px-2">${no++}</td>
+          <td class="py-3 px-2 font-semibold">${escapeHtml(room.label)}<br><span class="font-normal text-gray-500">${formatQty(room.area)} sqft</span></td>
+          <td class="py-3 px-2 leading-6">${quotationDescriptionList(roomItems)}</td>
+          <td class="py-3 px-2 text-right font-semibold">${money(sub, 2)}</td></tr>`;
+      });
+      const archTotal = archRows.reduce((s, r) => s + r.sub, 0);
+      body += `<tr class="border-b bg-gray-50"><td colspan="3" class="py-3 px-2 text-right font-bold">Architecture Total</td>
+        <td class="py-3 px-2 text-right font-bold">${money(archTotal, 2)}</td></tr>`;
+    }
+
+    // ELECTRICAL
+    if (data.electrical.length) {
+      body += `<tr class="bg-gray-900 text-white border-b"><td colspan="4" class="py-3 px-2 font-bold uppercase">Electrical</td></tr>`;
+      const sub = data.electrical.reduce((s, i) => s + i.amount, 0);
+      body += `<tr class="border-b align-top"><td class="py-3 px-2">${no++}</td>
+        <td class="py-3 px-2 font-semibold">Electrical Works</td>
+        <td class="py-3 px-2 leading-6">${quotationDescriptionList(data.electrical)}</td>
+        <td class="py-3 px-2 text-right font-semibold">${money(sub, 2)}</td></tr>`;
+      body += `<tr class="border-b bg-gray-50"><td colspan="3" class="py-3 px-2 text-right font-bold">Electrical Total</td>
+        <td class="py-3 px-2 text-right font-bold">${money(sub, 2)}</td></tr>`;
+    }
+
+    body += `
+          </tbody>
+          <tfoot>
+            <tr class="border-t-2">
+              <td colspan="3" class="py-4 px-2 text-right font-bold">TOTAL</td>
+              <td class="py-4 px-2 text-right font-bold text-lg">${money(data.total, 2)}</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>`;
+  } else {
+    body += `
+      <div class="overflow-x-auto">
+        <table class="w-full border-collapse text-sm detailed-quotation-table">
+          <colgroup>
+            <col style="width:50%"><col style="width:10%"><col style="width:10%"><col style="width:15%"><col style="width:15%">
+          </colgroup>
+          <thead>
+            <tr class="border-b-2 text-left">
+              <th class="py-3 px-2">Description</th>
+              <th class="py-3 px-2">Unit</th>
+              <th class="py-3 px-2 text-right">Quantity</th>
+              <th class="py-3 px-2 text-right">Rate (RM)</th>
+              <th class="py-3 px-2 text-right">Amount (RM)</th>
+            </tr>
+          </thead>
+          <tbody>`;
+
+    function detailGroupItems(groupItems) {
+      let h = "";
+      groupItems.forEach(item => {
+        h += `<tr class="border-b align-top">
+          <td class="py-3 px-2">${escapeHtml(item.description)}</td>
+          <td class="py-3 px-2">${escapeHtml(item.unit)}</td>
+          <td class="py-3 px-2 text-right">${formatQty(item.qty, item.unit)}</td>
+          <td class="py-3 px-2 text-right">${money(item.rate, 2)}</td>
+          <td class="py-3 px-2 text-right font-medium">${money(item.amount, 2)}</td>
+        </tr>`;
+      });
+      return h;
+    }
+
+    function detailGroup(title, groupItems) {
+      if (!groupItems.length) return "";
+      const sub = groupItems.reduce((s, i) => s + i.amount, 0);
+      let h = `<tr class="bg-gray-100 border-b"><td colspan="5" class="py-3 px-2 font-bold">${escapeHtml(title)}</td></tr>`;
+      h += detailGroupItems(groupItems);
+      h += `<tr class="border-b">
+        <td colspan="4" class="py-3 px-2 text-right font-bold">${escapeHtml(title)} Subtotal</td>
+        <td class="py-3 px-2 text-right font-bold">${money(sub, 2)}</td>
+      </tr>`;
+      return h;
+    }
+
+    function detailSectionTotal(label, amount) {
+      return `<tr class="border-b bg-gray-50">
+        <td colspan="4" class="py-3 px-2 text-right font-bold">${escapeHtml(label)}</td>
+        <td class="py-3 px-2 text-right font-bold">${money(amount, 2)}</td>
+      </tr>`;
+    }
+
+    // Preliminaries
+    if (data.prelim.length) {
+      body += `<tr class="bg-gray-900 text-white border-b"><td colspan="5" class="py-3 px-2 font-bold uppercase">Preliminaries & Authorities</td></tr>`;
+      body += detailGroupItems(data.prelim);
+      body += detailSectionTotal("Preliminaries Total", data.prelim.reduce((s, i) => s + i.amount, 0));
+    }
+
+    // Structures
+    if (data.structures.length) {
+      body += `<tr class="bg-gray-900 text-white border-b"><td colspan="5" class="py-3 px-2 font-bold uppercase">Structures</td></tr>`;
+      STRUCT_GROUPS.forEach(group => {
+        const groupItems = data.structures.filter(i => i.groupKey === group.key);
+        if (!groupItems.length) return;
+        body += detailGroup(group.title, groupItems);
+      });
+      body += detailSectionTotal("Structures Total", data.structures.reduce((s, i) => s + i.amount, 0));
+    }
+
+    // Architecture
+    const archAll = [];
+    data.rooms.forEach(room => {
+      if (room.area <= 0) return;
+      const roomItems = data.archByRoom[room.roomId] || [];
+      archAll.push(...roomItems);
+    });
+    if (archAll.length) {
+      body += `<tr class="bg-gray-900 text-white border-b"><td colspan="5" class="py-3 px-2 font-bold uppercase">Architecture</td></tr>`;
+      data.rooms.forEach(room => {
+        if (room.area <= 0) return;
+        const roomItems = data.archByRoom[room.roomId] || [];
+        if (!roomItems.length) return;
+        body += detailGroup(`${room.label} (${formatQty(room.area)} sqft)`, roomItems);
+      });
+      body += detailSectionTotal("Architecture Total", archAll.reduce((s, i) => s + i.amount, 0));
+    }
+
+    // Electrical
+    if (data.electrical.length) {
+      body += `<tr class="bg-gray-900 text-white border-b"><td colspan="5" class="py-3 px-2 font-bold uppercase">Electrical</td></tr>`;
+      body += detailGroupItems(data.electrical);
+      body += detailSectionTotal("Electrical Total", data.electrical.reduce((s, i) => s + i.amount, 0));
+    }
+
+    body += `
+          </tbody>
+          <tfoot>
+            <tr class="border-t-2">
+              <td colspan="4" class="py-4 px-2 text-right font-bold">TOTAL</td>
+              <td class="py-4 px-2 text-right font-bold text-lg">${money(data.total, 2)}</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>`;
+  }
+
+  body += `
+    <div class="mt-8 pt-5 border-t text-sm">
+      <p class="font-semibold mb-2">Terms / Notes</p>
+      <ul class="list-disc pl-5 space-y-1 text-gray-600">
+        <li>This quotation is based on the selected package rates and room areas provided.</li>
+        <li>Final scope, specifications, soil condition and pricing are subject to site inspection and confirmation.</li>
+        <li>Any additional works or authority requirements not stated above will be quoted separately.</li>
+        <li>Payment terms and progress claim schedule to be agreed upon confirmation of order.</li>
+      </ul>
+    </div>
+    <div class="mt-12 text-sm">
+      <p>Yours sincerely,</p>
+      <p class="font-bold mt-8">TERAJU CIPTABINA RESOURCES</p>
+    </div>`;
+
+  content.innerHTML = body;
+  document.getElementById("quotationDocument").classList.remove("hidden");
+  document.getElementById("quotationPrintActions").classList.remove("hidden");
+  document.getElementById("quotationDocument").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function printQuotation() {
+  const quotation = document.getElementById("quotationDocument");
+  if (quotation.classList.contains("hidden")) {
+    alert("Please generate the quotation first.");
+    return;
+  }
+  const originalTitle = document.title;
+  document.title = quotationNumber ? `Quotation ${quotationNumber}` : "Quotation";
+  document.body.classList.add("print-quotation");
+  const cleanup = () => {
+    document.body.classList.remove("print-quotation");
+    document.title = originalTitle;
+    window.removeEventListener("afterprint", cleanup);
+  };
+  window.addEventListener("afterprint", cleanup);
+  window.print();
+  setTimeout(cleanup, 1500);
+}
+
+/* Seed default rooms for a typical 600sqft bungalow */
+addRoom("living", "180");
+addRoom("dining", "80");
+addRoom("bedroom", "120");
+addRoom("bedroom", "100");
+addRoom("kitchen", "60");
+addRoom("bathroom", "30");
+addRoom("bathroom", "30");
+</script>
+</body>
+</html>
