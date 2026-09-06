@@ -1,0 +1,59 @@
+name: Inject Build Planner alignment fix
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  inject:
+    if: "!contains(github.event.head_commit.message, '[buildplanner-alignment]')"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Inject alignment script and remove duplicate helper tags
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          p = Path('quotation/buildplanner.html')
+          text = p.read_text(encoding='utf-8')
+
+          text = re.sub(r'<script\s+src=["\']buildplanner-alignment-fix\.js(?:\?[^"\']*)?["\']\s*></script>\s*', '', text)
+          text = re.sub(r'(\s*<script\s+src=["\']location-autocomplete\.js(?:\?[^"\']*)?["\']\s*></script>){2,}', r'\1', text)
+          text = re.sub(r'(\s*<script\s+src=["\']quotation-quantity-fix\.js(?:\?[^"\']*)?["\']\s*></script>){2,}', r'\1', text)
+
+          marker = '</body>'
+          if marker not in text:
+              raise SystemExit('Missing </body>')
+          tag = '<script src="buildplanner-alignment-fix.js?v=20260907"></script>\n'
+          text = text.replace(marker, tag + marker, 1)
+          p.write_text(text, encoding='utf-8')
+          PY
+
+      - name: Commit alignment fix
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add quotation/buildplanner.html
+          if git diff --cached --quiet; then
+            echo "No changes needed."
+            exit 0
+          fi
+          git commit -m "Fix Build Planner quotation alignment [buildplanner-alignment]"
+          git push origin main
+
+      - name: Remove temporary workflow
+        shell: bash
+        run: |
+          git rm .github/workflows/inject-buildplanner-alignment.yml
+          git commit -m "Retire quotation alignment workflow [buildplanner-alignment]"
+          git push origin main
