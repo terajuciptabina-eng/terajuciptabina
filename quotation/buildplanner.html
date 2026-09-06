@@ -285,7 +285,7 @@
     </div>
     <div id="homeownerQuotationOptions" class="hidden">
       <div class="grid md:grid-cols-2 gap-4">
-        <div class="border rounded-2xl p-5 bg-white"><p class="text-xs uppercase tracking-wide text-gray-500 mb-2">Free</p><p class="font-bold text-lg">Quotation Summary</p><p class="text-sm text-gray-500 mt-2">A clean summary of your project details, selected areas and estimated total.</p><button type="button" onclick="generateQuotation()" class="mt-5 w-full bg-black text-white px-5 py-3 rounded-lg font-semibold hover:bg-gray-800">Generate Free Quotation</button></div>
+        <div class="border rounded-2xl p-5 bg-white"><p class="text-xs uppercase tracking-wide text-gray-500 mb-2">Free</p><p class="font-bold text-lg">Simple Quotation</p><p class="text-sm text-gray-500 mt-2">A professional free quotation summarising the scope of works and estimated amount by category or room.</p><button type="button" onclick="generateQuotation()" class="mt-5 w-full bg-black text-white px-5 py-3 rounded-lg font-semibold hover:bg-gray-800">Generate Free Quotation</button></div>
         <div class="border rounded-2xl p-5 bg-gray-50"><p class="text-xs uppercase tracking-wide text-gray-500 mb-2">Detailed</p><p class="font-bold text-lg">Detailed Cost Breakdown</p><p class="text-sm text-gray-500 mt-2">Full scope, quantities, unit rates and costing breakdown prepared for your project.</p><button type="button" onclick="requestDetailedQuotation()" class="mt-5 w-full border border-gray-900 text-gray-900 px-5 py-3 rounded-lg font-semibold hover:bg-white">View Detailed Quotation</button></div>
       </div>
       <div class="mt-5 p-4 rounded-xl bg-gray-50 border text-sm text-gray-600"><strong class="text-gray-800">Your privacy:</strong> Internal rate schedules and costing formulas are not displayed in the homeowner planner.</div>
@@ -1199,7 +1199,87 @@ function generateQuotation() {
     const roomsArea=rooms.reduce((s,r)=>s+(r.area||0),0);
     const storeys=document.getElementById("numStoreys")?.value||"1";
     const today=new Intl.DateTimeFormat("en-MY",{day:"2-digit",month:"long",year:"numeric"}).format(new Date());
-    document.getElementById("quotationContent").innerHTML=`<div class="flex justify-between items-start gap-6 border-b pb-5 mb-6"><div><div class="flex items-center gap-4 mb-4"><img src="../images/logo.png" alt="Teraju Ciptabina Logo" class="h-14 w-auto"><div><h1 class="text-xl font-bold">TERAJU CIPTABINA RESOURCES</h1><p class="text-xs text-gray-500">No 10A, Jalan PP 2/1, Taman Putra Prima, 47100 Puchong, Selangor</p></div></div><h2 class="text-2xl font-bold uppercase">Quotation Summary</h2></div><div class="text-right text-sm"><p><span class="text-gray-500">Quotation No.</span><br><strong>${escapeHtml(quotationNumber)}</strong></p><p class="mt-2"><span class="text-gray-500">Date</span><br><strong>${escapeHtml(today)}</strong></p></div></div><div class="grid md:grid-cols-3 gap-6 mb-7 text-sm"><div><p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Customer</p><p class="font-semibold">${escapeHtml(customer)}</p></div><div><p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Project Location</p><p class="font-semibold">${escapeHtml(location)}</p></div><div><p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Project Size</p><p class="font-semibold">${formatQty(declared)} sqft · ${storeys} storey</p></div></div><div class="border rounded-2xl p-6 bg-gray-50"><p class="text-xs uppercase tracking-wide text-gray-500">Preliminary Construction Budget</p><p class="text-3xl font-bold mt-2">${money(data.total,2)}</p><p class="text-sm text-gray-500 mt-2">Based on ${formatQty(roomsArea)} sqft of room / area schedule entered.</p></div><div class="mt-6"><p class="font-semibold mb-3">Selected Areas</p><div class="border rounded-xl overflow-hidden"><table class="w-full border-collapse text-sm"><thead><tr class="border-b bg-gray-50 text-left"><th class="py-3 px-3">Room / Area</th><th class="py-3 px-3 text-right">Area</th></tr></thead><tbody>${rooms.filter(r=>r.area>0).map(r=>`<tr class="border-b"><td class="py-3 px-3">${escapeHtml(r.label)}</td><td class="py-3 px-3 text-right">${formatQty(r.area)} sqft</td></tr>`).join("")}</tbody></table></div></div><div class="homeowner-lock mt-6 no-print"><div class="lock-icon">🔒</div><p class="text-center font-semibold">Detailed costing is not included in this free summary</p><p class="text-center text-sm text-gray-500 mt-1">Unit rates, detailed quantities and internal costing breakdown are kept confidential.</p></div><div class="mt-8 pt-5 border-t text-sm"><p class="font-semibold mb-2">Terms / Notes</p><ul class="list-disc pl-5 space-y-1 text-gray-600"><li>This is a preliminary construction estimate based on the information provided.</li><li>Final scope, specifications, site conditions and pricing are subject to site inspection and confirmation.</li><li>Any additional works or authority requirements not included in the estimate shall be quoted separately.</li></ul></div><div class="mt-12 text-sm"><p>Yours sincerely,</p><p class="font-bold mt-8">TERAJU CIPTABINA RESOURCES</p></div>`;
+    const content=document.getElementById("quotationContent");
+
+    let body=`
+      <div class="flex justify-between items-start gap-6 border-b pb-5 mb-6">
+        <div class="min-w-0">
+          <div class="flex items-center gap-4 mb-4">
+            <img src="../images/logo.png" alt="Teraju Ciptabina Logo" class="h-14 w-auto flex-shrink-0">
+            <div class="min-w-0">
+              <h1 class="text-xl font-bold">TERAJU CIPTABINA RESOURCES</h1>
+              <p class="text-xs text-gray-500">No 10A, Jalan PP 2/1, Taman Putra Prima, 47100 Puchong, Selangor</p>
+            </div>
+          </div>
+          <h2 class="text-2xl font-bold uppercase">Quotation</h2>
+        </div>
+        <div class="text-right text-sm flex-shrink-0">
+          <p><span class="text-gray-500">Quotation No.</span><br><strong>${escapeHtml(quotationNumber)}</strong></p>
+          <p class="mt-2"><span class="text-gray-500">Date</span><br><strong>${escapeHtml(today)}</strong></p>
+        </div>
+      </div>
+      <div class="grid md:grid-cols-3 gap-6 mb-7 text-sm">
+        <div><p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Customer</p><p class="font-semibold">${escapeHtml(customer)}</p></div>
+        <div><p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Project Location</p><p class="font-semibold">${escapeHtml(location)}</p></div>
+        <div><p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Built-up Area</p><p class="font-semibold">${formatQty(declared)} sqft · ${storeys} storey<br><span class="font-normal text-gray-500">${formatQty(roomsArea)} sqft rooms</span></p></div>
+      </div>
+      <div class="mb-5">
+        <p class="text-sm text-gray-600">Construction works as described below. This quotation is subject to site inspection, soil investigation, approved drawings, actual site conditions, specifications and confirmation of the final scope of works.</p>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full border-collapse text-sm simple-quotation-table">
+          <colgroup><col style="width:6%"><col style="width:22%"><col style="width:52%"><col style="width:20%"></colgroup>
+          <thead><tr class="border-b-2 text-left"><th class="py-3 px-2">No.</th><th class="py-3 px-2">Category / Room</th><th class="py-3 px-2">Description of Works</th><th class="py-3 px-2 text-right">Amount (RM)</th></tr></thead>
+          <tbody>`;
+    let no=1;
+
+    if(data.prelim.length){
+      const sub=data.prelim.reduce((s,i)=>s+i.amount,0);
+      body+=`<tr class="bg-gray-900 text-white border-b"><td colspan="4" class="py-3 px-2 font-bold uppercase">Preliminaries & Authorities</td></tr>`;
+      body+=`<tr class="border-b align-top"><td class="py-3 px-2">${no++}</td><td class="py-3 px-2 font-semibold">Preliminaries</td><td class="py-3 px-2 leading-6">${quotationDescriptionList(data.prelim)}</td><td class="py-3 px-2 text-right font-semibold">${money(sub,2)}</td></tr>`;
+      body+=`<tr class="border-b bg-gray-50"><td colspan="3" class="py-3 px-2 text-right font-bold">Preliminaries Total</td><td class="py-3 px-2 text-right font-bold">${money(sub,2)}</td></tr>`;
+    }
+
+    if(data.structures.length){
+      const structTotal=data.structures.reduce((s,i)=>s+i.amount,0);
+      body+=`<tr class="bg-gray-900 text-white border-b"><td colspan="4" class="py-3 px-2 font-bold uppercase">Structures</td></tr>`;
+      STRUCT_GROUPS.forEach(group=>{
+        const groupItems=data.structures.filter(i=>i.groupKey===group.key);
+        if(!groupItems.length)return;
+        const sub=groupItems.reduce((s,i)=>s+i.amount,0);
+        body+=`<tr class="border-b align-top"><td class="py-3 px-2">${no++}</td><td class="py-3 px-2 font-semibold">${escapeHtml(group.title)}</td><td class="py-3 px-2 leading-6">${quotationDescriptionList(groupItems)}</td><td class="py-3 px-2 text-right font-semibold">${money(sub,2)}</td></tr>`;
+      });
+      body+=`<tr class="border-b bg-gray-50"><td colspan="3" class="py-3 px-2 text-right font-bold">Structures Total</td><td class="py-3 px-2 text-right font-bold">${money(structTotal,2)}</td></tr>`;
+    }
+
+    const archRows=[];
+    data.rooms.forEach(room=>{
+      if(room.area<=0)return;
+      const roomItems=data.archByRoom[room.roomId]||[];
+      if(!roomItems.length)return;
+      archRows.push({room,roomItems,sub:data.roomSubtotals[room.roomId]||0});
+    });
+    if(archRows.length){
+      const archTotal=archRows.reduce((s,r)=>s+r.sub,0);
+      body+=`<tr class="bg-gray-900 text-white border-b"><td colspan="4" class="py-3 px-2 font-bold uppercase">Architecture</td></tr>`;
+      archRows.forEach(({room,roomItems,sub})=>{
+        body+=`<tr class="border-b align-top"><td class="py-3 px-2">${no++}</td><td class="py-3 px-2 font-semibold">${escapeHtml(room.label)}<br><span class="font-normal text-gray-500">${formatQty(room.area)} sqft</span></td><td class="py-3 px-2 leading-6">${quotationDescriptionList(roomItems)}</td><td class="py-3 px-2 text-right font-semibold">${money(sub,2)}</td></tr>`;
+      });
+      body+=`<tr class="border-b bg-gray-50"><td colspan="3" class="py-3 px-2 text-right font-bold">Architecture Total</td><td class="py-3 px-2 text-right font-bold">${money(archTotal,2)}</td></tr>`;
+    }
+
+    if(data.electrical.length){
+      const sub=data.electrical.reduce((s,i)=>s+i.amount,0);
+      body+=`<tr class="bg-gray-900 text-white border-b"><td colspan="4" class="py-3 px-2 font-bold uppercase">Electrical</td></tr>`;
+      body+=`<tr class="border-b align-top"><td class="py-3 px-2">${no++}</td><td class="py-3 px-2 font-semibold">Electrical Works</td><td class="py-3 px-2 leading-6">${quotationDescriptionList(data.electrical)}</td><td class="py-3 px-2 text-right font-semibold">${money(sub,2)}</td></tr>`;
+      body+=`<tr class="border-b bg-gray-50"><td colspan="3" class="py-3 px-2 text-right font-bold">Electrical Total</td><td class="py-3 px-2 text-right font-bold">${money(sub,2)}</td></tr>`;
+    }
+
+    body+=`</tbody><tfoot><tr class="border-t-2"><td colspan="3" class="py-4 px-2 text-right font-bold">TOTAL</td><td class="py-4 px-2 text-right font-bold text-lg">${money(data.total,2)}</td></tr></tfoot></table></div>
+      <div class="mt-8 pt-5 border-t text-sm"><p class="font-semibold mb-2">Terms / Notes</p><ul class="list-disc pl-5 space-y-1 text-gray-600"><li>This is a preliminary construction estimate based on the information provided.</li><li>Final scope, specifications, site conditions and pricing are subject to site inspection and confirmation.</li><li>Any additional works or authority requirements not included in the estimate shall be quoted separately.</li></ul></div>
+      <div class="mt-12 text-sm"><p>Yours sincerely,</p><p class="font-bold mt-8">TERAJU CIPTABINA RESOURCES</p></div>`;
+
+    content.innerHTML=body;
     document.getElementById("quotationDocument").classList.remove("hidden");
     document.getElementById("quotationPrintActions").classList.remove("hidden");
     document.getElementById("quotationDocument").scrollIntoView({behavior:"smooth",block:"start"});
