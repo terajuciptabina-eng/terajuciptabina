@@ -53,6 +53,11 @@
       body { padding-bottom: env(safe-area-inset-bottom); }
     }
 
+    .homeowner-hidden { display:none !important; }
+    .homeowner-summary-card { border:1px solid #e5e7eb; border-radius:16px; background:#f9fafb; padding:20px; }
+    .homeowner-lock { border:1px dashed #d1d5db; border-radius:16px; background:#fafafa; padding:22px; }
+    .homeowner-lock .lock-icon { width:42px; height:42px; border-radius:12px; display:flex; align-items:center; justify-content:center; background:#111827; color:#fff; font-size:20px; margin:0 auto 12px; }
+
     .detailed-quotation-table, .simple-quotation-table { width: 100%; table-layout: fixed; }
 
     @media print {
@@ -209,13 +214,13 @@
     <div class="no-print bg-gray-50 border rounded-xl p-4 mb-5 text-sm text-gray-600">
       <strong class="text-gray-800">Guidance:</strong>
       Select the room type and enter the floor area in sqft. Door and window quantities are assigned automatically according to room type
-      (for example, a bedroom includes 1 door and 1 window). Quantities and rates may be adjusted in the estimate table below.
+      (for example, a bedroom includes 1 door and 1 window). Your room selections are used to prepare a preliminary construction budget.
     </div>
     <div id="roomsContainer" class="space-y-4"></div>
   </section>
 
   <!-- Rate Schedule -->
-  <section class="no-print bg-white rounded-2xl shadow-sm p-6 mb-6">
+  <section id="rateScheduleSection" class="no-print bg-white rounded-2xl shadow-sm p-6 mb-6">
     <div class="flex justify-between items-center cursor-pointer" onclick="toggleRateSchedule()">
       <div class="min-w-0">
         <h3 class="font-bold text-lg">Rate Schedule</h3>
@@ -278,7 +283,15 @@
       <h3 class="font-bold text-lg">Generate Quotation</h3>
       <p class="text-sm text-gray-500">Select the level of pricing detail to be presented in the quotation.</p>
     </div>
-    <div class="grid md:grid-cols-2 gap-4">
+    <div id="homeownerQuotationOptions" class="hidden">
+      <div class="grid md:grid-cols-2 gap-4">
+        <div class="border rounded-2xl p-5 bg-white"><p class="text-xs uppercase tracking-wide text-gray-500 mb-2">Free</p><p class="font-bold text-lg">Quotation Summary</p><p class="text-sm text-gray-500 mt-2">A clean summary of your project details, selected areas and estimated total.</p><button type="button" onclick="generateQuotation()" class="mt-5 w-full bg-black text-white px-5 py-3 rounded-lg font-semibold hover:bg-gray-800">Generate Free Quotation</button></div>
+        <div class="border rounded-2xl p-5 bg-gray-50"><p class="text-xs uppercase tracking-wide text-gray-500 mb-2">Detailed</p><p class="font-bold text-lg">Detailed Cost Breakdown</p><p class="text-sm text-gray-500 mt-2">Full scope, quantities, unit rates and costing breakdown prepared for your project.</p><button type="button" onclick="requestDetailedQuotation()" class="mt-5 w-full border border-gray-900 text-gray-900 px-5 py-3 rounded-lg font-semibold hover:bg-white">View Detailed Quotation</button></div>
+      </div>
+      <div class="mt-5 p-4 rounded-xl bg-gray-50 border text-sm text-gray-600"><strong class="text-gray-800">Your privacy:</strong> Internal rate schedules and costing formulas are not displayed in the homeowner planner.</div>
+    </div>
+    <div id="contractorQuotationOptions">
+          <div class="grid md:grid-cols-2 gap-4">
       <label class="quotation-option border rounded-xl p-4 cursor-pointer hover:bg-gray-50">
         <div class="flex items-start gap-3">
           <input type="radio" name="quotationType" value="simple" checked class="mt-1 h-4 w-4 flex-shrink-0">
@@ -307,6 +320,7 @@
         class="bg-black text-white px-5 py-3 rounded-lg font-semibold hover:bg-gray-800">
         Generate Quotation
       </button>
+    </div>
     </div>
   </section>
 
@@ -363,6 +377,10 @@ const DEFAULT_RATES = {
 };
 
 let RATES = { ...DEFAULT_RATES };
+
+const AUDIENCE = new URLSearchParams(window.location.search).get("audience") || "homeowner";
+const IS_HOMEOWNER = AUDIENCE !== "contractor";
+function isHomeowner(){ return IS_HOMEOWNER; }
 
 /* Rate schedule display — groups for the editable table */
 const RATE_SCHEDULE = [
@@ -573,6 +591,18 @@ function generateEstimateNumber() {
   return "NB-EST-" + String(n).padStart(4, "0");
 }
 document.getElementById("estimateNumber").textContent = generateEstimateNumber();
+
+function applyAudienceUI(){
+  if(!isHomeowner()) return;
+  document.getElementById("rateScheduleSection")?.classList.add("homeowner-hidden");
+  const restore=document.querySelector('button[onclick="restoreAllItems()"]');
+  restore?.closest(".no-print")?.classList.add("homeowner-hidden");
+  const heading=document.querySelector('section.no-print.bg-white.rounded-2xl.shadow-sm.p-6.mt-6 h3');
+  const sub=heading?.nextElementSibling;
+  if(heading) heading.textContent="Get Your Quotation";
+  if(sub) sub.textContent="Generate a free quotation summary, or request the detailed costing breakdown.";
+  document.title="Build Planner | Teraju Works";
+}
 
 function money(v, d = 0) {
   return new Intl.NumberFormat("en-MY", { style: "currency", currency: "MYR", minimumFractionDigits: d, maximumFractionDigits: d }).format(Number(v) || 0);
@@ -917,6 +947,22 @@ function renderEstimate(items, rooms, total, roomsArea, declared) {
     <div><p class="text-gray-500">Built-up / Rooms</p><p class="font-medium">${formatQty(declared)} sqft declared · ${formatQty(roomsArea)} sqft rooms · ${storeys} storey</p></div>
     <div><p class="text-gray-500">Estimate Type</p><p class="font-medium">Preliminary Construction Estimate</p></div>`;
 
+  if(isHomeowner()){
+    const validRooms=rooms.filter(r=>r.area>0);
+    container.innerHTML=`
+      <div class="grid md:grid-cols-3 gap-4 mb-5">
+        <div class="homeowner-summary-card"><p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Project Size</p><p class="text-2xl font-bold">${formatQty(declared)} sqft</p><p class="text-sm text-gray-500 mt-1">${storeys} storey</p></div>
+        <div class="homeowner-summary-card"><p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Room / Area Schedule</p><p class="text-2xl font-bold">${validRooms.length}</p><p class="text-sm text-gray-500 mt-1">${formatQty(roomsArea)} sqft entered</p></div>
+        <div class="homeowner-summary-card bg-white"><p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Estimated Construction Budget</p><p class="text-2xl md:text-3xl font-bold">${money(total,2)}</p><p class="text-sm text-gray-500 mt-1">Preliminary estimate</p></div>
+      </div>
+      ${validRooms.length?`<div class="mb-4"><p class="font-semibold mb-3">Your Selected Areas</p><div class="grid md:grid-cols-3 gap-3">${validRooms.map(r=>`<div class="homeowner-summary-card"><p class="font-semibold">${escapeHtml(r.label)}</p><p class="text-sm text-gray-500 mt-1">${formatQty(r.area)} sqft</p></div>`).join("")}</div></div>`:""}
+      <div class="homeowner-lock mt-5"><div class="lock-icon">✓</div><p class="text-center font-semibold">Your estimate has been calculated</p><p class="text-center text-sm text-gray-500 mt-1">Internal rates, quantities and costing formulas are not displayed in the homeowner planner.</p></div>`;
+    document.getElementById("grandTotal").textContent=money(total,2);
+    document.getElementById("totalBuiltArea").textContent=formatQty(declared)+" sqft";
+    document.getElementById("roomsTotalArea").textContent=formatQty(roomsArea)+" sqft";
+    return;
+  }
+
   // Group: Preliminaries, Structures, then each room architecture, then Electrical
   const prelim = items.filter(i => i.category === "preliminaries");
   const structures = items.filter(i => i.category === "structures");
@@ -1122,6 +1168,22 @@ function quotationDescriptionList(items) {
   return items.map(i => escapeHtml(i.description)).join("<br>");
 }
 
+function requestDetailedQuotation(){
+  const rooms=getRoomGroups();
+  if(!rooms.some(r=>r.area>0)){ alert("Please add at least one room with a valid area first."); return; }
+  const total=getAllItems().filter(i=>!excludedItems.has(i.id)).reduce((s,i)=>s+i.amount,0);
+  quotationNumber=generateQuotationNumber();
+  const customer=document.getElementById("customerName")?.value||"Not specified";
+  const location=document.getElementById("projectLocation")?.value||"Not specified";
+  const declared=parseFloat(document.getElementById("builtUpArea")?.value)||0;
+  const storeys=document.getElementById("numStoreys")?.value||"1";
+  const content=document.getElementById("quotationContent");
+  content.innerHTML=`<div class="flex justify-between items-start gap-6 border-b pb-5 mb-6"><div><div class="flex items-center gap-4 mb-4"><img src="../images/logo.png" alt="Teraju Ciptabina Logo" class="h-14 w-auto"><div><h1 class="text-xl font-bold">TERAJU CIPTABINA RESOURCES</h1><p class="text-xs text-gray-500">No 10A, Jalan PP 2/1, Taman Putra Prima, 47100 Puchong, Selangor</p></div></div><h2 class="text-2xl font-bold uppercase">Detailed Quotation Preview</h2></div><div class="text-right text-sm"><p><span class="text-gray-500">Reference</span><br><strong>${escapeHtml(quotationNumber)}</strong></p></div></div><div class="grid md:grid-cols-3 gap-6 mb-7 text-sm"><div><p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Customer</p><p class="font-semibold">${escapeHtml(customer)}</p></div><div><p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Project Location</p><p class="font-semibold">${escapeHtml(location)}</p></div><div><p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Estimated Budget</p><p class="font-semibold">${money(total,2)}</p></div></div><div class="homeowner-lock"><div class="lock-icon">🔒</div><h3 class="text-xl font-bold text-center">Detailed costing is protected</h3><p class="text-center text-gray-600 mt-2 max-w-2xl mx-auto">The detailed quotation contains the full scope, quantities, unit rates and costing breakdown. These details are not displayed in the free homeowner estimate.</p><div class="grid md:grid-cols-3 gap-3 mt-6 text-sm"><div class="bg-white border rounded-xl p-4 text-center"><p class="font-semibold">Full Scope</p><p class="text-gray-500 mt-1">Detailed work descriptions</p></div><div class="bg-white border rounded-xl p-4 text-center"><p class="font-semibold">Quantities</p><p class="text-gray-500 mt-1">Calculated project quantities</p></div><div class="bg-white border rounded-xl p-4 text-center"><p class="font-semibold">Cost Breakdown</p><p class="text-gray-500 mt-1">Internal rates & amounts</p></div></div><div class="text-center mt-6 no-print"><a href="../index.html#contact" class="inline-block bg-black text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-800">Request Detailed Quotation</a></div></div><div class="mt-8 pt-5 border-t text-sm"><p class="font-semibold mb-2">Important Note</p><p class="text-gray-600">This preview is not a final construction quotation. Final scope, specifications, site conditions and pricing are subject to site inspection and confirmation.</p></div>`;
+  document.getElementById("quotationPrintActions").classList.add("hidden");
+  document.getElementById("quotationDocument").classList.remove("hidden");
+  document.getElementById("quotationDocument").scrollIntoView({behavior:"smooth",block:"start"});
+}
+
 function generateQuotation() {
   const rooms = getRoomGroups();
   if (!rooms.some(r => r.area > 0)) {
@@ -1129,6 +1191,20 @@ function generateQuotation() {
     return;
   }
   const data = getCurrentQuotationData();
+  if(isHomeowner()){
+    quotationNumber=generateQuotationNumber();
+    const customer=document.getElementById("customerName")?.value||"Not specified";
+    const location=document.getElementById("projectLocation")?.value||"Not specified";
+    const declared=parseFloat(document.getElementById("builtUpArea")?.value)||0;
+    const roomsArea=rooms.reduce((s,r)=>s+(r.area||0),0);
+    const storeys=document.getElementById("numStoreys")?.value||"1";
+    const today=new Intl.DateTimeFormat("en-MY",{day:"2-digit",month:"long",year:"numeric"}).format(new Date());
+    document.getElementById("quotationContent").innerHTML=`<div class="flex justify-between items-start gap-6 border-b pb-5 mb-6"><div><div class="flex items-center gap-4 mb-4"><img src="../images/logo.png" alt="Teraju Ciptabina Logo" class="h-14 w-auto"><div><h1 class="text-xl font-bold">TERAJU CIPTABINA RESOURCES</h1><p class="text-xs text-gray-500">No 10A, Jalan PP 2/1, Taman Putra Prima, 47100 Puchong, Selangor</p></div></div><h2 class="text-2xl font-bold uppercase">Quotation Summary</h2></div><div class="text-right text-sm"><p><span class="text-gray-500">Quotation No.</span><br><strong>${escapeHtml(quotationNumber)}</strong></p><p class="mt-2"><span class="text-gray-500">Date</span><br><strong>${escapeHtml(today)}</strong></p></div></div><div class="grid md:grid-cols-3 gap-6 mb-7 text-sm"><div><p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Customer</p><p class="font-semibold">${escapeHtml(customer)}</p></div><div><p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Project Location</p><p class="font-semibold">${escapeHtml(location)}</p></div><div><p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Project Size</p><p class="font-semibold">${formatQty(declared)} sqft · ${storeys} storey</p></div></div><div class="border rounded-2xl p-6 bg-gray-50"><p class="text-xs uppercase tracking-wide text-gray-500">Preliminary Construction Budget</p><p class="text-3xl font-bold mt-2">${money(data.total,2)}</p><p class="text-sm text-gray-500 mt-2">Based on ${formatQty(roomsArea)} sqft of room / area schedule entered.</p></div><div class="mt-6"><p class="font-semibold mb-3">Selected Areas</p><div class="border rounded-xl overflow-hidden"><table class="w-full border-collapse text-sm"><thead><tr class="border-b bg-gray-50 text-left"><th class="py-3 px-3">Room / Area</th><th class="py-3 px-3 text-right">Area</th></tr></thead><tbody>${rooms.filter(r=>r.area>0).map(r=>`<tr class="border-b"><td class="py-3 px-3">${escapeHtml(r.label)}</td><td class="py-3 px-3 text-right">${formatQty(r.area)} sqft</td></tr>`).join("")}</tbody></table></div></div><div class="homeowner-lock mt-6 no-print"><div class="lock-icon">🔒</div><p class="text-center font-semibold">Detailed costing is not included in this free summary</p><p class="text-center text-sm text-gray-500 mt-1">Unit rates, detailed quantities and internal costing breakdown are kept confidential.</p></div><div class="mt-8 pt-5 border-t text-sm"><p class="font-semibold mb-2">Terms / Notes</p><ul class="list-disc pl-5 space-y-1 text-gray-600"><li>This is a preliminary construction estimate based on the information provided.</li><li>Final scope, specifications, site conditions and pricing are subject to site inspection and confirmation.</li><li>Any additional works or authority requirements not included in the estimate shall be quoted separately.</li></ul></div><div class="mt-12 text-sm"><p>Yours sincerely,</p><p class="font-bold mt-8">TERAJU CIPTABINA RESOURCES</p></div>`;
+    document.getElementById("quotationDocument").classList.remove("hidden");
+    document.getElementById("quotationPrintActions").classList.remove("hidden");
+    document.getElementById("quotationDocument").scrollIntoView({behavior:"smooth",block:"start"});
+    return;
+  }
   quotationNumber = generateQuotationNumber();
   const type = getSelectedQuotationType();
   const customer = document.getElementById("customerName")?.value || "Not specified";
@@ -1416,6 +1492,9 @@ function printQuotation() {
   window.print();
   setTimeout(cleanup, 1500);
 }
+
+applyAudienceUI();
+if(isHomeowner()){ document.getElementById("homeownerQuotationOptions")?.classList.remove("hidden"); document.getElementById("contractorQuotationOptions")?.classList.add("hidden"); }
 
 /* Seed default rooms for a typical 600sqft bungalow */
 addRoom("living", "180");
