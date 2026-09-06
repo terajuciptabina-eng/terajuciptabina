@@ -21,12 +21,11 @@ export default async function handler(req, res) {
 
   try {
     const {
-      statusId,
-      billcode,
+      billCode,
       orderId,
     } = req.body || {};
 
-    if (!statusId || !billcode || !orderId) {
+    if (!billCode || !orderId) {
       return res.status(400).json({
         paid: false,
         message: "Missing payment information.",
@@ -51,7 +50,7 @@ export default async function handler(req, res) {
     const formData = new URLSearchParams();
 
     formData.append("userSecretKey", secretKey);
-    formData.append("billCode", billcode);
+    formData.append("billCode", billCode);
 
     const response = await fetch(
       "https://toyyibpay.com/index.php/api/getBillTransactions",
@@ -135,7 +134,7 @@ export default async function handler(req, res) {
 
     return res.status(200).json({
       paid: true,
-      billcode,
+      billCode,
       orderId,
       message: "Payment verified successfully.",
     });
