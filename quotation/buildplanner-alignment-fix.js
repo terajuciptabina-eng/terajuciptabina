@@ -1,29 +1,110 @@
 (() => {
-  if (document.getElementById('tcBuildPlannerAlignmentFix')) return;
-  const style=document.createElement('style'); style.id='tcBuildPlannerAlignmentFix';
-  style.textContent=`
-#quotationContent .simple-quotation-table,#quotationContent .detailed-quotation-table{width:100%!important;table-layout:fixed!important;border-collapse:collapse!important}
-#quotationContent .simple-quotation-table col:nth-child(1){width:5%!important}#quotationContent .simple-quotation-table col:nth-child(2){width:20%!important}#quotationContent .simple-quotation-table col:nth-child(3){width:55%!important}#quotationContent .simple-quotation-table col:nth-child(4){width:20%!important}
-#quotationContent .detailed-quotation-table col:nth-child(1){width:54%!important}#quotationContent .detailed-quotation-table col:nth-child(2){width:8%!important}#quotationContent .detailed-quotation-table col:nth-child(3){width:10%!important}#quotationContent .detailed-quotation-table col:nth-child(4){width:14%!important}#quotationContent .detailed-quotation-table col:nth-child(5){width:14%!important}
-#quotationContent .simple-quotation-table th,#quotationContent .simple-quotation-table td,#quotationContent .detailed-quotation-table th,#quotationContent .detailed-quotation-table td{box-sizing:border-box!important;padding:8px!important;vertical-align:top!important;border-bottom:1px solid #e5e7eb!important;overflow-wrap:break-word!important;line-height:1.45!important}
-#quotationContent .simple-quotation-table th:nth-child(1),#quotationContent .simple-quotation-table td:nth-child(1){text-align:center!important}#quotationContent .simple-quotation-table th:nth-child(2),#quotationContent .simple-quotation-table td:nth-child(2),#quotationContent .simple-quotation-table th:nth-child(3),#quotationContent .simple-quotation-table td:nth-child(3),#quotationContent .detailed-quotation-table th:nth-child(1),#quotationContent .detailed-quotation-table td:nth-child(1){text-align:left!important}
-#quotationContent .simple-quotation-table th:nth-child(4),#quotationContent .simple-quotation-table td:nth-child(4),#quotationContent .detailed-quotation-table th:nth-child(3),#quotationContent .detailed-quotation-table td:nth-child(3),#quotationContent .detailed-quotation-table th:nth-child(4),#quotationContent .detailed-quotation-table td:nth-child(4),#quotationContent .detailed-quotation-table th:nth-child(5),#quotationContent .detailed-quotation-table td:nth-child(5){text-align:right!important;white-space:nowrap!important}
-#quotationContent .detailed-quotation-table th:nth-child(2),#quotationContent .detailed-quotation-table td:nth-child(2){text-align:center!important;white-space:nowrap!important}
-#quotationContent .simple-quotation-table thead th,#quotationContent .detailed-quotation-table thead th{background:#f8fafc!important;font-size:11px!important;font-weight:700!important;border-top:1px solid #d1d5db!important;border-bottom:2px solid #111827!important}
-#quotationContent tr.tc-quotation-section-heading td{background:#e5e7eb!important;color:#111827!important;font-weight:800!important;font-size:11px!important;letter-spacing:.04em!important;text-transform:uppercase!important;border-top:2px solid #6b7280!important;border-bottom:1px solid #9ca3af!important;padding:9px 8px!important;text-align:left!important;page-break-after:avoid!important;break-after:avoid!important}
-#quotationContent tr.tc-quotation-room-heading td{background:#f8fafc!important;color:#374151!important;font-weight:700!important;font-size:10.5px!important;border-top:1px solid #d1d5db!important;border-bottom:1px solid #e5e7eb!important;padding:7px 8px!important;text-align:left!important;page-break-after:avoid!important;break-after:avoid!important}
-#quotationContent .simple-quotation-table tfoot td,#quotationContent .detailed-quotation-table tfoot td{border-top:2px solid #111827!important;border-bottom:0!important;font-weight:700!important}
-@media print{#quotationContent .simple-quotation-table th,#quotationContent .simple-quotation-table td,#quotationContent .detailed-quotation-table th,#quotationContent .detailed-quotation-table td{padding:5px 4px!important}}
-`;
+  if (document.getElementById('tcBuildPlannerQuotationFix')) return;
+  const style = document.createElement('style');
+  style.id = 'tcBuildPlannerQuotationFix';
+  style.textContent = `
+    #quotationContent .simple-quotation-table,
+    #quotationContent .detailed-quotation-table { width:100%!important; table-layout:fixed!important; border-collapse:collapse!important; }
+    #quotationContent .simple-quotation-table col:nth-child(1){width:6%!important}
+    #quotationContent .simple-quotation-table col:nth-child(2){width:18%!important}
+    #quotationContent .simple-quotation-table col:nth-child(3){width:56%!important}
+    #quotationContent .simple-quotation-table col:nth-child(4){width:20%!important}
+    #quotationContent .detailed-quotation-table col:nth-child(1){width:48%!important}
+    #quotationContent .detailed-quotation-table col:nth-child(2){width:10%!important}
+    #quotationContent .detailed-quotation-table col:nth-child(3){width:10%!important}
+    #quotationContent .detailed-quotation-table col:nth-child(4){width:16%!important}
+    #quotationContent .detailed-quotation-table col:nth-child(5){width:16%!important}
+    #quotationContent .simple-quotation-table th,#quotationContent .simple-quotation-table td,
+    #quotationContent .detailed-quotation-table th,#quotationContent .detailed-quotation-table td { vertical-align:top; overflow-wrap:break-word; }
+    #quotationContent .tc-q-section td { background:#f3f4f6!important; font-weight:700!important; text-transform:uppercase; letter-spacing:.03em; border-top:1px solid #d1d5db!important; }
+    #quotationContent .tc-q-room td { background:#fafafa!important; font-weight:700!important; color:#374151!important; }
+  `;
   document.head.appendChild(style);
-  const esc=v=>String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
-  const money=v=>{const n=Number(v);return Number.isFinite(n)?'RM '+n.toLocaleString('en-MY',{minimumFractionDigits:2,maximumFractionDigits:2}):'RM 0.00'};
-  const num=v=>{const n=Number(v);return Number.isFinite(n)?n.toLocaleString('en-MY',{maximumFractionDigits:2}):'0'};
-  const total=a=>(a||[]).reduce((s,i)=>s+(Number(i?.amount)||0),0);
-  function heading(tb,text,span,room){const tr=document.createElement('tr');tr.className=room?'tc-quotation-room-heading':'tc-quotation-section-heading';const td=document.createElement('td');td.colSpan=span;td.textContent=text;tr.appendChild(td);tb.appendChild(tr)}
-  function buildSimple(){const d=window.getCurrentQuotationData?.(),t=document.querySelector('#quotationContent .simple-quotation-table'),tb=t?.tBodies[0];if(!d||!tb)return;tb.innerHTML='';let no=1;const row=a=>{const tr=document.createElement('tr');tr.innerHTML=`<td>${no++}</td><td></td><td>${a.map(i=>esc(i.description||'')).join('<br>')}</td><td>${money(total(a))}</td>`;tb.appendChild(tr)};if(d.prelim?.length){heading(tb,'A. Preliminaries',4);row(d.prelim)}if(d.structures?.length){heading(tb,'B. Structural Works',4);row(d.structures)}const rooms=(d.rooms||[]).filter(r=>(d.archByRoom?.[r.roomId]||[]).length);if(rooms.length){heading(tb,'C. Architectural Works',4);rooms.forEach(r=>{heading(tb,`${r.label||'Area / Room'}${Number(r.area)>0?' — '+num(r.area)+' sqft':''}`,4,true);row(d.archByRoom[r.roomId])})}if(d.electrical?.length){heading(tb,'D. Electrical Works',4);row(d.electrical)}}
-  function buildDetailed(){const d=window.getCurrentQuotationData?.(),t=document.querySelector('#quotationContent .detailed-quotation-table'),tb=t?.tBodies[0];if(!d||!tb)return;tb.innerHTML='';const rows=a=>(a||[]).forEach(i=>{const tr=document.createElement('tr');tr.innerHTML=`<td>${esc(i.description||'')}</td><td>${esc(i.unit||'—')}</td><td>${num(i.quantity)}</td><td>${money(i.rate)}</td><td>${money(i.amount)}</td>`;tb.appendChild(tr)});if(d.prelim?.length){heading(tb,'A. Preliminaries',5);rows(d.prelim)}if(d.structures?.length){heading(tb,'B. Structural Works',5);rows(d.structures)}const rooms=(d.rooms||[]).filter(r=>(d.archByRoom?.[r.roomId]||[]).length);if(rooms.length){heading(tb,'C. Architectural Works',5);rooms.forEach(r=>{heading(tb,`${r.label||'Area / Room'}${Number(r.area)>0?' — '+num(r.area)+' sqft':''}`,5,true);rows(d.archByRoom[r.roomId])})}if(d.electrical?.length){heading(tb,'D. Electrical Works',5);rows(d.electrical)}}
-  function apply(){try{buildSimple();buildDetailed()}catch(e){console.warn('[Teraju] quotation grouping fix',e)}}
-  function hook(){if(window.__tcQuotationGroupingFix)return true;if(typeof window.generateQuotation!=='function')return false;const original=window.generateQuotation;window.generateQuotation=function(){const r=original.apply(this,arguments);setTimeout(apply,50);return r};window.__tcQuotationGroupingFix=true;return true}
-  if(!hook()){const timer=setInterval(()=>{if(hook())clearInterval(timer)},50);setTimeout(()=>clearInterval(timer),10000)}
+
+  const esc = v => typeof window.escapeHtml === 'function' ? window.escapeHtml(v) : String(v ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+  const money = v => typeof window.money === 'function' ? window.money(v,2) : new Intl.NumberFormat('en-MY',{style:'currency',currency:'MYR',minimumFractionDigits:2,maximumFractionDigits:2}).format(Number(v)||0);
+  const qty = (v,u) => typeof window.formatQty === 'function' ? window.formatQty(v,u) : Number(v||0).toLocaleString('en-MY',{maximumFractionDigits:2});
+
+  function sectionRow(text, span) {
+    return `<tr class="tc-q-section"><td colspan="${span}" class="py-3 px-2">${text}</td></tr>`;
+  }
+  function roomRow(room, span) {
+    const area = Number(room?.area) || 0;
+    return `<tr class="tc-q-room"><td colspan="${span}" class="py-3 px-2">${esc(room?.label || 'Area / Room')} <span class="font-normal text-gray-500">(${qty(area)} sqft)</span></td></tr>`;
+  }
+
+  function generateBuildQuotation() {
+    const rooms = typeof getRoomGroups === 'function' ? getRoomGroups() : [];
+    if (!rooms.some(r => Number(r.area) > 0)) {
+      alert('Please add at least one room with a valid area before generating the quotation.');
+      return;
+    }
+
+    const data = typeof getCurrentQuotationData === 'function' ? getCurrentQuotationData() : null;
+    if (!data) return;
+
+    quotationNumber = typeof generateQuotationNumber === 'function' ? generateQuotationNumber() : '';
+    const type = typeof getSelectedQuotationType === 'function' ? getSelectedQuotationType() : 'simple';
+    const customer = document.getElementById('customerName')?.value || 'Not specified';
+    const location = document.getElementById('projectLocation')?.value || 'Not specified';
+    const declared = parseFloat(document.getElementById('builtUpArea')?.value) || 0;
+    const roomsArea = rooms.reduce((s,r) => s + (Number(r.area)||0), 0);
+    const storeys = document.getElementById('numStoreys')?.value || '1';
+    const today = new Intl.DateTimeFormat('en-MY',{day:'2-digit',month:'long',year:'numeric'}).format(new Date());
+    const content = document.getElementById('quotationContent');
+    if (!content) return;
+
+    let body = `<div class="flex justify-between items-start gap-6 border-b pb-5 mb-6"><div><div class="flex items-center gap-4 mb-4"><img src="../images/logo.png" class="h-14 w-auto"><div><h1 class="text-xl font-bold">TERAJU CIPTABINA RESOURCES</h1><p class="text-xs text-gray-500">No 10A, Jalan PP 2/1, Taman Putra Prima, 47100 Puchong, Selangor</p></div></div><h2 class="text-2xl font-bold uppercase">Quotation</h2></div><div class="text-right text-sm"><p>Quotation No.<br><strong>${esc(quotationNumber)}</strong></p><p class="mt-2">Date<br><strong>${today}</strong></p></div></div><div class="grid md:grid-cols-3 gap-6 mb-7 text-sm"><div><p class="text-xs text-gray-500">Customer</p><p class="font-semibold">${esc(customer)}</p></div><div><p class="text-xs text-gray-500">Project Location</p><p class="font-semibold">${esc(location)}</p></div><div><p class="text-xs text-gray-500">Built-up Area</p><p class="font-semibold">${qty(declared)} sqft · ${storeys} storey<br>${qty(roomsArea)} sqft rooms</p></div></div>`;
+
+    if (type === 'simple') {
+      body += `<div class="overflow-x-auto"><table class="w-full border-collapse text-sm simple-quotation-table"><colgroup><col><col><col><col></colgroup><thead><tr class="border-b-2 text-left"><th class="py-3 px-2">No.</th><th class="py-3 px-2">Category / Room</th><th class="py-3 px-2">Description of Works</th><th class="py-3 px-2 text-right">Amount (RM)</th></tr></thead><tbody>`;
+      let no = 1;
+      if (data.prelim.length) {
+        const s = data.prelim.reduce((a,i)=>a+i.amount,0);
+        body += sectionRow('A. Preliminaries',4);
+        body += `<tr class="border-b"><td class="py-3 px-2">${no++}</td><td></td><td class="py-3 px-2">${data.prelim.map(i=>esc(i.description)).join('<br>')}</td><td class="py-3 px-2 text-right font-semibold">${money(s)}</td></tr>`;
+      }
+      if (data.structures.length) {
+        const s = data.structures.reduce((a,i)=>a+i.amount,0);
+        body += sectionRow('B. Structural Works',4);
+        body += `<tr class="border-b"><td class="py-3 px-2">${no++}</td><td></td><td class="py-3 px-2">${data.structures.map(i=>esc(i.description)).join('<br>')}</td><td class="py-3 px-2 text-right font-semibold">${money(s)}</td></tr>`;
+      }
+      const archRooms = data.rooms.filter(r => r.area > 0 && (data.archByRoom[r.roomId]||[]).length);
+      if (archRooms.length) {
+        body += sectionRow('C. Architectural Works',4);
+        archRooms.forEach(r => {
+          const a = data.archByRoom[r.roomId] || [];
+          body += roomRow(r,4);
+          body += `<tr class="border-b align-top"><td class="py-3 px-2">${no++}</td><td></td><td class="py-3 px-2 leading-6">${a.map(i=>esc(i.description)).join('<br>')}</td><td class="py-3 px-2 text-right font-semibold">${money(data.roomSubtotals[r.roomId]||0)}</td></tr>`;
+        });
+      }
+      if (data.electrical.length) {
+        const s = data.electrical.reduce((a,i)=>a+i.amount,0);
+        body += sectionRow('D. Electrical Works',4);
+        body += `<tr class="border-b"><td class="py-3 px-2">${no++}</td><td></td><td class="py-3 px-2">${data.electrical.map(i=>esc(i.description)).join('<br>')}</td><td class="py-3 px-2 text-right font-semibold">${money(s)}</td></tr>`;
+      }
+      body += `</tbody><tfoot><tr class="border-t-2"><td colspan="3" class="py-4 px-2 text-right font-bold">TOTAL</td><td class="py-4 px-2 text-right font-bold text-lg">${money(data.total)}</td></tr></tfoot></table></div>`;
+    } else {
+      body += `<div class="overflow-x-auto"><table class="w-full border-collapse text-sm detailed-quotation-table"><colgroup><col><col><col><col><col></colgroup><thead><tr class="border-b-2 text-left"><th class="py-3 px-2">Description</th><th class="py-3 px-2">Unit</th><th class="py-3 px-2 text-right">Quantity</th><th class="py-3 px-2 text-right">Rate (RM)</th><th class="py-3 px-2 text-right">Amount (RM)</th></tr></thead><tbody>`;
+      const rows = arr => (arr||[]).map(i=>`<tr class="border-b align-top"><td class="py-3 px-2">${esc(i.description)}</td><td class="py-3 px-2">${esc(i.unit)}</td><td class="py-3 px-2 text-right">${qty(i.qty,i.unit)}</td><td class="py-3 px-2 text-right">${money(i.rate)}</td><td class="py-3 px-2 text-right font-medium">${money(i.amount)}</td></tr>`).join('');
+      if (data.prelim.length) { body += sectionRow('A. Preliminaries',5); body += rows(data.prelim); }
+      if (data.structures.length) { body += sectionRow('B. Structural Works',5); body += rows(data.structures); }
+      const archRooms = data.rooms.filter(r => r.area > 0 && (data.archByRoom[r.roomId]||[]).length);
+      if (archRooms.length) {
+        body += sectionRow('C. Architectural Works',5);
+        archRooms.forEach(r => { body += roomRow(r,5); body += rows(data.archByRoom[r.roomId]); body += `<tr class="border-b"><td colspan="4" class="py-3 px-2 text-right font-bold">${esc(r.label)} Subtotal</td><td class="py-3 px-2 text-right font-bold">${money(data.roomSubtotals[r.roomId]||0)}</td></tr>`; });
+      }
+      if (data.electrical.length) { body += sectionRow('D. Electrical Works',5); body += rows(data.electrical); }
+      body += `</tbody><tfoot><tr class="border-t-2"><td colspan="4" class="py-4 px-2 text-right font-bold">TOTAL</td><td class="py-4 px-2 text-right font-bold text-lg">${money(data.total)}</td></tr></tfoot></table></div>`;
+    }
+
+    body += `<div class="mt-8 pt-5 border-t text-sm"><p class="font-semibold mb-2">Terms / Notes</p><ul class="list-disc pl-5 space-y-1 text-gray-600"><li>This quotation is based on the stated built-up area, room schedule and rates applied herein.</li><li>Final scope, specifications, soil conditions and pricing remain subject to site inspection and written confirmation.</li><li>Any additional works or authority requirements not listed above shall be quoted separately.</li></ul></div><div class="mt-12 text-sm"><p>Yours sincerely,</p><p class="font-bold mt-8">TERAJU CIPTABINA RESOURCES</p></div>`;
+
+    content.innerHTML = body;
+    document.getElementById('quotationDocument')?.classList.remove('hidden');
+    document.getElementById('quotationPrintActions')?.classList.remove('hidden');
+    document.getElementById('quotationDocument')?.scrollIntoView({behavior:'smooth',block:'start'});
+  }
+
+  window.generateQuotation = generateBuildQuotation;
 })();
