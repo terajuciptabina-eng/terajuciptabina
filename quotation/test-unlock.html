@@ -5,30 +5,53 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Detailed Quotation Unlock Test | Teraju Ciptabina</title>
 <style>
-body{font-family:Arial,sans-serif;margin:0;padding:30px;background:#f5f5f5;color:#222}
-.card{max-width:720px;margin:auto;background:#fff;padding:28px;border-radius:14px;box-shadow:0 4px 20px rgba(0,0,0,.08)}
-button{padding:13px 20px;background:#111;color:#fff;border:0;border-radius:8px;font-weight:600;cursor:pointer}
-small{color:#666}
+body{font-family:Arial,sans-serif;margin:0;background:#f5f5f5;color:#222}
+.top{padding:18px 24px;background:#111;color:#fff;display:flex;gap:12px;align-items:center;justify-content:space-between}
+button{padding:12px 18px;background:#fff;color:#111;border:0;border-radius:8px;font-weight:700;cursor:pointer}
+#status{padding:16px 24px;background:#fff;border-bottom:1px solid #ddd;font-size:14px}
+iframe{display:block;width:100%;height:calc(100vh - 122px);border:0;background:#fff}
+small{opacity:.75}
 </style>
 </head>
 <body>
-<div class="card">
-<h2>Detailed Quotation Unlock Test</h2>
-<p>This is a <strong>temporary frontend-only test</strong>. It simulates a successful payment locally and does not modify or bypass the payment backend.</p>
-<button id="test">Simulate Paid & Open Detailed Quotation</button>
-<p><small>After clicking, the Renovation Planner will open with a temporary paid flag. Use it only to test whether the detailed quotation generation/unlock flow works.</small></p>
+<div class="top">
+  <div><strong>Detailed Quotation Unlock Test</strong><br><small>Temporary frontend-only test</small></div>
+  <button id="test">Simulate Paid → Produce Detailed Quotation</button>
 </div>
+<div id="status">Planner loading…</div>
+<iframe id="planner" src="renovationplanner.html?audience=homeowner"></iframe>
 <script>
+const iframe=document.getElementById('planner');
+const status=document.getElementById('status');
+
+iframe.addEventListener('load',()=>{
+  status.textContent='Renovation Planner loaded. Click the button above to simulate a successful payment and run the REAL detailed quotation generation function.';
+});
+
 document.getElementById('test').addEventListener('click',()=>{
-  sessionStorage.setItem('terajuDetailedQuotationPaid',JSON.stringify({
-    paid:true,
-    billCode:'TEST',
-    orderId:'TEST',
-    quotationNumber:'',
-    verifiedAt:Date.now(),
-    testMode:true
-  }));
-  window.location.href='renovationplanner.html?test_unlock=1';
+  const w=iframe.contentWindow;
+  try{
+    w.sessionStorage.setItem('terajuDetailedQuotationPaid',JSON.stringify({
+      paid:true,
+      billCode:'TEST',
+      orderId:'TEST',
+      quotationNumber:'',
+      verifiedAt:Date.now(),
+      testMode:true
+    }));
+
+    /* Use the planner's actual functions — this is the important test. */
+    if(typeof w.addRoom==='function') w.addRoom('living','100');
+    if(typeof w.generateDetailedQuotationAfterPayment==='function'){
+      w.generateDetailedQuotationAfterPayment();
+      status.textContent='Test executed. The planner should now display the Detailed Quotation below.';
+    }else{
+      status.textContent='ERROR: generateDetailedQuotationAfterPayment() was not found in the planner.';
+    }
+  }catch(err){
+    console.error(err);
+    status.textContent='ERROR: '+err.message;
+  }
 });
 </script>
 </body>
