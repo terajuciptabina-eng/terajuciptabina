@@ -1,14 +1,35 @@
 (() => {
   const STATE_KEY = 'terajuBuildPlannerStateBeforeDetailedUnlock';
 
+  function captureControls(container) {
+    if (!container) return [];
+    return Array.from(container.querySelectorAll('input, select, textarea')).map((el) => ({
+      value: el.value ?? '',
+      checked: typeof el.checked === 'boolean' ? el.checked : undefined
+    }));
+  }
+
+  function restoreControls(container, controls) {
+    if (!container || !Array.isArray(controls)) return;
+    const elements = Array.from(container.querySelectorAll('input, select, textarea'));
+    elements.forEach((el, index) => {
+      const saved = controls[index];
+      if (!saved) return;
+      if ('value' in el) el.value = saved.value ?? '';
+      if (typeof el.checked === 'boolean' && saved.checked !== undefined) el.checked = saved.checked;
+    });
+  }
+
   function savePlannerState() {
     try {
+      const rooms = document.getElementById('roomsContainer');
       const state = {
         builtUpArea: document.getElementById('builtUpArea')?.value ?? '',
         numStoreys: document.getElementById('numStoreys')?.value ?? '1',
         customerName: document.getElementById('customerName')?.value ?? '',
         projectLocation: document.getElementById('projectLocation')?.value ?? '',
-        roomsHtml: document.getElementById('roomsContainer')?.innerHTML ?? '',
+        roomsHtml: rooms?.innerHTML ?? '',
+        roomControls: captureControls(rooms),
         savedAt: Date.now()
       };
       sessionStorage.setItem(STATE_KEY, JSON.stringify(state));
@@ -44,6 +65,7 @@
     const rooms = document.getElementById('roomsContainer');
     if (rooms && state.roomsHtml) {
       rooms.innerHTML = state.roomsHtml;
+      restoreControls(rooms, state.roomControls);
     }
 
     if (typeof window.updateEstimate === 'function') {
@@ -59,14 +81,24 @@
 
     document.addEventListener('input', (event) => {
       const target = event.target;
-      if (target?.id === 'builtUpArea' || target?.id === 'customerName' || target?.id === 'projectLocation' || target?.classList?.contains('room-area') || target?.classList?.contains('room-name')) {
+      const rooms = document.getElementById('roomsContainer');
+      if (
+        target?.id === 'builtUpArea' ||
+        target?.id === 'customerName' ||
+        target?.id === 'projectLocation' ||
+        (rooms && rooms.contains(target))
+      ) {
         savePlannerState();
       }
     }, true);
 
     document.addEventListener('change', (event) => {
       const target = event.target;
-      if (target?.id === 'numStoreys' || target?.classList?.contains('room-type') || target?.classList?.contains('room-area') || target?.classList?.contains('room-name')) {
+      const rooms = document.getElementById('roomsContainer');
+      if (
+        target?.id === 'numStoreys' ||
+        (rooms && rooms.contains(target))
+      ) {
         savePlannerState();
       }
     }, true);
@@ -92,6 +124,7 @@
   }
 
   window.saveBuildPlannerState = savePlannerState;
+  window.restoreBuildPlannerState = restorePlannerState;
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init, { once: true });
