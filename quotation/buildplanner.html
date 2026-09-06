@@ -1248,8 +1248,15 @@ function quotationDescriptionList(items) {
    Never place the toyyibPay secret key in this HTML.
    ========================================================= */
 const DETAILED_QUOTATION_PRICE = 49;
-const PAYMENT_API_URL = window.TERAJU_PAYMENT_API_URL || "/api/create-payment";
-const PAYMENT_VERIFY_API_URL = window.TERAJU_PAYMENT_VERIFY_API_URL || "/api/verify-payment";
+const PAYMENT_API_BASE = "https://terajuciptabina-30cpcqutu-terajuciptabina-9880.vercel.app";
+
+const PAYMENT_API_URL =
+  window.TERAJU_PAYMENT_API_URL ||
+  `${PAYMENT_API_BASE}/api/create-payment`;
+
+const PAYMENT_VERIFY_API_URL =
+  window.TERAJU_PAYMENT_VERIFY_API_URL ||
+  `${PAYMENT_API_BASE}/api/verify-payment`;
 
 function openPaymentModal() {
   if (!isHomeowner()) return;
