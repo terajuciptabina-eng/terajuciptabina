@@ -12,49 +12,22 @@
   function qty(v,u) { return typeof window.formatQty === 'function' ? window.formatQty(v,u) : Number(v||0).toLocaleString('en-MY',{maximumFractionDigits:2}); }
   function save(key,value){try{sessionStorage.setItem(key,JSON.stringify(value))}catch(e){}try{localStorage.setItem(key,JSON.stringify(value))}catch(e){}}
 
-  // Structural headings must come from the Build Planner data itself.
-  // Do not invent or hard-code construction-element names here.
-  const LEVEL_FIELDS = [
-    ['mainHeading','main_heading','mainCategory','main_category','section','sectionName','section_name'],
-    ['subheading','subHeading','subcategory','subCategory','sub_category','category','categoryName','category_name','group','groupName','group_name','structure','structureType','element','elementType'],
-    ['subSubheading','subSubHeading','subsubcategory','subSubCategory','sub_subcategory','workType','work_type','itemGroup','item_group']
-  ];
-
-  function firstValue(item, fields) {
-    for (const key of fields) {
-      const value = item?.[key];
-      if (typeof value === 'string' && value.trim()) return value.trim();
-      if (typeof value === 'number') return String(value);
-    }
-    return '';
-  }
-
-  function structuralHierarchy(item) {
-    const levels = LEVEL_FIELDS.map(fields => firstValue(item, fields));
-    // If a generic category is present but there is no explicit main heading,
-    // keep it as the first available hierarchy level rather than inventing a label.
-    if (!levels[0] && !levels[1] && !levels[2]) return [];
-    if (!levels[0] && levels[1]) {
-      levels[0] = levels[1];
-      levels[1] = levels[2];
-      levels[2] = '';
-    }
-    return levels.filter(Boolean);
-  }
-
-  function groupStructures(items) {
+  // Build Planner already defines the real structural hierarchy in STRUCT_GROUPS.
+  // Use that data directly; never invent or infer structural heading names.
+  function groupStructuresByData(items) {
     const groups = [];
-    let current = null;
+    const byKey = new Map();
     (items || []).forEach(item => {
-      const hierarchy = structuralHierarchy(item);
-      const key = hierarchy.join(' › ');
-      if (!current || current.key !== key) {
-        current = { key, hierarchy, items: [] };
-        groups.push(current);
+      const key = item?.groupKey || item?.groupTitle || '__ungrouped__';
+      let group = byKey.get(key);
+      if (!group) {
+        group = { key, title: item?.groupTitle || '', items: [] };
+        byKey.set(key, group);
+        groups.push(group);
       }
-      current.items.push(item);
+      group.items.push(item);
     });
-    return groups;
+    return groups.filter(g => g.items.length);
   }
 
   function installDetailedOverride() {
@@ -80,15 +53,14 @@
       let no = 1;
       const section = t => `<tr class="tc-q-section"><td colspan="5" class="py-3 px-2">${esc(t)}</td></tr>`;
       const room = r => `<tr class="tc-q-room"><td colspan="5" class="py-3 px-2">${esc(r.label)} <span class="font-normal text-gray-500">(${qty(r.area)} sqft)</span></td></tr>`;
-      const sub = (t,level=1) => `<tr class="tc-q-room quotation-subsection-row ${level>1?'tc-q-subsub':''}"><td colspan="5" class="py-2 px-2">${esc(t)}</td></tr>`;
+      const sub = t => `<tr class="tc-q-room quotation-subsection-row"><td colspan="5" class="py-2 px-2">${esc(t)}</td></tr>`;
       const rows = arr => (arr||[]).map(i=>`<tr class="border-b align-top"><td class="py-3 px-2">${no++}</td><td class="py-3 px-2 text-left">${esc(i.description)}</td><td class="py-3 px-2 text-right">${qty(i.qty,i.unit)}</td><td class="py-3 px-2 text-right">${money2(i.rate)}</td><td class="py-3 px-2 text-right font-medium">${money2(i.amount)}</td></tr>`).join('');
 
       if (data.prelim.length) html += section('A. PRELIMINARIES') + rows(data.prelim);
       if (data.structures.length) {
         html += section('B. STRUCTURAL WORKS');
-        const groups = groupStructures(data.structures);
-        groups.forEach(g => {
-          g.hierarchy.forEach((name, index) => { html += sub(name, index + 1); });
+        groupStructuresByData(data.structures).forEach(g => {
+          if (g.title) html += sub(g.title);
           html += rows(g.items);
         });
       }
