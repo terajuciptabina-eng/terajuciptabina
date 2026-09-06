@@ -13,16 +13,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Add location autocomplete script to both planners
+      - name: Add planner helper scripts
         run: |
           python - <<'PY'
           from pathlib import Path
-          tag='<script src="location-autocomplete.js"></script>'
-          for name in ['quotation/renovationplanner.html','quotation/buildplanner.html']:
+          files=['quotation/renovationplanner.html','quotation/buildplanner.html']
+          tags=[
+              '<script src="location-autocomplete.js"></script>',
+              '<script src="quotation-quantity-fix.js?v=20260907"></script>'
+          ]
+          for name in files:
               p=Path(name)
               s=p.read_text(encoding='utf-8')
-              if tag not in s:
-                  s=s.replace('</body>', tag+'\n</body>')
+              changed=False
+              for tag in tags:
+                  base=tag.split('?')[0]
+                  if base not in s:
+                      s=s.replace('</body>', tag+'\n</body>',1)
+                      changed=True
+              if changed:
                   p.write_text(s,encoding='utf-8')
           PY
       - name: Commit planner updates
@@ -34,5 +43,5 @@ jobs:
             echo 'No planner changes needed.'
             exit 0
           fi
-          git commit -m 'Add project location autocomplete [location-autocomplete]'
+          git commit -m 'Add quotation quantity rounding [location-autocomplete]'
           git push
