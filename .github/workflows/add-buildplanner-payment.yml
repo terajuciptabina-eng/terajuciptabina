@@ -1,4 +1,4 @@
-name: Add Build Planner Payment Script
+name: Repair Build Planner Quotation
 
 on:
   push:
@@ -8,7 +8,7 @@ permissions:
   contents: write
 
 jobs:
-  patch-buildplanner:
+  repair-buildplanner:
     if: "!contains(github.event.head_commit.message, '[buildplanner-payment]')"
     runs-on: ubuntu-latest
     steps:
@@ -17,9 +17,12 @@ jobs:
           ref: main
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Inject versioned Build Planner payment script
+      - name: Restore complete Build Planner and refresh payment script
         shell: bash
         run: |
+          # Restore the last known-good complete Build Planner before the accidental truncation.
+          git checkout bd6b40623be24c191c428ef7b45976dfc2296241 -- quotation/buildplanner.html
+
           python - <<'PY'
           from pathlib import Path
           import re
@@ -27,27 +30,24 @@ jobs:
           path = Path('quotation/buildplanner.html')
           text = path.read_text(encoding='utf-8')
 
-          # Remove any previous payment-script tag, including old cache-busting versions.
+          # Remove old payment-script tags and add a cache-busted version.
           text = re.sub(r'<script\s+src=["\']buildplanner-payment\.js(?:\?[^"\']*)?["\']\s*></script>\s*', '', text)
-
-          tag = '<script src="buildplanner-payment.js?v=20260907"></script>'
           marker = '</body>'
           if marker not in text:
-              raise SystemExit('Could not find </body> in buildplanner.html')
-
-          text = text.replace(marker, tag + '\n' + marker, 1)
+              raise SystemExit('Could not find </body> in restored buildplanner.html')
+          text = text.replace(marker, '<script src="buildplanner-payment.js?v=20260907"></script>\n' + marker, 1)
           path.write_text(text, encoding='utf-8')
           PY
 
-      - name: Commit changes
+      - name: Commit repair
         shell: bash
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add quotation/buildplanner.html
           if git diff --cached --quiet; then
-            echo "No changes needed."
+            echo "No repair changes needed."
             exit 0
           fi
-          git commit -m "Refresh Build Planner quotation flow [buildplanner-payment]"
+          git commit -m "Repair Build Planner quotation flow [buildplanner-payment]"
           git push origin main
