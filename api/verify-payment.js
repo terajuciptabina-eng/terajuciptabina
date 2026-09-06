@@ -74,13 +74,6 @@ export default async function handler(req, res) {
       });
     }
 
-    /*
-      Find the transaction matching the order/payment reference.
-
-      toyyibPay transaction data can vary slightly, so we check
-      the common fields safely.
-    */
-
     const successfulTransaction = result.find((transaction) => {
       const transactionStatus =
         String(
@@ -110,7 +103,9 @@ export default async function handler(req, res) {
         transactionStatus.toLowerCase() === "success" ||
         transactionStatus.toLowerCase() === "successful";
 
+      // TEMPORARY TEST: accept RM1 (100 sen) as well as the normal RM49 amount.
       const amountIsCorrect =
+        amount === 100 ||
         amount === 4900 ||
         amount === 49;
 
