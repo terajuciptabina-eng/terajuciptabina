@@ -1,0 +1,37 @@
+name: Final quotation cleanup
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - name: Restore required planner helpers and alignment
+        shell: bash
+        run: |
+          set -e
+          python3 - <<'PY'
+          from pathlib import Path
+          b=Path('quotation/buildplanner.html'); s=b.read_text()
+          if 'buildplanner-payment.js' not in s:
+              s=s.replace('</body>','<script src="buildplanner-payment.js?v=20260907"></script>\n<script src="location-autocomplete.js"></script>\n<script src="quotation-quantity-fix.js?v=20260907"></script>\n</body>',1)
+          b.write_text(s)
+          r=Path('quotation/renovationplanner.html'); s=r.read_text()
+          css='''\n/* Standard quotation column widths */\n.simple-quotation-table col:nth-child(1){width:6%!important}.simple-quotation-table col:nth-child(2){width:18%!important}.simple-quotation-table col:nth-child(3){width:56%!important}.simple-quotation-table col:nth-child(4){width:20%!important}\n.detailed-quotation-table col:nth-child(1){width:48%!important}.detailed-quotation-table col:nth-child(2){width:10%!important}.detailed-quotation-table col:nth-child(3){width:10%!important}.detailed-quotation-table col:nth-child(4){width:16%!important}.detailed-quotation-table col:nth-child(5){width:16%!important}\n.simple-quotation-table th,.simple-quotation-table td,.detailed-quotation-table th,.detailed-quotation-table td{vertical-align:top;overflow-wrap:break-word}\n'''
+          if '/* Standard quotation column widths */' not in s:
+              s=s.replace('</style>',css+'</style>',1)
+          r.write_text(s)
+          PY
+          git config user.name 'Teraju Ciptabina Bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add quotation/buildplanner.html quotation/renovationplanner.html
+          git commit -m 'Finalize quotation helpers and alignment' || true
+          git push
+          rm -f .github/workflows/final-quotation-cleanup.yml .github/workflows/quotation-format-on-push.yml .github/workflows/fix-quotation-format.yml
+          git add -A .github/workflows
+          git commit -m 'Remove temporary quotation cleanup workflows' || true
+          git push
