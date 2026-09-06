@@ -34,17 +34,18 @@ export default async function handler(req, res) {
     const frontendBaseUrl = "https://terajuciptabina-eng.github.io";
     const billReturnUrl = `${frontendBaseUrl}${returnPath}`;
 
-    // TEMPORARY: bypass ToyyibPay for Renovation Planner testing.
-    // Set this to false when the real RM49 payment flow is ready.
-    const BYPASS_RENOVATION_PAYMENT = true;
+    // PROMO: Detailed Quotation is FREE until 31 October 2026.
+    // Set this to false when the RM49 paid flow should go live.
+    const BYPASS_DETAILED_QUOTATION_PROMO = true;
 
-    if (BYPASS_RENOVATION_PAYMENT && projectType === "renovation") {
+    if (BYPASS_DETAILED_QUOTATION_PROMO) {
       const bypassBillCode = `BYPASS-${Date.now()}`;
       const paymentUrl = `${billReturnUrl}?status_id=1&billcode=${encodeURIComponent(bypassBillCode)}&order_id=${encodeURIComponent(clientOrderId)}`;
 
       return res.status(200).json({
         success: true,
         bypass: true,
+        promo: true,
         billCode: bypassBillCode,
         paymentUrl,
         clientOrderId
@@ -59,13 +60,13 @@ export default async function handler(req, res) {
       return res.status(500).json({ message: "Payment configuration is incomplete." });
     }
 
-    // Temporary RM1 test price for the real ToyyibPay flow.
-    const amount = 100;
+    // Real RM49 price when promo is disabled.
+    const amount = 4900;
     const formData = new URLSearchParams();
     formData.append("userSecretKey", secretKey);
     formData.append("categoryCode", categoryCode);
-    formData.append("billName", "Detailed Quotation - TEST");
-    formData.append("billDescription", "Teraju Works Detailed Quotation - RM1 Test");
+    formData.append("billName", "Detailed Quotation");
+    formData.append("billDescription", "Teraju Works Detailed Quotation");
     formData.append("billPriceSetting", "1");
     formData.append("billPayorInfo", "1");
     formData.append("billAmount", String(amount));
