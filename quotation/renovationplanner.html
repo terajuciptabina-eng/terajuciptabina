@@ -1011,79 +1011,33 @@ function quotationDescriptionList(items) {
 
 function requestDetailedQuotation() {
   const data = getCurrentQuotationData();
-  if (!data.roomGroups.some(room => room.area > 0)) {
-    alert("Please add at least one area with a valid sqft before previewing the detailed quotation.");
-    return;
-  }
-
+  if (!data.roomGroups.some(room => room.area > 0)) { alert("Please add at least one area with a valid sqft before previewing the detailed quotation."); return; }
   quotationNumber = generateQuotationNumber();
   const customer = document.getElementById("customerName")?.value || "Not specified";
   const location = document.getElementById("projectLocation")?.value || "Not specified";
-  const totalBuiltArea = data.roomGroups.reduce((sum, room) => sum + (Number(room.area) || 0), 0);
   const content = document.getElementById("quotationContent");
-  const roomCount = data.roomGroups.filter(room => room.area > 0).length;
-  const itemCount = data.allItems.length;
-
+  const previewItems = data.allItems.slice(0, 4);
+  const previewRows = previewItems.length ? previewItems.map((item, index) => `
+    <tr class="border-b last:border-b-0">
+      <td class="py-3 px-3 text-gray-500">${index + 1}</td>
+      <td class="py-3 px-3"><p class="font-medium">${escapeHtml(item.description)}</p><p class="text-xs text-gray-500 mt-1">${escapeHtml(item.unit || "Unit")}</p></td>
+      <td class="py-3 px-3 text-center text-gray-400">🔒 •••</td>
+      <td class="py-3 px-3 text-right text-gray-400">🔒 •••</td>
+      <td class="py-3 px-3 text-right text-gray-400">🔒 ••••</td>
+    </tr>`).join("") : `<tr><td colspan="5" class="py-5 text-center text-gray-500">Your detailed work items will appear here.</td></tr>`;
   content.innerHTML = `
     <div class="border-b pb-5 mb-6">
-      <div class="flex items-center gap-4 mb-4">
-        <img src="../images/logo.png" alt="Teraju Ciptabina Logo" class="h-14 w-auto flex-shrink-0">
-        <div class="min-w-0">
-          <h1 class="text-xl font-bold">TERAJU CIPTABINA RESOURCES</h1>
-          <p class="text-xs text-gray-500">No 10A, Jalan PP 2/1, Taman Putra Prima, 47100 Puchong, Selangor</p>
-        </div>
-      </div>
-      <div class="flex flex-wrap justify-between items-end gap-4">
-        <div>
-          <p class="text-xs uppercase tracking-wide text-gray-500">Premium Preview</p>
-          <h2 class="text-2xl font-bold">Detailed Quotation</h2>
-        </div>
-        <p class="text-sm text-gray-500">Reference <strong class="text-gray-900">${escapeHtml(quotationNumber)}</strong></p>
-      </div>
+      <div class="flex items-center gap-4 mb-4"><img src="../images/logo.png" alt="Teraju Ciptabina Logo" class="h-14 w-auto flex-shrink-0"><div class="min-w-0"><h1 class="text-xl font-bold">TERAJU CIPTABINA RESOURCES</h1><p class="text-xs text-gray-500">No 10A, Jalan PP 2/1, Taman Putra Prima, 47100 Puchong, Selangor</p></div></div>
+      <div class="flex flex-wrap justify-between items-end gap-4"><div><p class="text-xs uppercase tracking-wide text-gray-500">Detailed Quotation Preview</p><h2 class="text-2xl font-bold">Sample of Your Detailed Quotation</h2></div><p class="text-sm text-gray-500">Reference <strong class="text-gray-900">${escapeHtml(quotationNumber)}</strong></p></div>
     </div>
-
-    <div class="grid md:grid-cols-3 gap-6 mb-7 text-sm">
-      <div><p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Customer</p><p class="font-semibold">${escapeHtml(customer)}</p></div>
-      <div><p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Project Location</p><p class="font-semibold">${escapeHtml(location)}</p></div>
-      <div><p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Estimated Budget</p><p class="font-semibold">${money(data.total,2)}</p></div>
+    <div class="grid md:grid-cols-3 gap-6 mb-7 text-sm"><div><p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Customer</p><p class="font-semibold">${escapeHtml(customer)}</p></div><div><p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Project Location</p><p class="font-semibold">${escapeHtml(location)}</p></div><div><p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Estimated Budget</p><p class="font-semibold">${money(data.total, 2)}</p></div></div>
+    <div class="border rounded-2xl overflow-hidden">
+      <div class="bg-gray-900 text-white px-5 py-4 flex items-center justify-between gap-4"><div><p class="font-semibold">Detailed Cost Breakdown</p><p class="text-xs text-gray-300 mt-1">A small sample is shown below. Full costing is locked.</p></div><span class="text-xl">🔒</span></div>
+      <div class="overflow-x-auto"><table class="w-full border-collapse text-sm"><thead class="bg-gray-50 border-b"><tr class="text-left"><th class="py-3 px-3">No.</th><th class="py-3 px-3">Description of Works</th><th class="py-3 px-3 text-center">Qty</th><th class="py-3 px-3 text-right">Rate</th><th class="py-3 px-3 text-right">Amount (RM)</th></tr></thead><tbody>${previewRows}</tbody></table></div>
+      <div class="bg-gray-50 border-t px-5 py-4 flex flex-wrap items-center justify-between gap-4"><div><p class="font-semibold">🔒 Remaining costing is locked</p><p class="text-sm text-gray-500 mt-1">Unlock to view the complete item-by-item breakdown.</p></div><button type="button" onclick="unlockDetailedQuotation()" class="bg-black text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-800">Unlock Detailed Quotation</button></div>
     </div>
-
-    <div class="border rounded-2xl p-6 bg-gray-50">
-      <div class="text-center mb-6">
-        <div class="text-3xl mb-2">🔒</div>
-        <h3 class="text-xl font-bold">Your detailed quotation is ready</h3>
-        <p class="text-gray-600 mt-2 max-w-2xl mx-auto">The full quotation is prepared from your selected renovation scope. The free quotation does not reveal the internal quantity, unit-rate and costing breakdown.</p>
-      </div>
-
-      <div class="grid md:grid-cols-3 gap-3 text-sm">
-        <div class="bg-white border rounded-xl p-4"><p class="font-semibold">${roomCount} Areas / Rooms</p><p class="text-gray-500 mt-1">Room-by-room scope and costing</p></div>
-        <div class="bg-white border rounded-xl p-4"><p class="font-semibold">${itemCount} Work Items</p><p class="text-gray-500 mt-1">Detailed descriptions and quantities</p></div>
-        <div class="bg-white border rounded-xl p-4"><p class="font-semibold">Full Cost Breakdown</p><p class="text-gray-500 mt-1">Unit rates and calculated amounts</p></div>
-      </div>
-
-      <div class="mt-6 bg-white border rounded-xl p-5">
-        <p class="text-xs uppercase tracking-wide text-gray-500 mb-3">What the full quotation contains</p>
-        <div class="grid md:grid-cols-2 gap-2 text-sm text-gray-700">
-          <p>✓ Detailed description of works</p>
-          <p>✓ Unit and quantity for each item</p>
-          <p>✓ Rate and amount breakdown</p>
-          <p>✓ Room / area subtotals</p>
-          <p>✓ Project preliminaries where applicable</p>
-          <p>✓ Professional quotation document</p>
-        </div>
-      </div>
-
-      <div class="text-center mt-6 no-print">
-        <button type="button" onclick="unlockDetailedQuotation()" class="bg-black text-white px-7 py-3 rounded-lg font-semibold hover:bg-gray-800">Unlock Detailed Quotation</button>
-        <p class="text-xs text-gray-500 mt-2">Secure online payment will be connected in the next step.</p>
-      </div>
-    </div>
-
-    <div class="mt-8 pt-5 border-t text-sm">
-      <p class="font-semibold mb-2">Important Note</p>
-      <p class="text-gray-600">This preview is not the detailed quotation itself. Final scope, specifications, site conditions and pricing remain subject to confirmation.</p>
-    </div>`;
-
+    <div class="mt-6 grid md:grid-cols-3 gap-3 text-sm"><div class="border rounded-xl p-4"><p class="font-semibold">Full Work Scope</p><p class="text-gray-500 mt-1">Complete item-by-item description</p></div><div class="border rounded-xl p-4"><p class="font-semibold">Quantity & Rate</p><p class="text-gray-500 mt-1">Full calculated quantities and unit rates</p></div><div class="border rounded-xl p-4"><p class="font-semibold">Complete Costing</p><p class="text-gray-500 mt-1">All amounts and subtotals</p></div></div>
+    <div class="mt-6 pt-5 border-t text-sm"><p class="font-semibold mb-2">Important Note</p><p class="text-gray-600">This is a preview only. Final scope, specifications, site conditions and pricing remain subject to confirmation.</p></div>`;
   document.getElementById("quotationPrintActions").classList.add("hidden");
   document.getElementById("quotationDocument").classList.remove("hidden");
   document.getElementById("quotationDocument").scrollIntoView({ behavior: "smooth", block: "start" });
