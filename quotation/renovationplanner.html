@@ -73,4 +73,5 @@ function restoreAllItems(){excludedItems.clear();updateEstimate()}
 document.getElementById('estimateNumber').textContent='EST-'+String((parseInt(localStorage.getItem('terajuEstimateNumber')||'0',10)+1)).padStart(4,'0');localStorage.setItem('terajuEstimateNumber',parseInt(localStorage.getItem('terajuEstimateNumber')||'0',10)+1);addRoom('living','');initPaymentReturn();
 </script>
 <script src="location-autocomplete.js"></script>
+<script src="detailed-quotation-promo-ui.js"></script>
 </body></html>
