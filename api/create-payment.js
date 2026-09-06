@@ -22,10 +22,12 @@ export default async function handler(req, res) {
   try {
     const {
       clientOrderId,
-      customerName,
-      customerEmail,
-      customerPhone,
+      customer,
     } = req.body || {};
+    
+    const customerName = customer?.name || "";
+    const customerEmail = customer?.email || "";
+    const customerPhone = customer?.phone || "";
 
     if (!clientOrderId) {
       return res.status(400).json({
