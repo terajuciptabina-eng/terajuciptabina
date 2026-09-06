@@ -7,12 +7,10 @@ export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
-  // Handle browser preflight request
   if (req.method === "OPTIONS") {
     return res.status(200).end();
   }
 
-  // Only POST is allowed
   if (req.method !== "POST") {
     return res.status(405).json({ message: "Method not allowed" });
   }
@@ -57,14 +55,14 @@ export default async function handler(req, res) {
     const frontendBaseUrl = "https://terajuciptabina-eng.github.io";
     const billReturnUrl = `${frontendBaseUrl}${returnPath}`;
 
-    // Detailed quotation price = RM49
-    const amount = 4900;
+    // TEMPORARY TEST PRICE = RM1. Change back to 4900 (RM49) after testing.
+    const amount = 100;
     const formData = new URLSearchParams();
 
     formData.append("userSecretKey", secretKey);
     formData.append("categoryCode", categoryCode);
-    formData.append("billName", "Detailed Quotation");
-    formData.append("billDescription", "Teraju Works Detailed Quotation");
+    formData.append("billName", "Detailed Quotation - TEST");
+    formData.append("billDescription", "Teraju Works Detailed Quotation - RM1 Test");
     formData.append("billPriceSetting", "1");
     formData.append("billPayorInfo", "1");
     formData.append("billAmount", String(amount));
