@@ -354,6 +354,35 @@
 
   <!-- Areas -->
   <section class="bg-white rounded-2xl shadow-sm p-6 mb-6">
+  <div class="flex justify-between items-center cursor-pointer" onclick="toggleRateList()">
+    <div class="min-w-0">
+      <h3 class="font-bold text-lg">Rate Price List</h3>
+      <p class="text-sm text-gray-500">Check and update the standard renovation rates used for calculations.</p>
+    </div>
+    <span id="rateListArrow" class="text-gray-500 text-sm ml-4 flex-shrink-0">▼</span>
+  </div>
+  <div id="rateList" class="hidden mt-5">
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="border-b text-gray-500">
+            <th class="text-left py-3 pr-3">Work Item</th>
+            <th class="text-center py-3 px-2">Unit</th>
+            <th class="text-right py-3 pl-3">Rate</th>
+          </tr>
+        </thead>
+        <tbody id="rateTableBody"></tbody>
+      </table>
+    </div>
+    <div class="mt-4 flex justify-end">
+      <button type="button" onclick="resetRates()" class="border px-4 py-2 rounded-lg text-sm font-semibold hover:bg-gray-50">
+        Reset to Default Rates
+      </button>
+    </div>
+  </div>
+</section>
+
+<section class="bg-white rounded-2xl shadow-sm p-6 mb-6">
     <div class="flex justify-between items-center mb-5 gap-4">
       <div class="min-w-0">
         <h3 class="font-bold text-lg">Areas / Rooms</h3>
@@ -469,7 +498,7 @@
 </main>
 
 <script>
-const RATES = {
+const DEFAULT_RATES = {
   ceiling: 12, spc: 14, floorTile: 22, wallTile: 22, facadeWall: 60,
   downlight: 200, wallLight: 250, ceilingFan: 550, exhaustFan: 200,
   curtainBoxLED: 300, barLamp: 500, diningLamp: 600,
@@ -478,6 +507,43 @@ const RATES = {
   gateMotor: 6400, brickwallDivider: 2800, frontFence: 5500,
   preliminaries: 8500, extensionKitchen: 250, extensionToilet: 584
 };
+
+const RATES = { ...DEFAULT_RATES };
+try {
+  const savedRates = JSON.parse(localStorage.getItem("terajuRenovationRates") || "null");
+  if (savedRates && typeof savedRates === "object") {
+    Object.keys(RATES).forEach(key => {
+      const value = Number(savedRates[key]);
+      if (Number.isFinite(value) && value >= 0) RATES[key] = value;
+    });
+  }
+} catch (e) {}
+
+const RATE_ITEMS = [
+  { key: "ceiling", label: "Plaster Ceiling c/w Paint", unit: "sqft" },
+  { key: "spc", label: "SPC Flooring c/w Skirting & Floor Mat", unit: "sqft" },
+  { key: "floorTile", label: "Floor Tiles c/w Waterproofing", unit: "sqft" },
+  { key: "wallTile", label: "Wall Tiles", unit: "sqft" },
+  { key: "facadeWall", label: "Facade Wall", unit: "sqft" },
+  { key: "downlight", label: "Downlight c/w Wiring", unit: "unit" },
+  { key: "wallLight", label: "Wall Light c/w Wiring", unit: "unit" },
+  { key: "ceilingFan", label: "Ceiling Fan c/w Wiring", unit: "unit" },
+  { key: "exhaustFan", label: "Exhaust Fan c/w Wiring", unit: "unit" },
+  { key: "curtainBoxLED", label: "Curtain Box LED c/w Wiring", unit: "ls" },
+  { key: "barLamp", label: "Bar Lamp c/w Wiring", unit: "unit" },
+  { key: "diningLamp", label: "Dining Lamp c/w Wiring", unit: "unit" },
+  { key: "kitchenFrame", label: "Laminated Arce Frame", unit: "ls" },
+  { key: "kitchenMakingGood", label: "Making Good", unit: "ls" },
+  { key: "kitchenGlassDoor", label: "Swing Glass Door", unit: "ls" },
+  { key: "bathroomSanitary", label: "Bathroom Sanitary", unit: "ls" },
+  { key: "bathroomDoor", label: "Bathroom Door", unit: "unit" },
+  { key: "gateMotor", label: "Gate Motor", unit: "ls" },
+  { key: "brickwallDivider", label: "Brickwall Divider", unit: "ls" },
+  { key: "frontFence", label: "Front Fence", unit: "ls" },
+  { key: "preliminaries", label: "Preliminaries / Permit & Engineer's Drawings", unit: "ls" },
+  { key: "extensionKitchen", label: "New Extension – Kitchen", unit: "sqft" },
+  { key: "extensionToilet", label: "New Extension – Toilet", unit: "sqft" }
+];
 
 const RULES = { downlightPerSqft: 50, minimumDownlights: 4 };
 
@@ -491,9 +557,9 @@ const ROOM_TYPES = {
 const OPTIONAL_SCOPES = [
   { key: "demolition", label: "Demolition works based on designer proposal, including careful removal, disposal, and site clearing, completed in a safe and professional manner", unit: "ls", rate: null, custom: true },
   { key: "painting", label: "Supply labour, materials, tools, and equipment to carry out internal and external painting works, including surface preparation, minor repairs, sealer where required, two coats of premium quality paint, cleaning and touch-up upon completion", unit: "ls", rate: null, custom: true },
-  { key: "glassDoor", label: "To supply and install additional swing glass door", unit: "unit", rate: RATES.kitchenGlassDoor },
-  { key: "brickwallDivider", label: "To build additional side brickwall divider c/w plaster and paint", unit: "ls", rate: RATES.brickwallDivider },
-  { key: "frontFence", label: "To build additional front fence brickwall based on designer proposal", unit: "ls", rate: RATES.frontFence },
+  { key: "glassDoor", label: "To supply and install additional swing glass door", unit: "unit", rateKey: "kitchenGlassDoor" },
+  { key: "brickwallDivider", label: "To build additional side brickwall divider c/w plaster and paint", unit: "ls", rateKey: "brickwallDivider" },
+  { key: "frontFence", label: "To build additional front fence brickwall based on designer proposal", unit: "ls", rateKey: "frontFence" },
   { key: "windows", label: "To supply and install additional windows", unit: "unit", rate: null, custom: true },
   { key: "electrical", label: "Additional electrical and wiring works based on confirmed site requirements", unit: "ls", rate: null, custom: true }
 ];
@@ -520,6 +586,56 @@ function money(value, decimals = 0) {
   }).format(Number(value) || 0);
 }
 
+function saveRates() {
+  localStorage.setItem("terajuRenovationRates", JSON.stringify(RATES));
+}
+
+function updateMasterRate(key, value) {
+  const rate = parseFloat(value);
+  if (!Number.isFinite(rate) || rate < 0) {
+    renderRateTable();
+    return;
+  }
+  RATES[key] = rate;
+  saveRates();
+  renderRateTable();
+  updateEstimate();
+}
+
+function resetRates() {
+  if (!confirm("Reset all rates to the default rates?")) return;
+  Object.keys(DEFAULT_RATES).forEach(key => RATES[key] = DEFAULT_RATES[key]);
+  saveRates();
+  renderRateTable();
+  updateEstimate();
+}
+
+function toggleRateList() {
+  const panel = document.getElementById("rateList");
+  const arrow = document.getElementById("rateListArrow");
+  if (!panel) return;
+  panel.classList.toggle("hidden");
+  if (arrow) arrow.textContent = panel.classList.contains("hidden") ? "▼" : "▲";
+}
+
+function renderRateTable() {
+  const body = document.getElementById("rateTableBody");
+  if (!body) return;
+  body.innerHTML = RATE_ITEMS.map(item => `
+    <tr class="border-b last:border-b-0">
+      <td class="py-3 pr-3">${escapeHtml(item.label)}</td>
+      <td class="py-3 px-2 text-center">${escapeHtml(item.unit)}</td>
+      <td class="py-3 pl-3 text-right">
+        <div class="flex justify-end items-center gap-1">
+          <span class="text-gray-500">RM</span>
+          <input type="number" min="0" step="0.01" value="${Number(RATES[item.key]).toFixed(2)}"
+            onchange="updateMasterRate('${item.key}', this.value)"
+            class="w-28 border rounded-lg px-3 py-2 text-right">
+        </div>
+      </td>
+    </tr>`).join("");
+}
+
 function calculateDownlights(area) {
   if (!area || area <= 0) return 0;
   return Math.max(RULES.minimumDownlights, Math.ceil(area / RULES.downlightPerSqft));
@@ -540,7 +656,8 @@ function roomOptions() {
 
 function optionalScopeHtml() {
   return OPTIONAL_SCOPES.map(scope => {
-    const fixed = scope.rate !== null;
+    const currentRate = scope.rateKey ? RATES[scope.rateKey] : scope.rate;
+    const fixed = currentRate !== null && currentRate !== undefined;
     return `
       <div class="optional-scope border rounded-lg p-3 bg-white" data-scope="${scope.key}">
         <div class="flex items-start gap-3">
@@ -548,11 +665,11 @@ function optionalScopeHtml() {
           <div class="flex-1 min-w-0">
             <label class="text-sm font-medium cursor-pointer">${escapeHtml(scope.label)}</label>
             <p class="text-xs text-gray-500 mt-1">
-              ${fixed ? `Standard rate: ${money(scope.rate)} / ${scope.unit}` : "Enter a room-specific rate if required"}
+              ${fixed ? `Standard rate: ${money(currentRate, 2)} / ${scope.unit}` : "Enter a room-specific rate if required"}
             </p>
           </div>
           ${fixed
-            ? `<div class="text-sm font-semibold whitespace-nowrap flex-shrink-0">${money(scope.rate)}</div>`
+            ? `<div class="text-sm font-semibold whitespace-nowrap flex-shrink-0">${money(currentRate, 2)}</div>`
             : `<input type="number" min="0" step="1" value="" placeholder="Rate" class="optional-rate w-28 border rounded-lg px-3 py-2 text-sm flex-shrink-0">`}
         </div>
       </div>`;
@@ -733,7 +850,7 @@ function generateOptionalRoomItems(room, roomLabel) {
     const key = scopeEl.dataset.scope;
     const definition = OPTIONAL_SCOPES.find(s => s.key === key);
     if (!definition) return;
-    let rate = definition.rate;
+    let rate = definition.rateKey ? RATES[definition.rateKey] : definition.rate;
     if (definition.custom) {
       rate = parseFloat(scopeEl.querySelector(".optional-rate")?.value) || 0;
       if (rate <= 0) return;
@@ -1191,6 +1308,7 @@ function printQuotation() {
 }
 
 addRoom("living", "");
+renderRateTable();
 </script>
 </body>
 </html>
