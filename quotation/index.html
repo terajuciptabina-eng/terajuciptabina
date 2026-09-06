@@ -168,10 +168,10 @@
         text-align: right !important;
       }
 
-      /* Customer + Location: 2 kolum (ikut web) */
+      /* Customer + Location + Total Built Area: 3 kolum (ikut web) */
       #quotationContent > div:nth-child(2) {
         display: grid !important;
-        grid-template-columns: 1fr 1fr !important;
+        grid-template-columns: 1fr 1fr 1fr !important;
         gap: 16px !important;
         width: 100% !important;
       }
@@ -995,6 +995,7 @@ function generateQuotation() {
   const type = getSelectedQuotationType();
   const customer = document.getElementById("customerName")?.value || "Not specified";
   const location = document.getElementById("projectLocation")?.value || "Not specified";
+  const totalBuiltArea = data.roomGroups.reduce((sum, room) => sum + (Number(room.area) || 0), 0);
   const today = new Intl.DateTimeFormat("en-MY", { day: "2-digit", month: "long", year: "numeric" }).format(new Date());
   const content = document.getElementById("quotationContent");
 
@@ -1015,7 +1016,7 @@ function generateQuotation() {
         <p class="mt-2"><span class="text-gray-500">Date</span><br><strong>${escapeHtml(today)}</strong></p>
       </div>
     </div>
-    <div class="grid md:grid-cols-2 gap-6 mb-7 text-sm">
+    <div class="grid md:grid-cols-3 gap-6 mb-7 text-sm">
       <div>
         <p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Customer</p>
         <p class="font-semibold">${escapeHtml(customer)}</p>
@@ -1023,6 +1024,10 @@ function generateQuotation() {
       <div>
         <p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Project Location</p>
         <p class="font-semibold">${escapeHtml(location)}</p>
+      </div>
+      <div>
+        <p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Total Built Area</p>
+        <p class="font-semibold">${formatQty(totalBuiltArea)} sqft</p>
       </div>
     </div>
     <div class="mb-5">
