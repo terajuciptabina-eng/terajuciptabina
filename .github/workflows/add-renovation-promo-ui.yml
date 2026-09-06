@@ -1,0 +1,47 @@
+name: Add Renovation Promo UI
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  patch-renovation:
+    if: "!contains(github.event.head_commit.message, '[renovation-promo-ui]')"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Inject promo UI script
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('quotation/renovationplanner.html')
+          text = path.read_text(encoding='utf-8')
+          tag = '<script src="detailed-quotation-promo-ui.js"></script>'
+          if tag not in text:
+              marker = '</body>'
+              if marker not in text:
+                  raise SystemExit('Could not find </body> in renovationplanner.html')
+              text = text.replace(marker, tag + '\n' + marker, 1)
+              path.write_text(text, encoding='utf-8')
+          PY
+
+      - name: Commit changes
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add quotation/renovationplanner.html
+          if git diff --cached --quiet; then
+            echo "No changes needed."
+            exit 0
+          fi
+          git commit -m "Add Renovation Planner promo UI [renovation-promo-ui]"
+          git push origin main
