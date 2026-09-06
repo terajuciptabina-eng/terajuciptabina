@@ -5,35 +5,37 @@
     const style = document.createElement('style');
     style.id = 'tcBuildPlannerQuotationFix';
     style.textContent = `
-      /* Keep the approved Simple Quotation layout unchanged. */
-      #quotationContent .simple-quotation-table {
-        width:100%!important;
-        table-layout:fixed!important;
-        border-collapse:collapse!important;
-      }
-      #quotationContent .simple-quotation-table col:nth-child(1){width:7%!important}
-      #quotationContent .simple-quotation-table col:nth-child(2){width:73%!important}
-      #quotationContent .simple-quotation-table col:nth-child(3){width:20%!important}
-      #quotationContent .simple-quotation-table th:nth-child(2),
-      #quotationContent .simple-quotation-table td:nth-child(2){text-align:left!important}
-
-      /* Detailed Quotation — rebuilt as a clean 5-column table. */
+      #quotationContent .simple-quotation-table,
       #quotationContent .detailed-quotation-table {
         width:100%!important;
         table-layout:fixed!important;
         border-collapse:collapse!important;
       }
+
+      /* SAME VISUAL STRUCTURE AS RENOVATION PLANNER */
+      #quotationContent .simple-quotation-table col:nth-child(1){width:6%!important}
+      #quotationContent .simple-quotation-table col:nth-child(2){width:18%!important}
+      #quotationContent .simple-quotation-table col:nth-child(3){width:56%!important}
+      #quotationContent .simple-quotation-table col:nth-child(4){width:20%!important}
+      #quotationContent .simple-quotation-table th:nth-child(1),
+      #quotationContent .simple-quotation-table td:nth-child(1){text-align:left!important}
+      #quotationContent .simple-quotation-table th:nth-child(2),
+      #quotationContent .simple-quotation-table td:nth-child(2){text-align:left!important}
+      #quotationContent .simple-quotation-table th:nth-child(3),
+      #quotationContent .simple-quotation-table td:nth-child(3){text-align:left!important}
+      #quotationContent .simple-quotation-table th:nth-child(4),
+      #quotationContent .simple-quotation-table td:nth-child(4){text-align:right!important;white-space:nowrap!important}
+
+      /* Detailed: retain the agreed Build Planner 5-column structure */
       #quotationContent .detailed-quotation-table col:nth-child(1){width:5%!important}
       #quotationContent .detailed-quotation-table col:nth-child(2){width:55%!important}
       #quotationContent .detailed-quotation-table col:nth-child(3){width:10%!important}
       #quotationContent .detailed-quotation-table col:nth-child(4){width:15%!important}
       #quotationContent .detailed-quotation-table col:nth-child(5){width:15%!important}
-
       #quotationContent .detailed-quotation-table th:nth-child(1),
       #quotationContent .detailed-quotation-table td:nth-child(1),
       #quotationContent .detailed-quotation-table th:nth-child(2),
       #quotationContent .detailed-quotation-table td:nth-child(2){text-align:left!important}
-
       #quotationContent .detailed-quotation-table th:nth-child(3),
       #quotationContent .detailed-quotation-table td:nth-child(3),
       #quotationContent .detailed-quotation-table th:nth-child(4),
@@ -47,6 +49,7 @@
       #quotationContent .detailed-quotation-table td{
         vertical-align:top;
         overflow-wrap:break-word;
+        word-break:normal;
       }
 
       #quotationContent .tc-q-section td{
@@ -76,13 +79,6 @@
         background:#fff!important;
         font-weight:700!important;
         border-bottom:1px solid #d1d5db!important;
-      }
-
-      #quotationContent .tc-q-spacer td{
-        height:8px!important;
-        padding:0!important;
-        border:0!important;
-        background:#fff!important;
       }
     `;
     document.head.appendChild(style);
@@ -116,7 +112,6 @@
       if (!data) return;
 
       quotationNumber = typeof generateQuotationNumber === 'function' ? generateQuotationNumber() : '';
-
       const type = typeof getSelectedQuotationType === 'function' ? getSelectedQuotationType() : 'simple';
       const customer = document.getElementById('customerName')?.value || 'Not specified';
       const location = document.getElementById('projectLocation')?.value || 'Not specified';
@@ -128,114 +123,73 @@
       if (!content) return;
 
       let body = `<div class="flex justify-between items-start gap-6 border-b pb-5 mb-6">
-        <div>
+        <div class="min-w-0">
           <div class="flex items-center gap-4 mb-4">
-            <img src="../images/logo.png" class="h-14 w-auto">
-            <div>
+            <img src="../images/logo.png" alt="Teraju Ciptabina Logo" class="h-14 w-auto flex-shrink-0">
+            <div class="min-w-0">
               <h1 class="text-xl font-bold">TERAJU CIPTABINA RESOURCES</h1>
               <p class="text-xs text-gray-500">No 10A, Jalan PP 2/1, Taman Putra Prima, 47100 Puchong, Selangor</p>
             </div>
           </div>
           <h2 class="text-2xl font-bold uppercase">Quotation</h2>
         </div>
-        <div class="text-right text-sm">
-          <p>Quotation No.<br><strong>${esc(quotationNumber)}</strong></p>
-          <p class="mt-2">Date<br><strong>${today}</strong></p>
+        <div class="text-right text-sm flex-shrink-0">
+          <p><span class="text-gray-500">Quotation No.</span><br><strong>${esc(quotationNumber)}</strong></p>
+          <p class="mt-2"><span class="text-gray-500">Date</span><br><strong>${today}</strong></p>
         </div>
       </div>
       <div class="grid md:grid-cols-3 gap-6 mb-7 text-sm">
-        <div><p class="text-xs text-gray-500">Customer</p><p class="font-semibold">${esc(customer)}</p></div>
-        <div><p class="text-xs text-gray-500">Project Location</p><p class="font-semibold">${esc(location)}</p></div>
-        <div><p class="text-xs text-gray-500">Built-up Area</p><p class="font-semibold">${qty(declared)} sqft · ${storeys} storey<br>${qty(roomsArea)} sqft rooms</p></div>
-      </div>`;
+        <div><p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Customer</p><p class="font-semibold">${esc(customer)}</p></div>
+        <div><p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Project Location</p><p class="font-semibold">${esc(location)}</p></div>
+        <div><p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Built-up Area</p><p class="font-semibold">${qty(declared)} sqft · ${storeys} storey<br>${qty(roomsArea)} sqft rooms</p></div>
+      </div>
+      <div class="mb-5"><p class="text-sm text-gray-600">Construction works as described below. Final quotation is subject to site inspection, approved drawings, actual site conditions, specifications, material selection and confirmation of final scope of works.</p></div>`;
 
-      /* SIMPLE — unchanged from the approved version. */
       if (type === 'simple') {
-        body += `<div class="overflow-x-auto"><table class="w-full border-collapse text-sm simple-quotation-table"><colgroup><col><col><col></colgroup><thead><tr class="border-b-2 text-left"><th class="py-3 px-2">No.</th><th class="py-3 px-2">Description of Works</th><th class="py-3 px-2 text-right">Amount (RM)</th></tr></thead><tbody>`;
+        /* EXACT Renovation Planner visual structure: No | Area / Room | Description | Amount */
+        body += `<div class="overflow-x-auto"><table class="w-full border-collapse text-sm simple-quotation-table"><colgroup><col><col><col><col></colgroup><thead><tr class="border-b-2 text-left"><th class="py-3 px-2">No.</th><th class="py-3 px-2">Area / Room</th><th class="py-3 px-2">Description of Works</th><th class="py-3 px-2 text-right">Amount (RM)</th></tr></thead><tbody>`;
 
         let no = 1;
         if (data.prelim.length) {
           const total = data.prelim.reduce((a,i) => a + i.amount, 0);
-          body += sectionRow('A. Preliminaries',3) + `<tr class="border-b"><td class="py-3 px-2">${no++}</td><td class="py-3 px-2">${data.prelim.map(i => esc(i.description)).join('<br>')}</td><td class="py-3 px-2 text-right font-semibold">${money(total)}</td></tr>`;
+          body += `<tr class="border-b align-top"><td class="py-3 px-2">${no++}</td><td class="py-3 px-2 font-semibold">Project</td><td class="py-3 px-2">${data.prelim.map(i => esc(i.description)).join('<br>')}</td><td class="py-3 px-2 text-right font-semibold">${money(total)}</td></tr>`;
         }
         if (data.structures.length) {
           const total = data.structures.reduce((a,i) => a + i.amount, 0);
-          body += sectionRow('B. Structural Works',3) + `<tr class="border-b"><td class="py-3 px-2">${no++}</td><td class="py-3 px-2">${data.structures.map(i => esc(i.description)).join('<br>')}</td><td class="py-3 px-2 text-right font-semibold">${money(total)}</td></tr>`;
+          body += `<tr class="border-b align-top"><td class="py-3 px-2">${no++}</td><td class="py-3 px-2 font-semibold">Structural Works</td><td class="py-3 px-2">${data.structures.map(i => esc(i.description)).join('<br>')}</td><td class="py-3 px-2 text-right font-semibold">${money(total)}</td></tr>`;
         }
         const archRooms = data.rooms.filter(r => r.area > 0 && (data.archByRoom[r.roomId]||[]).length);
-        if (archRooms.length) {
-          body += sectionRow('C. Architectural Works',3);
-          archRooms.forEach(r => {
-            const a = data.archByRoom[r.roomId] || [];
-            body += roomRow(r,3) + `<tr class="border-b align-top"><td class="py-3 px-2">${no++}</td><td class="py-3 px-2 leading-6">${a.map(i => esc(i.description)).join('<br>')}</td><td class="py-3 px-2 text-right font-semibold">${money(data.roomSubtotals[r.roomId]||0)}</td></tr>`;
-          });
-        }
+        archRooms.forEach(r => {
+          const a = data.archByRoom[r.roomId] || [];
+          body += `<tr class="border-b align-top"><td class="py-3 px-2">${no++}</td><td class="py-3 px-2 font-semibold">${esc(r.label)}<br><span class="font-normal text-gray-500">${qty(r.area)} sqft</span></td><td class="py-3 px-2 leading-6">${a.map(i => esc(i.description)).join('<br>')}</td><td class="py-3 px-2 text-right font-semibold">${money(data.roomSubtotals[r.roomId]||0)}</td></tr>`;
+        });
         if (data.electrical.length) {
           const total = data.electrical.reduce((a,i) => a + i.amount, 0);
-          body += sectionRow('D. Electrical Works',3) + `<tr class="border-b"><td class="py-3 px-2">${no++}</td><td class="py-3 px-2">${data.electrical.map(i => esc(i.description)).join('<br>')}</td><td class="py-3 px-2 text-right font-semibold">${money(total)}</td></tr>`;
+          body += `<tr class="border-b align-top"><td class="py-3 px-2">${no++}</td><td class="py-3 px-2 font-semibold">Electrical Works</td><td class="py-3 px-2">${data.electrical.map(i => esc(i.description)).join('<br>')}</td><td class="py-3 px-2 text-right font-semibold">${money(total)}</td></tr>`;
         }
-
-        body += `</tbody><tfoot><tr class="border-t-2"><td colspan="2" class="py-4 px-2 text-right font-bold">TOTAL</td><td class="py-4 px-2 text-right font-bold text-lg">${money(data.total)}</td></tr></tfoot></table></div>`;
+        body += `</tbody><tfoot><tr class="border-t-2"><td colspan="3" class="py-4 px-2 text-right font-bold">TOTAL</td><td class="py-4 px-2 text-right font-bold text-lg">${money(data.total)}</td></tr></tfoot></table></div>`;
       } else {
-        /* DETAILED — rebuilt from scratch: No. 5%, Description 55%, Quantity 10%, Rate 15%, Amount 15%. */
-        body += `<div class="overflow-x-auto"><table class="w-full border-collapse text-sm detailed-quotation-table"><colgroup><col><col><col><col><col></colgroup>
-          <thead><tr class="border-b-2 text-left">
-            <th class="py-3 px-2">No.</th>
-            <th class="py-3 px-2">Description</th>
-            <th class="py-3 px-2 text-right">Quantity</th>
-            <th class="py-3 px-2 text-right">Rate (RM)</th>
-            <th class="py-3 px-2 text-right">Amount (RM)</th>
-          </tr></thead><tbody>`;
+        body += `<div class="overflow-x-auto"><table class="w-full border-collapse text-sm detailed-quotation-table"><colgroup><col><col><col><col><col></colgroup><thead><tr class="border-b-2 text-left"><th class="py-3 px-2">No.</th><th class="py-3 px-2">Description</th><th class="py-3 px-2 text-right">Quantity</th><th class="py-3 px-2 text-right">Rate (RM)</th><th class="py-3 px-2 text-right">Amount (RM)</th></tr></thead><tbody>`;
 
         let detailNo = 1;
-        const rows = arr => (arr || []).map(i => `<tr class="border-b align-top">
-          <td class="py-3 px-2">${detailNo++}</td>
-          <td class="py-3 px-2 text-left">${esc(i.description)}</td>
-          <td class="py-3 px-2 text-right">${qty(i.qty,i.unit)}</td>
-          <td class="py-3 px-2 text-right">${money(i.rate)}</td>
-          <td class="py-3 px-2 text-right font-medium">${money(i.amount)}</td>
-        </tr>`).join('');
+        const rows = arr => (arr || []).map(i => `<tr class="border-b align-top"><td class="py-3 px-2">${detailNo++}</td><td class="py-3 px-2 text-left">${esc(i.description)}</td><td class="py-3 px-2 text-right">${qty(i.qty,i.unit)}</td><td class="py-3 px-2 text-right">${money(i.rate)}</td><td class="py-3 px-2 text-right font-medium">${money(i.amount)}</td></tr>`).join('');
 
         let first = true;
-        if (data.prelim.length) {
-          body += sectionRow('A. PRELIMINARIES',5,!first) + rows(data.prelim);
-          first = false;
-        }
-        if (data.structures.length) {
-          body += sectionRow('B. STRUCTURAL WORKS',5,!first) + rows(data.structures);
-          first = false;
-        }
-
+        if (data.prelim.length) { body += sectionRow('A. PRELIMINARIES',5,!first) + rows(data.prelim); first=false; }
+        if (data.structures.length) { body += sectionRow('B. STRUCTURAL WORKS',5,!first) + rows(data.structures); first=false; }
         const archRooms = data.rooms.filter(r => r.area > 0 && (data.archByRoom[r.roomId]||[]).length);
         if (archRooms.length) {
-          body += sectionRow('C. ARCHITECTURAL WORKS',5,!first);
-          first = false;
+          body += sectionRow('C. ARCHITECTURAL WORKS',5,!first); first=false;
           archRooms.forEach(r => {
-            body += roomRow(r,5);
-            body += rows(data.archByRoom[r.roomId]);
+            body += roomRow(r,5) + rows(data.archByRoom[r.roomId]);
             body += `<tr class="tc-q-subtotal"><td colspan="4" class="py-3 px-2 text-right">${esc(r.label)} Subtotal</td><td class="py-3 px-2 text-right">${money(data.roomSubtotals[r.roomId]||0)}</td></tr>`;
           });
         }
-
-        if (data.electrical.length) {
-          body += sectionRow('D. ELECTRICAL WORKS',5,!first) + rows(data.electrical);
-        }
-
-        body += `</tbody><tfoot><tr class="border-t-2">
-          <td colspan="4" class="py-4 px-2 text-right font-bold">TOTAL</td>
-          <td class="py-4 px-2 text-right font-bold text-lg">${money(data.total)}</td>
-        </tr></tfoot></table></div>`;
+        if (data.electrical.length) body += sectionRow('D. ELECTRICAL WORKS',5,!first) + rows(data.electrical);
+        body += `</tbody><tfoot><tr class="border-t-2"><td colspan="4" class="py-4 px-2 text-right font-bold">TOTAL</td><td class="py-4 px-2 text-right font-bold text-lg">${money(data.total)}</td></tr></tfoot></table></div>`;
       }
 
-      body += `<div class="mt-8 pt-5 border-t text-sm">
-        <p class="font-semibold mb-2">Terms / Notes</p>
-        <ul class="list-disc pl-5 space-y-1 text-gray-600">
-          <li>This quotation is based on the stated built-up area, room schedule and rates applied herein.</li>
-          <li>Final scope, specifications, soil conditions and pricing remain subject to site inspection and written confirmation.</li>
-          <li>Any additional works or authority requirements not listed above shall be quoted separately.</li>
-        </ul>
-      </div>
-      <div class="mt-12 text-sm"><p>Yours sincerely,</p><p class="font-bold mt-8">TERAJU CIPTABINA RESOURCES</p></div>`;
+      body += `<div class="mt-8 pt-5 border-t text-sm"><p class="font-semibold mb-2">Terms / Notes</p><ul class="list-disc pl-5 space-y-1 text-gray-600"><li>This quotation is based on the stated built-up area, room schedule and rates applied herein.</li><li>Final scope, specifications, site conditions and pricing remain subject to site inspection and written confirmation.</li><li>Any additional works or authority requirements not listed above shall be quoted separately.</li></ul></div><div class="mt-12 text-sm"><p>Yours sincerely,</p><p class="font-bold mt-8">TERAJU CIPTABINA RESOURCES</p></div>`;
 
       content.innerHTML = body;
       document.getElementById('quotationDocument')?.classList.remove('hidden');
@@ -246,9 +200,6 @@
     window.generateQuotation = generateBuildQuotation;
   };
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', install, {once:true});
-  } else {
-    install();
-  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', install, {once:true});
+  else install();
 })();
