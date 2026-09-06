@@ -28,16 +28,12 @@
   }
 
   function restorePlannerState() {
-    const params = new URLSearchParams(window.location.search);
-    const returningFromPayment = params.has('status_id') || params.has('billcode') || params.has('order_id');
-    if (!returningFromPayment) return;
-
     const state = loadPlannerState();
-    if (!state || !state.roomsHtml) return;
+    if (!state) return;
 
     const setValue = (id, value) => {
       const el = document.getElementById(id);
-      if (el && value !== undefined) el.value = value;
+      if (el && value !== undefined && value !== '') el.value = value;
     };
 
     setValue('customerName', state.customerName);
@@ -46,13 +42,37 @@
     setValue('numStoreys', state.numStoreys || '1');
 
     const rooms = document.getElementById('roomsContainer');
-    if (rooms) rooms.innerHTML = state.roomsHtml;
+    if (rooms && state.roomsHtml) {
+      rooms.innerHTML = state.roomsHtml;
+    }
 
     if (typeof window.updateEstimate === 'function') {
       window.updateEstimate();
     }
 
     window.__tcBuildPlannerStateRestored = true;
+  }
+
+  function hookLivePersistence() {
+    if (document.documentElement.dataset.tcPlannerStateHooked === '1') return;
+    document.documentElement.dataset.tcPlannerStateHooked = '1';
+
+    document.addEventListener('input', (event) => {
+      const target = event.target;
+      if (target?.id === 'builtUpArea' || target?.id === 'customerName' || target?.id === 'projectLocation' || target?.classList?.contains('room-area') || target?.classList?.contains('room-name')) {
+        savePlannerState();
+      }
+    }, true);
+
+    document.addEventListener('change', (event) => {
+      const target = event.target;
+      if (target?.id === 'numStoreys' || target?.classList?.contains('room-type') || target?.classList?.contains('room-area') || target?.classList?.contains('room-name')) {
+        savePlannerState();
+      }
+    }, true);
+
+    window.addEventListener('pagehide', savePlannerState);
+    window.addEventListener('beforeunload', savePlannerState);
   }
 
   function hookPaymentButton() {
@@ -64,11 +84,14 @@
 
   function init() {
     restorePlannerState();
+    hookLivePersistence();
     hookPaymentButton();
     const observer = new MutationObserver(() => hookPaymentButton());
     observer.observe(document.documentElement, { childList: true, subtree: true });
     setTimeout(() => observer.disconnect(), 30000);
   }
+
+  window.saveBuildPlannerState = savePlannerState;
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init, { once: true });
