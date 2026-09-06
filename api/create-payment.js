@@ -1,5 +1,4 @@
 export default async function handler(req, res) {
-  // Allow requests from the Teraju Ciptabina GitHub Pages website
   res.setHeader(
     "Access-Control-Allow-Origin",
     "https://terajuciptabina-eng.github.io"
@@ -7,38 +6,20 @@ export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
-  if (req.method === "OPTIONS") {
-    return res.status(200).end();
-  }
-
-  if (req.method !== "POST") {
-    return res.status(405).json({ message: "Method not allowed" });
-  }
+  if (req.method === "OPTIONS") return res.status(200).end();
+  if (req.method !== "POST") return res.status(405).json({ message: "Method not allowed" });
 
   try {
     const { clientOrderId, customer, project } = req.body || {};
-
     const customerName = customer?.name || "";
     const customerEmail = customer?.email || "";
     const customerPhone = customer?.phone || "";
 
-    if (!clientOrderId) {
-      return res.status(400).json({ message: "Missing clientOrderId" });
-    }
-
+    if (!clientOrderId) return res.status(400).json({ message: "Missing clientOrderId" });
     if (!customerName || !customerEmail || !customerPhone) {
       return res.status(400).json({ message: "Missing customer information" });
     }
 
-    const secretKey = process.env.TOYYIBPAY_SECRET_KEY;
-    const categoryCode = process.env.TOYYIBPAY_CATEGORY_CODE;
-    const publicBaseUrl = process.env.PUBLIC_BASE_URL;
-
-    if (!secretKey || !categoryCode || !publicBaseUrl) {
-      return res.status(500).json({ message: "Payment configuration is incomplete." });
-    }
-
-    // Select the correct GitHub Pages return page from the planner that started payment.
     const projectType = String(project?.projectType || "").toLowerCase();
     let returnPath = "";
 
@@ -50,15 +31,37 @@ export default async function handler(req, res) {
       return res.status(400).json({ message: "Invalid project type." });
     }
 
-    // ToyyibPay returns the customer to the GitHub Pages frontend.
-    // The callback remains on the Vercel backend.
     const frontendBaseUrl = "https://terajuciptabina-eng.github.io";
     const billReturnUrl = `${frontendBaseUrl}${returnPath}`;
 
-    // TEMPORARY TEST PRICE = RM1. Change back to 4900 (RM49) after testing.
+    // TEMPORARY: bypass ToyyibPay for Renovation Planner testing.
+    // Set this to false when the real RM49 payment flow is ready.
+    const BYPASS_RENOVATION_PAYMENT = true;
+
+    if (BYPASS_RENOVATION_PAYMENT && projectType === "renovation") {
+      const bypassBillCode = `BYPASS-${Date.now()}`;
+      const paymentUrl = `${billReturnUrl}?status_id=1&billcode=${encodeURIComponent(bypassBillCode)}&order_id=${encodeURIComponent(clientOrderId)}`;
+
+      return res.status(200).json({
+        success: true,
+        bypass: true,
+        billCode: bypassBillCode,
+        paymentUrl,
+        clientOrderId
+      });
+    }
+
+    const secretKey = process.env.TOYYIBPAY_SECRET_KEY;
+    const categoryCode = process.env.TOYYIBPAY_CATEGORY_CODE;
+    const publicBaseUrl = process.env.PUBLIC_BASE_URL;
+
+    if (!secretKey || !categoryCode || !publicBaseUrl) {
+      return res.status(500).json({ message: "Payment configuration is incomplete." });
+    }
+
+    // Temporary RM1 test price for the real ToyyibPay flow.
     const amount = 100;
     const formData = new URLSearchParams();
-
     formData.append("userSecretKey", secretKey);
     formData.append("categoryCode", categoryCode);
     formData.append("billName", "Detailed Quotation - TEST");
@@ -76,14 +79,11 @@ export default async function handler(req, res) {
     formData.append("billChargeToCustomer", "0");
     formData.append("billExpiryDays", "1");
 
-    const response = await fetch(
-      "https://toyyibpay.com/index.php/api/createBill",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: formData.toString()
-      }
-    );
+    const response = await fetch("https://toyyibpay.com/index.php/api/createBill", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: formData.toString()
+    });
 
     const result = await response.json();
 
@@ -93,7 +93,6 @@ export default async function handler(req, res) {
     }
 
     const billCode = result[0].BillCode;
-
     return res.status(200).json({
       success: true,
       billCode,
@@ -102,9 +101,6 @@ export default async function handler(req, res) {
     });
   } catch (error) {
     console.error("create-payment error:", error);
-
-    return res.status(500).json({
-      message: "Unable to create the payment. Please try again."
-    });
+    return res.status(500).json({ message: "Unable to create the payment. Please try again." });
   }
 }
