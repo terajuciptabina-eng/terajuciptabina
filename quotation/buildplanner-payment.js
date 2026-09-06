@@ -17,12 +17,12 @@
       #quotationContent thead th{font-size:12px;text-transform:uppercase;letter-spacing:.02em;font-weight:700;background:#f9fafb;border-top:1px solid #d1d5db;border-bottom:2px solid #111827}
       #quotationContent tbody td{font-size:13px}
       #quotationContent td:nth-child(n+2),#quotationContent th:nth-child(n+2){text-align:right;white-space:nowrap}
-      #quotationContent td:first-child,#quotationContent th:first-child{text-align:left;overflow-wrap:anywhere}
-      #quotationContent .detailed-quotation-table col:nth-child(1){width:50%}
-      #quotationContent .detailed-quotation-table col:nth-child(2){width:9%}
-      #quotationContent .detailed-quotation-table col:nth-child(3){width:11%}
-      #quotationContent .detailed-quotation-table col:nth-child(4){width:15%}
-      #quotationContent .detailed-quotation-table col:nth-child(5){width:15%}
+      #quotationContent td:first-child,#quotationContent th:first-child{text-align:left;overflow-wrap:break-word;word-break:normal;hyphens:none}
+      #quotationContent .detailed-quotation-table col:nth-child(1){width:48%!important}
+      #quotationContent .detailed-quotation-table col:nth-child(2){width:10%!important}
+      #quotationContent .detailed-quotation-table col:nth-child(3){width:12%!important}
+      #quotationContent .detailed-quotation-table col:nth-child(4){width:15%!important}
+      #quotationContent .detailed-quotation-table col:nth-child(5){width:15%!important}
       #quotationContent .simple-quotation-table col:nth-child(1){width:7%}
       #quotationContent .simple-quotation-table col:nth-child(2){width:20%}
       #quotationContent .simple-quotation-table col:nth-child(3){width:53%}
@@ -70,7 +70,7 @@
     const modal = document.getElementById('paymentModal');
     if (!modal) return;
     const price = modal.querySelector('.rounded-2xl.bg-gray-50.border.p-5.mb-5 .text-2xl');
-    if (price) price.innerHTML = `<span class="line-through text-gray-400 text-base mr-2">RM ${DETAILED_PRICE}</span><span class="text-green-700">FREE</span>`;
+    if (price) price.innerHTML = `<span class=\"line-through text-gray-400 text-base mr-2\">RM ${DETAILED_PRICE}</span><span class=\"text-green-700\">FREE</span>`;
     const note = modal.querySelector('.p-6 > p.mt-5');
     if (note) note.textContent = `Limited-time promotion: Detailed Quotation normally RM${DETAILED_PRICE}, now FREE until ${PROMO_END}. No payment is required.`;
     const button = document.getElementById('paymentProceedButton');
@@ -111,12 +111,12 @@
     const storeys = document.getElementById('numStoreys')?.value || '1';
     const today = new Intl.DateTimeFormat('en-MY',{day:'2-digit',month:'long',year:'numeric'}).format(new Date());
     const rows = arr => arr.map(i => `<tr><td>${escapeHtml(i.description)}</td><td>${escapeHtml(i.unit)}</td><td>${formatQty(i.qty,i.unit)}</td><td>${money(i.rate,2)}</td><td>${money(i.amount,2)}</td></tr>`).join('');
-    let body = `<div class="quotation-header"><div><div class="flex items-center gap-4 mb-4"><img src="../images/logo.png" alt="Teraju Ciptabina"><div><h1 class="text-xl font-bold">TERAJU CIPTABINA RESOURCES</h1><p class="text-xs text-gray-500">No 10A, Jalan PP 2/1, Taman Putra Prima, 47100 Puchong, Selangor</p></div></div><h2 class="text-2xl font-bold uppercase">Detailed Quotation</h2></div><div class="quotation-meta"><p>Quotation No.<br><strong>${escapeHtml(quotationNumber)}</strong></p><p style="margin-top:8px">Date<br><strong>${today}</strong></p></div></div>`;
-    body += `<div class="grid md:grid-cols-3 gap-6 mb-7 text-sm"><div><p class="text-xs text-gray-500">Customer</p><p class="font-semibold">${escapeHtml(customer)}</p></div><div><p class="text-xs text-gray-500">Project Location</p><p class="font-semibold">${escapeHtml(location)}</p></div><div><p class="text-xs text-gray-500">Built-up Area</p><p class="font-semibold">${formatQty(declared)} sqft · ${storeys} storey<br>${formatQty(roomsArea)} sqft rooms</p></div></div>`;
-    body += `<div class="overflow-x-auto"><table class="detailed-quotation-table"><colgroup><col><col><col><col><col></colgroup><thead><tr><th>Description</th><th>Unit</th><th>Quantity</th><th>Rate (RM)</th><th>Amount (RM)</th></tr></thead><tbody>`;
+    let body = `<div class=\"quotation-header\"><div><div class=\"flex items-center gap-4 mb-4\"><img src=\"../images/logo.png\" alt=\"Teraju Ciptabina\"><div><h1 class=\"text-xl font-bold\">TERAJU CIPTABINA RESOURCES</h1><p class=\"text-xs text-gray-500\">No 10A, Jalan PP 2/1, Taman Putra Prima, 47100 Puchong, Selangor</p></div></div><h2 class=\"text-2xl font-bold uppercase\">Detailed Quotation</h2></div><div class=\"quotation-meta\"><p>Quotation No.<br><strong>${escapeHtml(quotationNumber)}</strong></p><p style=\"margin-top:8px\">Date<br><strong>${today}</strong></p></div></div>`;
+    body += `<div class=\"grid md:grid-cols-3 gap-6 mb-7 text-sm\"><div><p class=\"text-xs text-gray-500\">Customer</p><p class=\"font-semibold\">${escapeHtml(customer)}</p></div><div><p class=\"text-xs text-gray-500\">Project Location</p><p class=\"font-semibold\">${escapeHtml(location)}</p></div><div><p class=\"text-xs text-gray-500\">Built-up Area</p><p class=\"font-semibold\">${formatQty(declared)} sqft · ${storeys} storey<br>${formatQty(roomsArea)} sqft rooms</p></div></div>`;
+    body += `<div class=\"overflow-x-auto\"><table class=\"detailed-quotation-table\"><colgroup><col><col><col><col><col></colgroup><thead><tr><th>Description</th><th>Unit</th><th>Quantity</th><th>Rate (RM)</th><th>Amount (RM)</th></tr></thead><tbody>`;
     body += rows(data.prelim); body += rows(data.structures); data.rooms.forEach(r => { body += rows(data.archByRoom[r.roomId] || []); }); body += rows(data.electrical);
-    body += `</tbody><tfoot><tr><td colspan="4" style="text-align:right;font-weight:700;border-bottom:0">TOTAL</td><td style="font-weight:700;border-bottom:0">${money(data.total,2)}</td></tr></tfoot></table></div>`;
-    body += `<div class="mt-8 pt-5 border-t text-sm"><p class="font-semibold mb-2">Terms / Notes</p><ul class="list-disc pl-5 text-gray-600"><li>This quotation is based on the stated built-up area, room schedule and rates applied herein.</li><li>Final scope, specifications, soil conditions and pricing remain subject to site inspection and written confirmation.</li><li>Any additional works or authority requirements not listed above shall be quoted separately.</li></ul></div><div class="mt-12 text-sm"><p>Yours sincerely,</p><p class="font-bold mt-8">TERAJU CIPTABINA RESOURCES</p></div>`;
+    body += `</tbody><tfoot><tr><td colspan=\"4\" style=\"text-align:right;font-weight:700;border-bottom:0\">TOTAL</td><td style=\"font-weight:700;border-bottom:0\">${money(data.total,2)}</td></tr></tfoot></table></div>`;
+    body += `<div class=\"mt-8 pt-5 border-t text-sm\"><p class=\"font-semibold mb-2\">Terms / Notes</p><ul class=\"list-disc pl-5 text-gray-600\"><li>This quotation is based on the stated built-up area, room schedule and rates applied herein.</li><li>Final scope, specifications, soil conditions and pricing remain subject to site inspection and written confirmation.</li><li>Any additional works or authority requirements not listed above shall be quoted separately.</li></ul></div><div class=\"mt-12 text-sm\"><p>Yours sincerely,</p><p class=\"font-bold mt-8\">TERAJU CIPTABINA RESOURCES</p></div>`;
     return body;
   }
 
@@ -128,7 +128,7 @@
     const html = buildDetailedHtml(data);
     saveState('terajuPendingDetailedQuotation',{quotationNumber,html,createdAt:Date.now(),projectType:'new house',customer:document.getElementById('customerName')?.value||'Not specified',location:document.getElementById('projectLocation')?.value||'Not specified'});
     const content = document.getElementById('quotationContent');
-    content.innerHTML = `<div class="detail-preview"><div class="detail-preview-locked">${html}</div><div class="detail-preview-fade"></div><div class="detail-lock-card"><div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gray-900 text-white mb-3">🔒</div><p class="font-bold text-lg">Detailed Quotation Preview</p><p class="text-sm text-gray-500 mt-1">Your full quotation is prepared. Pricing details are locked until you unlock it.</p><p class="mt-3 text-sm"><span class="line-through text-gray-400">RM ${DETAILED_PRICE}</span> <strong class="text-green-700">FREE PROMO</strong> until ${PROMO_END}</p><button type="button" onclick="unlockDetailedQuotation()" class="mt-5 bg-black text-white px-6 py-3 rounded-lg font-semibold">Unlock Detailed Quotation — FREE</button></div></div>`;
+    content.innerHTML = `<div class=\"detail-preview\"><div class=\"detail-preview-locked\">${html}</div><div class=\"detail-preview-fade\"></div><div class=\"detail-lock-card\"><div class=\"inline-flex items-center justify-center w-12 h-12 rounded-full bg-gray-900 text-white mb-3\">🔒</div><p class=\"font-bold text-lg\">Detailed Quotation Preview</p><p class=\"text-sm text-gray-500 mt-1\">Your full quotation is prepared. Pricing details are locked until you unlock it.</p><p class=\"mt-3 text-sm\"><span class=\"line-through text-gray-400\">RM ${DETAILED_PRICE}</span> <strong class=\"text-green-700\">FREE PROMO</strong> until ${PROMO_END}</p><button type=\"button\" onclick=\"unlockDetailedQuotation()\" class=\"mt-5 bg-black text-white px-6 py-3 rounded-lg font-semibold\">Unlock Detailed Quotation — FREE</button></div></div>`;
     document.getElementById('quotationPrintActions').classList.add('hidden');
     document.getElementById('quotationDocument').classList.remove('hidden');
     document.getElementById('quotationDocument').scrollIntoView({behavior:'smooth',block:'start'});
@@ -182,7 +182,7 @@
     if (!paid?.paid || !pending?.html) return false;
     quotationNumber=pending.quotationNumber;
     injectQuotationStyles();
-    document.getElementById('quotationContent').innerHTML=`<div class="detail-unlocked-badge mb-4">✓ Detailed Quotation Unlocked — Promo</div>${pending.html}`;
+    document.getElementById('quotationContent').innerHTML=`<div class=\"detail-unlocked-badge mb-4\">✓ Detailed Quotation Unlocked — Promo</div>${pending.html}`;
     document.getElementById('quotationDocument').classList.remove('hidden');
     document.getElementById('quotationPrintActions').classList.remove('hidden');
     removeState('terajuPendingDetailedQuotation');
