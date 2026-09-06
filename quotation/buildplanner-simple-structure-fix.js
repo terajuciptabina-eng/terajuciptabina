@@ -39,9 +39,21 @@
       groups.filter(g => g.items.length).forEach(g => {
         const total = g.items.reduce((sum,i) => sum + (Number(i.amount)||0), 0);
         const descriptions = g.items.map(i => esc(i.description)).join('<br>');
-        html += `<tr class="tc-q-room border-b align-top"><td class="py-3 px-2">${no++}</td><td class="py-3 px-2 font-semibold">${esc(g.title || 'Structural Works')}</td><td class="py-3 px-2 leading-6">${descriptions}</td><td class="py-3 px-2 text-right font-semibold">${money(total)}</td></tr>`;
+        html += `<tr class="tc-q-room border-b align-top"><td class="py-3 px-2">${no++}</td><td class="py-3 px-2 font-semibold">${esc(g.title || 'Structural Works')}</td><td class="py-3 px-2 leading-6">${descriptions}</td><td class="py-3 px-2 text-right font-semibold whitespace-nowrap">${money(total)}</td></tr>`;
       });
       old.outerHTML = html;
+
+      const currentRows = Array.from(tbody.querySelectorAll('tr'));
+      currentRows.filter(r => r.classList.contains('tc-q-structural-summary')).forEach(r => r.remove());
+      const footer = table.querySelector('tfoot');
+      if (!footer) return;
+
+      let summary = `<tr class="tc-q-section tc-q-structural-summary"><td colspan="4" class="py-3 px-2">STRUCTURAL SUMMARY — TOTAL AMOUNT BY HIERARCHY</td></tr>`;
+      groups.filter(g => g.items.length).forEach(g => {
+        const total = g.items.reduce((sum,i) => sum + (Number(i.amount)||0), 0);
+        summary += `<tr class="tc-q-structural-summary border-b"><td colspan="3" class="py-2 px-2 text-right font-semibold">${esc(g.title || 'Structural Works')}</td><td class="py-2 px-2 text-right font-semibold whitespace-nowrap">${money(total)}</td></tr>`;
+      });
+      footer.insertAdjacentHTML('beforebegin', summary);
     }
   }
 
