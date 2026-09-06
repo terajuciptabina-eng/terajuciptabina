@@ -10,28 +10,24 @@
         width:100%!important;
         table-layout:fixed!important;
         border-collapse:collapse!important;
+        direction:ltr!important;
       }
-
-      /* SAME VISUAL STRUCTURE AS RENOVATION PLANNER */
       #quotationContent .simple-quotation-table col:nth-child(1){width:6%!important}
       #quotationContent .simple-quotation-table col:nth-child(2){width:18%!important}
       #quotationContent .simple-quotation-table col:nth-child(3){width:56%!important}
       #quotationContent .simple-quotation-table col:nth-child(4){width:20%!important}
-      #quotationContent .simple-quotation-table th:nth-child(1),
-      #quotationContent .simple-quotation-table td:nth-child(1){text-align:left!important}
-      #quotationContent .simple-quotation-table th:nth-child(2),
-      #quotationContent .simple-quotation-table td:nth-child(2){text-align:left!important}
-      #quotationContent .simple-quotation-table th:nth-child(3),
-      #quotationContent .simple-quotation-table td:nth-child(3){text-align:left!important}
+      #quotationContent .simple-quotation-table th,
+      #quotationContent .simple-quotation-table td{direction:ltr!important;text-align:left!important;vertical-align:top!important;overflow-wrap:break-word!important;word-break:normal!important}
       #quotationContent .simple-quotation-table th:nth-child(4),
       #quotationContent .simple-quotation-table td:nth-child(4){text-align:right!important;white-space:nowrap!important}
 
-      /* Detailed: retain the agreed Build Planner 5-column structure */
       #quotationContent .detailed-quotation-table col:nth-child(1){width:5%!important}
       #quotationContent .detailed-quotation-table col:nth-child(2){width:55%!important}
       #quotationContent .detailed-quotation-table col:nth-child(3){width:10%!important}
       #quotationContent .detailed-quotation-table col:nth-child(4){width:15%!important}
       #quotationContent .detailed-quotation-table col:nth-child(5){width:15%!important}
+      #quotationContent .detailed-quotation-table th,
+      #quotationContent .detailed-quotation-table td{direction:ltr!important;vertical-align:top!important;overflow-wrap:break-word!important;word-break:normal!important}
       #quotationContent .detailed-quotation-table th:nth-child(1),
       #quotationContent .detailed-quotation-table td:nth-child(1),
       #quotationContent .detailed-quotation-table th:nth-child(2),
@@ -43,41 +39,33 @@
       #quotationContent .detailed-quotation-table th:nth-child(5),
       #quotationContent .detailed-quotation-table td:nth-child(5){text-align:right!important}
 
-      #quotationContent .simple-quotation-table th,
-      #quotationContent .simple-quotation-table td,
-      #quotationContent .detailed-quotation-table th,
-      #quotationContent .detailed-quotation-table td{
-        vertical-align:top;
-        overflow-wrap:break-word;
-        word-break:normal;
-      }
-
       #quotationContent .tc-q-section td{
         background:#f3f4f6!important;
         font-weight:700!important;
-        text-transform:uppercase;
-        letter-spacing:.03em;
+        text-transform:uppercase!important;
+        letter-spacing:.03em!important;
         border-top:2px solid #9ca3af!important;
         border-bottom:1px solid #d1d5db!important;
         text-align:left!important;
+        direction:ltr!important;
         padding-top:10px!important;
         padding-bottom:10px!important;
       }
-
       #quotationContent .tc-q-room td{
         background:#fafafa!important;
         font-weight:700!important;
         color:#374151!important;
         text-align:left!important;
+        direction:ltr!important;
         border-top:1px solid #d1d5db!important;
         border-bottom:1px solid #e5e7eb!important;
         padding-top:9px!important;
         padding-bottom:9px!important;
       }
-
       #quotationContent .tc-q-subtotal td{
         background:#fff!important;
         font-weight:700!important;
+        direction:ltr!important;
         border-bottom:1px solid #d1d5db!important;
       }
     `;
@@ -95,8 +83,8 @@
       ? window.formatQty(v,u)
       : Number(v||0).toLocaleString('en-MY',{maximumFractionDigits:2});
 
-    const sectionRow = (text, span, spacer = false) =>
-      `${spacer ? `<tr class="tc-q-spacer"><td colspan="${span}"></td></tr>` : ''}<tr class="tc-q-section"><td colspan="${span}" class="py-3 px-2">${text}</td></tr>`;
+    const sectionRow = (text, span) =>
+      `<tr class="tc-q-section"><td colspan="${span}" class="py-3 px-2">${esc(text)}</td></tr>`;
 
     const roomRow = (room, span) =>
       `<tr class="tc-q-room"><td colspan="${span}" class="py-3 px-2">${esc(room?.label || 'Area / Room')} <span class="font-normal text-gray-500">(${qty(Number(room?.area)||0)} sqft)</span></td></tr>`;
@@ -146,46 +134,56 @@
       <div class="mb-5"><p class="text-sm text-gray-600">Construction works as described below. Final quotation is subject to site inspection, approved drawings, actual site conditions, specifications, material selection and confirmation of final scope of works.</p></div>`;
 
       if (type === 'simple') {
-        /* EXACT Renovation Planner visual structure: No | Area / Room | Description | Amount */
-        body += `<div class="overflow-x-auto"><table class="w-full border-collapse text-sm simple-quotation-table"><colgroup><col><col><col><col></colgroup><thead><tr class="border-b-2 text-left"><th class="py-3 px-2">No.</th><th class="py-3 px-2">Area / Room</th><th class="py-3 px-2">Description of Works</th><th class="py-3 px-2 text-right">Amount (RM)</th></tr></thead><tbody>`;
-
+        body += `<div class="overflow-x-auto"><table class="w-full border-collapse text-sm simple-quotation-table"><colgroup><col><col><col><col></colgroup><thead><tr class="border-b-2"><th class="py-3 px-2">No.</th><th class="py-3 px-2">Area / Room</th><th class="py-3 px-2">Description of Works</th><th class="py-3 px-2 text-right">Amount (RM)</th></tr></thead><tbody>`;
         let no = 1;
+
         if (data.prelim.length) {
           const total = data.prelim.reduce((a,i) => a + i.amount, 0);
+          body += sectionRow('A. PRELIMINARIES',4);
           body += `<tr class="border-b align-top"><td class="py-3 px-2">${no++}</td><td class="py-3 px-2 font-semibold">Project</td><td class="py-3 px-2">${data.prelim.map(i => esc(i.description)).join('<br>')}</td><td class="py-3 px-2 text-right font-semibold">${money(total)}</td></tr>`;
         }
+
         if (data.structures.length) {
           const total = data.structures.reduce((a,i) => a + i.amount, 0);
+          body += sectionRow('B. STRUCTURAL WORKS',4);
           body += `<tr class="border-b align-top"><td class="py-3 px-2">${no++}</td><td class="py-3 px-2 font-semibold">Structural Works</td><td class="py-3 px-2">${data.structures.map(i => esc(i.description)).join('<br>')}</td><td class="py-3 px-2 text-right font-semibold">${money(total)}</td></tr>`;
         }
+
         const archRooms = data.rooms.filter(r => r.area > 0 && (data.archByRoom[r.roomId]||[]).length);
-        archRooms.forEach(r => {
-          const a = data.archByRoom[r.roomId] || [];
-          body += `<tr class="border-b align-top"><td class="py-3 px-2">${no++}</td><td class="py-3 px-2 font-semibold">${esc(r.label)}<br><span class="font-normal text-gray-500">${qty(r.area)} sqft</span></td><td class="py-3 px-2 leading-6">${a.map(i => esc(i.description)).join('<br>')}</td><td class="py-3 px-2 text-right font-semibold">${money(data.roomSubtotals[r.roomId]||0)}</td></tr>`;
-        });
+        if (archRooms.length) {
+          body += sectionRow('C. ARCHITECTURAL WORKS',4);
+          archRooms.forEach(r => {
+            const a = data.archByRoom[r.roomId] || [];
+            body += `<tr class="border-b align-top"><td class="py-3 px-2">${no++}</td><td class="py-3 px-2 font-semibold">${esc(r.label)}<br><span class="font-normal text-gray-500">${qty(r.area)} sqft</span></td><td class="py-3 px-2 leading-6">${a.map(i => esc(i.description)).join('<br>')}</td><td class="py-3 px-2 text-right font-semibold">${money(data.roomSubtotals[r.roomId]||0)}</td></tr>`;
+          });
+        }
+
         if (data.electrical.length) {
           const total = data.electrical.reduce((a,i) => a + i.amount, 0);
+          body += sectionRow('D. ELECTRICAL WORKS',4);
           body += `<tr class="border-b align-top"><td class="py-3 px-2">${no++}</td><td class="py-3 px-2 font-semibold">Electrical Works</td><td class="py-3 px-2">${data.electrical.map(i => esc(i.description)).join('<br>')}</td><td class="py-3 px-2 text-right font-semibold">${money(total)}</td></tr>`;
         }
+
         body += `</tbody><tfoot><tr class="border-t-2"><td colspan="3" class="py-4 px-2 text-right font-bold">TOTAL</td><td class="py-4 px-2 text-right font-bold text-lg">${money(data.total)}</td></tr></tfoot></table></div>`;
       } else {
-        body += `<div class="overflow-x-auto"><table class="w-full border-collapse text-sm detailed-quotation-table"><colgroup><col><col><col><col><col></colgroup><thead><tr class="border-b-2 text-left"><th class="py-3 px-2">No.</th><th class="py-3 px-2">Description</th><th class="py-3 px-2 text-right">Quantity</th><th class="py-3 px-2 text-right">Rate (RM)</th><th class="py-3 px-2 text-right">Amount (RM)</th></tr></thead><tbody>`;
+        body += `<div class="overflow-x-auto"><table class="w-full border-collapse text-sm detailed-quotation-table"><colgroup><col><col><col><col><col></colgroup><thead><tr class="border-b-2"><th class="py-3 px-2">No.</th><th class="py-3 px-2">Description</th><th class="py-3 px-2 text-right">Quantity</th><th class="py-3 px-2 text-right">Rate (RM)</th><th class="py-3 px-2 text-right">Amount (RM)</th></tr></thead><tbody>`;
 
         let detailNo = 1;
         const rows = arr => (arr || []).map(i => `<tr class="border-b align-top"><td class="py-3 px-2">${detailNo++}</td><td class="py-3 px-2 text-left">${esc(i.description)}</td><td class="py-3 px-2 text-right">${qty(i.qty,i.unit)}</td><td class="py-3 px-2 text-right">${money(i.rate)}</td><td class="py-3 px-2 text-right font-medium">${money(i.amount)}</td></tr>`).join('');
 
-        let first = true;
-        if (data.prelim.length) { body += sectionRow('A. PRELIMINARIES',5,!first) + rows(data.prelim); first=false; }
-        if (data.structures.length) { body += sectionRow('B. STRUCTURAL WORKS',5,!first) + rows(data.structures); first=false; }
+        if (data.prelim.length) { body += sectionRow('A. PRELIMINARIES',5) + rows(data.prelim); }
+        if (data.structures.length) { body += sectionRow('B. STRUCTURAL WORKS',5) + rows(data.structures); }
+
         const archRooms = data.rooms.filter(r => r.area > 0 && (data.archByRoom[r.roomId]||[]).length);
         if (archRooms.length) {
-          body += sectionRow('C. ARCHITECTURAL WORKS',5,!first); first=false;
+          body += sectionRow('C. ARCHITECTURAL WORKS',5);
           archRooms.forEach(r => {
             body += roomRow(r,5) + rows(data.archByRoom[r.roomId]);
             body += `<tr class="tc-q-subtotal"><td colspan="4" class="py-3 px-2 text-right">${esc(r.label)} Subtotal</td><td class="py-3 px-2 text-right">${money(data.roomSubtotals[r.roomId]||0)}</td></tr>`;
           });
         }
-        if (data.electrical.length) body += sectionRow('D. ELECTRICAL WORKS',5,!first) + rows(data.electrical);
+
+        if (data.electrical.length) { body += sectionRow('D. ELECTRICAL WORKS',5) + rows(data.electrical); }
         body += `</tbody><tfoot><tr class="border-t-2"><td colspan="4" class="py-4 px-2 text-right font-bold">TOTAL</td><td class="py-4 px-2 text-right font-bold text-lg">${money(data.total)}</td></tr></tfoot></table></div>`;
       }
 
@@ -200,6 +198,6 @@
     window.generateQuotation = generateBuildQuotation;
   };
 
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', install, {once:true});
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', install);
   else install();
 })();
