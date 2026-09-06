@@ -1173,16 +1173,39 @@ function unlockDetailedQuotation(){
 }
 
 function requestDetailedQuotation(){
-  const rooms=getRoomGroups();
+  const data=getCurrentQuotationData();
+  const rooms=data.rooms;
   if(!rooms.some(r=>r.area>0)){ alert("Please add at least one room with a valid area first."); return; }
-  const total=getAllItems().filter(i=>!excludedItems.has(i.id)).reduce((s,i)=>s+i.amount,0);
   quotationNumber=generateQuotationNumber();
   const customer=document.getElementById("customerName")?.value||"Not specified";
   const location=document.getElementById("projectLocation")?.value||"Not specified";
-  const declared=parseFloat(document.getElementById("builtUpArea")?.value)||0;
-  const storeys=document.getElementById("numStoreys")?.value||"1";
   const content=document.getElementById("quotationContent");
-  content.innerHTML=`<div class="flex justify-between items-start gap-6 border-b pb-5 mb-6"><div><div class="flex items-center gap-4 mb-4"><img src="../images/logo.png" alt="Teraju Ciptabina Logo" class="h-14 w-auto"><div><h1 class="text-xl font-bold">TERAJU CIPTABINA RESOURCES</h1><p class="text-xs text-gray-500">No 10A, Jalan PP 2/1, Taman Putra Prima, 47100 Puchong, Selangor</p></div></div><h2 class="text-2xl font-bold uppercase">Detailed Quotation Preview</h2></div><div class="text-right text-sm"><p><span class="text-gray-500">Reference</span><br><strong>${escapeHtml(quotationNumber)}</strong></p></div></div><div class="grid md:grid-cols-3 gap-6 mb-7 text-sm"><div><p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Customer</p><p class="font-semibold">${escapeHtml(customer)}</p></div><div><p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Project Location</p><p class="font-semibold">${escapeHtml(location)}</p></div><div><p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Estimated Budget</p><p class="font-semibold">${money(total,2)}</p></div></div><div class="homeowner-lock"><div class="lock-icon">🔒</div><h3 class="text-xl font-bold text-center">Detailed costing is protected</h3><p class="text-center text-gray-600 mt-2 max-w-2xl mx-auto">The detailed quotation contains the full scope, quantities, unit rates and costing breakdown. These details are not displayed in the free homeowner estimate.</p><div class="grid md:grid-cols-3 gap-3 mt-6 text-sm"><div class="bg-white border rounded-xl p-4 text-center"><p class="font-semibold">Full Scope</p><p class="text-gray-500 mt-1">Detailed work descriptions</p></div><div class="bg-white border rounded-xl p-4 text-center"><p class="font-semibold">Quantities</p><p class="text-gray-500 mt-1">Calculated project quantities</p></div><div class="bg-white border rounded-xl p-4 text-center"><p class="font-semibold">Cost Breakdown</p><p class="text-gray-500 mt-1">Internal rates & amounts</p></div></div><div class="text-center mt-6 no-print"><button type="button" onclick="unlockDetailedQuotation()" class="bg-black text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-800">Unlock Detailed Quotation</button><p class="text-xs text-gray-500 mt-2">Secure online payment will be connected in the next step.</p></div></div><div class="mt-8 pt-5 border-t text-sm"><p class="font-semibold mb-2">Important Note</p><p class="text-gray-600">This preview is not a final construction quotation. Final scope, specifications, site conditions and pricing are subject to site inspection and confirmation.</p></div>`;
+  const previewItems=data.allItems.slice(0,4);
+  const previewRows=previewItems.length ? previewItems.map((item,index)=>`
+    <tr class="border-b last:border-b-0">
+      <td class="py-3 px-3 text-gray-500">${index+1}</td>
+      <td class="py-3 px-3"><p class="font-medium">${escapeHtml(item.description)}</p><p class="text-xs text-gray-500 mt-1">${escapeHtml(item.unit || "Unit")}</p></td>
+      <td class="py-3 px-3 text-center text-gray-400">🔒 •••</td>
+      <td class="py-3 px-3 text-right text-gray-400">🔒 •••</td>
+      <td class="py-3 px-3 text-right text-gray-400">🔒 ••••</td>
+    </tr>`).join("") : `<tr><td colspan="5" class="py-5 text-center text-gray-500">Your detailed work items will appear here.</td></tr>`;
+  content.innerHTML=`
+    <div class="flex justify-between items-start gap-6 border-b pb-5 mb-6">
+      <div><div class="flex items-center gap-4 mb-4"><img src="../images/logo.png" alt="Teraju Ciptabina Logo" class="h-14 w-auto"><div><h1 class="text-xl font-bold">TERAJU CIPTABINA RESOURCES</h1><p class="text-xs text-gray-500">No 10A, Jalan PP 2/1, Taman Putra Prima, 47100 Puchong, Selangor</p></div></div><p class="text-xs uppercase tracking-wide text-gray-500">Detailed Quotation Preview</p><h2 class="text-2xl font-bold">Sample of Your Detailed Quotation</h2></div>
+      <div class="text-right text-sm"><p><span class="text-gray-500">Reference</span><br><strong>${escapeHtml(quotationNumber)}</strong></p></div>
+    </div>
+    <div class="grid md:grid-cols-3 gap-6 mb-7 text-sm">
+      <div><p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Customer</p><p class="font-semibold">${escapeHtml(customer)}</p></div>
+      <div><p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Project Location</p><p class="font-semibold">${escapeHtml(location)}</p></div>
+      <div><p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Estimated Budget</p><p class="font-semibold">${money(data.total,2)}</p></div>
+    </div>
+    <div class="border rounded-2xl overflow-hidden">
+      <div class="bg-gray-900 text-white px-5 py-4 flex items-center justify-between gap-4"><div><p class="font-semibold">Detailed Cost Breakdown</p><p class="text-xs text-gray-300 mt-1">A small sample is shown below. Full costing is locked.</p></div><span class="text-xl">🔒</span></div>
+      <div class="overflow-x-auto"><table class="w-full border-collapse text-sm"><thead class="bg-gray-50 border-b"><tr class="text-left"><th class="py-3 px-3">No.</th><th class="py-3 px-3">Description of Works</th><th class="py-3 px-3 text-center">Qty</th><th class="py-3 px-3 text-right">Rate</th><th class="py-3 px-3 text-right">Amount (RM)</th></tr></thead><tbody>${previewRows}</tbody></table></div>
+      <div class="bg-gray-50 border-t px-5 py-4 flex flex-wrap items-center justify-between gap-4"><div><p class="font-semibold">🔒 Remaining costing is locked</p><p class="text-sm text-gray-500 mt-1">Unlock to view the complete item-by-item breakdown.</p></div><button type="button" onclick="unlockDetailedQuotation()" class="bg-black text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-800">Unlock Detailed Quotation</button></div>
+    </div>
+    <div class="mt-6 grid md:grid-cols-3 gap-3 text-sm"><div class="border rounded-xl p-4"><p class="font-semibold">Full Work Scope</p><p class="text-gray-500 mt-1">Complete item-by-item description</p></div><div class="border rounded-xl p-4"><p class="font-semibold">Quantity & Rate</p><p class="text-gray-500 mt-1">Full calculated quantities and unit rates</p></div><div class="border rounded-xl p-4"><p class="font-semibold">Complete Costing</p><p class="text-gray-500 mt-1">All amounts and subtotals</p></div></div>
+    <div class="mt-6 pt-5 border-t text-sm"><p class="font-semibold mb-2">Important Note</p><p class="text-gray-600">This is a preview only. Final scope, specifications, site conditions and pricing are subject to confirmation.</p></div>`;
   document.getElementById("quotationPrintActions").classList.add("hidden");
   document.getElementById("quotationDocument").classList.remove("hidden");
   document.getElementById("quotationDocument").scrollIntoView({behavior:"smooth",block:"start"});
