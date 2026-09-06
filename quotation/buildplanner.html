@@ -328,32 +328,34 @@ const BASE_AREA = 600;
 
 const RATES = {
   // Structures (package, scale by area)
-  footingConc: 550, footingFw: 45, footingRebar: 15,
-  slabConc: 550, slabBrc: 70,
-  beamConc: 350, beamFw: 45, beamRebar: 15,
-  colConc: 550, colFw: 45, colRebar: 15,
-  flatRoofConc: 550, flatRoofFw: 45, flatRoofBrc: 70,
-  cChannel: 4, metalSheet: 35,
-  roofDesignConc: 550, roofDesignFw: 45, roofDesignRebar: 70,
-  apronConc: 350, apronFw: 45, apronBrc: 15,
+  // Structures — concrete m³ & rebar kg retained; surface measures standardised to sqft
+  // (formwork / BRC / metal sheet rates converted from RM/m² ÷ 10.7639)
+  footingConc: 550, footingFw: 4.18, footingRebar: 15,
+  slabConc: 550, slabBrc: 6.50,
+  beamConc: 350, beamFw: 4.18, beamRebar: 15,
+  colConc: 550, colFw: 4.18, colRebar: 15,
+  flatRoofConc: 550, flatRoofFw: 4.18, flatRoofBrc: 6.50,
+  cChannel: 4, metalSheet: 3.25,
+  roofDesignConc: 550, roofDesignFw: 4.18, roofDesignRebar: 70,
+  apronConc: 350, apronFw: 4.18, apronBrc: 15,
   drainage: 25,
-  // Architecture per room
+  // Architecture — all area units standardised to sqft (rates converted from RM/m² ÷ 10.7639)
   ceilingInt: 15,          // RM/sqft
-  ceilingExt: 20,
-  floorTileInt: 45,        // RM/m2  (~4.18 sqft = 1 m2, we convert)
-  floorTileExt: 60,
-  brickInt: 45,            // RM/m2 wall
-  brickExt: 45,
-  paintInt: 15,            // RM/m2
-  paintExt: 25,
+  ceilingExt: 20,          // RM/sqft
+  floorTileInt: 4.18,      // was RM 45/m²
+  floorTileExt: 5.57,      // was RM 60/m²
+  brickInt: 4.18,          // was RM 45/m²
+  brickExt: 4.18,          // was RM 45/m²
+  paintInt: 1.39,          // was RM 15/m²
+  paintExt: 2.32,          // was RM 25/m²
   door: 600,               // per unit
   window: 600,             // per unit
-  decoBlock: 150,          // RM/m2
+  decoBlock: 13.94,        // was RM 150/m²
   waterTank: 500,
   septicTank: 1500,
-  // Bathroom
-  bathWallTile: 45,        // m2
-  bathFloorTile: 45,
+  // Bathroom — RM/sqft
+  bathWallTile: 4.18,      // was RM 45/m²
+  bathFloorTile: 4.18,     // was RM 45/m²
   bathPiping: 1000,        // ls
   bathShower: 120,
   bathTap: 30,
@@ -381,7 +383,7 @@ const STRUCT_GROUPS = [
     title: "Footing",
     items: [
       { id: "str-footing-conc", desc: "Concrete G15", unit: "m3", qty: 0.5, rate: RATES.footingConc },
-      { id: "str-footing-fw", desc: "Formwork", unit: "m2", qty: 12, rate: RATES.footingFw },
+      { id: "str-footing-fw", desc: "Formwork", unit: "sqft", qty: 129.17, rate: RATES.footingFw },
       { id: "str-footing-rebar", desc: "Rebar", unit: "kg", qty: 80.5, rate: RATES.footingRebar }
     ]
   },
@@ -390,7 +392,7 @@ const STRUCT_GROUPS = [
     title: "Ground Slab",
     items: [
       { id: "str-slab-conc", desc: "Concrete G25", unit: "m3", qty: 8.361, rate: RATES.slabConc },
-      { id: "str-slab-brc", desc: "Rebar BRC A7 double layer", unit: "m2", qty: 111.48, rate: RATES.slabBrc }
+      { id: "str-slab-brc", desc: "Rebar BRC A7 double layer", unit: "sqft", qty: 1200.0, rate: RATES.slabBrc }
     ]
   },
   {
@@ -398,7 +400,7 @@ const STRUCT_GROUPS = [
     title: "Ground Beam",
     items: [
       { id: "str-gb-conc", desc: "Concrete G25", unit: "m3", qty: 3.552, rate: RATES.beamConc },
-      { id: "str-gb-fw", desc: "Formwork", unit: "m2", qty: 47.36, rate: RATES.beamFw },
+      { id: "str-gb-fw", desc: "Formwork", unit: "sqft", qty: 509.78, rate: RATES.beamFw },
       { id: "str-gb-rebar", desc: "Rebar", unit: "kg", qty: 710.4, rate: RATES.beamRebar }
     ]
   },
@@ -407,7 +409,7 @@ const STRUCT_GROUPS = [
     title: "Roof Beam",
     items: [
       { id: "str-rb-conc", desc: "Concrete G25", unit: "m3", qty: 3.552, rate: RATES.beamConc },
-      { id: "str-rb-fw", desc: "Formwork", unit: "m2", qty: 47.36, rate: RATES.beamFw },
+      { id: "str-rb-fw", desc: "Formwork", unit: "sqft", qty: 509.78, rate: RATES.beamFw },
       { id: "str-rb-rebar", desc: "Rebar", unit: "kg", qty: 710.4, rate: RATES.beamRebar }
     ]
   },
@@ -416,7 +418,7 @@ const STRUCT_GROUPS = [
     title: "Column",
     items: [
       { id: "str-col-conc", desc: "Concrete G25", unit: "m3", qty: 0.945, rate: RATES.colConc },
-      { id: "str-col-fw", desc: "Formwork", unit: "m2", qty: 25.2, rate: RATES.colFw },
+      { id: "str-col-fw", desc: "Formwork", unit: "sqft", qty: 271.25, rate: RATES.colFw },
       { id: "str-col-rebar", desc: "Rebar", unit: "kg", qty: 189, rate: RATES.colRebar }
     ]
   },
@@ -425,10 +427,10 @@ const STRUCT_GROUPS = [
     title: "Flat Roof & Roofing",
     items: [
       { id: "str-fr-conc", desc: "Flat roof – Concrete G25", unit: "m3", qty: 0.6315, rate: RATES.flatRoofConc },
-      { id: "str-fr-fw", desc: "Flat roof – Formwork", unit: "m2", qty: 6.315, rate: RATES.flatRoofFw },
-      { id: "str-fr-brc", desc: "Flat roof – Rebar BRC A7 double layer", unit: "m2", qty: 12.63, rate: RATES.flatRoofBrc },
+      { id: "str-fr-fw", desc: "Flat roof – Formwork", unit: "sqft", qty: 67.97, rate: RATES.flatRoofFw },
+      { id: "str-fr-brc", desc: "Flat roof – Rebar BRC A7 double layer", unit: "sqft", qty: 135.95, rate: RATES.flatRoofBrc },
       { id: "str-roof-c", desc: "C-channel for roof structures", unit: "m", qty: 781.2, rate: RATES.cChannel },
-      { id: "str-roof-m", desc: "Metal roofing sheet", unit: "m2", qty: 53.16, rate: RATES.metalSheet }
+      { id: "str-roof-m", desc: "Metal roofing sheet", unit: "sqft", qty: 572.20, rate: RATES.metalSheet }
     ]
   },
   {
@@ -436,7 +438,7 @@ const STRUCT_GROUPS = [
     title: "Infrastructure / Outside Works",
     items: [
       { id: "str-apron-c", desc: "Apron – Concrete G15", unit: "m3", qty: 0.90, rate: RATES.apronConc },
-      { id: "str-apron-f", desc: "Apron – Formwork", unit: "m", qty: 18.9, rate: RATES.apronFw },
+      { id: "str-apron-f", desc: "Apron – Formwork", unit: "ft", qty: 62.01, rate: 13.72 },
       { id: "str-apron-b", desc: "Apron – Rebar BRC A7", unit: "kg", qty: 62.99, rate: RATES.apronBrc },
       { id: "str-drain", desc: "Drainage – small U-shape scupper drain", unit: "ft", qty: 100, rate: RATES.drainage },
       { id: "arch-septik", desc: "Septic tank", unit: "no", qty: 1, rate: RATES.septicTank, scale: false },
@@ -448,7 +450,7 @@ const STRUCT_GROUPS = [
     title: "Special Item",
     items: [
       { id: "str-roof-dc", desc: "Design roof structure (Scandinavian) – Concrete G25", unit: "m3", qty: 0.3, rate: RATES.roofDesignConc },
-      { id: "str-roof-df", desc: "Design roof structure (Scandinavian) – Formwork", unit: "m2", qty: 15, rate: RATES.roofDesignFw },
+      { id: "str-roof-df", desc: "Design roof structure (Scandinavian) – Formwork", unit: "sqft", qty: 161.46, rate: RATES.roofDesignFw },
       { id: "str-roof-dr", desc: "Design roof structure (Scandinavian) – Rebar", unit: "kg", qty: 54, rate: RATES.roofDesignRebar }
     ]
   }
@@ -512,7 +514,7 @@ function roundQty(v, unit) {
   if (isIntegerUnit(unit)) return Math.max(0, Math.round(n));
   return Math.round(n * 100) / 100;
 }
-function sqftToM2(sqft) { return (Number(sqft) || 0) * 0.092903; }
+/* Area unit standard: sqft throughout (1 m² = 10.7639 sqft) */
 
 function toggleProjectInfo() {
   const info = document.getElementById("projectInfo");
@@ -660,23 +662,23 @@ function generateRoomArchitectureItems(room) {
   const items = [];
   if (!room.area || room.area <= 0) return items;
   const { roomId, roomType, label, area } = room;
-  const areaM2 = sqftToM2(area);
+  const areaSqft = roundQty(area, "sqft");
   const defs = ROOM_DEFAULTS[roomType] || ROOM_DEFAULTS.other;
 
-  // Ceiling (internal) – all rooms except porch
+  // Ceiling (internal) – all rooms except porch — sqft
   if (roomType !== "porch") {
     pushItem(items, `${roomId}-ceiling`, roomId, label, "architecture",
-      `Plaster / skim ceiling c/w paint – ${label}`, area, "sqft", RATES.ceilingInt);
+      `Plaster / skim ceiling c/w paint – ${label}`, areaSqft, "sqft", RATES.ceilingInt);
   }
 
-  // Floor tiles
+  // Floor tiles — all in sqft
   if (roomType === "bathroom") {
     pushItem(items, `${roomId}-floortile`, roomId, label, "architecture",
-      `Floor tiles c/w waterproofing – ${label}`, roundQty(areaM2, "m2"), "m2", RATES.bathFloorTile);
-    // wall tiles ~6x floor area for bathroom (typical)
-    const wallM2 = roundQty(areaM2 * 6, "m2");
+      `Floor tiles c/w waterproofing – ${label}`, areaSqft, "sqft", RATES.bathFloorTile);
+    // wall tiles ~6× floor area for bathroom (typical full-height tiling)
+    const wallSqft = roundQty(areaSqft * 6, "sqft");
     pushItem(items, `${roomId}-walltile`, roomId, label, "architecture",
-      `Wall tiles – ${label}`, wallM2, "m2", RATES.bathWallTile);
+      `Wall tiles – ${label}`, wallSqft, "sqft", RATES.bathWallTile);
     pushItem(items, `${roomId}-piping`, roomId, label, "architecture",
       `Piping works – ${label}`, 1, "ls", RATES.bathPiping);
     pushItem(items, `${roomId}-wc`, roomId, label, "architecture",
@@ -689,17 +691,17 @@ function generateRoomArchitectureItems(room) {
       `Tap – ${label}`, 1, "no", RATES.bathTap);
   } else if (roomType === "porch") {
     pushItem(items, `${roomId}-floortile`, roomId, label, "architecture",
-      `Floor tiles – ${label}`, roundQty(areaM2, "m2"), "m2", RATES.floorTileExt);
+      `Floor tiles – ${label}`, areaSqft, "sqft", RATES.floorTileExt);
   } else {
     pushItem(items, `${roomId}-floortile`, roomId, label, "architecture",
-      `Floor tiles – ${label}`, roundQty(areaM2, "m2"), "m2", RATES.floorTileInt);
+      `Floor tiles – ${label}`, areaSqft, "sqft", RATES.floorTileInt);
   }
 
-  // Painting (internal walls) – approximate wall area ~2.5–3x floor for typical room height
+  // Internal painting — approximate wall area ~2.8× floor area; unit sqft
   if (roomType !== "porch" && roomType !== "bathroom") {
-    const wallM2 = roundQty(areaM2 * 2.8, "m2");
+    const wallSqft = roundQty(areaSqft * 2.8, "sqft");
     pushItem(items, `${roomId}-paint`, roomId, label, "architecture",
-      `Internal painting – ${label}`, wallM2, "m2", RATES.paintInt);
+      `Internal painting – ${label}`, wallSqft, "sqft", RATES.paintInt);
   }
 
   // Doors
