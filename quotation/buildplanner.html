@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#ffffff">
-  <title>New Build Planner | Teraju Ciptabina</title>
+  <title>Build Planner | Teraju Ciptabina</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     * { box-sizing: border-box; }
@@ -118,7 +118,7 @@
       <div class="h-12 w-12 rounded-lg bg-gray-900 text-white items-center justify-center font-bold text-lg flex-shrink-0" style="display:none;">T|C</div>
       <div class="min-w-0">
         <h1 class="font-bold text-lg">TERAJU CIPTABINA</h1>
-        <p class="text-xs text-gray-500">New Build / Design & Build Planner</p>
+        <p class="text-xs text-gray-500">Build Planner</p>
       </div>
     </div>
   </div>
@@ -127,11 +127,10 @@
 <main class="max-w-6xl mx-auto px-6 py-8">
 
   <section class="mb-7">
-    <h2 class="text-3xl font-bold mb-2">New Build Planner</h2>
+    <h2 class="text-3xl font-bold mb-2">Build Planner</h2>
     <p class="text-gray-600">
-      Enter building size and add rooms/areas. Structures scale by total built-up area.
-      Architecture (ceiling, tiles, painting, doors, windows, sanitary) is calculated <strong>per room</strong>
-      so door & window quantities are logical.
+      Enter the proposed built-up area and room schedule. Structural works are estimated based on the overall built-up area.
+      Architectural finishes, doors, windows and sanitary fittings are calculated per room to ensure accurate quantities.
     </p>
   </section>
 
@@ -140,7 +139,7 @@
     <div class="flex justify-between items-center cursor-pointer" onclick="toggleProjectInfo()">
       <div class="min-w-0">
         <h3 class="font-bold text-lg">Project Information</h3>
-        <p class="text-sm text-gray-500">Enter the project details used for the estimate and quotation.</p>
+        <p class="text-sm text-gray-500">Provide the project details to be shown on the estimate and quotation.</p>
       </div>
       <span id="projectArrow" class="text-gray-500 text-sm ml-4 flex-shrink-0">▲</span>
     </div>
@@ -175,7 +174,7 @@
   <section class="bg-white rounded-2xl shadow-sm p-6 mb-6">
     <div class="mb-5">
       <h3 class="font-bold text-lg">Building Specification</h3>
-      <p class="text-sm text-gray-500">Used mainly for Structures package scaling. Architecture is driven by rooms below.</p>
+      <p class="text-sm text-gray-500">Define the overall building parameters used to estimate structural works.</p>
     </div>
     <div class="grid md:grid-cols-3 gap-5">
       <div>
@@ -183,7 +182,7 @@
         <input id="builtUpArea" type="number" min="100" step="1" value="600"
           class="w-full border rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-gray-300"
           oninput="updateEstimate()">
-        <p class="text-xs text-gray-500 mt-1">Should match sum of room areas as closely as possible.</p>
+        <p class="text-xs text-gray-500 mt-1">Preferably aligned with the total of all room areas below.</p>
       </div>
       <div>
         <label class="block text-sm font-medium mb-2">No. of Storeys</label>
@@ -193,7 +192,7 @@
         </select>
       </div>
       <div>
-        <label class="block text-sm font-medium mb-2">Package Style</label>
+        <label class="block text-sm font-medium mb-2">Design Style</label>
         <select id="packageStyle" class="w-full border rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-gray-300" onchange="updateEstimate()">
           <option value="scandinavian" selected>Scandinavian</option>
           <option value="modern">Modern Minimal</option>
@@ -207,7 +206,7 @@
     <div class="flex justify-between items-center mb-5 gap-4">
       <div class="min-w-0">
         <h3 class="font-bold text-lg">Rooms / Areas</h3>
-        <p class="text-sm text-gray-500">Add each room. Architecture cost (ceiling, tiles, painting, doors, windows, sanitary) is calculated per room.</p>
+        <p class="text-sm text-gray-500">Add each room or area. Architectural works are calculated individually based on room type and floor area.</p>
       </div>
       <button type="button" onclick="addRoom()"
         class="no-print bg-black text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-800 flex-shrink-0">
@@ -215,9 +214,9 @@
       </button>
     </div>
     <div class="no-print bg-gray-50 border rounded-xl p-4 mb-5 text-sm text-gray-600">
-      <strong class="text-gray-800">How it works:</strong>
-      Select room type + enter area (sqft). Doors & windows are auto-assigned by room type (e.g. Bedroom = 1 door + 1 window).
-      You can edit quantities later in the estimate table.
+      <strong class="text-gray-800">Guidance:</strong>
+      Select the room type and enter the floor area in sqft. Door and window quantities are assigned automatically according to room type
+      (for example, a bedroom includes 1 door and 1 window). Quantities and rates may be adjusted in the estimate table below.
     </div>
     <div id="roomsContainer" class="space-y-4"></div>
   </section>
@@ -227,7 +226,7 @@
     <div class="flex justify-between items-start mb-6 gap-4">
       <div class="min-w-0">
         <p class="text-xs uppercase tracking-wider text-gray-500">Preliminary Estimate</p>
-        <h3 class="text-2xl font-bold">New Build Budget</h3>
+        <h3 class="text-2xl font-bold">Construction Budget</h3>
       </div>
       <div class="text-right flex-shrink-0">
         <p class="text-xs text-gray-500">Estimate No.</p>
@@ -255,8 +254,8 @@
         <span id="grandTotal" class="font-bold text-3xl">RM 0</span>
       </div>
       <p class="text-xs text-gray-500 mt-3">
-        * Preliminary design & build estimate only. Final quotation subject to site inspection, soil investigation,
-        approved drawings, authority requirements and confirmation of final scope.
+        * This is a preliminary construction estimate only. The final quotation is subject to site inspection, soil investigation,
+        approved drawings, local authority requirements and confirmation of the final scope of works.
       </p>
     </div>
   </section>
@@ -265,7 +264,7 @@
   <section class="no-print bg-white rounded-2xl shadow-sm p-6 mt-6">
     <div class="mb-5">
       <h3 class="font-bold text-lg">Generate Quotation</h3>
-      <p class="text-sm text-gray-500">Choose how much pricing detail to show.</p>
+      <p class="text-sm text-gray-500">Select the level of pricing detail to be presented in the quotation.</p>
     </div>
     <div class="grid md:grid-cols-2 gap-4">
       <label class="quotation-option border rounded-xl p-4 cursor-pointer hover:bg-gray-50">
@@ -273,7 +272,7 @@
           <input type="radio" name="quotationType" value="simple" checked class="mt-1 h-4 w-4 flex-shrink-0">
           <div>
             <p class="font-semibold">Simple Quotation</p>
-            <p class="text-sm text-gray-500 mt-1">Preliminaries + Structures + one total per Room (Architecture) + Electrical.</p>
+            <p class="text-sm text-gray-500 mt-1">Summarised pricing by section: Preliminaries, Structures, Architecture (per room) and Electrical.</p>
           </div>
         </div>
       </label>
@@ -282,14 +281,14 @@
           <input type="radio" name="quotationType" value="detail" class="mt-1 h-4 w-4 flex-shrink-0">
           <div>
             <p class="font-semibold">Detailed Quotation</p>
-            <p class="text-sm text-gray-500 mt-1">Item-by-item quantity, unit, rate and amount under each room / category.</p>
+            <p class="text-sm text-gray-500 mt-1">Full breakdown with quantity, unit, rate and amount for every item under each section.</p>
           </div>
         </div>
       </label>
     </div>
     <div class="mt-5 p-4 rounded-xl bg-gray-50 border text-sm text-gray-600">
-      <strong class="text-gray-800">Review before generating:</strong>
-      Edit Description, Quantity and Rate in the table above. Quotation uses your final values.
+      <strong class="text-gray-800">Before generating:</strong>
+      Review and amend the description, quantity and rate in the estimate table above. The quotation will reflect your final values.
     </div>
     <div class="mt-5">
       <button type="button" onclick="generateQuotation()"
@@ -313,10 +312,10 @@
   <section class="no-print bg-gray-900 text-white rounded-2xl p-8 mt-8 text-center">
     <h3 class="text-2xl font-bold mb-3">Need an Official Quotation?</h3>
     <p class="text-gray-300 max-w-2xl mx-auto mb-6">
-      Let Teraju Ciptabina prepare a detailed design & build quotation based on your land and requirements.
+      Engage Teraju Ciptabina for a formal quotation prepared upon site inspection and based on your project requirements.
     </p>
-    <a href="#" class="inline-block bg-white text-black px-6 py-3 rounded-lg font-semibold hover:bg-gray-200">
-      Request Site Visit / Consultation
+    <a href="../index.html#contact" class="inline-block bg-white text-black px-6 py-3 rounded-lg font-semibold hover:bg-gray-200">
+      Request Site Visit
     </a>
   </section>
 </main>
@@ -773,7 +772,7 @@ function renderEstimate(items, rooms, total, roomsArea, declared) {
     <div><p class="text-gray-500">Customer</p><p class="font-medium">${escapeHtml(customer)}</p></div>
     <div><p class="text-gray-500">Location</p><p class="font-medium">${escapeHtml(location)}</p></div>
     <div><p class="text-gray-500">Built-up / Rooms</p><p class="font-medium">${formatQty(declared)} sqft declared · ${formatQty(roomsArea)} sqft rooms · ${storeys} storey</p></div>
-    <div><p class="text-gray-500">Estimate Type</p><p class="font-medium">Preliminary Design & Build</p></div>`;
+    <div><p class="text-gray-500">Estimate Type</p><p class="font-medium">Preliminary Construction Estimate</p></div>`;
 
   // Group: Preliminaries, Structures, then each room architecture, then Electrical
   const prelim = items.filter(i => i.category === "preliminaries");
@@ -1035,8 +1034,8 @@ function generateQuotation() {
     </div>
     <div class="mb-5">
       <p class="text-sm text-gray-600">
-        Design & build works as described below. Final quotation is subject to site inspection, soil investigation,
-        approved drawings, actual site conditions, specifications and confirmation of final scope of works.
+        Construction works as described below. This quotation is subject to site inspection, soil investigation,
+        approved drawings, actual site conditions, specifications and confirmation of the final scope of works.
       </p>
     </div>`;
 
@@ -1240,10 +1239,10 @@ function generateQuotation() {
     <div class="mt-8 pt-5 border-t text-sm">
       <p class="font-semibold mb-2">Terms / Notes</p>
       <ul class="list-disc pl-5 space-y-1 text-gray-600">
-        <li>This quotation is based on the selected package rates and room areas provided.</li>
-        <li>Final scope, specifications, soil condition and pricing are subject to site inspection and confirmation.</li>
-        <li>Any additional works or authority requirements not stated above will be quoted separately.</li>
-        <li>Payment terms and progress claim schedule to be agreed upon confirmation of order.</li>
+        <li>This quotation is based on the stated built-up area, room schedule and rates applied herein.</li>
+        <li>Final scope, specifications, soil conditions and pricing remain subject to site inspection and written confirmation.</li>
+        <li>Any additional works or authority requirements not listed above shall be quoted separately.</li>
+        <li>Payment terms and progress claim schedule shall be agreed upon acceptance of this quotation.</li>
       </ul>
     </div>
     <div class="mt-12 text-sm">
