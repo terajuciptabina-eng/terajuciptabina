@@ -14,31 +14,22 @@ export default async function handler(req, res) {
 
   // Only POST is allowed
   if (req.method !== "POST") {
-    return res.status(405).json({
-      message: "Method not allowed",
-    });
+    return res.status(405).json({ message: "Method not allowed" });
   }
 
   try {
-    const {
-      clientOrderId,
-      customer,
-    } = req.body || {};
-    
+    const { clientOrderId, customer, returnPath } = req.body || {};
+
     const customerName = customer?.name || "";
     const customerEmail = customer?.email || "";
     const customerPhone = customer?.phone || "";
 
     if (!clientOrderId) {
-      return res.status(400).json({
-        message: "Missing clientOrderId",
-      });
+      return res.status(400).json({ message: "Missing clientOrderId" });
     }
 
     if (!customerName || !customerEmail || !customerPhone) {
-      return res.status(400).json({
-        message: "Missing customer information",
-      });
+      return res.status(400).json({ message: "Missing customer information" });
     }
 
     const secretKey = process.env.TOYYIBPAY_SECRET_KEY;
@@ -46,35 +37,38 @@ export default async function handler(req, res) {
     const publicBaseUrl = process.env.PUBLIC_BASE_URL;
 
     if (!secretKey || !categoryCode || !publicBaseUrl) {
-      return res.status(500).json({
-        message: "Payment configuration is incomplete.",
-      });
+      return res.status(500).json({ message: "Payment configuration is incomplete." });
     }
+
+    // Only allow the two real quotation planner return pages.
+    const allowedReturnPaths = [
+      "/terajuciptabina/quotation/buildplanner.html",
+      "/terajuciptabina/quotation/renovationplanner.html"
+    ];
+
+    if (!allowedReturnPaths.includes(returnPath)) {
+      return res.status(400).json({ message: "Invalid payment return path." });
+    }
+
+    // ToyyibPay returns the customer to the GitHub Pages frontend.
+    // The callback remains on the Vercel backend.
+    const frontendBaseUrl = "https://terajuciptabina-eng.github.io";
+    const billReturnUrl = `${frontendBaseUrl}${returnPath}`;
 
     // Detailed quotation price = RM49
     const amount = 4900;
-
     const formData = new URLSearchParams();
 
     formData.append("userSecretKey", secretKey);
     formData.append("categoryCode", categoryCode);
     formData.append("billName", "Detailed Quotation");
-    formData.append(
-      "billDescription",
-      "Teraju Works Detailed Quotation"
-    );
+    formData.append("billDescription", "Teraju Works Detailed Quotation");
     formData.append("billPriceSetting", "1");
     formData.append("billPayorInfo", "1");
     formData.append("billAmount", String(amount));
-    formData.append("billReturnUrl", `${publicBaseUrl}/quotation/payment-return`);
-    formData.append(
-      "billCallbackUrl",
-      `${publicBaseUrl}/api/payment-callback`
-    );
-    formData.append(
-      "billExternalReferenceNo",
-      clientOrderId
-    );
+    formData.append("billReturnUrl", billReturnUrl);
+    formData.append("billCallbackUrl", `${publicBaseUrl}/api/payment-callback`);
+    formData.append("billExternalReferenceNo", clientOrderId);
     formData.append("billTo", customerName);
     formData.append("billEmail", customerEmail);
     formData.append("billPhone", customerPhone);
@@ -86,10 +80,8 @@ export default async function handler(req, res) {
       "https://toyyibpay.com/index.php/api/createBill",
       {
         method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: formData.toString(),
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: formData.toString()
       }
     );
 
@@ -97,10 +89,7 @@ export default async function handler(req, res) {
 
     if (!response.ok || !Array.isArray(result) || !result[0]?.BillCode) {
       console.error("toyyibPay createBill response:", result);
-
-      return res.status(502).json({
-        message: "Unable to create payment.",
-      });
+      return res.status(502).json({ message: "Unable to create payment." });
     }
 
     const billCode = result[0].BillCode;
@@ -109,13 +98,13 @@ export default async function handler(req, res) {
       success: true,
       billCode,
       paymentUrl: `https://toyyibpay.com/${billCode}`,
-      clientOrderId,
+      clientOrderId
     });
   } catch (error) {
     console.error("create-payment error:", error);
 
     return res.status(500).json({
-      message: "Unable to create the payment. Please try again.",
+      message: "Unable to create the payment. Please try again."
     });
   }
 }
