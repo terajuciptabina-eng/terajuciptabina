@@ -7,7 +7,6 @@
       document.head.appendChild(s);
     }
   }
-
   function money2(v) {
     return typeof window.money === 'function' ? window.money(v, 2) : `RM ${(Number(v)||0).toFixed(2)}`;
   }
@@ -18,6 +17,28 @@
     return typeof window.formatQty === 'function' ? window.formatQty(v,u) : Number(v||0).toLocaleString('en-MY',{maximumFractionDigits:2});
   }
   function save(key,value){try{sessionStorage.setItem(key,JSON.stringify(value))}catch(e){}try{localStorage.setItem(key,JSON.stringify(value))}catch(e){}}
+
+  // Build Planner structural items can carry their construction element in different
+  // fields depending on the selected estimator item. Keep the renderer tolerant of all
+  // known field names, and also recognize an element prefix in the description.
+  function subheading(item) {
+    const raw = item?.subheading ?? item?.subcategory ?? item?.subCategory ?? item?.category ?? item?.group ?? item?.structure ?? item?.element ?? item?.areaType ?? item?.location;
+    if (raw && typeof raw === 'string' && raw.trim()) return raw.trim();
+    const d = String(item?.description || '').trim();
+    const m = d.match(/^\s*(ground\s+beam|ground\s+floor|ground\s+slab|column|staircase|upper\s+floor|first\s+floor|roof\s+beam|roof\s+slab|roof\s+structure|roof|lintel|tie\s+beam|ring\s+beam|foundation|footing|pile\s+cap|wall)\s*[-–—:]/i);
+    return m ? m[1].replace(/\s+/g,' ').trim() : '';
+  }
+  function groupBySubheading(items) {
+    const groups = [];
+    (items || []).forEach(item => {
+      const label = subheading(item) || 'GENERAL STRUCTURAL WORKS';
+      const key = label.toLowerCase();
+      let g = groups.find(x => x.key === key);
+      if (!g) { g = {key, label, items:[]}; groups.push(g); }
+      g.items.push(item);
+    });
+    return groups;
+  }
 
   function installDetailedOverride() {
     if (typeof window.getCurrentQuotationData !== 'function') return;
@@ -47,10 +68,13 @@
       let no = 1;
       const section = t => `<tr class="tc-q-section"><td colspan="5" class="py-3 px-2">${esc(t)}</td></tr>`;
       const room = r => `<tr class="tc-q-room"><td colspan="5" class="py-3 px-2">${esc(r.label)} <span class="font-normal text-gray-500">(${qty(r.area)} sqft)</span></td></tr>`;
+      const sub = t => `<tr class="tc-q-room"><td colspan="5" class="py-2 px-2">${esc(t)}</td></tr>`;
       const rows = arr => (arr||[]).map(i=>`<tr class="border-b align-top"><td class="py-3 px-2">${no++}</td><td class="py-3 px-2 text-left">${esc(i.description)}</td><td class="py-3 px-2 text-right">${qty(i.qty,i.unit)}</td><td class="py-3 px-2 text-right">${money2(i.rate)}</td><td class="py-3 px-2 text-right font-medium">${money2(i.amount)}</td></tr>`).join('');
+      const grouped = items => groupBySubheading(items);
+      const groupedRows = items => grouped(items).map(g => sub(g.label) + rows(g.items)).join('');
 
       if (data.prelim.length) html += section('A. PRELIMINARIES') + rows(data.prelim);
-      if (data.structures.length) html += section('B. STRUCTURAL WORKS') + rows(data.structures);
+      if (data.structures.length) html += section('B. STRUCTURAL WORKS') + groupedRows(data.structures);
       const archRooms = rooms.filter(r=>Number(r.area)>0 && (data.archByRoom[r.roomId]||[]).length);
       if (archRooms.length) {
         html += section('C. ARCHITECTURAL WORKS');
