@@ -284,6 +284,27 @@
         white-space: nowrap !important;
       }
     }
+  
+    /* Detailed quotation payment modal */
+    .payment-modal-backdrop {
+      position: fixed; inset: 0; z-index: 9999; display: none;
+      align-items: center; justify-content: center; padding: 20px;
+      background: rgba(17,24,39,.62); backdrop-filter: blur(4px);
+    }
+    .payment-modal-backdrop.show { display: flex; }
+    .payment-modal {
+      width: min(100%, 520px); max-height: min(90vh, 760px); overflow-y: auto;
+      background: #fff; border-radius: 22px; box-shadow: 0 25px 70px rgba(0,0,0,.25);
+    }
+    .payment-modal input { width: 100%; border: 1px solid #d1d5db; border-radius: 10px; padding: 12px 14px; outline: none; }
+    .payment-modal input:focus { border-color:#111827; box-shadow:0 0 0 3px rgba(17,24,39,.08); }
+    .payment-error { display:none; }
+    .payment-error.show { display:block; }
+    @media (max-width: 767px) {
+      .payment-modal-backdrop { padding: 12px; align-items: flex-end; }
+      .payment-modal { max-height: 92vh; border-radius: 20px 20px 0 0; }
+    }
+
   </style>
 </head>
 
@@ -299,6 +320,57 @@
     </div>
   </div>
 </header>
+
+
+  <!-- Premium Detailed Quotation Payment -->
+  <div id="paymentModal" class="payment-modal-backdrop no-print" aria-hidden="true">
+    <div class="payment-modal" role="dialog" aria-modal="true" aria-labelledby="paymentModalTitle">
+      <div class="p-6 border-b flex items-start justify-between gap-4">
+        <div>
+          <p class="text-xs uppercase tracking-wider text-gray-500">Premium Quotation</p>
+          <h3 id="paymentModalTitle" class="text-2xl font-bold mt-1">Unlock Detailed Quotation</h3>
+          <p class="text-sm text-gray-500 mt-2">Get the full item-by-item quotation for this project.</p>
+        </div>
+        <button type="button" onclick="closePaymentModal()" class="text-gray-400 hover:text-gray-900 text-2xl leading-none" aria-label="Close">&times;</button>
+      </div>
+      <div class="p-6">
+        <div class="rounded-2xl bg-gray-50 border p-5 mb-5 flex items-center justify-between gap-4">
+          <div>
+            <p class="text-sm text-gray-500">Detailed Quotation</p>
+            <p class="text-xs text-gray-500 mt-1">Full scope, quantity, unit, rate & amount</p>
+          </div>
+          <div class="text-2xl font-bold whitespace-nowrap">RM 49</div>
+        </div>
+
+        <div class="grid gap-4">
+          <div>
+            <label class="block text-sm font-medium mb-2">Name</label>
+            <input id="paymentName" type="text" autocomplete="name" placeholder="Your name">
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-2">Email</label>
+            <input id="paymentEmail" type="email" autocomplete="email" placeholder="you@example.com">
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-2">Phone Number</label>
+            <input id="paymentPhone" type="tel" autocomplete="tel" placeholder="01X-XXXXXXX">
+          </div>
+        </div>
+
+        <div id="paymentError" class="payment-error mt-4 rounded-xl border border-red-200 bg-red-50 text-red-700 text-sm p-4"></div>
+
+        <div class="mt-5 text-xs text-gray-500 leading-relaxed">
+          You will be redirected to the secure toyyibPay payment page to complete the RM49 payment.
+          Do not enter bank details on this page.
+        </div>
+
+        <div class="mt-6 flex gap-3">
+          <button type="button" onclick="closePaymentModal()" class="flex-1 border px-4 py-3 rounded-xl font-semibold hover:bg-gray-50">Cancel</button>
+          <button id="paymentProceedButton" type="button" onclick="startDetailedQuotationPayment()" class="flex-1 bg-black text-white px-4 py-3 rounded-xl font-semibold hover:bg-gray-800">Pay RM49</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 <main class="max-w-6xl mx-auto px-6 py-8">
 
@@ -1043,8 +1115,199 @@ function requestDetailedQuotation() {
   document.getElementById("quotationDocument").scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
-function unlockDetailedQuotation() {
-  alert("Detailed quotation payment is the next feature. Your project data and preview are ready for the payment step.");
+
+/* =========================================================
+   PREMIUM DETAILED QUOTATION PAYMENT
+   RM49 via toyyibPay
+   The API URL must point to your secure backend/serverless function.
+   Never place the toyyibPay secret key in this HTML.
+   ========================================================= */
+const DETAILED_QUOTATION_PRICE = 49;
+const PAYMENT_API_URL = window.TERAJU_PAYMENT_API_URL || "/api/create-payment";
+const PAYMENT_VERIFY_API_URL = window.TERAJU_PAYMENT_VERIFY_API_URL || "/api/verify-payment";
+
+function openPaymentModal() {
+  if (!isHomeowner()) return;
+  const modal = document.getElementById("paymentModal");
+  if (!modal) return;
+  const customer = document.getElementById("customerName")?.value || "";
+  const nameInput = document.getElementById("paymentName");
+  if (nameInput && !nameInput.value) nameInput.value = customer;
+  modal.classList.add("show");
+  modal.setAttribute("aria-hidden", "false");
+  document.body.style.overflow = "hidden";
+  setTimeout(() => document.getElementById("paymentName")?.focus(), 50);
+}
+
+function closePaymentModal() {
+  const modal = document.getElementById("paymentModal");
+  if (!modal) return;
+  modal.classList.remove("show");
+  modal.setAttribute("aria-hidden", "true");
+  document.body.style.overflow = "";
+}
+
+function setPaymentError(message) {
+  const box = document.getElementById("paymentError");
+  if (!box) return;
+  box.textContent = message || "";
+  box.classList.toggle("show", !!message);
+}
+
+function setPaymentLoading(loading) {
+  const button = document.getElementById("paymentProceedButton");
+  if (!button) return;
+  button.disabled = loading;
+  button.textContent = loading ? "Connecting to payment..." : "Pay RM49";
+  button.classList.toggle("opacity-60", loading);
+  button.classList.toggle("cursor-not-allowed", loading);
+}
+
+function getPaymentProjectData() {
+  const data = getCurrentQuotationData();
+  return {
+    quotationNumber: quotationNumber || "",
+    customerName: document.getElementById("customerName")?.value || "",
+    projectLocation: document.getElementById("projectLocation")?.value || "",
+    projectType: document.title.includes("Build Planner") ? "New House" : "Renovation",
+    estimateNumber: document.getElementById("estimateNumber")?.textContent || "",
+    totalBuiltArea: document.getElementById("totalBuiltArea")?.textContent || "",
+    itemCount: Array.isArray(data.allItems) ? data.allItems.length : 0
+  };
+}
+
+async function startDetailedQuotationPayment() {
+  if (!isHomeowner()) return;
+
+  const name = document.getElementById("paymentName")?.value.trim() || "";
+  const email = document.getElementById("paymentEmail")?.value.trim() || "";
+  const phone = document.getElementById("paymentPhone")?.value.trim() || "";
+
+  setPaymentError("");
+
+  if (!name) { setPaymentError("Please enter your name."); return; }
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    setPaymentError("Please enter a valid email address."); return;
+  }
+  if (!phone) { setPaymentError("Please enter your phone number."); return; }
+
+  const project = getPaymentProjectData();
+  const clientOrderId = "TQ-" + Date.now() + "-" + Math.random().toString(36).slice(2, 8).toUpperCase();
+
+  setPaymentLoading(true);
+
+  try {
+    const response = await fetch(PAYMENT_API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        amount: DETAILED_QUOTATION_PRICE,
+        product: "Detailed Quotation",
+        customer: { name, email, phone },
+        project,
+        clientOrderId
+      })
+    });
+
+    const result = await response.json().catch(() => ({}));
+
+    if (!response.ok || !result.paymentUrl) {
+      throw new Error(result.message || "Unable to create the payment. Please try again.");
+    }
+
+    sessionStorage.setItem("terajuPendingPayment", JSON.stringify({
+      clientOrderId,
+      billCode: result.billCode || "",
+      quotationNumber: quotationNumber || "",
+      customerName: name,
+      email,
+      phone,
+      project,
+      createdAt: Date.now()
+    }));
+
+    window.location.href = result.paymentUrl;
+  } catch (error) {
+    setPaymentError(error?.message || "Unable to connect to the payment service.");
+    setPaymentLoading(false);
+  }
+}
+
+async function verifyDetailedQuotationPayment() {
+  const params = new URLSearchParams(window.location.search);
+  const statusId = params.get("status_id");
+  const billCode = params.get("billcode");
+  const orderId = params.get("order_id");
+
+  if (!statusId && !billCode && !orderId) return false;
+
+  const pendingRaw = sessionStorage.getItem("terajuPendingPayment");
+  let pending = {};
+  try { pending = pendingRaw ? JSON.parse(pendingRaw) : {}; } catch (_) {}
+
+  if (statusId !== "1" || !billCode || !orderId) {
+    return false;
+  }
+
+  try {
+    const response = await fetch(PAYMENT_VERIFY_API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        billCode,
+        orderId,
+        expectedAmount: DETAILED_QUOTATION_PRICE,
+        quotationNumber: pending.quotationNumber || ""
+      })
+    });
+    const result = await response.json().catch(() => ({}));
+
+    if (!response.ok || result.paid !== true) return false;
+
+    sessionStorage.setItem("terajuDetailedQuotationPaid", JSON.stringify({
+      paid: true,
+      billCode,
+      orderId,
+      quotationNumber: pending.quotationNumber || "",
+      verifiedAt: Date.now()
+    }));
+
+    window.history.replaceState({}, document.title, window.location.pathname + window.location.hash);
+    return true;
+  } catch (_) {
+    return false;
+  }
+}
+
+function hasVerifiedDetailedQuotationPayment() {
+  try {
+    const saved = JSON.parse(sessionStorage.getItem("terajuDetailedQuotationPaid") || "null");
+    return !!(saved && saved.paid === true);
+  } catch (_) {
+    return false;
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  verifyDetailedQuotationPayment().then((paid) => {
+    if (paid) {
+      setTimeout(() => {
+        const content = document.getElementById("quotationContent");
+        if (content) content.innerHTML = "";
+        generateDetailedQuotationAfterPayment();
+      }, 100);
+    }
+  });
+});
+
+
+function unlockDetailedQuotation() { openPaymentModal(); }
+
+function generateDetailedQuotationAfterPayment() {
+  if (!isHomeowner() || !hasVerifiedDetailedQuotationPayment()) return;
+  const radio = document.querySelector('input[name="quotationType"][value="detail"]');
+  if (radio) radio.checked = true;
+  generateQuotation();
 }
 
 function generateQuotation() {
@@ -1056,11 +1319,11 @@ function generateQuotation() {
 
   quotationNumber = generateQuotationNumber();
   let type = getSelectedQuotationType();
-  if (isHomeowner() && type === "detail") {
-    alert("Detailed Quotation is protected. Please use the Free Simple Quotation, or request a detailed quotation separately.");
+  if (isHomeowner() && type === "detail" && !hasVerifiedDetailedQuotationPayment()) {
+    alert("Detailed Quotation is protected. Please unlock it with the RM49 payment.");
     return;
   }
-  if (isHomeowner()) type = "simple";
+  if (isHomeowner() && !hasVerifiedDetailedQuotationPayment()) type = "simple";
   const customer = document.getElementById("customerName")?.value || "Not specified";
   const location = document.getElementById("projectLocation")?.value || "Not specified";
   const totalBuiltArea = data.roomGroups.reduce((sum, room) => sum + (Number(room.area) || 0), 0);
