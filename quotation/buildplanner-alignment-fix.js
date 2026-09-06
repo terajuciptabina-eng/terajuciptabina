@@ -6,14 +6,14 @@
     #quotationContent .simple-quotation-table,
     #quotationContent .detailed-quotation-table { width:100%!important; table-layout:fixed!important; border-collapse:collapse!important; }
 
-    /* Keep the approved Simple Quotation layout unchanged. */
+    /* Simple quotation: leave the approved layout untouched. */
     #quotationContent .simple-quotation-table col:nth-child(1){width:7%!important}
     #quotationContent .simple-quotation-table col:nth-child(2){width:73%!important}
     #quotationContent .simple-quotation-table col:nth-child(3){width:20%!important}
     #quotationContent .simple-quotation-table th:nth-child(2),
     #quotationContent .simple-quotation-table td:nth-child(2){text-align:left!important}
 
-    /* Detailed quotation: No. + wide Description + compact pricing columns. */
+    /* Detailed quotation: Description wide; Unit/Qty/Rate/Amount aligned right. */
     #quotationContent .detailed-quotation-table col:nth-child(1){width:6%!important}
     #quotationContent .detailed-quotation-table col:nth-child(2){width:49%!important}
     #quotationContent .detailed-quotation-table col:nth-child(3){width:9%!important}
@@ -22,6 +22,14 @@
     #quotationContent .detailed-quotation-table col:nth-child(6){width:13%!important}
     #quotationContent .detailed-quotation-table th:nth-child(2),
     #quotationContent .detailed-quotation-table td:nth-child(2){text-align:left!important}
+    #quotationContent .detailed-quotation-table th:nth-child(3),
+    #quotationContent .detailed-quotation-table td:nth-child(3),
+    #quotationContent .detailed-quotation-table th:nth-child(4),
+    #quotationContent .detailed-quotation-table td:nth-child(4),
+    #quotationContent .detailed-quotation-table th:nth-child(5),
+    #quotationContent .detailed-quotation-table td:nth-child(5),
+    #quotationContent .detailed-quotation-table th:nth-child(6),
+    #quotationContent .detailed-quotation-table td:nth-child(6){text-align:right!important}
 
     #quotationContent .simple-quotation-table th,#quotationContent .simple-quotation-table td,
     #quotationContent .detailed-quotation-table th,#quotationContent .detailed-quotation-table td {
@@ -111,10 +119,10 @@
       }
       body += `</tbody><tfoot><tr class="border-t-2"><td colspan="2" class="py-4 px-2 text-right font-bold">TOTAL</td><td class="py-4 px-2 text-right font-bold text-lg">${money(data.total)}</td></tr></tfoot></table></div>`;
     } else {
-      /* Detailed Quotation: one table, but clearly divided into main sections and rooms. */
-      body += `<div class="overflow-x-auto"><table class="w-full border-collapse text-sm detailed-quotation-table"><colgroup><col><col><col><col><col><col></colgroup><thead><tr class="border-b-2 text-left"><th class="py-3 px-2">No.</th><th class="py-3 px-2">Description</th><th class="py-3 px-2">Unit</th><th class="py-3 px-2 text-right">Quantity</th><th class="py-3 px-2 text-right">Rate (RM)</th><th class="py-3 px-2 text-right">Amount (RM)</th></tr></thead><tbody>`;
+      /* Detailed Quotation: one table, divided into main sections and rooms. */
+      body += `<div class="overflow-x-auto"><table class="w-full border-collapse text-sm detailed-quotation-table"><colgroup><col><col><col><col><col><col></colgroup><thead><tr class="border-b-2 text-left"><th class="py-3 px-2">No.</th><th class="py-3 px-2">Description</th><th class="py-3 px-2 text-right">Unit</th><th class="py-3 px-2 text-right">Quantity</th><th class="py-3 px-2 text-right">Rate (RM)</th><th class="py-3 px-2 text-right">Amount (RM)</th></tr></thead><tbody>`;
       let detailNo = 1;
-      const rows = arr => (arr||[]).map(i=>`<tr class="border-b align-top"><td class="py-3 px-2">${detailNo++}</td><td class="py-3 px-2 text-left">${esc(i.description)}</td><td class="py-3 px-2">${esc(i.unit)}</td><td class="py-3 px-2 text-right">${qty(i.qty,i.unit)}</td><td class="py-3 px-2 text-right">${money(i.rate)}</td><td class="py-3 px-2 text-right font-medium">${money(i.amount)}</td></tr>`).join('');
+      const rows = arr => (arr||[]).map(i=>`<tr class="border-b align-top"><td class="py-3 px-2">${detailNo++}</td><td class="py-3 px-2 text-left">${esc(i.description)}</td><td class="py-3 px-2 text-right">${esc(i.unit)}</td><td class="py-3 px-2 text-right">${qty(i.qty,i.unit)}</td><td class="py-3 px-2 text-right">${money(i.rate)}</td><td class="py-3 px-2 text-right font-medium">${money(i.amount)}</td></tr>`).join('');
 
       let firstSection = true;
       if (data.prelim.length) { body += sectionRow('A. PRELIMINARIES',6,!firstSection); firstSection=false; body += rows(data.prelim); }
