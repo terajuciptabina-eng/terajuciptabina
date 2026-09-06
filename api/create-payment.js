@@ -18,7 +18,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { clientOrderId, customer, returnPath } = req.body || {};
+    const { clientOrderId, customer, project } = req.body || {};
 
     const customerName = customer?.name || "";
     const customerEmail = customer?.email || "";
@@ -40,14 +40,16 @@ export default async function handler(req, res) {
       return res.status(500).json({ message: "Payment configuration is incomplete." });
     }
 
-    // Only allow the two real quotation planner return pages.
-    const allowedReturnPaths = [
-      "/terajuciptabina/quotation/buildplanner.html",
-      "/terajuciptabina/quotation/renovationplanner.html"
-    ];
+    // Select the correct GitHub Pages return page from the planner that started payment.
+    const projectType = String(project?.projectType || "").toLowerCase();
+    let returnPath = "";
 
-    if (!allowedReturnPaths.includes(returnPath)) {
-      return res.status(400).json({ message: "Invalid payment return path." });
+    if (projectType === "new house") {
+      returnPath = "/terajuciptabina/quotation/buildplanner.html";
+    } else if (projectType === "renovation") {
+      returnPath = "/terajuciptabina/quotation/renovationplanner.html";
+    } else {
+      return res.status(400).json({ message: "Invalid project type." });
     }
 
     // ToyyibPay returns the customer to the GitHub Pages frontend.
