@@ -35,7 +35,7 @@
       main > section:first-child { padding: 4px 0 10px !important; background: transparent; box-shadow: none; }
       main > section:first-child h2 { font-size: 28px !important; line-height: 1.2; }
       main > section:first-child p { font-size: 14px; line-height: 1.5; }
-      .grid.md\:grid-cols-2, .grid.md\:grid-cols-3, .grid.md\:grid-cols-\[1fr_1fr_1fr_auto\] {
+      .grid.md\:grid-cols-2, .grid.md\:grid-cols-3, .grid.md\:grid-cols-4, .grid.md\:grid-cols-\[1fr_1fr_1fr_auto\] {
         grid-template-columns: minmax(0, 1fr) !important;
       }
       #projectInfo, #projectInfo input { width: 100%; }
@@ -383,7 +383,7 @@
         <p id="estimateNumber" class="font-bold"></p>
       </div>
     </div>
-    <div id="customerSummary" class="grid md:grid-cols-3 gap-5 mb-6 text-sm"></div>
+    <div id="customerSummary" class="grid md:grid-cols-4 gap-5 mb-6 text-sm"></div>
     <div id="estimateContent" class="overflow-x-auto"></div>
     <div class="no-print mt-5 flex justify-end">
       <button type="button" onclick="restoreAllItems()" class="border px-4 py-2 rounded-lg text-sm hover:bg-gray-50">
@@ -391,6 +391,10 @@
       </button>
     </div>
     <div class="border-t mt-6 pt-6">
+      <div class="flex justify-between items-center gap-4 mb-2">
+        <span class="font-semibold text-lg">Total Built Area</span>
+        <span id="totalBuiltArea" class="font-bold text-xl text-gray-700">0 sqft</span>
+      </div>
       <div class="flex justify-between items-center gap-4">
         <span class="font-semibold text-lg">Estimated Total</span>
         <span id="grandTotal" class="font-bold text-3xl">RM 0</span>
@@ -800,10 +804,12 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
   const container = document.getElementById("estimateContent");
   const customer = document.getElementById("customerName")?.value || "Not specified";
   const location = document.getElementById("projectLocation")?.value || "Not specified";
+  const totalBuiltArea = roomGroups.reduce((sum, room) => sum + (Number(room.area) || 0), 0);
 
   document.getElementById("customerSummary").innerHTML = `
     <div><p class="text-gray-500">Customer</p><p class="font-medium">${escapeHtml(customer)}</p></div>
     <div><p class="text-gray-500">Location</p><p class="font-medium">${escapeHtml(location)}</p></div>
+    <div><p class="text-gray-500">Total Built Area</p><p class="font-medium">${formatQty(totalBuiltArea)} sqft</p></div>
     <div><p class="text-gray-500">Estimate Type</p><p class="font-medium">Preliminary Renovation Estimate</p></div>`;
 
   const itemsByRoom = {};
@@ -914,6 +920,8 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
     </div>`;
   container.innerHTML = html;
   document.getElementById("grandTotal").textContent = money(total, 2);
+  const totalBuiltAreaEl = document.getElementById("totalBuiltArea");
+  if (totalBuiltAreaEl) totalBuiltAreaEl.textContent = formatQty(totalBuiltArea) + " sqft";
 }
 
 function editRoomLabel(roomId, value) {
