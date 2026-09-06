@@ -66,7 +66,7 @@ export default async function handler(req, res) {
     formData.append("billPriceSetting", "1");
     formData.append("billPayorInfo", "1");
     formData.append("billAmount", String(amount));
-    formData.append("billReturnUrl", "https://terajuciptabina-eng.github.io/terajuciptabina/quotation/renovationplanner.html");
+    formData.append("billReturnUrl", `${publicBaseUrl}/quotation/payment-return`);
     formData.append(
       "billCallbackUrl",
       `${publicBaseUrl}/api/payment-callback`
