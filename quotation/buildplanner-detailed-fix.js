@@ -8,6 +8,7 @@
     (items||[]).forEach(item=>{const key=item?.groupKey||item?.groupTitle||'__ungrouped__'; let g=byKey.get(key); if(!g){g={key,title:item?.groupTitle||'',items:[]};byKey.set(key,g);groups.push(g)} g.items.push(item)});
     return groups.filter(g=>g.items.length);
   }
+  function sumItems(items){return (items||[]).reduce((sum,item)=>sum+(Number(item?.amount)||0),0)}
   function install() {
     if (typeof window.getCurrentQuotationData !== 'function' || window.__tcDetailedOverrideInstalled) return;
     window.__tcDetailedOverrideInstalled=true;
@@ -23,14 +24,17 @@
       html+=`<div class="overflow-x-auto"><table class="w-full border-collapse text-sm detailed-quotation-table"><colgroup><col><col><col><col><col></colgroup><thead><tr class="border-b-2"><th class="py-3 px-2">No.</th><th class="py-3 px-2">Description</th><th class="py-3 px-2 text-right">Quantity</th><th class="py-3 px-2 text-right">Rate (RM)</th><th class="py-3 px-2 text-right">Amount (RM)</th></tr></thead><tbody>`;
       let no=1; const section=t=>`<tr class="tc-q-section"><td colspan="5" class="py-3 px-2">${esc(t)}</td></tr>`; const room=r=>`<tr class="tc-q-room"><td colspan="5" class="py-3 px-2">${esc(r.label)} <span class="font-normal text-gray-500">(${qty(r.area)} sqft)</span></td></tr>`; const sub=t=>`<tr class="tc-q-room quotation-subsection-row"><td colspan="5" class="py-2 px-2">${esc(t)}</td></tr>`; const rows=arr=>(arr||[]).map(i=>`<tr class="border-b align-top"><td class="py-3 px-2">${no++}</td><td class="py-3 px-2 text-left">${esc(i.description)}</td><td class="py-3 px-2 text-right">${qty(i.qty,i.unit)}</td><td class="py-3 px-2 text-right">${money2(i.rate)}</td><td class="py-3 px-2 text-right font-medium">${money2(i.amount)}</td></tr>`).join('');
       const structuralGroups=groupStructuresByData(data.structures);
-      const structuralTotal=items=>(items||[]).reduce((sum,item)=>sum+(Number(item.amount)||0),0);
+      const structuralTotal=items=>sumItems(items);
       const structuralTotalRow=(title,total)=>`<tr class="tc-q-structural-total"><td colspan="4" class="py-2 px-2 text-right font-bold">${esc(title||'Structural Works')} Total</td><td class="py-2 px-2 text-right font-bold whitespace-nowrap">${money2(total)}</td></tr>`;
       if(data.prelim.length) html+=section('A. PRELIMINARIES')+rows(data.prelim);
       if(data.structures.length){html+=section('B. STRUCTURAL WORKS');structuralGroups.forEach(g=>{if(g.title)html+=sub(g.title);html+=rows(g.items);html+=structuralTotalRow(g.title,structuralTotal(g.items));})}
       const archRooms=rooms.filter(r=>Number(r.area)>0&&(data.archByRoom[r.roomId]||[]).length);
       if(archRooms.length){html+=section('C. ARCHITECTURAL WORKS');archRooms.forEach(r=>{html+=room(r)+rows(data.archByRoom[r.roomId]||[])+`<tr class="tc-q-subtotal"><td colspan="4" class="py-3 px-2 text-right">${esc(r.label)} Subtotal</td><td class="py-3 px-2 text-right">${money2(data.roomSubtotals[r.roomId]||0)}</td></tr>`})}
       if(data.electrical.length)html+=section('D. ELECTRICAL WORKS')+rows(data.electrical);
-      if(structuralGroups.length){html+=`<tr class="tc-q-section"><td colspan="5" class="py-3 px-2">STRUCTURAL SUMMARY — TOTAL AMOUNT BY HIERARCHY</td></tr>`;structuralGroups.forEach(g=>{html+=`<tr class="border-b"><td colspan="4" class="py-2 px-2 text-right font-semibold">${esc(g.title||'Structural Works')}</td><td class="py-2 px-2 text-right font-semibold whitespace-nowrap">${money2(structuralTotal(g.items))}</td></tr>`;});}
+      const architecturalItems=archRooms.flatMap(r=>data.archByRoom[r.roomId]||[]);
+      const summary=[['PRELIMINARIES',sumItems(data.prelim)],['STRUCTURAL WORKS',sumItems(data.structures)],['ARCHITECTURAL WORKS',sumItems(architecturalItems)],['ELECTRICAL WORKS',sumItems(data.electrical)]];
+      html+=`<tr class="tc-q-section"><td colspan="5" class="py-3 px-2">SUMMARY — TOTAL AMOUNT BY HIERARCHY</td></tr>`;
+      summary.forEach(([title,total])=>{html+=`<tr class="border-b"><td colspan="4" class="py-2 px-2 text-right font-semibold">${title}</td><td class="py-2 px-2 text-right font-semibold whitespace-nowrap">${money2(total)}</td></tr>`;});
       html+=`</tbody><tfoot><tr class="border-t-2"><td colspan="4" class="py-4 px-2 text-right font-bold">TOTAL</td><td class="py-4 px-2 text-right font-bold text-lg">${money2(data.total)}</td></tr></tfoot></table></div>`;
       html+=`<div class="mt-8 pt-5 border-t text-sm"><p class="font-semibold mb-2">Terms / Notes</p><ul class="list-disc pl-5 space-y-1 text-gray-600"><li>This quotation is based on the stated built-up area, room schedule and rates applied herein.</li><li>Final scope, specifications, site conditions and pricing remain subject to site inspection and written confirmation.</li><li>Any additional works or authority requirements not listed above shall be quoted separately.</li></ul></div><div class="mt-12 text-sm"><p>Yours sincerely,</p><p class="font-bold mt-8">TERAJU CIPTABINA RESOURCES</p></div>`;
       save('terajuPendingDetailedQuotation',{quotationNumber:window.quotationNumber,html,createdAt:Date.now(),projectType:'new house',customer,location});
