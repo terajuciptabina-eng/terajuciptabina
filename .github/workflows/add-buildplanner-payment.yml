@@ -17,20 +17,26 @@ jobs:
           ref: main
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Inject Build Planner payment script
+      - name: Inject versioned Build Planner payment script
         shell: bash
         run: |
           python - <<'PY'
           from pathlib import Path
+          import re
+
           path = Path('quotation/buildplanner.html')
           text = path.read_text(encoding='utf-8')
-          tag = '<script src="buildplanner-payment.js"></script>'
-          if tag not in text:
-              marker = '</body>'
-              if marker not in text:
-                  raise SystemExit('Could not find </body> in buildplanner.html')
-              text = text.replace(marker, tag + '\n' + marker, 1)
-              path.write_text(text, encoding='utf-8')
+
+          # Remove any previous payment-script tag, including old cache-busting versions.
+          text = re.sub(r'<script\s+src=["\']buildplanner-payment\.js(?:\?[^"\']*)?["\']\s*></script>\s*', '', text)
+
+          tag = '<script src="buildplanner-payment.js?v=20260907"></script>'
+          marker = '</body>'
+          if marker not in text:
+              raise SystemExit('Could not find </body> in buildplanner.html')
+
+          text = text.replace(marker, tag + '\n' + marker, 1)
+          path.write_text(text, encoding='utf-8')
           PY
 
       - name: Commit changes
@@ -43,5 +49,5 @@ jobs:
             echo "No changes needed."
             exit 0
           fi
-          git commit -m "Add Build Planner payment promo script [buildplanner-payment]"
+          git commit -m "Refresh Build Planner quotation flow [buildplanner-payment]"
           git push origin main
