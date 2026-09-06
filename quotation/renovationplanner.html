@@ -98,6 +98,11 @@
     .detailed-quotation-table { width: 100%; table-layout: fixed; }
     .simple-quotation-table { width: 100%; table-layout: fixed; }
 
+    .homeowner-only { display: block; }
+    .contractor-only { display: block; }
+    body.homeowner-mode .contractor-only { display: none !important; }
+    body.contractor-mode .homeowner-only { display: none !important; }
+
     /* =========================================================
        PRINT — CLEAN CONTINUOUS FLOW (NO EMPTY PAGES)
        ========================================================= */
@@ -282,7 +287,7 @@
   </style>
 </head>
 
-<body class="bg-gray-100 text-gray-800">
+<body class="bg-gray-100 text-gray-800 homeowner-mode">
 
 <header class="bg-white border-b">
   <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
@@ -354,35 +359,6 @@
 
   <!-- Areas -->
   <section class="bg-white rounded-2xl shadow-sm p-6 mb-6">
-  <div class="flex justify-between items-center cursor-pointer" onclick="toggleRateList()">
-    <div class="min-w-0">
-      <h3 class="font-bold text-lg">Rate Price List</h3>
-      <p class="text-sm text-gray-500">Check and update the standard renovation rates used for calculations.</p>
-    </div>
-    <span id="rateListArrow" class="text-gray-500 text-sm ml-4 flex-shrink-0">▼</span>
-  </div>
-  <div id="rateList" class="hidden mt-5">
-    <div class="overflow-x-auto">
-      <table class="w-full text-sm">
-        <thead>
-          <tr class="border-b text-gray-500">
-            <th class="text-left py-3 pr-3">Work Item</th>
-            <th class="text-center py-3 px-2">Unit</th>
-            <th class="text-right py-3 pl-3">Rate</th>
-          </tr>
-        </thead>
-        <tbody id="rateTableBody"></tbody>
-      </table>
-    </div>
-    <div class="mt-4 flex justify-end">
-      <button type="button" onclick="resetRates()" class="border px-4 py-2 rounded-lg text-sm font-semibold hover:bg-gray-50">
-        Reset to Default Rates
-      </button>
-    </div>
-  </div>
-</section>
-
-<section class="bg-white rounded-2xl shadow-sm p-6 mb-6">
     <div class="flex justify-between items-center mb-5 gap-4">
       <div class="min-w-0">
         <h3 class="font-bold text-lg">Areas / Rooms</h3>
@@ -447,12 +423,12 @@
         <div class="flex items-start gap-3">
           <input type="radio" name="quotationType" value="simple" checked class="mt-1 h-4 w-4 flex-shrink-0">
           <div>
-            <p class="font-semibold">Simple Quotation</p>
-            <p class="text-sm text-gray-500 mt-1">Shows the work description by room / area, with only one total price for each room / area.</p>
+            <p class="font-semibold">Free Simple Quotation</p>
+            <p class="text-sm text-gray-500 mt-1">Professional quotation showing the renovation scope by room / area and the corresponding amount.</p>
           </div>
         </div>
       </label>
-      <label class="quotation-option border rounded-xl p-4 cursor-pointer hover:bg-gray-50">
+      <label class="quotation-option contractor-only border rounded-xl p-4 cursor-pointer hover:bg-gray-50">
         <div class="flex items-start gap-3">
           <input type="radio" name="quotationType" value="detail" class="mt-1 h-4 w-4 flex-shrink-0">
           <div>
@@ -461,15 +437,22 @@
           </div>
         </div>
       </label>
+      <div class="homeowner-only border rounded-xl p-4 bg-gray-50">
+        <p class="font-semibold">Detailed Quotation</p>
+        <p class="text-sm text-gray-500 mt-1">Protected. Detailed quantities, rates and costing are available separately.</p>
+      </div>
     </div>
-    <div class="mt-5 p-4 rounded-xl bg-gray-50 border text-sm text-gray-600">
+    <div class="homeowner-only mt-5 p-4 rounded-xl bg-gray-50 border text-sm text-gray-600">
+      <strong class="text-gray-800">Free quotation:</strong> You will receive a Simple Quotation without internal rate, quantity and unit-cost breakdown.
+    </div>
+    <div class="contractor-only mt-5 p-4 rounded-xl bg-gray-50 border text-sm text-gray-600">
       <strong class="text-gray-800">Review before generating:</strong>
       Edit the Room / Area Name, Quantity and Rate directly in the estimate table above. The quotation will use your final edited values.
     </div>
     <div class="mt-5 flex flex-wrap gap-3">
       <button type="button" onclick="generateQuotation()"
         class="bg-black text-white px-5 py-3 rounded-lg font-semibold hover:bg-gray-800">
-        Generate Quotation
+        Generate Free Quotation
       </button>
     </div>
   </section>
@@ -487,7 +470,7 @@
 
   <!-- CTA -->
   <section class="no-print bg-gray-900 text-white rounded-2xl p-8 mt-8 text-center">
-    <h3 class="text-2xl font-bold mb-3">Need an Official Quotation?</h3>
+    <h3 class="text-2xl font-bold mb-3">Need a Detailed Quotation?</h3>
     <p class="text-gray-300 max-w-2xl mx-auto mb-6">
       Let Teraju Ciptabina inspect your property and prepare a detailed quotation based on the actual site condition and requirements.
     </p>
@@ -498,7 +481,11 @@
 </main>
 
 <script>
-const DEFAULT_RATES = {
+const AUDIENCE = new URLSearchParams(window.location.search).get("audience") || "homeowner";
+const IS_HOMEOWNER = AUDIENCE !== "contractor";
+function isHomeowner() { return IS_HOMEOWNER; }
+
+const RATES = {
   ceiling: 12, spc: 14, floorTile: 22, wallTile: 22, facadeWall: 60,
   downlight: 200, wallLight: 250, ceilingFan: 550, exhaustFan: 200,
   curtainBoxLED: 300, barLamp: 500, diningLamp: 600,
@@ -507,43 +494,6 @@ const DEFAULT_RATES = {
   gateMotor: 6400, brickwallDivider: 2800, frontFence: 5500,
   preliminaries: 8500, extensionKitchen: 250, extensionToilet: 584
 };
-
-const RATES = { ...DEFAULT_RATES };
-try {
-  const savedRates = JSON.parse(localStorage.getItem("terajuRenovationRates") || "null");
-  if (savedRates && typeof savedRates === "object") {
-    Object.keys(RATES).forEach(key => {
-      const value = Number(savedRates[key]);
-      if (Number.isFinite(value) && value >= 0) RATES[key] = value;
-    });
-  }
-} catch (e) {}
-
-const RATE_ITEMS = [
-  { key: "ceiling", label: "Plaster Ceiling c/w Paint", unit: "sqft" },
-  { key: "spc", label: "SPC Flooring c/w Skirting & Floor Mat", unit: "sqft" },
-  { key: "floorTile", label: "Floor Tiles c/w Waterproofing", unit: "sqft" },
-  { key: "wallTile", label: "Wall Tiles", unit: "sqft" },
-  { key: "facadeWall", label: "Facade Wall", unit: "sqft" },
-  { key: "downlight", label: "Downlight c/w Wiring", unit: "unit" },
-  { key: "wallLight", label: "Wall Light c/w Wiring", unit: "unit" },
-  { key: "ceilingFan", label: "Ceiling Fan c/w Wiring", unit: "unit" },
-  { key: "exhaustFan", label: "Exhaust Fan c/w Wiring", unit: "unit" },
-  { key: "curtainBoxLED", label: "Curtain Box LED c/w Wiring", unit: "ls" },
-  { key: "barLamp", label: "Bar Lamp c/w Wiring", unit: "unit" },
-  { key: "diningLamp", label: "Dining Lamp c/w Wiring", unit: "unit" },
-  { key: "kitchenFrame", label: "Laminated Arce Frame", unit: "ls" },
-  { key: "kitchenMakingGood", label: "Making Good", unit: "ls" },
-  { key: "kitchenGlassDoor", label: "Swing Glass Door", unit: "ls" },
-  { key: "bathroomSanitary", label: "Bathroom Sanitary", unit: "ls" },
-  { key: "bathroomDoor", label: "Bathroom Door", unit: "unit" },
-  { key: "gateMotor", label: "Gate Motor", unit: "ls" },
-  { key: "brickwallDivider", label: "Brickwall Divider", unit: "ls" },
-  { key: "frontFence", label: "Front Fence", unit: "ls" },
-  { key: "preliminaries", label: "Preliminaries / Permit & Engineer's Drawings", unit: "ls" },
-  { key: "extensionKitchen", label: "New Extension – Kitchen", unit: "sqft" },
-  { key: "extensionToilet", label: "New Extension – Toilet", unit: "sqft" }
-];
 
 const RULES = { downlightPerSqft: 50, minimumDownlights: 4 };
 
@@ -557,9 +507,9 @@ const ROOM_TYPES = {
 const OPTIONAL_SCOPES = [
   { key: "demolition", label: "Demolition works based on designer proposal, including careful removal, disposal, and site clearing, completed in a safe and professional manner", unit: "ls", rate: null, custom: true },
   { key: "painting", label: "Supply labour, materials, tools, and equipment to carry out internal and external painting works, including surface preparation, minor repairs, sealer where required, two coats of premium quality paint, cleaning and touch-up upon completion", unit: "ls", rate: null, custom: true },
-  { key: "glassDoor", label: "To supply and install additional swing glass door", unit: "unit", rateKey: "kitchenGlassDoor" },
-  { key: "brickwallDivider", label: "To build additional side brickwall divider c/w plaster and paint", unit: "ls", rateKey: "brickwallDivider" },
-  { key: "frontFence", label: "To build additional front fence brickwall based on designer proposal", unit: "ls", rateKey: "frontFence" },
+  { key: "glassDoor", label: "To supply and install additional swing glass door", unit: "unit", rate: RATES.kitchenGlassDoor },
+  { key: "brickwallDivider", label: "To build additional side brickwall divider c/w plaster and paint", unit: "ls", rate: RATES.brickwallDivider },
+  { key: "frontFence", label: "To build additional front fence brickwall based on designer proposal", unit: "ls", rate: RATES.frontFence },
   { key: "windows", label: "To supply and install additional windows", unit: "unit", rate: null, custom: true },
   { key: "electrical", label: "Additional electrical and wiring works based on confirmed site requirements", unit: "ls", rate: null, custom: true }
 ];
@@ -577,6 +527,8 @@ function generateEstimateNumber() {
   localStorage.setItem("terajuEstimateNumber", number);
   return "EST-" + String(number).padStart(4, "0");
 }
+document.body.classList.toggle("homeowner-mode", IS_HOMEOWNER);
+document.body.classList.toggle("contractor-mode", !IS_HOMEOWNER);
 document.getElementById("estimateNumber").textContent = generateEstimateNumber();
 
 function money(value, decimals = 0) {
@@ -584,56 +536,6 @@ function money(value, decimals = 0) {
     style: "currency", currency: "MYR",
     minimumFractionDigits: decimals, maximumFractionDigits: decimals
   }).format(Number(value) || 0);
-}
-
-function saveRates() {
-  localStorage.setItem("terajuRenovationRates", JSON.stringify(RATES));
-}
-
-function updateMasterRate(key, value) {
-  const rate = parseFloat(value);
-  if (!Number.isFinite(rate) || rate < 0) {
-    renderRateTable();
-    return;
-  }
-  RATES[key] = rate;
-  saveRates();
-  renderRateTable();
-  updateEstimate();
-}
-
-function resetRates() {
-  if (!confirm("Reset all rates to the default rates?")) return;
-  Object.keys(DEFAULT_RATES).forEach(key => RATES[key] = DEFAULT_RATES[key]);
-  saveRates();
-  renderRateTable();
-  updateEstimate();
-}
-
-function toggleRateList() {
-  const panel = document.getElementById("rateList");
-  const arrow = document.getElementById("rateListArrow");
-  if (!panel) return;
-  panel.classList.toggle("hidden");
-  if (arrow) arrow.textContent = panel.classList.contains("hidden") ? "▼" : "▲";
-}
-
-function renderRateTable() {
-  const body = document.getElementById("rateTableBody");
-  if (!body) return;
-  body.innerHTML = RATE_ITEMS.map(item => `
-    <tr class="border-b last:border-b-0">
-      <td class="py-3 pr-3">${escapeHtml(item.label)}</td>
-      <td class="py-3 px-2 text-center">${escapeHtml(item.unit)}</td>
-      <td class="py-3 pl-3 text-right">
-        <div class="flex justify-end items-center gap-1">
-          <span class="text-gray-500">RM</span>
-          <input type="number" min="0" step="0.01" value="${Number(RATES[item.key]).toFixed(2)}"
-            onchange="updateMasterRate('${item.key}', this.value)"
-            class="w-28 border rounded-lg px-3 py-2 text-right">
-        </div>
-      </td>
-    </tr>`).join("");
 }
 
 function calculateDownlights(area) {
@@ -656,8 +558,7 @@ function roomOptions() {
 
 function optionalScopeHtml() {
   return OPTIONAL_SCOPES.map(scope => {
-    const currentRate = scope.rateKey ? RATES[scope.rateKey] : scope.rate;
-    const fixed = currentRate !== null && currentRate !== undefined;
+    const fixed = scope.rate !== null;
     return `
       <div class="optional-scope border rounded-lg p-3 bg-white" data-scope="${scope.key}">
         <div class="flex items-start gap-3">
@@ -665,11 +566,11 @@ function optionalScopeHtml() {
           <div class="flex-1 min-w-0">
             <label class="text-sm font-medium cursor-pointer">${escapeHtml(scope.label)}</label>
             <p class="text-xs text-gray-500 mt-1">
-              ${fixed ? `Standard rate: ${money(currentRate, 2)} / ${scope.unit}` : "Enter a room-specific rate if required"}
+              ${fixed ? `Standard rate: ${money(scope.rate)} / ${scope.unit}` : "Enter a room-specific rate if required"}
             </p>
           </div>
           ${fixed
-            ? `<div class="text-sm font-semibold whitespace-nowrap flex-shrink-0">${money(currentRate, 2)}</div>`
+            ? `<div class="text-sm font-semibold whitespace-nowrap flex-shrink-0">${money(scope.rate)}</div>`
             : `<input type="number" min="0" step="1" value="" placeholder="Rate" class="optional-rate w-28 border rounded-lg px-3 py-2 text-sm flex-shrink-0">`}
         </div>
       </div>`;
@@ -850,7 +751,7 @@ function generateOptionalRoomItems(room, roomLabel) {
     const key = scopeEl.dataset.scope;
     const definition = OPTIONAL_SCOPES.find(s => s.key === key);
     if (!definition) return;
-    let rate = definition.rateKey ? RATES[definition.rateKey] : definition.rate;
+    let rate = definition.rate;
     if (definition.custom) {
       rate = parseFloat(scopeEl.querySelector(".optional-rate")?.value) || 0;
       if (rate <= 0) return;
@@ -929,6 +830,61 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
     <div><p class="text-gray-500">Total Built Area</p><p class="font-medium">${formatQty(totalBuiltArea)} sqft</p></div>
     <div><p class="text-gray-500">Estimate Type</p><p class="font-medium">Preliminary Renovation Estimate</p></div>`;
 
+  if (isHomeowner()) {
+    const itemsByRoom = {};
+    items.forEach(item => {
+      if (!itemsByRoom[item.roomId]) itemsByRoom[item.roomId] = [];
+      itemsByRoom[item.roomId].push(item);
+    });
+
+    let html = `
+      <div class="overflow-x-auto">
+        <table class="w-full border-collapse text-sm simple-quotation-table">
+          <thead>
+            <tr class="border-b-2 text-left">
+              <th class="py-3 px-2">Area / Room</th>
+              <th class="py-3 px-2">Estimated Scope of Works</th>
+            </tr>
+          </thead>
+          <tbody>`;
+
+    if (projectPreliminaries > 0) {
+      html += `
+        <tr class="border-b align-top">
+          <td class="py-3 px-2 font-semibold">Project / Authorities</td>
+          <td class="py-3 px-2">Renovation permit application and related professional drawings / submission requirements</td>
+        </tr>`;
+    }
+
+    roomGroups.forEach(room => {
+      if (room.area <= 0) return;
+      const roomItems = itemsByRoom[room.roomId] || [];
+      const descriptions = roomItems.length
+        ? roomItems.map(item => escapeHtml(item.description)).join("<br>")
+        : "Standard renovation works based on selected area type";
+      html += `
+        <tr class="border-b align-top">
+          <td class="py-3 px-2 font-semibold">${escapeHtml(room.label)}<br><span class="font-normal text-gray-500">${formatQty(room.area)} sqft</span></td>
+          <td class="py-3 px-2 leading-6">${descriptions}</td>
+        </tr>`;
+    });
+
+    html += `
+          </tbody>
+        </table>
+      </div>
+      <div class="mt-5 p-4 rounded-xl bg-gray-50 border text-sm text-gray-600">
+        <strong class="text-gray-800">Estimated Renovation Budget:</strong>
+        ${money(total, 2)}
+        <p class="mt-2 text-xs">Detailed quantities, unit rates and internal costing are not displayed in the homeowner estimate.</p>
+      </div>`;
+    container.innerHTML = html;
+    document.getElementById("grandTotal").textContent = money(total, 2);
+    const totalBuiltAreaEl = document.getElementById("totalBuiltArea");
+    if (totalBuiltAreaEl) totalBuiltAreaEl.textContent = formatQty(totalBuiltArea) + " sqft";
+    return;
+  }
+
   const itemsByRoom = {};
   items.forEach(item => {
     if (!itemsByRoom[item.roomId]) itemsByRoom[item.roomId] = [];
@@ -958,17 +914,9 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
         <td class="py-3 px-2">Submission of Renovation Permit Application and Engineer's Drawings to the Local Authority</td>
         <td class="py-3 px-2">ls</td>
         <td class="py-3 px-2 text-right">1</td>
-        <td class="py-3 px-2 text-right">
-          <input type="number" min="0" step="0.01" value="${Number(prelimRate).toFixed(2)}"
-            onchange="editItemRate('project-preliminaries', this.value)"
-            class="no-print w-32 border rounded-lg px-2 py-1.5 text-right bg-white">
-          <span class="hidden print:inline">${money(prelimRate, 2)}</span>
-        </td>
+        <td class="py-3 px-2 text-right"><input type="number" min="0" step="0.01" value="${Number(prelimRate).toFixed(2)}" onchange="editItemRate('project-preliminaries', this.value)" class="no-print w-32 border rounded-lg px-2 py-1.5 text-right bg-white"><span class="hidden print:inline">${money(prelimRate, 2)}</span></td>
         <td class="py-3 px-2 text-right font-medium">${money(prelimRate)}</td>
-        <td class="no-print py-3 px-2 text-center">
-          <button type="button" onclick="excludeItem('project-preliminaries')"
-            class="text-red-600 text-xs border border-red-200 rounded px-3 py-1.5 hover:bg-red-50">Delete</button>
-        </td>
+        <td class="no-print py-3 px-2 text-center"><button type="button" onclick="excludeItem('project-preliminaries')" class="text-red-600 text-xs border border-red-200 rounded px-3 py-1.5 hover:bg-red-50">Delete</button></td>
       </tr>`;
   }
 
@@ -976,65 +924,23 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
     const roomItems = itemsByRoom[room.roomId] || [];
     if (room.area <= 0) return;
     html += `
-      <tr class="bg-gray-100 border-b">
-        <td colspan="6" class="py-3 px-2">
-          <div class="flex flex-wrap items-center gap-3">
-            <label class="text-xs font-semibold uppercase tracking-wide text-gray-500">Room / Area Name</label>
-            <input type="text" value="${escapeHtml(room.label)}" onchange="editRoomLabel('${room.roomId}', this.value)"
-              class="no-print flex-1 min-w-[220px] border rounded-lg px-3 py-2 bg-white font-semibold">
-            <span class="font-normal text-gray-500">${formatQty(room.area)} sqft</span>
-          </div>
-          <div class="hidden print:block font-bold">
-            ${escapeHtml(room.label)} <span class="font-normal text-gray-500">(${formatQty(room.area)} sqft)</span>
-          </div>
-        </td>
-      </tr>`;
+      <tr class="bg-gray-100 border-b"><td colspan="6" class="py-3 px-2"><div class="flex flex-wrap items-center gap-3"><label class="text-xs font-semibold uppercase tracking-wide text-gray-500">Room / Area Name</label><input type="text" value="${escapeHtml(room.label)}" onchange="editRoomLabel('${room.roomId}', this.value)" class="no-print flex-1 min-w-[220px] border rounded-lg px-3 py-2 bg-white font-semibold"><span class="font-normal text-gray-500">${formatQty(room.area)} sqft</span></div><div class="hidden print:block font-bold">${escapeHtml(room.label)} <span class="font-normal text-gray-500">(${formatQty(room.area)} sqft)</span></div></td></tr>`;
     roomItems.forEach(item => {
       html += `
         <tr class="border-b hover:bg-gray-50">
-          <td class="py-3 px-2 align-top">
-            <textarea rows="2" onchange="editItemDescription('${item.id}', this.value)"
-              class="no-print w-full min-w-[280px] border rounded-lg px-3 py-2 bg-white leading-5 resize-y">${escapeHtml(item.description)}</textarea>
-            <div class="hidden print:block leading-6">${escapeHtml(item.description)}</div>
-          </td>
+          <td class="py-3 px-2 align-top"><textarea rows="2" onchange="editItemDescription('${item.id}', this.value)" class="no-print w-full min-w-[280px] border rounded-lg px-3 py-2 bg-white leading-5 resize-y">${escapeHtml(item.description)}</textarea><div class="hidden print:block leading-6">${escapeHtml(item.description)}</div></td>
           <td class="py-3 px-2">${escapeHtml(item.unit)}</td>
-          <td class="py-3 px-2 text-right">
-            <input type="number" min="0" step="1" value="${formatQty(item.qty)}" onchange="editItemQuantity('${item.id}', this.value)"
-              class="no-print w-24 border rounded-lg px-2 py-1.5 text-right bg-white">
-            <span class="hidden print:inline">${formatQty(item.qty)}</span>
-          </td>
-          <td class="py-3 px-2 text-right">
-            <input type="number" min="0" step="0.01" value="${Number(item.rate).toFixed(2)}" onchange="editItemRate('${item.id}', this.value)"
-              class="no-print w-28 border rounded-lg px-2 py-1.5 text-right bg-white">
-            <span class="hidden print:inline">${money(item.rate, 2)}</span>
-          </td>
+          <td class="py-3 px-2 text-right"><input type="number" min="0" step="1" value="${formatQty(item.qty)}" onchange="editItemQuantity('${item.id}', this.value)" class="no-print w-24 border rounded-lg px-2 py-1.5 text-right bg-white"><span class="hidden print:inline">${formatQty(item.qty)}</span></td>
+          <td class="py-3 px-2 text-right"><input type="number" min="0" step="0.01" value="${Number(item.rate).toFixed(2)}" onchange="editItemRate('${item.id}', this.value)" class="no-print w-28 border rounded-lg px-2 py-1.5 text-right bg-white"><span class="hidden print:inline">${money(item.rate, 2)}</span></td>
           <td class="py-3 px-2 text-right font-medium">${money(item.amount, 2)}</td>
-          <td class="no-print py-3 px-2 text-center">
-            <button type="button" onclick="excludeItem('${item.id}')"
-              class="text-red-600 text-xs border border-red-200 rounded px-3 py-1.5 hover:bg-red-50">Delete</button>
-          </td>
+          <td class="no-print py-3 px-2 text-center"><button type="button" onclick="excludeItem('${item.id}')" class="text-red-600 text-xs border border-red-200 rounded px-3 py-1.5 hover:bg-red-50">Delete</button></td>
         </tr>`;
     });
-    html += `
-      <tr class="border-b">
-        <td colspan="4" class="py-3 px-2 text-right font-semibold">${escapeHtml(room.label)} Subtotal</td>
-        <td class="py-3 px-2 text-right font-bold">${money(roomSubtotals[room.roomId] || 0, 2)}</td>
-        <td class="no-print"></td>
-      </tr>`;
+    html += `<tr class="border-b"><td colspan="4" class="py-3 px-2 text-right font-semibold">${escapeHtml(room.label)} Subtotal</td><td class="py-3 px-2 text-right font-bold">${money(roomSubtotals[room.roomId] || 0, 2)}</td><td class="no-print"></td></tr>`;
   });
 
   const roomTotal = Object.values(roomSubtotals).reduce((s, v) => s + v, 0);
-  html += `
-        </tbody>
-        <tfoot>
-          <tr class="border-t-2">
-            <td colspan="4" class="py-4 px-2 text-right font-semibold">Overall Subtotal</td>
-            <td class="py-4 px-2 text-right font-bold">${money(projectPreliminaries + roomTotal, 2)}</td>
-            <td class="no-print"></td>
-          </tr>
-        </tfoot>
-      </table>
-    </div>`;
+  html += `</tbody><tfoot><tr class="border-t-2"><td colspan="4" class="py-4 px-2 text-right font-semibold">Overall Subtotal</td><td class="py-4 px-2 text-right font-bold">${money(projectPreliminaries + roomTotal, 2)}</td><td class="no-print"></td></tr></tfoot></table></div>`;
   container.innerHTML = html;
   document.getElementById("grandTotal").textContent = money(total, 2);
   const totalBuiltAreaEl = document.getElementById("totalBuiltArea");
@@ -1109,7 +1015,12 @@ function generateQuotation() {
   }
 
   quotationNumber = generateQuotationNumber();
-  const type = getSelectedQuotationType();
+  let type = getSelectedQuotationType();
+  if (isHomeowner() && type === "detail") {
+    alert("Detailed Quotation is protected. Please use the Free Simple Quotation, or request a detailed quotation separately.");
+    return;
+  }
+  if (isHomeowner()) type = "simple";
   const customer = document.getElementById("customerName")?.value || "Not specified";
   const location = document.getElementById("projectLocation")?.value || "Not specified";
   const totalBuiltArea = data.roomGroups.reduce((sum, room) => sum + (Number(room.area) || 0), 0);
@@ -1308,7 +1219,6 @@ function printQuotation() {
 }
 
 addRoom("living", "");
-renderRateTable();
 </script>
 </body>
 </html>
