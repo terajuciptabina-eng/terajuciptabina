@@ -17,12 +17,13 @@ data/contractors/records/<contractorId>/
 
 ## Registry and schemas
 
-- `data/contractors/database.json` — database registry/index and the 16 Malaysian states/territories.
-- `data/contractors/database.schema.json` — schema for the registry structure.
-- `data/contractors/contractor-record.template.json` — example shape for a planner database record.
-- `data/contractors/export-format.md` — canonical browser-export record format.
 - `data/contractor-profile.schema.json` — contractor profile validation schema.
+- `data/contractors/record.schema.json` — canonical schema for build/renovation quotation records.
+- `data/contractors/registry.js` — canonical record factory used by the contractor tools.
+- `data/contractors/export-format.md` — canonical browser-export record format.
 - `data/contractors/records/README.md` — canonical record storage rules.
+
+There is intentionally **one canonical contractor rate-record model**. The old aggregate `database.json` / `database.schema.json` model has been removed to avoid two competing database structures.
 
 ## Planner flow
 
@@ -59,7 +60,7 @@ Default rate
 
 ## Contractor registration
 
-The live `contractors` registry remains empty until an actual contractor profile is registered. `CTR-DEMO-001` under `records/` is only a structural example and contains no real quotation rates.
+The contractor registry remains empty until an actual contractor profile is registered. `CTR-DEMO-001` under `records/` is only a structural example and contains no real quotation rates.
 
 ## Security boundary
 
