@@ -1,72 +1,66 @@
 (() => {
-  function roundQuotationQuantities() {
-    const root = document.getElementById('quotationContent');
-    if (!root) return;
-    root.querySelectorAll('table').forEach(table => {
-      const headers = Array.from(table.querySelectorAll('thead th')).map(th => th.textContent.trim().toLowerCase());
-      const quantityIndex = headers.findIndex(h => h === 'quantity' || h.includes('quantity'));
-      if (quantityIndex < 0) return;
-      table.querySelectorAll('tbody tr').forEach(row => {
-        const cell = row.children[quantityIndex];
-        if (!cell) return;
-        const match = cell.textContent.trim().match(/^\s*(\d+(?:\.\d+)?)\s*(.*)$/);
-        if (!match) return;
-        const value = Number(match[1]);
-        if (!Number.isFinite(value)) return;
-        const rounded = Math.max(1, Math.ceil(value));
-        const unit = match[2] || '';
-        cell.textContent = `${rounded}${unit ? ` ${unit}` : ''}`;
-      });
-    });
-  }
-
-  function quantityObserver() {
-    const root = document.getElementById('quotationContent');
-    if (!root) return;
-    roundQuotationQuantities();
-    const observer = new MutationObserver(() => {
-      observer.disconnect();
-      roundQuotationQuantities();
-      observer.observe(root, { childList: true, subtree: true });
-    });
-    observer.observe(root, { childList: true, subtree: true });
-  }
+  'use strict';
 
   const qs = new URLSearchParams(location.search);
   const audience = (qs.get('audience') || 'homeowner').toLowerCase();
   const contractor = audience === 'contractor';
-  window.TERAJU_AUDIENCE = contractor ? 'contractor' : 'homeowner';
-  document.body.classList.toggle('contractor-mode', contractor);
-  document.body.classList.toggle('homeowner-mode', !contractor);
-
-  const edits = new Map();
-  const esc = value => String(value ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
-  const getEdit = key => edits.get(key) || {};
-  const setEdit = (key, field, value) => {
-    const e = {...getEdit(key)};
-    e[field] = value;
-    edits.set(key, e);
+  const plannerType = /renovationplanner\.html/i.test(location.pathname) ? 'renovation' : 'build';
+  const DB_KEY = `terajuQuotationItemDatabase:v2:${plannerType}`;
+  const BUILTIN_RENO_UNITS = {
+    ceiling:'sqft', spc:'sqft', floorTile:'sqft', wallTile:'sqft', facadeWall:'sqft', downlight:'unit', wallLight:'unit',
+    ceilingFan:'unit', exhaustFan:'unit', curtainBoxLED:'unit', barLamp:'unit', kitchenFrame:'ls', kitchenMakingGood:'ls',
+    kitchenGlassDoor:'unit', bathroomSanitary:'set', bathroomDoor:'unit', gateMotor:'ls', wallDivider:'ls', frontFence:'ls',
+    preliminaries:'ls', extensionKitchen:'sqft', extensionToilet:'sqft'
   };
-  const effective = (key, item) => {
-    const e = getEdit(key);
+  const RENO_LABELS = {
+    ceiling:'Plaster ceiling flat c/w paint', spc:'SPC flooring c/w skirting and floor mat', floorTile:'Floor tiles c/w waterproofing',
+    wallTile:'Wall tiles c/w waterproofing', facadeWall:'Facade wall', downlight:'Downlight c/w wiring', wallLight:'Wall light c/w wiring',
+    ceilingFan:'Ceiling fan c/w wiring', exhaustFan:'Exhaust fan c/w wiring', curtainBoxLED:'LED light for curtain box c/w wiring', barLamp:'Bar / kitchen lamp c/w wiring',
+    kitchenFrame:'Laminated arce frame', kitchenMakingGood:'Making good after demolition', kitchenGlassDoor:'Swing glass door', bathroomSanitary:'Toilet accessories / sanitary set',
+    bathroomDoor:'Toilet swing door', gateMotor:'Main gate c/w automatic motor', wallDivider:'Side brickwall divider c/w plaster and paint', frontFence:'Front fence brickwall',
+    preliminaries:'Renovation permit / professional submission', extensionKitchen:'New kitchen extension works', extensionToilet:'New toilet extension works'
+  };
+  const esc = value => String(value ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;').replace(/'/g,'&#039;');
+  const num = value => Number.isFinite(Number(value)) ? Number(value) : 0;
+
+  function readDB() {
+    try { return JSON.parse(localStorage.getItem(DB_KEY) || '{}') || {}; } catch (_) { return {}; }
+  }
+  let db = readDB();
+  function saveDB() { localStorage.setItem(DB_KEY, JSON.stringify(db)); }
+  function ensureRecord(key, fallback) {
+    if (!db[key]) db[key] = { description:fallback.description || key, unit:fallback.unit || 'unit', rate:num(fallback.rate), qty:num(fallback.qty) || 1, included:true, custom:false };
+    return db[key];
+  }
+  function effectiveRecord(key, fallback) {
+    const r = db[key];
+    if (!r) return fallback;
     return {
-      description: e.description || item.description,
-      unit: e.unit || item.unit,
-      rate: Number.isFinite(e.rate) ? e.rate : Number(item.rate) || 0
+      description: r.description || fallback.description,
+      unit: r.unit || fallback.unit,
+      rate: Number.isFinite(Number(r.rate)) ? Number(r.rate) : num(fallback.rate),
+      qty: Number.isFinite(Number(r.qty)) ? Number(r.qty) : (num(fallback.qty) || 1)
     };
-  };
+  }
 
-  const buildRateKeys = new Map([
-    ['prelim-1','permit'], ['prelim-2','prelim'],
-    ['elec-db','dbBox'], ['elec-wiring','wiring'], ['elec-pp','powerPoint'], ['elec-switch','switch'],
-    ['elec-light','lighting'], ['elec-fan','fan'], ['elec-ac','aircond'], ['elec-earth','earthing']
-  ]);
-  if (typeof STRUCT_GROUPS !== 'undefined') {
-    STRUCT_GROUPS.forEach(g => g.items.forEach(item => buildRateKeys.set(item.id, item.rateKey)));
+  function renovationKey(item) {
+    const id = String(item?.id || '').toLowerCase();
+    const text = `${item?.description || ''} ${item?.type || ''}`.toLowerCase();
+    if (id === 'project-preliminaries') return 'preliminaries';
+    const aliases = [
+      ['ceiling','ceiling'],['spc','spc'],['floor','floorTile'],['walltile','wallTile'],['facade','facadeWall'],
+      ['downlight','downlight'],['walllight','wallLight'],['fan','ceilingFan'],['exhaust','exhaustFan'],['curtain','curtainBoxLED'],
+      ['barlamp','barLamp'],['lamp','barLamp'],['frame','kitchenFrame'],['makinggood','kitchenMakingGood'],['glassdoor','kitchenGlassDoor'],
+      ['sanitary','bathroomSanitary'],['door','bathroomDoor'],['gate','gateMotor'],['divider','wallDivider'],['fence','frontFence']
+    ];
+    for (const [suffix,key] of aliases) if (id.endsWith(`-${suffix}`) || id === suffix) return key;
+    if (/extension.*kitchen|kitchen.*extension/.test(text)) return 'extensionKitchen';
+    if (/extension.*toilet|toilet.*extension/.test(text)) return 'extensionToilet';
+    return null;
   }
 
   function buildRoomKey(item) {
-    const id = String(item.id || '');
+    const id = String(item?.id || '');
     if (id.endsWith('-ceiling')) return 'ceilingInt';
     if (id.endsWith('-walltile')) return 'bathWallTile';
     if (id.endsWith('-piping')) return 'bathPiping';
@@ -81,192 +75,135 @@
     return null;
   }
 
-  function applyBuildEdits(items) {
-    items.forEach(item => {
-      const key = buildRateKeys.get(item.id) || buildRoomKey(item);
+  function buildRateKey(item) {
+    if (!item) return null;
+    const id = String(item.id || '');
+    const map = {
+      'prelim-1':'permit','prelim-2':'prelim','elec-db':'dbBox','elec-wiring':'wiring','elec-pp':'powerPoint','elec-switch':'switch',
+      'elec-light':'lighting','elec-fan':'fan','elec-ac':'aircond','elec-earth':'earthing'
+    };
+    if (map[id]) return map[id];
+    if (typeof STRUCT_GROUPS !== 'undefined') {
+      for (const g of STRUCT_GROUPS) for (const x of g.items || []) if (x.id === id) return x.rateKey;
+    }
+    return buildRoomKey(item);
+  }
+
+  function addDatabaseRecord(key, fallback, custom=false) {
+    const current = ensureRecord(key, fallback);
+    current.custom = custom || !!current.custom;
+    saveDB();
+    return current;
+  }
+
+  function applyBuildDatabase(items) {
+    const result = Array.isArray(items) ? items : [];
+    result.forEach(item => {
+      const key = buildRateKey(item);
       if (!key) return;
-      const result = effective(key, item);
-      item.description = result.description;
-      item.unit = result.unit;
-      item.rate = result.rate;
-      item.amount = (Number(item.qty) || 0) * result.rate;
+      const fallback = {description:item.description, unit:item.unit || 'unit', rate:num(item.rate), qty:num(item.qty)};
+      addDatabaseRecord(key, fallback, false);
+      const e = effectiveRecord(key, fallback);
+      item.description=e.description; item.unit=e.unit; item.rate=e.rate; item.amount=num(item.qty)*e.rate;
     });
-    return items;
+    Object.entries(db).forEach(([key,r]) => {
+      if (!r.custom || r.included === false) return;
+      const qty = Math.max(0,num(r.qty));
+      if (!qty) return;
+      result.push({id:`custom-${key}`, key, description:r.description, unit:r.unit || 'unit', rate:num(r.rate), qty, amount:qty*num(r.rate), category:'Additional Contractor Item', room:'Additional / Custom'});
+    });
+    saveDB();
+    return result;
   }
 
-  function renderBuildSchedule() {
-    if (!contractor || typeof RATE_SCHEDULE === 'undefined' || typeof RATES === 'undefined') return;
-    const section = document.getElementById('rateScheduleSection');
-    const content = document.getElementById('rateScheduleContent');
-    if (!section || !content) return;
-    section.classList.remove('homeowner-hidden');
-    document.getElementById('rateSchedulePanel')?.classList.remove('hidden');
-    content.innerHTML = '<table class="w-full border-collapse text-sm"><thead><tr class="border-b-2 text-left"><th class="py-2 px-2">Description</th><th class="py-2 px-2">Unit</th><th class="py-2 px-2 text-right">Rate (RM)</th></tr></thead><tbody>' +
-      RATE_SCHEDULE.map(group => '<tr class="bg-gray-100 border-b"><td colspan="3" class="py-2 px-2 font-bold">' + esc(group.title) + '</td></tr>' +
-        group.rows.map(row => {
-          const e = getEdit(row.key);
-          const desc = e.description || row.label;
-          const unit = e.unit || row.unit;
-          const rate = Number.isFinite(e.rate) ? e.rate : Number(RATES[row.key] ?? 0);
-          return '<tr class="border-b"><td class="py-2 px-2"><input data-contractor-key="' + esc(row.key) + '" data-field="description" value="' + esc(desc) + '" class="w-full min-w-[260px] border rounded-lg px-2 py-2 bg-white"></td><td class="py-2 px-2"><input data-contractor-key="' + esc(row.key) + '" data-field="unit" value="' + esc(unit) + '" class="w-24 border rounded-lg px-2 py-2 bg-white"></td><td class="py-2 px-2 text-right"><input type="number" min="0" step="0.01" data-contractor-key="' + esc(row.key) + '" data-field="rate" value="' + rate.toFixed(2) + '" class="w-28 border rounded-lg px-2 py-2 text-right bg-white"></td></tr>';
-        }).join('')).join('') + '</tbody></table>';
-    content.querySelectorAll('input[data-contractor-key]').forEach(input => input.addEventListener('change', () => {
-      const key = input.dataset.contractorKey;
-      const field = input.dataset.field;
-      if (field === 'rate') {
-        const n = parseFloat(input.value);
-        if (!Number.isFinite(n) || n < 0) { renderBuildSchedule(); return; }
-        RATES[key] = n;
-        setEdit(key, 'rate', n);
-      } else setEdit(key, field, input.value.trim());
-      if (typeof updateEstimate === 'function') updateEstimate();
-    }));
+  function applyRenovationDatabase(data) {
+    const d = data || {};
+    d.allItems = Array.isArray(d.allItems) ? d.allItems : [];
+    d.allItems.forEach(item => {
+      const key = renovationKey(item);
+      if (!key) return;
+      const fallback = {description:item.description, unit:item.unit || BUILTIN_RENO_UNITS[key] || 'unit', rate:num(item.rate), qty:num(item.qty)};
+      addDatabaseRecord(key, fallback, false);
+      const e = effectiveRecord(key, fallback);
+      item.description=e.description; item.unit=e.unit; item.rate=e.rate; item.amount=num(item.qty)*e.rate;
+    });
+    Object.entries(db).forEach(([key,r]) => {
+      if (!r.custom || r.included === false) return;
+      const qty=Math.max(0,num(r.qty)); if (!qty) return;
+      d.allItems.push({id:`custom-${key}`,key,description:r.description,unit:r.unit||'unit',rate:num(r.rate),qty,amount:qty*num(r.rate),category:'Additional Contractor Item',room:'Additional / Custom'});
+    });
+    const p=effectiveRecord('preliminaries',{description:'Renovation permit / professional submission',unit:'ls',rate:num(d.projectPreliminaries),qty:1});
+    d.projectPreliminaries=num(p.rate);
+    d.total=d.projectPreliminaries+d.allItems.reduce((s,x)=>s+num(x.amount),0);
+    saveDB();
+    return d;
   }
 
-  function setupBuildContractor() {
-    if (!contractor || typeof RATE_SCHEDULE === 'undefined') return false;
+  function rateFallbacks() {
+    if (plannerType === 'renovation') {
+      return Object.fromEntries(Object.keys(RATES || {}).map(key => [key,{description:RENO_LABELS[key]||key,unit:BUILTIN_RENO_UNITS[key]||'unit',rate:num(RATES[key]),qty:1}]));
+    }
+    const out={};
+    if (typeof RATE_SCHEDULE !== 'undefined') RATE_SCHEDULE.forEach(g => (g.rows||[]).forEach(row => { out[row.key]={description:row.label,unit:row.unit||'unit',rate:num(RATES?.[row.key]),qty:1}; }));
+    return out;
+  }
+
+  function renderDatabase() {
+    if (!contractor) return;
+    let section=document.getElementById('contractorItemDatabase');
+    if (!section) {
+      section=document.createElement('section'); section.id='contractorItemDatabase';
+      section.className='no-print bg-white rounded-2xl shadow-sm p-6 mb-6';
+      const anchor=document.getElementById('rateScheduleSection') || document.getElementById('estimateContent')?.closest('section');
+      anchor?.parentNode.insertBefore(section,anchor);
+    }
+    const builtins=rateFallbacks();
+    Object.entries(builtins).forEach(([key,f])=>ensureRecord(key,f));
+    saveDB();
+    const custom=Object.entries(db).filter(([,r])=>r.custom);
+    const builtinRows=Object.entries(builtins).map(([key,f])=>{const r=effectiveRecord(key,f);return `<tr class="border-b"><td class="py-2 px-2"><input data-db-key="${esc(key)}" data-db-field="description" value="${esc(r.description)}" class="w-full min-w-[250px] border rounded-lg px-2 py-2"></td><td class="py-2 px-2"><input data-db-key="${esc(key)}" data-db-field="unit" value="${esc(r.unit)}" class="w-24 border rounded-lg px-2 py-2"></td><td class="py-2 px-2"><input type="number" min="0" step="0.01" data-db-key="${esc(key)}" data-db-field="rate" value="${num(r.rate).toFixed(2)}" class="w-28 border rounded-lg px-2 py-2 text-right"></td><td class="py-2 px-2 text-center text-xs text-gray-500">Built-in</td></tr>`;}).join('');
+    const customRows=custom.map(([key,r])=>`<tr class="border-b"><td class="py-2 px-2"><input data-db-key="${esc(key)}" data-db-field="description" value="${esc(r.description)}" class="w-full min-w-[250px] border rounded-lg px-2 py-2"></td><td class="py-2 px-2"><input data-db-key="${esc(key)}" data-db-field="unit" value="${esc(r.unit||'unit')}" class="w-24 border rounded-lg px-2 py-2"></td><td class="py-2 px-2"><input type="number" min="0" step="0.01" data-db-key="${esc(key)}" data-db-field="rate" value="${num(r.rate).toFixed(2)}" class="w-28 border rounded-lg px-2 py-2 text-right"></td><td class="py-2 px-2 text-center"><button type="button" data-db-delete="${esc(key)}" class="border rounded-lg px-3 py-2 text-xs">Delete</button></td></tr>`).join('');
+    section.innerHTML=`<div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4"><div><h3 class="font-bold text-lg">Contractor Item Database</h3><p class="text-sm text-gray-500">Built-in and custom items are stored in this browser and applied to estimates and quotations.</p></div><div class="flex gap-2"><button type="button" id="addContractorItem" class="bg-black text-white px-4 py-2 rounded-lg text-sm font-semibold">+ Add New Item</button><button type="button" id="resetContractorDatabase" class="border px-4 py-2 rounded-lg text-sm">Reset Built-in Rates</button></div></div><div id="newContractorItemForm" class="hidden mb-5 border rounded-xl bg-gray-50 p-4"><div class="grid md:grid-cols-4 gap-3"><input id="newItemDescription" class="border rounded-lg px-3 py-2" placeholder="Description"><input id="newItemUnit" class="border rounded-lg px-3 py-2" placeholder="Unit (e.g. unit, sqft, ls)"><input id="newItemRate" type="number" min="0" step="0.01" class="border rounded-lg px-3 py-2" placeholder="Rate (RM)"><input id="newItemQty" type="number" min="0" step="0.01" value="1" class="border rounded-lg px-3 py-2" placeholder="Qty"></div><label class="flex items-center gap-2 mt-3 text-sm"><input id="newItemIncluded" type="checkbox" checked> Include this item in the estimate / quotation</label><div class="mt-3 flex gap-2"><button type="button" id="saveNewContractorItem" class="bg-black text-white px-4 py-2 rounded-lg text-sm font-semibold">Save Item</button><button type="button" id="cancelNewContractorItem" class="border px-4 py-2 rounded-lg text-sm">Cancel</button></div></div><div class="overflow-x-auto"><table class="w-full border-collapse text-sm"><thead><tr class="border-b-2 text-left"><th class="py-2 px-2">Description</th><th class="py-2 px-2">Unit</th><th class="py-2 px-2 text-right">Rate (RM)</th><th class="py-2 px-2">Type</th></tr></thead><tbody>${builtinRows}${customRows}</tbody></table></div>`;
+    section.querySelectorAll('input[data-db-key]').forEach(input=>input.addEventListener('change',()=>{const key=input.dataset.dbKey,field=input.dataset.dbField; if(field==='rate'){const n=parseFloat(input.value); if(!Number.isFinite(n)||n<0){renderDatabase();return;} db[key].rate=n; if(plannerType==='build'&&typeof RATES!=='undefined')RATES[key]=n;} else db[key][field]=input.value.trim(); saveDB(); window.updateEstimate?.();}));
+    section.querySelectorAll('[data-db-delete]').forEach(btn=>btn.addEventListener('click',()=>{delete db[btn.dataset.dbDelete];saveDB();renderDatabase();window.updateEstimate?.();}));
+    section.querySelector('#addContractorItem').onclick=()=>section.querySelector('#newContractorItemForm').classList.toggle('hidden');
+    section.querySelector('#cancelNewContractorItem').onclick=()=>section.querySelector('#newContractorItemForm').classList.add('hidden');
+    section.querySelector('#saveNewContractorItem').onclick=()=>{const description=section.querySelector('#newItemDescription').value.trim(),unit=section.querySelector('#newItemUnit').value.trim()||'unit',rate=parseFloat(section.querySelector('#newItemRate').value),qty=parseFloat(section.querySelector('#newItemQty').value)||1,included=section.querySelector('#newItemIncluded').checked;if(!description||!Number.isFinite(rate)||rate<0){alert('Please enter a description and valid rate.');return;}const key='custom-'+Date.now().toString(36);db[key]={description,unit,rate,qty,included,custom:true};saveDB();renderDatabase();window.updateEstimate?.();};
+    section.querySelector('#resetContractorDatabase').onclick=()=>{Object.keys(db).forEach(k=>{if(!db[k].custom)delete db[k];});const builtins2=rateFallbacks();Object.entries(builtins2).forEach(([k,f])=>db[k]={...f,custom:false,included:true});saveDB();if(plannerType==='build'&&typeof RATES!=='undefined')Object.entries(db).forEach(([k,r])=>{if(k in RATES)RATES[k]=num(r.rate);});renderDatabase();window.updateEstimate?.();};
+  }
+
+  function installBuild() {
+    if (!contractor || typeof window.getAllItems !== 'function' || typeof RATE_SCHEDULE === 'undefined') return false;
+    if (!window.getAllItems.__terajuDatabaseWrapped) {
+      const original=window.getAllItems;
+      const wrapped=function(){return applyBuildDatabase(original());}; wrapped.__terajuDatabaseWrapped=true; window.getAllItems=wrapped;
+    }
     document.getElementById('homeownerQuotationOptions')?.classList.add('hidden');
     document.getElementById('contractorQuotationOptions')?.classList.remove('hidden');
-    const originalToggle = window.toggleRateSchedule;
-    if (originalToggle && !originalToggle.__terajuWrapped) {
-      const wrapped = function() { originalToggle(); if (contractor) renderBuildSchedule(); };
-      wrapped.__terajuWrapped = true;
-      window.toggleRateSchedule = wrapped;
-    }
-    const originalReset = window.resetRatesToDefault;
-    if (originalReset && !originalReset.__terajuWrapped) {
-      const wrapped = function() { edits.clear(); originalReset(); renderBuildSchedule(); };
-      wrapped.__terajuWrapped = true;
-      window.resetRatesToDefault = wrapped;
-    }
-    if (window.getAllItems && !window.getAllItems.__terajuWrapped) {
-      const originalGetAllItems = window.getAllItems;
-      const wrapped = function() { return applyBuildEdits(originalGetAllItems()); };
-      wrapped.__terajuWrapped = true;
-      window.getAllItems = wrapped;
-    }
-    renderBuildSchedule();
+    const oldRate=document.getElementById('rateScheduleSection'); if(oldRate) oldRate.classList.add('hidden');
+    renderDatabase();
     return true;
   }
 
-  function renovationLabels() {
-    return {
-      ceiling:'Plaster ceiling flat c/w paint', spc:'SPC flooring c/w skirting and floor mat', floorTile:'Floor tiles c/w waterproofing',
-      wallTile:'Wall tiles c/w waterproofing', facadeWall:'Facade wall', downlight:'Downlight c/w wiring', wallLight:'Wall light c/w wiring',
-      ceilingFan:'Ceiling fan c/w wiring', exhaustFan:'Exhaust fan c/w wiring', curtainBoxLED:'LED light for curtain box c/w wiring', barLamp:'Bar / kitchen lamp c/w wiring',
-      kitchenFrame:'Laminated arce frame', kitchenMakingGood:'Making good after demolition', kitchenGlassDoor:'Swing glass door', bathroomSanitary:'Toilet accessories / sanitary set',
-      bathroomDoor:'Toilet swing door', gateMotor:'Main gate c/w automatic motor', wallDivider:'Side brickwall divider c/w plaster and paint', frontFence:'Front fence brickwall',
-      preliminaries:'Renovation permit / professional submission', extensionKitchen:'New kitchen extension works', extensionToilet:'New toilet extension works'
-    };
-  }
-
-  function renderRenovationSchedule() {
-    if (!contractor || typeof RATES === 'undefined' || typeof getData !== 'function') return;
-    if (document.getElementById('contractorRateSchedule')) return;
-    const labels = renovationLabels();
-    const section = document.createElement('section');
-    section.id = 'contractorRateSchedule';
-    section.className = 'no-print bg-white rounded-2xl shadow-sm p-6 mb-6';
-    section.innerHTML = '<div class="flex justify-between items-center mb-4"><div><h3 class="font-bold text-lg">Contractor Rate Schedule</h3><p class="text-sm text-gray-500">Edit description, unit and rate. Changes apply to the estimate and quotations.</p></div><button type="button" id="resetContractorRates" class="border px-4 py-2 rounded-lg text-sm">Reset</button></div><div id="contractorRateScheduleContent" class="overflow-x-auto"></div>';
-    const estimate = document.getElementById('estimateContent')?.closest('section');
-    estimate?.parentNode.insertBefore(section, estimate);
-    const content = section.querySelector('#contractorRateScheduleContent');
-    const rows = Object.keys(RATES).map(key => {
-      const e = getEdit(key), fallback = labels[key] || key;
-      const unit = e.unit || (key === 'preliminaries' ? 'ls' : 'unit');
-      const rate = Number.isFinite(e.rate) ? e.rate : Number(RATES[key] || 0);
-      return '<tr class="border-b"><td class="py-2 px-2"><input data-key="' + esc(key) + '" data-field="description" value="' + esc(e.description || fallback) + '" class="w-full min-w-[260px] border rounded-lg px-2 py-2"></td><td class="py-2 px-2"><input data-key="' + esc(key) + '" data-field="unit" value="' + esc(unit) + '" class="w-24 border rounded-lg px-2 py-2"></td><td class="py-2 px-2"><input type="number" min="0" step="0.01" data-key="' + esc(key) + '" data-field="rate" value="' + rate.toFixed(2) + '" class="w-32 border rounded-lg px-2 py-2 text-right"></td></tr>';
-    }).join('');
-    content.innerHTML = '<table class="w-full border-collapse text-sm"><thead><tr class="border-b-2 text-left"><th class="py-2 px-2">Description</th><th class="py-2 px-2">Unit</th><th class="py-2 px-2 text-right">Rate (RM)</th></tr></thead><tbody>' + rows + '</tbody></table>';
-    content.querySelectorAll('input[data-key]').forEach(input => input.addEventListener('change', () => {
-      const key = input.dataset.key, field = input.dataset.field;
-      if (field === 'rate') {
-        const n = parseFloat(input.value);
-        if (!Number.isFinite(n) || n < 0) { renderRenovationSchedule(); return; }
-        RATES[key] = n; setEdit(key, 'rate', n);
-      } else setEdit(key, field, input.value.trim());
-      updateEstimate?.();
-    }));
-    section.querySelector('#resetContractorRates').addEventListener('click', () => {
-      edits.clear();
-      if (typeof DEFAULT_RATES !== 'undefined') RATES = {...DEFAULT_RATES};
-      section.remove();
-      renderRenovationSchedule();
-      updateEstimate?.();
-    });
-  }
-
-  function setupRenovationContractor() {
-    if (!contractor || typeof getData !== 'function' || typeof RATES === 'undefined') return false;
-    const quotationSection = Array.from(document.querySelectorAll('section.no-print')).find(section => section.querySelector('[onclick="generateSimpleQuotation()"]'));
-    if (quotationSection) {
-      quotationSection.innerHTML = '<div class="mb-5"><h3 class="font-bold text-lg">Generate Contractor Quotation</h3><p class="text-sm text-gray-500">Choose the quotation detail level. Contractor quotations are available without homeowner payment unlock.</p></div><div id="renovationContractorQuotationOptions" class="grid md:grid-cols-2 gap-4"><label class="border rounded-xl p-4"><input type="radio" name="renovationQuotationType" value="simple" checked> Simple Quotation</label><label class="border rounded-xl p-4"><input type="radio" name="renovationQuotationType" value="detail"> Detailed Quotation</label></div><button type="button" id="generateRenovationContractorQuotation" class="mt-5 bg-black text-white px-5 py-3 rounded-lg font-semibold">Generate Quotation</button>';
-      document.getElementById('generateRenovationContractorQuotation').onclick = () => {
-        const type = document.querySelector('input[name="renovationQuotationType"]:checked')?.value || 'simple';
-        if (type === 'simple') window.generateSimpleQuotation();
-        else window.generateContractorDetailedQuotation();
-      };
+  function installRenovation() {
+    if (!contractor || typeof window.getData !== 'function' || typeof RATES === 'undefined') return false;
+    if (!window.getData.__terajuDatabaseWrapped) {
+      const original=window.getData;
+      const wrapped=function(){return applyRenovationDatabase(original());}; wrapped.__terajuDatabaseWrapped=true; window.getData=wrapped;
     }
-    if (window.getData && !window.getData.__terajuWrapped) {
-      const originalGetData = window.getData;
-      const wrapped = function() {
-        const d = originalGetData();
-        d.allItems?.forEach(item => {
-          const key = item.id === 'project-preliminaries' ? 'preliminaries' : item.id.split('-').pop();
-          const e = getEdit(key);
-          if (!e.description && !e.unit && !Number.isFinite(e.rate)) return;
-          const result = effective(key, item);
-          item.description = result.description;
-          item.unit = result.unit;
-          item.rate = result.rate;
-          item.amount = (Number(item.qty) || 0) * result.rate;
-        });
-        const p = getEdit('preliminaries');
-        if (Number.isFinite(p.rate)) d.projectPreliminaries = p.rate;
-        d.total = d.projectPreliminaries + (d.allItems || []).reduce((sum, item) => sum + (Number(item.amount) || 0), 0);
-        return d;
-      };
-      wrapped.__terajuWrapped = true;
-      window.getData = wrapped;
-    }
-    window.generateContractorDetailedQuotation = function() {
-      const d = window.getData();
-      if (!d.roomGroups.some(r => r.area > 0)) { alert('Please add at least one area with a valid sqft before generating the quotation.'); return; }
-      quotationNumber = typeof generateQuotationNumber === 'function' ? generateQuotationNumber() : ('QO' + Date.now());
-      let html = detailHtml(d);
-      const p = getEdit('preliminaries');
-      if (p.description) html = html.replace("Submission of Renovation Permit Application and Engineer's Drawings to the Local Authority", esc(p.description));
-      if (p.unit) {
-        const marker = p.description ? esc(p.description) : "Submission of Renovation Permit Application and Engineer's Drawings to the Local Authority";
-        const pos = html.indexOf(marker);
-        if (pos >= 0) {
-          const tdPos = html.indexOf('<td>ls</td>', pos);
-          if (tdPos >= 0) html = html.slice(0, tdPos) + '<td>' + esc(p.unit) + '</td>' + html.slice(tdPos + '<td>ls</td>'.length);
-        }
-      }
-      document.getElementById('quotationContent').innerHTML = html;
-      document.getElementById('quotationPrintActions').classList.remove('hidden');
-      document.getElementById('quotationDocument').classList.remove('hidden');
-      document.getElementById('quotationDocument').scrollIntoView({behavior:'smooth',block:'start'});
-    };
-    renderRenovationSchedule();
+    const quotationSection=Array.from(document.querySelectorAll('section.no-print')).find(s=>s.querySelector('[onclick="generateSimpleQuotation()"]'));
+    if(quotationSection&&!quotationSection.dataset.terajuDbQuotation){quotationSection.dataset.terajuDbQuotation='1';quotationSection.innerHTML='<div class="mb-5"><h3 class="font-bold text-lg">Generate Contractor Quotation</h3><p class="text-sm text-gray-500">Choose the quotation detail level. Contractor detailed quotation is available without homeowner payment unlock.</p></div><div class="grid md:grid-cols-2 gap-4"><label class="border rounded-xl p-4"><input type="radio" name="renovationQuotationType" value="simple" checked> Simple Quotation</label><label class="border rounded-xl p-4"><input type="radio" name="renovationQuotationType" value="detail"> Detailed Quotation</label></div><button type="button" id="generateRenovationContractorQuotation" class="mt-5 bg-black text-white px-5 py-3 rounded-lg font-semibold">Generate Quotation</button>';document.getElementById('generateRenovationContractorQuotation').onclick=()=>{const type=document.querySelector('input[name="renovationQuotationType"]:checked')?.value||'simple';if(type==='simple')window.generateSimpleQuotation();else window.generateContractorDetailedQuotation?.();};}
+    renderDatabase();
     return true;
   }
 
-  function applyUI() {
-    if (!contractor) {
-      document.getElementById('contractorQuotationOptions')?.classList.add('hidden');
-      document.getElementById('homeownerQuotationOptions')?.classList.remove('hidden');
-      document.getElementById('rateScheduleSection')?.classList.add('homeowner-hidden');
-      return;
-    }
-    if (!setupBuildContractor()) setupRenovationContractor();
+  function roundQuotationQuantities(){const root=document.getElementById('quotationContent');if(!root)return;root.querySelectorAll('table').forEach(table=>{const headers=[...table.querySelectorAll('thead th')].map(th=>th.textContent.trim().toLowerCase());const qi=headers.findIndex(h=>h==='quantity'||h.includes('quantity'));if(qi<0)return;table.querySelectorAll('tbody tr').forEach(row=>{const cell=row.children[qi];if(!cell)return;const m=cell.textContent.trim().match(/^(\d+(?:\.\d+)?)(.*)$/);if(!m)return;const v=Number(m[1]);if(!Number.isFinite(v))return;cell.textContent=`${Math.max(1,Math.ceil(v))}${m[2]||''}`;});});}
+  function init(){
+    window.TERAJU_AUDIENCE=contractor?'contractor':'homeowner'; document.body.classList.toggle('contractor-mode',contractor); document.body.classList.toggle('homeowner-mode',!contractor);
+    if(!contractor)return;
+    const ok=plannerType==='build'?installBuild():installRenovation();
+    if(!ok){setTimeout(init,100);return;}
+    const q=document.getElementById('quotationContent'); if(q){roundQuotationQuantities();new MutationObserver(()=>roundQuotationQuantities()).observe(q,{childList:true,subtree:true});}
   }
-
-  function init() {
-    applyUI();
-    quantityObserver();
-  }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => setTimeout(init, 30));
-  else setTimeout(init, 30);
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
