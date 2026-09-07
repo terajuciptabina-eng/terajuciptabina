@@ -425,6 +425,9 @@ async function printQuotation() {
     const clone = source.cloneNode(true);
     clone.querySelectorAll('.no-print, #quotationPrintActions, #quotationLockOverlay').forEach(el => el.remove());
     clone.classList.remove('quotation-locked');
+    // Give the final signature/footer breathing room so the direct PDF renderer
+    // never crops the last text pixels at the bottom edge of the source.
+    clone.style.paddingBottom = '32px';
 
     const holder = document.createElement('div');
     holder.style.cssText = [
