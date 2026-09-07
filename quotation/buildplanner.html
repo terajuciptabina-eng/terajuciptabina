@@ -15,10 +15,37 @@
 body.contractor-mode .contractor-only{display:block!important}
 body.contractor-mode .contractor-only.inline-flex{display:inline-flex!important}
 body.contractor-mode .contractor-only.flex{display:flex!important}
+body.contractor-mode td.contractor-only,body.contractor-mode th.contractor-only{display:table-cell!important}
 .contractor-editable{display:none}
 body.contractor-mode .contractor-editable{display:inline-block}
 .homeowner-locked{background:#f9fafb!important;color:#4b5563}
 body.contractor-mode .homeowner-locked{display:none!important}
+
+#contractorItemDatabase table{width:100%!important;table-layout:fixed!important;border-collapse:collapse!important}
+#contractorItemDatabase table th:nth-child(1),#contractorItemDatabase table td:nth-child(1){width:55%!important}
+#contractorItemDatabase table th:nth-child(2),#contractorItemDatabase table td:nth-child(2){width:15%!important}
+#contractorItemDatabase table th:nth-child(3),#contractorItemDatabase table td:nth-child(3){width:18%!important}
+#contractorItemDatabase table th:nth-child(4),#contractorItemDatabase table td:nth-child(4){width:12%!important}
+#contractorItemDatabase table input{box-sizing:border-box!important;max-width:100%!important;min-width:0!important}
+#rateScheduleContent table{width:100%!important;table-layout:fixed!important;border-collapse:collapse!important}
+#rateScheduleContent table th:nth-child(1),#rateScheduleContent table td:nth-child(1){width:55%!important}
+#rateScheduleContent table th:nth-child(2),#rateScheduleContent table td:nth-child(2){width:15%!important}
+#rateScheduleContent table th:nth-child(3),#rateScheduleContent table td:nth-child(3){width:30%!important}
+#rateScheduleContent table input{box-sizing:border-box!important;max-width:100%!important}
+.detailed-quotation-table{width:100%!important;table-layout:fixed!important}
+.detailed-quotation-table th:nth-child(1),.detailed-quotation-table td:nth-child(1){width:32%!important}
+.detailed-quotation-table th:nth-child(2),.detailed-quotation-table td:nth-child(2){width:8%!important}
+.detailed-quotation-table th:nth-child(3),.detailed-quotation-table td:nth-child(3){width:13%!important}
+.detailed-quotation-table th:nth-child(4),.detailed-quotation-table td:nth-child(4){width:15%!important}
+.detailed-quotation-table th:nth-child(5),.detailed-quotation-table td:nth-child(5){width:20%!important}
+.detailed-quotation-table th:nth-child(6),.detailed-quotation-table td:nth-child(6){width:12%!important}
+.detailed-quotation-table textarea{width:100%!important;min-width:0!important;box-sizing:border-box!important;resize:vertical}
+.detailed-quotation-table td,.detailed-quotation-table th{vertical-align:top}
+@media(max-width:767px){
+ #contractorItemDatabase table{min-width:620px!important}
+ #rateScheduleContent table{min-width:560px!important}
+ #estimateContent .detailed-quotation-table{min-width:760px!important}
+}
 </style>
 </head>
 <body class="bg-gray-100 text-gray-800">
@@ -105,7 +132,7 @@ function formatQty(v){const n=Number(v)||0;return Math.ceil(n)}
 function roundQty(v){const n=Number(v)||0;return Math.max(0,Math.ceil(n))}
 function toggleProjectInfo(){const p=document.getElementById('projectInfo'),a=document.getElementById('projectArrow');if(!p)return;p.classList.toggle('hidden');if(a)a.textContent=p.classList.contains('hidden')?'▼':'▲'}
 function toggleRateSchedule(){const p=document.getElementById('rateSchedulePanel'),a=document.getElementById('rateScheduleArrow');if(!p)return;p.classList.toggle('hidden');if(a)a.textContent=p.classList.contains('hidden')?'▼':'▲';if(!p.classList.contains('hidden'))renderRateSchedule()}
-function renderRateSchedule(){const c=document.getElementById('rateScheduleContent');if(!c)return;let h='<table class="w-full border-collapse text-sm"><thead><tr class="border-b-2 text-left"><th class="py-2 px-2">Description</th><th class="py-2 px-2">Unit</th><th class="py-2 px-2 text-right">Rate (RM)</th></tr></thead><tbody>';RATE_SCHEDULE.forEach(g=>{h+=`<tr class="bg-gray-100 border-b"><td colspan="3" class="py-2 px-2 font-bold">${escapeHtml(g.title)}</td></tr>`;g.rows.forEach(r=>h+=`<tr class="border-b"><td class="py-2 px-2">${escapeHtml(r.label)}</td><td class="py-2 px-2">${escapeHtml(r.unit)}</td><td class="py-2 px-2 text-right"><input type="number" min="0" step="0.01" value="${Number(RATES[r.key]??0).toFixed(2)}" onchange="editScheduleRate('${r.key}',this.value)" class="w-28 border rounded-lg px-2 py-1.5 text-right bg-white"></td></tr>`)});c.innerHTML=h+'</tbody></table>'}
+function renderRateSchedule(){const c=document.getElementById('rateScheduleContent');if(!c)return;let h='<table class="w-full border-collapse text-sm"><colgroup><col style="width:55%"><col style="width:15%"><col style="width:30%"></colgroup><thead><tr class="border-b-2 text-left"><th class="py-2 px-2">Description</th><th class="py-2 px-2">Unit</th><th class="py-2 px-2 text-right">Rate (RM)</th></tr></thead><tbody>';RATE_SCHEDULE.forEach(g=>{h+=`<tr class="bg-gray-100 border-b"><td colspan="3" class="py-2 px-2 font-bold">${escapeHtml(g.title)}</td></tr>`;g.rows.forEach(r=>h+=`<tr class="border-b"><td class="py-2 px-2">${escapeHtml(r.label)}</td><td class="py-2 px-2">${escapeHtml(r.unit)}</td><td class="py-2 px-2 text-right"><input type="number" min="0" step="0.01" value="${Number(RATES[r.key]??0).toFixed(2)}" onchange="editScheduleRate('${r.key}',this.value)" class="w-28 border rounded-lg px-2 py-1.5 text-right bg-white"></td></tr>`)});c.innerHTML=h+'</tbody></table>'}
 function editScheduleRate(k,v){const n=parseFloat(v);if(!Number.isFinite(n)||n<0){alert('Please enter a valid rate.');renderRateSchedule();return}RATES[k]=Math.round(n*100)/100;customRates.clear();saveContractorState();updateEstimate()}
 function resetRatesToDefault(){RATES={...DEFAULT_RATES};customRates.clear();renderRateSchedule();updateEstimate()}
 function roomOptions(){return Object.entries(ROOM_TYPES).map(([k,n])=>`<option value="${k}">${escapeHtml(n)}</option>`).join('')}
@@ -124,7 +151,7 @@ function renderEstimate(items,rooms,total,roomsArea,declared){const c=document.g
  const byCategory=(cat)=>items.filter(i=>i.category===cat);const prelim=byCategory('preliminaries'),structures=byCategory('structures'),electrical=byCategory('electrical');const archByRoom={};rooms.forEach(r=>archByRoom[r.roomId]=items.filter(i=>i.category==='architecture'&&i.roomId===r.roomId));
  const row=(i,target)=>`<tr class="border-b align-top"><td class="py-3 px-2 min-w-[300px]"><textarea class="w-full border rounded-lg px-3 py-2 bg-white contractor-editable" onchange="editItemDescription('${i.id}',this.value)">${escapeHtml(i.description)}</textarea><div class="homeowner-locked py-2">${escapeHtml(i.description)}</div></td><td class="py-3 px-2">${escapeHtml(i.unit)}</td><td class="py-3 px-2"><input type="number" min="0" step="1" value="${normalizeQuantity(i.qty)}" class="w-24 border rounded-lg px-2 py-2 text-right contractor-editable" onchange="editItemQuantity('${i.id}',this.value)"><div class="homeowner-locked text-right py-2">${formatQty(i.qty)}</div></td><td class="py-3 px-2"><input type="number" min="0" step="0.01" value="${normalizeRate(i.rate).toFixed(2)}" class="w-28 border rounded-lg px-2 py-2 text-right contractor-editable" onchange="editItemRate('${i.id}',this.value)"><div class="homeowner-locked text-right py-2">${money(i.rate,2)}</div></td><td class="py-3 px-2 text-right font-medium">${money(i.amount,2)}</td><td class="py-3 px-2 contractor-only"><button type="button" onclick="excludeItem('${i.id}')" class="text-red-600 border border-red-200 px-3 py-2 rounded-lg text-xs">Delete</button></td></tr>`;
  const section=(title,cat,target,arr)=>{let h=`<tr class="quotation-section-row"><td colspan="6" class="py-3 px-2"><div class="flex items-center justify-between gap-3"><span>${escapeHtml(title)}</span><button type="button" class="contractor-only border px-3 py-1.5 rounded-lg text-xs bg-white" onclick="addManualItemPrompt('${target}')">+ Add Item</button></div></td></tr>`;if(!arr.length)h+=`<tr><td colspan="6" class="py-3 px-2 text-sm text-gray-500">No active items.</td></tr>`;else arr.forEach(i=>h+=row(i,target));return h};
- let h='<table class="w-full border-collapse text-sm detailed-quotation-table"><thead><tr class="border-b-2 text-left"><th>Description</th><th>Unit</th><th>Quantity</th><th>Rate (RM)</th><th>Amount (RM)</th><th class="contractor-only">Action</th></tr></thead><tbody>';
+ let h='<table class="w-full border-collapse text-sm detailed-quotation-table"><colgroup><col style="width:32%"><col style="width:8%"><col style="width:13%"><col style="width:15%"><col style="width:20%"><col style="width:12%"></colgroup><thead><tr class="border-b-2 text-left"><th>Description</th><th>Unit</th><th>Quantity</th><th>Rate (RM)</th><th>Amount (RM)</th><th class="contractor-only">Action</th></tr></thead><tbody>';
  h+=section('Project / Preliminaries','preliminaries','prelim',prelim);h+=section('Structural Works','structures','structures',structures);rooms.forEach(r=>{const arr=archByRoom[r.roomId]||[];h+=`<tr class="quotation-subsection-row"><td colspan="6" class="py-2 px-2"><div class="flex items-center justify-between gap-3"><span>${escapeHtml(r.label)} <span class="font-normal">(${formatQty(r.area)} sqft)</span></span><button type="button" class="contractor-only border px-3 py-1.5 rounded-lg text-xs bg-white" onclick="addManualItemPrompt('room:${r.roomId}')">+ Add Item</button></div></td></tr>`;arr.forEach(i=>h+=row(i,`room:${r.roomId}`))});h+=section('Electrical Works','electrical','electrical',electrical);h+='</tbody><tfoot><tr class="border-t-2"><td colspan="4" class="py-4 px-2 text-right font-bold">TOTAL</td><td class="py-4 px-2 text-right font-bold text-lg">'+money(total,2)+'</td><td class="contractor-only"></td></tr></tfoot></table>';
  c.innerHTML=h;document.getElementById('grandTotal').textContent=money(total,2);document.getElementById('totalBuiltArea').textContent=formatQty(declared)+' sqft';document.getElementById('roomsTotalArea').textContent=formatQty(roomsArea)+' sqft';
 }
