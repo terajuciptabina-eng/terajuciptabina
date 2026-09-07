@@ -4,7 +4,8 @@
   if (!window.TerajuContractorProfile) return;
 
   const params = new URLSearchParams(window.location.search);
-  const audience = (params.get('audience') || 'homeowner').toLowerCase();
+  const isContractorSelector = /\/contractor\.html$/i.test(window.location.pathname);
+  const audience = (params.get('audience') || (isContractorSelector ? 'contractor' : 'homeowner')).toLowerCase();
   if (audience !== 'contractor') return;
 
   const profile = window.TerajuContractorProfile.getOrCreate();
@@ -13,6 +14,24 @@
     return String(value ?? '').replace(/[&<>\"']/g, ch => ({
       '&':'&amp;', '<':'&lt;', '>':'&gt;', '\"':'&quot;', "'":'&#39;'
     }[ch]));
+  }
+
+  function plannerUrl(path) {
+    const p = window.TerajuContractorProfile.get();
+    const url = new URL(path, window.location.href);
+    url.searchParams.set('audience', 'contractor');
+    if (p?.contractorId) url.searchParams.set('contractorId', p.contractorId);
+    if (p?.state) url.searchParams.set('state', p.state);
+    return url.href;
+  }
+
+  function updatePlannerLinks() {
+    document.querySelectorAll('a[href*="buildplanner.html"], a[href*="renovationplanner.html"]').forEach(link => {
+      const href = link.getAttribute('href');
+      if (!href) return;
+      const target = new URL(href, window.location.href);
+      link.href = plannerUrl(target.pathname.split('/').pop());
+    });
   }
 
   function injectStyles() {
@@ -36,6 +55,7 @@
   }
 
   function findAnchor() {
+    if (isContractorSelector) return document.getElementById('contractorProfileMount') || document.querySelector('main') || document.body;
     return document.querySelector('main') || document.querySelector('.container') || document.body;
   }
 
@@ -69,7 +89,8 @@
     `;
 
     const anchor = findAnchor();
-    anchor.insertBefore(box, anchor.firstChild);
+    if (isContractorSelector && anchor.id === 'contractorProfileMount') anchor.appendChild(box);
+    else anchor.insertBefore(box, anchor.firstChild);
 
     box.querySelector('#tcpSave').addEventListener('click', () => {
       const name = box.querySelector('#tcpContractorName').value.trim();
@@ -84,8 +105,11 @@
       });
       box.querySelector('#tcpId').textContent = saved.contractorId;
       box.querySelector('#tcpSaved').textContent = 'Profile saved.';
+      updatePlannerLinks();
       window.dispatchEvent(new CustomEvent('teraju:contractor-profile-saved', { detail: saved }));
     });
+
+    updatePlannerLinks();
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', render, { once:true });
