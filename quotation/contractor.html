@@ -1,19 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contractor | TERAJU WORKS</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.card{transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease}.card:hover{transform:translateY(-4px);box-shadow:0 18px 45px rgba(15,23,42,.10);border-color:#cbd5e1}</style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contractor | TERAJU WORKS</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.card{transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease}.card:hover{transform:translateY(-4px);box-shadow:0 18px 45px rgba(15,23,42,.10);border-color:#cbd5e1}</style>
 </head>
 <body class="min-h-screen bg-slate-50 text-slate-900">
 <header class="border-b border-slate-200 bg-white"><div class="mx-auto flex max-w-6xl items-center justify-between px-5 py-4 sm:px-6"><a href="index.html" class="flex items-center gap-3"><img src="../images/logo.png" alt="Teraju Ciptabina Logo" class="h-10 w-auto"><div class="hidden sm:block leading-tight"><div class="text-sm font-bold tracking-wide text-slate-900">TERAJU WORKS</div><div class="text-[10px] font-medium tracking-[0.16em] text-slate-500">CONSTRUCTION COSTING & QUOTATION</div></div></a><a href="index.html" class="text-sm font-medium text-slate-500 transition hover:text-slate-900">← Change User Type</a></div></header>
 <main class="mx-auto max-w-6xl px-5 py-12 sm:px-6 sm:py-16">
 <div id="loginPanel" class="mx-auto max-w-xl rounded-3xl border border-slate-200 bg-white p-7 shadow-sm sm:p-9">
-  <div class="text-center"><div class="mb-4 inline-flex rounded-full border border-slate-200 bg-slate-50 px-4 py-1.5 text-xs font-semibold tracking-wide text-slate-600">CONTRACTOR</div><h1 id="authTitle" class="text-3xl font-bold tracking-tight text-slate-950">Contractor sign in</h1><p id="authDescription" class="mt-3 text-sm leading-6 text-slate-600">Sign in with your Contractor ID to continue your saved local costing data on this device.</p></div>
-  <div class="mt-7 grid grid-cols-2 rounded-2xl bg-slate-100 p-1"><button id="signInTab" type="button" class="rounded-xl bg-white px-4 py-2.5 text-sm font-semibold shadow-sm">Sign in</button><button id="signUpTab" type="button" class="rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-500">Sign up</button></div>
-  <form id="contractorLogin" class="mt-6 space-y-4"><label class="block"><span class="mb-2 block text-sm font-semibold">Contractor ID</span><input id="contractorIdInput" required autocomplete="username" placeholder="e.g. CTR-001" class="w-full rounded-2xl border border-slate-300 px-4 py-3 outline-none focus:border-slate-500"></label><label id="contractorNameField" class="hidden block"><span class="mb-2 block text-sm font-semibold">Company / Contractor name</span><input id="contractorNameInput" placeholder="Your company name" autocomplete="organization" class="w-full rounded-2xl border border-slate-300 px-4 py-3 outline-none focus:border-slate-500"></label><button id="authButton" class="w-full rounded-2xl bg-slate-950 px-5 py-3.5 text-sm font-semibold text-white hover:bg-slate-800">Sign in</button><p id="authError" class="hidden rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-700"></p></form>
-  <p class="mt-5 text-center text-xs leading-5 text-slate-500">Prototype only: contractor accounts and costing data are stored locally on this device. This is not a secure online account system.</p>
+<div class="text-center"><div class="mb-4 inline-flex rounded-full border border-slate-200 bg-slate-50 px-4 py-1.5 text-xs font-semibold tracking-wide text-slate-600">CONTRACTOR</div><h1 id="authTitle" class="text-3xl font-bold tracking-tight text-slate-950">Contractor sign in</h1><p id="authDescription" class="mt-3 text-sm leading-6 text-slate-600">Sign in with your Contractor ID to continue your saved local costing data on this device.</p></div>
+<div class="mt-7 grid grid-cols-2 rounded-2xl bg-slate-100 p-1"><button id="signInTab" type="button" class="rounded-xl bg-white px-4 py-2.5 text-sm font-semibold shadow-sm">Sign in</button><button id="signUpTab" type="button" class="rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-500">Sign up</button></div>
+<form id="contractorLogin" class="mt-6 space-y-4">
+<label id="contractorIdField" class="block hidden"><span class="mb-2 block text-sm font-semibold">Contractor ID</span><input id="contractorIdInput" autocomplete="username" placeholder="e.g. CTR-20260907-A7K2" class="w-full rounded-2xl border border-slate-300 px-4 py-3 outline-none focus:border-slate-500"></label>
+<label id="contractorNameField" class="block"><span class="mb-2 block text-sm font-semibold">Company / Contractor name</span><input id="contractorNameInput" placeholder="Your company name" autocomplete="organization" class="w-full rounded-2xl border border-slate-300 px-4 py-3 outline-none focus:border-slate-500"></label>
+<button id="authButton" class="w-full rounded-2xl bg-slate-950 px-5 py-3.5 text-sm font-semibold text-white hover:bg-slate-800">Create account</button><p id="authGeneratedId" class="hidden rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-700"></p><p id="authError" class="hidden rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-700"></p>
+</form>
+<p class="mt-5 text-center text-xs leading-5 text-slate-500">Prototype only: contractor accounts and costing data are stored locally on this device. No password is used in this prototype.</p>
 </div>
 <div id="portal" class="hidden">
 <div class="mx-auto max-w-3xl text-center"><div class="mb-4 inline-flex items-center rounded-full border border-slate-200 bg-white px-4 py-1.5 text-xs font-semibold tracking-wide text-slate-600">CONTRACTOR</div><h1 class="text-3xl font-bold tracking-tight text-slate-950 sm:text-5xl">What are you costing?</h1><p id="welcome" class="mx-auto mt-4 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg"></p><button id="logout" type="button" class="mt-4 rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700">Log out</button></div>
@@ -24,51 +29,18 @@
 <footer class="border-t border-slate-200 bg-white"><div class="mx-auto max-w-6xl px-5 py-6 text-center text-xs text-slate-500 sm:px-6">TERAJU CIPTABINA RESOURCES · CONSTRUCTION COSTING & QUOTATION</div></footer>
 <script>
 (()=>{
-  const K='teraju.contractor.local.v1';
-  let mode='signin';
-  const active=()=>localStorage.getItem(K+'.activeContractorId');
-  const profile=id=>{try{return JSON.parse(localStorage.getItem(K+'.profile.'+encodeURIComponent(id))||'null')}catch(e){return null}};
-  const error=msg=>{const el=document.getElementById('authError');el.textContent=msg;el.classList.remove('hidden')};
-  const clearError=()=>document.getElementById('authError').classList.add('hidden');
-  const setMode=m=>{
-    mode=m; clearError();
-    const signup=m==='signup';
-    document.getElementById('authTitle').textContent=signup?'Create contractor account':'Contractor sign in';
-    document.getElementById('authDescription').textContent=signup?'Create your local contractor profile first. After sign up, you can use the same Contractor ID to sign in again.':'Sign in with your Contractor ID to continue your saved local costing data on this device.';
-    document.getElementById('contractorNameField').classList.toggle('hidden',!signup);
-    document.getElementById('contractorNameInput').required=signup;
-    document.getElementById('authButton').textContent=signup?'Create account':'Sign in';
-    document.getElementById('signInTab').className=signup?'rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-500':'rounded-xl bg-white px-4 py-2.5 text-sm font-semibold shadow-sm';
-    document.getElementById('signUpTab').className=signup?'rounded-xl bg-white px-4 py-2.5 text-sm font-semibold shadow-sm':'rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-500';
-  };
-  const show=id=>{
-    const p=profile(id);if(!p)return;
-    localStorage.setItem(K+'.activeContractorId',id);
-    document.getElementById('loginPanel').classList.add('hidden');
-    document.getElementById('portal').classList.remove('hidden');
-    document.getElementById('welcome').textContent=`Welcome, ${p.name}. Contractor ID: ${id}`;
-    document.getElementById('buildLink').href=`buildplanner.html?audience=contractor&contractorId=${encodeURIComponent(id)}`;
-    document.getElementById('renoLink').href=`renovationplanner.html?audience=contractor&contractorId=${encodeURIComponent(id)}`;
-  };
-  document.getElementById('signInTab').addEventListener('click',()=>setMode('signin'));
-  document.getElementById('signUpTab').addEventListener('click',()=>setMode('signup'));
-  document.getElementById('contractorLogin').addEventListener('submit',e=>{
-    e.preventDefault();clearError();
-    const id=document.getElementById('contractorIdInput').value.trim();
-    const name=document.getElementById('contractorNameInput').value.trim();
-    if(!id)return;
-    const existing=profile(id);
-    if(mode==='signup'){
-      if(existing){error('This Contractor ID already exists. Please use Sign in instead.');return;}
-      if(!name){error('Please enter your company / contractor name.');return;}
-      localStorage.setItem(K+'.profile.'+encodeURIComponent(id),JSON.stringify({contractorId:id,name,createdAt:new Date().toISOString()}));
-      show(id);return;
-    }
-    if(!existing){error('Contractor ID not found on this device. Please Sign up first.');return;}
-    show(id);
-  });
-  document.getElementById('logout').addEventListener('click',()=>{localStorage.removeItem(K+'.activeContractorId');location.reload()});
-  const id=active();if(id&&profile(id))show(id); else setMode('signin');
+const K='teraju.contractor.local.v1'; let mode='signup';
+const active=()=>localStorage.getItem(K+'.activeContractorId');
+const profile=id=>{try{return JSON.parse(localStorage.getItem(K+'.profile.'+encodeURIComponent(id))||'null')}catch(e){return null}};
+const error=msg=>{const el=document.getElementById('authError');el.textContent=msg;el.classList.remove('hidden')};
+const clearError=()=>document.getElementById('authError').classList.add('hidden');
+const makeId=()=>{let id;do{id='CTR-'+new Date().toISOString().slice(0,10).replace(/-/g,'')+'-'+Math.random().toString(36).slice(2,6).toUpperCase()}while(profile(id));return id};
+const setMode=m=>{mode=m;clearError();document.getElementById('authGeneratedId').classList.add('hidden');const signup=m==='signup';document.getElementById('authTitle').textContent=signup?'Create contractor account':'Contractor sign in';document.getElementById('authDescription').textContent=signup?'Enter your contractor name. The system will automatically create your unique Contractor ID.':'Enter the Contractor ID that was generated for you during Sign Up.';document.getElementById('contractorIdField').classList.toggle('hidden',signup);document.getElementById('contractorIdInput').required=!signup;document.getElementById('contractorNameField').classList.toggle('hidden',!signup);document.getElementById('contractorNameInput').required=signup;document.getElementById('authButton').textContent=signup?'Create account':'Sign in';document.getElementById('signInTab').className=signup?'rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-500':'rounded-xl bg-white px-4 py-2.5 text-sm font-semibold shadow-sm';document.getElementById('signUpTab').className=signup?'rounded-xl bg-white px-4 py-2.5 text-sm font-semibold shadow-sm':'rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-500'};
+const show=id=>{const p=profile(id);if(!p)return;localStorage.setItem(K+'.activeContractorId',id);document.getElementById('loginPanel').classList.add('hidden');document.getElementById('portal').classList.remove('hidden');document.getElementById('welcome').textContent=`Welcome, ${p.name}. Contractor ID: ${id}`;document.getElementById('buildLink').href=`buildplanner.html?audience=contractor&contractorId=${encodeURIComponent(id)}`;document.getElementById('renoLink').href=`renovationplanner.html?audience=contractor&contractorId=${encodeURIComponent(id)}`};
+document.getElementById('signInTab').addEventListener('click',()=>setMode('signin'));document.getElementById('signUpTab').addEventListener('click',()=>setMode('signup'));
+document.getElementById('contractorLogin').addEventListener('submit',e=>{e.preventDefault();clearError();if(mode==='signup'){const name=document.getElementById('contractorNameInput').value.trim();if(!name){error('Please enter your company / contractor name.');return}const id=makeId();localStorage.setItem(K+'.profile.'+encodeURIComponent(id),JSON.stringify({contractorId:id,name,createdAt:new Date().toISOString()}));const out=document.getElementById('authGeneratedId');out.innerHTML=`<strong>Your Contractor ID:</strong><br><span class="mt-1 inline-block text-lg font-bold tracking-wide text-slate-950">${id}</span><br><span class="text-xs text-slate-500">Keep this ID. You will use it to sign in next time.</span>`;out.classList.remove('hidden');show(id);return}const id=document.getElementById('contractorIdInput').value.trim();if(!id){error('Please enter your Contractor ID.');return}if(!profile(id)){error('Contractor ID not found on this device. Please Sign up first.');return}show(id)});
+document.getElementById('logout').addEventListener('click',()=>{localStorage.removeItem(K+'.activeContractorId');location.reload()});
+const id=active();if(id&&profile(id))show(id);else setMode('signup');
 })();
 </script>
 </body></html>
