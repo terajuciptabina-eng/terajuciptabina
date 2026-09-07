@@ -7,7 +7,7 @@
   <title>Build Planner | Teraju Ciptabina</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    *{box-sizing:border-box}html,body{max-width:100%;overflow-x:hidden}body{font-family:Arial,Helvetica,sans-serif;-webkit-text-size-adjust:100%;text-rendering:optimizeLegibility}button,input,select,textarea{font:inherit}button,input,select{min-height:44px}textarea{min-height:88px}button,a,input,select,textarea{-webkit-tap-highlight-color:transparent}button{touch-action:manipulation}input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}input[type=number]{-moz-appearance:textfield;appearance:textfield}.homeowner-hidden{display:none!important}.homeowner-summary-card{border:1px solid #e5e7eb;border-radius:16px;background:#f9fafb;padding:20px}.homeowner-lock{border:1px dashed #d1d5db;border-radius:16px;background:#fafafa;padding:22px}.homeowner-lock .lock-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:#111827;color:#fff;font-size:20px;margin:0 auto 12px}.detailed-quotation-table,.simple-quotation-table{width:100%;table-layout:fixed}.payment-modal-backdrop{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(17,24,39,.62);backdrop-filter:blur(4px)}.payment-modal-backdrop.show{display:flex}.payment-modal{width:min(100%,520px);max-height:min(90vh,760px);overflow-y:auto;background:#fff;border-radius:22px;box-shadow:0 25px 70px rgba(0,0,0,.25)}.payment-modal input{width:100%;border:1px solid #d1d5db;border-radius:10px;padding:12px 14px;outline:none}.payment-modal input:focus{border-color:#111827;box-shadow:0 0 0 3px rgba(17,24,39,.08)}.payment-error{display:none}.payment-error.show{display:block}@media(max-width:767px){main{padding:16px!important}main>section{padding:16px!important;border-radius:16px!important}.room-card{padding:14px!important;overflow:hidden}.room-card>div:first-child{grid-template-columns:1fr!important}.room-card .no-print.flex{display:grid!important;grid-template-columns:1fr 1fr;gap:8px;width:100%}.room-card .no-print.flex button{width:100%}.room-card .no-print.flex button:last-child{grid-column:1/-1}#estimateContent{overflow-x:auto}#estimateContent table,#quotationContent table{min-width:680px}#quotationDocument{padding:16px!important}#quotationPrintActions button{width:100%}}@media print {
+    *{box-sizing:border-box}html,body{max-width:100%;overflow-x:hidden}body{font-family:Arial,Helvetica,sans-serif;-webkit-text-size-adjust:100%;text-rendering:optimizeLegibility}button,input,select,textarea{font:inherit}button,input,select{min-height:44px}textarea{min-height:88px}button,a,input,select,textarea{-webkit-tap-highlight-color:transparent}button{touch-action:manipulation}input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}input[type=number]{-moz-appearance:textfield;appearance:textfield}.homeowner-hidden{display:none!important}.homeowner-summary-card{border:1px solid #e5e7eb;border-radius:16px;background:#f9fafb;padding:20px}.homeowner-lock{border:1px dashed #d1d5db;border-radius:16px;background:#fafafa;padding:22px}.homeowner-lock .lock-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:#111827;color:#fff;font-size:20px;margin:0 auto 12px}.detailed-quotation-table,.simple-quotation-table{width:100%;table-layout:fixed}.payment-modal-backdrop{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(17,24,39,.62);backdrop-filter:blur(4px)}.payment-modal-backdrop.show,.payment-modal-backdrop.open{display:flex}.payment-modal{width:min(100%,520px);max-height:min(90vh,760px);overflow-y:auto;background:#fff;border-radius:22px;box-shadow:0 25px 70px rgba(0,0,0,.25)}.payment-modal input{width:100%;border:1px solid #d1d5db;border-radius:10px;padding:12px 14px;outline:none}.payment-modal input:focus{border-color:#111827;box-shadow:0 0 0 3px rgba(17,24,39,.08)}.payment-error{display:none}.payment-error.show{display:block}@media(max-width:767px){main{padding:16px!important}main>section{padding:16px!important;border-radius:16px!important}.room-card{padding:14px!important;overflow:hidden}.room-card>div:first-child{grid-template-columns:1fr!important}.room-card .no-print.flex{display:grid!important;grid-template-columns:1fr 1fr;gap:8px;width:100%}.room-card .no-print.flex button{width:100%}.room-card .no-print.flex button:last-child{grid-column:1/-1}#estimateContent{overflow-x:auto}#estimateContent table,#quotationContent table{min-width:680px}#quotationDocument{padding:16px!important}#quotationPrintActions button{width:100%}}@media print {
   @page { size: A4 portrait; margin: 12mm; }
 
   html, body {
@@ -94,11 +94,47 @@ body.contractor-mode .homeowner-locked{display:none!important}
  #rateScheduleContent table{min-width:560px!important}
  #estimateContent .detailed-quotation-table{min-width:760px!important}
 }
+
+    /* Detailed quotation access gate */
+    #quotationDocument { position: relative; }
+    #quotationContent.quotation-locked { filter: blur(7px); user-select: none; pointer-events: none; }
+    #quotationDocument.detailed-locked #quotationPrintActions { opacity: .45; pointer-events: none; }
+    .quotation-lock-overlay { position:absolute; inset:0; z-index:20; display:flex; align-items:center; justify-content:center; padding:24px; background:rgba(255,255,255,.30); backdrop-filter:blur(1px); -webkit-backdrop-filter:blur(1px); }
+    .quotation-lock-card { width:min(420px,100%); background:rgba(255,255,255,.97); border:1px solid rgba(0,0,0,.12); border-radius:20px; padding:28px; text-align:center; box-shadow:0 18px 50px rgba(0,0,0,.18); }
+    .quotation-lock-icon { width:54px; height:54px; margin:0 auto 14px; border-radius:999px; display:flex; align-items:center; justify-content:center; background:#111; color:#fff; font-size:25px; }
+    @media print { .quotation-lock-overlay { display:none !important; } #quotationContent.quotation-locked { filter:none !important; } }
 </style>
 </head>
 <body class="bg-gray-100 text-gray-800">
 <header class="bg-white border-b"><div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between"><div class="flex items-center gap-4 min-w-0"><img src="../images/logo.png" alt="Teraju Ciptabina Logo" class="h-12 w-auto flex-shrink-0"><div class="h-12 w-12 rounded-lg bg-gray-900 text-white items-center justify-center font-bold text-lg flex-shrink-0" style="display:none;">T|C</div><div class="min-w-0"><h1 class="font-bold text-lg">TERAJU CIPTABINA</h1><p class="text-xs text-gray-500">Build Planner</p><p id="contractorBadge" class="contractor-only text-xs text-gray-500 mt-1">Contractor Mode</p></div></div></div></header>
-<div id="paymentModal" class="payment-modal-backdrop no-print" aria-hidden="true"><div class="payment-modal" role="dialog" aria-modal="true"><div class="p-6 border-b flex items-start justify-between gap-4"><div><p class="text-xs uppercase tracking-wider text-gray-500">Premium Quotation</p><h3 class="text-2xl font-bold mt-1">Unlock Detailed Quotation</h3><p class="text-sm text-gray-500 mt-2">Get the full item-by-item quotation for this project.</p></div><button type="button" onclick="closePaymentModal()" class="text-gray-400 text-2xl">&times;</button></div><div class="p-6"><div class="rounded-2xl bg-gray-50 border p-5 mb-5 flex items-center justify-between"><div><p class="text-sm text-gray-500">Detailed Quotation</p><p class="text-xs text-gray-500 mt-1">Full scope, quantity, unit, rate & amount</p></div><div class="text-2xl font-bold">RM 49</div></div><div class="grid gap-4"><div><label class="block text-sm font-medium mb-2">Name</label><input id="paymentName" type="text" autocomplete="name" placeholder="Your name"></div><div><label class="block text-sm font-medium mb-2">Email</label><input id="paymentEmail" type="email" autocomplete="email" placeholder="you@example.com"></div><div><label class="block text-sm font-medium mb-2">Phone Number</label><input id="paymentPhone" type="tel" autocomplete="tel" placeholder="01X-XXXXXXX"></div></div><div id="paymentError" class="payment-error mt-4 rounded-xl border border-red-200 bg-red-50 text-red-700 text-sm p-4"></div><p class="mt-5 text-xs text-gray-500">You will be redirected to the secure toyyibPay payment page to complete the RM49 payment.</p><div class="mt-6 flex gap-3"><button type="button" onclick="closePaymentModal()" class="flex-1 border px-4 py-3 rounded-xl font-semibold">Cancel</button><button id="paymentProceedButton" type="button" onclick="startDetailedQuotationPayment()" class="flex-1 bg-black text-white px-4 py-3 rounded-xl font-semibold">Pay RM49</button></div></div></div></div>
+<div id="paymentModal" class="payment-modal-backdrop no-print" aria-hidden="true">
+<div class="payment-modal" role="dialog" aria-modal="true" aria-labelledby="promoModalTitle">
+  <div class="p-6 border-b flex items-start justify-between gap-4">
+    <div>
+      <p data-detailed-modal-title class="text-xs uppercase tracking-wider text-gray-500">Limited-Time Promotion</p>
+      <h3 id="promoModalTitle" class="text-2xl font-bold mt-1">Detailed Quotation</h3>
+      <p class="text-sm text-gray-500 mt-2">The detailed quotation is generated first, then locked until you unlock it.</p>
+    </div>
+    <button type="button" onclick="closePaymentModal()" class="text-gray-400 text-2xl" aria-label="Close">&times;</button>
+  </div>
+  <div class="p-6">
+    <div class="rounded-2xl bg-gray-50 border p-5 mb-5 flex items-center justify-between gap-4">
+      <div>
+        <p class="text-sm text-gray-500">Detailed Quotation</p>
+        <p class="text-xs text-gray-500 mt-1">Full scope, quantity, unit, rate & amount</p>
+      </div>
+      <div data-detailed-price class="text-2xl font-bold whitespace-nowrap"><span class="line-through text-gray-400 text-base mr-2">RM 49</span><span class="text-green-700">FREE</span></div>
+    </div>
+    <div data-detailed-promo-note class="rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800">
+      <strong>Promo:</strong> Detailed Quotation is FREE until 31 October 2026.
+    </div>
+    <p class="mt-5 text-sm text-gray-600">Your quotation will still show the <strong>actual project rates and amounts</strong>. Only the Detailed Quotation service fee is FREE during this promotion.</p>
+    <div class="mt-6 flex gap-3">
+      <button type="button" onclick="closePaymentModal()" class="flex-1 border px-4 py-3 rounded-xl font-semibold">Cancel</button>
+      <button id="paymentProceedButton" type="button" onclick="confirmDetailedQuotationPromo()" class="flex-1 bg-black text-white px-4 py-3 rounded-xl font-semibold">Unlock Detailed Quotation — FREE</button>
+    </div>
+  </div>
+</div></div></div></div>
 <main class="max-w-6xl mx-auto px-6 py-8">
 <section class="mb-7"><h2 class="text-3xl font-bold mb-2">Build Planner</h2><p class="text-gray-600">Enter the proposed built-up area and room schedule. Structural works are estimated based on the overall built-up area. Architectural finishes, doors, windows and sanitary fittings are calculated per room to ensure accurate quantities.</p></section>
 <section class="bg-white rounded-2xl shadow-sm p-6 mb-6"><div class="flex justify-between items-center cursor-pointer" onclick="toggleProjectInfo()"><div><h3 class="font-bold text-lg">Project Information</h3><p class="text-sm text-gray-500">Provide the project details to be shown on the estimate and quotation.</p></div><span id="projectArrow">▲</span></div><div id="projectInfo" class="mt-5"><div class="grid md:grid-cols-2 gap-5"><div><label class="block text-sm font-medium mb-2">Customer Name</label><input id="customerName" type="text" placeholder="Optional" class="w-full border rounded-lg px-4 py-3" oninput="updateEstimate();saveContractorState()"></div><div><label class="block text-sm font-medium mb-2">Project Location</label><input id="projectLocation" type="text" placeholder="Start typing location..." class="w-full border rounded-lg px-4 py-3" oninput="updateEstimate();saveContractorState()"></div></div></div></section>
@@ -108,7 +144,7 @@ body.contractor-mode .homeowner-locked{display:none!important}
 <section id="rateScheduleSection" class="contractor-only no-print bg-white rounded-2xl shadow-sm p-6 mb-6"><div class="flex justify-between items-center cursor-pointer" onclick="toggleRateSchedule()"><div><h3 class="font-bold text-lg">Rate Schedule</h3><p class="text-sm text-gray-500">Hidden by default. Open this only when you need to amend standard rates.</p></div><span id="rateScheduleArrow">▼</span></div><div id="rateSchedulePanel" class="hidden mt-5"><div class="mb-3"><button type="button" onclick="resetRatesToDefault()" class="border px-4 py-2 rounded-lg text-sm">Reset to Default Rates</button></div><div id="rateScheduleContent" class="overflow-x-auto"></div></div></section>
 <section class="bg-white rounded-2xl shadow-sm p-6"><div class="flex justify-between items-start mb-6"><div><p class="text-xs uppercase tracking-wider text-gray-500">Preliminary Estimate</p><h3 class="text-2xl font-bold">Construction Budget</h3></div><div class="text-right"><p class="text-xs text-gray-500">Estimate No.</p><p id="estimateNumber" class="font-bold"></p></div></div><div id="customerSummary" class="grid md:grid-cols-4 gap-5 mb-6 text-sm"></div><div id="estimateContent" class="overflow-x-auto"></div><div class="contractor-only no-print mt-5 flex justify-end gap-3"><button type="button" onclick="showRemovedItems()" class="border px-4 py-2 rounded-lg text-sm">Show Removed Items</button><button type="button" onclick="restoreAllItems()" class="border px-4 py-2 rounded-lg text-sm">Restore All Items</button></div><div class="border-t mt-6 pt-6"><div class="flex justify-between mb-2"><span class="font-semibold text-lg">Rooms Total Area</span><span id="roomsTotalArea" class="font-bold text-xl">0 sqft</span></div><div class="flex justify-between mb-2"><span class="font-semibold text-lg">Declared Built-up Area</span><span id="totalBuiltArea" class="font-bold text-xl">600 sqft</span></div><div class="flex justify-between"><span class="font-semibold text-lg">Estimated Total</span><span id="grandTotal" class="font-bold text-3xl">RM 0</span></div></div></section>
 <section class="no-print bg-white rounded-2xl shadow-sm p-6 mt-6"><div class="mb-5"><h3 class="font-bold text-lg">Generate Quotation</h3><p class="text-sm text-gray-500">Select the level of pricing detail to be presented in the quotation.</p></div><div id="homeownerQuotationOptions" class="hidden"><div class="grid md:grid-cols-2 gap-4"><div class="border rounded-2xl p-5"><p class="font-bold text-lg">Simple Quotation</p><p class="text-sm text-gray-500 mt-2">Free quotation summary.</p><button type="button" onclick="generateQuotation()" class="mt-5 w-full bg-black text-white px-5 py-3 rounded-lg font-semibold">Generate Free Quotation</button></div><div class="border rounded-2xl p-5 bg-gray-50"><p class="font-bold text-lg">Detailed Cost Breakdown</p><p class="text-sm text-gray-500 mt-2">Full scope, quantities, rates and costing.</p><button type="button" onclick="requestDetailedQuotation()" class="mt-5 w-full border border-gray-900 text-gray-900 px-5 py-3 rounded-lg font-semibold">Generate Detailed Quotation</button></div></div></div><div id="contractorQuotationOptions" class="contractor-only"><div class="grid md:grid-cols-2 gap-4"><label class="border rounded-xl p-4"><input type="radio" name="quotationType" value="simple" checked> Simple Quotation</label><label class="border rounded-xl p-4"><input type="radio" name="quotationType" value="detail"> Detailed Quotation</label></div><button type="button" onclick="generateQuotation()" class="mt-5 bg-black text-white px-5 py-3 rounded-lg font-semibold">Generate Quotation</button></div></section>
-<section id="quotationDocument" class="hidden bg-white rounded-2xl shadow-sm p-8 mt-6"><div id="quotationContent"></div><div id="quotationPrintActions" class="no-print mt-6 pt-5 border-t flex justify-end"><button type="button" onclick="printQuotation()" class="bg-black text-white px-5 py-3 rounded-lg font-semibold">Save Quotation as PDF</button></div></section>
+<section id="quotationDocument" class="hidden bg-white rounded-2xl shadow-sm p-8 mt-6"><div id="quotationContent"></div><div id="quotationLockOverlay" class="quotation-lock-overlay no-print hidden" aria-hidden="true"><div class="quotation-lock-card"><div class="quotation-lock-icon" aria-hidden="true">🔒</div><h3 class="text-xl font-bold">Detailed Quotation Locked</h3><p class="text-sm text-gray-600 mt-2">The detailed quotation has been generated. Unlock it to view the full item-by-item rates and amounts.</p><button type="button" onclick="unlockDetailedQuotation()" class="mt-5 w-full bg-black text-white px-5 py-3 rounded-xl font-semibold">Unlock Detailed Quotation</button></div></div><div id="quotationPrintActions" class="no-print mt-6 pt-5 border-t flex justify-end"><button type="button" onclick="saveQuotationPdf()" class="bg-black text-white px-5 py-3 rounded-lg font-semibold">Save Quotation as PDF</button></div></section>
 </main>
 <script>
 const BASE_AREA=600;
@@ -291,9 +327,21 @@ function generateQuotationNumber(){let n=localStorage.getItem('terajuNBQO');n=n?
 function getSelectedQuotationType(){return document.querySelector('input[name="quotationType"]:checked')?.value||'simple'}
 function getCurrentQuotationData(){const all=getAllItems().filter(i=>!excludedItems.has(i.id)),rooms=getRoomGroups(),prelim=all.filter(i=>i.category==='preliminaries'),structures=all.filter(i=>i.category==='structures'),electrical=all.filter(i=>i.category==='electrical'),archByRoom={},roomSubtotals={};rooms.forEach(r=>{archByRoom[r.roomId]=[];roomSubtotals[r.roomId]=0});all.filter(i=>i.category==='architecture').forEach(i=>{(archByRoom[i.roomId]??=[]).push(i);roomSubtotals[i.roomId]=(roomSubtotals[i.roomId]||0)+i.amount});return{allItems:all,rooms,prelim,structures,electrical,archByRoom,roomSubtotals,total:all.reduce((s,i)=>s+i.amount,0)}}
 function quotationDescriptionList(items){return items.length?items.map(i=>escapeHtml(i.description)).join('<br>'):'No selected works'}
-function unlockDetailedQuotation(){requestDetailedQuotation()}
-function requestDetailedQuotation(){generateQuotation('detail')}
+const DETAILED_QUOTATION_PROMO = true;
+const DETAILED_QUOTATION_PRICE = 49;
+const DETAILED_QUOTATION_PROMO_END = '31 October 2026';
+function setDetailedQuotationLocked(locked){const doc=document.getElementById('quotationDocument'),content=document.getElementById('quotationContent'),overlay=document.getElementById('quotationLockOverlay');if(!doc||!content||!overlay)return;doc.classList.toggle('detailed-locked',!!locked);content.classList.toggle('quotation-locked',!!locked);overlay.classList.toggle('hidden',!locked);overlay.setAttribute('aria-hidden',locked?'false':'true');}
+function openDetailedQuotationPromo(){const modal=document.getElementById('paymentModal');if(!modal){DETAILED_QUOTATION_PROMO?unlockDetailedQuotation():startDetailedQuotationPayment();return;}const price=modal.querySelector('[data-detailed-price]'),note=modal.querySelector('[data-detailed-promo-note]'),button=document.getElementById('paymentProceedButton'),title=modal.querySelector('[data-detailed-modal-title]');if(DETAILED_QUOTATION_PROMO){if(price)price.innerHTML='<span class="line-through text-gray-400 text-base mr-2">RM 49</span><span class="text-green-700">FREE</span>';if(note)note.innerHTML='<strong>Promo:</strong> Detailed Quotation is FREE until 31 October 2026.';if(button){button.textContent='Unlock Detailed Quotation — FREE';button.onclick=confirmDetailedQuotationPromo;}if(title)title.textContent='Limited-Time Promotion';}else{if(price)price.innerHTML='<span class="text-gray-900">RM 49</span>';if(note)note.innerHTML='<strong>Price:</strong> Detailed Quotation service fee is RM 49.';if(button){button.textContent='Pay RM 49 & Unlock';button.onclick=startDetailedQuotationPayment;}if(title)title.textContent='Detailed Quotation';}modal.classList.add('open');modal.setAttribute('aria-hidden','false');}
+function closePaymentModal(){const modal=document.getElementById('paymentModal');if(!modal)return;modal.classList.remove('open');modal.classList.remove('show');modal.setAttribute('aria-hidden','true');}
+function unlockDetailedQuotation(){setDetailedQuotationLocked(false);closePaymentModal();}
+function confirmDetailedQuotationPromo(){if(!DETAILED_QUOTATION_PROMO)return startDetailedQuotationPayment();unlockDetailedQuotation();}
+function startDetailedQuotationPayment(){if(DETAILED_QUOTATION_PROMO){unlockDetailedQuotation();return;}if(typeof window.TERAJU_START_DETAILED_PAYMENT==='function'){window.TERAJU_START_DETAILED_PAYMENT({amount:DETAILED_QUOTATION_PRICE,onVerified:completeDetailedQuotationPayment});return;}alert('Payment gateway is not active yet.');}
+function completeDetailedQuotationPayment(verified){if(verified)unlockDetailedQuotation();}
+
+function requestDetailedQuotation(){generateQuotation('detail');}
+
 function generateQuotation(typeOverride){
+ const selectedType=typeOverride||getSelectedQuotationType();
  const rooms=getRoomGroups();
  if(!rooms.some(r=>r.area>0)){alert('Please add at least one area with a valid area before generating the quotation.');return}
  const data=getCurrentQuotationData();
@@ -314,6 +362,7 @@ function generateQuotation(typeOverride){
   if(data.electrical.length) simpleSection('ELECTRICAL WORKS',data.electrical);
   body+=`</tbody><tfoot><tr class="border-t-2"><td colspan="3" class="py-4 px-2 text-right font-bold">TOTAL</td><td class="py-4 px-2 text-right font-bold text-lg">${money(data.total,2)}</td></tr></tfoot></table></div>`;
  }else{
+  body+=`<div class="mb-5 rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm"><span class="font-semibold">Detailed Quotation:</span> <span class="line-through text-gray-400">RM 49</span> <span class="font-bold text-green-700 ml-1">FREE</span> <span class="text-gray-600 ml-1">— Limited-time promotion until 31 October 2026.</span></div>`;
   body+=`<div class="overflow-x-auto"><table class="w-full border-collapse text-sm detailed-quotation-table"><colgroup><col style="width:48%"><col style="width:10%"><col style="width:10%"><col style="width:16%"><col style="width:16%"></colgroup><thead><tr class="border-b-2 text-left"><th class="py-3 px-2">Description</th><th class="py-3 px-2">Unit</th><th class="py-3 px-2 text-right">Quantity</th><th class="py-3 px-2 text-right">Rate (RM)</th><th class="py-3 px-2 text-right">Amount (RM)</th></tr></thead><tbody>`;
   const itemRow=i=>`<tr class="border-b align-top"><td class="py-3 px-2">${escapeHtml(i.description)}</td><td class="py-3 px-2">${escapeHtml(i.unit)}</td><td class="py-3 px-2 text-right">${formatQty(i.qty,i.unit)}</td><td class="py-3 px-2 text-right">${money(i.rate,2)}</td><td class="py-3 px-2 text-right font-medium">${money(i.amount,2)}</td></tr>`;
   if(data.prelim.length){body+=`<tr class="quotation-section-row"><td colspan="5" class="py-3 px-2">PRELIMINARIES</td></tr>`;body+=data.prelim.map(itemRow).join('');body+=`<tr class="border-b"><td colspan="3"></td><td class="py-2 px-2 text-right font-semibold">Subtotal - Preliminaries</td><td class="py-2 px-2 text-right font-semibold">${money(data.prelim.reduce((s,i)=>s+i.amount,0),2)}</td></tr>`}
@@ -324,9 +373,80 @@ function generateQuotation(typeOverride){
  }
  body+=`<div class="mt-8 pt-5 border-t text-sm"><p class="font-semibold mb-2">Terms / Notes</p><ul class="list-disc pl-5 text-gray-600"><li>This quotation is based on the stated built-up area, area schedule and rates applied herein.</li><li>Final scope, specifications, site conditions and pricing remain subject to site inspection and written confirmation.</li><li>Any additional works or authority requirements not listed above shall be quoted separately.</li></ul></div><div class="mt-12 text-sm"><p>Yours sincerely,</p><p class="font-bold mt-8">TERAJU CIPTABINA RESOURCES</p></div>`;
  content.innerHTML=body;document.getElementById('quotationDocument').classList.remove('hidden');document.getElementById('quotationPrintActions').classList.remove('hidden');document.getElementById('quotationDocument').scrollIntoView({behavior:'smooth',block:'start'})
+setDetailedQuotationLocked(type==='detail');if(type==='detail')openDetailedQuotationPromo();return true;
 }
+async function saveQuotationPdf(){if(document.getElementById('quotationDocument')?.classList.contains('detailed-locked')){alert('Please unlock the Detailed Quotation before saving the PDF.');return;}
+
+  const quotation=document.getElementById('quotationDocument');
+  const content=document.getElementById('quotationContent');
+  if(!quotation||quotation.classList.contains('hidden')||!content||!content.innerHTML.trim()){
+    alert('Please generate the quotation first.');
+    return;
+  }
+  if(!window.html2canvas||!window.jspdf||!window.jspdf.jsPDF){
+    alert('PDF generator is still loading. Please try again in a moment.');
+    return;
+  }
+  const button=document.querySelector('#quotationPrintActions button');
+  const originalText=button?button.textContent:'';
+  if(button){button.disabled=true;button.textContent='Creating PDF...';}
+  try{
+    await new Promise(resolve=>{
+      const images=Array.from(content.querySelectorAll('img'));
+      if(!images.length){resolve();return;}
+      let remaining=images.length;
+      const done=()=>{remaining--;if(remaining<=0)resolve()};
+      images.forEach(img=>{
+        if(img.complete)done();
+        else{img.addEventListener('load',done,{once:true});img.addEventListener('error',done,{once:true});}
+      });
+    });
+    const canvas=await html2canvas(content,{
+      scale:2,
+      useCORS:true,
+      allowTaint:false,
+      backgroundColor:'#ffffff',
+      logging:false,
+      imageTimeout:15000,
+      windowWidth:content.scrollWidth
+    });
+    const {jsPDF}=window.jspdf;
+    const pdf=new jsPDF({orientation:'portrait',unit:'mm',format:'a4',compress:true});
+    const pageWidth=210, pageHeight=297, margin=10;
+    const usableWidth=pageWidth-(margin*2), usableHeight=pageHeight-(margin*2);
+    const pxPerMm=canvas.width/usableWidth;
+    const pageCanvasHeight=Math.floor(usableHeight*pxPerMm);
+    let offsetY=0, page=0;
+    while(offsetY<canvas.height){
+      const sliceHeight=Math.min(pageCanvasHeight,canvas.height-offsetY);
+      const slice=document.createElement('canvas');
+      slice.width=canvas.width;
+      slice.height=sliceHeight;
+      const ctx=slice.getContext('2d');
+      ctx.fillStyle='#ffffff';
+      ctx.fillRect(0,0,slice.width,slice.height);
+      ctx.drawImage(canvas,0,offsetY,canvas.width,sliceHeight,0,0,canvas.width,sliceHeight);
+      if(page>0)pdf.addPage();
+      const renderedHeight=sliceHeight/pxPerMm;
+      pdf.addImage(slice.toDataURL('image/jpeg',0.96),'JPEG',margin,margin,usableWidth,renderedHeight,'FAST');
+      offsetY+=sliceHeight;
+      page++;
+    }
+    const filename=(quotationNumber?`Quotation-${quotationNumber}`:'Quotation')+'.pdf';
+    pdf.save(filename);
+  }catch(err){
+    console.error('PDF generation failed:',err);
+    alert('Unable to create the PDF automatically. Please try again.');
+  }finally{
+    if(button){button.disabled=false;button.textContent=originalText||'Save Quotation as PDF';}
+  }
+}
+
 function printQuotation(){const q=document.getElementById('quotationDocument');if(q.classList.contains('hidden'))return alert('Please generate the quotation first.');const t=document.title;document.title=quotationNumber?`Quotation ${quotationNumber}`:'Quotation';document.body.classList.add('print-quotation');const clean=()=>{document.body.classList.remove('print-quotation');document.title=t;window.removeEventListener('afterprint',clean)};window.addEventListener('afterprint',clean);window.print();setTimeout(clean,1500)}
 applyAudienceUI();if(isHomeowner()){document.getElementById('homeownerQuotationOptions')?.classList.remove('hidden');document.getElementById('contractorQuotationOptions')?.classList.add('hidden');document.getElementById('roomsContainer').innerHTML='';roomCounter=0;document.getElementById('builtUpArea').value='0';updateEstimate()}else{document.getElementById('homeownerQuotationOptions')?.classList.add('hidden');document.getElementById('contractorQuotationOptions')?.classList.remove('hidden');if(!loadContractorState()){document.getElementById('roomsContainer').innerHTML='';roomCounter=0;document.getElementById('builtUpArea').value='0';saveContractorState()}document.getElementById('contractorIdDisplay').textContent=CONTRACTOR_ID||'Not signed in';updateEstimate()}
 </script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="location-autocomplete.js"></script>
 </body></html>
