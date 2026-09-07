@@ -1,28 +1,44 @@
 (() => {
-  function load(id, src, next) {
-    if (document.getElementById(id)) { next?.(); return; }
-    const s = document.createElement('script');
-    s.id = id;
-    s.src = src;
-    s.onload = () => next?.();
-    document.head.appendChild(s);
-  }
-  const contractor = new URLSearchParams(location.search).get('audience') === 'contractor';
-  const renovationContractor = contractor && /renoplannercon\.html$/i.test(location.pathname);
-  load('tcBuildPlannerStatePersistence', 'buildplanner-state-persistence.js?v=20260907-final', () => {
-    load('tcBuildPlannerQuotationRenderer', 'buildplanner-alignment-fix.js?v=20260907-simple-summary-fix-2', () => {
-      load('tcBuildPlannerSimpleStructureFix', 'buildplanner-simple-structure-fix.js?v=20260907-simple-summary-fix-2', () => {
-        load('tcBuildPlannerSummaryCleanup', 'buildplanner-summary-cleanup.js?v=20260907-2', () => {
-          load('tcBuildPlannerDetailedFix', 'buildplanner-detailed-fix.js?v=20260907-final', () => {
-            if (contractor && !renovationContractor) {
-              load('tcContractorItemEditor', 'contractor-item-editor.js?v=20260907-1', () => {
-                load('tcContractorDetailedQuotation', 'contractor-detailed-quotation.js?v=20260907-2');
-              });
-            }
-            if (renovationContractor) load('tcRenovationContractorItemEditor', 'renovation-contractor-item-editor.js?v=20260907-1');
-          });
-        });
+  function roundQuotationQuantities() {
+    const root = document.getElementById('quotationContent');
+    if (!root) return;
+
+    root.querySelectorAll('table').forEach(table => {
+      const headers = Array.from(table.querySelectorAll('thead th')).map(th => th.textContent.trim().toLowerCase());
+      const quantityIndex = headers.findIndex(h => h === 'quantity' || h.includes('quantity'));
+      if (quantityIndex < 0) return;
+
+      table.querySelectorAll('tbody tr').forEach(row => {
+        const cells = row.children;
+        if (!cells[quantityIndex]) return;
+        const cell = cells[quantityIndex];
+        const raw = cell.textContent.trim();
+        const match = raw.match(/^\s*(\d+(?:\.\d+)?)\s*(.*)$/);
+        if (!match) return;
+
+        const value = Number(match[1]);
+        if (!Number.isFinite(value)) return;
+
+        const unit = match[2] || '';
+        const rounded = Math.max(1, Math.ceil(value));
+        cell.textContent = `${rounded}${unit ? ` ${unit}` : ''}`;
       });
     });
-  });
+  }
+
+  function init() {
+    roundQuotationQuantities();
+    const root = document.getElementById('quotationContent');
+    if (!root) return;
+
+    const observer = new MutationObserver(() => {
+      observer.disconnect();
+      roundQuotationQuantities();
+      observer.observe(root, { childList: true, subtree: true });
+    });
+    observer.observe(root, { childList: true, subtree: true });
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
 })();
