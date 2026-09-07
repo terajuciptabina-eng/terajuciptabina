@@ -13,7 +13,11 @@
     load('tcBuildPlannerQuotationRenderer', 'buildplanner-alignment-fix.js?v=20260907-final', () => {
       load('tcBuildPlannerSimpleStructureFix', 'buildplanner-simple-structure-fix.js?v=20260907-final', () => {
         load('tcBuildPlannerDetailedFix', 'buildplanner-detailed-fix.js?v=20260907-final', () => {
-          if (contractor && !renovationContractor) load('tcContractorItemEditor', 'contractor-item-editor.js?v=20260907-1');
+          if (contractor && !renovationContractor) {
+            load('tcContractorItemEditor', 'contractor-item-editor.js?v=20260907-1', () => {
+              load('tcContractorDetailedQuotation', 'contractor-detailed-quotation.js?v=20260907-2');
+            });
+          }
           if (renovationContractor) load('tcRenovationContractorItemEditor', 'renovation-contractor-item-editor.js?v=20260907-1');
         });
       });
