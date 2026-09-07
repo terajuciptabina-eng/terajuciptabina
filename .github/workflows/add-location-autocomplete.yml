@@ -34,6 +34,49 @@ jobs:
               if changed:
                   p.write_text(s,encoding='utf-8')
           PY
+      - name: Refine contractor description editing
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('quotation/renovationplanner.html')
+          s=p.read_text(encoding='utf-8')
+          css='    .homeowner-locked { background: #f9fafb !important; color: #4b5563; }'
+          if 'body.contractor-mode .homeowner-locked' not in s:
+              assert css in s
+              s=s.replace(css,css+'\n    body.contractor-mode .homeowner-locked { display: none !important; }',1)
+          old='''        <td class="py-3 px-2">Submission of Renovation Permit Application and Engineer's Drawings to the Local Authority</td>'''
+          new='''        <td class="py-3 px-2 align-top">
+          <textarea rows="2" onchange="editItemDescription('project-preliminaries', this.value)"
+            class="contractor-only no-print w-full min-w-[280px] border rounded-lg px-3 py-2 bg-white leading-5 resize-y">${escapeHtml(customDescriptions.has("project-preliminaries") ? customDescriptions.get("project-preliminaries") : "Submission of Renovation Permit Application and Engineer's Drawings to the Local Authority")}</textarea>
+          <div class="homeowner-locked no-print p-2 rounded leading-5">${escapeHtml(customDescriptions.has("project-preliminaries") ? customDescriptions.get("project-preliminaries") : "Submission of Renovation Permit Application and Engineer's Drawings to the Local Authority")}</div>
+          <div class="hidden print:block leading-6">${escapeHtml(customDescriptions.has("project-preliminaries") ? customDescriptions.get("project-preliminaries") : "Submission of Renovation Permit Application and Engineer's Drawings to the Local Authority")}</div>
+        </td>'''
+          if old in s: s=s.replace(old,new,1)
+          old='''          <button type="button" onclick="excludeItem('project-preliminaries')"
+            class="text-red-600 text-xs border border-red-200 rounded px-3 py-1.5 hover:bg-red-50">Delete</button>'''
+          new='''          <button type="button" onclick="excludeItem('project-preliminaries')"
+            class="contractor-only text-red-600 text-xs border border-red-200 rounded px-3 py-1.5 hover:bg-red-50">Delete</button>'''
+          if old in s: s=s.replace(old,new,1)
+          old='''  prelimManual.forEach(item => { html += `<tr class="border-b"><td class="py-3 px-2">${escapeHtml(item.description)}</td><td class="py-3 px-2">${escapeHtml(item.unit)}</td>'''
+          new='''  prelimManual.forEach(item => { html += `<tr class="border-b"><td class="py-3 px-2 align-top"><textarea rows="2" onchange="editItemDescription('${item.id}', this.value)" class="contractor-only no-print w-full min-w-[280px] border rounded-lg px-3 py-2 bg-white leading-5 resize-y">${escapeHtml(item.description)}</textarea><div class="homeowner-locked no-print p-2 rounded leading-5">${escapeHtml(item.description)}</div><div class="hidden print:block leading-6">${escapeHtml(item.description)}</div></td><td class="py-3 px-2">${escapeHtml(item.unit)}</td>'''
+          if old in s: s=s.replace(old,new,1)
+          old='''          <td class="py-3 px-2">Submission of Renovation Permit Application and Engineer’s Drawings to the Local Authority</td>'''
+          new='''          <td class="py-3 px-2">${escapeHtml(customDescriptions.has("project-preliminaries") ? customDescriptions.get("project-preliminaries") : "Submission of Renovation Permit Application and Engineer’s Drawings to the Local Authority")}</td>'''
+          if old in s: s=s.replace(old,new,1)
+          old='''          <td class="py-3 px-2">Submission of Renovation Permit Application and Engineer's Drawings to the Local Authority</td>'''
+          new='''          <td class="py-3 px-2">${escapeHtml(customDescriptions.has("project-preliminaries") ? customDescriptions.get("project-preliminaries") : "Submission of Renovation Permit Application and Engineer's Drawings to the Local Authority")}</td>'''
+          if old in s: s=s.replace(old,new,1)
+          p.write_text(s,encoding='utf-8')
+          PY
+      - name: Validate planner JavaScript
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          s=Path('quotation/renovationplanner.html').read_text(encoding='utf-8')
+          Path('/tmp/renovationplanner.js').write_text('\n'.join(re.findall(r'<script(?:\\s[^>]*)?>(.*?)</script>',s,re.S)))
+          PY
+          node --check /tmp/renovationplanner.js
       - name: Commit planner updates
         run: |
           git config user.name 'Teraju Ciptabina Bot'
@@ -43,5 +86,5 @@ jobs:
             echo 'No planner changes needed.'
             exit 0
           fi
-          git commit -m 'Add quotation quantity rounding [location-autocomplete]'
+          git commit -m 'Apply renovation description editing cleanup [location-autocomplete]'
           git push
