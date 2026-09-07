@@ -68,12 +68,17 @@
         direction:ltr!important;
         border-bottom:1px solid #d1d5db!important;
       }
+
+      /* Contractor-only Simple quotation hierarchy summary alignment. */
+      #quotationContent .tc-q-summary-row td:first-child { text-align:left!important; }
+      #quotationContent .tc-q-summary-row td:last-child { text-align:right!important; white-space:nowrap!important; }
+      #quotationContent .tc-q-summary-header td { text-align:left!important; }
     `;
     document.head.appendChild(style);
 
     const esc = v => typeof window.escapeHtml === 'function'
       ? window.escapeHtml(v)
-      : String(v ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;').replace(/'/g,'&#039;');
+      : String(v ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\\"/g,'&quot;').replace(/'/g,'&#039;');
 
     const money = v => typeof window.money === 'function'
       ? window.money(v,2)
@@ -164,7 +169,18 @@
           body += `<tr class="border-b align-top"><td class="py-3 px-2">${no++}</td><td class="py-3 px-2 font-semibold">Electrical Works</td><td class="py-3 px-2">${data.electrical.map(i => esc(i.description)).join('<br>')}</td><td class="py-3 px-2 text-right font-semibold">${money(total)}</td></tr>`;
         }
 
-        body += `</tbody><tfoot><tr class="border-t-2"><td colspan="3" class="py-4 px-2 text-right font-bold">TOTAL</td><td class="py-4 px-2 text-right font-bold text-lg">${money(data.total)}</td></tr></tfoot></table></div>`;
+        const summary = [
+          ['PRELIMINARIES', data.prelim.reduce((a,i) => a + i.amount, 0)],
+          ['STRUCTURAL WORKS', data.structures.reduce((a,i) => a + i.amount, 0)],
+          ['ARCHITECTURAL WORKS', archRooms.reduce((sum,r) => sum + (Number(data.roomSubtotals[r.roomId]) || 0), 0)],
+          ['ELECTRICAL WORKS', data.electrical.reduce((a,i) => a + i.amount, 0)]
+        ];
+        body += `<tr class="tc-q-summary-header"><td colspan="4" class="py-3 px-2">SUMMARY — TOTAL AMOUNT BY HIERARCHY</td></tr>`;
+        summary.forEach(([title,total]) => {
+          body += `<tr class="tc-q-summary-row border-b"><td colspan="3" class="py-2 px-2 text-left font-semibold">${esc(title)}</td><td class="py-2 px-2 text-right font-semibold whitespace-nowrap">${money(total)}</td></tr>`;
+        });
+
+        body += `</tbody><tfoot><tr class="border-t-2"><td colspan="3" class="py-4 px-2 text-left font-bold">TOTAL</td><td class="py-4 px-2 text-right font-bold text-lg whitespace-nowrap">${money(data.total)}</td></tr></tfoot></table></div>`;
       } else {
         body += `<div class="overflow-x-auto"><table class="w-full border-collapse text-sm detailed-quotation-table"><colgroup><col><col><col><col><col></colgroup><thead><tr class="border-b-2"><th class="py-3 px-2">No.</th><th class="py-3 px-2">Description</th><th class="py-3 px-2 text-right">Quantity</th><th class="py-3 px-2 text-right">Rate (RM)</th><th class="py-3 px-2 text-right">Amount (RM)</th></tr></thead><tbody>`;
 
