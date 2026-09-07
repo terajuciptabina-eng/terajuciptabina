@@ -141,20 +141,3 @@
 
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init); else init();
 })();
-
-(function(){
-  'use strict';
-  const params=new URLSearchParams(location.search);
-  if(params.get('audience')!=='contractor') return;
-  const modules=['contractor-item-editor.js','contractor-detailed-quotation.js','contractor-local-storage.js'];
-  const renovationModule='renovation-contractor-item-editor.js';
-  const isRenovation=/renovationplanner\.html$/i.test(location.pathname);
-  const names=isRenovation?[renovationModule,'contractor-local-storage.js']:modules;
-  names.forEach(src=>{
-    if(document.querySelector(`script[src$="${src}"]`)) return;
-    const s=document.createElement('script');
-    s.src=src;
-    s.async=false;
-    document.body.appendChild(s);
-  });
-})();
