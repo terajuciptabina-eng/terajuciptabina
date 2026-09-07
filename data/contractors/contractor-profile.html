@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contractor Profile | Teraju Ciptabina</title>
+  <style>
+    :root { font-family: Arial, sans-serif; color: #1f2937; background: #f7f7f7; }
+    body { margin: 0; }
+    main { max-width: 980px; margin: 0 auto; padding: 32px 20px 60px; }
+    .card { background: #fff; border: 1px solid #ddd; border-radius: 12px; padding: 20px; margin-top: 16px; }
+    label { display: block; font-weight: 700; margin-bottom: 6px; }
+    input, select { width: 100%; box-sizing: border-box; padding: 11px 12px; border: 1px solid #bbb; border-radius: 8px; font: inherit; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+    button { border: 0; border-radius: 8px; padding: 11px 16px; font: inherit; font-weight: 700; cursor: pointer; margin-top: 16px; }
+    button:disabled { opacity: .6; cursor: wait; }
+    #loadBtn { background: #111827; color: white; }
+    .status { margin-top: 14px; font-weight: 700; }
+    .ok { color: #087f23; }
+    .error { color: #b00020; }
+    .record { margin-top: 16px; padding: 16px; background: #fafafa; border-radius: 8px; }
+    .item-count { font-size: 1.4rem; font-weight: 700; }
+    pre { white-space: pre-wrap; word-break: break-word; background: #111827; color: #f3f4f6; padding: 14px; border-radius: 8px; overflow: auto; }
+    .muted { color: #6b7280; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Contractor Profile</h1>
+  <p class="muted">Standalone contractor database viewer. Read-only: GitHub records are loaded through the canonical loader.</p>
+
+  <section class="card">
+    <div class="grid">
+      <div>
+        <label for="contractorId">Contractor ID</label>
+        <input id="contractorId" value="CTR-DEMO-001" autocomplete="off">
+      </div>
+      <div>
+        <label for="projectType">Project type</label>
+        <select id="projectType">
+          <option value="all">Build + Renovation</option>
+          <option value="build">Build</option>
+          <option value="renovation">Renovation</option>
+        </select>
+      </div>
+    </div>
+    <button id="loadBtn">Load contractor database</button>
+    <div id="status" class="status">Ready.</div>
+  </section>
+
+  <section id="profile" class="card" hidden></section>
+  <section id="records" class="card" hidden></section>
+  <section id="raw" class="card" hidden>
+    <h2>Raw canonical data</h2>
+    <pre id="rawData"></pre>
+  </section>
+</main>
+
+<script src="./github-loader.js"></script>
+<script>
+  const $ = (id) => document.getElementById(id);
+
+  function escapeHtml(value) {
+    return String(value ?? '').replace(/[&<>'"]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[ch]));
+  }
+
+  async function loadProfile() {
+    const id = $('contractorId').value.trim();
+    const type = $('projectType').value;
+    const status = $('status');
+    const button = $('loadBtn');
+
+    if (!id) {
+      status.className = 'status error';
+      status.textContent = 'Contractor ID is required.';
+      return;
+    }
+
+    button.disabled = true;
+    status.className = 'status';
+    status.textContent = 'Loading from GitHub…';
+    $('profile').hidden = true;
+    $('records').hidden = true;
+    $('raw').hidden = true;
+
+    try {
+      const loader = window.TerajuContractorGitHubLoader;
+      if (!loader) throw new Error('Contractor GitHub loader is unavailable.');
+
+      let data;
+      if (type === 'all') {
+        data = await loader.loadContractorDatabase(id);
+      } else {
+        const record = await loader.loadRecord(id, type);
+        data = { contractorId: id, build: type === 'build' ? record : null, renovation: type === 'renovation' ? record : null, errors: {} };
+      }
+
+      const records = [data.build, data.renovation].filter(Boolean);
+      if (!records.length) throw new Error('No contractor records were loaded.');
+
+      const first = records[0];
+      $('profile').innerHTML = `
+        <h2>Profile</h2>
+        <div class="grid">
+          <div><strong>Contractor ID</strong><br>${escapeHtml(first.contractorId)}</div>
+          <div><strong>Contractor name</strong><br>${escapeHtml(first.contractorName)}</div>
+          <div><strong>State</strong><br>${escapeHtml(first.state)}</div>
+          <div><strong>Schema version</strong><br>${escapeHtml(first.schemaVersion)}</div>
+        </div>`;
+      $('profile').hidden = false;
+
+      $('records').innerHTML = '<h2>Database records</h2>' + records.map(record => `
+        <div class="record">
+          <h3>${escapeHtml(record.projectType)}</h3>
+          <div class="item-count">${record.items.length} item(s)</div>
+          <div class="muted">Last updated: ${escapeHtml(record.updatedAt)}</div>
+        </div>`).join('');
+      $('records').hidden = false;
+
+      $('rawData').textContent = JSON.stringify(data, null, 2);
+      $('raw').hidden = false;
+
+      const errors = Object.keys(data.errors || {});
+      status.className = errors.length ? 'status error' : 'status ok';
+      status.textContent = errors.length
+        ? `Loaded with ${errors.length} record error(s).`
+        : 'Loaded successfully from GitHub.';
+    } catch (error) {
+      status.className = 'status error';
+      status.textContent = 'Load failed: ' + (error.message || error);
+    } finally {
+      button.disabled = false;
+    }
+  }
+
+  $('loadBtn').addEventListener('click', loadProfile);
+  loadProfile();
+</script>
+</body>
+</html>
