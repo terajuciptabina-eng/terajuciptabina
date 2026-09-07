@@ -1474,72 +1474,67 @@ function generateQuotationConfirmed(type) {
   document.getElementById("quotationDocument").scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
-async function saveQuotationPdf(){if(document.getElementById('quotationDocument')?.classList.contains('detailed-locked')){alert('Please unlock the Detailed Quotation before saving the PDF.');return;}
-
+async function saveQuotationPdf(){
   const quotation=document.getElementById('quotationDocument');
   const content=document.getElementById('quotationContent');
+  if(quotation?.classList.contains('detailed-locked')){
+    alert('Please unlock the Detailed Quotation before saving the PDF.');
+    return;
+  }
   if(!quotation||quotation.classList.contains('hidden')||!content||!content.innerHTML.trim()){
     alert('Please generate the quotation first.');
     return;
   }
-  if(!window.html2canvas||!window.jspdf||!window.jspdf.jsPDF){
+  if(!window.jspdf||!window.jspdf.jsPDF||!window.html2canvas){
     alert('PDF generator is still loading. Please try again in a moment.');
     return;
   }
+
   const button=document.querySelector('#quotationPrintActions button');
   const originalText=button?button.textContent:'';
   if(button){button.disabled=true;button.textContent='Creating PDF...';}
+
   try{
-    await new Promise(resolve=>{
-      const images=Array.from(content.querySelectorAll('img'));
-      if(!images.length){resolve();return;}
-      let remaining=images.length;
-      const done=()=>{remaining--;if(remaining<=0)resolve()};
-      images.forEach(img=>{
-        if(img.complete)done();
-        else{img.addEventListener('load',done,{once:true});img.addEventListener('error',done,{once:true});}
-      });
-    });
-    const canvas=await html2canvas(content,{
-      scale:2,
-      useCORS:true,
-      allowTaint:false,
-      backgroundColor:'#ffffff',
-      logging:false,
-      imageTimeout:15000,
-      windowWidth:content.scrollWidth
-    });
+    // Give the browser one frame to finish layout before jsPDF captures the DOM.
+    await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+
     const {jsPDF}=window.jspdf;
     const pdf=new jsPDF({orientation:'portrait',unit:'mm',format:'a4',compress:true});
-    const pageWidth=210, pageHeight=297, margin=10;
-    const usableWidth=pageWidth-(margin*2), usableHeight=pageHeight-(margin*2);
-    const pxPerMm=canvas.width/usableWidth;
-    const pageCanvasHeight=Math.floor(usableHeight*pxPerMm);
-    let offsetY=0, page=0;
-    while(offsetY<canvas.height){
-      const sliceHeight=Math.min(pageCanvasHeight,canvas.height-offsetY);
-      const slice=document.createElement('canvas');
-      slice.width=canvas.width;
-      slice.height=sliceHeight;
-      const ctx=slice.getContext('2d');
-      ctx.fillStyle='#ffffff';
-      ctx.fillRect(0,0,slice.width,slice.height);
-      ctx.drawImage(canvas,0,offsetY,canvas.width,sliceHeight,0,0,canvas.width,sliceHeight);
-      if(page>0)pdf.addPage();
-      const renderedHeight=sliceHeight/pxPerMm;
-      pdf.addImage(slice.toDataURL('image/jpeg',0.96),'JPEG',margin,margin,usableWidth,renderedHeight,'FAST');
-      offsetY+=sliceHeight;
-      page++;
-    }
-    const filename=(quotationNumber?`Quotation-${quotationNumber}`:'Quotation')+'.pdf';
-    pdf.save(filename);
+
+    // Use jsPDF's HTML paginator instead of slicing one giant canvas.
+    // Canvas slicing caused the same quotation region to be repeated on every page.
+    await new Promise((resolve,reject)=>{
+      pdf.html(content,{
+        x:10,
+        y:10,
+        width:190,
+        windowWidth:Math.max(content.scrollWidth,content.clientWidth),
+        autoPaging:'text',
+        margin:[10,10,10,10],
+        html2canvas:{
+          scale:1.5,
+          useCORS:true,
+          allowTaint:false,
+          backgroundColor:'#ffffff',
+          logging:false,
+          imageTimeout:15000
+        },
+        pagebreak:{mode:['css','legacy']},
+        callback:(doc)=>{
+          try{
+            const filename=(quotationNumber?`Quotation-${quotationNumber}`:'Quotation')+'.pdf';
+            doc.save(filename);
+            resolve();
+          }catch(err){reject(err);}
+        }
+      });
+    });
   }catch(err){
     console.error('PDF generation failed:',err);
     alert('Unable to create the PDF automatically. Please try again.');
   }finally{
     if(button){button.disabled=false;button.textContent=originalText||'Save Quotation as PDF';}
   }
-return true;
 }
 
 function printQuotation() {
