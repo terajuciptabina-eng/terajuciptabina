@@ -88,7 +88,10 @@
     restoreRooms(record.project);
 
     if (projectType === 'build') {
-      window.__tcExcludedItems = new Set(record.itemState?.excluded || []);
+      const excluded = window.__tcExcludedItems || new Set();
+      excluded.clear();
+      (record.itemState?.excluded || []).forEach(id => excluded.add(id));
+      window.__tcExcludedItems = excluded;
       (record.itemState?.items || []).forEach(saved => {
         if (typeof window.editItemDescription === 'function' && saved.description !== undefined) window.editItemDescription(saved.id, saved.description);
         if (typeof window.editItemQuantity === 'function' && saved.qty !== undefined) window.editItemQuantity(saved.id, saved.qty);
@@ -97,7 +100,10 @@
     } else if (projectType === 'renovation') {
       window.__tcRenovationContractorState = window.__tcRenovationContractorState || { excluded:new Set(), rates:new Map(), descriptions:new Map() };
       const s = window.__tcRenovationContractorState;
-      s.excluded = new Set(record.itemState?.excluded || []);
+      s.excluded.clear();
+      s.rates.clear();
+      s.descriptions.clear();
+      (record.itemState?.excluded || []).forEach(id => s.excluded.add(id));
       (record.itemState?.items || []).forEach(saved => {
         if (saved.id === 'project-preliminaries') {
           s.rates.set(saved.id, Number(saved.rate) || 0);
