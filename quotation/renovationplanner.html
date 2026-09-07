@@ -166,10 +166,46 @@
     break-inside: avoid !important; page-break-inside: avoid !important;
   }
 }
-  </style>
+  
+    .payment-modal-backdrop { position: fixed; inset: 0; z-index: 1000; display: none; align-items: center; justify-content: center; padding: 20px; background: rgba(0,0,0,.55); }
+    .payment-modal-backdrop.open { display: flex; }
+    .payment-modal { width: min(560px, 100%); max-height: calc(100vh - 40px); overflow-y: auto; background: #fff; border-radius: 18px; box-shadow: 0 20px 60px rgba(0,0,0,.25); }
+
+/* Detailed quotation access gate */
+#quotationDocument{position:relative}
+#quotationContent.quotation-locked{filter:blur(7px);user-select:none;pointer-events:none}
+#quotationDocument.detailed-locked #quotationPrintActions{opacity:.45;pointer-events:none}
+.quotation-lock-overlay{position:absolute;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(255,255,255,.30);backdrop-filter:blur(1px);-webkit-backdrop-filter:blur(1px)}
+.quotation-lock-card{width:min(420px,100%);background:rgba(255,255,255,.97);border:1px solid rgba(0,0,0,.12);border-radius:20px;padding:28px;text-align:center;box-shadow:0 18px 50px rgba(0,0,0,.18)}
+.quotation-lock-icon{width:54px;height:54px;margin:0 auto 14px;border-radius:999px;display:flex;align-items:center;justify-content:center;background:#111;color:#fff;font-size:25px}
+@media print{.quotation-lock-overlay{display:none!important}#quotationContent.quotation-locked{filter:none!important}}
+</style>
 </head>
 
 <body class="bg-gray-100 text-gray-800">
+<div id="paymentModal" class="payment-modal-backdrop no-print" aria-hidden="true">
+<div class="payment-modal" role="dialog" aria-modal="true" aria-labelledby="promoModalTitle">
+  <div class="p-6 border-b flex items-start justify-between gap-4">
+    <div>
+      <p data-detailed-modal-title class="text-xs uppercase tracking-wider text-gray-500">Limited-Time Promotion</p>
+      <h3 id="promoModalTitle" class="text-2xl font-bold mt-1">Detailed Quotation</h3>
+      <p class="text-sm text-gray-500 mt-2">The detailed quotation is generated first, then locked until you unlock it.</p>
+    </div>
+    <button type="button" onclick="closePaymentModal()" class="text-gray-400 text-2xl" aria-label="Close">&times;</button>
+  </div>
+  <div class="p-6">
+    <div class="rounded-2xl bg-gray-50 border p-5 mb-5 flex items-center justify-between gap-4">
+      <div><p class="text-sm text-gray-500">Detailed Quotation</p><p class="text-xs text-gray-500 mt-1">Full scope, quantity, unit, rate & amount</p></div>
+      <div data-detailed-price class="text-2xl font-bold whitespace-nowrap"><span class="line-through text-gray-400 text-base mr-2">RM 49</span><span class="text-green-700">FREE</span></div>
+    </div>
+    <div data-detailed-promo-note class="rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800"><strong>Promo:</strong> Detailed Quotation is FREE until 31 October 2026.</div>
+    <p class="mt-5 text-sm text-gray-600">Your quotation will still show the <strong>actual project rates and amounts</strong>. Only the Detailed Quotation service fee is FREE during this promotion.</p>
+    <div class="mt-6 flex gap-3">
+      <button type="button" onclick="closePaymentModal()" class="flex-1 border px-4 py-3 rounded-xl font-semibold">Cancel</button>
+      <button type="button" onclick="confirmDetailedQuotationPromo()" class="flex-1 bg-black text-white px-4 py-3 rounded-xl font-semibold">Unlock Detailed Quotation — FREE</button>
+    </div>
+  </div>
+</div></div></div>
 
 <header class="bg-white border-b">
   <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
@@ -367,9 +403,9 @@
 
   <!-- Generated Quotation -->
   <section id="quotationDocument" class="hidden bg-white rounded-2xl shadow-sm p-8 mt-6">
-    <div id="quotationContent"></div>
+    <div id="quotationContent"></div><div id="quotationLockOverlay" class="quotation-lock-overlay no-print hidden" aria-hidden="true"><div class="quotation-lock-card"><div class="quotation-lock-icon" aria-hidden="true">🔒</div><h3 class="text-xl font-bold">Detailed Quotation Locked</h3><p class="text-sm text-gray-600 mt-2">The detailed quotation has been generated. Unlock it to view the full item-by-item rates and amounts.</p><button type="button" onclick="unlockDetailedQuotation()" class="mt-5 w-full bg-black text-white px-5 py-3 rounded-xl font-semibold">Unlock Detailed Quotation</button></div></div>
     <div id="quotationPrintActions" class="no-print mt-6 pt-5 border-t flex flex-wrap justify-end gap-3">
-      <button type="button" onclick="printQuotation()"
+      <button type="button" onclick="saveQuotationPdf()"
         class="bg-black text-white px-5 py-3 rounded-lg font-semibold hover:bg-gray-800">
         Save Quotation as PDF
       </button>
@@ -1236,7 +1272,17 @@ function quotationDescriptionList(items) {
   return items.map(item => escapeHtml(item.description)).join("<br>");
 }
 
-function generateQuotation() {
+const DETAILED_QUOTATION_PROMO=true;const DETAILED_QUOTATION_PRICE=49;const DETAILED_QUOTATION_PROMO_END='31 October 2026';
+function setDetailedQuotationLocked(locked){const doc=document.getElementById('quotationDocument'),content=document.getElementById('quotationContent'),overlay=document.getElementById('quotationLockOverlay');if(!doc||!content||!overlay)return;doc.classList.toggle('detailed-locked',!!locked);content.classList.toggle('quotation-locked',!!locked);overlay.classList.toggle('hidden',!locked);overlay.setAttribute('aria-hidden',locked?'false':'true');}
+function openDetailedQuotationPromo(){const modal=document.getElementById('paymentModal');if(!modal){if(DETAILED_QUOTATION_PROMO)unlockDetailedQuotation();else startDetailedQuotationPayment();return;}const price=modal.querySelector('[data-detailed-price]'),note=modal.querySelector('[data-detailed-promo-note]'),button=document.getElementById('paymentProceedButton'),title=modal.querySelector('[data-detailed-modal-title]');if(DETAILED_QUOTATION_PROMO){if(price)price.innerHTML='<span class="line-through text-gray-400 text-base mr-2">RM 49</span><span class="text-green-700">FREE</span>';if(note)note.innerHTML='<strong>Promo:</strong> Detailed Quotation is FREE until 31 October 2026.';if(button){button.textContent='Unlock Detailed Quotation — FREE';button.onclick=confirmDetailedQuotationPromo;}if(title)title.textContent='Limited-Time Promotion';}else{if(price)price.innerHTML='<span class="text-gray-900">RM 49</span>';if(note)note.innerHTML='<strong>Price:</strong> Detailed Quotation service fee is RM 49.';if(button){button.textContent='Pay RM 49 & Unlock';button.onclick=startDetailedQuotationPayment;}if(title)title.textContent='Detailed Quotation';}modal.classList.add('open');modal.setAttribute('aria-hidden','false');}
+function closePaymentModal(){const modal=document.getElementById('paymentModal');if(!modal)return;modal.classList.remove('open');modal.classList.remove('show');modal.setAttribute('aria-hidden','true');}
+function unlockDetailedQuotation(){setDetailedQuotationLocked(false);closePaymentModal();}
+function confirmDetailedQuotationPromo(){if(!DETAILED_QUOTATION_PROMO)return startDetailedQuotationPayment();unlockDetailedQuotation();}
+function startDetailedQuotationPayment(){if(DETAILED_QUOTATION_PROMO){unlockDetailedQuotation();return;}if(typeof window.TERAJU_START_DETAILED_PAYMENT==='function'){window.TERAJU_START_DETAILED_PAYMENT({amount:DETAILED_QUOTATION_PRICE,onVerified:completeDetailedQuotationPayment});return;}alert('Payment gateway is not active yet.');}
+function completeDetailedQuotationPayment(verified){if(verified)unlockDetailedQuotation();}
+
+function generateQuotation(){const type=getSelectedQuotationType();if(type==='detail'){const generated=generateQuotationConfirmed(type);if(generated!==false){setDetailedQuotationLocked(true);openDetailedQuotationPromo();}return;}setDetailedQuotationLocked(false);generateQuotationConfirmed(type);}
+function generateQuotationConfirmed(type) {
   const data = getCurrentQuotationData();
   if (!data.roomGroups.some(room => room.area > 0)) {
     alert("Please add at least one area with a valid sqft before generating the quotation.");
@@ -1244,7 +1290,6 @@ function generateQuotation() {
   }
 
   quotationNumber = generateQuotationNumber();
-  const type = getSelectedQuotationType();
   const customer = document.getElementById("customerName")?.value || "Not specified";
   const location = document.getElementById("projectLocation")?.value || "Not specified";
   const totalBuiltArea = data.roomGroups.reduce((sum, room) => sum + (Number(room.area) || 0), 0);
@@ -1343,6 +1388,7 @@ function generateQuotation() {
       </div>`;
   } else {
     body += `
+      <div class="mb-5 rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm"><span class="font-semibold">Detailed Quotation:</span> <span class="line-through text-gray-400">RM 49</span> <span class="font-bold text-green-700 ml-1">FREE</span> <span class="text-gray-600 ml-1">— Limited-time promotion until 31 October 2026.</span></div>
       <div class="overflow-x-auto">
         <table class="w-full border-collapse text-sm detailed-quotation-table">
           <colgroup>
@@ -1428,6 +1474,74 @@ function generateQuotation() {
   document.getElementById("quotationDocument").scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
+async function saveQuotationPdf(){if(document.getElementById('quotationDocument')?.classList.contains('detailed-locked')){alert('Please unlock the Detailed Quotation before saving the PDF.');return;}
+
+  const quotation=document.getElementById('quotationDocument');
+  const content=document.getElementById('quotationContent');
+  if(!quotation||quotation.classList.contains('hidden')||!content||!content.innerHTML.trim()){
+    alert('Please generate the quotation first.');
+    return;
+  }
+  if(!window.html2canvas||!window.jspdf||!window.jspdf.jsPDF){
+    alert('PDF generator is still loading. Please try again in a moment.');
+    return;
+  }
+  const button=document.querySelector('#quotationPrintActions button');
+  const originalText=button?button.textContent:'';
+  if(button){button.disabled=true;button.textContent='Creating PDF...';}
+  try{
+    await new Promise(resolve=>{
+      const images=Array.from(content.querySelectorAll('img'));
+      if(!images.length){resolve();return;}
+      let remaining=images.length;
+      const done=()=>{remaining--;if(remaining<=0)resolve()};
+      images.forEach(img=>{
+        if(img.complete)done();
+        else{img.addEventListener('load',done,{once:true});img.addEventListener('error',done,{once:true});}
+      });
+    });
+    const canvas=await html2canvas(content,{
+      scale:2,
+      useCORS:true,
+      allowTaint:false,
+      backgroundColor:'#ffffff',
+      logging:false,
+      imageTimeout:15000,
+      windowWidth:content.scrollWidth
+    });
+    const {jsPDF}=window.jspdf;
+    const pdf=new jsPDF({orientation:'portrait',unit:'mm',format:'a4',compress:true});
+    const pageWidth=210, pageHeight=297, margin=10;
+    const usableWidth=pageWidth-(margin*2), usableHeight=pageHeight-(margin*2);
+    const pxPerMm=canvas.width/usableWidth;
+    const pageCanvasHeight=Math.floor(usableHeight*pxPerMm);
+    let offsetY=0, page=0;
+    while(offsetY<canvas.height){
+      const sliceHeight=Math.min(pageCanvasHeight,canvas.height-offsetY);
+      const slice=document.createElement('canvas');
+      slice.width=canvas.width;
+      slice.height=sliceHeight;
+      const ctx=slice.getContext('2d');
+      ctx.fillStyle='#ffffff';
+      ctx.fillRect(0,0,slice.width,slice.height);
+      ctx.drawImage(canvas,0,offsetY,canvas.width,sliceHeight,0,0,canvas.width,sliceHeight);
+      if(page>0)pdf.addPage();
+      const renderedHeight=sliceHeight/pxPerMm;
+      pdf.addImage(slice.toDataURL('image/jpeg',0.96),'JPEG',margin,margin,usableWidth,renderedHeight,'FAST');
+      offsetY+=sliceHeight;
+      page++;
+    }
+    const filename=(quotationNumber?`Quotation-${quotationNumber}`:'Quotation')+'.pdf';
+    pdf.save(filename);
+  }catch(err){
+    console.error('PDF generation failed:',err);
+    alert('Unable to create the PDF automatically. Please try again.');
+  }finally{
+    if(button){button.disabled=false;button.textContent=originalText||'Save Quotation as PDF';}
+  }
+return true;
+}
+
 function printQuotation() {
   const quotation = document.getElementById("quotationDocument");
   if (quotation.classList.contains("hidden")) {
@@ -1450,6 +1564,9 @@ function printQuotation() {
 
 initContractorMode();
 </script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="detailed-quotation-promo-ui.js"></script>
 <script src="location-autocomplete.js"></script>
 <script src="quotation-quantity-fix.js?v=20260907"></script>
