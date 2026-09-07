@@ -6,6 +6,7 @@
   // and never handles repository credentials.
 
   const VERSION = 1;
+  const PROJECT_TYPES = Object.freeze(['build', 'renovation']);
 
   function text(value) {
     return String(value ?? '').trim();
@@ -21,17 +22,38 @@
   }
 
   function getContext(projectType) {
-    const profile = window.TerajuContractorProfile?.getPlannerContext(projectType) || {};
+    const profileApi = window.TerajuContractorProfile;
+    const profile = profileApi?.getPlannerContext(projectType) || {};
+    const type = PROJECT_TYPES.includes(text(projectType).toLowerCase())
+      ? text(projectType).toLowerCase()
+      : 'build';
     return {
       contractorId: text(profile.contractorId),
       contractorName: text(profile.contractorName),
       state: text(profile.state),
-      projectType: profile.projectType === 'renovation' ? 'renovation' : 'build'
+      projectType: type,
+      databaseKey: text(profile.databaseKey)
     };
   }
 
-  function normaliseItem(item, context) {
-    const itemId = text(item?.itemId || item?.id);
+  function readPlannerItems(projectType) {
+    const context = getContext(projectType);
+    if (!context.contractorId || !context.state) return [];
+
+    const key = context.databaseKey ||
+      `terajuQuotationItemDatabase:v3:${context.contractorId}:${context.state}:${context.projectType}`;
+
+    try {
+      const data = JSON.parse(localStorage.getItem(key) || '[]');
+      if (Array.isArray(data)) return data;
+      if (Array.isArray(data?.items)) return data.items;
+    } catch (_) {}
+    return [];
+  }
+
+  function normaliseItem(item, context, index) {
+    const itemId = text(item?.itemId || item?.id) || `item-${index + 1}`;
+    const updatedAt = text(item?.updatedAt) || now();
     return {
       id: itemId,
       contractorId: context.contractorId,
@@ -45,7 +67,7 @@
       quantity: number(item?.quantity ?? item?.qty),
       included: item?.included !== false,
       active: item?.active !== false,
-      updatedAt: text(item?.updatedAt) || now()
+      updatedAt
     };
   }
 
@@ -60,9 +82,21 @@
       projectType: context.projectType,
       updatedAt: now(),
       items: source
-        .map(item => normaliseItem(item, context))
-        .filter(item => item.id || item.description)
+        .map((item, index) => normaliseItem(item, context, index))
+        .filter(item => item.description)
     };
+  }
+
+  function exportCurrent(projectType, items) {
+    const record = buildRecord(projectType, items);
+    if (!record.contractorId || !record.contractorName || !record.state) {
+      throw new Error('Contractor profile is incomplete. Save Contractor Name and State first.');
+    }
+    return record;
+  }
+
+  function exportPlanner(projectType) {
+    return exportCurrent(projectType, readPlannerItems(projectType));
   }
 
   function download(record, filename) {
@@ -78,18 +112,22 @@
     URL.revokeObjectURL(url);
   }
 
-  function exportCurrent(projectType, items) {
-    const record = buildRecord(projectType, items);
-    if (!record.contractorId || !record.state) {
-      throw new Error('Contractor profile is incomplete. Save contractor name and state first.');
-    }
+  function downloadPlanner(projectType) {
+    const record = exportPlanner(projectType);
+    download(record, `contractor-${record.contractorId}-${record.projectType}.json`);
     return record;
   }
 
   window.TerajuContractorDatabaseExport = Object.freeze({
     VERSION,
+    PROJECT_TYPES,
+    getContext,
+    readPlannerItems,
+    normaliseItem,
     buildRecord,
     exportCurrent,
-    download
+    exportPlanner,
+    download,
+    downloadPlanner
   });
 })();
