@@ -85,3 +85,5 @@ jobs:
           git diff --cached --quiet && exit 0
           git commit -m 'Apply renovation description editing cleanup [renovation-description-cleanup]'
           git push
+
+# Intentional one-time trigger; this workflow removes itself after the base change.
