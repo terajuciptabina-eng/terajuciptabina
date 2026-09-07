@@ -1,0 +1,87 @@
+name: One-time Renovation Description Cleanup
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    if: "!contains(github.event.head_commit.message, '[renovation-description-cleanup]')"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Update renovation planner base
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('quotation/renovationplanner.html')
+          s = p.read_text(encoding='utf-8')
+
+          css = '    .homeowner-locked { background: #f9fafb !important; color: #4b5563; }'
+          hide = '    body.contractor-mode .homeowner-locked { display: none !important; }'
+          if hide not in s:
+              assert css in s, 'homeowner CSS marker missing'
+              s = s.replace(css, css + '\n' + hide, 1)
+
+          old = '''        <td class="py-3 px-2">Submission of Renovation Permit Application and Engineer's Drawings to the Local Authority</td>'''
+          new = '''        <td class="py-3 px-2 align-top">
+          <textarea rows="2" onchange="editItemDescription('project-preliminaries', this.value)"
+            class="contractor-only no-print w-full min-w-[280px] border rounded-lg px-3 py-2 bg-white leading-5 resize-y">${escapeHtml(customDescriptions.has("project-preliminaries") ? customDescriptions.get("project-preliminaries") : "Submission of Renovation Permit Application and Engineer's Drawings to the Local Authority")}</textarea>
+          <div class="homeowner-locked no-print p-2 rounded leading-5">${escapeHtml(customDescriptions.has("project-preliminaries") ? customDescriptions.get("project-preliminaries") : "Submission of Renovation Permit Application and Engineer's Drawings to the Local Authority")}</div>
+          <div class="hidden print:block leading-6">${escapeHtml(customDescriptions.has("project-preliminaries") ? customDescriptions.get("project-preliminaries") : "Submission of Renovation Permit Application and Engineer's Drawings to the Local Authority")}</div>
+        </td>'''
+          if old in s:
+              s = s.replace(old, new, 1)
+          elif "editItemDescription('project-preliminaries'" not in s:
+              raise AssertionError('prelim description editor missing')
+
+          delete_marker = '''onclick="excludeItem('project-preliminaries')"\n            class="text-red-600 text-xs border border-red-200 rounded px-3 py-1.5 hover:bg-red-50">Delete</button>'''
+          delete_new = delete_marker.replace('class="text-red-600', 'class="contractor-only text-red-600', 1)
+          if delete_marker in s:
+              s = s.replace(delete_marker, delete_new, 1)
+
+          if 'const prelimDescription =' not in s:
+              marker = '  if (type === "simple") {'
+              assert marker in s, 'quotation simple marker missing'
+              s = s.replace(marker, '  const prelimDescription = customDescriptions.has("project-preliminaries") ? customDescriptions.get("project-preliminaries") : "Submission of Renovation Permit Application and Engineer’s Drawings to the Local Authority";\n\n' + marker, 1)
+
+          simple_old = 'Submission of Renovation Permit Application and Engineer’s Drawings to the Local Authority</td><td class="py-3 px-2 text-right font-medium">'
+          simple_new = '${escapeHtml(prelimDescription)}</td><td class="py-3 px-2 text-right font-medium">'
+          if simple_old in s:
+              s = s.replace(simple_old, simple_new, 1)
+
+          detailed_old = 'Submission of Renovation Permit Application and Engineer\'s Drawings to the Local Authority</td><td class="py-3 px-2">ls</td>'
+          detailed_new = '${escapeHtml(prelimDescription)}</td><td class="py-3 px-2">ls</td>'
+          if detailed_old in s:
+              s = s.replace(detailed_old, detailed_new, 1)
+
+          p.write_text(s, encoding='utf-8')
+          PY
+
+      - name: Validate JavaScript
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          s = Path('quotation/renovationplanner.html').read_text(encoding='utf-8')
+          scripts = '\n'.join(re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>', s, re.S))
+          Path('/tmp/renovationplanner.js').write_text(scripts, encoding='utf-8')
+          PY
+          node --check /tmp/renovationplanner.js
+
+      - name: Commit base change and remove temporary workflow
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add quotation/renovationplanner.html
+          git rm .github/workflows/one-time-renovation-description-cleanup.yml
+          git diff --cached --quiet && exit 0
+          git commit -m 'Apply renovation description editing cleanup [renovation-description-cleanup]'
+          git push
