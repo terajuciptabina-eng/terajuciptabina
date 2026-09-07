@@ -5,22 +5,8 @@
   const PROFILE_VERSION = 1;
 
   const MALAYSIA_STATES = [
-    'Johor',
-    'Kedah',
-    'Kelantan',
-    'Melaka',
-    'Negeri Sembilan',
-    'Pahang',
-    'Perak',
-    'Perlis',
-    'Pulau Pinang',
-    'Sabah',
-    'Sarawak',
-    'Selangor',
-    'Terengganu',
-    'Kuala Lumpur',
-    'Putrajaya',
-    'Labuan'
+    'Johor','Kedah','Kelantan','Melaka','Negeri Sembilan','Pahang','Perak','Perlis',
+    'Pulau Pinang','Sabah','Sarawak','Selangor','Terengganu','Kuala Lumpur','Putrajaya','Labuan'
   ];
 
   function makeId() {
@@ -28,9 +14,7 @@
     return `CTR-${random}`;
   }
 
-  function now() {
-    return new Date().toISOString();
-  }
+  function now() { return new Date().toISOString(); }
 
   function read() {
     try {
@@ -39,9 +23,7 @@
       const data = JSON.parse(raw);
       if (!data || typeof data !== 'object') return null;
       return data;
-    } catch (_) {
-      return null;
-    }
+    } catch (_) { return null; }
   }
 
   function save(profile) {
@@ -54,7 +36,6 @@
       createdAt: current.createdAt || now(),
       updatedAt: now()
     };
-
     localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
     return next;
   }
@@ -65,12 +46,27 @@
     return save({});
   }
 
+  function getPlannerContext(projectType) {
+    const profile = read() || {};
+    const type = String(projectType || '').toLowerCase() === 'renovation' ? 'renovation' : 'build';
+    return {
+      contractorId: profile.contractorId || '',
+      contractorName: profile.contractorName || '',
+      state: profile.state || '',
+      projectType: type,
+      databaseKey: profile.contractorId && profile.state
+        ? `terajuQuotationItemDatabase:v3:${profile.contractorId}:${profile.state}:${type}`
+        : `terajuQuotationItemDatabase:v2:${type}`
+    };
+  }
+
   window.TerajuContractorProfile = Object.freeze({
     STORAGE_KEY,
     MALAYSIA_STATES: Object.freeze(MALAYSIA_STATES.slice()),
     get: read,
     getOrCreate,
     save,
-    generateId: makeId
+    generateId: makeId,
+    getPlannerContext
   });
 })();
