@@ -34,6 +34,71 @@
     });
   }
 
+  function loadExportAdapter(done) {
+    if (window.TerajuContractorDatabaseExport) return done();
+    const existing = document.querySelector('script[data-teraju-database-export]');
+    if (existing) {
+      existing.addEventListener('load', done, { once:true });
+      return;
+    }
+    const script = document.createElement('script');
+    script.src = 'contractor-database-export.js?v=20260907';
+    script.dataset.terajuDatabaseExport = '1';
+    script.onload = done;
+    document.head.appendChild(script);
+  }
+
+  function readPlannerItems(projectType, p) {
+    if (!p?.contractorId || !p?.state) return [];
+    const key = `terajuQuotationItemDatabase:v3:${p.contractorId}:${p.state}:${projectType}`;
+    try {
+      const data = JSON.parse(localStorage.getItem(key) || '[]');
+      if (Array.isArray(data)) return data;
+      if (Array.isArray(data?.items)) return data.items;
+    } catch (_) {}
+    return [];
+  }
+
+  function exportCurrentPlannerDatabase(projectType, status) {
+    const p = window.TerajuContractorProfile.get();
+    if (!p?.contractorId || !p?.state) {
+      status.textContent = 'Sila simpan Contractor Profile dan State terlebih dahulu.';
+      return;
+    }
+    loadExportAdapter(() => {
+      try {
+        const record = window.TerajuContractorDatabaseExport.exportCurrent(projectType, readPlannerItems(projectType, p));
+        window.TerajuContractorDatabaseExport.download(record, `contractor-${p.contractorId}-${projectType}.json`);
+        status.textContent = `Exported ${projectType}: ${record.items.length} item(s).`;
+      } catch (error) {
+        status.textContent = error.message || 'Database export failed.';
+      }
+    });
+  }
+
+  function renderPlannerExportControls() {
+    if (isContractorSelector || document.getElementById('terajuPlannerDatabaseExport')) return;
+    const plannerType = /renovationplanner\.html/i.test(window.location.pathname) ? 'renovation' : 'build';
+    const section = document.createElement('section');
+    section.id = 'terajuPlannerDatabaseExport';
+    section.className = 'no-print bg-white rounded-2xl shadow-sm p-5 mb-6';
+    section.innerHTML = `
+      <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+        <div>
+          <h3 class="font-bold">Contractor Database</h3>
+          <p class="text-sm text-gray-500 mt-1">Export the current ${plannerType} rate database as a GitHub-ready JSON record.</p>
+        </div>
+        <button type="button" id="terajuPlannerExportButton" class="bg-black text-white px-4 py-3 rounded-lg text-sm font-semibold">Export ${plannerType === 'build' ? 'Build' : 'Renovation'} Database</button>
+      </div>
+      <div id="terajuPlannerExportStatus" class="mt-2 text-xs text-gray-500"></div>
+    `;
+    const anchor = document.getElementById('contractorItemDatabase') || document.getElementById('rateScheduleSection') || document.querySelector('main > section');
+    if (anchor?.parentNode) anchor.parentNode.insertBefore(section, anchor);
+    section.querySelector('#terajuPlannerExportButton').addEventListener('click', () => {
+      exportCurrentPlannerDatabase(plannerType, section.querySelector('#terajuPlannerExportStatus'));
+    });
+  }
+
   function injectStyles() {
     if (document.getElementById('terajuContractorProfileStyles')) return;
     const style = document.createElement('style');
@@ -110,6 +175,7 @@
     });
 
     updatePlannerLinks();
+    if (!isContractorSelector) renderPlannerExportControls();
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', render, { once:true });
