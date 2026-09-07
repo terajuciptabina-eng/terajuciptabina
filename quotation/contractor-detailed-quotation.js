@@ -5,6 +5,13 @@
     if (typeof window.requestDetailedQuotation !== 'function' || typeof window.generateQuotation !== 'function') return;
     window.__tcContractorDetailedQuotationInstalled = true;
 
+    const ensureInitialEstimate = () => {
+      const rooms = document.getElementById('roomsContainer');
+      if (rooms && !rooms.children.length && typeof window.addRoom === 'function') window.addRoom();
+      if (typeof window.updateEstimate === 'function') window.updateEstimate();
+    };
+    ensureInitialEstimate();
+
     const originalRequestDetailedQuotation = window.requestDetailedQuotation;
     const originalGenerateQuotation = window.generateQuotation;
 
@@ -12,6 +19,7 @@
       const selected = document.querySelector('input[name="quotationType"]:checked')?.value || 'simple';
       if (selected !== 'detail') return originalGenerateQuotation.apply(this, arguments);
 
+      ensureInitialEstimate();
       originalRequestDetailedQuotation.apply(this, arguments);
 
       let pending = null;
