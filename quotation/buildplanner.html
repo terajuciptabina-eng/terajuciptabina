@@ -103,6 +103,8 @@ body.contractor-mode .homeowner-locked{display:none!important}
     .quotation-lock-card { width:min(420px,100%); background:rgba(255,255,255,.97); border:1px solid rgba(0,0,0,.12); border-radius:20px; padding:28px; text-align:center; box-shadow:0 18px 50px rgba(0,0,0,.18); }
     .quotation-lock-icon { width:54px; height:54px; margin:0 auto 14px; border-radius:999px; display:flex; align-items:center; justify-content:center; background:#111; color:#fff; font-size:25px; }
     @media print { .quotation-lock-overlay { display:none !important; } #quotationContent.quotation-locked { filter:none !important; } }
+
+.contractor-quotation-panel{display:block!important}.contractor-quotation-choice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.contractor-quotation-choice{position:relative;display:flex;align-items:flex-start;gap:13px;padding:20px;border:1px solid #d9dee7;border-radius:16px;background:#fff;cursor:pointer;transition:.18s ease;min-height:116px}.contractor-quotation-choice:hover{border-color:#9ca3af;background:#fafafa}.contractor-quotation-choice input{position:absolute;opacity:0;pointer-events:none}.contractor-quotation-choice.is-selected{border-color:#111827;box-shadow:0 0 0 2px rgba(17,24,39,.06)}.choice-radio{width:19px;height:19px;border:2px solid #9ca3af;border-radius:999px;flex:0 0 19px;margin-top:2px;position:relative}.contractor-quotation-choice.is-selected .choice-radio{border-color:#111827}.contractor-quotation-choice.is-selected .choice-radio:after{content:'';position:absolute;width:9px;height:9px;border-radius:999px;background:#111827;left:3px;top:3px}.choice-copy{display:flex;flex-direction:column;gap:5px}.choice-copy strong{font-size:16px;color:#111827}.choice-copy small{font-size:13px;line-height:1.45;color:#6b7280}.choice-copy em{font-size:12px;font-style:normal;color:#15803d;font-weight:700;margin-top:2px}.contractor-quotation-tip{display:flex;flex-direction:column;gap:3px;margin-top:14px;padding:13px 15px;border-radius:12px;background:#f8fafc;border:1px solid #e5e7eb;font-size:13px;color:#6b7280}.contractor-quotation-tip strong{color:#1f2937}.contractor-generate-btn{margin-top:16px;width:100%;background:#111827;color:#fff;border:0;border-radius:12px;padding:13px 18px;font-weight:700;cursor:pointer}.contractor-generate-btn:hover{background:#000}@media(max-width:767px){.contractor-quotation-choice-grid{grid-template-columns:1fr}.contractor-quotation-choice{min-height:0}.contractor-generate-btn{min-height:48px}}
 </style>
 </head>
 <body class="bg-gray-100 text-gray-800">
@@ -143,7 +145,7 @@ body.contractor-mode .homeowner-locked{display:none!important}
 <section class="bg-white rounded-2xl shadow-sm p-6 mb-6"><div class="flex justify-between items-center mb-5 gap-4"><div><h3 class="font-bold text-lg">Areas</h3><p class="text-sm text-gray-500">Add each area. Architectural works are calculated individually based on room type and floor area.</p></div><button type="button" onclick="addRoom()" class="no-print bg-black text-white px-4 py-2 rounded-lg text-sm font-medium">+ Add Area</button></div><div class="no-print bg-gray-50 border rounded-xl p-4 mb-5 text-sm text-gray-600"><strong class="text-gray-800">Guidance:</strong> Select the area type and enter the floor area in sqft. Door and window quantities are assigned automatically according to room type. Your area selections are used to prepare a preliminary construction budget.</div><div id="roomsContainer" class="space-y-4"></div></section>
 <section id="rateScheduleSection" class="contractor-only no-print bg-white rounded-2xl shadow-sm p-6 mb-6"><div class="flex justify-between items-center cursor-pointer" onclick="toggleRateSchedule()"><div><h3 class="font-bold text-lg">Rate Schedule</h3><p class="text-sm text-gray-500">Hidden by default. Open this only when you need to amend standard rates.</p></div><span id="rateScheduleArrow">▼</span></div><div id="rateSchedulePanel" class="hidden mt-5"><div class="mb-3"><button type="button" onclick="resetRatesToDefault()" class="border px-4 py-2 rounded-lg text-sm">Reset to Default Rates</button></div><div id="rateScheduleContent" class="overflow-x-auto"></div></div></section>
 <section class="bg-white rounded-2xl shadow-sm p-6"><div class="flex justify-between items-start mb-6"><div><p class="text-xs uppercase tracking-wider text-gray-500">Preliminary Estimate</p><h3 class="text-2xl font-bold">Construction Budget</h3></div><div class="text-right"><p class="text-xs text-gray-500">Estimate No.</p><p id="estimateNumber" class="font-bold"></p></div></div><div id="customerSummary" class="grid md:grid-cols-4 gap-5 mb-6 text-sm"></div><div id="estimateContent" class="overflow-x-auto"></div><div class="contractor-only no-print mt-5 flex justify-end gap-3"><button type="button" onclick="showRemovedItems()" class="border px-4 py-2 rounded-lg text-sm">Show Removed Items</button><button type="button" onclick="restoreAllItems()" class="border px-4 py-2 rounded-lg text-sm">Restore All Items</button></div><div class="border-t mt-6 pt-6"><div class="flex justify-between mb-2"><span class="font-semibold text-lg">Rooms Total Area</span><span id="roomsTotalArea" class="font-bold text-xl">0 sqft</span></div><div class="flex justify-between mb-2"><span class="font-semibold text-lg">Declared Built-up Area</span><span id="totalBuiltArea" class="font-bold text-xl">600 sqft</span></div><div class="flex justify-between"><span class="font-semibold text-lg">Estimated Total</span><span id="grandTotal" class="font-bold text-3xl">RM 0</span></div></div></section>
-<section class="no-print bg-white rounded-2xl shadow-sm p-6 mt-6"><div class="mb-5"><h3 class="font-bold text-lg">Generate Quotation</h3><p class="text-sm text-gray-500">Select the level of pricing detail to be presented in the quotation.</p></div><div id="homeownerQuotationOptions" class="hidden"><div class="grid md:grid-cols-2 gap-4"><div class="border rounded-2xl p-5"><p class="font-bold text-lg">Simple Quotation</p><p class="text-sm text-gray-500 mt-2">Free quotation summary.</p><button type="button" onclick="generateQuotation()" class="mt-5 w-full bg-black text-white px-5 py-3 rounded-lg font-semibold">Generate Free Quotation</button></div><div class="border rounded-2xl p-5 bg-gray-50"><p class="font-bold text-lg">Detailed Cost Breakdown</p><p class="text-sm text-gray-500 mt-2">Full scope, quantities, rates and costing.</p><button type="button" onclick="requestDetailedQuotation()" class="mt-5 w-full border border-gray-900 text-gray-900 px-5 py-3 rounded-lg font-semibold">Generate Detailed Quotation</button></div></div></div><div id="contractorQuotationOptions" class="contractor-only"><div class="grid md:grid-cols-2 gap-4"><label class="border rounded-xl p-4"><input type="radio" name="quotationType" value="simple" checked> Simple Quotation</label><label class="border rounded-xl p-4"><input type="radio" name="quotationType" value="detail"> Detailed Quotation</label></div><button type="button" onclick="generateQuotation()" class="mt-5 bg-black text-white px-5 py-3 rounded-lg font-semibold">Generate Quotation</button></div></section>
+<section class="no-print bg-white rounded-2xl shadow-sm p-6 mt-6"><div class="mb-5"><h3 class="font-bold text-lg">Generate Quotation</h3><p class="text-sm text-gray-500">Select the level of pricing detail to be presented in the quotation.</p></div><div id="homeownerQuotationOptions" class="hidden"><div class="grid md:grid-cols-2 gap-4"><div class="border rounded-2xl p-5"><p class="font-bold text-lg">Simple Quotation</p><p class="text-sm text-gray-500 mt-2">Free quotation summary.</p><button type="button" onclick="generateQuotation()" class="mt-5 w-full bg-black text-white px-5 py-3 rounded-lg font-semibold">Generate Free Quotation</button></div><div class="border rounded-2xl p-5 bg-gray-50"><p class="font-bold text-lg">Detailed Cost Breakdown</p><p class="text-sm text-gray-500 mt-2">Full scope, quantities, rates and costing.</p><button type="button" onclick="requestDetailedQuotation()" class="mt-5 w-full border border-gray-900 text-gray-900 px-5 py-3 rounded-lg font-semibold">Generate Detailed Quotation</button></div></div></div><div id="contractorQuotationOptions" class="contractor-only contractor-quotation-panel"><div class="contractor-quotation-choice-grid"><label class="contractor-quotation-choice is-selected"><input type="radio" name="quotationType" value="simple" checked><span class="choice-radio"></span><span class="choice-copy"><strong>Simple Quotation</strong><small>Work descriptions with section / room totals only.</small></span></label><label class="contractor-quotation-choice"><input type="radio" name="quotationType" value="detail"><span class="choice-radio"></span><span class="choice-copy"><strong>Detailed Quotation</strong><small>Full quantity, rate, amount and subtotal breakdown.</small><em>~~RM49~~ FREE during promotion</em></span></label></div><div class="contractor-quotation-tip"><strong>Before generating</strong><span>Review your edited quantities and rates above. The quotation uses the final estimate values.</span></div><button type="button" onclick="generateQuotation()" class="contractor-generate-btn">Generate Quotation</button></div></section>
 <section id="quotationDocument" class="hidden bg-white rounded-2xl shadow-sm p-8 mt-6"><div id="quotationContent"></div><div id="quotationLockOverlay" class="quotation-lock-overlay no-print hidden" aria-hidden="true"><div class="quotation-lock-card"><div class="quotation-lock-icon" aria-hidden="true">🔒</div><h3 class="text-xl font-bold">Detailed Quotation Locked</h3><p class="text-sm text-gray-600 mt-2">The detailed quotation has been generated. Unlock it to view the full item-by-item rates and amounts.</p><button type="button" onclick="unlockDetailedQuotation()" class="mt-5 w-full bg-black text-white px-5 py-3 rounded-xl font-semibold">Unlock Detailed Quotation</button></div></div><div id="quotationPrintActions" class="no-print mt-6 pt-5 border-t flex justify-end"><button type="button" onclick="saveQuotationPdf()" class="bg-black text-white px-5 py-3 rounded-lg font-semibold">Save Quotation as PDF</button></div></section>
 </main>
 <script>
@@ -395,50 +397,119 @@ async function saveQuotationPdf(){
   const originalText=button?button.textContent:'';
   if(button){button.disabled=true;button.textContent='Creating PDF...';}
 
+  let holder=null;
   try{
-    // Give the browser one frame to finish layout before jsPDF captures the DOM.
     await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+
+    /*
+      Render a dedicated A4-width copy of the quotation.
+      Do NOT use jsPDF.html() here: its CSS/layout conversion was producing
+      oversized text and many pages. The dedicated clone keeps the quotation
+      at the same proportions as the web view, then we paginate one canvas.
+    */
+    holder=document.createElement('div');
+    holder.setAttribute('aria-hidden','true');
+    holder.style.cssText='position:fixed;left:-100000px;top:0;width:794px;background:#fff;z-index:-1;overflow:visible;';
+
+    const clone=content.cloneNode(true);
+    clone.id='quotationPdfRender';
+    clone.classList.remove('quotation-locked');
+    clone.style.cssText='display:block!important;width:794px!important;max-width:794px!important;min-width:0!important;margin:0!important;padding:0!important;background:#fff!important;filter:none!important;overflow:visible!important;font-size:14px!important;line-height:1.4!important;';
+
+    clone.querySelectorAll('.overflow-x-auto').forEach(el=>{
+      el.style.overflow='visible';
+      el.style.width='100%';
+    });
+    clone.querySelectorAll('table').forEach(table=>{
+      table.style.width='100%';
+      table.style.maxWidth='100%';
+      table.style.minWidth='0';
+      table.style.tableLayout='fixed';
+    });
+    clone.querySelectorAll('img').forEach(img=>{
+      img.style.maxWidth='100%';
+      img.style.height='auto';
+    });
+    clone.querySelectorAll('*').forEach(el=>{
+      el.style.maxWidth=el.style.maxWidth||'100%';
+    });
+
+    holder.appendChild(clone);
+    document.body.appendChild(holder);
+
+    await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+
+    const scale=2;
+    const canvas=await html2canvas(clone,{
+      scale,
+      useCORS:true,
+      allowTaint:false,
+      backgroundColor:'#ffffff',
+      logging:false,
+      imageTimeout:15000,
+      width:794,
+      windowWidth:794,
+      scrollX:0,
+      scrollY:0
+    });
 
     const {jsPDF}=window.jspdf;
     const pdf=new jsPDF({orientation:'portrait',unit:'mm',format:'a4',compress:true});
+    const margin=10;
+    const pageWidth=210-margin*2;
+    const pageHeight=297-margin*2;
+    const pagePixelWidth=794*scale;
+    const pagePixelHeight=Math.floor(pagePixelWidth*(pageHeight/pageWidth));
 
-    // Use jsPDF's HTML paginator instead of slicing one giant canvas.
-    // Canvas slicing caused the same quotation region to be repeated on every page.
-    await new Promise((resolve,reject)=>{
-      pdf.html(content,{
-        x:10,
-        y:10,
-        width:190,
-        windowWidth:Math.max(content.scrollWidth,content.clientWidth),
-        autoPaging:'text',
-        margin:[10,10,10,10],
-        html2canvas:{
-          scale:1.5,
-          useCORS:true,
-          allowTaint:false,
-          backgroundColor:'#ffffff',
-          logging:false,
-          imageTimeout:15000
-        },
-        pagebreak:{mode:['css','legacy']},
-        callback:(doc)=>{
-          try{
-            const filename=(quotationNumber?`Quotation-${quotationNumber}`:'Quotation')+'.pdf';
-            doc.save(filename);
-            resolve();
-          }catch(err){reject(err);}
-        }
-      });
+    /* Find safe row boundaries so a table row is not cut across pages. */
+    const safeBreaks=[];
+    clone.querySelectorAll('tr').forEach(row=>{
+      const r=row.getBoundingClientRect();
+      const bottom=Math.round((r.bottom-clone.getBoundingClientRect().top)*scale);
+      if(bottom>0 && bottom<canvas.height) safeBreaks.push(bottom);
     });
+    safeBreaks.sort((a,b)=>a-b);
+
+    let sourceY=0;
+    let pageNo=0;
+    while(sourceY<canvas.height-1){
+      if(pageNo>0) pdf.addPage();
+
+      let sliceHeight=Math.min(pagePixelHeight,canvas.height-sourceY);
+      const target=sourceY+pagePixelHeight;
+      if(target<canvas.height){
+        const candidates=safeBreaks.filter(y=>y>sourceY+40 && y<=target-20);
+        if(candidates.length) sliceHeight=candidates[candidates.length-1]-sourceY;
+      }
+      if(sliceHeight<=0) sliceHeight=Math.min(pagePixelHeight,canvas.height-sourceY);
+
+      const pageCanvas=document.createElement('canvas');
+      pageCanvas.width=canvas.width;
+      pageCanvas.height=sliceHeight;
+      const ctx=pageCanvas.getContext('2d');
+      ctx.fillStyle='#fff';
+      ctx.fillRect(0,0,pageCanvas.width,pageCanvas.height);
+      ctx.drawImage(canvas,0,sourceY,canvas.width,sliceHeight,0,0,canvas.width,sliceHeight);
+
+      const imgData=pageCanvas.toDataURL('image/jpeg',0.94);
+      const renderedHeight=pageWidth*(sliceHeight/pagePixelWidth);
+      pdf.addImage(imgData,'JPEG',margin,margin,pageWidth,renderedHeight,'','FAST');
+      sourceY+=sliceHeight;
+      pageNo++;
+    }
+
+    const filename=(quotationNumber?`Quotation-${quotationNumber}`:'Quotation')+'.pdf';
+    pdf.save(filename);
   }catch(err){
     console.error('PDF generation failed:',err);
     alert('Unable to create the PDF automatically. Please try again.');
   }finally{
+    if(holder) holder.remove();
     if(button){button.disabled=false;button.textContent=originalText||'Save Quotation as PDF';}
   }
 }
-
 function printQuotation(){const q=document.getElementById('quotationDocument');if(q.classList.contains('hidden'))return alert('Please generate the quotation first.');const t=document.title;document.title=quotationNumber?`Quotation ${quotationNumber}`:'Quotation';document.body.classList.add('print-quotation');const clean=()=>{document.body.classList.remove('print-quotation');document.title=t;window.removeEventListener('afterprint',clean)};window.addEventListener('afterprint',clean);window.print();setTimeout(clean,1500)}
+document.querySelectorAll('input[name="quotationType"]').forEach(r=>r.addEventListener('change',()=>{document.querySelectorAll('.contractor-quotation-choice').forEach(c=>c.classList.toggle('is-selected',c.querySelector('input')?.checked));}));
 applyAudienceUI();if(isHomeowner()){document.getElementById('homeownerQuotationOptions')?.classList.remove('hidden');document.getElementById('contractorQuotationOptions')?.classList.add('hidden');document.getElementById('roomsContainer').innerHTML='';roomCounter=0;document.getElementById('builtUpArea').value='0';updateEstimate()}else{document.getElementById('homeownerQuotationOptions')?.classList.add('hidden');document.getElementById('contractorQuotationOptions')?.classList.remove('hidden');if(!loadContractorState()){document.getElementById('roomsContainer').innerHTML='';roomCounter=0;document.getElementById('builtUpArea').value='0';saveContractorState()}document.getElementById('contractorIdDisplay').textContent=CONTRACTOR_ID||'Not signed in';updateEstimate()}
 </script>
 
