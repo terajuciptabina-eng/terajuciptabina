@@ -5,7 +5,11 @@
   const audience = (qs.get('audience') || 'homeowner').toLowerCase();
   const contractor = audience === 'contractor';
   const plannerType = /renovationplanner\.html/i.test(location.pathname) ? 'renovation' : 'build';
-  const DB_KEY = `terajuQuotationItemDatabase:v2:${plannerType}`;
+  const contractorId = (qs.get('contractorId') || '').trim();
+  const contractorState = (qs.get('state') || '').trim();
+  const DB_KEY = contractor && contractorId && contractorState
+    ? `terajuQuotationItemDatabase:v3:${contractorId}:${contractorState}:${plannerType}`
+    : `terajuQuotationItemDatabase:v2:${plannerType}`;
   const BUILTIN_RENO_UNITS = {
     ceiling:'sqft', spc:'sqft', floorTile:'sqft', wallTile:'sqft', facadeWall:'sqft', downlight:'unit', wallLight:'unit',
     ceilingFan:'unit', exhaustFan:'unit', curtainBoxLED:'unit', barLamp:'unit', kitchenFrame:'ls', kitchenMakingGood:'ls',
