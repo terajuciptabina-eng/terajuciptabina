@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "databaseType": "contractor-rate-database",
+  "storage": "github",
+  "description": "GitHub-first contractor quotation rate database for the experimental Teraju Ciptabina planner.",
+  "ratePrecedence": [
+    "projectOverride",
+    "contractorRate",
+    "stateRate",
+    "defaultRate"
+  ],
+  "contractors": []
+}
