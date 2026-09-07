@@ -1,109 +1,1201 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
-<meta name="theme-color" content="#ffffff">
-<title>Renovation Planner | Teraju Ciptabina</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<style>
-*{box-sizing:border-box}html,body{max-width:100%;overflow-x:hidden}body{font-family:Arial,Helvetica,sans-serif;-webkit-text-size-adjust:100%}button,input,select,textarea{font:inherit}button,input,select{min-height:44px}textarea{min-height:88px}button{touch-action:manipulation}.detailed-quotation-table,.simple-quotation-table{width:100%;table-layout:fixed}.payment-modal-backdrop{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(17,24,39,.62);backdrop-filter:blur(4px)}.payment-modal-backdrop.show{display:flex}.payment-modal{width:min(100%,520px);max-height:min(90vh,760px);overflow-y:auto;background:#fff;border-radius:22px;box-shadow:0 25px 70px rgba(0,0,0,.25)}.payment-modal input{width:100%;border:1px solid #d1d5db;border-radius:10px;padding:12px 14px;outline:none}.payment-error{display:none}.payment-error.show{display:block}.detail-preview{position:relative;overflow:hidden}.detail-preview-locked{filter:blur(2.5px);user-select:none;pointer-events:none;max-height:390px;overflow:hidden}.detail-preview-fade{position:absolute;left:0;right:0;bottom:0;height:170px;background:linear-gradient(transparent,rgba(249,250,251,.98) 65%);pointer-events:none}.detail-lock-card{border:1px solid #e5e7eb;border-radius:18px;background:#f9fafb}.detail-unlocked-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:#ecfdf5;color:#065f46;font-size:12px;font-weight:700}.hidden-print{display:none!important}
-@media(max-width:767px){main{padding:16px!important}main>section{padding:16px!important;border-radius:16px!important}.room-card{padding:14px!important;overflow:hidden}.room-card>div:first-child{grid-template-columns:1fr!important}.room-card .room-actions{display:grid!important;grid-template-columns:1fr 1fr;gap:8px}.room-card .room-actions button:last-child{grid-column:1/-1}#estimateContent{overflow-x:auto}#estimateContent table,#quotationContent table{min-width:680px}#quotationDocument{padding:16px!important}#quotationPrintActions button{width:100%}}
-@media print{@page{size:A4 portrait;margin:12mm}html,body{width:210mm!important;margin:0!important;padding:0!important;background:#fff!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}body.print-quotation>header,body.print-quotation>main>section:not(#quotationDocument),body.print-quotation .no-print,body.print-quotation #quotationPrintActions{display:none!important}body.print-quotation>main{display:block!important;width:100%!important;max-width:none!important;margin:0!important;padding:0!important}body.print-quotation #quotationDocument{display:block!important;width:100%!important;max-width:none!important;margin:0!important;padding:0!important;background:#fff!important;box-shadow:none!important;border:0!important;border-radius:0!important}#quotationContent{font-size:9.5px!important;line-height:1.35!important}#quotationContent table{width:100%!important;font-size:9.5px!important;border-collapse:collapse!important;table-layout:fixed!important}#quotationContent .overflow-x-auto{overflow:visible!important}#quotationContent table thead{display:table-header-group!important}#quotationContent table tfoot{display:table-footer-group!important}#quotationContent table tr{break-inside:avoid!important;page-break-inside:avoid!important}#quotationContent table th,#quotationContent table td{padding:5px 4px!important;vertical-align:top!important}.simple-quotation-table col:nth-child(1){width:6%!important}.simple-quotation-table col:nth-child(2){width:18%!important}.simple-quotation-table col:nth-child(3){width:56%!important}.simple-quotation-table col:nth-child(4){width:20%!important}.detailed-quotation-table col:nth-child(1){width:48%!important}.detailed-quotation-table col:nth-child(2){width:10%!important}.detailed-quotation-table col:nth-child(3){width:10%!important}.detailed-quotation-table col:nth-child(4){width:16%!important}.detailed-quotation-table col:nth-child(5){width:16%!important}.detail-preview-locked{filter:none!important;max-height:none!important}.detail-preview-fade{display:none!important}}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  <title>Renovation Planner | Teraju Ciptabina</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 
-/* Standard quotation column widths */
-.simple-quotation-table col:nth-child(1){width:6%!important}.simple-quotation-table col:nth-child(2){width:18%!important}.simple-quotation-table col:nth-child(3){width:56%!important}.simple-quotation-table col:nth-child(4){width:20%!important}
-.detailed-quotation-table col:nth-child(1){width:48%!important}.detailed-quotation-table col:nth-child(2){width:10%!important}.detailed-quotation-table col:nth-child(3){width:10%!important}.detailed-quotation-table col:nth-child(4){width:16%!important}.detailed-quotation-table col:nth-child(5){width:16%!important}
-.simple-quotation-table th,.simple-quotation-table td,.detailed-quotation-table th,.detailed-quotation-table td{vertical-align:top;overflow-wrap:break-word}
-.rate-schedule-input{width:130px;text-align:right}
+  <style>
+    * { box-sizing: border-box; }
+    html, body { max-width: 100%; overflow-x: hidden; }
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      -webkit-text-size-adjust: 100%;
+      text-rendering: optimizeLegibility;
+    }
+    button, input, select, textarea { font: inherit; }
+    button, input, select { min-height: 44px; }
+    textarea { min-height: 88px; }
+    button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
+    button { touch-action: manipulation; }
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+    input[type="number"] { -moz-appearance: textfield; appearance: textfield; }
 
-.rate-readonly{background:#f9fafb;color:#6b7280}.rate-schedule-table input{min-width:110px}.rate-schedule-note{font-size:12px;color:#6b7280}
-.homeowner-hidden{display:none!important}.rate-schedule-input{width:7rem;text-align:right}.rate-schedule-input:focus{outline:2px solid #111827;outline-offset:1px}@media(max-width:767px){.rate-schedule-input{width:6.5rem}}
-</style>
+    /* Mobile */
+    @media (max-width: 767px) {
+      html, body { width: 100%; max-width: 100%; overflow-x: hidden; }
+      main { width: 100%; max-width: 100% !important; padding: 16px !important; }
+      header > div { width: 100%; padding-left: 16px !important; padding-right: 16px !important; }
+      header img { height: 40px !important; max-width: 160px; }
+      header h1 { font-size: 15px !important; }
+      main > section { width: 100%; max-width: 100%; padding: 16px !important; border-radius: 16px !important; }
+      main > section:first-child { padding: 4px 0 10px !important; background: transparent; box-shadow: none; }
+      main > section:first-child h2 { font-size: 28px !important; line-height: 1.2; }
+      main > section:first-child p { font-size: 14px; line-height: 1.5; }
+      .grid.md\:grid-cols-2, .grid.md\:grid-cols-3, .grid.md\:grid-cols-4, .grid.md\:grid-cols-\[1fr_1fr_1fr_auto\] {
+        grid-template-columns: minmax(0, 1fr) !important;
+      }
+      #projectInfo, #projectInfo input { width: 100%; }
+      #roomsContainer { width: 100%; }
+      .room-card { width: 100%; max-width: 100%; padding: 14px !important; overflow: hidden; }
+      .room-card > div:first-child { grid-template-columns: minmax(0, 1fr) !important; gap: 12px !important; }
+      .room-card input, .room-card select { width: 100%; max-width: 100%; }
+      .room-card .room-name, .room-card .room-type, .room-card .room-area { min-width: 0; }
+      .room-card .no-print.flex { display: grid !important; grid-template-columns: 1fr 1fr; gap: 8px; width: 100%; }
+      .room-card .no-print.flex button { width: 100%; min-width: 0; }
+      .room-card .no-print.flex button:last-child { grid-column: 1 / -1; }
+      main > section:nth-of-type(3) > div:first-child { align-items: flex-start !important; gap: 12px; }
+      main > section:nth-of-type(3) > div:first-child > button { flex-shrink: 0; }
+      .optional-scopes { grid-template-columns: minmax(0, 1fr) !important; }
+      .optional-scope { width: 100%; max-width: 100%; padding: 12px !important; overflow: hidden; }
+      .optional-scope > div { align-items: flex-start !important; }
+      .optional-scope .optional-check { flex-shrink: 0; margin-top: 2px; }
+      .optional-scope label { display: block; line-height: 1.45; }
+      .optional-scope .optional-rate { width: 90px !important; min-width: 90px !important; flex: 0 0 90px; }
+      #customerSummary { grid-template-columns: minmax(0, 1fr) !important; gap: 12px !important; }
+      #estimateContent { width: calc(100% + 8px); margin-left: -4px; margin-right: -4px; padding-bottom: 8px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+      #estimateContent > div, #estimateContent table { min-width: 760px; }
+      #estimateContent table th, #estimateContent table td { padding: 10px 8px !important; }
+      #estimateContent textarea { min-width: 260px !important; max-width: 320px; }
+      #estimateContent input[type="number"], #estimateContent input[type="text"] { min-height: 42px; }
+      #grandTotal { font-size: 26px !important; white-space: nowrap; }
+      input[name="quotationType"] { min-height: 20px; width: 20px; flex-shrink: 0; }
+      .quotation-option { width: 100%; }
+      #quotationDocument { width: 100%; max-width: 100%; padding: 16px !important; }
+      #quotationContent { width: 100%; max-width: 100%; min-width: 0; }
+      #quotationContent > div:first-child { flex-direction: column !important; gap: 16px !important; }
+      #quotationContent > div:first-child > div:first-child,
+      #quotationContent > div:first-child > div:last-child { width: 100%; }
+      #quotationContent > div:first-child > div:last-child { text-align: left !important; }
+      #quotationContent > div:first-child img { height: 48px !important; max-width: 150px; }
+      #quotationContent > div:first-child h1 { font-size: 16px !important; }
+      #quotationContent > div:first-child h2 { font-size: 22px !important; }
+      #quotationContent > div:nth-child(2) { grid-template-columns: minmax(0, 1fr) !important; }
+      #quotationContent .overflow-x-auto { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+      #quotationContent table { min-width: 680px; }
+      #quotationContent table th, #quotationContent table td { padding: 9px 7px !important; }
+      #quotationPrintActions { width: 100%; justify-content: stretch !important; }
+      #quotationPrintActions button { width: 100%; min-height: 48px; }
+      main > section:last-child { padding: 24px 16px !important; }
+      main > section:last-child h3 { font-size: 22px !important; }
+      main > section:last-child a { width: 100%; text-align: center; min-height: 48px; display: flex; align-items: center; justify-content: center; }
+      input, select, textarea { font-size: 16px !important; }
+      body { padding-bottom: env(safe-area-inset-bottom); }
+    }
+
+    @media (max-width: 380px) {
+      main { padding: 12px !important; }
+      main > section { padding: 14px !important; }
+      main > section:first-child h2 { font-size: 24px !important; }
+      #grandTotal { font-size: 23px !important; }
+      header img { height: 36px !important; }
+      header h1 { font-size: 14px !important; }
+    }
+
+    .detailed-quotation-table { width: 100%; table-layout: fixed; }
+    .simple-quotation-table { width: 100%; table-layout: fixed; }
+
+    /* =========================================================
+       PRINT — CLEAN CONTINUOUS FLOW (NO EMPTY PAGES)
+       ========================================================= */
+    @media print {
+      @page {
+        size: A4 portrait;
+        margin: 12mm 12mm;
+      }
+
+      html, body {
+        width: 210mm !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #fff !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      body.print-quotation > header,
+      body.print-quotation > main > section:not(#quotationDocument),
+      body.print-quotation .no-print,
+      body.print-quotation #quotationPrintActions {
+        display: none !important;
+      }
+
+      body.print-quotation > main {
+        display: block !important;
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+
+      body.print-quotation #quotationDocument {
+        display: block !important;
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #fff !important;
+        box-shadow: none !important;
+        border: none !important;
+        border-radius: 0 !important;
+      }
+
+      #quotationContent {
+        width: 100% !important;
+        font-size: 9.5px !important;
+        line-height: 1.35 !important;
+      }
+
+      /* Header: logo kiri, Quotation No / Date kanan (ikut web) */
+      #quotationContent > div:first-child {
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: space-between !important;
+        align-items: flex-start !important;
+        gap: 16px !important;
+        width: 100% !important;
+      }
+      #quotationContent > div:first-child > div:first-child {
+        width: auto !important;
+        flex: 1 1 auto !important;
+      }
+      #quotationContent > div:first-child > div:last-child {
+        width: auto !important;
+        flex: 0 0 auto !important;
+        text-align: right !important;
+      }
+
+      /* Customer + Location + Total Built Area: 3 kolum (ikut web) */
+      #quotationContent > div:nth-child(2) {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr 1fr !important;
+        gap: 16px !important;
+        width: 100% !important;
+      }
+
+      #quotationContent table {
+        width: 100% !important;
+        font-size: 9.5px !important;
+        line-height: 1.35 !important;
+        table-layout: fixed !important;
+        border-collapse: collapse !important;
+      }
+
+      #quotationContent .overflow-x-auto {
+        overflow: visible !important;
+        width: 100% !important;
+      }
+
+      #quotationContent table thead {
+        display: table-header-group !important;
+      }
+
+      #quotationContent table tfoot {
+        display: table-footer-group !important;
+      }
+
+      #quotationContent table tr {
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+      }
+
+      #quotationContent table th,
+      #quotationContent table td {
+        padding: 5px 4px !important;
+        vertical-align: top !important;
+      }
+
+      /* Simple quotation — lebar & alignment ikut web */
+      .simple-quotation-table col:nth-child(1) { width: 6% !important; }
+      .simple-quotation-table col:nth-child(2) { width: 18% !important; }
+      .simple-quotation-table col:nth-child(3) { width: 56% !important; }
+      .simple-quotation-table col:nth-child(4) { width: 20% !important; }
+
+      .simple-quotation-table th:nth-child(1),
+      .simple-quotation-table td:nth-child(1) {
+        text-align: left !important;
+        width: 6% !important;
+      }
+      .simple-quotation-table th:nth-child(2),
+      .simple-quotation-table td:nth-child(2) {
+        text-align: left !important;
+        width: 18% !important;
+      }
+      .simple-quotation-table th:nth-child(3),
+      .simple-quotation-table td:nth-child(3) {
+        text-align: left !important;
+        width: 56% !important;
+      }
+      .simple-quotation-table th:nth-child(4),
+      .simple-quotation-table td:nth-child(4) {
+        text-align: right !important;
+        width: 20% !important;
+        white-space: nowrap !important;
+      }
+
+      .detailed-quotation-table col:nth-child(1) { width: 48% !important; }
+      .detailed-quotation-table col:nth-child(2) { width: 10% !important; }
+      .detailed-quotation-table col:nth-child(3) { width: 10% !important; }
+      .detailed-quotation-table col:nth-child(4) { width: 16% !important; }
+      .detailed-quotation-table col:nth-child(5) { width: 16% !important; }
+
+      /* Elak halaman kosong */
+      #quotationContent .mt-8 {
+        margin-top: 16px !important;
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+      }
+      #quotationContent .mt-12 {
+        margin-top: 24px !important;
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+      }
+      #quotationContent tfoot {
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+      }
+
+      #quotationContent tfoot td {
+        font-size: 11px !important;
+        padding-top: 8px !important;
+        padding-bottom: 8px !important;
+      }
+      
+      #quotationContent tfoot td:last-child {
+        font-size: 12px !important;
+        white-space: nowrap !important;
+        text-align: right !important;
+      }
+
+      /* Simple quotation TOTAL row — right aligned (label + amount) */
+      .simple-quotation-table tfoot td {
+        text-align: right !important;
+      }
+      .simple-quotation-table tfoot td:last-child {
+        text-align: right !important;
+        white-space: nowrap !important;
+      }
+    }
+  </style>
 </head>
-<body class="bg-gray-100 text-gray-800 homeowner-mode">
-<header class="bg-white border-b"><div class="max-w-6xl mx-auto px-6 py-4 flex items-center gap-4"><img src="../images/logo.png" alt="Teraju Ciptabina Logo" class="h-12 w-auto"><div><h1 class="font-bold text-lg">TERAJU CIPTABINA</h1></div></div></header>
-<div id="paymentModal" class="payment-modal-backdrop no-print" aria-hidden="true"><div class="payment-modal" role="dialog" aria-modal="true"><div class="p-6 border-b flex items-start justify-between gap-4"><div><p class="text-xs uppercase tracking-wider text-gray-500">Premium Quotation</p><h3 class="text-2xl font-bold mt-1">Unlock Detailed Quotation</h3><p class="text-sm text-gray-500 mt-2">Unlock the detailed quotation already prepared for this project.</p></div><button type="button" onclick="closePaymentModal()" class="text-gray-400 text-2xl">&times;</button></div><div class="p-6"><div class="rounded-2xl bg-gray-50 border p-5 mb-5 flex items-center justify-between"><div><p class="text-sm text-gray-500">Detailed Quotation</p><p class="text-xs text-gray-500 mt-1">Full scope, quantity, unit, rate & amount</p></div><div class="text-2xl font-bold">RM 49</div></div><div class="grid gap-4"><div><label class="block text-sm font-medium mb-2">Name</label><input id="paymentName" type="text" autocomplete="name" placeholder="Your name"></div><div><label class="block text-sm font-medium mb-2">Email</label><input id="paymentEmail" type="email" autocomplete="email" placeholder="you@example.com"></div><div><label class="block text-sm font-medium mb-2">Phone Number</label><input id="paymentPhone" type="tel" autocomplete="tel" placeholder="01X-XXXXXXX"></div></div><div id="paymentError" class="payment-error mt-4 rounded-xl border border-red-200 bg-red-50 text-red-700 text-sm p-4"></div><p class="mt-5 text-xs text-gray-500">You will be redirected to the secure toyyibPay payment page to complete the RM49 payment.</p><div class="mt-6 flex gap-3"><button type="button" onclick="closePaymentModal()" class="flex-1 border px-4 py-3 rounded-xl font-semibold">Cancel</button><button id="paymentProceedButton" type="button" onclick="startDetailedQuotationPayment()" class="flex-1 bg-black text-white px-4 py-3 rounded-xl font-semibold">Pay RM49</button></div></div></div></div>
+
+<body class="bg-gray-100 text-gray-800">
+
+<header class="bg-white border-b">
+  <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+    <div class="flex items-center gap-4 min-w-0">
+      <img src="../images/logo.png" alt="Teraju Ciptabina Logo" class="h-12 w-auto flex-shrink-0">
+      <div class="min-w-0">
+        <h1 class="font-bold text-lg">TERAJU CIPTABINA</h1>
+      </div>
+    </div>
+  </div>
+</header>
+
 <main class="max-w-6xl mx-auto px-6 py-8">
-<section class="mb-7"><h2 class="text-3xl font-bold mb-2">Renovation Planner</h2><p class="text-gray-600">Select the area type and enter the estimated floor area. The system will automatically generate the renovation breakdown.</p></section>
-<section class="bg-white rounded-2xl shadow-sm p-6 mb-6"><div class="flex justify-between items-center cursor-pointer" onclick="toggleProjectInfo()"><div><h3 class="font-bold text-lg">Project Information</h3><p class="text-sm text-gray-500">Enter the project details used for the estimate and quotation.</p></div><span id="projectArrow">▲</span></div><div id="projectInfo" class="mt-5"><div class="grid md:grid-cols-2 gap-5"><div><label class="block text-sm font-medium mb-2">Customer Name</label><input id="customerName" type="text" placeholder="Optional" class="w-full border rounded-lg px-4 py-3" oninput="updateEstimate()"></div><div><label class="block text-sm font-medium mb-2">Project Location</label><input id="projectLocation" type="text" placeholder="e.g. Puchong, Selangor" class="w-full border rounded-lg px-4 py-3" oninput="updateEstimate()"></div></div></div></section>
-<section class="bg-white rounded-2xl shadow-sm p-6 mb-6"><div class="flex justify-between items-center mb-5 gap-4"><div><h3 class="font-bold text-lg">Areas / Rooms</h3><p class="text-sm text-gray-500">Only select the area type and enter the sqft.</p></div><button type="button" onclick="addRoom()" class="no-print bg-black text-white px-4 py-2 rounded-lg text-sm font-medium">+ Add Area</button></div><div class="no-print bg-gray-50 border rounded-xl p-4 mb-5 text-sm text-gray-600"><strong class="text-gray-800">Simple input:</strong> Select the room type and enter the area. Standard quantities are calculated automatically.</div><div id="roomsContainer" class="space-y-4"></div></section>
-<section id="rateScheduleSection" class="no-print bg-white rounded-2xl shadow-sm p-6 mb-6 homeowner-hidden"><div class="flex justify-between items-center cursor-pointer" onclick="toggleRateSchedule()"><div><h3 class="font-bold text-lg">Rate Schedule</h3><p class="text-sm text-gray-500">Review and amend standard renovation unit rates. Changes are applied to the estimate and quotation.</p></div><span id="rateScheduleArrow">▼</span></div><div id="rateSchedulePanel" class="hidden mt-5"><div class="mb-4 flex flex-wrap items-center justify-between gap-3"><p class="text-xs text-gray-500">Contractor rate settings. Changes are saved for this Contractor ID.</p><button type="button" onclick="resetRatesToDefault()" class="border px-4 py-2 rounded-lg text-sm">Reset to Default Rates</button></div><div id="rateScheduleContent" class="overflow-x-auto"></div></div></section>
-<section class="bg-white rounded-2xl shadow-sm p-6"><div class="flex justify-between items-start mb-6"><div><p class="text-xs uppercase tracking-wider text-gray-500">Preliminary Estimate</p><h3 class="text-2xl font-bold">Renovation Budget</h3></div><div class="text-right"><p class="text-xs text-gray-500">Estimate No.</p><p id="estimateNumber" class="font-bold"></p></div></div><div id="customerSummary" class="grid md:grid-cols-4 gap-5 mb-6 text-sm"></div><div id="estimateContent" class="overflow-x-auto"></div><div class="no-print mt-5 flex justify-end"><button type="button" onclick="restoreAllItems()" class="border px-4 py-2 rounded-lg text-sm">Restore All Items</button></div><div class="border-t mt-6 pt-6"><div class="flex justify-between mb-2"><span class="font-semibold text-lg">Total Built Area</span><span id="totalBuiltArea" class="font-bold text-xl">0 sqft</span></div><div class="flex justify-between"><span class="font-semibold text-lg">Estimated Total</span><span id="grandTotal" class="font-bold text-3xl">RM 0</span></div><p class="text-xs text-gray-500 mt-3">* Preliminary renovation estimate only. Final quotation is subject to site inspection, approved drawings, actual site conditions, specifications, material selection and confirmation of final scope.</p></div></section>
-<section class="no-print bg-white rounded-2xl shadow-sm p-6 mt-6"><div class="mb-5"><h3 class="font-bold text-lg">Generate Quotation</h3><p class="text-sm text-gray-500">Choose the quotation you want to generate.</p></div><div class="grid md:grid-cols-2 gap-4"><div class="border rounded-xl p-5"><p class="font-semibold">Free Simple Quotation</p><p class="text-sm text-gray-500 mt-1">Generate immediately with scope by room / area and amount.</p><button type="button" onclick="generateSimpleQuotation()" class="mt-5 w-full bg-black text-white px-5 py-3 rounded-lg font-semibold">Generate Simple Quotation</button></div><div class="border rounded-xl p-5 bg-gray-50"><p class="text-xs uppercase tracking-wide text-gray-500">Premium</p><p class="font-bold text-lg mt-1">Detailed Quotation — RM49</p><p class="text-sm text-gray-500 mt-1">Preview the quotation first. Quantity, unit, rate and full costing remain locked until payment.</p><button type="button" onclick="previewDetailedQuotation()" class="mt-5 w-full border border-gray-900 text-gray-900 px-5 py-3 rounded-lg font-semibold">Preview Detailed Quotation</button></div></div></section>
-<section id="quotationDocument" class="hidden bg-white rounded-2xl shadow-sm p-8 mt-6"><div id="quotationContent"></div><div id="quotationPrintActions" class="no-print mt-6 pt-5 border-t flex justify-end"><button type="button" onclick="printQuotation()" class="bg-black text-white px-5 py-3 rounded-lg font-semibold">Print / Save Quotation PDF</button></div></section>
-<section class="no-print bg-gray-900 text-white rounded-2xl p-8 mt-8 text-center"><h3 class="text-2xl font-bold mb-3">Need a Site-Based Quotation?</h3><p class="text-gray-300 max-w-2xl mx-auto mb-6">Let Teraju Ciptabina inspect your property and prepare a quotation based on the actual site condition and requirements.</p><a href="../index.html#contact" class="inline-block bg-white text-black px-6 py-3 rounded-lg font-semibold">Request Site Visit</a></section>
+
+  <section class="mb-7">
+    <h2 class="text-3xl font-bold mb-2">Renovation Planner</h2>
+    <p class="text-gray-600">
+      Select the area type and enter the estimated floor area.
+      The system will automatically generate the renovation breakdown.
+    </p>
+  </section>
+
+  <!-- Project Information -->
+  <section class="bg-white rounded-2xl shadow-sm p-6 mb-6">
+    <div class="flex justify-between items-center cursor-pointer" onclick="toggleProjectInfo()">
+      <div class="min-w-0">
+        <h3 class="font-bold text-lg">Project Information</h3>
+        <p class="text-sm text-gray-500">Enter the project details used for the estimate and quotation.</p>
+      </div>
+      <span id="projectArrow" class="text-gray-500 text-sm ml-4 flex-shrink-0">▲</span>
+    </div>
+    <div id="projectInfo" class="mt-5">
+      <div class="grid md:grid-cols-2 gap-5">
+        <div>
+          <label class="block text-sm font-medium mb-2">Customer Name</label>
+          <input id="customerName" type="text" placeholder="Optional"
+            class="w-full border rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-gray-300"
+            oninput="updateEstimate()">
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-2">Project Location</label>
+          <input id="projectLocation" type="text" list="projectLocationSuggestions"
+            placeholder="Start typing location..." autocomplete="off"
+            class="w-full border rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-gray-300"
+            oninput="updateEstimate()">
+        </div>
+      </div>
+    </div>
+    <datalist id="projectLocationSuggestions">
+      <option value="Kuala Lumpur"><option value="Putrajaya"><option value="Cyberjaya">
+      <option value="Petaling Jaya, Selangor"><option value="Shah Alam, Selangor">
+      <option value="Subang Jaya, Selangor"><option value="Puchong, Selangor">
+      <option value="Seri Kembangan, Selangor"><option value="Kajang, Selangor">
+      <option value="Bangi, Selangor"><option value="Semenyih, Selangor">
+      <option value="Ampang, Selangor"><option value="Cheras, Selangor">
+      <option value="Rawang, Selangor"><option value="Klang, Selangor">
+      <option value="Kapar, Selangor"><option value="Kota Damansara, Selangor">
+      <option value="Ara Damansara, Selangor"><option value="Setia Alam, Selangor">
+      <option value="Bandar Kinrara, Puchong, Selangor"><option value="Taman Putra Prima, Puchong, Selangor">
+      <option value="Johor Bahru, Johor"><option value="Iskandar Puteri, Johor">
+      <option value="Pasir Gudang, Johor"><option value="Melaka">
+      <option value="Seremban, Negeri Sembilan"><option value="Ipoh, Perak">
+      <option value="Penang / George Town, Penang"><option value="Butterworth, Penang">
+      <option value="Alor Setar, Kedah"><option value="Kota Bharu, Kelantan">
+      <option value="Kuantan, Pahang"><option value="Kuala Terengganu, Terengganu">
+      <option value="Kota Kinabalu, Sabah"><option value="Kuching, Sarawak">
+    </datalist>
+  </section>
+
+  <!-- Areas -->
+  <section class="bg-white rounded-2xl shadow-sm p-6 mb-6">
+    <div class="flex justify-between items-center mb-5 gap-4">
+      <div class="min-w-0">
+        <h3 class="font-bold text-lg">Areas / Rooms</h3>
+        <p class="text-sm text-gray-500">Only select the area type and enter the sqft.</p>
+      </div>
+      <button type="button" onclick="addRoom()"
+        class="no-print bg-black text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-800 flex-shrink-0">
+        + Add Area
+      </button>
+    </div>
+    <div class="no-print bg-gray-50 border rounded-xl p-4 mb-5 text-sm text-gray-600">
+      <strong class="text-gray-800">Simple input:</strong>
+      Select the room type and enter the area. Quantities such as downlights, fans and other standard items will be calculated automatically.
+    </div>
+    <div id="roomsContainer" class="space-y-4"></div>
+  </section>
+
+  <!-- Estimate -->
+  <section class="bg-white rounded-2xl shadow-sm p-6 print-card">
+    <div class="flex justify-between items-start mb-6 gap-4">
+      <div class="min-w-0">
+        <p class="text-xs uppercase tracking-wider text-gray-500">Preliminary Estimate</p>
+        <h3 class="text-2xl font-bold">Renovation Budget</h3>
+      </div>
+      <div class="text-right flex-shrink-0">
+        <p class="text-xs text-gray-500">Estimate No.</p>
+        <p id="estimateNumber" class="font-bold"></p>
+      </div>
+    </div>
+    <div id="customerSummary" class="grid md:grid-cols-4 gap-5 mb-6 text-sm"></div>
+    <div id="estimateContent" class="overflow-x-auto"></div>
+    <div class="no-print mt-5 flex justify-end">
+      <button type="button" onclick="restoreAllItems()" class="border px-4 py-2 rounded-lg text-sm hover:bg-gray-50">
+        Restore All Items
+      </button>
+    </div>
+    <div class="border-t mt-6 pt-6">
+      <div class="flex justify-between items-center gap-4 mb-2">
+        <span class="font-semibold text-lg">Total Built Area</span>
+        <span id="totalBuiltArea" class="font-bold text-xl text-gray-700">0 sqft</span>
+      </div>
+      <div class="flex justify-between items-center gap-4">
+        <span class="font-semibold text-lg">Estimated Total</span>
+        <span id="grandTotal" class="font-bold text-3xl">RM 0</span>
+      </div>
+      <p class="text-xs text-gray-500 mt-3">
+        * This is a preliminary renovation estimate only.
+        Final quotation is subject to site inspection, approved drawings, actual site conditions,
+        specifications, material selection and confirmation of final scope of works.
+      </p>
+    </div>
+  </section>
+
+  <!-- Quotation Generator -->
+  <section class="no-print bg-white rounded-2xl shadow-sm p-6 mt-6">
+    <div class="mb-5">
+      <h3 class="font-bold text-lg">Generate Quotation</h3>
+      <p class="text-sm text-gray-500">Choose how much pricing detail you want to show in the quotation.</p>
+    </div>
+    <div class="grid md:grid-cols-2 gap-4">
+      <label class="quotation-option border rounded-xl p-4 cursor-pointer hover:bg-gray-50">
+        <div class="flex items-start gap-3">
+          <input type="radio" name="quotationType" value="simple" checked class="mt-1 h-4 w-4 flex-shrink-0">
+          <div>
+            <p class="font-semibold">Simple Quotation</p>
+            <p class="text-sm text-gray-500 mt-1">Shows the work description by room / area, with only one total price for each room / area.</p>
+          </div>
+        </div>
+      </label>
+      <label class="quotation-option border rounded-xl p-4 cursor-pointer hover:bg-gray-50">
+        <div class="flex items-start gap-3">
+          <input type="radio" name="quotationType" value="detail" class="mt-1 h-4 w-4 flex-shrink-0">
+          <div>
+            <p class="font-semibold">Detailed Quotation</p>
+            <p class="text-sm text-gray-500 mt-1">Shows item-by-item quantity, unit, rate and amount under each room / area.</p>
+          </div>
+        </div>
+      </label>
+    </div>
+    <div class="mt-5 p-4 rounded-xl bg-gray-50 border text-sm text-gray-600">
+      <strong class="text-gray-800">Review before generating:</strong>
+      Edit the Room / Area Name, Quantity and Rate directly in the estimate table above. The quotation will use your final edited values.
+    </div>
+    <div class="mt-5 flex flex-wrap gap-3">
+      <button type="button" onclick="generateQuotation()"
+        class="bg-black text-white px-5 py-3 rounded-lg font-semibold hover:bg-gray-800">
+        Generate Quotation
+      </button>
+    </div>
+  </section>
+
+  <!-- Generated Quotation -->
+  <section id="quotationDocument" class="hidden bg-white rounded-2xl shadow-sm p-8 mt-6">
+    <div id="quotationContent"></div>
+    <div id="quotationPrintActions" class="no-print mt-6 pt-5 border-t flex flex-wrap justify-end gap-3">
+      <button type="button" onclick="printQuotation()"
+        class="bg-black text-white px-5 py-3 rounded-lg font-semibold hover:bg-gray-800">
+        Print / Save Quotation PDF
+      </button>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="no-print bg-gray-900 text-white rounded-2xl p-8 mt-8 text-center">
+    <h3 class="text-2xl font-bold mb-3">Need an Official Quotation?</h3>
+    <p class="text-gray-300 max-w-2xl mx-auto mb-6">
+      Let Teraju Ciptabina inspect your property and prepare a detailed quotation based on the actual site condition and requirements.
+    </p>
+    <a href="../index.html#contact" class="inline-block bg-white text-black px-6 py-3 rounded-lg font-semibold hover:bg-gray-200">
+      Request Site Visit
+    </a>
+  </section>
 </main>
+
 <script>
-const AUDIENCE=new URLSearchParams(location.search).get('audience')||'homeowner';
-const IS_HOMEOWNER=AUDIENCE!=='contractor';
-const RATES={ceiling:12,spc:14,floorTile:22,wallTile:22,facadeWall:60,downlight:200,wallLight:250,ceilingFan:550,exhaustFan:200,curtainBoxLED:300,barLamp:500,kitchenFrame:1200,kitchenMakingGood:1000,kitchenGlassDoor:1200,bathroomSanitary:3000,bathroomDoor:1200,gateMotor:6400,wallDivider:2800,frontFence:5500,preliminaries:8500,extensionKitchen:250,extensionToilet:584};
-const DEFAULT_RATES={...RATES};
-const ROOM_TYPES={living:'Living / Dining',bedroom:'Bedroom',dryKitchen:'Dry Kitchen',wetKitchen:'Wet Kitchen',bathroom:'Bathroom',carPorch:'Car Porch',balcony:'Balcony',extensionKitchen:'New Extension – Kitchen',extensionToilet:'New Extension – Toilet'};
-const OPTIONAL_SCOPES=[{key:'demolition',label:'Demolition works based on designer proposal, including careful removal, disposal, and site clearing, completed in a safe and professional manner',unit:'ls',rate:null},{key:'painting',label:'Supply labour, materials, tools, and equipment to carry out internal and external painting works, including surface preparation, minor repairs, sealer where required, two coats of premium quality paint, cleaning and touch-up upon completion',unit:'ls',rate:null},{key:'glassDoor',label:'To supply and install additional swing glass door',unit:'unit',rate:RATES.kitchenGlassDoor},{key:'brickwallDivider',label:'To build additional side brickwall divider c/w plaster and paint',unit:'ls',rate:RATES.wallDivider},{key:'frontFence',label:'To build additional front fence brickwall based on designer proposal',unit:'ls',rate:RATES.frontFence},{key:'windows',label:'To supply and install additional windows',unit:'unit',rate:null},{key:'electrical',label:'Additional electrical and wiring works based on confirmed site requirements',unit:'ls',rate:null}];
-const RATE_SCHEDULE=[
-{title:'General / Preliminaries',rows:[{key:'preliminaries',label:'Preliminaries & project mobilisation',unit:'ls'}]},
-{title:'Ceiling & Flooring',rows:[{key:'ceiling',label:'Plaster ceiling flat c/w paint',unit:'sqft'},{key:'spc',label:'SPC flooring c/w skirting and floor mat',unit:'sqft'},{key:'floorTile',label:'Floor tiles c/w waterproofing',unit:'sqft'},{key:'wallTile',label:'Wall tiles',unit:'sqft'},{key:'facadeWall',label:'Facade wall',unit:'sqft'}]},
-{title:'Lighting & Electrical',rows:[{key:'downlight',label:'Downlight c/w wiring',unit:'unit'},{key:'wallLight',label:'Wall light c/w wiring',unit:'unit'},{key:'ceilingFan',label:'Ceiling fan c/w wiring',unit:'unit'},{key:'exhaustFan',label:'Exhaust fan c/w wiring',unit:'unit'},{key:'curtainBoxLED',label:'LED light for curtain box c/w wiring',unit:'ls'},{key:'barLamp',label:'Bar / kitchen lamp c/w wiring',unit:'unit'}]},
-{title:'Kitchen',rows:[{key:'kitchenFrame',label:'Laminated arce frame',unit:'ls'},{key:'kitchenMakingGood',label:'Making good after demolition',unit:'ls'},{key:'kitchenGlassDoor',label:'Swing glass door',unit:'ls'}]},
-{title:'Bathroom',rows:[{key:'bathroomSanitary',label:'Toilet accessories / sanitary fittings',unit:'ls'},{key:'bathroomDoor',label:'Toilet swing door',unit:'unit'}]},
-{title:'External Works',rows:[{key:'gateMotor',label:'Main gate c/w automatic motor',unit:'ls'},{key:'wallDivider',label:'Side brickwall divider c/w plaster and paint',unit:'ls'},{key:'frontFence',label:'Front fence brickwall',unit:'ls'}]},
-{title:'New Extensions',rows:[{key:'extensionKitchen',label:'New extension – Kitchen',unit:'sqft'},{key:'extensionToilet',label:'New extension – Toilet',unit:'sqft'}]}
+const RATES = {
+  ceiling: 12, spc: 14, floorTile: 22, wallTile: 22, facadeWall: 60,
+  downlight: 200, wallLight: 250, ceilingFan: 550, exhaustFan: 200,
+  curtainBoxLED: 300, barLamp: 500, diningLamp: 600,
+  kitchenFrame: 1200, kitchenMakingGood: 1000, kitchenGlassDoor: 1200,
+  bathroomSanitary: 3000, bathroomDoor: 1200,
+  gateMotor: 6400, brickwallDivider: 2800, frontFence: 5500,
+  preliminaries: 8500, extensionKitchen: 250, extensionToilet: 584
+};
+
+const RULES = { downlightPerSqft: 50, minimumDownlights: 4 };
+
+const ROOM_TYPES = {
+  living: "Living / Dining", bedroom: "Bedroom", dryKitchen: "Dry Kitchen",
+  wetKitchen: "Wet Kitchen", bathroom: "Bathroom", carPorch: "Car Porch",
+  balcony: "Balcony", extensionKitchen: "New Extension – Kitchen",
+  extensionToilet: "New Extension – Toilet"
+};
+
+const OPTIONAL_SCOPES = [
+  { key: "demolition", label: "Demolition works based on designer proposal, including careful removal, disposal, and site clearing, completed in a safe and professional manner", unit: "ls", rate: null, custom: true },
+  { key: "painting", label: "Supply labour, materials, tools, and equipment to carry out internal and external painting works, including surface preparation, minor repairs, sealer where required, two coats of premium quality paint, cleaning and touch-up upon completion", unit: "ls", rate: null, custom: true },
+  { key: "glassDoor", label: "To supply and install additional swing glass door", unit: "unit", rate: RATES.kitchenGlassDoor },
+  { key: "brickwallDivider", label: "To build additional side brickwall divider c/w plaster and paint", unit: "ls", rate: RATES.brickwallDivider },
+  { key: "frontFence", label: "To build additional front fence brickwall based on designer proposal", unit: "ls", rate: RATES.frontFence },
+  { key: "windows", label: "To supply and install additional windows", unit: "unit", rate: null, custom: true },
+  { key: "electrical", label: "Additional electrical and wiring works based on confirmed site requirements", unit: "ls", rate: null, custom: true }
 ];
-let roomCounter=0,quotationNumber=null,detailedQuotationHtml='';
-const excludedItems=new Set(),customRates=new Map(),customQuantities=new Map(),customDescriptions=new Map(),customRoomLabels=new Map();
-function money(v,d=0){return new Intl.NumberFormat('en-MY',{style:'currency',currency:'MYR',minimumFractionDigits:d,maximumFractionDigits:d}).format(Number(v)||0)}
-function escapeHtml(v){return String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;').replace(/'/g,'&#039;')}
-function formatQty(v){return Math.round(Number(v)||0)}
-function calculateDownlights(a){return a>0?Math.max(4,Math.ceil(a/50)):0}
-function roomOptions(){return Object.entries(ROOM_TYPES).map(([k,v])=>`<option value="${k}">${escapeHtml(v)}</option>`).join('')}
-function optionalScopeRate(s){const map={glassDoor:'kitchenGlassDoor',brickwallDivider:'wallDivider',frontFence:'frontFence'};return map[s.key]?RATES[map[s.key]]:s.rate}
-function optionalScopeHtml(){return OPTIONAL_SCOPES.map(s=>{const rate=optionalScopeRate(s);return `<div class="border rounded-lg p-3 bg-white" data-scope="${s.key}"><div class="flex items-start gap-3"><input type="checkbox" class="optional-check" data-scope="${s.key}"><div class="flex-1"><label class="text-sm font-medium">${escapeHtml(s.label)}</label><p class="text-xs text-gray-500 mt-1">${rate!==null?'Standard rate: '+money(rate)+' / '+s.unit:'Enter a room-specific rate if required'}</p></div>${rate===null?`<input type="number" min="0" step="1" placeholder="Rate" class="optional-rate w-24 border rounded-lg px-2 py-2">`:`<span class="text-sm font-semibold">${money(rate)}</span>`}</div></div>`}).join('')}
-function contractorScheduleStorageKey(){const id=new URLSearchParams(location.search).get('contractorId')||localStorage.getItem('teraju.contractor.local.v1.activeContractorId')||'';return id?`teraju.contractor.local.v1.schedule.renovation.${id}`:''}
-function loadContractorSchedule(){if(IS_HOMEOWNER)return;const key=contractorScheduleStorageKey();if(!key)return;try{const saved=JSON.parse(localStorage.getItem(key)||'{}');Object.keys(DEFAULT_RATES).forEach(k=>{if(Number.isFinite(Number(saved[k]))&&Number(saved[k])>=0)RATES[k]=Number(saved[k])});OPTIONAL_SCOPES.forEach(s=>{const map={glassDoor:'kitchenGlassDoor',brickwallDivider:'wallDivider',frontFence:'frontFence'};if(map[s.key])s.rate=RATES[map[s.key]]})}catch(e){}}
-function saveContractorSchedule(){if(IS_HOMEOWNER)return;const key=contractorScheduleStorageKey();if(!key)return;try{localStorage.setItem(key,JSON.stringify(RATES))}catch(e){}}
-function scheduleSuffixes(k){return ({ceiling:['ceiling'],spc:['spc'],floorTile:['floor'],wallTile:['walltile'],facadeWall:['facade'],downlight:['downlight'],wallLight:['walllight'],ceilingFan:['fan'],exhaustFan:['exhaust'],curtainBoxLED:['curtain'],barLamp:['barlamp','lamp'],kitchenFrame:['frame'],kitchenMakingGood:['makinggood'],kitchenGlassDoor:['glassdoor'],bathroomSanitary:['sanitary'],bathroomDoor:['door'],gateMotor:['gate'],wallDivider:['divider'],frontFence:['fence']})[k]||[]} 
-function syncScheduleRateToItems(k,n){if(k==='preliminaries'){customRates.set('project-preliminaries',n);return}const suffixes=scheduleSuffixes(k);const rooms=[...document.querySelectorAll('.room-card')];rooms.forEach(r=>{const type=r.querySelector('.room-type')?.value; if((k==='extensionKitchen'||k==='extensionToilet')&&type!==k)return; if((k!=='extensionKitchen'&&k!=='extensionToilet')&&suffixes.length===0)return; const id=r.id;if(k==='extensionKitchen'||k==='extensionToilet'){customRates.set(id+'-extension',n);return}suffixes.forEach(s=>customRates.set(id+'-'+s,n))})}
-function editScheduleRate(k,v){if(IS_HOMEOWNER)return;const n=parseFloat(v);if(!Number.isFinite(n)||n<0){alert('Please enter a valid rate.');renderRateSchedule();return}RATES[k]=n;const optMap={kitchenGlassDoor:'glassDoor',wallDivider:'brickwallDivider',frontFence:'frontFence'};if(optMap[k]){const opt=OPTIONAL_SCOPES.find(s=>s.key===optMap[k]);if(opt)opt.rate=n}syncScheduleRateToItems(k,n);saveContractorSchedule();updateEstimate();renderRateSchedule()}
-function resetRatesToDefault(){if(IS_HOMEOWNER)return;Object.keys(DEFAULT_RATES).forEach(k=>{RATES[k]=DEFAULT_RATES[k];syncScheduleRateToItems(k,DEFAULT_RATES[k])});OPTIONAL_SCOPES.forEach(s=>{const map={glassDoor:'kitchenGlassDoor',brickwallDivider:'wallDivider',frontFence:'frontFence'};if(map[s.key])s.rate=RATES[map[s.key]]});saveContractorSchedule();updateEstimate();renderRateSchedule()}
-function toggleRateSchedule(){const p=document.getElementById('rateSchedulePanel'),a=document.getElementById('rateScheduleArrow');if(!p||IS_HOMEOWNER)return;p.classList.toggle('hidden');if(a)a.textContent=p.classList.contains('hidden')?'▼':'▲';if(!p.classList.contains('hidden'))renderRateSchedule()}
-function renderRateSchedule(){const c=document.getElementById('rateScheduleContent');if(!c||IS_HOMEOWNER)return;let h='<table class="w-full border-collapse text-sm"><thead><tr class="border-b-2 text-left"><th class="py-2 px-2">Description</th><th class="py-2 px-2">Unit</th><th class="py-2 px-2 text-right">Rate (RM)</th></tr></thead><tbody>';RATE_SCHEDULE.forEach(g=>{h+=`<tr class="bg-gray-100 border-b"><td colspan="3" class="py-2 px-2 font-bold">${escapeHtml(g.title)}</td></tr>`;g.rows.forEach(r=>{const val=Number(RATES[r.key]??0);h+=`<tr class="border-b"><td class="py-2 px-2">${escapeHtml(r.label)}</td><td class="py-2 px-2">${escapeHtml(r.unit)}</td><td class="py-2 px-2 text-right"><input type="number" min="0" step="0.01" value="${val.toFixed(2)}" onchange="editScheduleRate('${r.key}',this.value)" class="rate-schedule-input border rounded-lg px-2 py-1.5 bg-white"></td></tr>`})});c.innerHTML=h+'</tbody></table>'}
-function addRoom(type='living',area=''){roomCounter++;const id='room-'+roomCounter,div=document.createElement('div');div.id=id;div.className='room-card border rounded-xl p-4 bg-gray-50';div.innerHTML=`<div class="grid md:grid-cols-[1fr_1fr_1fr_auto] gap-4 items-end"><div><label class="block text-sm font-medium mb-2">Room / Area Name</label><input class="room-name w-full border rounded-lg px-4 py-3 bg-white" value="${escapeHtml(ROOM_TYPES[type]||'Area')}"></div><div><label class="block text-sm font-medium mb-2">Room Type</label><select class="room-type w-full border rounded-lg px-4 py-3 bg-white">${roomOptions()}</select></div><div><label class="block text-sm font-medium mb-2">Area (sqft)</label><input type="number" min="1" step="1" class="room-area w-full border rounded-lg px-4 py-3 bg-white" value="${escapeHtml(area)}" placeholder="e.g. 200"></div><div class="room-actions no-print flex gap-2"><button type="button" onclick="moveRoom('${id}',-1)" class="border rounded-lg px-3">▲</button><button type="button" onclick="moveRoom('${id}',1)" class="border rounded-lg px-3">▼</button><button type="button" onclick="removeRoom('${id}')" class="border border-red-300 text-red-600 rounded-lg px-4">Remove</button></div></div><div class="mt-4 border-t pt-4"><button type="button" onclick="toggleOptionalWorks('${id}')" class="optional-toggle no-print w-full flex justify-between text-left"><span><strong class="text-sm">Optional Works</strong><span class="block text-xs text-gray-500 mt-1">Expand only if additional works are required.</span></span><span id="${id}-arrow">▼</span></button><div id="${id}-optional" class="hidden mt-3 grid md:grid-cols-2 gap-3">${optionalScopeHtml()}</div></div>`;document.getElementById('roomsContainer').appendChild(div);div.querySelector('.room-type').value=type;div.querySelector('.room-name').addEventListener('change',e=>{customRoomLabels.set(id,e.target.value.trim());updateEstimate()});div.querySelector('.room-type').addEventListener('change',()=>{if(!customRoomLabels.has(id))div.querySelector('.room-name').value=ROOM_TYPES[div.querySelector('.room-type').value];updateEstimate()});div.querySelector('.room-area').addEventListener('input',updateEstimate);div.querySelectorAll('.optional-check,.optional-rate').forEach(e=>e.addEventListener('input',updateEstimate));updateEstimate()}
-function removeRoom(id){document.getElementById(id)?.remove();customRoomLabels.delete(id);updateEstimate()}
-function moveRoom(id,d){const r=document.getElementById(id),c=document.getElementById('roomsContainer');if(!r)return;if(d<0&&r.previousElementSibling)c.insertBefore(r,r.previousElementSibling);if(d>0&&r.nextElementSibling)c.insertBefore(r.nextElementSibling,r);updateEstimate()}
-function toggleOptionalWorks(id){const p=document.getElementById(id+'-optional'),a=document.getElementById(id+'-arrow');p.classList.toggle('hidden');a.textContent=p.classList.contains('hidden')?'▼':'▲'}
-function toggleProjectInfo(){const p=document.getElementById('projectInfo'),a=document.getElementById('projectArrow');p.classList.toggle('hidden');a.textContent=p.classList.contains('hidden')?'▼':'▲'}
-function push(items,id,room,description,qty,unit,rate,key){items.push({id:id+'-'+key,roomId:id,room,description,qty:Number(qty)||0,unit,rate:Number(rate)||0,amount:(Number(qty)||0)*(Number(rate)||0)})}
-function standardItems(type,a,id,label){const x=[];if(a<=0)return x;if(type==='living'||type==='bedroom'){push(x,id,label,'To supply and install plaster ceiling flat c/w paint',a,'sqft',RATES.ceiling,'ceiling');push(x,id,label,'To supply and install spc flooring c/w skirting and floor mat',a,'sqft',RATES.spc,'spc');push(x,id,label,`To supply and install ${calculateDownlights(a)} unit downlight c/w wiring`,calculateDownlights(a),'unit',RATES.downlight,'downlight');push(x,id,label,'To supply and install 1 unit ceiling fan c/w wiring',1,'unit',RATES.ceilingFan,'fan');push(x,id,label,'To supply and install led light for curtain box 1 set c/w wiring',1,'ls',RATES.curtainBoxLED,'curtain')}if(type==='dryKitchen'){push(x,id,label,'To supply and install plaster ceiling flat c/w paint',a,'sqft',RATES.ceiling,'ceiling');push(x,id,label,'To supply and install spc flooring c/w skirting and floor mat',a,'sqft',RATES.spc,'spc');push(x,id,label,`To supply and install ${calculateDownlights(a)} unit downlight c/w wiring`,calculateDownlights(a),'unit',RATES.downlight,'downlight');push(x,id,label,'To supply and install bar lamp c/w wiring',1,'unit',RATES.barLamp,'barlamp');push(x,id,label,'To supply and install baby ceiling fan c/w wiring',1,'unit',RATES.ceilingFan,'fan');push(x,id,label,'To supply and install laminated arce frame 1 unit',1,'ls',RATES.kitchenFrame,'frame');push(x,id,label,'To making good wall after demolish existing toilet',1,'ls',RATES.kitchenMakingGood,'makinggood');push(x,id,label,'To supply and install swing glass door',1,'ls',RATES.kitchenGlassDoor,'glassdoor')}if(type==='wetKitchen'){push(x,id,label,'To supply and install floor tiles c/w water proofing',a,'sqft',RATES.floorTile,'floor');push(x,id,label,'To supply and install wall tiles',a*2,'sqft',RATES.wallTile,'walltile');push(x,id,label,'To supply and install plaster ceiling flat c/w paint',a,'sqft',RATES.ceiling,'ceiling');push(x,id,label,`To supply and install ${calculateDownlights(a)} unit downlight c/w wiring`,calculateDownlights(a),'unit',RATES.downlight,'downlight');push(x,id,label,'To supply and install 1 unit ceiling fan c/w wiring',1,'unit',RATES.ceilingFan,'fan');push(x,id,label,'To supply and install kitchen lighting c/w wiring',1,'ls',RATES.barLamp,'lamp')}if(type==='bathroom'){push(x,id,label,'To supply and install floor tiles c/w water proofing',a,'sqft',RATES.floorTile,'floor');push(x,id,label,'Wall tiles',a*6,'sqft',RATES.wallTile,'walltile');push(x,id,label,'To supply and install plaster ceiling flat c/w paint',a,'sqft',RATES.ceiling,'ceiling');push(x,id,label,'To supply and install toilet accessories (water closet, bidet, sink and cabinet)',1,'ls',RATES.bathroomSanitary,'sanitary');push(x,id,label,'To supply and install toilet swing door',1,'unit',RATES.bathroomDoor,'door');push(x,id,label,`To supply and install ${calculateDownlights(a)} unit downlight c/w wiring`,calculateDownlights(a),'unit',RATES.downlight,'downlight');push(x,id,label,`To supply and install ${Math.max(1,Math.ceil(a/50))} unit exhaust fan c/w wiring`,Math.max(1,Math.ceil(a/50)),'unit',RATES.exhaustFan,'exhaust')}if(type==='carPorch'){push(x,id,label,'To supply and install floor tiles',a,'sqft',RATES.floorTile,'floor');push(x,id,label,'To supply and install plaster ceiling flat c/w paint',a,'sqft',RATES.ceiling,'ceiling');push(x,id,label,`To supply and install ${calculateDownlights(a)} unit downlight c/w wiring`,calculateDownlights(a),'unit',RATES.downlight,'downlight');push(x,id,label,'To supply and install main gate c/w automatic motor 4000mm (L) x 1830mm (H)',1,'ls',RATES.gateMotor,'gate');push(x,id,label,'To build 1 side brickwall divider c/w plaster and paint',1,'ls',RATES.wallDivider,'divider');push(x,id,label,'To build new front fence brickwall based on designer proposal',1,'ls',RATES.frontFence,'fence')}if(type==='balcony'){push(x,id,label,'To supply and install floor tiles c/w water proofing',a,'sqft',RATES.floorTile,'floor');push(x,id,label,'Facade wall',a*1.33,'sqft',RATES.facadeWall,'facade');push(x,id,label,`To supply and install ${Math.max(2,Math.ceil(a/70))} unit wall light c/w wiring`,Math.max(2,Math.ceil(a/70)),'unit',RATES.wallLight,'walllight')}if(type==='extensionKitchen'){push(x,id,label,`To build concrete foundation for new kitchen, including excavation, reinforcement and concreting works, complete with tiles finishing, safety door, casement window, accessories and concrete roof slab based on designer’s proposal. Total area ${formatQty(a)}sqft`,a,'sqft',RATES.extensionKitchen,'extension');push(x,id,label,`To supply and install ${calculateDownlights(a)} unit downlight c/w wiring`,calculateDownlights(a),'unit',RATES.downlight,'downlight')}if(type==='extensionToilet'){push(x,id,label,`To build concrete foundation for new toilet, including excavation, reinforcement and concreting works, complete with tiles finishing, safety door, casement window, toilet accessories and concrete roof slab based on designer’s proposal. Total area ${formatQty(a)}sqft`,a,'sqft',RATES.extensionToilet,'extension');push(x,id,label,`To supply and install ${calculateDownlights(a)} unit downlight c/w wiring`,calculateDownlights(a),'unit',RATES.downlight,'downlight');push(x,id,label,`To supply and install ${Math.max(1,Math.ceil(a/50))} unit exhaust fan c/w wiring`,Math.max(1,Math.ceil(a/50)),'unit',RATES.exhaustFan,'exhaust')}return x}
-function getData(){const rooms=[...document.querySelectorAll('.room-card')],idx={},groups=[],all=[];rooms.forEach(r=>{const id=r.id,type=r.querySelector('.room-type').value,a=parseFloat(r.querySelector('.room-area').value)||0;idx[type]=(idx[type]||0)+1;const base=ROOM_TYPES[type]||'Area',auto=idx[type]>1?base+' '+idx[type]:base,label=customRoomLabels.get(id)||auto;groups.push({roomId:id,roomType:type,label,area:a});const items=standardItems(type,a,id,label);r.querySelectorAll('.optional-check').forEach(ch=>{if(!ch.checked)return;const s=OPTIONAL_SCOPES.find(v=>v.key===ch.dataset.scope);if(!s)return;const rate=optionalScopeRate(s)===null?parseFloat(ch.closest('[data-scope]').querySelector('.optional-rate')?.value)||0:optionalScopeRate(s);if(rate>0)push(items,id,label,s.label,1,s.unit,rate,'optional-'+s.key)});items.forEach(i=>{if(customRates.has(i.id))i.rate=customRates.get(i.id);if(customQuantities.has(i.id))i.qty=customQuantities.get(i.id);if(customDescriptions.has(i.id))i.description=customDescriptions.get(i.id);i.amount=i.qty*i.rate});all.push(...items)});const prelim=groups.some(r=>r.area>0)&&!excludedItems.has('project-preliminaries')?(customRates.get('project-preliminaries')??RATES.preliminaries):0;const active=all.filter(i=>!excludedItems.has(i.id));const byRoom={},subs={};groups.forEach(r=>{byRoom[r.roomId]=[];subs[r.roomId]=0});active.forEach(i=>{(byRoom[i.roomId]??=[]).push(i);subs[i.roomId]=(subs[i.roomId]||0)+i.amount});const roomTotal=Object.values(subs).reduce((a,b)=>a+b,0);return{roomGroups:groups,allItems:active,itemsByRoom:byRoom,roomSubtotals:subs,projectPreliminaries:prelim,total:prelim+roomTotal}}
-function updateEstimate(){const d=getData(),items=d.allItems;const area=d.roomGroups.reduce((s,r)=>s+r.area,0);document.getElementById('customerSummary').innerHTML=`<div><p class="text-gray-500">Customer</p><p class="font-medium">${escapeHtml(document.getElementById('customerName').value||'Not specified')}</p></div><div><p class="text-gray-500">Location</p><p class="font-medium">${escapeHtml(document.getElementById('projectLocation').value||'Not specified')}</p></div><div><p class="text-gray-500">Total Built Area</p><p class="font-medium">${formatQty(area)} sqft</p></div><div><p class="text-gray-500">Estimate Type</p><p class="font-medium">Preliminary Renovation Estimate</p></div>`;const by={};items.forEach(i=>(by[i.roomId]??=[]).push(i));let h='<div class="overflow-x-auto"><table class="w-full border-collapse text-sm"><thead><tr class="border-b-2 text-left"><th class="py-3 px-2">Area / Room</th><th class="py-3 px-2">Estimated Scope of Works</th></tr></thead><tbody>';if(d.projectPreliminaries)h+='<tr class="border-b"><td class="py-3 px-2 font-semibold">Project / Authorities</td><td class="py-3 px-2">Renovation permit application and related professional drawings / submission requirements</td></tr>';d.roomGroups.forEach(r=>{if(r.area<=0)return;h+=`<tr class="border-b align-top"><td class="py-3 px-2 font-semibold">${escapeHtml(r.label)}<br><span class="font-normal text-gray-500">${formatQty(r.area)} sqft</span></td><td class="py-3 px-2 leading-6">${(by[r.roomId]||[]).map(i=>escapeHtml(i.description)).join('<br>')}</td></tr>`});h+='</tbody></table></div>';document.getElementById('estimateContent').innerHTML=h;document.getElementById('grandTotal').textContent=money(d.total,2);document.getElementById('totalBuiltArea').textContent=formatQty(area)+' sqft'}
-function generateQuotationNumber(){let n=localStorage.getItem('terajuQuotationNumber');n=n?parseInt(n,10)+1:1;localStorage.setItem('terajuQuotationNumber',n);return'QO'+String(n).padStart(3,'0')}
-function detailHtml(d){const customer=document.getElementById('customerName').value||'Not specified',location=document.getElementById('projectLocation').value||'Not specified',area=d.roomGroups.reduce((s,r)=>s+r.area,0),today=new Intl.DateTimeFormat('en-MY',{day:'2-digit',month:'long',year:'numeric'}).format(new Date());let b=`<div class="flex justify-between items-start gap-6 border-b pb-5 mb-6"><div><div class="flex items-center gap-4 mb-4"><img src="../images/logo.png" class="h-14 w-auto"><div><h1 class="text-xl font-bold">TERAJU CIPTABINA RESOURCES</h1><p class="text-xs text-gray-500">No 10A, Jalan PP 2/1, Taman Putra Prima, 47100 Puchong, Selangor</p></div></div><h2 class="text-2xl font-bold uppercase">Quotation</h2></div><div class="text-right text-sm"><p><span class="text-gray-500">Quotation No.</span><br><strong>${escapeHtml(quotationNumber)}</strong></p><p class="mt-2"><span class="text-gray-500">Date</span><br><strong>${today}</strong></p></div></div><div class="grid md:grid-cols-3 gap-6 mb-7 text-sm"><div><p class="text-xs uppercase text-gray-500">Customer</p><p class="font-semibold">${escapeHtml(customer)}</p></div><div><p class="text-xs uppercase text-gray-500">Project Location</p><p class="font-semibold">${escapeHtml(location)}</p></div><div><p class="text-xs uppercase text-gray-500">Total Built Area</p><p class="font-semibold">${formatQty(area)} sqft</p></div></div><p class="text-sm text-gray-600 mb-5">Renovation works as described below. Final quotation is subject to site inspection, approved drawings, actual site conditions, specifications, material selection and confirmation of final scope of works.</p><div class="overflow-x-auto"><table class="w-full border-collapse text-sm detailed-quotation-table"><colgroup><col style="width:48%"><col style="width:10%"><col style="width:10%"><col style="width:16%"><col style="width:16%"></colgroup><thead><tr class="border-b-2 text-left"><th class="py-3 px-2">Description</th><th class="py-3 px-2">Unit</th><th class="py-3 px-2 text-right">Quantity</th><th class="py-3 px-2 text-right">Rate (RM)</th><th class="py-3 px-2 text-right">Amount (RM)</th></tr></thead><tbody>`;if(d.projectPreliminaries)b+=`<tr class="bg-gray-100 border-b"><td colspan="5" class="py-3 px-2 font-bold">Project / Preliminaries</td></tr><tr class="border-b"><td class="py-3 px-2">Submission of Renovation Permit Application and Engineer's Drawings to the Local Authority</td><td>ls</td><td class="text-right">1</td><td class="text-right">${money(d.projectPreliminaries,2)}</td><td class="text-right font-semibold">${money(d.projectPreliminaries,2)}</td></tr>`;d.roomGroups.forEach(r=>{if(r.area<=0)return;const arr=d.itemsByRoom[r.roomId]||[];b+=`<tr class="bg-gray-100 border-b"><td colspan="5" class="py-3 px-2 font-bold">${escapeHtml(r.label)} <span class="font-normal text-gray-500">(${formatQty(r.area)} sqft)</span></td></tr>`;arr.forEach(i=>b+=`<tr class="border-b align-top"><td class="py-3 px-2">${escapeHtml(i.description)}</td><td class="py-3 px-2">${escapeHtml(i.unit)}</td><td class="py-3 px-2 text-right">${formatQty(i.qty)}</td><td class="py-3 px-2 text-right">${money(i.rate,2)}</td><td class="py-3 px-2 text-right font-medium">${money(i.amount,2)}</td></tr>`);b+=`<tr class="border-b"><td colspan="4" class="py-3 px-2 text-right font-bold">${escapeHtml(r.label)} Subtotal</td><td class="py-3 px-2 text-right font-bold">${money(d.roomSubtotals[r.roomId]||0,2)}</td></tr>`});return b+`</tbody><tfoot><tr class="border-t-2"><td colspan="4" class="py-4 px-2 text-right font-bold">TOTAL</td><td class="py-4 px-2 text-right font-bold text-lg">${money(d.total,2)}</td></tr></tfoot></table></div><div class="mt-8 pt-5 border-t text-sm"><p class="font-semibold mb-2">Terms / Notes</p><ul class="list-disc pl-5 space-y-1 text-gray-600"><li>This quotation is based on the selected scope and estimated area provided.</li><li>Final scope, specifications and pricing are subject to site inspection and confirmation.</li><li>Any additional works not stated above will be quoted separately.</li></ul></div><div class="mt-12 text-sm"><p>Yours sincerely,</p><p class="font-bold mt-8">TERAJU CIPTABINA RESOURCES</p></div>`}
-function simpleHtml(d){const customer=document.getElementById('customerName').value||'Not specified',location=document.getElementById('projectLocation').value||'Not specified',area=d.roomGroups.reduce((s,r)=>s+r.area,0),today=new Intl.DateTimeFormat('en-MY',{day:'2-digit',month:'long',year:'numeric'}).format(new Date());let b=`<div class="flex justify-between items-start gap-6 border-b pb-5 mb-6"><div class="flex items-center gap-4"><img src="../images/logo.png" class="h-14 w-auto"><div><h1 class="text-xl font-bold">TERAJU CIPTABINA RESOURCES</h1><p class="text-xs text-gray-500">No 10A, Jalan PP 2/1, Taman Putra Prima, 47100 Puchong, Selangor</p><h2 class="text-2xl font-bold uppercase mt-3">Quotation</h2></div></div><div class="text-right text-sm"><p>Quotation No.<br><strong>${escapeHtml(quotationNumber)}</strong></p><p class="mt-2">Date<br><strong>${today}</strong></p></div></div><div class="grid md:grid-cols-3 gap-6 mb-7 text-sm"><div><p class="text-xs uppercase text-gray-500">Customer</p><p class="font-semibold">${escapeHtml(customer)}</p></div><div><p class="text-xs uppercase text-gray-500">Project Location</p><p class="font-semibold">${escapeHtml(location)}</p></div><div><p class="text-xs uppercase text-gray-500">Total Built Area</p><p class="font-semibold">${formatQty(area)} sqft</p></div></div><div class="overflow-x-auto"><table class="w-full border-collapse text-sm simple-quotation-table"><colgroup><col><col><col><col></colgroup><thead><tr class="border-b-2 text-left"><th class="py-3 px-2">No.</th><th class="py-3 px-2">Area / Room</th><th class="py-3 px-2">Description of Works</th><th class="py-3 px-2 text-right">Amount (RM)</th></tr></thead><tbody>`;let n=1;if(d.projectPreliminaries)b+=`<tr class="border-b"><td>${n++}</td><td class="font-semibold">Project</td><td>Submission of Renovation Permit Application and Engineer’s Drawings to the Local Authority</td><td class="text-right">${money(d.projectPreliminaries,2)}</td></tr>`;d.roomGroups.forEach(r=>{if(r.area<=0)return;b+=`<tr class="border-b align-top"><td class="py-3 px-2">${n++}</td><td class="py-3 px-2 font-semibold">${escapeHtml(r.label)}<br><span class="font-normal text-gray-500">${formatQty(r.area)} sqft</span></td><td class="py-3 px-2 leading-6">${(d.itemsByRoom[r.roomId]||[]).map(i=>escapeHtml(i.description)).join('<br>')}</td><td class="py-3 px-2 text-right font-semibold">${money(d.roomSubtotals[r.roomId]||0,2)}</td></tr>`});return b+`</tbody><tfoot><tr class="border-t-2"><td colspan="3" class="py-4 px-2 text-right font-bold">TOTAL</td><td class="py-4 px-2 text-right font-bold text-lg">${money(d.total,2)}</td></tr></tfoot></table></div><div class="mt-8 pt-5 border-t text-sm"><p class="font-semibold mb-2">Terms / Notes</p><ul class="list-disc pl-5 text-gray-600"><li>This quotation is based on the selected scope and estimated area provided.</li><li>Final scope and pricing are subject to site inspection and confirmation.</li></ul></div><div class="mt-12 text-sm"><p>Yours sincerely,</p><p class="font-bold mt-8">TERAJU CIPTABINA RESOURCES</p></div>`}
-function previewDetailedQuotation(){const d=getData();if(!d.roomGroups.some(r=>r.area>0)){alert('Please add at least one area with a valid sqft before previewing the detailed quotation.');return}quotationNumber=generateQuotationNumber();detailedQuotationHtml=detailHtml(d);const pendingQuote={quotationNumber,html:detailedQuotationHtml,customerName:document.getElementById('customerName').value,projectLocation:document.getElementById('projectLocation').value,createdAt:Date.now()};sessionStorage.setItem('terajuPendingDetailedQuotation',JSON.stringify(pendingQuote));localStorage.setItem('terajuPendingDetailedQuotation',JSON.stringify(pendingQuote));const sample=d.allItems.slice(0,4);const rows=sample.map((i,n)=>`<tr class="border-b"><td class="py-3 px-3">${n+1}</td><td class="py-3 px-3">${escapeHtml(i.description)}</td><td class="py-3 px-3 text-center text-gray-400">🔒 •••</td><td class="py-3 px-3 text-right text-gray-400">🔒 •••</td><td class="py-3 px-3 text-right text-gray-400">🔒 •••</td></tr>`).join('');document.getElementById('quotationContent').innerHTML=`<div class="border-b pb-5 mb-6"><div class="flex items-center gap-4"><img src="../images/logo.png" class="h-14 w-auto"><div><h1 class="text-xl font-bold">TERAJU CIPTABINA RESOURCES</h1><p class="text-xs text-gray-500">No 10A, Jalan PP 2/1, Taman Putra Prima, 47100 Puchong, Selangor</p></div></div><div class="mt-4 flex justify-between"><div><p class="text-xs uppercase text-gray-500">Detailed Quotation Preview</p><h2 class="text-2xl font-bold">Your Detailed Quotation</h2></div><p class="text-sm">Reference <strong>${escapeHtml(quotationNumber)}</strong></p></div></div><div class="grid md:grid-cols-3 gap-6 mb-6 text-sm"><div><p class="text-xs text-gray-500">Customer</p><p class="font-semibold">${escapeHtml(document.getElementById('customerName').value||'Not specified')}</p></div><div><p class="text-xs text-gray-500">Project Location</p><p class="font-semibold">${escapeHtml(document.getElementById('projectLocation').value||'Not specified')}</p></div><div><p class="text-xs text-gray-500">Estimated Budget</p><p class="font-semibold">${money(d.total,2)}</p></div></div><div class="detail-lock-card overflow-hidden"><div class="bg-gray-900 text-white px-5 py-4 flex justify-between"><div><p class="font-semibold">Detailed Cost Breakdown</p><p class="text-xs text-gray-300 mt-1">Preview generated from your current project data</p></div><span>🔒</span></div><div class="detail-preview"><div class="detail-preview-locked"><table class="w-full border-collapse text-sm"><thead class="bg-gray-50"><tr><th class="py-3 px-3 text-left">No.</th><th class="py-3 px-3 text-left">Description</th><th class="py-3 px-3">Qty</th><th class="py-3 px-3 text-right">Rate</th><th class="py-3 px-3 text-right">Amount</th></tr></thead><tbody>${rows}</tbody></table></div><div class="detail-preview-fade"></div></div><div class="p-5 border-t bg-gray-50 flex flex-wrap items-center justify-between gap-4"><div><p class="font-semibold">Detailed quotation is ready.</p><p class="text-sm text-gray-500 mt-1">Unlock to reveal the complete item-by-item quotation.</p></div><button type="button" onclick="unlockDetailedQuotation()" class="bg-black text-white px-6 py-3 rounded-lg font-semibold">Unlock Detailed Quotation — RM49</button></div></div><div class="mt-6 grid md:grid-cols-3 gap-3 text-sm"><div class="border rounded-xl p-4"><strong>Full Work Scope</strong><p class="text-gray-500 mt-1">Complete descriptions</p></div><div class="border rounded-xl p-4"><strong>Quantity & Rate</strong><p class="text-gray-500 mt-1">Calculated quantities and unit rates</p></div><div class="border rounded-xl p-4"><strong>Complete Costing</strong><p class="text-gray-500 mt-1">All amounts and subtotals</p></div></div>`;document.getElementById('quotationPrintActions').classList.add('hidden');document.getElementById('quotationDocument').classList.remove('hidden');document.getElementById('quotationDocument').scrollIntoView({behavior:'smooth',block:'start'})}
-function generateSimpleQuotation(){const d=getData();if(!d.roomGroups.some(r=>r.area>0)){alert('Please add at least one area with a valid sqft before generating the quotation.');return}quotationNumber=generateQuotationNumber();document.getElementById('quotationContent').innerHTML=simpleHtml(d);document.getElementById('quotationPrintActions').classList.remove('hidden');document.getElementById('quotationDocument').classList.remove('hidden');document.getElementById('quotationDocument').scrollIntoView({behavior:'smooth',block:'start'})}
-const DETAILED_QUOTATION_PRICE=49,PAYMENT_API_BASE='https://terajuciptabina.vercel.app',PAYMENT_API_URL=`${PAYMENT_API_BASE}/api/create-payment`,PAYMENT_VERIFY_API_URL=`${PAYMENT_API_BASE}/api/verify-payment`;
-function openPaymentModal(){const m=document.getElementById('paymentModal'),n=document.getElementById('paymentName');if(n&&!n.value)n.value=document.getElementById('customerName').value||'';m.classList.add('show');m.setAttribute('aria-hidden','false');document.body.style.overflow='hidden'}
-function closePaymentModal(){const m=document.getElementById('paymentModal');m.classList.remove('show');m.setAttribute('aria-hidden','true');document.body.style.overflow=''}
-function setPaymentError(s){const e=document.getElementById('paymentError');e.textContent=s||'';e.classList.toggle('show',!!s)}
-function setPaymentLoading(v){const b=document.getElementById('paymentProceedButton');b.disabled=v;b.textContent=v?'Connecting to payment...':'Pay RM49'}
-function unlockDetailedQuotation(){if(hasVerifiedDetailedQuotationPayment()){unlockExistingDetailedQuotation();return}openPaymentModal()}
-function getPaymentProjectData(){const d=getData();return{quotationNumber,customerName:document.getElementById('customerName').value,projectLocation:document.getElementById('projectLocation').value,projectType:'Renovation',estimateNumber:document.getElementById('estimateNumber').textContent,totalBuiltArea:document.getElementById('totalBuiltArea').textContent,itemCount:d.allItems.length}}
-async function startDetailedQuotationPayment(){const name=document.getElementById('paymentName').value.trim(),email=document.getElementById('paymentEmail').value.trim(),phone=document.getElementById('paymentPhone').value.trim();setPaymentError('');if(!name)return setPaymentError('Please enter your name.');if(!/^\S+@\S+\.\S+$/.test(email))return setPaymentError('Please enter a valid email address.');if(!phone)return setPaymentError('Please enter your phone number.');if(!detailedQuotationHtml){alert('Please preview the Detailed Quotation first.');closePaymentModal();return}const project=getPaymentProjectData(),clientOrderId='TQ-'+Date.now()+'-'+Math.random().toString(36).slice(2,8).toUpperCase();setPaymentLoading(true);try{const r=await fetch(PAYMENT_API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({amount:49,product:'Detailed Quotation',customer:{name,email,phone},project,clientOrderId})}),j=await r.json().catch(()=>({}));if(!r.ok||!j.paymentUrl)throw new Error(j.message||'Unable to create the payment. Please try again.');const pendingPayment={clientOrderId,billCode:j.billCode||'',quotationNumber,customerName:name,email,phone,project,createdAt:Date.now()};sessionStorage.setItem('terajuPendingPayment',JSON.stringify(pendingPayment));localStorage.setItem('terajuPendingPayment',JSON.stringify(pendingPayment));window.location.href=j.paymentUrl}catch(e){setPaymentError(e.message||'Unable to connect to the payment service.');setPaymentLoading(false)}}
-async function verifyDetailedQuotationPayment(){const p=new URLSearchParams(location.search),statusId=p.get('status_id'),billCode=p.get('billcode'),orderId=p.get('order_id');if(!statusId&&!billCode&&!orderId)return false;let pending={};try{pending=JSON.parse(sessionStorage.getItem('terajuPendingPayment')||localStorage.getItem('terajuPendingPayment')||'{}')}catch(e){}if(statusId!=='1'||!billCode||!orderId)return false;try{const r=await fetch(PAYMENT_VERIFY_API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({billCode,orderId,expectedAmount:49,quotationNumber:pending.quotationNumber||''})}),j=await r.json().catch(()=>({}));if(!r.ok||j.paid!==true)return false;const paidData={paid:true,billCode,orderId,quotationNumber:pending.quotationNumber||'',verifiedAt:Date.now()};sessionStorage.setItem('terajuDetailedQuotationPaid',JSON.stringify(paidData));localStorage.setItem('terajuDetailedQuotationPaid',JSON.stringify(paidData));history.replaceState({},document.title,location.pathname+location.hash);return true}catch(e){return false}}
-function hasVerifiedDetailedQuotationPayment(){try{return JSON.parse(sessionStorage.getItem('terajuDetailedQuotationPaid')||localStorage.getItem('terajuDetailedQuotationPaid')||'null')?.paid===true}catch(e){return false}}
-function unlockExistingDetailedQuotation(){let saved=null;try{saved=JSON.parse(sessionStorage.getItem('terajuPendingDetailedQuotation')||localStorage.getItem('terajuPendingDetailedQuotation')||'null')}catch(e){}const paid=hasVerifiedDetailedQuotationPayment();if(!paid||!saved?.html)return false;quotationNumber=saved.quotationNumber||quotationNumber;detailedQuotationHtml=saved.html;document.getElementById('quotationContent').innerHTML=`<div class="mb-5"><span class="detail-unlocked-badge">✓ Detailed Quotation Unlocked</span></div>${detailedQuotationHtml}`;document.getElementById('quotationPrintActions').classList.remove('hidden');document.getElementById('quotationDocument').classList.remove('hidden');document.getElementById('quotationDocument').scrollIntoView({behavior:'smooth',block:'start'});sessionStorage.removeItem('terajuPendingDetailedQuotation');localStorage.removeItem('terajuPendingDetailedQuotation');return true}
-async function initPaymentReturn(){const paid=await verifyDetailedQuotationPayment();if(paid){setTimeout(()=>{if(!unlockExistingDetailedQuotation()){const saved=sessionStorage.getItem('terajuPendingDetailedQuotation')||localStorage.getItem('terajuPendingDetailedQuotation');if(saved){try{const s=JSON.parse(saved);document.getElementById('customerName').value=s.customerName||'';document.getElementById('projectLocation').value=s.projectLocation||'';quotationNumber=s.quotationNumber||null;detailedQuotationHtml=s.html||'';unlockExistingDetailedQuotation()}catch(e){}}}},50)}}
-function printQuotation(){if(document.getElementById('quotationDocument').classList.contains('hidden'))return alert('Please generate the quotation first.');const old=document.title;document.title=quotationNumber?`Quotation ${quotationNumber}`:'Quotation';document.body.classList.add('print-quotation');const clean=()=>{document.body.classList.remove('print-quotation');document.title=old;window.removeEventListener('afterprint',clean)};window.addEventListener('afterprint',clean);window.print();setTimeout(clean,1500)}
-function editRoomLabel(id,v){customRoomLabels.set(id,v.trim());updateEstimate()}
-function editItemDescription(id,v){customDescriptions.set(id,v);updateEstimate()}
-function editItemQuantity(id,v){const n=parseFloat(v);if(Number.isFinite(n)&&n>=0)customQuantities.set(id,n);updateEstimate()}
-function editItemRate(id,v){const n=parseFloat(v);if(Number.isFinite(n)&&n>=0)customRates.set(id,n);updateEstimate()}
-function excludeItem(id){excludedItems.add(id);updateEstimate()}
-function restoreAllItems(){excludedItems.clear();updateEstimate()}
-document.getElementById('estimateNumber').textContent='EST-'+String((parseInt(localStorage.getItem('terajuEstimateNumber')||'0',10)+1)).padStart(4,'0');localStorage.setItem('terajuEstimateNumber',parseInt(localStorage.getItem('terajuEstimateNumber')||'0',10)+1);loadContractorSchedule();const rateSection=document.getElementById('rateScheduleSection');if(IS_HOMEOWNER){rateSection?.classList.add('homeowner-hidden')}else{rateSection?.classList.remove('homeowner-hidden');document.body.classList.remove('homeowner-mode')}addRoom('living','');if(!IS_HOMEOWNER)renderRateSchedule();initPaymentReturn();
+
+let roomCounter = 0;
+const excludedItems = new Set();
+const customRates = new Map();
+const customQuantities = new Map();
+const customDescriptions = new Map();
+const customRoomLabels = new Map();
+
+function generateEstimateNumber() {
+  let number = localStorage.getItem("terajuEstimateNumber");
+  number = number ? parseInt(number, 10) + 1 : 1;
+  localStorage.setItem("terajuEstimateNumber", number);
+  return "EST-" + String(number).padStart(4, "0");
+}
+document.getElementById("estimateNumber").textContent = generateEstimateNumber();
+
+function money(value, decimals = 0) {
+  return new Intl.NumberFormat("en-MY", {
+    style: "currency", currency: "MYR",
+    minimumFractionDigits: decimals, maximumFractionDigits: decimals
+  }).format(Number(value) || 0);
+}
+
+function calculateDownlights(area) {
+  if (!area || area <= 0) return 0;
+  return Math.max(RULES.minimumDownlights, Math.ceil(area / RULES.downlightPerSqft));
+}
+
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+}
+
+function formatQty(value) { return Math.round(Number(value) || 0); }
+
+function roomOptions() {
+  return Object.entries(ROOM_TYPES)
+    .map(([key, name]) => `<option value="${key}">${escapeHtml(name)}</option>`).join("");
+}
+
+function optionalScopeHtml() {
+  return OPTIONAL_SCOPES.map(scope => {
+    const fixed = scope.rate !== null;
+    return `
+      <div class="optional-scope border rounded-lg p-3 bg-white" data-scope="${scope.key}">
+        <div class="flex items-start gap-3">
+          <input type="checkbox" class="optional-check h-4 w-4" data-scope="${scope.key}">
+          <div class="flex-1 min-w-0">
+            <label class="text-sm font-medium cursor-pointer">${escapeHtml(scope.label)}</label>
+            <p class="text-xs text-gray-500 mt-1">
+              ${fixed ? `Standard rate: ${money(scope.rate)} / ${scope.unit}` : "Enter a room-specific rate if required"}
+            </p>
+          </div>
+          ${fixed
+            ? `<div class="text-sm font-semibold whitespace-nowrap flex-shrink-0">${money(scope.rate)}</div>`
+            : `<input type="number" min="0" step="1" value="" placeholder="Rate" class="optional-rate w-28 border rounded-lg px-3 py-2 text-sm flex-shrink-0">`}
+        </div>
+      </div>`;
+  }).join("");
+}
+
+function addRoom(defaultType = "living", defaultArea = "") {
+  roomCounter++;
+  const id = "room-" + roomCounter;
+  const container = document.getElementById("roomsContainer");
+  const div = document.createElement("div");
+  div.id = id;
+  div.className = "room-card border rounded-xl p-4 bg-gray-50";
+
+  div.innerHTML = `
+    <div class="grid md:grid-cols-[1fr_1fr_1fr_auto] gap-4 items-end">
+      <div>
+        <label class="block text-sm font-medium mb-2">Room / Area Name</label>
+        <input type="text" value="${escapeHtml(customRoomLabels.get(id) || ROOM_TYPES[defaultType] || "Area")}"
+          placeholder="e.g. Living Area" class="room-name w-full border rounded-lg px-4 py-3 bg-white">
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-2">Room Type</label>
+        <select class="room-type w-full border rounded-lg px-4 py-3 bg-white">${roomOptions()}</select>
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-2">Area (sqft)</label>
+        <input type="number" min="1" step="1" value="${escapeHtml(defaultArea)}"
+          placeholder="e.g. 200" class="room-area w-full border rounded-lg px-4 py-3 bg-white">
+      </div>
+      <div class="no-print flex gap-2">
+        <button type="button" onclick="moveRoom('${id}', -1)" title="Move up" class="border rounded-lg px-3 py-3 hover:bg-gray-100">▲</button>
+        <button type="button" onclick="moveRoom('${id}', 1)" title="Move down" class="border rounded-lg px-3 py-3 hover:bg-gray-100">▼</button>
+        <button type="button" onclick="removeRoom('${id}')" class="border border-red-300 text-red-600 rounded-lg px-4 py-3 hover:bg-red-50">Remove</button>
+      </div>
+    </div>
+    <div class="mt-4 border-t pt-4">
+      <button type="button" class="optional-toggle w-full flex items-center justify-between text-left py-1 no-print"
+        onclick="toggleOptionalWorks('${id}')" aria-expanded="false">
+        <div class="min-w-0">
+          <h4 class="font-semibold text-sm">Optional Works</h4>
+          <p class="text-xs text-gray-500 mt-1">Expand only if additional works are required for this area.</p>
+        </div>
+        <span id="${id}-optional-arrow" class="text-gray-500 text-sm ml-4 flex-shrink-0">▼</span>
+      </button>
+      <div id="${id}-optional" class="hidden mt-3">
+        <div class="grid md:grid-cols-2 gap-3 optional-scopes">${optionalScopeHtml()}</div>
+      </div>
+    </div>`;
+
+  container.appendChild(div);
+  div.querySelector(".room-type").value = defaultType;
+
+  div.querySelector(".room-name").addEventListener("change", e => editRoomLabel(id, e.target.value));
+  div.querySelector(".room-type").addEventListener("change", () => {
+    if (!customRoomLabels.has(id)) {
+      div.querySelector(".room-name").value = ROOM_TYPES[div.querySelector(".room-type").value] || "Area";
+    }
+    updateEstimate();
+  });
+  div.querySelector(".room-area").addEventListener("input", updateEstimate);
+  div.querySelectorAll(".optional-check").forEach(el => el.addEventListener("change", updateEstimate));
+  div.querySelectorAll(".optional-rate").forEach(el => el.addEventListener("input", updateEstimate));
+  updateEstimate();
+}
+
+function removeRoom(id) {
+  document.getElementById(id)?.remove();
+  customRoomLabels.delete(id);
+  updateEstimate();
+}
+
+function moveRoom(id, direction) {
+  const room = document.getElementById(id);
+  const container = document.getElementById("roomsContainer");
+  if (!room || !container) return;
+  if (direction < 0) {
+    const prev = room.previousElementSibling;
+    if (prev) container.insertBefore(room, prev);
+  } else {
+    const next = room.nextElementSibling;
+    if (next) container.insertBefore(next, room);
+  }
+  updateEstimate();
+}
+
+function toggleOptionalWorks(roomId) {
+  const panel = document.getElementById(`${roomId}-optional`);
+  const arrow = document.getElementById(`${roomId}-optional-arrow`);
+  if (!panel || !arrow) return;
+  panel.classList.toggle("hidden");
+  const expanded = !panel.classList.contains("hidden");
+  arrow.textContent = expanded ? "▲" : "▼";
+  document.querySelector(`.optional-toggle[onclick="toggleOptionalWorks('${roomId}')"]`)
+    ?.setAttribute("aria-expanded", String(expanded));
+}
+
+function toggleProjectInfo() {
+  const info = document.getElementById("projectInfo");
+  const arrow = document.getElementById("projectArrow");
+  if (!info) return;
+  info.classList.toggle("hidden");
+  if (arrow) arrow.textContent = info.classList.contains("hidden") ? "▼" : "▲";
+}
+
+function pushItem(items, roomId, roomLabel, key, description, qty, unit, rate, optional = false) {
+  items.push({ id: `${roomId}-${key}`, roomId, room: roomLabel, description, qty: Number(qty) || 0, unit, rate: Number(rate) || 0, optional });
+}
+
+function generateStandardRoomItems(roomType, area, roomId, roomLabel) {
+  const items = [];
+  if (!area || area <= 0) return items;
+
+  if (roomType === "living" || roomType === "bedroom") {
+    pushItem(items, roomId, roomLabel, "ceiling", "To supply and install plaster ceiling flat c/w paint", area, "sqft", RATES.ceiling);
+    pushItem(items, roomId, roomLabel, "spc", "To supply and install spc flooring c/w skirting and floor mat", area, "sqft", RATES.spc);
+    pushItem(items, roomId, roomLabel, "downlight", `To supply and install ${calculateDownlights(area)} unit downlight c/w wiring`, calculateDownlights(area), "unit", RATES.downlight);
+    pushItem(items, roomId, roomLabel, "fan", "To supply and install 1 unit ceiling fan c/w wiring", 1, "unit", RATES.ceilingFan);
+    pushItem(items, roomId, roomLabel, "curtain", "To supply and install led light for curtain box 1 set c/w wiring", 1, "ls", RATES.curtainBoxLED);
+  }
+  if (roomType === "dryKitchen") {
+    pushItem(items, roomId, roomLabel, "ceiling", "To supply and install plaster ceiling flat c/w paint", area, "sqft", RATES.ceiling);
+    pushItem(items, roomId, roomLabel, "spc", "To supply and install spc flooring c/w skirting and floor mat", area, "sqft", RATES.spc);
+    pushItem(items, roomId, roomLabel, "downlight", `To supply and install ${calculateDownlights(area)} unit downlight c/w wiring`, calculateDownlights(area), "unit", RATES.downlight);
+    pushItem(items, roomId, roomLabel, "barlamp", "To supply and install bar lamp c/w wiring", 1, "unit", RATES.barLamp);
+    pushItem(items, roomId, roomLabel, "fan", "To supply and install baby ceiling fan c/w wiring", 1, "unit", RATES.ceilingFan);
+    pushItem(items, roomId, roomLabel, "frame", "To supply and install laminated arce frame 1 unit", 1, "ls", RATES.kitchenFrame);
+    pushItem(items, roomId, roomLabel, "makinggood", "To making good wall after demolish existing toilet", 1, "ls", RATES.kitchenMakingGood);
+    pushItem(items, roomId, roomLabel, "glassdoor", "To supply and install swing glass door", 1, "ls", RATES.kitchenGlassDoor);
+  }
+  if (roomType === "wetKitchen") {
+    pushItem(items, roomId, roomLabel, "floor", "To supply and install floor tiles c/w water proofing", area, "sqft", RATES.floorTile);
+    pushItem(items, roomId, roomLabel, "walltile", "To supply and install wall tiles", area * 2, "sqft", RATES.wallTile);
+    pushItem(items, roomId, roomLabel, "ceiling", "To supply and install plaster ceiling flat c/w paint", area, "sqft", RATES.ceiling);
+    pushItem(items, roomId, roomLabel, "downlight", `To supply and install ${calculateDownlights(area)} unit downlight c/w wiring`, calculateDownlights(area), "unit", RATES.downlight);
+    pushItem(items, roomId, roomLabel, "fan", "To supply and install 1 unit ceiling fan c/w wiring", 1, "unit", RATES.ceilingFan);
+    pushItem(items, roomId, roomLabel, "lamp", "To supply and install kitchen lighting c/w wiring", 1, "ls", RATES.barLamp);
+  }
+  if (roomType === "bathroom") {
+    pushItem(items, roomId, roomLabel, "floor", "To supply and install floor tiles c/w water proofing", area, "sqft", RATES.floorTile);
+    pushItem(items, roomId, roomLabel, "walltile", "Wall tiles", area * 6, "sqft", RATES.wallTile);
+    pushItem(items, roomId, roomLabel, "ceiling", "To supply and install plaster ceiling flat c/w paint", area, "sqft", RATES.ceiling);
+    pushItem(items, roomId, roomLabel, "sanitary", "To supply and install toilet accessories (water closet, bidet, sink and cabinet)", 1, "ls", RATES.bathroomSanitary);
+    pushItem(items, roomId, roomLabel, "door", "To supply and install toilet swing door", 1, "unit", RATES.bathroomDoor);
+    pushItem(items, roomId, roomLabel, "downlight", `To supply and install ${calculateDownlights(area)} unit downlight c/w wiring`, calculateDownlights(area), "unit", RATES.downlight);
+    pushItem(items, roomId, roomLabel, "exhaust", `To supply and install ${Math.max(1, Math.ceil(area / 50))} unit exhaust fan c/w wiring`, Math.max(1, Math.ceil(area / 50)), "unit", RATES.exhaustFan);
+  }
+  if (roomType === "carPorch") {
+    pushItem(items, roomId, roomLabel, "floor", "To supply and install floor tiles", area, "sqft", RATES.floorTile);
+    pushItem(items, roomId, roomLabel, "ceiling", "To supply and install plaster ceiling flat c/w paint", area, "sqft", RATES.ceiling);
+    pushItem(items, roomId, roomLabel, "downlight", `To supply and install ${calculateDownlights(area)} unit downlight c/w wiring`, calculateDownlights(area), "unit", RATES.downlight);
+    pushItem(items, roomId, roomLabel, "gate", "To supply and install main gate c/w automatic motor 4000mm (L) x 1830mm (H)", 1, "ls", RATES.gateMotor);
+    pushItem(items, roomId, roomLabel, "divider", "To build 1 side brickwall divider c/w plaster and paint", 1, "ls", RATES.brickwallDivider);
+    pushItem(items, roomId, roomLabel, "fence", "To build new front fence brickwall based on designer proposal", 1, "ls", RATES.frontFence);
+  }
+  if (roomType === "balcony") {
+    pushItem(items, roomId, roomLabel, "floor", "To supply and install floor tiles c/w water proofing", area, "sqft", RATES.floorTile);
+    pushItem(items, roomId, roomLabel, "facade", "Facade wall", area * 1.33, "sqft", RATES.facadeWall);
+    pushItem(items, roomId, roomLabel, "walllight", `To supply and install ${Math.max(2, Math.ceil(area / 70))} unit wall light c/w wiring`, Math.max(2, Math.ceil(area / 70)), "unit", RATES.wallLight);
+  }
+  if (roomType === "extensionKitchen") {
+    pushItem(items, roomId, roomLabel, "extension", `To build concrete foundation for new kitchen, including excavation, reinforcement and concreting works, complete with tiles finishing, safety door, casement window, accessories and concrete roof slab based on designer’s proposal. Total area ${formatQty(area)}sqft`, area, "sqft", RATES.extensionKitchen);
+    pushItem(items, roomId, roomLabel, "downlight", `To supply and install ${calculateDownlights(area)} unit downlight c/w wiring`, calculateDownlights(area), "unit", RATES.downlight);
+  }
+  if (roomType === "extensionToilet") {
+    pushItem(items, roomId, roomLabel, "extension", `To build concrete foundation for new toilet, including excavation, reinforcement and concreting works, complete with tiles finishing, safety door, casement window, toilet accessories and concrete roof slab based on designer’s proposal. Total area ${formatQty(area)}sqft`, area, "sqft", RATES.extensionToilet);
+    pushItem(items, roomId, roomLabel, "downlight", `To supply and install ${calculateDownlights(area)} unit downlight c/w wiring`, calculateDownlights(area), "unit", RATES.downlight);
+    pushItem(items, roomId, roomLabel, "exhaust", `To supply and install ${Math.max(1, Math.ceil(area / 50))} unit exhaust fan c/w wiring`, Math.max(1, Math.ceil(area / 50)), "unit", RATES.exhaustFan);
+  }
+  return items;
+}
+
+function generateOptionalRoomItems(room, roomLabel) {
+  const items = [];
+  room.querySelectorAll(".optional-scope").forEach(scopeEl => {
+    const checkbox = scopeEl.querySelector(".optional-check");
+    if (!checkbox?.checked) return;
+    const key = scopeEl.dataset.scope;
+    const definition = OPTIONAL_SCOPES.find(s => s.key === key);
+    if (!definition) return;
+    let rate = definition.rate;
+    if (definition.custom) {
+      rate = parseFloat(scopeEl.querySelector(".optional-rate")?.value) || 0;
+      if (rate <= 0) return;
+    }
+    pushItem(items, room.id, roomLabel, `optional-${key}`, definition.label, 1, definition.unit, rate, true);
+  });
+  return items;
+}
+
+function getAllItems() {
+  const rooms = [...document.querySelectorAll("#roomsContainer .room-card")];
+  const typeIndexes = {};
+  const allItems = [];
+  rooms.forEach(room => {
+    const roomId = room.id;
+    const roomType = room.querySelector(".room-type")?.value || "living";
+    const area = parseFloat(room.querySelector(".room-area")?.value) || 0;
+    typeIndexes[roomType] = (typeIndexes[roomType] || 0) + 1;
+    const base = ROOM_TYPES[roomType] || "Area";
+    const autoLabel = typeIndexes[roomType] > 1 ? `${base} ${typeIndexes[roomType]}` : base;
+    const roomLabel = customRoomLabels.has(roomId) ? customRoomLabels.get(roomId) : autoLabel;
+    const standard = generateStandardRoomItems(roomType, area, roomId, roomLabel);
+    const optional = generateOptionalRoomItems(room, roomLabel);
+    [...standard, ...optional].forEach(item => {
+      if (customRates.has(item.id)) item.rate = customRates.get(item.id);
+      if (customQuantities.has(item.id)) item.qty = customQuantities.get(item.id);
+      if (customDescriptions.has(item.id)) item.description = customDescriptions.get(item.id);
+
+      // Quotation rule: every quantity is rounded UP to a whole number.
+      // The rounded quantity is then multiplied by a rate fixed to 2 decimals.
+      item.qty = Math.max(0, Math.ceil(Number(item.qty) || 0));
+      item.rate = Math.max(0, Math.round((Number(item.rate) || 0) * 100) / 100);
+      item.amount = Math.round((item.qty * item.rate + Number.EPSILON) * 100) / 100;
+    });
+    allItems.push(...standard, ...optional);
+  });
+  return allItems;
+}
+
+function getRoomGroups() {
+  const rooms = [...document.querySelectorAll("#roomsContainer .room-card")];
+  const typeIndexes = {};
+  const groups = [];
+  rooms.forEach(room => {
+    const roomId = room.id;
+    const roomType = room.querySelector(".room-type")?.value || "living";
+    const area = parseFloat(room.querySelector(".room-area")?.value) || 0;
+    typeIndexes[roomType] = (typeIndexes[roomType] || 0) + 1;
+    const base = ROOM_TYPES[roomType] || "Area";
+    const autoLabel = typeIndexes[roomType] > 1 ? `${base} ${typeIndexes[roomType]}` : base;
+    const label = customRoomLabels.has(roomId) ? customRoomLabels.get(roomId) : autoLabel;
+    groups.push({ roomId, roomType, label, area });
+  });
+  return groups;
+}
+
+function updateEstimate() {
+  const allItems = getAllItems();
+  const roomGroups = getRoomGroups();
+  allItems.forEach(item => item.amount = item.qty * item.rate);
+  const activeItems = allItems.filter(item => !excludedItems.has(item.id));
+  const hasAnyArea = roomGroups.some(room => room.area > 0);
+  const projectPreliminaries = hasAnyArea && !excludedItems.has("project-preliminaries")
+    ? (customRates.has("project-preliminaries") ? customRates.get("project-preliminaries") : RATES.preliminaries) : 0;
+  const roomSubtotals = {};
+  roomGroups.forEach(room => roomSubtotals[room.roomId] = 0);
+  activeItems.forEach(item => roomSubtotals[item.roomId] = (roomSubtotals[item.roomId] || 0) + item.amount);
+  const roomTotal = Object.values(roomSubtotals).reduce((s, v) => s + v, 0);
+  renderEstimate(activeItems, roomGroups, roomSubtotals, projectPreliminaries, projectPreliminaries + roomTotal);
+}
+
+function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, total) {
+  const container = document.getElementById("estimateContent");
+  const customer = document.getElementById("customerName")?.value || "Not specified";
+  const location = document.getElementById("projectLocation")?.value || "Not specified";
+  const totalBuiltArea = roomGroups.reduce((sum, room) => sum + (Number(room.area) || 0), 0);
+
+  document.getElementById("customerSummary").innerHTML = `
+    <div><p class="text-gray-500">Customer</p><p class="font-medium">${escapeHtml(customer)}</p></div>
+    <div><p class="text-gray-500">Location</p><p class="font-medium">${escapeHtml(location)}</p></div>
+    <div><p class="text-gray-500">Total Built Area</p><p class="font-medium">${formatQty(totalBuiltArea)} sqft</p></div>
+    <div><p class="text-gray-500">Estimate Type</p><p class="font-medium">Preliminary Renovation Estimate</p></div>`;
+
+  const itemsByRoom = {};
+  items.forEach(item => {
+    if (!itemsByRoom[item.roomId]) itemsByRoom[item.roomId] = [];
+    itemsByRoom[item.roomId].push(item);
+  });
+
+  let html = `
+    <div class="overflow-x-auto">
+      <table class="w-full border-collapse text-sm">
+        <thead>
+          <tr class="border-b-2 text-left">
+            <th class="py-3 px-2">Description</th>
+            <th class="py-3 px-2">Unit</th>
+            <th class="py-3 px-2 text-right">Quantity</th>
+            <th class="py-3 px-2 text-right">Rate (RM)</th>
+            <th class="py-3 px-2 text-right">Amount (RM)</th>
+            <th class="no-print py-3 px-2 text-center">Action</th>
+          </tr>
+        </thead>
+        <tbody>`;
+
+  if (projectPreliminaries > 0) {
+    const prelimRate = customRates.has("project-preliminaries") ? customRates.get("project-preliminaries") : RATES.preliminaries;
+    html += `
+      <tr class="bg-gray-100 border-b"><td colspan="6" class="py-3 px-2 font-bold">Project / Preliminaries</td></tr>
+      <tr class="border-b">
+        <td class="py-3 px-2">Submission of Renovation Permit Application and Engineer's Drawings to the Local Authority</td>
+        <td class="py-3 px-2">ls</td>
+        <td class="py-3 px-2 text-right">1</td>
+        <td class="py-3 px-2 text-right">
+          <input type="number" min="0" step="0.01" value="${Number(prelimRate).toFixed(2)}"
+            onchange="editItemRate('project-preliminaries', this.value)"
+            class="no-print w-32 border rounded-lg px-2 py-1.5 text-right bg-white">
+          <span class="hidden print:inline">${money(prelimRate, 2)}</span>
+        </td>
+        <td class="py-3 px-2 text-right font-medium">${money(prelimRate)}</td>
+        <td class="no-print py-3 px-2 text-center">
+          <button type="button" onclick="excludeItem('project-preliminaries')"
+            class="text-red-600 text-xs border border-red-200 rounded px-3 py-1.5 hover:bg-red-50">Delete</button>
+        </td>
+      </tr>`;
+  }
+
+  roomGroups.forEach(room => {
+    const roomItems = itemsByRoom[room.roomId] || [];
+    if (room.area <= 0) return;
+    html += `
+      <tr class="bg-gray-100 border-b">
+        <td colspan="6" class="py-3 px-2">
+          <div class="flex flex-wrap items-center gap-3">
+            <label class="text-xs font-semibold uppercase tracking-wide text-gray-500">Room / Area Name</label>
+            <input type="text" value="${escapeHtml(room.label)}" onchange="editRoomLabel('${room.roomId}', this.value)"
+              class="no-print flex-1 min-w-[220px] border rounded-lg px-3 py-2 bg-white font-semibold">
+            <span class="font-normal text-gray-500">${formatQty(room.area)} sqft</span>
+          </div>
+          <div class="hidden print:block font-bold">
+            ${escapeHtml(room.label)} <span class="font-normal text-gray-500">(${formatQty(room.area)} sqft)</span>
+          </div>
+        </td>
+      </tr>`;
+    roomItems.forEach(item => {
+      html += `
+        <tr class="border-b hover:bg-gray-50">
+          <td class="py-3 px-2 align-top">
+            <textarea rows="2" onchange="editItemDescription('${item.id}', this.value)"
+              class="no-print w-full min-w-[280px] border rounded-lg px-3 py-2 bg-white leading-5 resize-y">${escapeHtml(item.description)}</textarea>
+            <div class="hidden print:block leading-6">${escapeHtml(item.description)}</div>
+          </td>
+          <td class="py-3 px-2">${escapeHtml(item.unit)}</td>
+          <td class="py-3 px-2 text-right">
+            <input type="number" min="0" step="1" value="${formatQty(item.qty)}" onchange="editItemQuantity('${item.id}', this.value)"
+              class="no-print w-24 border rounded-lg px-2 py-1.5 text-right bg-white">
+            <span class="hidden print:inline">${formatQty(item.qty)}</span>
+          </td>
+          <td class="py-3 px-2 text-right">
+            <input type="number" min="0" step="0.01" value="${Number(item.rate).toFixed(2)}" onchange="editItemRate('${item.id}', this.value)"
+              class="no-print w-28 border rounded-lg px-2 py-1.5 text-right bg-white">
+            <span class="hidden print:inline">${money(item.rate, 2)}</span>
+          </td>
+          <td class="py-3 px-2 text-right font-medium">${money(item.amount, 2)}</td>
+          <td class="no-print py-3 px-2 text-center">
+            <button type="button" onclick="excludeItem('${item.id}')"
+              class="text-red-600 text-xs border border-red-200 rounded px-3 py-1.5 hover:bg-red-50">Delete</button>
+          </td>
+        </tr>`;
+    });
+    html += `
+      <tr class="border-b">
+        <td colspan="4" class="py-3 px-2 text-right font-semibold">${escapeHtml(room.label)} Subtotal</td>
+        <td class="py-3 px-2 text-right font-bold">${money(roomSubtotals[room.roomId] || 0, 2)}</td>
+        <td class="no-print"></td>
+      </tr>`;
+  });
+
+  const roomTotal = Object.values(roomSubtotals).reduce((s, v) => s + v, 0);
+  html += `
+        </tbody>
+        <tfoot>
+          <tr class="border-t-2">
+            <td colspan="4" class="py-4 px-2 text-right font-semibold">Overall Subtotal</td>
+            <td class="py-4 px-2 text-right font-bold">${money(projectPreliminaries + roomTotal, 2)}</td>
+            <td class="no-print"></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>`;
+  container.innerHTML = html;
+  document.getElementById("grandTotal").textContent = money(total, 2);
+  const totalBuiltAreaEl = document.getElementById("totalBuiltArea");
+  if (totalBuiltAreaEl) totalBuiltAreaEl.textContent = formatQty(totalBuiltArea) + " sqft";
+}
+
+function editRoomLabel(roomId, value) {
+  const label = String(value || "").trim();
+  if (!label) { alert("Please enter a room / area name."); updateEstimate(); return; }
+  customRoomLabels.set(roomId, label);
+  updateEstimate();
+}
+function editItemDescription(itemId, value) {
+  const description = String(value || "").trim();
+  if (!description) { alert("Please enter a description."); updateEstimate(); return; }
+  customDescriptions.set(itemId, description);
+  updateEstimate();
+}
+function editItemQuantity(itemId, value) {
+  const qty = parseFloat(value);
+  if (!Number.isFinite(qty) || qty < 0) { alert("Please enter a valid quantity."); updateEstimate(); return; }
+  customQuantities.set(itemId, qty);
+  updateEstimate();
+}
+function editItemRate(itemId, value) {
+  const rate = parseFloat(value);
+  if (!Number.isFinite(rate) || rate < 0) { alert("Please enter a valid rate."); updateEstimate(); return; }
+  customRates.set(itemId, rate);
+  updateEstimate();
+}
+function excludeItem(itemId) { excludedItems.add(itemId); updateEstimate(); }
+function restoreAllItems() { excludedItems.clear(); updateEstimate(); }
+
+let quotationNumber = null;
+function generateQuotationNumber() {
+  let number = localStorage.getItem("terajuQuotationNumber");
+  number = number ? parseInt(number, 10) + 1 : 1;
+  localStorage.setItem("terajuQuotationNumber", number);
+  return "QO" + String(number).padStart(3, "0");
+}
+function getSelectedQuotationType() {
+  return document.querySelector('input[name="quotationType"]:checked')?.value || "simple";
+}
+
+function getCurrentQuotationData() {
+  const allItems = getAllItems().filter(item => !excludedItems.has(item.id));
+  const roomGroups = getRoomGroups();
+  const hasAnyArea = roomGroups.some(room => room.area > 0);
+  const prelimRate = customRates.has("project-preliminaries") ? customRates.get("project-preliminaries") : RATES.preliminaries;
+  const projectPreliminaries = hasAnyArea && !excludedItems.has("project-preliminaries") ? prelimRate : 0;
+  const itemsByRoom = {}, roomSubtotals = {};
+  roomGroups.forEach(room => { itemsByRoom[room.roomId] = []; roomSubtotals[room.roomId] = 0; });
+  allItems.forEach(item => {
+    if (!itemsByRoom[item.roomId]) itemsByRoom[item.roomId] = [];
+    itemsByRoom[item.roomId].push(item);
+    roomSubtotals[item.roomId] = (roomSubtotals[item.roomId] || 0) + item.amount;
+  });
+  const roomTotal = Object.values(roomSubtotals).reduce((s, v) => s + v, 0);
+  return { allItems, roomGroups, itemsByRoom, roomSubtotals, projectPreliminaries, total: projectPreliminaries + roomTotal };
+}
+
+function quotationDescriptionList(items) {
+  if (!items.length) return "No selected works";
+  return items.map(item => escapeHtml(item.description)).join("<br>");
+}
+
+function generateQuotation() {
+  const data = getCurrentQuotationData();
+  if (!data.roomGroups.some(room => room.area > 0)) {
+    alert("Please add at least one area with a valid sqft before generating the quotation.");
+    return;
+  }
+
+  quotationNumber = generateQuotationNumber();
+  const type = getSelectedQuotationType();
+  const customer = document.getElementById("customerName")?.value || "Not specified";
+  const location = document.getElementById("projectLocation")?.value || "Not specified";
+  const totalBuiltArea = data.roomGroups.reduce((sum, room) => sum + (Number(room.area) || 0), 0);
+  const today = new Intl.DateTimeFormat("en-MY", { day: "2-digit", month: "long", year: "numeric" }).format(new Date());
+  const content = document.getElementById("quotationContent");
+
+  let body = `
+    <div class="flex justify-between items-start gap-6 border-b pb-5 mb-6">
+      <div class="min-w-0">
+        <div class="flex items-center gap-4 mb-4">
+          <img src="../images/logo.png" alt="Teraju Ciptabina Logo" class="h-14 w-auto flex-shrink-0">
+          <div class="min-w-0">
+            <h1 class="text-xl font-bold">TERAJU CIPTABINA RESOURCES</h1>
+            <p class="text-xs text-gray-500">No 10A, Jalan PP 2/1, Taman Putra Prima, 47100 Puchong, Selangor</p>
+          </div>
+        </div>
+        <h2 class="text-2xl font-bold uppercase">Quotation</h2>
+      </div>
+      <div class="text-right text-sm flex-shrink-0">
+        <p><span class="text-gray-500">Quotation No.</span><br><strong>${escapeHtml(quotationNumber)}</strong></p>
+        <p class="mt-2"><span class="text-gray-500">Date</span><br><strong>${escapeHtml(today)}</strong></p>
+      </div>
+    </div>
+    <div class="grid md:grid-cols-3 gap-6 mb-7 text-sm">
+      <div>
+        <p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Customer</p>
+        <p class="font-semibold">${escapeHtml(customer)}</p>
+      </div>
+      <div>
+        <p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Project Location</p>
+        <p class="font-semibold">${escapeHtml(location)}</p>
+      </div>
+      <div>
+        <p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Total Built Area</p>
+        <p class="font-semibold">${formatQty(totalBuiltArea)} sqft</p>
+      </div>
+    </div>
+    <div class="mb-5">
+      <p class="text-sm text-gray-600">
+        Renovation works as described below. Final quotation is subject to site inspection,
+        approved drawings, actual site conditions, specifications, material selection and confirmation of final scope of works.
+      </p>
+    </div>`;
+
+  if (type === "simple") {
+    body += `
+      <div class="overflow-x-auto">
+        <table class="w-full border-collapse text-sm simple-quotation-table">
+          <colgroup>
+            <col style="width:6%">
+            <col style="width:18%">
+            <col style="width:56%">
+            <col style="width:20%">
+          </colgroup>
+          <thead>
+            <tr class="border-b-2 text-left">
+              <th class="py-3 px-2">No.</th>
+              <th class="py-3 px-2">Area / Room</th>
+              <th class="py-3 px-2">Description of Works</th>
+              <th class="py-3 px-2 text-right">Amount (RM)</th>
+            </tr>
+          </thead>
+          <tbody>`;
+    let no = 1;
+    if (data.projectPreliminaries > 0) {
+      body += `
+        <tr class="border-b align-top">
+          <td class="py-3 px-2">${no++}</td>
+          <td class="py-3 px-2 font-semibold">Project</td>
+          <td class="py-3 px-2">Submission of Renovation Permit Application and Engineer’s Drawings to the Local Authority</td>
+          <td class="py-3 px-2 text-right font-medium">${money(data.projectPreliminaries, 2)}</td>
+        </tr>`;
+    }
+    data.roomGroups.forEach(room => {
+      if (room.area <= 0) return;
+      body += `
+        <tr class="border-b align-top">
+          <td class="py-3 px-2">${no++}</td>
+          <td class="py-3 px-2 font-semibold">${escapeHtml(room.label)}<br><span class="font-normal text-gray-500">${formatQty(room.area)} sqft</span></td>
+          <td class="py-3 px-2 leading-6">${quotationDescriptionList(data.itemsByRoom[room.roomId] || [])}</td>
+          <td class="py-3 px-2 text-right font-semibold">${money(data.roomSubtotals[room.roomId] || 0, 2)}</td>
+        </tr>`;
+    });
+    body += `
+          </tbody>
+          <tfoot>
+            <tr class="border-t-2">
+              <td colspan="3" class="py-4 px-2 text-right font-bold">TOTAL</td>
+              <td class="py-4 px-2 text-right font-bold text-lg">${money(data.total, 2)}</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>`;
+  } else {
+    body += `
+      <div class="overflow-x-auto">
+        <table class="w-full border-collapse text-sm detailed-quotation-table">
+          <colgroup>
+            <col style="width:50%"><col style="width:10%"><col style="width:10%"><col style="width:15%"><col style="width:15%">
+          </colgroup>
+          <thead>
+            <tr class="border-b-2 text-left">
+              <th class="py-3 px-2">Description</th>
+              <th class="py-3 px-2">Unit</th>
+              <th class="py-3 px-2 text-right">Quantity</th>
+              <th class="py-3 px-2 text-right">Rate (RM)</th>
+              <th class="py-3 px-2 text-right">Amount (RM)</th>
+            </tr>
+          </thead>
+          <tbody>`;
+    if (data.projectPreliminaries > 0) {
+      body += `
+        <tr class="bg-gray-100 border-b"><td colspan="5" class="py-3 px-2 font-bold">Project / Preliminaries</td></tr>
+        <tr class="border-b align-top">
+          <td class="py-3 px-2">Submission of Renovation Permit Application and Engineer's Drawings to the Local Authority</td>
+          <td class="py-3 px-2">ls</td>
+          <td class="py-3 px-2 text-right">1</td>
+          <td class="py-3 px-2 text-right">${money(data.projectPreliminaries, 2)}</td>
+          <td class="py-3 px-2 text-right font-semibold">${money(data.projectPreliminaries, 2)}</td>
+        </tr>`;
+    }
+    data.roomGroups.forEach(room => {
+      if (room.area <= 0) return;
+      const roomItems = data.itemsByRoom[room.roomId] || [];
+      body += `
+        <tr class="bg-gray-100 border-b">
+          <td colspan="5" class="py-3 px-2 font-bold">${escapeHtml(room.label)} <span class="font-normal text-gray-500">(${formatQty(room.area)} sqft)</span></td>
+        </tr>`;
+      roomItems.forEach(item => {
+        body += `
+          <tr class="border-b align-top">
+            <td class="py-3 px-2">${escapeHtml(item.description)}</td>
+            <td class="py-3 px-2">${escapeHtml(item.unit)}</td>
+            <td class="py-3 px-2 text-right">${formatQty(item.qty)}</td>
+            <td class="py-3 px-2 text-right">${money(item.rate, 2)}</td>
+            <td class="py-3 px-2 text-right font-medium">${money(item.amount, 2)}</td>
+          </tr>`;
+      });
+      body += `
+        <tr class="border-b">
+          <td colspan="4" class="py-3 px-2 text-right font-bold">${escapeHtml(room.label)} Subtotal</td>
+          <td class="py-3 px-2 text-right font-bold">${money(data.roomSubtotals[room.roomId] || 0, 2)}</td>
+        </tr>`;
+    });
+    body += `
+          </tbody>
+          <tfoot>
+            <tr class="border-t-2">
+              <td colspan="4" class="py-4 px-2 text-right font-bold">TOTAL</td>
+              <td class="py-4 px-2 text-right font-bold text-lg">${money(data.total, 2)}</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>`;
+  }
+
+  body += `
+    <div class="mt-8 pt-5 border-t text-sm">
+      <p class="font-semibold mb-2">Terms / Notes</p>
+      <ul class="list-disc pl-5 space-y-1 text-gray-600">
+        <li>This quotation is based on the selected scope and estimated area provided.</li>
+        <li>Final scope, specifications and pricing are subject to site inspection and confirmation.</li>
+        <li>Any additional works not stated above will be quoted separately.</li>
+      </ul>
+    </div>
+    <div class="mt-12 text-sm">
+      <p>Your sincerely,</p>
+      <p class="font-bold mt-8">TERAJU CIPTABINA RESOURCES</p>
+    </div>`;
+
+  content.innerHTML = body;
+
+  document.getElementById("quotationDocument").classList.remove("hidden");
+  document.getElementById("quotationPrintActions").classList.remove("hidden");
+  document.getElementById("quotationDocument").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function printQuotation() {
+  const quotation = document.getElementById("quotationDocument");
+  if (quotation.classList.contains("hidden")) {
+    alert("Please generate the quotation first.");
+    return;
+  }
+  const originalTitle = document.title;
+  document.title = quotationNumber ? `Quotation ${quotationNumber}` : "Quotation";
+  document.body.classList.add("print-quotation");
+
+  const cleanup = () => {
+    document.body.classList.remove("print-quotation");
+    document.title = originalTitle;
+    window.removeEventListener("afterprint", cleanup);
+  };
+  window.addEventListener("afterprint", cleanup);
+  window.print();
+  setTimeout(cleanup, 1500);
+}
+
+addRoom("living", "");
 </script>
-<script src="location-autocomplete.js"></script>
-<script src="detailed-quotation-promo-ui.js"></script>
-<script src="quotation-quantity-fix.js?v=20260907"></script>
-</body></html>
+</body>
+</html>
