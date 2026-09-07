@@ -258,7 +258,7 @@ const CONTRACTOR_ID = new URLSearchParams(window.location.search).get("contracto
 const CONTRACTOR_STORAGE_PREFIX = "teraju.contractor.local.v1";
 let restoringContractorState = false;
 
-function contractorStorageKey() { return CONTRACTOR_ID ? `${CONTRACTOR_STORAGE_PREFIX}.renovation.${CONTRACTOR_ID}` : ""; }
+function contractorStorageKey() { return CONTRACTOR_ID ? `${CONTRACTOR_STORAGE_PREFIX}.${CONTRACTOR_ID}.renovation` : ""; }
 function normalizeRate(value) { return Math.max(0, Math.round((Number(value) || 0) * 100) / 100); }
 function normalizeQuantity(value) { return Math.max(0, Math.ceil(Number(value) || 0)); }
 function generateEstimateNumber() { let number = localStorage.getItem("terajuEstimateNumber"); number = number ? parseInt(number, 10) + 1 : 1; localStorage.setItem("terajuEstimateNumber", number); return "EST-" + String(number).padStart(4, "0"); }
