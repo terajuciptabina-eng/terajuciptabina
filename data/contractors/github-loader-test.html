@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contractor GitHub Loader Test | Teraju Ciptabina</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 900px; margin: 40px auto; padding: 0 20px; line-height: 1.5; }
+    pre { background: #f5f5f5; padding: 16px; overflow: auto; border-radius: 8px; }
+    .pass { color: #087f23; font-weight: 700; }
+    .fail { color: #b00020; font-weight: 700; }
+    button { padding: 10px 16px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h1>Contractor GitHub Loader Test</h1>
+  <p>Read-only test for <code>CTR-DEMO-001</code>. This page does not write to GitHub and does not touch the planner.</p>
+  <button id="runTest">Run test</button>
+  <p id="status">Ready.</p>
+  <pre id="output">No test run yet.</pre>
+
+  <script src="./github-loader.js"></script>
+  <script>
+    const statusEl = document.getElementById('status');
+    const outputEl = document.getElementById('output');
+    const runButton = document.getElementById('runTest');
+
+    function assert(condition, message) {
+      if (!condition) throw new Error(message);
+    }
+
+    async function runTest() {
+      runButton.disabled = true;
+      statusEl.className = '';
+      statusEl.textContent = 'Running…';
+      outputEl.textContent = '';
+
+      try {
+        const loader = window.TerajuContractorGitHubLoader;
+        assert(loader, 'TerajuContractorGitHubLoader is not available');
+
+        const buildUrl = loader.buildRecordUrl('CTR-DEMO-001', 'build');
+        const renovationUrl = loader.buildRecordUrl('CTR-DEMO-001', 'renovation');
+        assert(buildUrl.includes('/CTR-DEMO-001/build.json'), 'Build URL is incorrect');
+        assert(renovationUrl.includes('/CTR-DEMO-001/renovation.json'), 'Renovation URL is incorrect');
+
+        const result = await loader.loadContractorDatabase('CTR-DEMO-001');
+        assert(result.contractorId === 'CTR-DEMO-001', 'Database contractorId mismatch');
+        assert(result.build, 'Build record did not load');
+        assert(result.renovation, 'Renovation record did not load');
+        assert(result.build.contractorId === 'CTR-DEMO-001', 'Build contractorId mismatch');
+        assert(result.renovation.contractorId === 'CTR-DEMO-001', 'Renovation contractorId mismatch');
+        assert(result.build.projectType === 'build', 'Build projectType mismatch');
+        assert(result.renovation.projectType === 'renovation', 'Renovation projectType mismatch');
+        assert(Array.isArray(result.build.items), 'Build items is not an array');
+        assert(Array.isArray(result.renovation.items), 'Renovation items is not an array');
+        assert(result.build.items.length === 0, 'Demo build record should start empty');
+        assert(result.renovation.items.length === 0, 'Demo renovation record should start empty');
+        assert(Object.keys(result.errors).length === 0, 'One or more records returned loader errors');
+
+        const summary = {
+          passed: true,
+          contractorId: result.contractorId,
+          build: {
+            projectType: result.build.projectType,
+            state: result.build.state,
+            items: result.build.items.length
+          },
+          renovation: {
+            projectType: result.renovation.projectType,
+            state: result.renovation.state,
+            items: result.renovation.items.length
+          },
+          buildUrl,
+          renovationUrl
+        };
+
+        statusEl.className = 'pass';
+        statusEl.textContent = 'PASS — GitHub → loader → canonical records are working.';
+        outputEl.textContent = JSON.stringify(summary, null, 2);
+      } catch (error) {
+        statusEl.className = 'fail';
+        statusEl.textContent = 'FAIL — ' + (error.message || error);
+        outputEl.textContent = error.stack || String(error);
+      } finally {
+        runButton.disabled = false;
+      }
+    }
+
+    runButton.addEventListener('click', runTest);
+  </script>
+</body>
+</html>
