@@ -2,23 +2,46 @@
 
 This folder is the **GitHub-first contractor quotation database** for the experimental planner.
 
-## Storage model
+## Canonical storage
 
-Each contractor is identified by a stable `contractorId`. Contractor data is separated by:
+Each contractor is identified by a stable `contractorId`. The canonical records are stored separately from the registry:
 
 ```text
-contractorId
-  state
-    projectType
-      items
+data/contractors/records/<contractorId>/
+  profile.json
+  build.json
+  renovation.json
 ```
 
-Supported project types:
+`build.json` and `renovation.json` contain the contractor's quotation-rate records for the two planners.
 
-- `build`
-- `renovation`
+## Registry and schemas
 
-Supported states/territories are defined in `data/states.json` and registered in `data/contractors/database.json`.
+- `data/contractors/database.json` — database registry/index and the 16 Malaysian states/territories.
+- `data/contractors/database.schema.json` — schema for the registry structure.
+- `data/contractors/contractor-record.template.json` — example shape for a planner database record.
+- `data/contractors/export-format.md` — canonical browser-export record format.
+- `data/contractor-profile.schema.json` — contractor profile validation schema.
+- `data/contractors/records/README.md` — canonical record storage rules.
+
+## Planner flow
+
+```text
+Contractor Profile
+      ↓
+Stable contractorId + state
+      ↓
+Build / Renovation Planner
+      ↓
+Contractor Item Database (local working data)
+      ↓
+Canonical export record
+      ↓
+GitHub records/<contractorId>/build.json
+GitHub records/<contractorId>/renovation.json
+```
+
+The browser currently prepares and exports the canonical JSON record. It does **not** write directly to GitHub. This keeps repository credentials out of the planner.
 
 ## Rate precedence
 
@@ -34,36 +57,10 @@ State rate
 Default rate
 ```
 
-## Database files
+## Contractor registration
 
-- `data/contractors/database.json` — GitHub database registry/index and the 16 Malaysian states/territories.
-- `data/contractors/database.schema.json` — validation schema for the database structure.
-- `data/contractors/sample-record.json` — example record only; not a real contractor.
-- `data/contractor-profile.schema.json` — contractor profile validation schema.
+The live `contractors` registry remains empty until an actual contractor profile is registered. `CTR-DEMO-001` under `records/` is only a structural example and contains no real quotation rates.
 
-## Recording contractor data
+## Security boundary
 
-A real contractor record is added under the `contractors` array using a stable `contractorId`. Each contractor can have one or more states, and each state can contain separate `build` and `renovation` item rates.
-
-Example structure:
-
-```text
-contractors[]
-  contractorId
-  contractorName
-  states[]
-    state
-    projectTypes
-      build.items[]
-      renovation.items[]
-```
-
-The database is intentionally empty until an actual contractor profile is registered. No fake contractor data is inserted into the live registry.
-
-## Important
-
-GitHub is the storage layer for this experimental phase. Authentication, write authorization, rate limiting and other security controls will be added later.
-
-The planner should never contain a GitHub token or other repository credentials.
-
-For now, the database structure is prepared and recorded in GitHub first. A secure write adapter can be connected later without changing the database model.
+Do not store passwords, API keys, GitHub tokens, payment credentials or other secrets in this database. Authentication, write authorization and rate limiting will be added later through a secure write adapter without changing the record layout.
