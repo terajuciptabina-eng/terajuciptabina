@@ -5,6 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TERAJU WORKS | Construction Costing & Quotation</title>
   <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-50XR3XER7B"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-50XR3XER7B');
+  </script>
+
   <style>
     :root{color-scheme:light}
     *{box-sizing:border-box}
@@ -157,5 +167,13 @@
       <div class="text-[9px] font-semibold tracking-[.16em] text-slate-400">CONSTRUCTION COSTING &amp; QUOTATION</div>
     </div>
   </footer>
+
+  <!-- Custom landing-page event: counts visits specifically to the quotation entry page. -->
+  <script>
+    gtag('event', 'quotation_landing_view', {
+      page_type: 'quotation_landing',
+      page_path: window.location.pathname
+    });
+  </script>
 </body>
 </html>
