@@ -10,9 +10,9 @@
   const contractor = new URLSearchParams(location.search).get('audience') === 'contractor';
   const renovationContractor = contractor && /renoplannercon\.html$/i.test(location.pathname);
   load('tcBuildPlannerStatePersistence', 'buildplanner-state-persistence.js?v=20260907-final', () => {
-    load('tcBuildPlannerQuotationRenderer', 'buildplanner-alignment-fix.js?v=20260907-final', () => {
-      load('tcBuildPlannerSimpleStructureFix', 'buildplanner-simple-structure-fix.js?v=20260907-final', () => {
-        load('tcBuildPlannerSummaryCleanup', 'buildplanner-summary-cleanup.js?v=20260907-1', () => {
+    load('tcBuildPlannerQuotationRenderer', 'buildplanner-alignment-fix.js?v=20260907-simple-summary-fix-2', () => {
+      load('tcBuildPlannerSimpleStructureFix', 'buildplanner-simple-structure-fix.js?v=20260907-simple-summary-fix-2', () => {
+        load('tcBuildPlannerSummaryCleanup', 'buildplanner-summary-cleanup.js?v=20260907-2', () => {
           load('tcBuildPlannerDetailedFix', 'buildplanner-detailed-fix.js?v=20260907-final', () => {
             if (contractor && !renovationContractor) {
               load('tcContractorItemEditor', 'contractor-item-editor.js?v=20260907-1', () => {
