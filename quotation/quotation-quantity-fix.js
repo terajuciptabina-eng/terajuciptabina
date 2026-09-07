@@ -201,13 +201,11 @@
     return true;
   }
 
-  function roundQuotationQuantities(){const root=document.getElementById('quotationContent');if(!root)return;root.querySelectorAll('table').forEach(table=>{const headers=[...table.querySelectorAll('thead th')].map(th=>th.textContent.trim().toLowerCase());const qi=headers.findIndex(h=>h==='quantity'||h.includes('quantity'));if(qi<0)return;table.querySelectorAll('tbody tr').forEach(row=>{const cell=row.children[qi];if(!cell)return;const m=cell.textContent.trim().match(/^(\d+(?:\.\d+)?)(.*)$/);if(!m)return;const v=Number(m[1]);if(!Number.isFinite(v))return;cell.textContent=`${Math.max(1,Math.ceil(v))}${m[2]||''}`;});});}
   function init(){
     window.TERAJU_AUDIENCE=contractor?'contractor':'homeowner'; document.body.classList.toggle('contractor-mode',contractor); document.body.classList.toggle('homeowner-mode',!contractor);
     if(!contractor)return;
     const ok=plannerType==='build'?installBuild():installRenovation();
     if(!ok){setTimeout(init,100);return;}
-    const q=document.getElementById('quotationContent'); if(q){roundQuotationQuantities();new MutationObserver(()=>roundQuotationQuantities()).observe(q,{childList:true,subtree:true});}
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
