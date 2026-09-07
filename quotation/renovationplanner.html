@@ -407,7 +407,7 @@
   <section id="quotationDocument" class="hidden bg-white rounded-2xl shadow-sm p-8 mt-6">
     <div id="quotationContent"></div><div id="quotationLockOverlay" class="quotation-lock-overlay no-print hidden" aria-hidden="true"><div class="quotation-lock-card"><div class="quotation-lock-icon" aria-hidden="true">🔒</div><h3 class="text-xl font-bold">Detailed Quotation Locked</h3><p class="text-sm text-gray-600 mt-2">The detailed quotation has been generated. Unlock it to view the full item-by-item rates and amounts.</p><button type="button" onclick="unlockDetailedQuotation()" class="mt-5 w-full bg-black text-white px-5 py-3 rounded-xl font-semibold">Unlock Detailed Quotation</button></div></div>
     <div id="quotationPrintActions" class="no-print mt-6 pt-5 border-t flex flex-wrap justify-end gap-3">
-      <button type="button" onclick="saveQuotationPdf()"
+      <button type="button" onclick="printQuotation()"
         class="bg-black text-white px-5 py-3 rounded-lg font-semibold hover:bg-gray-800">
         Save Quotation as PDF
       </button>
@@ -1476,162 +1476,131 @@ function generateQuotationConfirmed(type) {
   document.getElementById("quotationDocument").scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
-async function saveQuotationPdf(){
-  const quotation=document.getElementById('quotationDocument');
-  const content=document.getElementById('quotationContent');
-  if(quotation?.classList.contains('detailed-locked')){
-    alert('Please unlock the Detailed Quotation before saving the PDF.');
-    return;
-  }
-  if(!quotation||quotation.classList.contains('hidden')||!content||!content.innerHTML.trim()){
-    alert('Please generate the quotation first.');
-    return;
-  }
-  if(!window.jspdf||!window.jspdf.jsPDF||!window.html2canvas){
-    alert('PDF generator is still loading. Please try again in a moment.');
-    return;
-  }
-
-  const button=document.querySelector('#quotationPrintActions button');
-  const originalText=button?button.textContent:'';
-  if(button){button.disabled=true;button.textContent='Creating PDF...';}
-
-  let holder=null;
-  try{
-    await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
-
-    /*
-      Render a dedicated A4-width copy of the quotation.
-      Do NOT use jsPDF.html() here: its CSS/layout conversion was producing
-      oversized text and many pages. The dedicated clone keeps the quotation
-      at the same proportions as the web view, then we paginate one canvas.
-    */
-    holder=document.createElement('div');
-    holder.setAttribute('aria-hidden','true');
-    holder.style.cssText='position:fixed;left:-100000px;top:0;width:794px;background:#fff;z-index:-1;overflow:visible;';
-
-    const clone=content.cloneNode(true);
-    clone.id='quotationPdfRender';
-    clone.classList.remove('quotation-locked');
-    clone.style.cssText='display:block!important;width:794px!important;max-width:794px!important;min-width:0!important;margin:0!important;padding:0!important;background:#fff!important;filter:none!important;overflow:visible!important;font-size:14px!important;line-height:1.4!important;';
-
-    clone.querySelectorAll('.overflow-x-auto').forEach(el=>{
-      el.style.overflow='visible';
-      el.style.width='100%';
-    });
-    clone.querySelectorAll('table').forEach(table=>{
-      table.style.width='100%';
-      table.style.maxWidth='100%';
-      table.style.minWidth='0';
-      table.style.tableLayout='fixed';
-    });
-    clone.querySelectorAll('img').forEach(img=>{
-      img.style.maxWidth='100%';
-      img.style.height='auto';
-    });
-    clone.querySelectorAll('*').forEach(el=>{
-      el.style.maxWidth=el.style.maxWidth||'100%';
-    });
-
-    holder.appendChild(clone);
-    document.body.appendChild(holder);
-
-    await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
-
-    const scale=2;
-    const canvas=await html2canvas(clone,{
-      scale,
-      useCORS:true,
-      allowTaint:false,
-      backgroundColor:'#ffffff',
-      logging:false,
-      imageTimeout:15000,
-      width:794,
-      windowWidth:794,
-      scrollX:0,
-      scrollY:0
-    });
-
-    const {jsPDF}=window.jspdf;
-    const pdf=new jsPDF({orientation:'portrait',unit:'mm',format:'a4',compress:true});
-    const margin=10;
-    const pageWidth=210-margin*2;
-    const pageHeight=297-margin*2;
-    const pagePixelWidth=794*scale;
-    const pagePixelHeight=Math.floor(pagePixelWidth*(pageHeight/pageWidth));
-
-    /* Find safe row boundaries so a table row is not cut across pages. */
-    const safeBreaks=[];
-    clone.querySelectorAll('tr').forEach(row=>{
-      const r=row.getBoundingClientRect();
-      const bottom=Math.round((r.bottom-clone.getBoundingClientRect().top)*scale);
-      if(bottom>0 && bottom<canvas.height) safeBreaks.push(bottom);
-    });
-    safeBreaks.sort((a,b)=>a-b);
-
-    let sourceY=0;
-    let pageNo=0;
-    while(sourceY<canvas.height-1){
-      if(pageNo>0) pdf.addPage();
-
-      let sliceHeight=Math.min(pagePixelHeight,canvas.height-sourceY);
-      const target=sourceY+pagePixelHeight;
-      if(target<canvas.height){
-        const candidates=safeBreaks.filter(y=>y>sourceY+40 && y<=target-20);
-        if(candidates.length) sliceHeight=candidates[candidates.length-1]-sourceY;
-      }
-      if(sliceHeight<=0) sliceHeight=Math.min(pagePixelHeight,canvas.height-sourceY);
-
-      const pageCanvas=document.createElement('canvas');
-      pageCanvas.width=canvas.width;
-      pageCanvas.height=sliceHeight;
-      const ctx=pageCanvas.getContext('2d');
-      ctx.fillStyle='#fff';
-      ctx.fillRect(0,0,pageCanvas.width,pageCanvas.height);
-      ctx.drawImage(canvas,0,sourceY,canvas.width,sliceHeight,0,0,canvas.width,sliceHeight);
-
-      const imgData=pageCanvas.toDataURL('image/jpeg',0.94);
-      const renderedHeight=pageWidth*(sliceHeight/pagePixelWidth);
-      pdf.addImage(imgData,'JPEG',margin,margin,pageWidth,renderedHeight,'','FAST');
-      sourceY+=sliceHeight;
-      pageNo++;
-    }
-
-    const filename=(quotationNumber?`Quotation-${quotationNumber}`:'Quotation')+'.pdf';
-    pdf.save(filename);
-  }catch(err){
-    console.error('PDF generation failed:',err);
-    alert('Unable to create the PDF automatically. Please try again.');
-  }finally{
-    if(holder) holder.remove();
-    if(button){button.disabled=false;button.textContent=originalText||'Save Quotation as PDF';}
-  }
-}
-function printQuotation() {
+async function printQuotation() {
   const quotation = document.getElementById("quotationDocument");
-  if (quotation.classList.contains("hidden")) {
+  if (!quotation || quotation.classList.contains("hidden")) {
     alert("Please generate the quotation first.");
     return;
   }
-  const originalTitle = document.title;
-  document.title = quotationNumber ? `Quotation ${quotationNumber}` : "Quotation";
-  document.body.classList.add("print-quotation");
 
-  const cleanup = () => {
-    document.body.classList.remove("print-quotation");
-    document.title = originalTitle;
-    window.removeEventListener("afterprint", cleanup);
-  };
-  window.addEventListener("afterprint", cleanup);
-  window.print();
-  setTimeout(cleanup, 1500);
+  // Direct PDF download: render the already-visible quotation exactly as HTML,
+  // then scale the rendered image to A4. This does NOT open the browser Print dialog.
+  const button = document.querySelector('#quotationPrintActions button');
+  const originalLabel = button ? button.textContent : '';
+  if (button) {
+    button.disabled = true;
+    button.textContent = 'Preparing PDF…';
+  }
+
+  const loadScript = (src, test) => new Promise((resolve, reject) => {
+    if (test()) return resolve();
+    const existing = document.querySelector(`script[src="${src}"]`);
+    if (existing) {
+      existing.addEventListener('load', resolve, { once: true });
+      existing.addEventListener('error', reject, { once: true });
+      return;
+    }
+    const script = document.createElement('script');
+    script.src = src;
+    script.onload = resolve;
+    script.onerror = () => reject(new Error('Unable to load PDF component.'));
+    document.head.appendChild(script);
+  });
+
+  try {
+    await loadScript(
+      'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js',
+      () => typeof window.html2canvas === 'function'
+    );
+    await loadScript(
+      'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js',
+      () => !!(window.jspdf && window.jspdf.jsPDF)
+    );
+
+    const source = document.getElementById('quotationContent');
+    if (!source) throw new Error('Quotation content is unavailable.');
+
+    // Clone only the quotation itself so browser/page UI never enters the PDF.
+    const clone = source.cloneNode(true);
+    clone.querySelectorAll('.no-print, #quotationPrintActions, #quotationLockOverlay').forEach(el => el.remove());
+    clone.classList.remove('quotation-locked');
+
+    const holder = document.createElement('div');
+    holder.style.cssText = [
+      'position:fixed', 'left:-100000px', 'top:0', 'z-index:-1',
+      'width:' + Math.max(760, Math.min(source.getBoundingClientRect().width, 1200)) + 'px',
+      'background:#fff', 'padding:0', 'margin:0', 'overflow:visible'
+    ].join(';');
+    holder.appendChild(clone);
+    document.body.appendChild(holder);
+
+    // Wait for layout/images/fonts before capturing.
+    await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+    if (document.fonts && document.fonts.ready) await document.fonts.ready;
+    const images = Array.from(holder.querySelectorAll('img'));
+    await Promise.all(images.map(img => img.complete ? Promise.resolve() : new Promise(r => {
+      img.addEventListener('load', r, { once: true });
+      img.addEventListener('error', r, { once: true });
+    })));
+
+    const canvas = await window.html2canvas(holder, {
+      backgroundColor: '#ffffff',
+      scale: Math.min(2, Math.max(1.25, window.devicePixelRatio || 1)),
+      useCORS: true,
+      allowTaint: false,
+      logging: false,
+      imageTimeout: 15000,
+      scrollX: 0,
+      scrollY: 0,
+      windowWidth: holder.scrollWidth,
+      windowHeight: holder.scrollHeight
+    });
+    holder.remove();
+
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4', compress: true });
+    const pageW = 210;
+    const pageH = 297;
+    const marginX = 10;
+    const marginY = 10;
+    const contentW = pageW - marginX * 2;
+    const contentH = pageH - marginY * 2;
+    const pxPerMm = canvas.width / contentW;
+    const sliceH = Math.floor(contentH * pxPerMm);
+
+    let y = 0;
+    let page = 0;
+    while (y < canvas.height) {
+      const h = Math.min(sliceH, canvas.height - y);
+      const pageCanvas = document.createElement('canvas');
+      pageCanvas.width = canvas.width;
+      pageCanvas.height = h;
+      const ctx = pageCanvas.getContext('2d');
+      ctx.fillStyle = '#fff';
+      ctx.fillRect(0, 0, pageCanvas.width, pageCanvas.height);
+      ctx.drawImage(canvas, 0, y, canvas.width, h, 0, 0, canvas.width, h);
+      if (page > 0) pdf.addPage();
+      pdf.addImage(pageCanvas.toDataURL('image/jpeg', 0.94), 'JPEG', marginX, marginY, contentW, h / pxPerMm, undefined, 'FAST');
+      y += h;
+      page++;
+    }
+
+    const safeNumber = (quotationNumber || 'quotation').replace(/[^a-z0-9_-]+/gi, '-');
+    pdf.save(`Quotation-${safeNumber}.pdf`);
+  } catch (err) {
+    console.error(err);
+    alert('Unable to create the PDF. Please check your internet connection and try again.');
+  } finally {
+    if (button) {
+      button.disabled = false;
+      button.textContent = originalLabel || 'Save Quotation as PDF';
+    }
+  }
 }
 
 initContractorMode();
 </script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="detailed-quotation-promo-ui.js"></script>
 <script src="location-autocomplete.js"></script>
 <script src="quotation-quantity-fix.js?v=20260907"></script>
