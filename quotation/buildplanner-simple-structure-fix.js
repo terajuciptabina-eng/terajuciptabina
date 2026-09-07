@@ -45,7 +45,10 @@
         }
       }
 
-      tbody.querySelectorAll('tr.tc-q-structural-summary').forEach(r => r.remove());
+      // Simple renderer already adds a summary. Remove every previous summary
+      // variant before inserting exactly one canonical four-column summary.
+      tbody.querySelectorAll('tr.tc-q-summary-header, tr.tc-q-summary-row, tr.tc-q-structural-summary').forEach(r => r.remove());
+
       const footer = table.querySelector('tfoot');
       if (!footer) return;
 
@@ -57,9 +60,9 @@
         ['ELECTRICAL WORKS', sum(data?.electrical)]
       ];
 
-      let html = `<tr class="tc-q-section tc-q-structural-summary"><td colspan="4" class="py-3 px-2">SUMMARY — TOTAL AMOUNT BY HIERARCHY</td></tr>`;
+      let html = `<tr class="tc-q-summary-header"><td colspan="4" class="py-3 px-2 text-left font-bold">SUMMARY — TOTAL AMOUNT BY HIERARCHY</td></tr>`;
       summary.forEach(([title,total]) => {
-        html += `<tr class="tc-q-structural-summary border-b"><td colspan="3" class="py-2 px-2 text-right font-semibold">${title}</td><td class="py-2 px-2 text-right font-semibold whitespace-nowrap">${money(total)}</td></tr>`;
+        html += `<tr class="tc-q-summary-row border-b"><td colspan="3" class="py-2 px-2 text-left font-semibold">${esc(title)}</td><td class="py-2 px-2 text-right font-semibold whitespace-nowrap">${money(total)}</td></tr>`;
       });
       footer.insertAdjacentHTML('beforebegin', html);
     }
