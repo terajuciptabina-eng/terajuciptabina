@@ -414,7 +414,7 @@ function renderEstimate(items,rooms,total,roomsArea,declared){
  const subheading=(title,target,add=true)=>`<tr class="quotation-subsection-row"><td colspan="6" class="py-2 px-2" data-manual-anchor="${escapeHtml(target)}"><div class="flex items-center justify-between gap-3"><span>${escapeHtml(title)}</span>${add?`<button type="button" class="contractor-only border px-3 py-1.5 rounded-lg text-xs bg-white" onclick="addManualItemPrompt('${target}')">+ Add Item</button>`:''}</div></td></tr>`;
  const rows=(arr,target)=>arr.map(i=>row(i,target)).join('');
 
- let h='<table class="w-full border-collapse text-sm detailed-quotation-table"><colgroup><col style="width:32%"><col style="width:8%"><col style="width:13%"><col style="width:15%"><col style="width:20%"><col style="width:12%"></colgroup><thead><tr class="border-b-2 text-left"><th>Description</th><th>Unit</th><th>Quantity</th><th>Rate (RM)</th><th>Amount (RM)</th><th class="contractor-only">Action</th></tr></thead><tbody>';
+ let h='<table class="w-full border-collapse text-sm detailed-quotation-table"><colgroup><col style="width:32%"><col style="width:8%"><col style="width:13%"><col style="width:15%"><col style="width:20%"><col style="width:12%"></colgroup><thead><tr class="border-b-2 text-left"><th>Description</th><th>Unit</th><th>Quantity</th><th>Rate (RM)</th><th>Amount (RM)</th><th>Action</th></tr></thead><tbody>';
 
  h+=heading('PROJECT / PRELIMINARIES','prelim');
  h+=rows(prelim,'prelim');
