@@ -13,44 +13,35 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Restore quotation preview styles
+      - name: Add planner helper scripts
         run: |
           python - <<'PY'
           from pathlib import Path
-          UNIFIED = '''/* Unified quotation flow + visual document preview */
-          .quotation-type-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
-          .quotation-type-card{position:relative;display:flex;align-items:flex-start;gap:13px;padding:20px;border:1px solid #d9dee7;border-radius:16px;background:#fff;cursor:pointer;transition:.18s ease;min-height:112px}
-          .quotation-type-card:hover{border-color:#9ca3af;background:#fafafa}
-          .quotation-type-card input{position:absolute;opacity:0;pointer-events:none}
-          .quotation-type-card.is-selected{border-color:#111827;box-shadow:0 0 0 2px rgba(17,24,39,.06)}
-          .quotation-type-radio{width:19px;height:19px;border:2px solid #9ca3af;border-radius:999px;flex:0 0 19px;margin-top:2px;position:relative}
-          .quotation-type-card.is-selected .quotation-type-radio{border-color:#111827}
-          .quotation-type-card.is-selected .quotation-type-radio:after{content:'';position:absolute;width:9px;height:9px;border-radius:999px;background:#111827;left:3px;top:3px}
-          .quotation-type-copy{display:flex;flex-direction:column;gap:5px}
-          .quotation-type-copy strong{font-size:16px;color:#111827}
-          .quotation-type-copy small{font-size:13px;line-height:1.45;color:#6b7280}
-          .quotation-type-copy em{font-size:12px;font-style:normal;color:#15803d;font-weight:700;margin-top:2px}
-          .quotation-generator-tip{display:flex;flex-direction:column;gap:3px;margin-top:14px;padding:13px 15px;border-radius:12px;background:#f8fafc;border:1px solid #e5e7eb;font-size:13px;color:#6b7280}
-          .quotation-generator-tip strong{color:#1f2937}
-          .quotation-generate-btn{margin-top:16px;width:100%;background:#111827;color:#fff;border:0;border-radius:12px;padding:14px 18px;font-weight:700;cursor:pointer;min-height:52px}
-          .quotation-generate-btn:hover{background:#000}
-          .quotation-preview-heading{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px}
-          .quotation-render-source{position:fixed;left:-100000px;top:0;width:794px;background:#fff;visibility:visible;pointer-events:none;z-index:-1}
-          @media(max-width:767px){.quotation-type-grid{grid-template-columns:1fr}
-            .quotation-type-card{min-height:0;padding:16px}
-          }'''
-          for name in ['quotation/buildplanner.html','quotation/renovationplanner.html']:
-              p=Path(name); s=p.read_text(encoding='utf-8')
-              marker='/* Mobile quotation cards — single clean implementation */'
-              if '.quotation-type-grid{' not in s:
-                  s=s.replace(marker, UNIFIED+'\n\n'+marker, 2)
-              p.write_text(s,encoding='utf-8')
+          location_files=['quotation/renovationplanner.html','quotation/buildplanner.html']
+          quantity_files=['quotation/renovationplanner.html']
+          location_tag='<script src="location-autocomplete.js"></script>'
+          quantity_tag='<script src="quotation-quantity-fix.js?v=20260907"></script>'
+          for name in location_files:
+              p=Path(name)
+              s=p.read_text(encoding='utf-8')
+              if location_tag not in s:
+                  s=s.replace('</body>', location_tag+'\n</body>',1)
+                  p.write_text(s,encoding='utf-8')
+          for name in quantity_files:
+              p=Path(name)
+              s=p.read_text(encoding='utf-8')
+              if quantity_tag not in s:
+                  s=s.replace('</body>', quantity_tag+'\n</body>',1)
+                  p.write_text(s,encoding='utf-8')
           PY
       - name: Commit planner updates
         run: |
           git config user.name 'Teraju Ciptabina Bot'
           git config user.email 'actions@users.noreply.github.com'
           git add quotation/renovationplanner.html quotation/buildplanner.html
-          if git diff --cached --quiet; then echo 'No planner changes needed.'; exit 0; fi
-          git commit -m 'Restore quotation preview styles [location-autocomplete]'
+          if git diff --cached --quiet; then
+            echo 'No planner changes needed.'
+            exit 0
+          fi
+          git commit -m 'Add quotation quantity rounding [location-autocomplete]'
           git push
