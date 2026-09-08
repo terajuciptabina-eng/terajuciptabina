@@ -1,0 +1,63 @@
+name: Amend create-new-item fields
+on:
+  push:
+    paths:
+      - '.planner-new-item-fields-trigger'
+permissions:
+  contents: write
+jobs:
+  amend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Amend planner source directly
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          # Build Planner
+          p=Path('quotation/buildplanner.html')
+          s=p.read_text()
+          old='''wrap.innerHTML=`<div class="flex flex-wrap items-center justify-between gap-3 mb-3"><p class="font-semibold text-sm">Add Item</p><button type="button" onclick="addManualItemPrompt('${targetKey}')" class="text-xs text-gray-500">Cancel</button></div><div class="grid md:grid-cols-[2fr_1fr_1fr_auto] gap-3 items-end"><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Standard Rate Item</span><select id="manual-select-${targetKey}" class="w-full border rounded-lg px-3 py-2 bg-white" onchange="prepareManualItem('${targetKey}')"><option value="">Select an item…</option>${standardItemOptions(targetKey)}<option value="__new__">＋ Create New Standard Item</option></select></label><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Quantity</span><input id="manual-qty-${targetKey}" type="number" min="0" step="1" value="1" class="w-full border rounded-lg px-3 py-2 bg-white"></label><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Rate (RM)</span><input id="manual-rate-${targetKey}" type="number" min="0" step="0.01" value="0.00" class="w-full border rounded-lg px-3 py-2 bg-white"></label><button type="button" onclick="saveManualItem('${targetKey}')" class="bg-black text-white px-4 py-2 rounded-lg text-sm font-semibold">Add</button></div><div id="manual-new-${targetKey}" class="hidden grid md:grid-cols-2 gap-3 mt-3"><label><span class="block text-xs font-medium text-gray-500 mb-1">New Description</span><input id="manual-desc-${targetKey}" type="text" placeholder="e.g. Additional structural work" class="w-full border rounded-lg px-3 py-2 bg-white"></label><label><span class="block text-xs font-medium text-gray-500 mb-1">Unit</span><input id="manual-unit-${targetKey}" type="text" value="ls" class="w-full border rounded-lg px-3 py-2 bg-white"></label></div>`;'''
+          new='''wrap.innerHTML=`<div class="flex flex-wrap items-center justify-between gap-3 mb-3"><p class="font-semibold text-sm">Add Item</p><button type="button" onclick="addManualItemPrompt('${targetKey}')" class="text-xs text-gray-500">Cancel</button></div><div class="grid md:grid-cols-[2fr_1fr_1fr_auto] gap-3 items-end"><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Standard Rate Item</span><select id="manual-select-${targetKey}" class="w-full border rounded-lg px-3 py-2 bg-white" onchange="prepareManualItem('${targetKey}')"><option value="">Select an item…</option>${standardItemOptions(targetKey)}<option value="__new__">＋ Create New Standard Item</option></select></label><label id="manual-qty-wrap-${targetKey}" class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Quantity</span><input id="manual-qty-${targetKey}" type="number" min="0" step="1" value="1" class="w-full border rounded-lg px-3 py-2 bg-white"></label><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Rate (RM)</span><input id="manual-rate-${targetKey}" type="number" min="0" step="0.01" value="0.00" class="w-full border rounded-lg px-3 py-2 bg-white"></label><button type="button" onclick="saveManualItem('${targetKey}')" class="bg-black text-white px-4 py-2 rounded-lg text-sm font-semibold">Add</button></div><div id="manual-new-${targetKey}" class="hidden mt-3"><label><span class="block text-xs font-medium text-gray-500 mb-1">New Description</span><input id="manual-desc-${targetKey}" type="text" placeholder="e.g. Additional structural work" class="w-full border rounded-lg px-3 py-2 bg-white"></label></div>`;'''
+          if old not in s: raise SystemExit('Build UI block not found')
+          s=s.replace(old,new,1)
+          old='''function prepareManualItem(targetKey){const select=document.getElementById(`manual-select-${targetKey}`),rate=document.getElementById(`manual-rate-${targetKey}`),box=document.getElementById(`manual-new-${targetKey}`),item=standardLibrary().find(x=>x.id===select?.value);if(select?.value==='__new__'){box?.classList.remove('hidden');if(rate)rate.value='0.00';return}box?.classList.add('hidden');if(item&&rate)rate.value=normalizeRate(item.rate).toFixed(2)}'''
+          new='''function prepareManualItem(targetKey){const select=document.getElementById(`manual-select-${targetKey}`),rate=document.getElementById(`manual-rate-${targetKey}`),box=document.getElementById(`manual-new-${targetKey}`),qtyWrap=document.getElementById(`manual-qty-wrap-${targetKey}`),item=standardLibrary().find(x=>x.id===select?.value);if(select?.value==='__new__'){box?.classList.remove('hidden');qtyWrap?.classList.add('hidden');if(rate)rate.value='0.00';return}box?.classList.add('hidden');qtyWrap?.classList.remove('hidden');if(item&&rate)rate.value=normalizeRate(item.rate).toFixed(2)}'''
+          if old not in s: raise SystemExit('Build prepare block not found')
+          s=s.replace(old,new,1)
+          s=s.replace(" const qty=normalizeQuantity(document.getElementById(`manual-qty-${targetKey}`)?.value);", " let qty=normalizeQuantity(document.getElementById(`manual-qty-${targetKey}`)?.value);",1)
+          s=s.replace("  unit=String(document.getElementById(`manual-unit-${targetKey}`)?.value||'ls').trim()||'ls';\n  if(!description)", "  unit='ls';\n  qty=1;\n  if(!description)",1)
+          p.write_text(s)
+
+          # Renovation Planner
+          p=Path('quotation/renovationplanner.html')
+          s=p.read_text()
+          old='''wrap.innerHTML = `<div class=\\"flex flex-wrap items-center justify-between gap-3 mb-3\\"><p class=\\"font-semibold text-sm\\">Add Item</p><button type=\\"button\\" onclick=\\"addManualItemPrompt('${roomId}')\\" class=\\"text-xs text-gray-500\\">Cancel</button></div><div class=\\"grid md:grid-cols-[2fr_1fr_1fr_auto] gap-3 items-end\\"><label class=\\"block\\"><span class=\\"block text-xs font-medium text-gray-500 mb-1\\">Standard Rate Item</span><select id=\\"manual-select-${roomId}\\" class=\\"w-full border rounded-lg px-3 py-2 bg-white\\" onchange=\\"prepareManualItem('${roomId}')\\"><option value=\\"\\">Select an item…</option>${standardItemOptions(roomId)}<option value=\\"__new__\\">＋ Create New Standard Item</option></select></label><label class=\\"block\\"><span class=\\"block text-xs font-medium text-gray-500 mb-1\\">Quantity</span><input id=\\"manual-qty-${roomId}\\" type=\\"number\\" min=\\"0\\" step=\\"1\\" value=\\"1\\" class=\\"w-full border rounded-lg px-3 py-2 bg-white\\"></label><label class=\\"block\\"><span class=\\"block text-xs font-medium text-gray-500 mb-1\\">Rate (RM)</span><input id=\\"manual-rate-${roomId}\\" type=\\"number\\" min=\\"0\\" step=\\"0.01\\" value=\\"0.00\\" class=\\"w-full border rounded-lg px-3 py-2 bg-white\\"></label><button type=\\"button\\" onclick=\\"saveManualItem('${roomId}')\\" class=\\"bg-black text-white px-4 py-2 rounded-lg text-sm font-semibold\\">Add</button></div><div id=\\"manual-new-${roomId}\\" class=\\"hidden grid md:grid-cols-3 gap-3 mt-3\\"><label><span class=\\"block text-xs font-medium text-gray-500 mb-1\\">New Description</span><input id=\\"manual-desc-${roomId}\\" type=\\"text\\" placeholder=\\"e.g. Aluminium awning\\" class=\\"w-full border rounded-lg px-3 py-2 bg-white\\"></label><label><span class=\\"block text-xs font-medium text-gray-500 mb-1\\">Unit</span><input id=\\"manual-unit-${roomId}\\" type=\\"text\\" value=\\"ls\\" class=\\"w-full border rounded-lg px-3 py-2 bg-white\\"></label><div class=\\"text-xs text-gray-500 self-end pb-2\\">New item will be added to this Contractor ID's Standard Rate Schedule.</div></div>`;'''
+          new='''wrap.innerHTML = `<div class=\\"flex flex-wrap items-center justify-between gap-3 mb-3\\"><p class=\\"font-semibold text-sm\\">Add Item</p><button type=\\"button\\" onclick=\\"addManualItemPrompt('${roomId}')\\" class=\\"text-xs text-gray-500\\">Cancel</button></div><div class=\\"grid md:grid-cols-[2fr_1fr_1fr_auto] gap-3 items-end\\"><label class=\\"block\\"><span class=\\"block text-xs font-medium text-gray-500 mb-1\\">Standard Rate Item</span><select id=\\"manual-select-${roomId}\\" class=\\"w-full border rounded-lg px-3 py-2 bg-white\\" onchange=\\"prepareManualItem('${roomId}')\\"><option value=\\"\\">Select an item…</option>${standardItemOptions(roomId)}<option value=\\"__new__\\">＋ Create New Standard Item</option></select></label><label id=\\"manual-qty-wrap-${roomId}\\" class=\\"block\\"><span class=\\"block text-xs font-medium text-gray-500 mb-1\\">Quantity</span><input id=\\"manual-qty-${roomId}\\" type=\\"number\\" min=\\"0\\" step=\\"1\\" value=\\"1\\" class=\\"w-full border rounded-lg px-3 py-2 bg-white\\"></label><label class=\\"block\\"><span class=\\"block text-xs font-medium text-gray-500 mb-1\\">Rate (RM)</span><input id=\\"manual-rate-${roomId}\\" type=\\"number\\" min=\\"0\\" step=\\"0.01\\" value=\\"0.00\\" class=\\"w-full border rounded-lg px-3 py-2 bg-white\\"></label><button type=\\"button\\" onclick=\\"saveManualItem('${roomId}')\\" class=\\"bg-black text-white px-4 py-2 rounded-lg text-sm font-semibold\\">Add</button></div><div id=\\"manual-new-${roomId}\\" class=\\"hidden mt-3\\"><label><span class=\\"block text-xs font-medium text-gray-500 mb-1\\">New Description</span><input id=\\"manual-desc-${roomId}\\" type=\\"text\\" placeholder=\\"e.g. Aluminium awning\\" class=\\"w-full border rounded-lg px-3 py-2 bg-white\\"></label></div>`;'''
+          if old not in s: raise SystemExit('Renov UI block not found')
+          s=s.replace(old,new,1)
+          old='''if (select?.value === "__new__") { newBox?.classList.remove("hidden"); if (rate) rate.value = "0.00"; return; }\n  newBox?.classList.add("hidden"); if (item && rate) rate.value = normalizeRate(item.rate).toFixed(2);'''
+          new='''if (select?.value === "__new__") { newBox?.classList.remove("hidden"); document.getElementById(`manual-qty-wrap-${roomId}`)?.classList.add("hidden"); if (rate) rate.value = "0.00"; return; }\n  newBox?.classList.add("hidden"); document.getElementById(`manual-qty-wrap-${roomId}`)?.classList.remove("hidden"); if (item && rate) rate.value = normalizeRate(item.rate).toFixed(2);'''
+          if old not in s: raise SystemExit('Renov prepare block not found')
+          s=s.replace(old,new,1)
+          s=s.replace('''if (!IS_CONTRACTOR) return; const select = document.getElementById(`manual-select-${roomId}`), qty = normalizeQuantity(document.getElementById(`manual-qty-${roomId}`)?.value), rateInput = document.getElementById(`manual-rate-${roomId}`);''', '''if (!IS_CONTRACTOR) return; const select = document.getElementById(`manual-select-${roomId}`); let qty = normalizeQuantity(document.getElementById(`manual-qty-${roomId}`)?.value), rateInput = document.getElementById(`manual-rate-${roomId}`);''',1)
+          s=s.replace('''description = String(document.getElementById(`manual-desc-${roomId}`)?.value || "").trim(); unit = String(document.getElementById(`manual-unit-${roomId}`)?.value || "ls").trim() || "ls";''', '''description = String(document.getElementById(`manual-desc-${roomId}`)?.value || "").trim(); unit = "ls"; qty = 1;''',1)
+          p.write_text(s)
+          PY
+      - name: Verify source
+        run: |
+          test "$(grep -o 'manual-unit-' quotation/buildplanner.html | wc -l)" -eq 0
+          test "$(grep -o 'manual-unit-' quotation/renovationplanner.html | wc -l)" -eq 0
+          grep -q 'manual-qty-wrap-' quotation/buildplanner.html
+          grep -q 'manual-qty-wrap-' quotation/renovationplanner.html
+          git diff --check
+      - name: Commit and clean temporary workflow
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add quotation/buildplanner.html quotation/renovationplanner.html
+          git commit -m "Amend create new item fields"
+          git rm .github/workflows/amend-create-new-item-fields.yml .planner-new-item-fields-trigger
+          git commit -m "Clean temporary amendment workflow"
+          git push
