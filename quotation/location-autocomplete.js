@@ -150,9 +150,8 @@
 })();
 
 // Shared planner Add Item placement.
-// Existing planner functions remain the source of truth; this only moves the existing
-// + Add Item controls to the bottom of their relevant estimate section and keeps the
-// existing addManualItemPrompt() target working. No planner data or typography is changed.
+// Each existing Add Item control stays tied to its own heading/section and is moved
+// to the bottom of that exact section. No controls are merged by target key.
 (function(){
   'use strict';
 
@@ -165,31 +164,18 @@
     return anchor?.getAttribute('data-tc-add-bottom')==='true';
   }
 
-  function makeBottomRow(table,target){
-    const existing=table.querySelector(`tr[data-tc-add-row="${CSS.escape(target)}"]`);
-    if(existing) return existing;
+  function makeBottomRow(target){
     const row=document.createElement('tr');
     row.className='contractor-only no-print';
-    row.setAttribute('data-tc-add-row',target);
     row.innerHTML=`<td colspan="6" class="py-2 px-2"><div data-manual-anchor="${target}" data-tc-add-bottom="true"><button type="button" class="border rounded-lg px-3 py-2 text-xs font-semibold hover:bg-gray-50" onclick="addManualItemPrompt('${target}')">＋ Add Item</button></div></td>`;
     return row;
   }
 
-  function nextSectionRow(startRow){
-    let row=startRow?.nextElementSibling||null;
+  function findBottomBoundary(sourceRow){
+    let row=sourceRow?.nextElementSibling||null;
     while(row){
-      if(row.classList?.contains('quotation-section-row')) return row;
-      row=row.nextElementSibling;
-    }
-    return null;
-  }
-
-  function subtotalForRoom(startRow){
-    let row=startRow?.nextElementSibling||null;
-    while(row){
-      if(row.classList?.contains('quotation-section-row')) return null;
-      const text=(row.textContent||'').trim();
-      if(/^Subtotal\s*-/i.test(text)) return row;
+      if(row.classList?.contains('quotation-section-row') || row.classList?.contains('quotation-subsection-row')) return row;
+      if(/^Subtotal\s*(?:-|:)?/i.test((row.textContent||'').trim())) return row;
       row=row.nextElementSibling;
     }
     return null;
@@ -198,35 +184,12 @@
   function placeButton(table,button,target){
     const sourceRow=button.closest('tr');
     if(!sourceRow) return;
+    const bottomRow=makeBottomRow(target);
+    const boundary=findBottomBoundary(sourceRow);
     button.remove();
-
-    let bottomRow=null;
-    if(target==='structures'){
-      const nextSection=nextSectionRow(sourceRow);
-      bottomRow=makeBottomRow(table,target);
-      if(nextSection) nextSection.parentNode.insertBefore(bottomRow,nextSection);
-      else table.tBodies[0]?.appendChild(bottomRow);
-    }else if(target.startsWith('room:')){
-      const subtotal=subtotalForRoom(sourceRow);
-      bottomRow=makeBottomRow(table,target);
-      if(subtotal) subtotal.parentNode.insertBefore(bottomRow,subtotal);
-      else table.tBodies[0]?.appendChild(bottomRow);
-    }else{
-      let subtotal=null;
-      const rows=[...table.querySelectorAll('tbody tr')];
-      const sourceIndex=rows.indexOf(sourceRow);
-      for(let i=sourceIndex+1;i<rows.length;i++){
-        const r=rows[i];
-        if(r.classList.contains('quotation-section-row')) break;
-        if(/^Subtotal\s*-/i.test((r.textContent||'').trim())){subtotal=r;break;}
-      }
-      bottomRow=makeBottomRow(table,target);
-      if(subtotal) subtotal.parentNode.insertBefore(bottomRow,subtotal);
-      else {const nextSection=nextSectionRow(sourceRow);if(nextSection)nextSection.parentNode.insertBefore(bottomRow,nextSection);else table.tBodies[0]?.appendChild(bottomRow);}
-    }
-
-    const anchor=sourceRow.querySelector('[data-manual-anchor]');
-    if(anchor) anchor.removeAttribute('data-manual-anchor');
+    if(boundary) boundary.parentNode.insertBefore(bottomRow,boundary);
+    else table.tBodies[0]?.appendChild(bottomRow);
+    sourceRow.querySelector('[data-manual-anchor]')?.removeAttribute('data-manual-anchor');
   }
 
   function standardizeAddItems(){
@@ -234,13 +197,10 @@
     if(!estimate || !document.body.classList.contains('contractor-mode')) return;
     estimate.querySelectorAll('table').forEach(table=>{
       const buttons=[...table.querySelectorAll('button[onclick*="addManualItemPrompt"]')]
-        .filter(button=>!button.closest('[data-tc-add-bottom="true"]'));
-      const seen=new Set();
+        .filter(button=>!isBottomAnchor(button.closest('[data-tc-add-bottom]')));
       buttons.forEach(button=>{
         const target=targetFromButton(button);
-        if(!target || seen.has(target)) return;
-        seen.add(target);
-        placeButton(table,button,target);
+        if(target) placeButton(table,button,target);
       });
     });
   }
