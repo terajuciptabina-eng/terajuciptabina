@@ -45,3 +45,5 @@ jobs:
           fi
           git commit -m 'Add quotation quantity rounding [location-autocomplete]'
           git push
+
+# Existing workflow retained; planner source files remain the canonical implementation.
