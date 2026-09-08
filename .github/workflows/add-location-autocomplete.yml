@@ -13,6 +13,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Inspect quotation currency output
+        run: |
+          grep -n -E 'RM|rm' quotation/buildplanner.html quotation/renovationplanner.html | head -200 || true
       - name: Add planner helper scripts
         run: |
           python - <<'PY'
@@ -43,5 +46,5 @@ jobs:
             echo 'No planner changes needed.'
             exit 0
           fi
-          git commit -m 'Add quotation quantity rounding [location-autocomplete]'
+          git commit -m 'Inspect quotation currency output'
           git push
