@@ -224,6 +224,38 @@
   .contractor-generate-btn { min-height:52px !important; border-radius:14px !important; font-size:15px !important; }
 }
 
+
+    /* Unified quotation flow + visual document preview */
+    .quotation-type-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+    .quotation-type-card{position:relative;display:flex;align-items:flex-start;gap:13px;padding:20px;border:1px solid #d9dee7;border-radius:16px;background:#fff;cursor:pointer;transition:.18s ease;min-height:112px}
+    .quotation-type-card:hover{border-color:#9ca3af;background:#fafafa}
+    .quotation-type-card input{position:absolute;opacity:0;pointer-events:none}
+    .quotation-type-card.is-selected{border-color:#111827;box-shadow:0 0 0 2px rgba(17,24,39,.06)}
+    .quotation-type-radio{width:19px;height:19px;border:2px solid #9ca3af;border-radius:999px;flex:0 0 19px;margin-top:2px;position:relative}
+    .quotation-type-card.is-selected .quotation-type-radio{border-color:#111827}
+    .quotation-type-card.is-selected .quotation-type-radio:after{content:'';position:absolute;width:9px;height:9px;border-radius:999px;background:#111827;left:3px;top:3px}
+    .quotation-type-copy{display:flex;flex-direction:column;gap:5px}
+    .quotation-type-copy strong{font-size:16px;color:#111827}
+    .quotation-type-copy small{font-size:13px;line-height:1.45;color:#6b7280}
+    .quotation-type-copy em{font-size:12px;font-style:normal;color:#15803d;font-weight:700;margin-top:2px}
+    .quotation-generator-tip{display:flex;flex-direction:column;gap:3px;margin-top:14px;padding:13px 15px;border-radius:12px;background:#f8fafc;border:1px solid #e5e7eb;font-size:13px;color:#6b7280}
+    .quotation-generator-tip strong{color:#1f2937}
+    .quotation-generate-btn{margin-top:16px;width:100%;background:#111827;color:#fff;border:0;border-radius:12px;padding:14px 18px;font-weight:700;cursor:pointer;min-height:52px}
+    .quotation-generate-btn:hover{background:#000}
+    .quotation-preview-heading{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px}
+    .quotation-preview-stage{width:100%;display:flex;flex-direction:column;align-items:center;gap:22px;overflow-x:hidden}
+    .quotation-preview-loading{width:100%;padding:32px 20px;text-align:center;border:1px dashed #d1d5db;border-radius:16px;background:#fafafa;color:#6b7280}
+    .quotation-preview-page{width:min(100%,794px);background:#fff;border:1px solid #e5e7eb;box-shadow:0 12px 36px rgba(15,23,42,.10);overflow:hidden}
+    .quotation-preview-page img{display:block;width:100%;height:auto}
+    .quotation-render-source{position:fixed;left:-100000px;top:0;width:794px;background:#fff;visibility:visible;pointer-events:none;z-index:-1}
+    @media(max-width:767px){
+      .quotation-type-grid{grid-template-columns:1fr}
+      .quotation-type-card{min-height:0;padding:16px}
+      .quotation-preview-stage{gap:14px}
+      .quotation-preview-page{width:100%;box-shadow:0 8px 24px rgba(15,23,42,.08)}
+      .quotation-preview-heading{margin-bottom:14px}
+    }
+
 </style>
 </head>
 
@@ -409,53 +441,55 @@
   </section>
 
   <!-- Quotation Generator -->
-  <section class="no-print bg-white rounded-2xl shadow-sm p-6 mt-6">
-    <div class="mb-5">
-      <h3 class="font-bold text-lg">Generate Quotation</h3>
-      <p class="text-sm text-gray-500">Choose how much pricing detail you want to show in the quotation.</p>
-    </div>
-    <div class="grid md:grid-cols-2 gap-4">
-      <label class="quotation-option border rounded-xl p-4 cursor-pointer hover:bg-gray-50">
-        <div class="flex items-start gap-3">
-          <input type="radio" name="quotationType" value="simple" checked class="mt-1 h-4 w-4 flex-shrink-0">
-          <div>
-            <p class="font-semibold">Simple Quotation</p>
-            <p class="text-sm text-gray-500 mt-1">Shows the work description by room / area, with only one total price for each room / area.</p>
-          </div>
-        </div>
-      </label>
-      <label class="quotation-option border rounded-xl p-4 cursor-pointer hover:bg-gray-50">
-        <div class="flex items-start gap-3">
-          <input type="radio" name="quotationType" value="detail" class="mt-1 h-4 w-4 flex-shrink-0">
-          <div>
-            <p class="font-semibold">Detailed Quotation</p>
-            <p class="text-sm text-gray-500 mt-1">Shows item-by-item quantity, unit, rate and amount under each room / area.</p>
-          </div>
-        </div>
-      </label>
-    </div>
-    <div class="mt-5 p-4 rounded-xl bg-gray-50 border text-sm text-gray-600">
-      <strong class="text-gray-800">Review before generating:</strong>
-      Edit the Room / Area Name, Quantity and Rate directly in the estimate table above. The quotation will use your final edited values.
-    </div>
-    <div class="mt-5 flex flex-wrap gap-3">
-      <button type="button" onclick="generateQuotation()"
-        class="bg-black text-white px-5 py-3 rounded-lg font-semibold hover:bg-gray-800">
-        Generate Quotation
-      </button>
-    </div>
-  </section>
+  <section id="quotationGenerator" class="no-print bg-white rounded-2xl shadow-sm p-6 mt-6">
+  <div class="mb-5">
+    <p class="text-xs uppercase tracking-wider text-gray-500">Quotation</p>
+    <h3 class="font-bold text-xl mt-1">Choose Quotation Type</h3>
+    <p class="text-sm text-gray-500 mt-2">Select the quotation format, then generate one quotation using the final estimate values above.</p>
+  </div>
+  <div class="quotation-type-grid">
+    <label class="quotation-type-card is-selected">
+      <input type="radio" name="quotationType" value="simple" checked>
+      <span class="quotation-type-radio" aria-hidden="true"></span>
+      <span class="quotation-type-copy">
+        <strong>Simple Quotation</strong>
+        <small>Work descriptions with section / room totals only.</small>
+      </span>
+    </label>
+    <label class="quotation-type-card">
+      <input type="radio" name="quotationType" value="detail">
+      <span class="quotation-type-radio" aria-hidden="true"></span>
+      <span class="quotation-type-copy">
+        <strong>Detailed Quotation</strong>
+        <small>Full quantity, unit, rate, amount and subtotal breakdown.</small>
+        <em>~~RM49~~ FREE during promotion</em>
+      </span>
+    </label>
+  </div>
+  <div class="quotation-generator-tip">
+    <strong>Review before generating</strong>
+    <span>The quotation uses the final customer, project, room, quantity and rate values shown in the estimate.</span>
+  </div>
+  <button type="button" onclick="generateQuotation()" class="quotation-generate-btn">Generate Quotation</button>
+</section>
 
-  <!-- Generated Quotation -->
-  <section id="quotationDocument" class="hidden bg-white rounded-2xl shadow-sm p-8 mt-6">
-    <div id="quotationContent"></div><div id="quotationLockOverlay" class="quotation-lock-overlay no-print hidden" aria-hidden="true"><div class="quotation-lock-card"><div class="quotation-lock-icon" aria-hidden="true">🔒</div><h3 class="text-xl font-bold">Detailed Quotation Locked</h3><p class="text-sm text-gray-600 mt-2">The detailed quotation has been generated. Unlock it to view the full item-by-item rates and amounts.</p><button type="button" onclick="unlockDetailedQuotation()" class="mt-5 w-full bg-black text-white px-5 py-3 rounded-xl font-semibold">Unlock Detailed Quotation</button></div></div>
-    <div id="quotationPrintActions" class="no-print mt-6 pt-5 border-t flex flex-wrap justify-end gap-3">
-      <button type="button" onclick="printQuotation()"
-        class="bg-black text-white px-5 py-3 rounded-lg font-semibold hover:bg-gray-800">
-        Save Quotation as PDF
-      </button>
+<section id="quotationDocument" class="hidden bg-white rounded-2xl shadow-sm p-8 mt-6">
+  <div class="quotation-preview-heading no-print">
+    <div>
+      <p class="text-xs uppercase tracking-wider text-gray-500">Generated Quotation</p>
+      <h3 class="text-2xl font-bold mt-1">Quotation Preview</h3>
+      <p class="text-sm text-gray-500 mt-1">Visual document preview — scaled automatically for desktop and mobile.</p>
     </div>
-  </section>
+  </div>
+  <div id="quotationPreview" class="quotation-preview-stage no-print" aria-live="polite">
+    <div class="quotation-preview-loading">Your quotation preview will appear here.</div>
+  </div>
+  <div id="quotationContent" class="quotation-render-source" aria-hidden="true"></div>
+  <div id="quotationLockOverlay" class="quotation-lock-overlay no-print hidden" aria-hidden="true"><div class="quotation-lock-card"><div class="quotation-lock-icon" aria-hidden="true">🔒</div><h3 class="text-xl font-bold">Detailed Quotation Locked</h3><p class="text-sm text-gray-600 mt-2">The detailed quotation has been generated. Unlock it to view the full item-by-item rates and amounts.</p><button type="button" onclick="unlockDetailedQuotation()" class="mt-5 w-full bg-black text-white px-5 py-3 rounded-xl font-semibold">Unlock Detailed Quotation</button></div></div>
+  <div id="quotationPrintActions" class="no-print mt-6 pt-5 border-t flex justify-end">
+    <button type="button" onclick="printQuotation()" class="bg-black text-white px-5 py-3 rounded-lg font-semibold">Download PDF</button>
+  </div>
+</section>
 
   <!-- CTA -->
   <section class="no-print bg-gray-900 text-white rounded-2xl p-8 mt-8 text-center">
@@ -1326,7 +1360,7 @@ function confirmDetailedQuotationPromo(){if(!DETAILED_QUOTATION_PROMO)return sta
 function startDetailedQuotationPayment(){if(DETAILED_QUOTATION_PROMO){unlockDetailedQuotation();return;}if(typeof window.TERAJU_START_DETAILED_PAYMENT==='function'){window.TERAJU_START_DETAILED_PAYMENT({amount:DETAILED_QUOTATION_PRICE,onVerified:completeDetailedQuotationPayment});return;}alert('Payment gateway is not active yet.');}
 function completeDetailedQuotationPayment(verified){if(verified)unlockDetailedQuotation();}
 
-function generateQuotation(){const type=getSelectedQuotationType();if(type==='detail'){const generated=generateQuotationConfirmed(type);if(generated!==false){setDetailedQuotationLocked(true);openDetailedQuotationPromo();}return;}setDetailedQuotationLocked(false);generateQuotationConfirmed(type);}
+function generateQuotation(){const type=getSelectedQuotationType();if(type==='detail'){const generated=generateQuotationConfirmed(type);if(generated!==false){setDetailedQuotationLocked(true);renderQuotationPreview();openDetailedQuotationPromo();}return;}setDetailedQuotationLocked(false);const generated=generateQuotationConfirmed(type);if(generated!==false)renderQuotationPreview();}
 function generateQuotationConfirmed(type) {
   const data = getCurrentQuotationData();
   if (!data.roomGroups.some(room => room.area > 0)) {
@@ -1519,130 +1553,90 @@ function generateQuotationConfirmed(type) {
   document.getElementById("quotationDocument").scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
-async function printQuotation() {
-  const quotation = document.getElementById("quotationDocument");
-  if (!quotation || quotation.classList.contains("hidden")) {
-    alert("Please generate the quotation first.");
-    return;
-  }
-
-  // Direct PDF download: render the already-visible quotation exactly as HTML,
-  // then scale the rendered image to A4. This does NOT open the browser Print dialog.
-  const button = document.querySelector('#quotationPrintActions button');
-  const originalLabel = button ? button.textContent : '';
-  if (button) {
-    button.disabled = true;
-    button.textContent = 'Preparing PDF…';
-  }
-
-  const loadScript = (src, test) => new Promise((resolve, reject) => {
-    if (test()) return resolve();
-    const existing = document.querySelector(`script[src="${src}"]`);
-    if (existing) {
-      existing.addEventListener('load', resolve, { once: true });
-      existing.addEventListener('error', reject, { once: true });
-      return;
-    }
-    const script = document.createElement('script');
-    script.src = src;
-    script.onload = resolve;
-    script.onerror = () => reject(new Error('Unable to load PDF component.'));
+async function loadQuotationCanvas(){
+  if(typeof window.html2canvas==='function') return;
+  await new Promise((resolve,reject)=>{
+    const existing=document.querySelector('script[data-quotation-html2canvas]');
+    if(existing){existing.addEventListener('load',resolve,{once:true});existing.addEventListener('error',reject,{once:true});return;}
+    const script=document.createElement('script');
+    script.src='https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+    script.dataset.quotationHtml2canvas='1';
+    script.onload=resolve;
+    script.onerror=()=>reject(new Error('Unable to load quotation preview component.'));
     document.head.appendChild(script);
   });
-
-  try {
-    await loadScript(
-      'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js',
-      () => typeof window.html2canvas === 'function'
-    );
-    await loadScript(
-      'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js',
-      () => !!(window.jspdf && window.jspdf.jsPDF)
-    );
-
-    const source = document.getElementById('quotationContent');
-    if (!source) throw new Error('Quotation content is unavailable.');
-
-    // Clone only the quotation itself so browser/page UI never enters the PDF.
-    const clone = source.cloneNode(true);
-    clone.querySelectorAll('.no-print, #quotationPrintActions, #quotationLockOverlay').forEach(el => el.remove());
+}
+async function renderQuotationPreview(){
+  const source=document.getElementById('quotationContent');
+  const stage=document.getElementById('quotationPreview');
+  if(!source||!stage)return;
+  stage.innerHTML='<div class="quotation-preview-loading">Preparing visual quotation preview…</div>';
+  try{
+    await loadQuotationCanvas();
+    const clone=source.cloneNode(true);
+    clone.querySelectorAll('.no-print,#quotationPrintActions,#quotationLockOverlay').forEach(el=>el.remove());
     clone.classList.remove('quotation-locked');
-    // Give the final signature/footer breathing room so the direct PDF renderer
-    // never crops the last text pixels at the bottom edge of the source.
-    clone.style.paddingBottom = '32px';
-
-    const holder = document.createElement('div');
-    holder.style.cssText = [
-      'position:fixed', 'left:-100000px', 'top:0', 'z-index:-1',
-      'width:' + Math.max(760, Math.min(source.getBoundingClientRect().width, 1200)) + 'px',
-      'background:#fff', 'padding:0', 'margin:0', 'overflow:visible'
-    ].join(';');
+    clone.style.paddingBottom='32px';
+    const holder=document.createElement('div');
+    holder.style.cssText='position:fixed;left:-100000px;top:0;width:794px;background:#fff;padding:0;margin:0;overflow:visible;z-index:-1';
     holder.appendChild(clone);
     document.body.appendChild(holder);
-
-    // Wait for layout/images/fonts before capturing.
-    await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
-    if (document.fonts && document.fonts.ready) await document.fonts.ready;
-    const images = Array.from(holder.querySelectorAll('img'));
-    await Promise.all(images.map(img => img.complete ? Promise.resolve() : new Promise(r => {
-      img.addEventListener('load', r, { once: true });
-      img.addEventListener('error', r, { once: true });
-    })));
-
-    const canvas = await window.html2canvas(holder, {
-      backgroundColor: '#ffffff',
-      scale: Math.min(2, Math.max(1.25, window.devicePixelRatio || 1)),
-      useCORS: true,
-      allowTaint: false,
-      logging: false,
-      imageTimeout: 15000,
-      scrollX: 0,
-      scrollY: 0,
-      windowWidth: holder.scrollWidth,
-      windowHeight: holder.scrollHeight
-    });
+    await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+    if(document.fonts?.ready)await document.fonts.ready;
+    await Promise.all(Array.from(holder.querySelectorAll('img')).map(img=>img.complete?Promise.resolve():new Promise(r=>{img.addEventListener('load',r,{once:true});img.addEventListener('error',r,{once:true})})));
+    const canvas=await window.html2canvas(holder,{backgroundColor:'#fff',scale:Math.min(2,Math.max(1.5,window.devicePixelRatio||1)),useCORS:true,allowTaint:false,logging:false,imageTimeout:15000,scrollX:0,scrollY:0,windowWidth:794,windowHeight:holder.scrollHeight});
     holder.remove();
-
-    const { jsPDF } = window.jspdf;
-    const pdf = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4', compress: true });
-    const pageW = 210;
-    const pageH = 297;
-    const marginX = 10;
-    const marginY = 10;
-    const contentW = pageW - marginX * 2;
-    const contentH = pageH - marginY * 2;
-    const pxPerMm = canvas.width / contentW;
-    const sliceH = Math.floor(contentH * pxPerMm);
-
-    let y = 0;
-    let page = 0;
-    while (y < canvas.height) {
-      const h = Math.min(sliceH, canvas.height - y);
-      const pageCanvas = document.createElement('canvas');
-      pageCanvas.width = canvas.width;
-      pageCanvas.height = h;
-      const ctx = pageCanvas.getContext('2d');
-      ctx.fillStyle = '#fff';
-      ctx.fillRect(0, 0, pageCanvas.width, pageCanvas.height);
-      ctx.drawImage(canvas, 0, y, canvas.width, h, 0, 0, canvas.width, h);
-      if (page > 0) pdf.addPage();
-      pdf.addImage(pageCanvas.toDataURL('image/jpeg', 0.94), 'JPEG', marginX, marginY, contentW, h / pxPerMm, undefined, 'FAST');
-      y += h;
-      page++;
+    const pxPerMm=canvas.width/190;
+    const sliceH=Math.floor(277*pxPerMm);
+    const pages=[];
+    let y=0;
+    while(y<canvas.height){
+      const h=Math.min(sliceH,canvas.height-y);
+      const pageCanvas=document.createElement('canvas');
+      pageCanvas.width=canvas.width;pageCanvas.height=h;
+      const ctx=pageCanvas.getContext('2d');
+      ctx.fillStyle='#fff';ctx.fillRect(0,0,pageCanvas.width,pageCanvas.height);
+      ctx.drawImage(canvas,0,y,canvas.width,h,0,0,canvas.width,h);
+      pages.push(pageCanvas.toDataURL('image/jpeg',0.94));
+      y+=h;
     }
-
-    const safeNumber = (quotationNumber || 'quotation').replace(/[^a-z0-9_-]+/gi, '-');
-    pdf.save(`Quotation-${safeNumber}.pdf`);
-  } catch (err) {
+    window.__quotationPreviewPages=pages;
+    stage.innerHTML=pages.map((src,i)=>`<div class="quotation-preview-page"><img src="${src}" alt="Quotation page ${i+1}"></div>`).join('');
+  }catch(err){
     console.error(err);
-    alert('Unable to create the PDF. Please check your internet connection and try again.');
-  } finally {
-    if (button) {
-      button.disabled = false;
-      button.textContent = originalLabel || 'Save Quotation as PDF';
-    }
+    stage.innerHTML='<div class="quotation-preview-loading">Unable to prepare the visual preview. You can still try Download PDF.</div>';
   }
 }
+async function printQuotation(){
+  const quotation=document.getElementById('quotationDocument');
+  if(!quotation||quotation.classList.contains('hidden')){alert('Please generate the quotation first.');return;}
+  const button=document.querySelector('#quotationPrintActions button');
+  const originalLabel=button?button.textContent:'';
+  if(button){button.disabled=true;button.textContent='Preparing PDF…';}
+  try{
+    if(!window.__quotationPreviewPages?.length)await renderQuotationPreview();
+    const pages=window.__quotationPreviewPages||[];
+    if(!pages.length)throw new Error('Quotation preview is unavailable.');
+    const loadScript=(src,test)=>new Promise((resolve,reject)=>{
+      if(test())return resolve();
+      const existing=document.querySelector(`script[src="${src}"]`);
+      if(existing){existing.addEventListener('load',resolve,{once:true});existing.addEventListener('error',reject,{once:true});return;}
+      const script=document.createElement('script');script.src=src;script.onload=resolve;script.onerror=()=>reject(new Error('Unable to load PDF component.'));document.head.appendChild(script);
+    });
+    await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js',()=>!!(window.jspdf&&window.jspdf.jsPDF));
+    const {jsPDF}=window.jspdf;
+    const pdf=new jsPDF({orientation:'p',unit:'mm',format:'a4',compress:true});
+    pages.forEach((src,index)=>{if(index)pdf.addPage();pdf.addImage(src,'JPEG',10,10,190,277,undefined,'FAST');});
+    const safeNumber=(quotationNumber||'quotation').replace(/[^a-z0-9_-]+/gi,'-');
+    pdf.save(`Quotation-${safeNumber}.pdf`);
+  }catch(err){
+    console.error(err);
+    alert('Unable to create the PDF. Please check your internet connection and try again.');
+  }finally{
+    if(button){button.disabled=false;button.textContent=originalLabel||'Download PDF';}
+  }
+}
+
 
 initContractorMode();
 </script>
