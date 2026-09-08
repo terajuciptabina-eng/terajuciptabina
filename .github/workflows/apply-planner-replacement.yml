@@ -1,0 +1,34 @@
+name: Apply planner replacement
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply prepared full-source patches
+        run: |
+          python - <<'PY'
+          import re,base64,gzip,subprocess
+          from pathlib import Path
+          y=Path('.github/workflows/replace-planners.yml').read_text()
+          for envname,path,old,new in [('BUILD_PATCH','quotation/buildplanner.html','--- buildplanner.html','--- a/quotation/buildplanner.html'),('RENOVATION_PATCH','quotation/renovationplanner.html','--- renovationplanner.html','--- a/quotation/renovationplanner.html')]:
+              m=re.search(r'^\s*'+envname+r':\s*(\S+)\s*$',y,re.M)
+              if not m: raise SystemExit('Missing '+envname)
+              d=gzip.decompress(base64.b64decode(m.group(1))).decode().replace(old,new).replace('+++ '+path.split('/')[-1],'+++ b/'+path)
+              p=Path('/tmp/'+Path(path).name+'.diff');p.write_text(d)
+              subprocess.run(['git','apply','--whitespace=nowarn',str(p)],check=True)
+          Path('.github/workflows/replace-planners.yml').unlink(missing_ok=True)
+          Path('.github/workflows/apply-planner-replacement.yml').unlink(missing_ok=True)
+          Path('.planner-replacement-trigger').unlink(missing_ok=True)
+          PY
+      - name: Commit exact planner replacements
+        run: |
+          git config user.name 'Teraju Ciptabina Bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add quotation/buildplanner.html quotation/renovationplanner.html .github/workflows .planner-replacement-trigger
+          git commit -m 'Replace planner sources [planner-replacement]'
+          git push
