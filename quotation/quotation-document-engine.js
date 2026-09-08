@@ -30,7 +30,10 @@ function loadScript(src,test){
   if(test())return resolve();
   const existing=document.querySelector(`script[data-tc-src="${src}"]`);
   if(existing){existing.addEventListener('load',resolve,{once:true});existing.addEventListener('error',reject,{once:true});return;}
-  const script=document.createElement('script');script.src=src;script.dataset.tcSrc=src;script.onload=resolve;script.onerror=()=>reject(new Error('Unable to load quotation document component.'));document.head.appendChild(script);
+  const script=document.createElement('script');
+  script.src=src;script.dataset.tcSrc=src;
+  script.onload=resolve;script.onerror=()=>reject(new Error('Unable to load quotation document component.'));
+  document.head.appendChild(script);
  });
 }
 async function loadQuotationCanvas(){await loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js',()=>typeof window.html2canvas==='function');}
@@ -50,7 +53,7 @@ function collectPageUnits(tbody){
  for(let i=0;i<rows.length;i++){
   const row=rows[i];
   if(isHeadingRow(row)){
-   const group=[row]; let j=i+1;
+   const group=[row];let j=i+1;
    while(j<rows.length&&isHeadingRow(rows[j])){group.push(rows[j]);j++;}
    if(j<rows.length)group.push(rows[j]);
    units.push(group);i=j;
@@ -63,29 +66,27 @@ function collectPageUnits(tbody){
  return units;
 }
 
-function makePageShell(headerNodes,tableTemplate){
+function makePageShell(headerNodes,tableTemplate,includeTableHeader){
  const root=createRenderRoot();
  headerNodes.forEach(node=>root.appendChild(node.cloneNode(true)));
- const wrap=document.createElement('div');
- wrap.className=tableTemplate.wrapper.className;
- wrap.style.overflow='visible';
- wrap.style.width='100%';
- const table=tableTemplate.table.cloneNode(false);
- const thead=tableTemplate.thead?tableTemplate.thead.cloneNode(true):null;
- const tbody=document.createElement('tbody');
- if(thead)table.appendChild(thead);
- table.appendChild(tbody);
- wrap.appendChild(table);
- root.appendChild(wrap);
+ let wrap=null,table=null,tbody=null;
+ if(includeTableHeader){
+  wrap=document.createElement('div');
+  wrap.className=tableTemplate.wrapper.className;
+  wrap.style.overflow='visible';wrap.style.width='100%';
+  table=tableTemplate.table.cloneNode(false);
+  const thead=tableTemplate.thead?tableTemplate.thead.cloneNode(true):null;
+  tbody=document.createElement('tbody');
+  if(thead)table.appendChild(thead);
+  table.appendChild(tbody);wrap.appendChild(table);root.appendChild(wrap);
+ }
  return {root,wrap,table,tbody};
 }
-
 function appendUnits(page,units){units.forEach(unit=>unit.forEach(row=>page.tbody.appendChild(row.cloneNode(true))));}
 function pageHeight(page){
  const holder=document.createElement('div');
  holder.style.cssText=`position:fixed;left:-100000px;top:0;width:${RENDER_WIDTH_PX}px;background:#fff;padding:0;margin:0;overflow:visible;visibility:hidden;z-index:-1`;
- holder.appendChild(page.root);
- document.body.appendChild(holder);
+ holder.appendChild(page.root);document.body.appendChild(holder);
  void page.root.offsetHeight;
  const height=Math.ceil(Math.max(page.root.scrollHeight,page.root.getBoundingClientRect().height));
  holder.remove();
@@ -94,8 +95,7 @@ function pageHeight(page){
 function canvasFromPage(root){
  const holder=document.createElement('div');
  holder.style.cssText=`position:fixed;left:-100000px;top:0;width:${RENDER_WIDTH_PX}px;background:#fff;padding:0;margin:0;overflow:visible;z-index:-1;visibility:visible`;
- holder.appendChild(root);
- document.body.appendChild(holder);
+ holder.appendChild(root);document.body.appendChild(holder);
  return holder;
 }
 
@@ -106,7 +106,18 @@ async function rasterizePages(pageRoots){
   await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
   if(document.fonts?.ready)await document.fonts.ready;
   await waitForImages(holder);
-  const canvas=await window.html2canvas(holder,{backgroundColor:'#fff',scale:Math.min(2,Math.max(1.5,window.devicePixelRatio||1)),useCORS:true,allowTaint:false,logging:false,imageTimeout:15000,scrollX:0,scrollY:0,windowWidth:RENDER_WIDTH_PX,windowHeight:Math.min(Math.max(holder.scrollHeight,1),CONTENT_HEIGHT_PX)});
+  const measured=Math.ceil(Math.max(root.scrollHeight,root.getBoundingClientRect().height,1));
+  const captureHeight=Math.min(USABLE_HEIGHT_PX,measured);
+  const canvas=await window.html2canvas(holder,{
+   backgroundColor:'#fff',
+   scale:Math.min(2,Math.max(1.5,window.devicePixelRatio||1)),
+   useCORS:true,allowTaint:false,logging:false,imageTimeout:15000,
+   scrollX:0,scrollY:0,
+   width:RENDER_WIDTH_PX,
+   height:captureHeight,
+   windowWidth:RENDER_WIDTH_PX,
+   windowHeight:captureHeight
+  });
   holder.remove();
   const heightMm=(canvas.height/Math.max(canvas.width,1))*CONTENT_MM.width;
   pages.push({src:canvas.toDataURL('image/jpeg',JPEG_QUALITY),heightMm});
@@ -132,41 +143,43 @@ async function buildPaginatedPages(source){
  const template={wrapper:tableWrap,table,thead,tfoot};
  const units=collectPageUnits(tbody);
  const roots=[];
- let page=makePageShell(headerNodes,template);
- function fits(p){return pageHeight(p)<=USABLE_HEIGHT_PX;}
- function hasBody(p){return !!p.tbody.children.length;}
- function pushCurrent(){if(hasBody(page))roots.push(page.root);}
- function startNewPage(){page=makePageShell(headerNodes,template);}
+ let page=makePageShell(headerNodes,template,true);
+ const fits=p=>pageHeight(p)<=USABLE_HEIGHT_PX;
+ const hasBody=p=>!!p.tbody?.children.length;
+ const pushCurrent=()=>{if(hasBody(page))roots.push(page.root);};
+ const startNewPage=()=>{page=makePageShell(headerNodes,template,true);};
 
  for(const unit of units){
   const testRows=unit.map(r=>r.cloneNode(true));
   testRows.forEach(r=>page.tbody.appendChild(r));
   if(!fits(page)&&page.tbody.children.length>testRows.length){
    testRows.forEach(r=>r.remove());
-   pushCurrent();
-   startNewPage();
-   appendUnits(page,[unit]);
-   if(!fits(page))console.warn('Quotation row group exceeds one A4 page; it will be isolated to avoid clipping.');
+   pushCurrent();startNewPage();appendUnits(page,[unit]);
+   if(!fits(page))console.warn('Quotation row group exceeds one A4 page; keeping the row together may require smaller source text.');
   }
  }
 
- const finalBlocks=[];
- if(tfoot)finalBlocks.push({kind:'tfoot',node:tfoot});
- footerNodes.forEach(node=>finalBlocks.push({kind:'footer',node}));
- for(const block of finalBlocks){
-  const clone=block.node.cloneNode(true);
-  if(block.kind==='tfoot')page.table.appendChild(clone);else page.root.appendChild(clone);
-  if(!fits(page)&&(hasBody(page)||roots.length)){
+ if(hasBody(page)&&tfoot){
+  const total=tfoot.cloneNode(true);page.table.appendChild(total);
+  if(!fits(page)){total.remove();pushCurrent();startNewPage();page.table.appendChild(tfoot.cloneNode(true));}
+ }
+
+ if(hasBody(page))pushCurrent();
+ else if(!roots.length)roots.push(page.root);
+
+ // Footer is handled on a dedicated page when it cannot fit after the quotation table.
+ let footerPage=null;
+ for(const node of footerNodes){
+  if(!footerPage)footerPage=makePageShell(headerNodes,template,false);
+  const clone=node.cloneNode(true);footerPage.root.appendChild(clone);
+  if(pageHeight(footerPage)>USABLE_HEIGHT_PX){
    clone.remove();
-   if(hasBody(page))pushCurrent();
-   startNewPage();
-   const fresh=block.node.cloneNode(true);
-   if(block.kind==='tfoot')page.table.appendChild(fresh);else page.root.appendChild(fresh);
-   if(!fits(page))console.warn('Quotation footer block exceeds one A4 page.');
+   if(footerPage.root.children.length>headerNodes.length)roots.push(footerPage.root);
+   footerPage=makePageShell(headerNodes,template,false);
+   footerPage.root.appendChild(node.cloneNode(true));
   }
  }
- if(!hasBody(page)&&!finalBlocks.length&&!roots.length)roots.push(page.root);
- else if(hasBody(page)||finalBlocks.length)roots.push(page.root);
+ if(footerPage&&footerPage.root.children.length>headerNodes.length)roots.push(footerPage.root);
  return roots;
 }
 
@@ -215,6 +228,6 @@ function bindQuotationTypeCards(){
  document.querySelectorAll('.quotation-type-card').forEach(card=>card.addEventListener('click',()=>{const input=card.querySelector('input[name="quotationType"]');if(!input)return;input.checked=true;input.dispatchEvent(new Event('change',{bubbles:true}));}));
  sync();
 }
-function install(){injectStyles();bindQuotationTypeCards();window.renderQuotationPreview=renderQuotationPreview;window.printQuotation=printQuotation;window.TERAJU_QUOTATION_DOCUMENT_ENGINE_VERSION='2026-09-08-page-aware-header-v4';}
+function install(){injectStyles();bindQuotationTypeCards();window.renderQuotationPreview=renderQuotationPreview;window.printQuotation=printQuotation;window.TERAJU_QUOTATION_DOCUMENT_ENGINE_VERSION='2026-09-08-page-aware-header-v5';}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install,{once:true});else install();
 })();
