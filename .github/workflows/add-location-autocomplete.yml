@@ -26,15 +26,13 @@ jobs:
               s=p.read_text(encoding='utf-8')
               if location_tag not in s:
                   s=s.replace('</body>', location_tag+'\n</body>',1)
-              # Adjust only the existing consolidated mobile quotation block's font size.
-              s=s.replace('font-size:9px !important;','font-size:8px !important;')
-              p.write_text(s,encoding='utf-8')
+                  p.write_text(s,encoding='utf-8')
           for name in quantity_files:
               p=Path(name)
               s=p.read_text(encoding='utf-8')
               if quantity_tag not in s:
                   s=s.replace('</body>', quantity_tag+'\n</body>',1)
-              p.write_text(s,encoding='utf-8')
+                  p.write_text(s,encoding='utf-8')
           PY
       - name: Commit planner updates
         run: |
@@ -45,5 +43,5 @@ jobs:
             echo 'No planner changes needed.'
             exit 0
           fi
-          git commit -m 'Reduce mobile quotation font size'
+          git commit -m 'Add quotation quantity rounding [location-autocomplete]'
           git push
