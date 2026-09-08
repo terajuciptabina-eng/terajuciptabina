@@ -105,6 +105,49 @@ body.contractor-mode .homeowner-locked{display:none!important}
     @media print { .quotation-lock-overlay { display:none !important; } #quotationContent.quotation-locked { filter:none !important; } }
 
 .contractor-quotation-panel{display:block!important}.contractor-quotation-choice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.contractor-quotation-choice{position:relative;display:flex;align-items:flex-start;gap:13px;padding:20px;border:1px solid #d9dee7;border-radius:16px;background:#fff;cursor:pointer;transition:.18s ease;min-height:116px}.contractor-quotation-choice:hover{border-color:#9ca3af;background:#fafafa}.contractor-quotation-choice input{position:absolute;opacity:0;pointer-events:none}.contractor-quotation-choice.is-selected{border-color:#111827;box-shadow:0 0 0 2px rgba(17,24,39,.06)}.choice-radio{width:19px;height:19px;border:2px solid #9ca3af;border-radius:999px;flex:0 0 19px;margin-top:2px;position:relative}.contractor-quotation-choice.is-selected .choice-radio{border-color:#111827}.contractor-quotation-choice.is-selected .choice-radio:after{content:'';position:absolute;width:9px;height:9px;border-radius:999px;background:#111827;left:3px;top:3px}.choice-copy{display:flex;flex-direction:column;gap:5px}.choice-copy strong{font-size:16px;color:#111827}.choice-copy small{font-size:13px;line-height:1.45;color:#6b7280}.choice-copy em{font-size:12px;font-style:normal;color:#15803d;font-weight:700;margin-top:2px}.contractor-quotation-tip{display:flex;flex-direction:column;gap:3px;margin-top:14px;padding:13px 15px;border-radius:12px;background:#f8fafc;border:1px solid #e5e7eb;font-size:13px;color:#6b7280}.contractor-quotation-tip strong{color:#1f2937}.contractor-generate-btn{margin-top:16px;width:100%;background:#111827;color:#fff;border:0;border-radius:12px;padding:13px 18px;font-weight:700;cursor:pointer}.contractor-generate-btn:hover{background:#000}@media(max-width:767px){.contractor-quotation-choice-grid{grid-template-columns:1fr}.contractor-quotation-choice{min-height:0}.contractor-generate-btn{min-height:48px}}
+
+/* Mobile UX — keep desktop/tablet layout unchanged */
+@media (max-width: 767px) {
+  #estimateContent { overflow: visible !important; width: 100% !important; margin: 0 !important; }
+  #estimateContent table { min-width: 0 !important; width: 100% !important; table-layout: auto !important; border-collapse: separate !important; border-spacing: 0 10px !important; }
+  #estimateContent table thead { display: none !important; }
+  #estimateContent table tbody tr { display: grid !important; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; padding: 12px; margin-bottom: 10px; border: 1px solid #e5e7eb !important; border-radius: 16px; background: #fff; box-shadow: 0 4px 16px rgba(15,23,42,.05); }
+  #estimateContent table tbody tr.quotation-section-row, #estimateContent table tbody tr.quotation-subsection-row, #estimateContent table tbody tr.bg-gray-100 { display: block !important; padding: 12px !important; margin-bottom: 8px; background: #f8fafc !important; }
+  #estimateContent table tbody tr.quotation-section-row td, #estimateContent table tbody tr.quotation-subsection-row td, #estimateContent table tbody tr.bg-gray-100 td { display: block !important; width: 100% !important; }
+  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td { display: block !important; width: 100% !important; min-width: 0 !important; padding: 7px 4px !important; }
+  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:first-child { grid-column: 1 / -1; padding-top: 2px !important; }
+  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(2) { display: none !important; }
+  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(3), #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(4), #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(5) { width: auto !important; }
+  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(3):before { content: 'Quantity'; display:block; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:#9ca3af; margin-bottom:3px; }
+  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(4):before { content: 'Rate'; display:block; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:#9ca3af; margin-bottom:3px; }
+  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(5):before { content: 'Amount'; display:block; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:#9ca3af; margin-bottom:3px; }
+  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(6) { grid-column:1 / -1; text-align:left !important; border-top:1px solid #f1f5f9; margin-top:4px; padding-top:10px !important; }
+  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:first-child textarea { min-width:0 !important; width:100% !important; min-height:76px; font-size:16px !important; }
+  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(3) input, #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(4) input { width:100% !important; min-width:0 !important; }
+  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(5) { text-align:right !important; font-weight:700; }
+  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td[colspan] { grid-column:1 / -1; }
+  #estimateContent table tfoot tr { display:grid !important; grid-template-columns:1fr auto; padding:14px 8px; border-top:2px solid #111827 !important; }
+  #estimateContent table tfoot td { display:block !important; width:auto !important; padding:6px 4px !important; }
+  #estimateContent table tfoot td:first-child { grid-column:1; }
+  #estimateContent table tfoot td:nth-child(2) { grid-column:2; }
+  #rateScheduleContent { overflow:visible !important; }
+  #rateScheduleContent table { min-width:0 !important; width:100% !important; }
+  #rateScheduleContent table thead { display:none !important; }
+  #rateScheduleContent table tr { display:grid !important; grid-template-columns:1fr 92px; gap:10px; padding:12px; margin-bottom:8px; border:1px solid #e5e7eb; border-radius:14px; background:#fff; }
+  #rateScheduleContent table td { display:block !important; width:auto !important; padding:5px !important; }
+  #rateScheduleContent table td:nth-child(1) { grid-column:1 / -1; }
+  #rateScheduleContent table td:nth-child(2) { font-size:11px; color:#6b7280; }
+  #rateScheduleContent table td:nth-child(3) input { width:100% !important; min-width:0 !important; }
+  #customerSummary { gap:8px !important; }
+  #customerSummary > div { padding:11px 12px; border:1px solid #e5e7eb; border-radius:12px; background:#fafafa; }
+  #grandTotal { font-size:24px !important; }
+  .contractor-quotation-choice-grid { gap:10px !important; }
+  .contractor-quotation-choice { padding:16px !important; }
+  .contractor-quotation-choice .choice-copy strong { font-size:15px; }
+  .contractor-quotation-choice .choice-copy small { font-size:12px; }
+  .contractor-generate-btn { min-height:52px !important; border-radius:14px !important; font-size:15px !important; }
+}
+
 </style>
 </head>
 <body class="bg-gray-100 text-gray-800">
