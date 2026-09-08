@@ -5,17 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#ffffff">
   <title>Renovation Planner | Teraju Ciptabina</title>
-  <script src="https://cdn.tailwindcss.com">
-function ensureInitialAreaCard(){
-  const container=document.getElementById('roomsContainer');
-  if(!container)return;
-  const hasValidArea=[...container.querySelectorAll('.room-card')].some(card=>Number(card.querySelector('.room-area')?.value||0)>0);
-  if(!hasValidArea)addRoom();
-}
-ensureInitialAreaCard();
-updateEstimate();
-
-</script>
+  <script src="https://cdn.tailwindcss.com"></script>
 
   <style>
     * { box-sizing: border-box; }
@@ -619,7 +609,7 @@ function optionalScopeHtml() {
   }).join("");
 }
 
-function addRoomBase(defaultType = "living", defaultArea = "") {
+function addRoom(defaultType = "living", defaultArea = "") {
   roomCounter++;
   const id = "room-" + roomCounter;
   const container = document.getElementById("roomsContainer");
@@ -855,27 +845,9 @@ function saveManualItem(roomId) {
   if (!description) { alert("Please select or create an item."); return; } const id = `manual-${Date.now()}-${Math.random().toString(36).slice(2,8)}`; if (!manualItems.has(roomId)) manualItems.set(roomId, []); manualItems.get(roomId).push({ id, roomId, description, unit, qty, rate, amount: Math.round((qty * rate + Number.EPSILON) * 100) / 100 }); updateEstimate(); saveContractorState();
 }
 function removeManualItem(roomId, itemId) { if (!IS_CONTRACTOR) return; const list = manualItems.get(roomId) || []; manualItems.set(roomId, list.filter(item => item.id !== itemId)); updateEstimate(); saveContractorState(); }
-
-function getRoomGroups(){
-  return getRoomGroupsBase().filter(room=>Number(room.area)>0);
-}
 function getAllItems() { const rooms = [...document.querySelectorAll("#roomsContainer .room-card")], typeIndexes = {}, allItems = []; rooms.forEach(room => { const roomId = room.id, roomType = room.querySelector(".room-type")?.value || "living", area = parseFloat(room.querySelector(".room-area")?.value) || 0; typeIndexes[roomType] = (typeIndexes[roomType] || 0) + 1; const base = ROOM_TYPES[roomType] || "Area", autoLabel = typeIndexes[roomType] > 1 ? `${base} ${typeIndexes[roomType]}` : base, roomLabel = customRoomLabels.has(roomId) ? customRoomLabels.get(roomId) : autoLabel, standard = generateStandardRoomItems(roomType, area, roomId, roomLabel), optional = generateOptionalRoomItems(room, roomLabel), manual = (manualItems.get(roomId) || []).map(item => ({ ...item })); [...standard, ...optional, ...manual].forEach(item => { if (customRates.has(item.id)) item.rate = customRates.get(item.id); if (customQuantities.has(item.id)) item.qty = customQuantities.get(item.id); if (customDescriptions.has(item.id)) item.description = customDescriptions.get(item.id); item.qty = normalizeQuantity(item.qty); item.rate = normalizeRate(item.rate); item.amount = Math.round((item.qty * item.rate + Number.EPSILON) * 100) / 100; }); allItems.push(...standard, ...optional, ...manual); }); const prelimManual = (manualItems.get("__prelim__") || []).map(item => ({ ...item, roomId: "__prelim__", room: "Project / Preliminaries" })); prelimManual.forEach(item => { item.qty = normalizeQuantity(item.qty); item.rate = normalizeRate(item.rate); item.amount = Math.round((item.qty * item.rate + Number.EPSILON) * 100) / 100; }); allItems.push(...prelimManual); return allItems; }
 
-
-function addRoom(...args){
-  const blankAreaCall=args.length===0;
-  addRoomBase(...args);
-  if(blankAreaCall){
-    const card=document.querySelector('#roomsContainer .room-card:last-child');
-    const nameInput=card?.querySelector('.room-name');
-    const areaInput=card?.querySelector('.room-area');
-    if(nameInput)nameInput.value='';
-    if(areaInput){areaInput.value='';areaInput.placeholder='e.g. 200';}
-    updateEstimate();
-    if(typeof saveContractorState==='function')saveContractorState();
-  }
-}
-function getRoomGroupsBase() {
+function getRoomGroups() {
   const rooms = [...document.querySelectorAll("#roomsContainer .room-card")];
   const typeIndexes = {};
   const groups = [];
