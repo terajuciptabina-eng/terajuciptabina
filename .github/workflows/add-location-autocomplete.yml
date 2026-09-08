@@ -21,12 +21,32 @@ jobs:
           quantity_files=['quotation/renovationplanner.html']
           location_tag='<script src="location-autocomplete.js"></script>'
           quantity_tag='<script src="quotation-quantity-fix.js?v=20260907"></script>'
+          mobile_fix_tag='''<style id="homeowner-mobile-description-fix">
+          @media (max-width: 767px) {
+            #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:first-child,
+            #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:first-child .homeowner-locked {
+              width:100% !important;
+              max-width:100% !important;
+              min-width:0 !important;
+              white-space:normal !important;
+              overflow-wrap:anywhere !important;
+              word-break:break-word !important;
+              line-height:1.5 !important;
+              overflow:visible !important;
+            }
+            #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:first-child .homeowner-locked {
+              display:block !important;
+            }
+          }
+          </style>'''
           for name in location_files:
               p=Path(name)
               s=p.read_text(encoding='utf-8')
               if location_tag not in s:
                   s=s.replace('</body>', location_tag+'\n</body>',1)
-                  p.write_text(s,encoding='utf-8')
+              if 'id="homeowner-mobile-description-fix"' not in s:
+                  s=s.replace('</head>', mobile_fix_tag+'\n</head>',1)
+              p.write_text(s,encoding='utf-8')
           for name in quantity_files:
               p=Path(name)
               s=p.read_text(encoding='utf-8')
@@ -43,5 +63,5 @@ jobs:
             echo 'No planner changes needed.'
             exit 0
           fi
-          git commit -m 'Add quotation quantity rounding [location-autocomplete]'
+          git commit -m 'Fix homeowner mobile quotation description [location-autocomplete]'
           git push
