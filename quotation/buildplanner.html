@@ -455,7 +455,7 @@ function showRemovedItems(){if(!IS_CONTRACTOR)return;const removed=[...excludedI
 function editItemDescription(id,v){if(!IS_CONTRACTOR)return;const d=String(v||'').trim();if(!d){alert('Please enter a description.');updateEstimate();return}customDescriptions.set(id,d);updateEstimate();saveContractorState()}
 function editItemQuantity(id,v){if(!IS_CONTRACTOR)return;let q=parseFloat(v);if(!Number.isFinite(q)||q<0){alert('Please enter a valid quantity.');updateEstimate();return}customQuantities.set(id,normalizeQuantity(q));updateEstimate();saveContractorState()}
 function editItemRate(id,v){if(!IS_CONTRACTOR)return;const r=parseFloat(v);if(!Number.isFinite(r)||r<0){alert('Please enter a valid rate.');updateEstimate();return}customRates.set(id,normalizeRate(r));updateEstimate();saveContractorState()}
-function excludeItem(id){if(!IS_CONTRACTOR)return;excludedItems.add(id);updateEstimate();saveContractorState()}
+function excludeItem(id){if(!IS_CONTRACTOR&&!isHomeowner())return;excludedItems.add(id);updateEstimate();saveContractorState()}
 function restoreAllItems(){if(!IS_CONTRACTOR)return;excludedItems.clear();updateEstimate();saveContractorState()}
 function generateQuotationNumber(){let n=localStorage.getItem('terajuNBQO');n=n?parseInt(n,10)+1:1;localStorage.setItem('terajuNBQO',n);return'NB-QO'+String(n).padStart(3,'0')}
 function getSelectedQuotationType(){return document.querySelector('input[name="quotationType"]:checked')?.value||'simple'}
