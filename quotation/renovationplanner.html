@@ -282,16 +282,16 @@
 
 
 @media (max-width: 767px) {
-  #estimateContent table tr:has(td[colspan]) td {
-    white-space: nowrap !important;
-    overflow-wrap: normal !important;
+  #estimateContent table tr:has(td[colspan]) td:nth-child(5) {
+    font-size: 9px !important;
+    line-height: 1.25 !important;
+    white-space: normal !important;
+    overflow-wrap: anywhere !important;
     word-break: normal !important;
   }
-  #estimateContent table tr:has(td[colspan]) td:first-child {
-    text-align: right !important;
-  }
-  #estimateContent table tr:has(td[colspan]) td:last-child {
-    text-align: right !important;
+  #estimateContent table tr:has(td[colspan]) td:nth-child(6) {
+    font-size: 9px !important;
+    line-height: 1.25 !important;
     white-space: nowrap !important;
   }
 }
