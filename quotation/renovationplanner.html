@@ -267,6 +267,58 @@
   }
 }
 </style>
+<style id="mobile-quotation-and-room-fix">
+@media (max-width: 767px) {
+  #estimateContent .detailed-quotation-table,
+  #estimateContent table {
+    width:100% !important;
+    min-width:0 !important;
+    max-width:100% !important;
+    table-layout:fixed !important;
+  }
+  #estimateContent .detailed-quotation-table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100),
+  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) {
+    width:100% !important;
+    min-width:0 !important;
+    grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  }
+  #estimateContent .detailed-quotation-table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:first-child,
+  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:first-child {
+    grid-column:1 / -1 !important;
+    width:100% !important;
+    min-width:0 !important;
+    max-width:100% !important;
+    overflow:hidden !important;
+    white-space:normal !important;
+    overflow-wrap:anywhere !important;
+    word-break:break-word !important;
+  }
+  #estimateContent .detailed-quotation-table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:first-child textarea,
+  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:first-child textarea {
+    display:block !important;
+    width:100% !important;
+    min-width:0 !important;
+    max-width:none !important;
+    box-sizing:border-box !important;
+    white-space:pre-wrap !important;
+    overflow-wrap:anywhere !important;
+    word-break:break-word !important;
+    overflow-x:hidden !important;
+    line-height:1.45 !important;
+  }
+  #estimateContent .detailed-quotation-table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:first-child .homeowner-locked,
+  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:first-child .homeowner-locked {
+    display:block !important;
+    width:100% !important;
+    min-width:0 !important;
+    max-width:100% !important;
+    white-space:normal !important;
+    overflow-wrap:anywhere !important;
+    word-break:break-word !important;
+    line-height:1.5 !important;
+  }
+}
+</style>
 </head>
 
 <body class="bg-gray-100 text-gray-800">
@@ -638,13 +690,13 @@ function addRoomBase(defaultType = "living", defaultArea = "") {
   div.innerHTML = `
     <div class="grid md:grid-cols-[1fr_1fr_1fr_auto] gap-4 items-end">
       <div>
+        <label class="block text-sm font-medium mb-2">Room Type</label>
+        <select class="room-type w-full border rounded-lg px-4 py-3 bg-white">${roomOptions()}</select>
+      </div>
+<div>
         <label class="block text-sm font-medium mb-2">Room / Area Name</label>
         <input type="text" value="${escapeHtml(customRoomLabels.get(id) || ROOM_TYPES[defaultType] || "Area")}"
           placeholder="e.g. Living Area" class="room-name w-full border rounded-lg px-4 py-3 bg-white">
-      </div>
-      <div>
-        <label class="block text-sm font-medium mb-2">Room Type</label>
-        <select class="room-type w-full border rounded-lg px-4 py-3 bg-white">${roomOptions()}</select>
       </div>
       <div>
         <label class="block text-sm font-medium mb-2">Area (sqft)</label>

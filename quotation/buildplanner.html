@@ -191,6 +191,58 @@ body.contractor-mode .homeowner-locked{display:none!important}
   }
 }
 </style>
+<style id="mobile-quotation-and-room-fix">
+@media (max-width: 767px) {
+  #estimateContent .detailed-quotation-table,
+  #estimateContent table {
+    width:100% !important;
+    min-width:0 !important;
+    max-width:100% !important;
+    table-layout:fixed !important;
+  }
+  #estimateContent .detailed-quotation-table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100),
+  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) {
+    width:100% !important;
+    min-width:0 !important;
+    grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  }
+  #estimateContent .detailed-quotation-table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:first-child,
+  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:first-child {
+    grid-column:1 / -1 !important;
+    width:100% !important;
+    min-width:0 !important;
+    max-width:100% !important;
+    overflow:hidden !important;
+    white-space:normal !important;
+    overflow-wrap:anywhere !important;
+    word-break:break-word !important;
+  }
+  #estimateContent .detailed-quotation-table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:first-child textarea,
+  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:first-child textarea {
+    display:block !important;
+    width:100% !important;
+    min-width:0 !important;
+    max-width:none !important;
+    box-sizing:border-box !important;
+    white-space:pre-wrap !important;
+    overflow-wrap:anywhere !important;
+    word-break:break-word !important;
+    overflow-x:hidden !important;
+    line-height:1.45 !important;
+  }
+  #estimateContent .detailed-quotation-table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:first-child .homeowner-locked,
+  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:first-child .homeowner-locked {
+    display:block !important;
+    width:100% !important;
+    min-width:0 !important;
+    max-width:100% !important;
+    white-space:normal !important;
+    overflow-wrap:anywhere !important;
+    word-break:break-word !important;
+    line-height:1.5 !important;
+  }
+}
+</style>
 </head>
 <body class="bg-gray-100 text-gray-800">
 <header class="bg-white border-b"><div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between"><div class="flex items-center gap-4 min-w-0"><img src="../images/logo.png" alt="Teraju Ciptabina Logo" class="h-12 w-auto flex-shrink-0"><div class="h-12 w-12 rounded-lg bg-gray-900 text-white items-center justify-center font-bold text-lg flex-shrink-0" style="display:none;">T|C</div><div class="min-w-0"><h1 class="font-bold text-lg">TERAJU CIPTABINA</h1><p class="text-xs text-gray-500">Build Planner</p><p id="contractorBadge" class="contractor-only text-xs text-gray-500 mt-1">Contractor Mode</p></div></div></div></header>
@@ -371,7 +423,8 @@ function renderRateSchedule(){
 function editScheduleRate(k,v){const n=parseFloat(v);if(!Number.isFinite(n)||n<0){alert('Please enter a valid rate.');renderRateSchedule();return}RATES[k]=Math.round(n*100)/100;customRates.clear();saveContractorState();updateEstimate()}
 function resetRatesToDefault(){RATES={...DEFAULT_RATES};customRates.clear();renderRateSchedule();updateEstimate()}
 function roomOptions(){return Object.entries(ROOM_TYPES).map(([k,n])=>`<option value="${k}">${escapeHtml(n)}</option>`).join('')}
-function addRoomBase(defaultType='other',defaultArea='',forcedId='',forcedName=''){roomCounter++;const id=forcedId||('room-'+roomCounter),container=document.getElementById('roomsContainer'),div=document.createElement('div');div.id=id;div.className='room-card border rounded-xl p-4 bg-gray-50';div.innerHTML=`<div class="grid md:grid-cols-[1fr_1fr_1fr_auto] gap-4 items-end"><div><label class="block text-sm font-medium mb-2">Room / Area Name</label><input type="text" value="${escapeHtml(forcedName||ROOM_TYPES[defaultType]||'Area')}" class="room-name w-full border rounded-lg px-4 py-3 bg-white"></div><div><label class="block text-sm font-medium mb-2">Room Type</label><select class="room-type w-full border rounded-lg px-4 py-3 bg-white">${roomOptions()}</select></div><div><label class="block text-sm font-medium mb-2">Area (sqft)</label><input type="number" min="1" step="1" value="${escapeHtml(defaultArea)}" class="room-area w-full border rounded-lg px-4 py-3 bg-white"></div><div class="no-print flex gap-2"><button type="button" onclick="moveRoom('${id}',-1)" class="border rounded-lg px-3">▲</button><button type="button" onclick="moveRoom('${id}',1)" class="border rounded-lg px-3">▼</button><button type="button" onclick="removeRoom('${id}')" class="border border-red-300 text-red-600 rounded-lg px-4">Remove</button></div></div>`;container.appendChild(div);div.querySelector('.room-type').value=defaultType;div.querySelector('.room-name').addEventListener('change',e=>{const l=String(e.target.value||'').trim();if(l)customRoomLabels.set(id,l);updateEstimate()});div.querySelector('.room-type').addEventListener('change',()=>{if(!customRoomLabels.has(id))div.querySelector('.room-name').value=ROOM_TYPES[div.querySelector('.room-type').value]||'Area';updateEstimate()});div.querySelector('.room-area').addEventListener('input',()=>{updateEstimate();saveContractorState()});div.querySelector('.room-name').addEventListener('input',()=>{if(IS_CONTRACTOR)saveContractorState()});if(IS_CONTRACTOR&&!customRoomLabels.has(id)){const initial=String(forcedName||'').trim();if(initial)customRoomLabels.set(id,initial)}updateEstimate();if(!restoringContractorState)saveContractorState()}
+function addRoomBase(defaultType='other',defaultArea='',forcedId='',forcedName=''){roomCounter++;const id=forcedId||('room-'+roomCounter),container=document.getElementById('roomsContainer'),div=document.createElement('div');div.id=id;div.className='room-card border rounded-xl p-4 bg-gray-50';div.innerHTML=`<div class="grid md:grid-cols-[1fr_1fr_1fr_auto] gap-4 items-end"><div><label class="block text-sm font-medium mb-2">Room Type</label><select class="room-type w-full border rounded-lg px-4 py-3 bg-white">${roomOptions()}</select></div>
+<div><label class="block text-sm font-medium mb-2">Room / Area Name</label><input type="text" value="${escapeHtml(forcedName||ROOM_TYPES[defaultType]||'Area')}" class="room-name w-full border rounded-lg px-4 py-3 bg-white"></div><div><label class="block text-sm font-medium mb-2">Area (sqft)</label><input type="number" min="1" step="1" value="${escapeHtml(defaultArea)}" class="room-area w-full border rounded-lg px-4 py-3 bg-white"></div><div class="no-print flex gap-2"><button type="button" onclick="moveRoom('${id}',-1)" class="border rounded-lg px-3">▲</button><button type="button" onclick="moveRoom('${id}',1)" class="border rounded-lg px-3">▼</button><button type="button" onclick="removeRoom('${id}')" class="border border-red-300 text-red-600 rounded-lg px-4">Remove</button></div></div>`;container.appendChild(div);div.querySelector('.room-type').value=defaultType;div.querySelector('.room-name').addEventListener('change',e=>{const l=String(e.target.value||'').trim();if(l)customRoomLabels.set(id,l);updateEstimate()});div.querySelector('.room-type').addEventListener('change',()=>{if(!customRoomLabels.has(id))div.querySelector('.room-name').value=ROOM_TYPES[div.querySelector('.room-type').value]||'Area';updateEstimate()});div.querySelector('.room-area').addEventListener('input',()=>{updateEstimate();saveContractorState()});div.querySelector('.room-name').addEventListener('input',()=>{if(IS_CONTRACTOR)saveContractorState()});if(IS_CONTRACTOR&&!customRoomLabels.has(id)){const initial=String(forcedName||'').trim();if(initial)customRoomLabels.set(id,initial)}updateEstimate();if(!restoringContractorState)saveContractorState()}
 function removeRoom(id){document.getElementById(id)?.remove();customRoomLabels.delete(id);updateEstimate()}
 function moveRoom(id,d){const r=document.getElementById(id),c=document.getElementById('roomsContainer');if(!r||!c)return;if(d<0&&r.previousElementSibling)c.insertBefore(r,r.previousElementSibling);if(d>0&&r.nextElementSibling)c.insertBefore(r.nextElementSibling,r);updateEstimate()}
 
