@@ -614,7 +614,6 @@ document.getElementById("estimateNumber").textContent = generateEstimateNumber()
 
 function money(value, decimals = 0) {
   return new Intl.NumberFormat("en-MY", {
-    style: "currency", currency: "MYR",
     minimumFractionDigits: decimals, maximumFractionDigits: decimals
   }).format(Number(value) || 0);
 }
