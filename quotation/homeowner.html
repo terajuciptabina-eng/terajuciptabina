@@ -1,113 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#111827">
-  <title>Homeowner | TERAJU WORKS</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    :root{color-scheme:dark}
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#0f172a}
-    .app-shell{background-image:linear-gradient(180deg,rgba(15,23,42,.28) 0%,rgba(15,23,42,.68) 58%,rgba(15,23,42,.88) 100%),url('https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=2200&q=88');background-size:cover;background-position:center;background-attachment:fixed}
-    .glass{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);box-shadow:0 25px 80px rgba(0,0,0,.20);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
-    .project-card{position:relative;overflow:hidden;background:rgba(255,255,255,.94);border:1px solid rgba(255,255,255,.72);box-shadow:0 22px 55px rgba(0,0,0,.16);transition:transform .22s ease,box-shadow .22s ease}
-    .project-card:hover{transform:translateY(-4px);box-shadow:0 30px 70px rgba(0,0,0,.22)}
-    .project-card:active{transform:scale(.99)}
-    .gold{background:linear-gradient(135deg,#c89b4a,#a97827)}
-    .dark-btn{background:#111827;box-shadow:0 10px 25px rgba(15,23,42,.18)}
-    .dark-btn:hover{background:#020617}
-    .back-btn{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.20);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
-    .back-btn:hover{background:rgba(255,255,255,.16)}
-    @media(max-width:767px){
-      .app-shell{background-position:58% center;background-attachment:scroll}
-      .mobile-main{min-height:calc(100vh - 74px);padding:18px 16px 24px}
-      .glass{border-radius:28px!important;padding:22px!important}
-      .hero-title{font-size:32px!important;line-height:1.04!important;letter-spacing:-.045em!important}
-      .hero-copy{font-size:13px!important;line-height:1.55!important}
-      .project-grid{gap:14px!important;margin-top:20px!important}
-      .project-card{border-radius:24px!important;padding:18px!important}
-      .project-card h2{font-size:21px!important;line-height:1.12!important}
-      .project-card p{font-size:12px!important;line-height:1.5!important}
-      .project-card .action{min-height:48px!important;font-size:12px!important}
-      .project-card .icon{width:48px!important;height:48px!important}
-      footer{padding:14px 16px!important}
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#111827">
+<title>Homeowner | TERAJU WORKS</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+:root{color-scheme:dark}*{box-sizing:border-box}html{scroll-behavior:smooth}body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#0f172a}
+.app-shell{background-image:linear-gradient(180deg,rgba(15,23,42,.28) 0%,rgba(15,23,42,.68) 58%,rgba(15,23,42,.88) 100%),url('https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=2200&q=88');background-size:cover;background-position:center;background-attachment:fixed}
+.glass{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);box-shadow:0 25px 80px rgba(0,0,0,.20);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+.auth-card{background:rgba(255,255,255,.94);border:1px solid rgba(255,255,255,.8);box-shadow:0 25px 80px rgba(0,0,0,.22);color:#0f172a}.project-card{position:relative;overflow:hidden;background:rgba(255,255,255,.94);border:1px solid rgba(255,255,255,.72);box-shadow:0 22px 55px rgba(0,0,0,.16);transition:transform .22s ease,box-shadow .22s ease}.project-card:hover{transform:translateY(-4px);box-shadow:0 30px 70px rgba(0,0,0,.22)}.project-card:active{transform:scale(.99)}
+.gold{background:linear-gradient(135deg,#c89b4a,#a97827)}.dark-btn{background:#111827;box-shadow:0 10px 25px rgba(15,23,42,.18)}.dark-btn:hover{background:#020617}.back-btn{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.20);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}.back-btn:hover{background:rgba(255,255,255,.16)}
+.auth-wrap,.portal-head,.project-grid,.portal-note,.site-footer{animation:fadeUp .7s cubic-bezier(.22,1,.36,1) both}.project-grid{animation-delay:.12s}.portal-note{animation-delay:.25s}.site-footer{animation-delay:.35s}.project-card{animation:cardIn .7s cubic-bezier(.22,1,.36,1) both}.project-card:nth-child(2){animation-delay:.1s}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}@keyframes cardIn{from{opacity:0;transform:translateY(26px) scale(.985)}to{opacity:1;transform:none}}
+@media(max-width:767px){.app-shell{background-position:58% center;background-attachment:scroll}header .inner{padding:14px 16px!important}header img{height:40px!important}.mobile-main{min-height:calc(100vh - 74px);padding:18px 16px 24px}.auth-card{border-radius:28px!important;padding:22px!important}.auth-title{font-size:30px!important;line-height:1.08!important;letter-spacing:-.045em!important}.auth-copy{font-size:13px!important;line-height:1.55!important}.auth-card input{min-height:50px}.auth-card button{min-height:48px}.hero-title{font-size:32px!important;line-height:1.04!important;letter-spacing:-.045em!important}.hero-copy{font-size:13px!important;line-height:1.55!important}.project-grid{gap:14px!important;margin-top:20px!important}.project-card{border-radius:24px!important;padding:18px!important}.project-card h2{font-size:21px!important;line-height:1.12!important}.project-card p{font-size:12px!important;line-height:1.5!important}.project-card .action{min-height:48px!important;font-size:12px!important}.project-card .icon{width:48px!important;height:48px!important}footer{padding:14px 16px!important}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.auth-wrap,.portal-head,.project-grid,.portal-note,.site-footer,.project-card{animation:none!important}.project-card{transition:none!important}.project-card:hover{transform:none}}
+</style>
 </head>
 <body class="min-h-screen text-white antialiased">
-  <div class="app-shell min-h-screen">
-    <header class="border-b border-white/10 bg-slate-950/20 backdrop-blur-xl">
-      <div class="mx-auto flex max-w-6xl items-center justify-between px-5 py-3.5 sm:px-6 sm:py-4">
-        <a href="index.html" class="flex items-center gap-3" aria-label="Back to TERAJU WORKS">
-          <img src="../images/logo.png" alt="Teraju Ciptabina Resources" class="h-10 w-auto sm:h-11">
-          <div class="hidden border-l border-white/20 pl-4 sm:block">
-            <div class="text-[12px] font-black tracking-[.17em] text-white">TERAJU WORKS</div>
-            <div class="mt-1 text-[9px] font-semibold tracking-[.2em] text-white/55">PLAN • COST • BUILD</div>
-          </div>
-        </a>
-        <a href="index.html" class="back-btn rounded-full px-3.5 py-2 text-[10px] font-bold tracking-wide text-white transition sm:px-4 sm:py-2.5 sm:text-xs">← Change User Type</a>
-      </div>
-    </header>
-
-    <main class="mobile-main mx-auto flex max-w-6xl items-center px-5 py-10 sm:px-6 sm:py-16 lg:px-10">
-      <div class="w-full">
-        <section class="glass mx-auto max-w-5xl rounded-[34px] p-7 sm:p-10 lg:p-12">
-          <div class="mx-auto max-w-3xl text-center">
-            <div class="mb-4 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3.5 py-2 text-[9px] font-black tracking-[.2em] text-white/75 shadow-sm">
-              <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
-              HOMEOWNER WORKSPACE
-            </div>
-            <h1 class="hero-title text-4xl font-black tracking-[-.05em] text-white sm:text-5xl lg:text-6xl">What are you planning?</h1>
-            <p class="hero-copy mx-auto mt-4 max-w-2xl text-sm leading-6 text-white/70 sm:text-base sm:leading-7">Choose a project to start planning your home cost. You can review the estimate before deciding whether to generate a quotation.</p>
-          </div>
-
-          <div class="project-grid mx-auto mt-8 grid max-w-4xl gap-5 md:grid-cols-2 lg:mt-10">
-            <article class="project-card rounded-[28px] p-6 text-slate-900 sm:p-7">
-              <div class="flex items-start justify-between gap-4">
-                <div class="icon gold flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl text-2xl text-white shadow-lg">⌂</div>
-                <span class="rounded-full bg-amber-50 px-3 py-1.5 text-[9px] font-black tracking-[.16em] text-amber-800">NEW BUILD</span>
-              </div>
-              <div class="mt-5">
-                <h2 class="text-2xl font-black tracking-[-.025em] text-slate-950">Build a New House</h2>
-                <p class="mt-3 text-sm leading-6 text-slate-500">Start with your basic project information and get an estimated construction cost for your new home.</p>
-              </div>
-              <div class="mt-5 flex flex-wrap gap-2">
-                <span class="rounded-full bg-slate-100 px-3 py-1.5 text-[10px] font-semibold text-slate-500">Cost Estimate</span>
-                <span class="rounded-full bg-slate-100 px-3 py-1.5 text-[10px] font-semibold text-slate-500">Quotation</span>
-              </div>
-              <a href="buildplanner.html?audience=homeowner" class="action dark-btn mt-6 flex w-full items-center justify-center rounded-2xl px-5 py-3.5 text-sm font-bold text-white transition">Start New House Estimate <span class="ml-2 text-base">→</span></a>
-            </article>
-
-            <article class="project-card rounded-[28px] p-6 text-slate-900 sm:p-7">
-              <div class="flex items-start justify-between gap-4">
-                <div class="icon flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-slate-900 text-2xl text-white shadow-lg">⌘</div>
-                <span class="rounded-full bg-slate-100 px-3 py-1.5 text-[9px] font-black tracking-[.16em] text-slate-600">RENOVATION</span>
-              </div>
-              <div class="mt-5">
-                <h2 class="text-2xl font-black tracking-[-.025em] text-slate-950">Renovate Existing House</h2>
-                <p class="mt-3 text-sm leading-6 text-slate-500">Select the renovation works you are planning and estimate the cost before moving forward.</p>
-              </div>
-              <div class="mt-5 flex flex-wrap gap-2">
-                <span class="rounded-full bg-slate-100 px-3 py-1.5 text-[10px] font-semibold text-slate-500">Cost Estimate</span>
-                <span class="rounded-full bg-slate-100 px-3 py-1.5 text-[10px] font-semibold text-slate-500">Quotation</span>
-              </div>
-              <a href="renovationplanner.html?audience=homeowner" class="action dark-btn mt-6 flex w-full items-center justify-center rounded-2xl px-5 py-3.5 text-sm font-bold text-white transition">Start Renovation Estimate <span class="ml-2 text-base">→</span></a>
-            </article>
-          </div>
-
-          <div class="mx-auto mt-6 max-w-4xl rounded-2xl border border-white/10 bg-black/15 px-4 py-3 text-center text-[10px] leading-5 text-white/55 sm:px-5 sm:text-xs">
-            Your estimate stays focused on planning first — review your project cost before generating a quotation.
-          </div>
-        </section>
-      </div>
-    </main>
-
-    <footer class="border-t border-white/10 bg-slate-950/25 px-5 py-5 text-center text-[9px] font-semibold tracking-[.15em] text-white/45 backdrop-blur-xl sm:px-6">
-      TERAJU CIPTABINA RESOURCES · CONSTRUCTION COSTING &amp; QUOTATION
-    </footer>
-  </div>
+<div class="app-shell min-h-screen">
+<header class="border-b border-white/10 bg-slate-950/20 backdrop-blur-xl"><div class="inner mx-auto flex max-w-6xl items-center justify-between px-5 py-3.5 sm:px-6 sm:py-4"><a href="index.html" class="flex items-center gap-3" aria-label="Back to TERAJU WORKS"><img src="../images/logo.png" alt="Teraju Ciptabina Resources" class="h-10 w-auto sm:h-11"><div class="hidden border-l border-white/20 pl-4 sm:block"><div class="text-[12px] font-black tracking-[.17em] text-white">TERAJU WORKS</div><div class="mt-1 text-[9px] font-semibold tracking-[.2em] text-white/55">PLAN • COST • BUILD</div></div></a><a href="index.html" class="back-btn rounded-full px-3.5 py-2 text-[10px] font-bold tracking-wide text-white transition sm:px-4 sm:py-2.5 sm:text-xs">← Change User Type</a></div></header>
+<main class="mobile-main mx-auto max-w-6xl px-5 py-10 sm:px-6 sm:py-16 lg:px-10">
+<section id="authPanel" class="auth-wrap auth-card mx-auto max-w-xl rounded-[34px] p-7 sm:p-10"><div class="mx-auto max-w-lg text-center"><div class="mb-4 inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-4 py-2 text-[9px] font-black tracking-[.2em] text-amber-800"><span class="h-1.5 w-1.5 rounded-full bg-[#b58a3a]"></span>HOMEOWNER WORKSPACE</div><h1 id="authTitle" class="auth-title text-4xl font-black tracking-[-.05em] text-slate-950">Create homeowner account</h1><p id="authDescription" class="auth-copy mx-auto mt-4 max-w-md text-sm leading-6 text-slate-500">Enter your name to create your home project workspace and continue planning your build or renovation.</p></div><div class="mt-7 grid grid-cols-2 rounded-2xl bg-slate-100 p-1"><button id="signInTab" type="button" class="rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-500">Sign in</button><button id="signUpTab" type="button" class="rounded-xl bg-white px-4 py-2.5 text-sm font-semibold shadow-sm">Sign up</button></div><form id="homeownerAuth" class="mt-6 space-y-4"><label id="homeownerIdField" class="block hidden"><span class="mb-2 block text-sm font-semibold">Homeowner ID</span><input id="homeownerIdInput" autocomplete="username" placeholder="e.g. HME-20260909-A7K2" class="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 outline-none transition focus:border-[#b58a3a] focus:ring-2 focus:ring-amber-100"></label><label id="homeownerNameField" class="block"><span class="mb-2 block text-sm font-semibold">Your name</span><input id="homeownerNameInput" placeholder="Your name" autocomplete="name" class="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 outline-none transition focus:border-[#b58a3a] focus:ring-2 focus:ring-amber-100"></label><button id="authButton" class="dark-btn w-full rounded-2xl px-5 py-3.5 text-sm font-bold text-white transition">Create workspace</button><p id="authGeneratedId" class="hidden rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-slate-700"></p><p id="authError" class="hidden rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-700"></p></form><p class="mt-5 text-center text-xs leading-5 text-slate-400">Your homeowner workspace is stored locally on this device. No password is used in this prototype.</p></section>
+<section id="portal" class="hidden"><div class="portal-head mx-auto max-w-3xl text-center"><div class="mb-4 inline-flex items-center rounded-full border border-white/15 bg-white/10 px-4 py-2 text-[9px] font-black tracking-[.2em] text-white/75 shadow-sm">HOMEOWNER WORKSPACE</div><h1 class="hero-title text-4xl font-black tracking-[-.05em] text-white sm:text-5xl lg:text-6xl">What are you planning?</h1><p id="welcome" class="hero-copy mx-auto mt-4 max-w-2xl text-sm leading-6 text-white/70 sm:text-base sm:leading-7"></p><button id="logout" type="button" class="back-btn mt-4 rounded-xl px-5 py-2.5 text-sm font-semibold text-white transition">Log out</button></div><div class="project-grid mx-auto mt-8 grid max-w-4xl gap-5 md:grid-cols-2 lg:mt-10"><article class="project-card rounded-[28px] p-6 text-slate-900 sm:p-7"><div class="flex items-start justify-between gap-4"><div class="icon gold flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl text-2xl text-white shadow-lg">⌂</div><span class="rounded-full bg-amber-50 px-3 py-1.5 text-[9px] font-black tracking-[.16em] text-amber-800">NEW BUILD</span></div><div class="mt-5"><h2 class="text-2xl font-black tracking-[-.025em] text-slate-950">Build a New House</h2><p class="mt-3 text-sm leading-6 text-slate-500">Start with your basic project information and get an estimated construction cost for your new home.</p></div><div class="mt-5 flex flex-wrap gap-2"><span class="rounded-full bg-slate-100 px-3 py-1.5 text-[10px] font-semibold text-slate-500">Cost Estimate</span><span class="rounded-full bg-slate-100 px-3 py-1.5 text-[10px] font-semibold text-slate-500">Quotation</span></div><a href="buildplanner.html?audience=homeowner" class="action dark-btn mt-6 flex w-full items-center justify-center rounded-2xl px-5 py-3.5 text-sm font-bold text-white transition">Start New House Estimate <span class="ml-2 text-base">→</span></a></article><article class="project-card rounded-[28px] p-6 text-slate-900 sm:p-7"><div class="flex items-start justify-between gap-4"><div class="icon flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-slate-900 text-2xl text-white shadow-lg">⌘</div><span class="rounded-full bg-slate-100 px-3 py-1.5 text-[9px] font-black tracking-[.16em] text-slate-600">RENOVATION</span></div><div class="mt-5"><h2 class="text-2xl font-black tracking-[-.025em] text-slate-950">Renovate Existing House</h2><p class="mt-3 text-sm leading-6 text-slate-500">Select the renovation works you are planning and estimate the cost before moving forward.</p></div><div class="mt-5 flex flex-wrap gap-2"><span class="rounded-full bg-slate-100 px-3 py-1.5 text-[10px] font-semibold text-slate-500">Cost Estimate</span><span class="rounded-full bg-slate-100 px-3 py-1.5 text-[10px] font-semibold text-slate-500">Quotation</span></div><a href="renovationplanner.html?audience=homeowner" class="action dark-btn mt-6 flex w-full items-center justify-center rounded-2xl px-5 py-3.5 text-sm font-bold text-white transition">Start Renovation Estimate <span class="ml-2 text-base">→</span></a></article></div><div class="portal-note mx-auto mt-6 max-w-4xl rounded-2xl border border-white/10 bg-black/15 px-4 py-3 text-center text-[10px] leading-5 text-white/55 sm:px-5 sm:text-xs">Your estimate stays focused on planning first — review your project cost before generating a quotation.</div></section>
+</main>
+<footer class="site-footer border-t border-white/10 bg-slate-950/25 px-5 py-5 text-center text-[9px] font-semibold tracking-[.15em] text-white/45 backdrop-blur-xl sm:px-6">TERAJU CIPTABINA RESOURCES · CONSTRUCTION COSTING &amp; QUOTATION</footer>
+</div>
+<script>(()=>{const K='teraju.homeowner.local.v1';let mode='signup';const active=()=>localStorage.getItem(K+'.activeHomeownerId');const profile=id=>{try{return JSON.parse(localStorage.getItem(K+'.profile.'+encodeURIComponent(id))||'null')}catch(e){return null}};const showError=msg=>{const el=document.getElementById('authError');el.textContent=msg;el.classList.remove('hidden')};const clearError=()=>document.getElementById('authError').classList.add('hidden');const makeId=()=>{let id;do{id='HME-'+new Date().toISOString().slice(0,10).replace(/-/g,'')+'-'+Math.random().toString(36).slice(2,6).toUpperCase()}while(profile(id));return id};const setMode=m=>{mode=m;clearError();document.getElementById('authGeneratedId').classList.add('hidden');const signup=m==='signup';document.getElementById('authTitle').textContent=signup?'Create homeowner account':'Welcome back';document.getElementById('authDescription').textContent=signup?'Enter your name to create your home project workspace and continue planning your build or renovation.':'Enter the Homeowner ID that was generated for you during Sign Up.';document.getElementById('homeownerIdField').classList.toggle('hidden',signup);document.getElementById('homeownerIdInput').required=!signup;document.getElementById('homeownerNameField').classList.toggle('hidden',!signup);document.getElementById('homeownerNameInput').required=signup;document.getElementById('authButton').textContent=signup?'Create workspace':'Sign in';document.getElementById('signInTab').className=signup?'rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-500':'rounded-xl bg-white px-4 py-2.5 text-sm font-semibold shadow-sm';document.getElementById('signUpTab').className=signup?'rounded-xl bg-white px-4 py-2.5 text-sm font-semibold shadow-sm':'rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-500')};const show=id=>{const p=profile(id);if(!p)return;localStorage.setItem(K+'.activeHomeownerId',id);document.getElementById('authPanel').classList.add('hidden');document.getElementById('portal').classList.remove('hidden');document.getElementById('welcome').textContent=`Welcome, ${p.name}. Your home project workspace is ready.`};document.getElementById('signInTab').addEventListener('click',()=>setMode('signin'));document.getElementById('signUpTab').addEventListener('click',()=>setMode('signup'));document.getElementById('homeownerAuth').addEventListener('submit',e=>{e.preventDefault();clearError();if(mode==='signup'){const name=document.getElementById('homeownerNameInput').value.trim();if(!name){showError('Please enter your name.');return}const id=makeId();localStorage.setItem(K+'.profile.'+encodeURIComponent(id),JSON.stringify({homeownerId:id,name,createdAt:new Date().toISOString()}));const out=document.getElementById('authGeneratedId');out.innerHTML=`<strong>Your Homeowner ID:</strong><br><span class="mt-1 inline-block text-lg font-bold tracking-wide text-slate-950">${id}</span><br><span class="text-xs text-slate-500">Keep this ID. You will use it to sign in next time.</span>`;out.classList.remove('hidden');show(id);return}const id=document.getElementById('homeownerIdInput').value.trim();if(!id){showError('Please enter your Homeowner ID.');return}if(!profile(id)){showError('Homeowner ID not found on this device. Please Sign up first.');return}show(id)});document.getElementById('logout').addEventListener('click',()=>{localStorage.removeItem(K+'.activeHomeownerId');location.reload()});const id=active();if(id&&profile(id))show(id);else setMode('signup')})();</script>
 </body>
 </html>
