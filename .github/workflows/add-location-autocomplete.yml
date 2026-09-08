@@ -13,35 +13,28 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Add planner helper scripts
+      - name: Inspect quotation layout
         run: |
           python - <<'PY'
           from pathlib import Path
-          location_files=['quotation/renovationplanner.html','quotation/buildplanner.html']
-          quantity_files=['quotation/renovationplanner.html']
-          location_tag='<script src="location-autocomplete.js"></script>'
-          quantity_tag='<script src="quotation-quantity-fix.js?v=20260907"></script>'
-          for name in location_files:
-              p=Path(name)
-              s=p.read_text(encoding='utf-8')
-              if location_tag not in s:
-                  s=s.replace('</body>', location_tag+'\n</body>',1)
-                  p.write_text(s,encoding='utf-8')
-          for name in quantity_files:
-              p=Path(name)
-              s=p.read_text(encoding='utf-8')
-              if quantity_tag not in s:
-                  s=s.replace('</body>', quantity_tag+'\n</body>',1)
-                  p.write_text(s,encoding='utf-8')
+          for name in ['quotation/buildplanner.html','quotation/renovationplanner.html']:
+              s=Path(name).read_text(encoding='utf-8')
+              print('\n===== '+name+' =====')
+              marker='/* Mobile quotation cards — single clean implementation */'
+              i=s.find(marker)
+              print('mobile marker index:', i)
+              if i>=0:
+                  print(s[i:i+9000])
+              for key in ['detailed-quotation-table','function renderEstimate','function buildDetailed','function generateDetailed']:
+                  j=s.find(key)
+                  print('\nKEY',key,'index',j)
+                  if j>=0: print(s[max(0,j-1800):j+5000])
           PY
-      - name: Commit planner updates
+      - name: Commit inspection workflow only
         run: |
           git config user.name 'Teraju Ciptabina Bot'
           git config user.email 'actions@users.noreply.github.com'
-          git add quotation/renovationplanner.html quotation/buildplanner.html
-          if git diff --cached --quiet; then
-            echo 'No planner changes needed.'
-            exit 0
-          fi
-          git commit -m 'Add quotation quantity rounding [location-autocomplete]'
+          git status --short
+          git add .github/workflows/add-location-autocomplete.yml
+          git commit -m 'Inspect quotation mobile layout [location-autocomplete]'
           git push
