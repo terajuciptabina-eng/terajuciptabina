@@ -407,7 +407,7 @@ function renderEstimate(items,rooms,total,roomsArea,declared){
   <td class="py-3 px-2"><input type="number" min="0" step="1" value="${normalizeQuantity(i.qty)}" class="w-24 border rounded-lg px-2 py-2 text-right contractor-editable" onchange="editItemQuantity('${i.id}',this.value)"><div class="homeowner-locked text-right py-2">${formatQty(i.qty)}</div></td>
   <td class="py-3 px-2"><input type="number" min="0" step="0.01" value="${normalizeRate(i.rate).toFixed(2)}" class="w-28 border rounded-lg px-2 py-2 text-right contractor-editable" onchange="editItemRate('${i.id}',this.value)"><div class="homeowner-locked text-right py-2">${money(i.rate,2)}</div></td>
   <td class="py-3 px-2 text-right font-medium">${money(i.amount,2)}</td>
-  <td class="py-3 px-2 contractor-only"><button type="button" onclick="excludeItem('${i.id}')" class="text-red-600 border border-red-200 px-3 py-2 rounded-lg text-xs">Delete</button></td>
+  <td class="py-3 px-2"><button type="button" onclick="excludeItem('${i.id}')" class="text-red-600 border border-red-200 px-3 py-2 rounded-lg text-xs">Delete</button></td>
  </tr>`;
 
  const heading=(title,target,add=true)=>`<tr class="quotation-section-row"><td colspan="6" class="py-3 px-2" data-manual-anchor="${escapeHtml(target)}"><div class="flex items-center justify-between gap-3"><span>${escapeHtml(title)}</span>${add?`<button type="button" class="contractor-only border px-3 py-1.5 rounded-lg text-xs bg-white" onclick="addManualItemPrompt('${target}')">+ Add Item</button>`:''}</div></td></tr>`;
