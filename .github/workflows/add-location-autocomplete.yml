@@ -13,62 +13,35 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Normalize mobile quotation to desktop table
+      - name: Add planner helper scripts
         run: |
           python - <<'PY'
           from pathlib import Path
-
-          replacement = '''/* Mobile quotation — same table structure as desktop */
-          @media (max-width: 767px) {
-            #estimateContent,
-            #estimateContent > .overflow-x-auto {
-              width:100% !important;
-              max-width:100% !important;
-              overflow-x:auto !important;
-              overflow-y:visible !important;
-              -webkit-overflow-scrolling:touch !important;
-            }
-            #estimateContent table {
-              width:100% !important;
-              min-width:760px !important;
-              table-layout:fixed !important;
-              border-collapse:collapse !important;
-            }
-            #estimateContent table thead { display:table-header-group !important; }
-            #estimateContent table tbody,
-            #estimateContent table tfoot { display:table-row-group !important; }
-            #estimateContent table tr { display:table-row !important; }
-            #estimateContent table th,
-            #estimateContent table td { display:table-cell !important; }
-          }'''
-
-          for name in ['quotation/buildplanner.html','quotation/renovationplanner.html']:
+          location_files=['quotation/renovationplanner.html','quotation/buildplanner.html']
+          quantity_files=['quotation/renovationplanner.html']
+          location_tag='<script src="location-autocomplete.js"></script>'
+          quantity_tag='<script src="quotation-quantity-fix.js?v=20260907"></script>'
+          for name in location_files:
               p=Path(name)
               s=p.read_text(encoding='utf-8')
-              marker='/* Mobile quotation cards — single clean implementation */'
-              i=s.find(marker)
-              if i < 0:
-                  raise RuntimeError(f'{name}: mobile quotation block not found')
-              media=s.find('@media', i)
-              brace=s.find('{', media)
-              depth=0
-              end=None
-              for pos in range(brace, len(s)):
-                  if s[pos]=='{': depth += 1
-                  elif s[pos]=='}':
-                      depth -= 1
-                      if depth==0:
-                          end=pos+1
-                          break
-              if end is None:
-                  raise RuntimeError(f'{name}: mobile quotation block end not found')
-              s=s[:i]+replacement+s[end:]
-              p.write_text(s,encoding='utf-8')
+              if location_tag not in s:
+                  s=s.replace('</body>', location_tag+'\n</body>',1)
+                  p.write_text(s,encoding='utf-8')
+          for name in quantity_files:
+              p=Path(name)
+              s=p.read_text(encoding='utf-8')
+              if quantity_tag not in s:
+                  s=s.replace('</body>', quantity_tag+'\n</body>',1)
+                  p.write_text(s,encoding='utf-8')
           PY
       - name: Commit planner updates
         run: |
           git config user.name 'Teraju Ciptabina Bot'
           git config user.email 'actions@users.noreply.github.com'
-          git add quotation/buildplanner.html quotation/renovationplanner.html
-          git commit -m 'Normalize mobile quotation to desktop table [location-autocomplete]'
+          git add quotation/renovationplanner.html quotation/buildplanner.html
+          if git diff --cached --quiet; then
+            echo 'No planner changes needed.'
+            exit 0
+          fi
+          git commit -m 'Add quotation quantity rounding [location-autocomplete]'
           git push
