@@ -7,7 +7,7 @@
   <title>Build Planner | Teraju Ciptabina</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    *{box-sizing:border-box}html,body{max-width:100%;overflow-x:hidden}body{font-family:Arial,Helvetica,sans-serif;-webkit-text-size-adjust:100%;text-rendering:optimizeLegibility}button,input,select,textarea{font:inherit}button,input,select{min-height:44px}textarea{min-height:88px}button,a,input,select,textarea{-webkit-tap-highlight-color:transparent}button{touch-action:manipulation}input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}input[type=number]{-moz-appearance:textfield;appearance:textfield}.homeowner-hidden{display:none!important}.homeowner-summary-card{border:1px solid #e5e7eb;border-radius:16px;background:#f9fafb;padding:20px}.homeowner-lock{border:1px dashed #d1d5db;border-radius:16px;background:#fafafa;padding:22px}.homeowner-lock .lock-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:#111827;color:#fff;font-size:20px;margin:0 auto 12px}.detailed-quotation-table,.simple-quotation-table{width:100%;table-layout:fixed}.payment-modal-backdrop{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(17,24,39,.62);backdrop-filter:blur(4px)}.payment-modal-backdrop.show,.payment-modal-backdrop.open{display:flex}.payment-modal{width:min(100%,520px);max-height:min(90vh,760px);overflow-y:auto;background:#fff;border-radius:22px;box-shadow:0 25px 70px rgba(0,0,0,.25)}.payment-modal input{width:100%;border:1px solid #d1d5db;border-radius:10px;padding:12px 14px;outline:none}.payment-modal input:focus{border-color:#111827;box-shadow:0 0 0 3px rgba(17,24,39,.08)}.payment-error{display:none}.payment-error.show{display:block}@media(max-width:767px){main{padding:16px!important}main>section{padding:16px!important;border-radius:16px!important}.room-card{padding:14px!important;overflow:hidden}.room-card>div:first-child{grid-template-columns:1fr!important}.room-card .no-print.flex{display:grid!important;grid-template-columns:1fr 1fr;gap:8px;width:100%}.room-card .no-print.flex button{width:100%}.room-card .no-print.flex button:last-child{grid-column:1/-1}#estimateContent{overflow-x:auto}#estimateContent table,#quotationContent table{min-width:680px}#quotationDocument{padding:16px!important}#quotationPrintActions button{width:100%}}@media print {
+    *{box-sizing:border-box}html,body{max-width:100%;overflow-x:hidden}body{font-family:Arial,Helvetica,sans-serif;-webkit-text-size-adjust:100%;text-rendering:optimizeLegibility}button,input,select,textarea{font:inherit}button,input,select{min-height:44px}textarea{min-height:88px}button,a,input,select,textarea{-webkit-tap-highlight-color:transparent}button{touch-action:manipulation}input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}input[type=number]{-moz-appearance:textfield;appearance:textfield}.homeowner-hidden{display:none!important}.homeowner-summary-card{border:1px solid #e5e7eb;border-radius:16px;background:#f9fafb;padding:20px}.homeowner-lock{border:1px dashed #d1d5db;border-radius:16px;background:#fafafa;padding:22px}.homeowner-lock .lock-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:#111827;color:#fff;font-size:20px;margin:0 auto 12px}.detailed-quotation-table,.simple-quotation-table{width:100%;table-layout:fixed}.payment-modal-backdrop{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(17,24,39,.62);backdrop-filter:blur(4px)}.payment-modal-backdrop.show,.payment-modal-backdrop.open{display:flex}.payment-modal{width:min(100%,520px);max-height:min(90vh,760px);overflow-y:auto;background:#fff;border-radius:22px;box-shadow:0 25px 70px rgba(0,0,0,.25)}.payment-modal input{width:100%;border:1px solid #d1d5db;border-radius:10px;padding:12px 14px;outline:none}.payment-modal input:focus{border-color:#111827;box-shadow:0 0 0 3px rgba(17,24,39,.08)}.payment-error{display:none}.payment-error.show{display:block}@media(max-width:767px){main{padding:16px!important}main>section{padding:16px!important;border-radius:16px!important}.room-card{padding:14px!important;overflow:hidden}.room-card>div:first-child{grid-template-columns:1fr!important}.room-card .no-print.flex{display:grid!important;grid-template-columns:1fr 1fr;gap:8px;width:100%}.room-card .no-print.flex button{width:100%}.room-card .no-print.flex button:last-child{grid-column:1/-1}#estimateContent{overflow:visible}#quotationDocument{padding:16px!important}#quotationPrintActions button{width:100%}}@media print {
   @page { size: A4 portrait; margin: 12mm; }
 
   html, body {
@@ -92,7 +92,6 @@ body.contractor-mode .homeowner-locked{display:none!important}
 .detailed-quotation-table td,.detailed-quotation-table th{vertical-align:top}
 @media(max-width:767px){
  #rateScheduleContent table{min-width:560px!important}
- #estimateContent .detailed-quotation-table{min-width:760px!important}
 }
 
     /* Detailed quotation access gate */
@@ -172,24 +171,6 @@ body.contractor-mode .homeowner-locked{display:none!important}
       .quotation-type-card{min-height:0;padding:16px}
     }
 
-</style>
-<style id="homeowner-mobile-description-fix">
-@media (max-width: 767px) {
-  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:first-child,
-  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:first-child .homeowner-locked {
-    width:100% !important;
-    max-width:100% !important;
-    min-width:0 !important;
-    white-space:normal !important;
-    overflow-wrap:anywhere !important;
-    word-break:break-word !important;
-    line-height:1.5 !important;
-    overflow:visible !important;
-  }
-  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:first-child .homeowner-locked {
-    display:block !important;
-  }
-}
 </style>
 <style id="mobile-quotation-and-room-fix">
 @media (max-width: 767px) {
