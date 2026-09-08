@@ -13,73 +13,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Apply planner area UX to latest files
+      - name: Fix planner area UX placement from latest files
         run: |
           python - <<'PY'
           from pathlib import Path
+          import re
           files=['quotation/buildplanner.html','quotation/renovationplanner.html']
 
-          def rename_once(s,name,new):
-              marker=f'function {name}('
-              pos=s.find(marker)
-              if pos<0: raise RuntimeError(f'{marker} not found')
-              return s[:pos]+f'function {new}('+s[pos+len(marker):]
-
-          for filename in files:
-              p=Path(filename)
-              s=p.read_text(encoding='utf-8')
-
-              # Existing addRoom remains the implementation; wrapper only changes
-              # the UX for calls made without explicit room data.
-              if 'function addRoomBase(' not in s:
-                  s=rename_once(s,'addRoom','addRoomBase')
-                  anchor=s.find('function getRoomGroups(')
-                  if anchor<0: anchor=s.find('function getAllItems(')
-                  if anchor<0: raise RuntimeError(f'addRoom insertion anchor not found in {filename}')
-                  wrapper="""
-          function addRoom(...args){
-            const blankAreaCall=args.length===0;
-            addRoomBase(...args);
-            if(blankAreaCall){
-              const card=document.querySelector('#roomsContainer .room-card:last-child');
-              const nameInput=card?.querySelector('.room-name');
-              const areaInput=card?.querySelector('.room-area');
-              if(nameInput)nameInput.value='';
-              if(areaInput){areaInput.value='';areaInput.placeholder='e.g. 200';}
-              updateEstimate();
-              if(typeof saveContractorState==='function')saveContractorState();
-            }
-          }
-          """
-                  s=s[:anchor]+wrapper+s[anchor:]
-
-              # Build Planner uses getRoomGroups() as the room source for calculations.
-              if filename.endswith('buildplanner.html') and 'function getRoomGroupsBase(' not in s:
-                  s=rename_once(s,'getRoomGroups','getRoomGroupsBase')
-                  anchor=s.find('function getScaleFactor(')
-                  if anchor<0: anchor=s.find('function getAllItems(')
-                  if anchor<0: raise RuntimeError(f'getRoomGroups insertion anchor not found in {filename}')
-                  wrapper="""
-          function getRoomGroups(){
-            return getRoomGroupsBase().filter(room=>Number(room.area)>0);
-          }
-          """
-                  s=s[:anchor]+wrapper+s[anchor:]
-
-              # Renovation Planner builds quotation items directly from room cards.
-              # Skip zero-area cards before generating any item/quotation data.
-              if filename.endswith('renovationplanner.html'):
-                  old='area = parseFloat(room.querySelector(".room-area")?.value) || 0; typeIndexes[roomType]'
-                  new='area = parseFloat(room.querySelector(".room-area")?.value) || 0; if(area<=0)return; typeIndexes[roomType]'
-                  if old in s and 'if(area<=0)return; typeIndexes[roomType]' not in s:
-                      s=s.replace(old,new,1)
-                  elif 'if(area<=0)return; typeIndexes[roomType]' not in s:
-                      raise RuntimeError('Renovation getAllItems area guard pattern not found')
-
-              # Append the initial-card helper before the FINAL script closing tag,
-              # never the Tailwind script tag in <head>.
-              if 'function ensureInitialAreaCard(' not in s:
-                  helper="""
+          helper="""
           function ensureInitialAreaCard(){
             const container=document.getElementById('roomsContainer');
             if(!container)return;
@@ -89,13 +30,24 @@ jobs:
           ensureInitialAreaCard();
           updateEstimate();
           """
-                  head,tail=s.rsplit('</script>',1)
-                  s=head+helper+'\n</script>'+tail
 
+          for filename in files:
+              p=Path(filename); s=p.read_text(encoding='utf-8')
+
+              # The previous attempt placed the inline helper inside the external
+              # location-autocomplete script tag. Normalize that tag and remove any
+              # copy of the helper before reinserting it in its own inline script.
+              s=re.sub(r'<script src="location-autocomplete\.js">.*?</script>', '<script src="location-autocomplete.js"></script>', s, count=1, flags=re.S)
+              s=s.replace(helper,'',1)
+              marker='<script src="location-autocomplete.js"></script>'
+              if marker not in s:
+                  raise RuntimeError(f'Location script marker not found in {filename}')
+              inline='<script>\n'+helper+'\n</script>\n'
+              s=s.replace(marker,inline+marker,1)
               p.write_text(s,encoding='utf-8')
-              print('Patched',filename)
+              print('Fixed',filename)
           PY
-      - name: Commit planner area UX
+      - name: Commit planner area UX placement fix
         run: |
           git config user.name 'Teraju Ciptabina Bot'
           git config user.email 'actions@users.noreply.github.com'
@@ -104,5 +56,5 @@ jobs:
             echo 'No planner changes needed.'
             exit 0
           fi
-          git commit -m 'Standardize planner area UX [area-ux-final]'
+          git commit -m 'Fix planner area init placement [area-ux-final]'
           git push
