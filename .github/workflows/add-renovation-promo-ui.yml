@@ -17,20 +17,27 @@ jobs:
           ref: main
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Inject promo UI script
+      - name: Surgical mobile subtotal alignment
         shell: bash
         run: |
           python - <<'PY'
           from pathlib import Path
-          path = Path('quotation/renovationplanner.html')
-          text = path.read_text(encoding='utf-8')
-          tag = '<script src="detailed-quotation-promo-ui.js"></script>'
-          if tag not in text:
-              marker = '</body>'
+          import re
+          for name in ['quotation/buildplanner.html','quotation/renovationplanner.html']:
+              path=Path(name)
+              text=path.read_text(encoding='utf-8')
+              marker='/* Mobile quotation'
               if marker not in text:
-                  raise SystemExit('Could not find </body> in renovationplanner.html')
-              text = text.replace(marker, tag + '\n' + marker, 1)
-              path.write_text(text, encoding='utf-8')
+                  raise SystemExit(f'Mobile quotation block not found in {name}')
+              start=text.index(marker)
+              end=text.index('</style>', start)
+              block=text[start:end]
+              replacement='''  #estimateContent table tr:has(td:first-child + td:last-child) td:first-child {\n    text-align:left !important;\n    white-space:nowrap !important;\n    overflow-wrap:normal !important;\n    word-break:normal !important;\n  }\n  #estimateContent table tr:has(td:first-child + td:last-child) td:last-child {\n    text-align:right !important;\n    white-space:nowrap !important;\n    overflow-wrap:normal !important;\n    word-break:normal !important;\n  }\n'''
+              pattern=r'  #estimateContent table tr:has\(td\[colspan\]\) td:first-child \{.*?\n  \}\n  #estimateContent table tr:has\(td\[colspan\]\) td:last-child \{.*?\n  \}\n'
+              if not re.search(pattern, block, flags=re.S):
+                  raise SystemExit(f'Existing subtotal selector not found in {name}')
+              block=re.sub(pattern, replacement, block, count=1, flags=re.S)
+              path.write_text(text[:start]+block+text[end:],encoding='utf-8')
           PY
 
       - name: Commit changes
@@ -38,7 +45,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add quotation/renovationplanner.html
+          git add quotation/buildplanner.html quotation/renovationplanner.html
           if git diff --cached --quiet; then
             echo "No changes needed."
             exit 0
