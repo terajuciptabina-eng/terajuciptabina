@@ -130,201 +130,28 @@ body.contractor-mode .homeowner-locked{display:none!important}
   .quotation-type-card{min-height:0;padding:16px}
 }
 
-/* Mobile quotation cards — single clean implementation */
+/* Mobile quotation — same table structure as desktop */
 @media (max-width: 767px) {
   #estimateContent,
-  #estimateContent > .overflow-x-auto,
-  #estimateContent > div,
-  #estimateContent table,
-  #estimateContent table tbody {
+  #estimateContent > .overflow-x-auto {
     width:100% !important;
-    min-width:0 !important;
     max-width:100% !important;
-    overflow:visible !important;
+    overflow-x:auto !important;
+    overflow-y:visible !important;
+    -webkit-overflow-scrolling:touch !important;
   }
   #estimateContent table {
-    display:block !important;
-    table-layout:auto !important;
-    border-collapse:separate !important;
-    border-spacing:0 12px !important;
-  }
-  #estimateContent table thead { display:none !important; }
-  #estimateContent table tbody { display:block !important; }
-
-  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) {
-    display:grid !important;
-    grid-template-columns:repeat(3,minmax(0,1fr)) !important;
-    gap:0 10px !important;
     width:100% !important;
-    min-width:0 !important;
-    max-width:100% !important;
-    margin:0 0 12px !important;
-    padding:14px !important;
-    border:1px solid #e5e7eb !important;
-    border-radius:16px !important;
-    background:#fff !important;
-    box-shadow:0 4px 16px rgba(15,23,42,.05) !important;
-    overflow:hidden !important;
+    min-width:760px !important;
+    table-layout:fixed !important;
+    border-collapse:collapse !important;
   }
-
-  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td {
-    display:block !important;
-    width:auto !important;
-    min-width:0 !important;
-    max-width:none !important;
-    box-sizing:border-box !important;
-    padding:6px 2px !important;
-    overflow:visible !important;
-    min-height:0 !important;
-  }
-
-  /* Description */
-  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(1) {
-    grid-column:1 / -1 !important;
-    width:100% !important;
-    padding:0 0 12px !important;
-  }
-  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(1) textarea,
-  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(1) .homeowner-locked {
-    display:block !important;
-    width:100% !important;
-    min-width:0 !important;
-    max-width:100% !important;
-    box-sizing:border-box !important;
-    white-space:pre-wrap !important;
-    overflow-wrap:anywhere !important;
-    word-break:break-word !important;
-    line-height:1.5 !important;
-    margin:0 !important;
-  }
-  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(1) textarea {
-    min-height:88px !important;
-    height:auto !important;
-    resize:vertical !important;
-  }
-
-  /* Unit is desktop-only */
-  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(2) {
-    display:none !important;
-  }
-
-  /* Quantity / Rate / Amount — always one aligned 3-column row */
-  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(3) {
-    grid-column:1 !important;
-    width:100% !important;
-    text-align:left !important;
-  }
-  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(4) {
-    grid-column:2 !important;
-    width:100% !important;
-    text-align:left !important;
-  }
-  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(5) {
-    grid-column:3 !important;
-    width:100% !important;
-    text-align:left !important;
-    font-weight:700 !important;
-  }
-  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(3)::before { content:'Quantity'; }
-  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(4)::before { content:'Rate (RM)'; }
-  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(5)::before { content:'Amount (RM)'; }
-  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(3)::before,
-  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(4)::before,
-  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(5)::before {
-    display:block;
-    margin:0 0 5px;
-    font-size:11px;
-    line-height:1.2;
-    font-weight:700;
-    text-transform:uppercase;
-    letter-spacing:.06em;
-    color:#9ca3af;
-  }
-  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(3) input,
-  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(4) input,
-  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(3) .homeowner-locked,
-  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(4) .homeowner-locked {
-    width:100% !important;
-    min-width:0 !important;
-    max-width:100% !important;
-    min-height:52px !important;
-    box-sizing:border-box !important;
-    border:1px solid #e5e7eb !important;
-    border-radius:12px !important;
-    padding:12px 10px !important;
-    background:#fff !important;
-    display:flex !important;
-    align-items:center !important;
-  }
-  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(5) {
-    width:100% !important;
-    min-width:0 !important;
-    max-width:100% !important;
-    min-height:52px !important;
-    box-sizing:border-box !important;
-    border:1px solid #e5e7eb !important;
-    border-radius:12px !important;
-    padding:12px 10px !important;
-    background:#f8fafc !important;
-    display:block !important;
-    text-align:right !important;
-  }
-  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(3) input,
-  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(4) input {
-    text-align:right !important;
-  }
-  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(3) .homeowner-locked,
-  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(4) .homeowner-locked,
-  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(5) {
-    justify-content:flex-end !important;
-    color:#1f2937 !important;
-    background:#f8fafc !important;
-  }
-
-  /* Homeowner sees one read-only value; contractor sees one editable value. */
-  body:not(.contractor-mode) #estimateContent table tbody td:nth-child(3) input,
-  body:not(.contractor-mode) #estimateContent table tbody td:nth-child(4) input { display:none !important; }
-  body.contractor-mode #estimateContent table tbody td:nth-child(3) .homeowner-locked,
-  body.contractor-mode #estimateContent table tbody td:nth-child(4) .homeowner-locked { display:none !important; }
-
-  /* Delete */
-  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(6) {
-    grid-column:1 / -1 !important;
-    width:100% !important;
-    margin-top:10px !important;
-    padding:12px 0 0 !important;
-    border-top:1px solid #f1f5f9 !important;
-    text-align:left !important;
-  }
-  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(6) button {
-    width:auto !important;
-    min-width:120px !important;
-  }
-
-  #estimateContent table tbody tr.quotation-section-row,
-  #estimateContent table tbody tr.quotation-subsection-row,
-  #estimateContent table tbody tr.bg-gray-100 {
-    display:block !important;
-    width:100% !important;
-    min-width:0 !important;
-    max-width:100% !important;
-    padding:12px !important;
-    margin:0 0 8px !important;
-  }
-  #estimateContent table tbody tr.quotation-section-row td,
-  #estimateContent table tbody tr.quotation-subsection-row td,
-  #estimateContent table tbody tr.bg-gray-100 td {
-    display:block !important;
-    width:100% !important;
-    min-width:0 !important;
-    max-width:100% !important;
-  }
-  #estimateContent table tfoot tr { display:block !important; width:100% !important; min-width:0 !important; }
-  #estimateContent table tfoot td { display:inline-block !important; width:auto !important; min-width:0 !important; padding:6px 4px !important; }
-
-  /* Homeowner: description stays display-only; contractor keeps edit control. */
-  body:not(.contractor-mode) #estimateContent table tbody td:nth-child(1) textarea { display:none !important; }
-  body.contractor-mode #estimateContent table tbody td:nth-child(1) .homeowner-locked { display:none !important; }
+  #estimateContent table thead { display:table-header-group !important; }
+  #estimateContent table tbody,
+  #estimateContent table tfoot { display:table-row-group !important; }
+  #estimateContent table tr { display:table-row !important; }
+  #estimateContent table th,
+  #estimateContent table td { display:table-cell !important; }
 }
 
 </style>
