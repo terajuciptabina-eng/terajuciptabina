@@ -34,27 +34,6 @@ jobs:
                   s=s.replace('</body>', quantity_tag+'\n</body>',1)
                   p.write_text(s,encoding='utf-8')
           PY
-      - name: Patch existing mobile quotation CSS
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-          for name in ['quotation/buildplanner.html','quotation/renovationplanner.html']:
-              p=Path(name)
-              s=p.read_text(encoding='utf-8')
-              marker='/* Mobile quotation — same table structure as desktop, responsive shrink */'
-              if marker not in s:
-                  raise SystemExit(f'Mobile CSS marker not found in {name}; refusing to change file.')
-              start=s.index(marker)
-              end=s.index('</style>', start)
-              block=s[start:end]
-              block=block.replace('font-size:10px !important;', 'font-size:9px !important;', 1)
-              block=block.replace('padding:6px 3px !important;', 'padding:5px 2px !important;', 1)
-              block=block.replace('padding:5px 3px !important;', 'padding:4px 2px !important;', 1)
-              block=block.replace('font-size:10px !important;\n              box-sizing:border-box', 'font-size:9px !important;\n              box-sizing:border-box', 1)
-              block=block.replace('font-size:9px !important;\n              line-height:1.1', 'font-size:8px !important;\n              line-height:1.1', 1)
-              s=s[:start]+block+s[end:]
-              p.write_text(s,encoding='utf-8')
-          PY
       - name: Commit planner updates
         run: |
           git config user.name 'Teraju Ciptabina Bot'
@@ -64,5 +43,5 @@ jobs:
             echo 'No planner changes needed.'
             exit 0
           fi
-          git commit -m 'Tighten mobile quotation font [location-autocomplete]'
+          git commit -m 'Add quotation quantity rounding [location-autocomplete]'
           git push
