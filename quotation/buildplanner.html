@@ -130,19 +130,19 @@ body.contractor-mode .homeowner-locked{display:none!important}
   .quotation-type-card{min-height:0;padding:16px}
 }
 
-/* Mobile quotation — same table structure as desktop */
+/* Mobile quotation — same table structure as desktop, scaled to screen */
 @media (max-width: 767px) {
   #estimateContent,
   #estimateContent > .overflow-x-auto {
     width:100% !important;
     max-width:100% !important;
-    overflow-x:auto !important;
+    overflow-x:hidden !important;
     overflow-y:visible !important;
-    -webkit-overflow-scrolling:touch !important;
   }
   #estimateContent table {
     width:100% !important;
-    min-width:760px !important;
+    min-width:0 !important;
+    max-width:100% !important;
     table-layout:fixed !important;
     border-collapse:collapse !important;
   }
@@ -151,8 +151,51 @@ body.contractor-mode .homeowner-locked{display:none!important}
   #estimateContent table tfoot { display:table-row-group !important; }
   #estimateContent table tr { display:table-row !important; }
   #estimateContent table th,
-  #estimateContent table td { display:table-cell !important; }
+  #estimateContent table td {
+    display:table-cell !important;
+    padding:6px 4px !important;
+    font-size:11px !important;
+    line-height:1.35 !important;
+    vertical-align:top !important;
+    overflow-wrap:anywhere !important;
+    word-break:break-word !important;
+  }
+  #estimateContent table input,
+  #estimateContent table select {
+    min-width:0 !important;
+    width:100% !important;
+    max-width:100% !important;
+    min-height:38px !important;
+    padding:5px 4px !important;
+    font-size:11px !important;
+  }
+  #estimateContent table textarea {
+    width:100% !important;
+    min-width:0 !important;
+    max-width:100% !important;
+    min-height:72px !important;
+    padding:6px !important;
+    font-size:11px !important;
+    line-height:1.4 !important;
+    overflow-wrap:anywhere !important;
+    word-break:break-word !important;
+  }
+  #estimateContent table th:nth-child(2),
+  #estimateContent table td:nth-child(2) {
+    font-size:10px !important;
+  }
+  #estimateContent table th:nth-child(3),
+  #estimateContent table td:nth-child(3),
+  #estimateContent table th:nth-child(4),
+  #estimateContent table td:nth-child(4),
+  #estimateContent table th:nth-child(5),
+  #estimateContent table td:nth-child(5),
+  #estimateContent table th:nth-child(6),
+  #estimateContent table td:nth-child(6) {
+    font-size:10px !important;
+  }
 }
+
 
 </style>
 </head>
