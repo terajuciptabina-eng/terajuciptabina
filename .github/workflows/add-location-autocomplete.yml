@@ -23,12 +23,12 @@ jobs:
               p=Path(name)
               s=p.read_text(encoding='utf-8')
 
-              # Existing Delete buttons are intentionally contractor-only.
-              # Make the same existing Delete action visible to homeowners too.
-              s=s.replace('class="contractor-only text-red-600', 'class="text-red-600')
+              # The Delete control itself must be visible to homeowners.
+              s=s.replace('<td class="py-3 px-2 contractor-only"><button type="button" onclick="excludeItem', '<td class="py-3 px-2"><button type="button" onclick="excludeItem')
+              s=s.replace('class="contractor-only text-red-600 text-xs border', 'class="text-red-600 text-xs border')
 
-              # Keep edit permissions contractor-only, but allow the existing
-              # exclusion/delete action to run for homeowners as well.
+              # Editing remains contractor-only; only the existing delete/exclude action
+              # is permitted for homeowners.
               s=s.replace('function excludeItem(id){if(!IS_CONTRACTOR)return;', 'function excludeItem(id){if(!IS_CONTRACTOR&&!isHomeowner())return;')
               s=s.replace('function excludeItem(itemId) {\n  if (!IS_CONTRACTOR) return;', 'function excludeItem(itemId) {\n  if (!IS_CONTRACTOR && !isHomeowner()) return;')
 
@@ -47,4 +47,4 @@ jobs:
           git commit -m 'Allow homeowners to delete quotation items [homeowner-delete]'
           git push
 
-# Triggered once to apply the permission patch from the latest repository state.
+# Temporary trigger/refinement for the existing planner files only.
