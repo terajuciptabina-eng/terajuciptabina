@@ -297,7 +297,30 @@
     overflow-wrap:normal !important;
     word-break:normal !important;
   }
-}</style>
+}/* TERAJU PLANNER UI REFRESH */
+
+@media screen {
+  :root{--tp-ink:#111827;--tp-line:rgba(15,23,42,.10);--tp-shadow:0 18px 55px rgba(15,23,42,.10)}
+  body{background:linear-gradient(180deg,#f8fafc,#eef2f7);color:var(--tp-ink)}
+  header{background:rgba(255,255,255,.84)!important;border-bottom:1px solid var(--tp-line)!important;box-shadow:0 8px 30px rgba(15,23,42,.06)!important;backdrop-filter:blur(18px);position:sticky;top:0;z-index:50}
+  main{max-width:1180px!important;margin:auto!important;padding-top:28px!important;padding-bottom:60px!important}
+  main>section{border:1px solid var(--tp-line)!important;border-radius:24px!important;box-shadow:var(--tp-shadow)!important;background:rgba(255,255,255,.94)!important;backdrop-filter:blur(14px);transition:transform .2s ease,box-shadow .2s ease}
+  main>section:first-child{position:relative;overflow:hidden;min-height:250px;padding:42px!important;border:0!important;background-image:linear-gradient(100deg,rgba(15,23,42,.90),rgba(15,23,42,.56)),'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=2200&q=88'!important;background-size:cover!important;background-position:center!important;color:#fff!important;display:flex;align-items:flex-end}
+  main>section:first-child>*{position:relative;z-index:1}
+  main>section:first-child h2{font-size:clamp(30px,5vw,52px)!important;line-height:1.02!important;letter-spacing:-.035em!important;text-shadow:0 8px 30px rgba(0,0,0,.25)}
+  main>section:first-child p{color:rgba(255,255,255,.84)!important;max-width:700px}
+  .room-card{border:1px solid var(--tp-line)!important;border-radius:20px!important;background:linear-gradient(145deg,#fff,#f8fafc)!important;box-shadow:0 10px 30px rgba(15,23,42,.07)!important;transition:transform .2s ease,box-shadow .2s ease!important}
+  .room-card:hover{transform:translateY(-2px);box-shadow:0 16px 38px rgba(15,23,42,.11)!important}
+  .optional-scope,.contractor-quotation-choice,.quotation-type-card{border-radius:16px!important;transition:transform .2s ease,box-shadow .2s ease!important}
+  .optional-scope:hover,.contractor-quotation-choice:hover,.quotation-type-card:hover{transform:translateY(-1px);box-shadow:0 10px 26px rgba(15,23,42,.08)!important}
+  .quotation-generate-btn,.contractor-generate-btn{border-radius:14px!important;box-shadow:0 10px 24px rgba(15,23,42,.16);transition:transform .18s ease,box-shadow .18s ease!important}
+  .quotation-generate-btn:hover,.contractor-generate-btn:hover{transform:translateY(-1px);box-shadow:0 14px 30px rgba(15,23,42,.21)}
+  #quotationDocument{border-radius:24px!important;box-shadow:0 20px 60px rgba(15,23,42,.12)!important}
+  @media(max-width:767px){main{padding:18px 14px 42px!important}main>section{border-radius:20px!important}main>section:first-child{min-height:270px;padding:28px 20px!important;border-radius:20px!important}.room-card{border-radius:18px!important}}
+  @media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
+}
+
+</style>
 </head>
 
 <body class="bg-gray-100 text-gray-800">
