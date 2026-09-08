@@ -243,8 +243,7 @@ body.contractor-mode .homeowner-locked{display:none!important}
   #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(3) input,
   #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(4) input,
   #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(3) .homeowner-locked,
-  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(4) .homeowner-locked,
-  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(5) {
+  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(4) .homeowner-locked {
     width:100% !important;
     min-width:0 !important;
     max-width:100% !important;
@@ -257,6 +256,19 @@ body.contractor-mode .homeowner-locked{display:none!important}
     display:flex !important;
     align-items:center !important;
   }
+  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(5) {
+    width:100% !important;
+    min-width:0 !important;
+    max-width:100% !important;
+    min-height:52px !important;
+    box-sizing:border-box !important;
+    border:1px solid #e5e7eb !important;
+    border-radius:12px !important;
+    padding:12px 10px !important;
+    background:#f8fafc !important;
+    display:block !important;
+    text-align:right !important;
+  }
   #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(3) input,
   #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(4) input {
     text-align:right !important;
@@ -268,6 +280,12 @@ body.contractor-mode .homeowner-locked{display:none!important}
     color:#1f2937 !important;
     background:#f8fafc !important;
   }
+
+  /* Homeowner sees one read-only value; contractor sees one editable value. */
+  body:not(.contractor-mode) #estimateContent table tbody td:nth-child(3) input,
+  body:not(.contractor-mode) #estimateContent table tbody td:nth-child(4) input { display:none !important; }
+  body.contractor-mode #estimateContent table tbody td:nth-child(3) .homeowner-locked,
+  body.contractor-mode #estimateContent table tbody td:nth-child(4) .homeowner-locked { display:none !important; }
 
   /* Delete */
   #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(6) {
