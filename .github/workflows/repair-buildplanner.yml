@@ -1,6 +1,6 @@
 name: Repair Build Planner source
 
-# Temporary repair workflow: restore the known-good planner source, apply the agreed new-item fields, verify, then remove itself.
+# Temporary repair workflow active for one pass.
 on:
   push:
     branches: [main]
