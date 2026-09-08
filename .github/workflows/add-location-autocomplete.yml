@@ -13,23 +13,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Remove repeated RM prefix from quotation values
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-          import re
-          files=[Path('quotation/buildplanner.html'),Path('quotation/renovationplanner.html')]
-          for p in files:
-              s=p.read_text(encoding='utf-8')
-              original=s
-              # Remove RM only when it is acting as a value prefix.
-              s=re.sub(r'RM\\s+(?=\\$\\{)', '', s)
-              s=re.sub(r'([\"\\\'])RM\\s*([+])', r'\\1\\2', s)
-              s=re.sub(r'\\bRM\\s+(?=\\d[\\d,]*(?:\\.\\d{2})?)', '', s)
-              s=re.sub(r'RM(?:&nbsp;|\\s)+(?=<)', '', s)
-              if s != original:
-                  p.write_text(s,encoding='utf-8')
-          PY
       - name: Add planner helper scripts
         run: |
           python - <<'PY'
@@ -60,5 +43,5 @@ jobs:
             echo 'No planner changes needed.'
             exit 0
           fi
-          git commit -m 'Remove repeated RM from quotation values'
+          git commit -m 'Add quotation quantity rounding [location-autocomplete]'
           git push
