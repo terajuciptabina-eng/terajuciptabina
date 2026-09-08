@@ -173,6 +173,24 @@ body.contractor-mode .homeowner-locked{display:none!important}
     }
 
 </style>
+<style id="homeowner-mobile-description-fix">
+@media (max-width: 767px) {
+  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:first-child,
+  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:first-child .homeowner-locked {
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+    white-space:normal !important;
+    overflow-wrap:anywhere !important;
+    word-break:break-word !important;
+    line-height:1.5 !important;
+    overflow:visible !important;
+  }
+  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:first-child .homeowner-locked {
+    display:block !important;
+  }
+}
+</style>
 </head>
 <body class="bg-gray-100 text-gray-800">
 <header class="bg-white border-b"><div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between"><div class="flex items-center gap-4 min-w-0"><img src="../images/logo.png" alt="Teraju Ciptabina Logo" class="h-12 w-auto flex-shrink-0"><div class="h-12 w-12 rounded-lg bg-gray-900 text-white items-center justify-center font-bold text-lg flex-shrink-0" style="display:none;">T|C</div><div class="min-w-0"><h1 class="font-bold text-lg">TERAJU CIPTABINA</h1><p class="text-xs text-gray-500">Build Planner</p><p id="contractorBadge" class="contractor-only text-xs text-gray-500 mt-1">Contractor Mode</p></div></div></div></header>
