@@ -285,13 +285,13 @@
     overflow-wrap:normal !important;
     word-break:normal !important;
   }
-  #estimateContent table tr:has(td[colspan]) td:first-child {
+  #estimateContent table tr:has(td:first-child + td:last-child) td:first-child {
     text-align:left !important;
     white-space:nowrap !important;
     overflow-wrap:normal !important;
     word-break:normal !important;
   }
-  #estimateContent table tr:has(td[colspan]) td:last-child {
+  #estimateContent table tr:has(td:first-child + td:last-child) td:last-child {
     text-align:right !important;
     white-space:nowrap !important;
     overflow-wrap:normal !important;
