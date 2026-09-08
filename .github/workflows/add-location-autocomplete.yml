@@ -13,38 +13,128 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Apply surgical mobile subtotal fix
+      - name: Add planner helper scripts
         run: |
           python - <<'PY'
           from pathlib import Path
-          import re
-          files=['quotation/buildplanner.html','quotation/renovationplanner.html']
-          pattern=re.compile(r'''  #estimateContent table tr:has\(td:first-child \+ td:last-child\) td:first-child \{.*?  \}\n  #estimateContent table tr:has\(td:first-child \+ td:last-child\) td:last-child \{.*?  \}''', re.S)
-          new='''  #estimateContent table tr.border-b:has(td[colspan="4"]) td:nth-child(5) {
-    text-align:right !important;
-    white-space:nowrap !important;
-    overflow-wrap:normal !important;
-    word-break:normal !important;
-    font-size:8px !important;
-    padding-left:1px !important;
-    padding-right:1px !important;
-  }
-  #estimateContent table tr.border-b:has(td[colspan="4"]) td:nth-child(6) {
-    text-align:right !important;
-    white-space:nowrap !important;
-    overflow-wrap:normal !important;
-    word-break:normal !important;
-    font-size:8px !important;
-    padding-left:1px !important;
-    padding-right:1px !important;
-  }'''
-          for name in files:
+          location_files=['quotation/renovationplanner.html','quotation/buildplanner.html']
+          quantity_files=['quotation/renovationplanner.html']
+          location_tag='<script src="location-autocomplete.js"></script>'
+          quantity_tag='<script src="quotation-quantity-fix.js?v=20260907"></script>'
+          for name in location_files:
               p=Path(name)
               s=p.read_text(encoding='utf-8')
-              s2,n=pattern.subn(new,s,count=1)
-              if n!=1:
-                  raise SystemExit(f'Expected existing mobile subtotal selector not found exactly once in {name}: {n}')
-              p.write_text(s2,encoding='utf-8')
+              if location_tag not in s:
+                  s=s.replace('</body>', location_tag+'\n</body>',1)
+              marker='/* Mobile quotation'
+              if marker not in s:
+                  raise SystemExit(f'Mobile quotation block not found in {name}')
+              start=s.index(marker)
+              end=s.index('</style>', start)
+              new_block='''/* Mobile quotation — same table structure as desktop, responsive shrink */
+@media (max-width: 767px) {
+  #estimateContent,
+  #estimateContent > .overflow-x-auto {
+    width:100% !important;
+    max-width:100% !important;
+    overflow-x:hidden !important;
+    overflow-y:visible !important;
+  }
+  #estimateContent table {
+    width:100% !important;
+    min-width:0 !important;
+    max-width:100% !important;
+    table-layout:fixed !important;
+    border-collapse:collapse !important;
+    font-size:8px !important;
+  }
+  #estimateContent table thead { display:table-header-group !important; }
+  #estimateContent table tbody,
+  #estimateContent table tfoot { display:table-row-group !important; }
+  #estimateContent table tr { display:table-row !important; }
+  #estimateContent table th,
+  #estimateContent table td {
+    display:table-cell !important;
+    padding:5px 2px !important;
+    vertical-align:top !important;
+  }
+  #estimateContent table th:nth-child(1),#estimateContent table td:nth-child(1){width:31% !important}
+  #estimateContent table th:nth-child(2),#estimateContent table td:nth-child(2){width:7% !important}
+  #estimateContent table th:nth-child(3),#estimateContent table td:nth-child(3){width:12% !important}
+  #estimateContent table th:nth-child(4),#estimateContent table td:nth-child(4){width:15% !important}
+  #estimateContent table th:nth-child(5),#estimateContent table td:nth-child(5){width:20% !important}
+  #estimateContent table th:nth-child(6),#estimateContent table td:nth-child(6){width:15% !important}
+  #estimateContent table th,
+  #estimateContent table td { overflow-wrap:normal !important; word-break:normal !important; }
+  #estimateContent table th:first-child,
+  #estimateContent table td:first-child { overflow-wrap:anywhere !important; word-break:break-word !important; }
+  #estimateContent table th:nth-child(n+2),
+  #estimateContent table td:nth-child(n+2) { white-space:nowrap !important; }
+  #estimateContent table td:nth-child(2),
+  #estimateContent table td:nth-child(3),
+  #estimateContent table td:nth-child(4),
+  #estimateContent table td:nth-child(5),
+  #estimateContent table td:nth-child(6) { text-align:center !important; }
+  #estimateContent table input,
+  #estimateContent table select,
+  #estimateContent table textarea {
+    width:100% !important;
+    min-width:0 !important;
+    max-width:100% !important;
+    min-height:30px !important;
+    padding:4px 2px !important;
+    font-size:9px !important;
+    box-sizing:border-box !important;
+  }
+  #estimateContent table textarea { min-height:58px !important; }
+  #estimateContent table td:nth-child(6) button {
+    width:100% !important;
+    min-width:0 !important;
+    min-height:30px !important;
+    padding:3px 1px !important;
+    font-size:8px !important;
+    line-height:1.1 !important;
+    white-space:nowrap !important;
+  }
+  #estimateContent table .homeowner-locked {
+    width:100% !important;
+    min-width:0 !important;
+    max-width:100% !important;
+    white-space:normal !important;
+    overflow-wrap:anywhere !important;
+    word-break:break-word !important;
+  }
+  #estimateContent table .quotation-section-row td,
+  #estimateContent table .quotation-subsection-row td {
+    text-align:left !important;
+    padding:7px 5px !important;
+    font-size:10px !important;
+    white-space:normal !important;
+    overflow-wrap:normal !important;
+    word-break:normal !important;
+  }
+  #estimateContent table tr:has(td:first-child + td:last-child) td:first-child {
+    text-align:left !important;
+    white-space:nowrap !important;
+    overflow-wrap:normal !important;
+    word-break:normal !important;
+  }
+  #estimateContent table tr:has(td:first-child + td:last-child) td:last-child {
+    text-align:right !important;
+    white-space:nowrap !important;
+    overflow-wrap:normal !important;
+    word-break:normal !important;
+  }
+}
+'''
+              s=s[:start]+new_block+s[end:]
+              p.write_text(s,encoding='utf-8')
+          for name in quantity_files:
+              p=Path(name)
+              s=p.read_text(encoding='utf-8')
+              if quantity_tag not in s:
+                  s=s.replace('</body>', quantity_tag+'\n</body>',1)
+              p.write_text(s,encoding='utf-8')
           PY
       - name: Commit planner updates
         run: |
@@ -55,5 +145,5 @@ jobs:
             echo 'No planner changes needed.'
             exit 0
           fi
-          git commit -m 'Fix mobile subtotal alignment [subtotal-fix]'
+          git commit -m 'Restore planner mobile block [location-autocomplete]'
           git push
