@@ -34,6 +34,133 @@ jobs:
                   s=s.replace('</body>', quantity_tag+'\n</body>',1)
                   p.write_text(s,encoding='utf-8')
           PY
+      - name: Patch existing mobile quotation CSS
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          mobile_css = r'''/* Mobile quotation — same table structure as desktop, responsive shrink */
+          @media (max-width: 767px) {
+            #estimateContent,
+            #estimateContent > .overflow-x-auto {
+              width:100% !important;
+              max-width:100% !important;
+              overflow-x:hidden !important;
+              overflow-y:visible !important;
+            }
+            #estimateContent table {
+              width:100% !important;
+              min-width:0 !important;
+              max-width:100% !important;
+              table-layout:fixed !important;
+              border-collapse:collapse !important;
+              font-size:10px !important;
+            }
+            #estimateContent table thead { display:table-header-group !important; }
+            #estimateContent table tbody,
+            #estimateContent table tfoot { display:table-row-group !important; }
+            #estimateContent table tr { display:table-row !important; }
+            #estimateContent table th,
+            #estimateContent table td {
+              display:table-cell !important;
+              padding:6px 3px !important;
+              vertical-align:top !important;
+              overflow-wrap:anywhere !important;
+              word-break:break-word !important;
+            }
+
+            /* Keep the six desktop columns, but give the numeric columns enough room. */
+            #estimateContent table th:nth-child(1),#estimateContent table td:nth-child(1){width:31% !important}
+            #estimateContent table th:nth-child(2),#estimateContent table td:nth-child(2){width:7% !important}
+            #estimateContent table th:nth-child(3),#estimateContent table td:nth-child(3){width:12% !important}
+            #estimateContent table th:nth-child(4),#estimateContent table td:nth-child(4){width:15% !important}
+            #estimateContent table th:nth-child(5),#estimateContent table td:nth-child(5){width:20% !important}
+            #estimateContent table th:nth-child(6),#estimateContent table td:nth-child(6){width:15% !important}
+
+            /* Unit, Quantity, Rate and Amount stay together instead of splitting characters. */
+            #estimateContent table th:nth-child(n+2),
+            #estimateContent table td:nth-child(n+2) {
+              white-space:nowrap !important;
+              overflow-wrap:normal !important;
+              word-break:normal !important;
+            }
+            #estimateContent table th:nth-child(2),#estimateContent table td:nth-child(2),
+            #estimateContent table th:nth-child(3),#estimateContent table td:nth-child(3),
+            #estimateContent table th:nth-child(4),#estimateContent table td:nth-child(4),
+            #estimateContent table th:nth-child(5),#estimateContent table td:nth-child(5),
+            #estimateContent table th:nth-child(6),#estimateContent table td:nth-child(6) {
+              text-align:center !important;
+            }
+
+            #estimateContent table input,
+            #estimateContent table select,
+            #estimateContent table textarea {
+              width:100% !important;
+              min-width:0 !important;
+              max-width:100% !important;
+              min-height:34px !important;
+              padding:5px 3px !important;
+              font-size:10px !important;
+              box-sizing:border-box !important;
+            }
+            #estimateContent table textarea { min-height:64px !important; }
+            #estimateContent table td:nth-child(6) button {
+              width:100% !important;
+              min-width:0 !important;
+              min-height:34px !important;
+              padding:4px 1px !important;
+              font-size:9px !important;
+              line-height:1.1 !important;
+              white-space:normal !important;
+            }
+            #estimateContent table .homeowner-locked {
+              width:100% !important;
+              min-width:0 !important;
+              max-width:100% !important;
+              white-space:normal !important;
+              overflow-wrap:anywhere !important;
+              word-break:break-word !important;
+            }
+            #estimateContent table .quotation-section-row td,
+            #estimateContent table .quotation-subsection-row td {
+              text-align:left !important;
+              padding:8px 6px !important;
+              font-size:11px !important;
+            }
+
+            /* Summary/subtotal rows use the same Amount column as the desktop table. */
+            #estimateContent table tr:has(td[colspan]) td:first-child {
+              text-align:right !important;
+              white-space:nowrap !important;
+              overflow-wrap:normal !important;
+              word-break:normal !important;
+              padding-right:8px !important;
+            }
+            #estimateContent table tr:has(td[colspan]) td:nth-child(5) {
+              text-align:right !important;
+              white-space:nowrap !important;
+              overflow-wrap:normal !important;
+              word-break:normal !important;
+              padding-left:3px !important;
+              padding-right:3px !important;
+              font-size:10px !important;
+            }
+            #estimateContent table tr:has(td[colspan]) td:nth-child(6) {
+              text-align:center !important;
+              white-space:nowrap !important;
+            }
+          }'''
+
+          for name in ['quotation/buildplanner.html','quotation/renovationplanner.html']:
+              p=Path(name)
+              s=p.read_text(encoding='utf-8')
+              marker='/* Mobile quotation — same table structure as desktop, responsive shrink */'
+              if marker not in s:
+                  raise SystemExit(f'Mobile CSS marker not found in {name}; refusing to change file.')
+              s=s[:s.index(marker)] + mobile_css + '\n</style>' + s[s.index('</style>', s.index(marker)) + len('</style>'):]
+              p.write_text(s,encoding='utf-8')
+          PY
       - name: Commit planner updates
         run: |
           git config user.name 'Teraju Ciptabina Bot'
@@ -43,5 +170,5 @@ jobs:
             echo 'No planner changes needed.'
             exit 0
           fi
-          git commit -m 'Add quotation quantity rounding [location-autocomplete]'
+          git commit -m 'Fix mobile quotation table widths [location-autocomplete]'
           git push
