@@ -1574,6 +1574,7 @@ async function renderQuotationPreview(){
   try{
     await loadQuotationCanvas();
     const clone=source.cloneNode(true);
+    clone.classList.remove('quotation-render-source');
     clone.querySelectorAll('.no-print,#quotationPrintActions,#quotationLockOverlay').forEach(el=>el.remove());
     clone.classList.remove('quotation-locked');
     clone.style.paddingBottom='32px';
