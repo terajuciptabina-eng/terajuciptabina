@@ -512,7 +512,7 @@ function renderEstimate(items,rooms,total,roomsArea,declared){
 
  h+=heading('PROJECT / PRELIMINARIES','prelim');
  h+=rows(prelim,'prelim');
- if(prelim.length) h+=`<tr class="border-b"><td colspan="4"></td><td class="py-2 px-2 text-right font-semibold">Subtotal - Preliminaries</td><td class="py-2 px-2 text-right font-semibold">${money(prelim.reduce((s,i)=>s+i.amount,0),2)}</td></tr>`;
+ if(prelim.length) h+=`<tr class="border-b"><td colspan="5" class="py-2 px-2 text-right font-semibold">Subtotal - Preliminaries</td><td class="py-2 px-2 text-right font-semibold">${money(prelim.reduce((s,i)=>s+i.amount,0),2)}</td></tr>`;
 
  h+=heading('STRUCTURAL WORKS','structures',false);
  const groups=[...new Set(structures.map(i=>i.groupKey).filter(Boolean))];
@@ -521,7 +521,7 @@ function renderEstimate(items,rooms,total,roomsArea,declared){
    const title=arr[0]?.groupTitle||key;
    h+=subheading(title,'structures');
    h+=rows(arr,'structures');
-   h+=`<tr class="border-b"><td colspan="4"></td><td class="py-2 px-2 text-right font-semibold">Subtotal - ${escapeHtml(title)}</td><td class="py-2 px-2 text-right font-semibold">${money(arr.reduce((s,i)=>s+i.amount,0),2)}</td></tr>`;
+   h+=`<tr class="border-b"><td colspan="5" class="py-2 px-2 text-right font-semibold">Subtotal - ${escapeHtml(title)}</td><td class="py-2 px-2 text-right font-semibold">${money(arr.reduce((s,i)=>s+i.amount,0),2)}</td></tr>`;
  });
  const ungrouped=structures.filter(i=>!i.groupKey);
  if(ungrouped.length) h+=rows(ungrouped,'structures');
@@ -532,12 +532,12 @@ function renderEstimate(items,rooms,total,roomsArea,declared){
    if(!arr.length)return;
    h+=subheading(`${r.label} (${formatQty(r.area)} sqft)`,`room:${r.roomId}`);
    h+=rows(arr,`room:${r.roomId}`);
-   h+=`<tr class="border-b"><td colspan="4"></td><td class="py-2 px-2 text-right font-semibold">Subtotal - ${escapeHtml(r.label)}</td><td class="py-2 px-2 text-right font-semibold">${money(arr.reduce((s,i)=>s+i.amount,0),2)}</td></tr>`;
+   h+=`<tr class="border-b"><td colspan="5" class="py-2 px-2 text-right font-semibold">Subtotal - ${escapeHtml(r.label)}</td><td class="py-2 px-2 text-right font-semibold">${money(arr.reduce((s,i)=>s+i.amount,0),2)}</td></tr>`;
  });
 
  h+=heading('ELECTRICAL WORKS','electrical');
  h+=rows(electrical,'electrical');
- if(electrical.length) h+=`<tr class="border-b"><td colspan="4"></td><td class="py-2 px-2 text-right font-semibold">Subtotal - Electrical Works</td><td class="py-2 px-2 text-right font-semibold">${money(electrical.reduce((s,i)=>s+i.amount,0),2)}</td></tr>`;
+ if(electrical.length) h+=`<tr class="border-b"><td colspan="5" class="py-2 px-2 text-right font-semibold">Subtotal - Electrical Works</td><td class="py-2 px-2 text-right font-semibold">${money(electrical.reduce((s,i)=>s+i.amount,0),2)}</td></tr>`;
 
  h+='</tbody><tfoot><tr class="border-t-2"><td colspan="4" class="py-4 px-2 text-right font-bold">TOTAL</td><td class="py-4 px-2 text-right font-bold text-lg">'+money(total,2)+'</td><td class="contractor-only"></td></tr></tfoot></table>';
  c.innerHTML=h;
