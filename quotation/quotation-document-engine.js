@@ -7,7 +7,8 @@ const RENDER_WIDTH_PX=794;
 const PX_PER_MM=RENDER_WIDTH_PX/CONTENT_MM.width;
 const CONTENT_HEIGHT_PX=Math.floor(CONTENT_MM.height*PX_PER_MM);
 const PAGE_NUMBER_RESERVE_PX=Math.ceil(8*PX_PER_MM);
-const USABLE_HEIGHT_PX=CONTENT_HEIGHT_PX-PAGE_NUMBER_RESERVE_PX;
+const PAGE_BOTTOM_SAFETY_PX=Math.ceil(8*PX_PER_MM);
+const USABLE_HEIGHT_PX=CONTENT_HEIGHT_PX-PAGE_NUMBER_RESERVE_PX-PAGE_BOTTOM_SAFETY_PX;
 const JPEG_QUALITY=0.94;
 
 function injectStyles(){
@@ -41,7 +42,7 @@ function waitForImages(root){return Promise.all(Array.from(root.querySelectorAll
 
 function createRenderRoot(){
  const root=document.createElement('div');
- root.style.cssText=`width:${RENDER_WIDTH_PX}px;box-sizing:border-box;background:#fff;padding:0;margin:0;overflow:visible;font-family:Arial,Helvetica,sans-serif;`;
+ root.style.cssText=`width:${RENDER_WIDTH_PX}px;box-sizing:border-box;background:#fff;padding:0 0 ${PAGE_BOTTOM_SAFETY_PX}px;margin:0;overflow:visible;font-family:Arial,Helvetica,sans-serif;`;
  return root;
 }
 function isHeadingRow(row){return row.classList.contains('quotation-section-row')||row.classList.contains('quotation-subsection-row');}
@@ -75,8 +76,20 @@ function makePageShell(headerNodes,tableTemplate,includeTableHeader){
   wrap.className=tableTemplate.wrapper.className;
   wrap.style.overflow='visible';wrap.style.width='100%';
   table=tableTemplate.table.cloneNode(false);
+  const colgroup=tableTemplate.colgroup?tableTemplate.colgroup.cloneNode(true):null;
   const thead=tableTemplate.thead?tableTemplate.thead.cloneNode(true):null;
   tbody=document.createElement('tbody');
+  if(colgroup){
+   const widths=tableTemplate.table.classList.contains('simple-quotation-table')
+    ? ['6%','18%','56%','20%']
+    : tableTemplate.table.classList.contains('detailed-quotation-table')
+      ? ['48%','10%','10%','16%','16%']
+      : null;
+   if(widths){
+    Array.from(colgroup.children).forEach((col,i)=>{if(widths[i])col.style.width=widths[i];});
+   }
+   table.appendChild(colgroup);
+  }
   if(thead)table.appendChild(thead);
   table.appendChild(tbody);wrap.appendChild(table);root.appendChild(wrap);
  }
@@ -133,6 +146,7 @@ async function buildPaginatedPages(source){
  const tableWrap=children.find(el=>el.querySelector?.('table'));
  if(!tableWrap)return [working];
  const table=tableWrap.querySelector('table');
+ const colgroup=table?.querySelector('colgroup');
  const thead=table?.querySelector('thead');
  const tbody=table?.querySelector('tbody');
  const tfoot=table?.querySelector('tfoot');
@@ -140,7 +154,7 @@ async function buildPaginatedPages(source){
  const tableIndex=children.indexOf(tableWrap);
  const headerNodes=children.slice(0,tableIndex);
  const footerNodes=children.slice(tableIndex+1);
- const template={wrapper:tableWrap,table,thead,tfoot};
+ const template={wrapper:tableWrap,table,colgroup,thead,tfoot};
  const units=collectPageUnits(tbody);
  const roots=[];
  let page=makePageShell(headerNodes,template,true);
@@ -167,7 +181,6 @@ async function buildPaginatedPages(source){
  if(hasBody(page))pushCurrent();
  else if(!roots.length)roots.push(page.root);
 
- // Footer is handled on a dedicated page when it cannot fit after the quotation table.
  let footerPage=null;
  for(const node of footerNodes){
   if(!footerPage)footerPage=makePageShell(headerNodes,template,false);
@@ -228,6 +241,6 @@ function bindQuotationTypeCards(){
  document.querySelectorAll('.quotation-type-card').forEach(card=>card.addEventListener('click',()=>{const input=card.querySelector('input[name="quotationType"]');if(!input)return;input.checked=true;input.dispatchEvent(new Event('change',{bubbles:true}));}));
  sync();
 }
-function install(){injectStyles();bindQuotationTypeCards();window.renderQuotationPreview=renderQuotationPreview;window.printQuotation=printQuotation;window.TERAJU_QUOTATION_DOCUMENT_ENGINE_VERSION='2026-09-08-page-aware-header-v5';}
+function install(){injectStyles();bindQuotationTypeCards();window.renderQuotationPreview=renderQuotationPreview;window.printQuotation=printQuotation;window.TERAJU_QUOTATION_DOCUMENT_ENGINE_VERSION='2026-09-08-page-aware-header-v6';}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install,{once:true});else install();
 })();
