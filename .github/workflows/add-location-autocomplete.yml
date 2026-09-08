@@ -34,6 +34,27 @@ jobs:
                   s=s.replace('</body>', quantity_tag+'\n</body>',1)
                   p.write_text(s,encoding='utf-8')
           PY
+      - name: Remove repeated RM prefix from quotation values
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          replacements = {
+              'quotation/buildplanner.html': (
+                  'function money(v,d=2){return new Intl.NumberFormat(\'en-MY\',{style:\'currency\',currency:\'MYR\',minimumFractionDigits:2,maximumFractionDigits:2}).format(Math.round((Number(v)||0)*100)/100)}',
+                  'function money(v,d=2){return new Intl.NumberFormat(\'en-MY\',{minimumFractionDigits:d,maximumFractionDigits:d}).format(Math.round((Number(v)||0)*100)/100)}'
+              ),
+              'quotation/renovationplanner.html': (
+                  'function money(value, decimals = 0) {\n  return new Intl.NumberFormat("en-MY", {\n    style: "currency", currency: "MYR",\n    minimumFractionDigits: decimals, maximumFractionDigits: decimals\n  }).format(Number(value) || 0);\n}',
+                  'function money(value, decimals = 0) {\n  return new Intl.NumberFormat("en-MY", {\n    minimumFractionDigits: decimals, maximumFractionDigits: decimals\n  }).format(Number(value) || 0);\n}'
+              )
+          }
+          for name,(old,new) in replacements.items():
+              p=Path(name)
+              s=p.read_text(encoding='utf-8')
+              if old not in s:
+                  raise SystemExit(f'Expected money formatter not found in {name}')
+              p.write_text(s.replace(old,new,1),encoding='utf-8')
+          PY
       - name: Commit planner updates
         run: |
           git config user.name 'Teraju Ciptabina Bot'
@@ -43,5 +64,5 @@ jobs:
             echo 'No planner changes needed.'
             exit 0
           fi
-          git commit -m 'Add quotation quantity rounding [location-autocomplete]'
+          git commit -m 'Remove repeated RM from quotation values [location-autocomplete]'
           git push
