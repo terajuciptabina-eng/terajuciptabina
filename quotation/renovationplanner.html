@@ -280,6 +280,21 @@
   }
 }
 
+
+@media (max-width: 767px) {
+  #estimateContent table tr:has(td[colspan]) td {
+    white-space: nowrap !important;
+    overflow-wrap: normal !important;
+    word-break: normal !important;
+  }
+  #estimateContent table tr:has(td[colspan]) td:first-child {
+    text-align: right !important;
+  }
+  #estimateContent table tr:has(td[colspan]) td:last-child {
+    text-align: right !important;
+    white-space: nowrap !important;
+  }
+}
 </style>
 </head>
 
