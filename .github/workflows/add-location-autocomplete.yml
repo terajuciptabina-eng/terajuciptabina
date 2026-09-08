@@ -9,52 +9,39 @@ permissions:
 
 jobs:
   patch-location-fields:
-    if: "!contains(github.event.head_commit.message, '[area-ux-final]') && !contains(github.event.head_commit.message, '[area-ux-restore]')"
+    if: "!contains(github.event.head_commit.message, '[location-autocomplete]')"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Fix planner area UX placement from latest files
+      - name: Add planner helper scripts
         run: |
           python - <<'PY'
           from pathlib import Path
-          import re
-          files=['quotation/buildplanner.html','quotation/renovationplanner.html']
-
-          helper="""
-          function ensureInitialAreaCard(){
-            const container=document.getElementById('roomsContainer');
-            if(!container)return;
-            const hasValidArea=[...container.querySelectorAll('.room-card')].some(card=>Number(card.querySelector('.room-area')?.value||0)>0);
-            if(!hasValidArea)addRoom();
-          }
-          ensureInitialAreaCard();
-          updateEstimate();
-          """
-
-          for filename in files:
-              p=Path(filename); s=p.read_text(encoding='utf-8')
-
-              # The previous attempt placed the inline helper inside the external
-              # location-autocomplete script tag. Normalize that tag and remove any
-              # copy of the helper before reinserting it in its own inline script.
-              s=re.sub(r'<script src="location-autocomplete\.js">.*?</script>', '<script src="location-autocomplete.js"></script>', s, count=1, flags=re.S)
-              s=s.replace(helper,'',1)
-              marker='<script src="location-autocomplete.js"></script>'
-              if marker not in s:
-                  raise RuntimeError(f'Location script marker not found in {filename}')
-              inline='<script>\n'+helper+'\n</script>\n'
-              s=s.replace(marker,inline+marker,1)
-              p.write_text(s,encoding='utf-8')
-              print('Fixed',filename)
+          location_files=['quotation/renovationplanner.html','quotation/buildplanner.html']
+          quantity_files=['quotation/renovationplanner.html']
+          location_tag='<script src="location-autocomplete.js"></script>'
+          quantity_tag='<script src="quotation-quantity-fix.js?v=20260907"></script>'
+          for name in location_files:
+              p=Path(name)
+              s=p.read_text(encoding='utf-8')
+              if location_tag not in s:
+                  s=s.replace('</body>', location_tag+'\n</body>',1)
+                  p.write_text(s,encoding='utf-8')
+          for name in quantity_files:
+              p=Path(name)
+              s=p.read_text(encoding='utf-8')
+              if quantity_tag not in s:
+                  s=s.replace('</body>', quantity_tag+'\n</body>',1)
+                  p.write_text(s,encoding='utf-8')
           PY
-      - name: Commit planner area UX placement fix
+      - name: Commit planner updates
         run: |
           git config user.name 'Teraju Ciptabina Bot'
           git config user.email 'actions@users.noreply.github.com'
-          git add quotation/buildplanner.html quotation/renovationplanner.html
+          git add quotation/renovationplanner.html quotation/buildplanner.html
           if git diff --cached --quiet; then
             echo 'No planner changes needed.'
             exit 0
           fi
-          git commit -m 'Fix planner area init placement [area-ux-final]'
+          git commit -m 'Add quotation quantity rounding [location-autocomplete]'
           git push
