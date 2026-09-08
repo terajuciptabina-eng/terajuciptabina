@@ -11,8 +11,7 @@
 
   function escapeHtml(value){
     return String(value??'')
-      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
-      .replace(/\"/g,'&quot;').replace(/'/g,'&#039;');
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;').replace(/'/g,'&#039;');
   }
 
   function labelForFeature(feature){
@@ -140,4 +139,12 @@
   }
 
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init); else init();
+})();
+
+// Shared quotation document engine bootstrap. This is deliberately external to the planner bases.
+(function(){
+  const script=document.createElement('script');
+  script.src='quotation-document-engine.js?v='+Date.now();
+  script.async=false;
+  document.head.appendChild(script);
 })();
