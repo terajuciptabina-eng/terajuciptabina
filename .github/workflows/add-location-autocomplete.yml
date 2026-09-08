@@ -9,39 +9,40 @@ permissions:
 
 jobs:
   patch-location-fields:
-    if: "!contains(github.event.head_commit.message, '[location-autocomplete]')"
+    if: "!contains(github.event.head_commit.message, '[homeowner-delete]')"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Add planner helper scripts
+      - name: Apply homeowner item delete permission
         run: |
           python - <<'PY'
           from pathlib import Path
-          location_files=['quotation/renovationplanner.html','quotation/buildplanner.html']
-          quantity_files=['quotation/renovationplanner.html']
-          location_tag='<script src="location-autocomplete.js"></script>'
-          quantity_tag='<script src="quotation-quantity-fix.js?v=20260907"></script>'
-          for name in location_files:
+
+          files=['quotation/buildplanner.html','quotation/renovationplanner.html']
+          for name in files:
               p=Path(name)
               s=p.read_text(encoding='utf-8')
-              if location_tag not in s:
-                  s=s.replace('</body>', location_tag+'\n</body>',1)
-                  p.write_text(s,encoding='utf-8')
-          for name in quantity_files:
-              p=Path(name)
-              s=p.read_text(encoding='utf-8')
-              if quantity_tag not in s:
-                  s=s.replace('</body>', quantity_tag+'\n</body>',1)
-                  p.write_text(s,encoding='utf-8')
+
+              # Existing Delete buttons are intentionally contractor-only.
+              # Make the same existing Delete action visible to homeowners too.
+              s=s.replace('class="contractor-only text-red-600', 'class="text-red-600')
+
+              # Keep edit permissions contractor-only, but allow the existing
+              # exclusion/delete action to run for homeowners as well.
+              s=s.replace('function excludeItem(id){if(!IS_CONTRACTOR)return;', 'function excludeItem(id){if(!IS_CONTRACTOR&&!isHomeowner())return;')
+              s=s.replace('function excludeItem(itemId) {\n  if (!IS_CONTRACTOR) return;', 'function excludeItem(itemId) {\n  if (!IS_CONTRACTOR && !isHomeowner()) return;')
+
+              p.write_text(s,encoding='utf-8')
+              print('Patched',name)
           PY
-      - name: Commit planner updates
+      - name: Commit homeowner delete permission
         run: |
           git config user.name 'Teraju Ciptabina Bot'
           git config user.email 'actions@users.noreply.github.com'
-          git add quotation/renovationplanner.html quotation/buildplanner.html
+          git add quotation/buildplanner.html quotation/renovationplanner.html
           if git diff --cached --quiet; then
             echo 'No planner changes needed.'
             exit 0
           fi
-          git commit -m 'Add quotation quantity rounding [location-autocomplete]'
+          git commit -m 'Allow homeowners to delete quotation items [homeowner-delete]'
           git push
