@@ -861,7 +861,7 @@ function generateStandardRoomItems(roomType, area, roomId, roomLabel) {
     pushItem(items, roomId, roomLabel, "downlight", `To supply and install ${calculateDownlights(area)} unit downlight c/w wiring`, calculateDownlights(area), "unit", RATES.downlight);
     pushItem(items, roomId, roomLabel, "exhaust", `To supply and install ${Math.max(1, Math.ceil(area / 50))} unit exhaust fan c/w wiring`, Math.max(1, Math.ceil(area / 50)), "unit", RATES.exhaustFan);
   }
-  return items;
+  return items.map(item => ({ ...item, roomType }));
 }
 
 function generateOptionalRoomItems(room, roomLabel) {
@@ -882,34 +882,49 @@ function generateOptionalRoomItems(room, roomLabel) {
   return items;
 }
 
-function getStandardRateItems() {
-  const items = [
-    ["ceiling", "To supply and install plaster ceiling flat c/w paint", "sqft", RATES.ceiling],
-    ["spc", "To supply and install spc flooring c/w skirting and floor mat", "sqft", RATES.spc],
-    ["floorTile", "To supply and install floor tiles c/w water proofing", "sqft", RATES.floorTile],
-    ["wallTile", "To supply and install wall tiles", "sqft", RATES.wallTile],
-    ["facadeWall", "Facade wall", "sqft", RATES.facadeWall],
-    ["downlight", "To supply and install downlight c/w wiring", "unit", RATES.downlight],
-    ["wallLight", "To supply and install wall light c/w wiring", "unit", RATES.wallLight],
-    ["ceilingFan", "To supply and install ceiling fan c/w wiring", "unit", RATES.ceilingFan],
-    ["exhaustFan", "To supply and install exhaust fan c/w wiring", "unit", RATES.exhaustFan],
-    ["curtainBoxLED", "To supply and install led light for curtain box c/w wiring", "ls", RATES.curtainBoxLED],
-    ["barLamp", "To supply and install bar lamp c/w wiring", "unit", RATES.barLamp],
-    ["diningLamp", "To supply and install dining lamp c/w wiring", "unit", RATES.diningLamp],
-    ["kitchenFrame", "To supply and install laminated arce frame", "ls", RATES.kitchenFrame],
-    ["kitchenMakingGood", "To making good wall after demolish existing toilet", "ls", RATES.kitchenMakingGood],
-    ["kitchenGlassDoor", "To supply and install swing glass door", "ls", RATES.kitchenGlassDoor],
-    ["bathroomSanitary", "To supply and install toilet accessories (water closet, bidet, sink and cabinet)", "ls", RATES.bathroomSanitary],
-    ["bathroomDoor", "To supply and install toilet swing door", "unit", RATES.bathroomDoor],
-    ["gateMotor", "To supply and install main gate c/w automatic motor", "ls", RATES.gateMotor],
-    ["brickwallDivider", "To build side brickwall divider c/w plaster and paint", "ls", RATES.brickwallDivider],
-    ["frontFence", "To build new front fence brickwall based on designer proposal", "ls", RATES.frontFence],
-    ["extensionKitchen", "To build concrete foundation and complete new kitchen extension based on designer proposal", "sqft", RATES.extensionKitchen],
-    ["extensionToilet", "To build concrete foundation and complete new toilet extension based on designer proposal", "sqft", RATES.extensionToilet]
-  ].map(([key, description, unit, rate]) => ({ id: `default-${key}`, key, description, unit, rate: normalizeRate(rate), custom: false }));
-  return [...items, ...standardRateItems.map(item => ({ ...item, rate: normalizeRate(item.rate), custom: true }))];
+function getStandardRateItems(roomId=null) {
+  const roomType=roomId ? document.getElementById(roomId)?.querySelector('.room-type')?.value || 'other' : null;
+  const roomStandardKeys={
+    living:["ceiling","spc","downlight","ceilingFan","curtainBoxLED"],
+    bedroom:["ceiling","spc","downlight","ceilingFan","curtainBoxLED"],
+    dryKitchen:["ceiling","spc","downlight","barLamp","ceilingFan","kitchenFrame","kitchenMakingGood","kitchenGlassDoor"],
+    wetKitchen:["floorTile","wallTile","ceiling","downlight","ceilingFan","barLamp"],
+    bathroom:["floorTile","wallTile","ceiling","bathroomSanitary","bathroomDoor","downlight","exhaustFan"],
+    carPorch:["floorTile","ceiling","downlight","gateMotor","brickwallDivider","frontFence"],
+    balcony:["floorTile","facadeWall","wallLight"],
+    extensionKitchen:["extensionKitchen","downlight"],
+    extensionToilet:["extensionToilet","downlight","exhaustFan"]
+  };
+  const allowed=roomStandardKeys[roomType]||[];
+  const items=[
+    ["ceiling","To supply and install plaster ceiling flat c/w paint","sqft",RATES.ceiling],
+    ["spc","To supply and install spc flooring c/w skirting and floor mat","sqft",RATES.spc],
+    ["floorTile","To supply and install floor tiles c/w water proofing","sqft",RATES.floorTile],
+    ["wallTile","To supply and install wall tiles","sqft",RATES.wallTile],
+    ["facadeWall","Facade wall","sqft",RATES.facadeWall],
+    ["downlight","To supply and install downlight c/w wiring","unit",RATES.downlight],
+    ["wallLight","To supply and install wall light c/w wiring","unit",RATES.wallLight],
+    ["ceilingFan","To supply and install ceiling fan c/w wiring","unit",RATES.ceilingFan],
+    ["exhaustFan","To supply and install exhaust fan c/w wiring","unit",RATES.exhaustFan],
+    ["curtainBoxLED","To supply and install led light for curtain box c/w wiring","ls",RATES.curtainBoxLED],
+    ["barLamp","To supply and install bar lamp c/w wiring","unit",RATES.barLamp],
+    ["diningLamp","To supply and install dining lamp c/w wiring","unit",RATES.diningLamp],
+    ["kitchenFrame","To supply and install laminated arce frame","ls",RATES.kitchenFrame],
+    ["kitchenMakingGood","To making good wall after demolish existing toilet","ls",RATES.kitchenMakingGood],
+    ["kitchenGlassDoor","To supply and install swing glass door","ls",RATES.kitchenGlassDoor],
+    ["bathroomSanitary","To supply and install toilet accessories (water closet, bidet, sink and cabinet)","ls",RATES.bathroomSanitary],
+    ["bathroomDoor","To supply and install toilet swing door","unit",RATES.bathroomDoor],
+    ["gateMotor","To supply and install main gate c/w automatic motor","ls",RATES.gateMotor],
+    ["brickwallDivider","To build side brickwall divider c/w plaster and paint","ls",RATES.brickwallDivider],
+    ["frontFence","To build new front fence brickwall based on designer proposal","ls",RATES.frontFence],
+    ["extensionKitchen","To build concrete foundation and complete new kitchen extension based on designer proposal","sqft",RATES.extensionKitchen],
+    ["extensionToilet","To build concrete foundation and complete new toilet extension based on designer proposal","sqft",RATES.extensionToilet]
+  ].map(([key,description,unit,rate])=>({id:`default-${key}`,key,description,unit,rate:normalizeRate(rate),custom:false}));
+  const defaults=roomId ? items.filter(item=>allowed.includes(item.key)).map(item=>({...item,roomType})) : items;
+  const custom=roomId ? standardRateItems.filter(item=>item.roomType===roomType) : standardRateItems;
+  return [...defaults,...custom.map(item=>({...item,rate:normalizeRate(item.rate),custom:true}))];
 }
-function standardItemOptions() { return getStandardRateItems().map(item => `<option value=\"${escapeHtml(item.id)}\">${escapeHtml(item.description)} — ${money(item.rate, 2)} / ${escapeHtml(item.unit)}</option>`).join(""); }
+function standardItemOptions(roomId) { return getStandardRateItems(roomId).map(item => `<option value="${escapeHtml(item.id)}">${escapeHtml(item.description)} — ${money(item.rate, 2)}</option>`).join(""); }
 function addManualItemPrompt(roomId) {
   if (!IS_CONTRACTOR) return;
   const existing = document.getElementById(`manual-add-${roomId}`);
@@ -918,18 +933,18 @@ function addManualItemPrompt(roomId) {
   if (!anchor) return;
   const wrap = document.createElement("div");
   wrap.id = `manual-add-${roomId}`; wrap.className = "no-print mt-3 border rounded-xl bg-gray-50 p-4";
-  wrap.innerHTML = `<div class=\"flex flex-wrap items-center justify-between gap-3 mb-3\"><p class=\"font-semibold text-sm\">Add Item</p><button type=\"button\" onclick=\"addManualItemPrompt('${roomId}')\" class=\"text-xs text-gray-500\">Cancel</button></div><div class=\"grid md:grid-cols-[2fr_1fr_1fr_auto] gap-3 items-end\"><label class=\"block\"><span class=\"block text-xs font-medium text-gray-500 mb-1\">Standard Rate Item</span><select id=\"manual-select-${roomId}\" class=\"w-full border rounded-lg px-3 py-2 bg-white\" onchange=\"prepareManualItem('${roomId}')\"><option value=\"\">Select an item…</option>${standardItemOptions()}<option value=\"__new__\">＋ Create New Standard Item</option></select></label><label class=\"block\"><span class=\"block text-xs font-medium text-gray-500 mb-1\">Quantity</span><input id=\"manual-qty-${roomId}\" type=\"number\" min=\"0\" step=\"1\" value=\"1\" class=\"w-full border rounded-lg px-3 py-2 bg-white\"></label><label class=\"block\"><span class=\"block text-xs font-medium text-gray-500 mb-1\">Rate (RM)</span><input id=\"manual-rate-${roomId}\" type=\"number\" min=\"0\" step=\"0.01\" value=\"0.00\" class=\"w-full border rounded-lg px-3 py-2 bg-white\"></label><button type=\"button\" onclick=\"saveManualItem('${roomId}')\" class=\"bg-black text-white px-4 py-2 rounded-lg text-sm font-semibold\">Add</button></div><div id=\"manual-new-${roomId}\" class=\"hidden grid md:grid-cols-3 gap-3 mt-3\"><label><span class=\"block text-xs font-medium text-gray-500 mb-1\">New Description</span><input id=\"manual-desc-${roomId}\" type=\"text\" placeholder=\"e.g. Aluminium awning\" class=\"w-full border rounded-lg px-3 py-2 bg-white\"></label><label><span class=\"block text-xs font-medium text-gray-500 mb-1\">Unit</span><input id=\"manual-unit-${roomId}\" type=\"text\" value=\"ls\" class=\"w-full border rounded-lg px-3 py-2 bg-white\"></label><div class=\"text-xs text-gray-500 self-end pb-2\">New item will be added to this Contractor ID's Standard Rate Schedule.</div></div>`;
+  wrap.innerHTML = `<div class=\"flex flex-wrap items-center justify-between gap-3 mb-3\"><p class=\"font-semibold text-sm\">Add Item</p><button type=\"button\" onclick=\"addManualItemPrompt('${roomId}')\" class=\"text-xs text-gray-500\">Cancel</button></div><div class=\"grid md:grid-cols-[2fr_1fr_1fr_auto] gap-3 items-end\"><label class=\"block\"><span class=\"block text-xs font-medium text-gray-500 mb-1\">Standard Rate Item</span><select id=\"manual-select-${roomId}\" class=\"w-full border rounded-lg px-3 py-2 bg-white\" onchange=\"prepareManualItem('${roomId}')\"><option value=\"\">Select an item…</option>${standardItemOptions(roomId)}<option value=\"__new__\">＋ Create New Standard Item</option></select></label><label class=\"block\"><span class=\"block text-xs font-medium text-gray-500 mb-1\">Quantity</span><input id=\"manual-qty-${roomId}\" type=\"number\" min=\"0\" step=\"1\" value=\"1\" class=\"w-full border rounded-lg px-3 py-2 bg-white\"></label><label class=\"block\"><span class=\"block text-xs font-medium text-gray-500 mb-1\">Rate (RM)</span><input id=\"manual-rate-${roomId}\" type=\"number\" min=\"0\" step=\"0.01\" value=\"0.00\" class=\"w-full border rounded-lg px-3 py-2 bg-white\"></label><button type=\"button\" onclick=\"saveManualItem('${roomId}')\" class=\"bg-black text-white px-4 py-2 rounded-lg text-sm font-semibold\">Add</button></div><div id=\"manual-new-${roomId}\" class=\"hidden grid md:grid-cols-3 gap-3 mt-3\"><label><span class=\"block text-xs font-medium text-gray-500 mb-1\">New Description</span><input id=\"manual-desc-${roomId}\" type=\"text\" placeholder=\"e.g. Aluminium awning\" class=\"w-full border rounded-lg px-3 py-2 bg-white\"></label><label><span class=\"block text-xs font-medium text-gray-500 mb-1\">Unit</span><input id=\"manual-unit-${roomId}\" type=\"text\" value=\"ls\" class=\"w-full border rounded-lg px-3 py-2 bg-white\"></label><div class=\"text-xs text-gray-500 self-end pb-2\">New item will be added to this Contractor ID's Standard Rate Schedule.</div></div>`;
   anchor.appendChild(wrap);
 }
 function prepareManualItem(roomId) {
-  const select = document.getElementById(`manual-select-${roomId}`), rate = document.getElementById(`manual-rate-${roomId}`), newBox = document.getElementById(`manual-new-${roomId}`), item = getStandardRateItems().find(x => x.id === select?.value);
+  const select = document.getElementById(`manual-select-${roomId}`), rate = document.getElementById(`manual-rate-${roomId}`), newBox = document.getElementById(`manual-new-${roomId}`), item = getStandardRateItems(roomId).find(x => x.id === select?.value);
   if (select?.value === "__new__") { newBox?.classList.remove("hidden"); if (rate) rate.value = "0.00"; return; }
   newBox?.classList.add("hidden"); if (item && rate) rate.value = normalizeRate(item.rate).toFixed(2);
 }
 function saveManualItem(roomId) {
-  if (!IS_CONTRACTOR) return; const select = document.getElementById(`manual-select-${roomId}`), qty = normalizeQuantity(document.getElementById(`manual-qty-${roomId}`)?.value), rateInput = document.getElementById(`manual-rate-${roomId}`); let selected = getStandardRateItems().find(x => x.id === select?.value), description = selected?.description || "", unit = selected?.unit || "ls", rate = normalizeRate(rateInput?.value);
-  if (select?.value === "__new__") { description = String(document.getElementById(`manual-desc-${roomId}`)?.value || "").trim(); unit = String(document.getElementById(`manual-unit-${roomId}`)?.value || "ls").trim() || "ls"; if (!description) { alert("Please enter the new item description."); return; } if (rate < 0) { alert("Please enter a valid rate."); return; } const id = `custom-${Date.now()}-${Math.random().toString(36).slice(2,8)}`; standardRateItems.push({ id, description, unit, rate, custom: true }); selected = { id, description, unit, rate, custom: true }; saveContractorState(); }
-  if (!description) { alert("Please select or create an item."); return; } const id = `manual-${Date.now()}-${Math.random().toString(36).slice(2,8)}`; if (!manualItems.has(roomId)) manualItems.set(roomId, []); manualItems.get(roomId).push({ id, roomId, description, unit, qty, rate, amount: Math.round((qty * rate + Number.EPSILON) * 100) / 100 }); updateEstimate(); saveContractorState();
+  if (!IS_CONTRACTOR) return; const select = document.getElementById(`manual-select-${roomId}`), qty = normalizeQuantity(document.getElementById(`manual-qty-${roomId}`)?.value), rateInput = document.getElementById(`manual-rate-${roomId}`); let selected = getStandardRateItems(roomId).find(x => x.id === select?.value), description = selected?.description || "", unit = selected?.unit || "ls", rate = normalizeRate(rateInput?.value);
+  if (select?.value === "__new__") { description = String(document.getElementById(`manual-desc-${roomId}`)?.value || "").trim(); unit = String(document.getElementById(`manual-unit-${roomId}`)?.value || "ls").trim() || "ls"; if (!description) { alert("Please enter the new item description."); return; } if (rate < 0) { alert("Please enter a valid rate."); return; } const id = `custom-${Date.now()}-${Math.random().toString(36).slice(2,8)}`; standardRateItems.push({ id, description, unit, rate, roomType: document.getElementById(roomId)?.querySelector(".room-type")?.value || "other", custom: true }); selected = { id, description, unit, rate, roomType: document.getElementById(roomId)?.querySelector(".room-type")?.value || "other", custom: true }; saveContractorState(); }
+  if (!description) { alert("Please select or create an item."); return; } const id = `manual-${Date.now()}-${Math.random().toString(36).slice(2,8)}`; if (!manualItems.has(roomId)) manualItems.set(roomId, []); manualItems.get(roomId).push({ id, roomId, roomType: document.getElementById(roomId)?.querySelector(".room-type")?.value || "other", description, unit, qty, rate, amount: Math.round((qty * rate + Number.EPSILON) * 100) / 100 }); updateEstimate(); saveContractorState();
 }
 function removeManualItem(roomId, itemId) { if (!IS_CONTRACTOR) return; const list = manualItems.get(roomId) || []; manualItems.set(roomId, list.filter(item => item.id !== itemId)); updateEstimate(); saveContractorState(); }
 function getAllItems() { const rooms = [...document.querySelectorAll("#roomsContainer .room-card")], typeIndexes = {}, allItems = []; rooms.forEach(room => { const roomId = room.id, roomType = room.querySelector(".room-type")?.value || "living", area = parseFloat(room.querySelector(".room-area")?.value) || 0; if(area<=0)return; typeIndexes[roomType] = (typeIndexes[roomType] || 0) + 1; const base = ROOM_TYPES[roomType] || "Area", autoLabel = typeIndexes[roomType] > 1 ? `${base} ${typeIndexes[roomType]}` : base, roomLabel = customRoomLabels.has(roomId) ? customRoomLabels.get(roomId) : autoLabel, standard = generateStandardRoomItems(roomType, area, roomId, roomLabel), optional = generateOptionalRoomItems(room, roomLabel), manual = (manualItems.get(roomId) || []).map(item => ({ ...item })); [...standard, ...optional, ...manual].forEach(item => { if (customRates.has(item.id)) item.rate = customRates.get(item.id); if (customQuantities.has(item.id)) item.qty = customQuantities.get(item.id); if (customDescriptions.has(item.id)) item.description = customDescriptions.get(item.id); item.qty = normalizeQuantity(item.qty); item.rate = normalizeRate(item.rate); item.amount = Math.round((item.qty * item.rate + Number.EPSILON) * 100) / 100; }); allItems.push(...standard, ...optional, ...manual); }); const prelimManual = (manualItems.get("__prelim__") || []).map(item => ({ ...item, roomId: "__prelim__", room: "Project / Preliminaries" })); prelimManual.forEach(item => { item.qty = normalizeQuantity(item.qty); item.rate = normalizeRate(item.rate); item.amount = Math.round((item.qty * item.rate + Number.EPSILON) * 100) / 100; }); allItems.push(...prelimManual); return allItems; }
@@ -1053,7 +1068,7 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
             class="text-red-600 text-xs border border-red-200 rounded px-3 py-1.5 hover:bg-red-50">Delete</button>
         </td>
       </tr>
-      <tr class="contractor-only no-print"><td colspan="6" class="py-2 px-2"><div data-manual-anchor="__prelim__"><button type="button" onclick="addManualItemPrompt('__prelim__')" class="border rounded-lg px-3 py-2 text-xs font-semibold hover:bg-gray-50">＋ Add Item</button></div></td></tr>`;
+      <tr class="no-print"><td colspan="6" class="py-2 px-2"><div class="contractor-only" data-manual-anchor="__prelim__"><button type="button" onclick="addManualItemPrompt('__prelim__')" class="border rounded-lg px-3 py-2 text-xs font-semibold hover:bg-gray-50">＋ Add Item</button></div></td></tr>`;
   }
 
   const prelimManual = manualItems.get("__prelim__") || [];
@@ -1105,7 +1120,7 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
           </td>
         </tr>`;
     });
-    html += `<tr class="contractor-only no-print"><td colspan="6" class="py-2 px-2"><div data-manual-anchor="${room.roomId}"><button type="button" onclick="addManualItemPrompt('${room.roomId}')" class="border rounded-lg px-3 py-2 text-xs font-semibold hover:bg-gray-50">＋ Add Item</button></div></td></tr>`;
+    html += `<tr class="no-print"><td colspan="6" class="py-2 px-2"><div class="contractor-only" data-manual-anchor="${room.roomId}"><button type="button" onclick="addManualItemPrompt('${room.roomId}')" class="border rounded-lg px-3 py-2 text-xs font-semibold hover:bg-gray-50">＋ Add Item</button></div></td></tr>`;
     html += `
       <tr class="border-b">
         <td colspan="4" class="py-3 px-2 text-right font-semibold">${escapeHtml(room.label)} Subtotal</td>

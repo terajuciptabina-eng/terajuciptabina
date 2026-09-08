@@ -381,11 +381,30 @@ function safeParseJson(v,fallback){try{return JSON.parse(v)}catch(e){return fall
 function serializeMap(map){return [...map.entries()]}
 function restoreMap(map,entries){map.clear();(Array.isArray(entries)?entries:[]).forEach(([k,v])=>map.set(k,v))}
 function standardLibrary(){
+ const structural=[];
+ const structuralRateKeys=new Set();
+ STRUCT_GROUPS.forEach(g=>g.items.forEach(s=>{
+  structuralRateKeys.add(s.rateKey);
+  structural.push({id:`rate-${s.rateKey}`,key:s.rateKey,description:s.desc,unit:s.unit,rate:normalizeRate(RATES[s.rateKey]),category:'structures',groupKey:g.key,groupTitle:g.title,custom:false});
+ }));
  const items=[];
- RATE_SCHEDULE.forEach(g=>g.rows.forEach(r=>items.push({id:`rate-${r.key}`,description:r.label,unit:r.unit,rate:normalizeRate(RATES[r.key]),category:g.title==='Preliminaries'?'preliminaries':g.title==='Structures'?'structures':g.title==='Electrical'?'electrical':'architecture',groupTitle:g.title,custom:false})));
- return [...items,...standardRateItems.map(x=>({...x,rate:normalizeRate(x.rate),custom:true}))];
+ RATE_SCHEDULE.forEach(g=>g.rows.forEach(r=>{
+  const category=g.title==='Preliminaries'?'preliminaries':g.title==='Structures'?'structures':g.title==='Electrical'?'electrical':'architecture';
+  if(category==='structures' && structuralRateKeys.has(r.key))return;
+  items.push({id:`rate-${r.key}`,key:r.key,description:r.label,unit:r.unit,rate:normalizeRate(RATES[r.key]),category,groupTitle:g.title,custom:false});
+ }));
+ return [...items,...structural,...standardRateItems.map(x=>({...x,rate:normalizeRate(x.rate),custom:true}))];
 }
-function standardItemOptions(){return standardLibrary().map(x=>`<option value="${escapeHtml(x.id)}">${escapeHtml(x.description)} — ${money(x.rate,2)} / ${escapeHtml(x.unit)}</option>`).join('')}
+function standardItemOptions(targetKey){
+ const list=standardLibrary().filter(x=>{
+  if(targetKey==='prelim')return x.category==='preliminaries';
+  if(targetKey==='electrical')return x.category==='electrical';
+  if(targetKey.startsWith('room:'))return x.category==='architecture';
+  if(targetKey.startsWith('structures:'))return x.category==='structures'&&x.groupKey===targetKey.slice(11);
+  return false;
+ });
+ return list.map(x=>`<option value="${escapeHtml(x.id)}">${escapeHtml(x.description)} — ${money(x.rate,2)}</option>`).join('');
+}
 function saveContractorState(){
  if(!IS_CONTRACTOR||restoringContractorState||!CONTRACTOR_ID)return;
  const state={customerName:document.getElementById('customerName')?.value||'',projectLocation:document.getElementById('projectLocation')?.value||'',builtUpArea:document.getElementById('builtUpArea')?.value||'',numStoreys:document.getElementById('numStoreys')?.value||'1',rooms:[...document.querySelectorAll('#roomsContainer .room-card')].map(r=>({id:r.id,name:r.querySelector('.room-name')?.value||'',type:r.querySelector('.room-type')?.value||'other',area:r.querySelector('.room-area')?.value||''})),rates:{...RATES},customRates:serializeMap(customRates),customQuantities:serializeMap(customQuantities),customDescriptions:serializeMap(customDescriptions),customRoomLabels:serializeMap(customRoomLabels),excludedItems:[...excludedItems],manualItems:[...manualItems.entries()],standardRateItems:[...standardRateItems],quotationType:getSelectedQuotationType()};
@@ -406,17 +425,52 @@ function loadContractorState(){
  updateEstimate(); return true;
 }
 function addManualItemPrompt(targetKey){
- if(!IS_CONTRACTOR)return; const existing=document.getElementById(`manual-add-${targetKey}`);if(existing){existing.remove();return;} const anchor=[...document.querySelectorAll('[data-manual-anchor]')].find(el=>el.getAttribute('data-manual-anchor')===targetKey);if(!anchor)return;
- const wrap=document.createElement('div');wrap.id=`manual-add-${targetKey}`;wrap.className='no-print mt-3 border rounded-xl bg-gray-50 p-4';
- wrap.innerHTML=`<div class="flex flex-wrap items-center justify-between gap-3 mb-3"><p class="font-semibold text-sm">Add Item</p><button type="button" onclick="addManualItemPrompt('${targetKey}')" class="text-xs text-gray-500">Cancel</button></div><div class="grid md:grid-cols-[2fr_1fr_1fr_auto] gap-3 items-end"><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Standard Rate Item</span><select id="manual-select-${targetKey}" class="w-full border rounded-lg px-3 py-2 bg-white" onchange="prepareManualItem('${targetKey}')"><option value="">Select an item…</option>${standardItemOptions()}<option value="__new__">＋ Create New Standard Item</option></select></label><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Quantity</span><input id="manual-qty-${targetKey}" type="number" min="0" step="1" value="1" class="w-full border rounded-lg px-3 py-2 bg-white"></label><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Rate (RM)</span><input id="manual-rate-${targetKey}" type="number" min="0" step="0.01" value="0.00" class="w-full border rounded-lg px-3 py-2 bg-white"></label><button type="button" onclick="saveManualItem('${targetKey}')" class="bg-black text-white px-4 py-2 rounded-lg text-sm font-semibold">Add</button></div><div id="manual-new-${targetKey}" class="hidden grid md:grid-cols-3 gap-3 mt-3"><label><span class="block text-xs font-medium text-gray-500 mb-1">New Description</span><input id="manual-desc-${targetKey}" type="text" placeholder="e.g. Aluminium awning" class="w-full border rounded-lg px-3 py-2 bg-white"></label><label><span class="block text-xs font-medium text-gray-500 mb-1">Unit</span><input id="manual-unit-${targetKey}" type="text" value="ls" class="w-full border rounded-lg px-3 py-2 bg-white"></label><label><span class="block text-xs font-medium text-gray-500 mb-1">Category</span><select id="manual-cat-${targetKey}" class="w-full border rounded-lg px-3 py-2 bg-white"><option value="preliminaries">Preliminaries</option><option value="structures">Structures</option><option value="architecture">Architecture</option><option value="electrical">Electrical</option></select></label></div>`;
+ if(!IS_CONTRACTOR)return;
+ const existing=document.getElementById(`manual-add-${targetKey}`);
+ if(existing){existing.remove();return;}
+ const anchor=[...document.querySelectorAll('[data-manual-anchor]')].find(el=>el.getAttribute('data-manual-anchor')===targetKey);
+ if(!anchor)return;
+ const wrap=document.createElement('div');
+ wrap.id=`manual-add-${targetKey}`;
+ wrap.className='no-print mt-3 border rounded-xl bg-gray-50 p-4';
+ wrap.innerHTML=`<div class="flex flex-wrap items-center justify-between gap-3 mb-3"><p class="font-semibold text-sm">Add Item</p><button type="button" onclick="addManualItemPrompt('${targetKey}')" class="text-xs text-gray-500">Cancel</button></div><div class="grid md:grid-cols-[2fr_1fr_1fr_auto] gap-3 items-end"><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Standard Rate Item</span><select id="manual-select-${targetKey}" class="w-full border rounded-lg px-3 py-2 bg-white" onchange="prepareManualItem('${targetKey}')"><option value="">Select an item…</option>${standardItemOptions(targetKey)}<option value="__new__">＋ Create New Standard Item</option></select></label><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Quantity</span><input id="manual-qty-${targetKey}" type="number" min="0" step="1" value="1" class="w-full border rounded-lg px-3 py-2 bg-white"></label><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Rate (RM)</span><input id="manual-rate-${targetKey}" type="number" min="0" step="0.01" value="0.00" class="w-full border rounded-lg px-3 py-2 bg-white"></label><button type="button" onclick="saveManualItem('${targetKey}')" class="bg-black text-white px-4 py-2 rounded-lg text-sm font-semibold">Add</button></div><div id="manual-new-${targetKey}" class="hidden grid md:grid-cols-2 gap-3 mt-3"><label><span class="block text-xs font-medium text-gray-500 mb-1">New Description</span><input id="manual-desc-${targetKey}" type="text" placeholder="e.g. Additional structural work" class="w-full border rounded-lg px-3 py-2 bg-white"></label><label><span class="block text-xs font-medium text-gray-500 mb-1">Unit</span><input id="manual-unit-${targetKey}" type="text" value="ls" class="w-full border rounded-lg px-3 py-2 bg-white"></label></div>`;
  anchor.appendChild(wrap);
 }
 function prepareManualItem(targetKey){const select=document.getElementById(`manual-select-${targetKey}`),rate=document.getElementById(`manual-rate-${targetKey}`),box=document.getElementById(`manual-new-${targetKey}`),item=standardLibrary().find(x=>x.id===select?.value);if(select?.value==='__new__'){box?.classList.remove('hidden');if(rate)rate.value='0.00';return}box?.classList.add('hidden');if(item&&rate)rate.value=normalizeRate(item.rate).toFixed(2)}
-function saveManualItem(targetKey){if(!IS_CONTRACTOR)return;const select=document.getElementById(`manual-select-${targetKey}`),qty=normalizeQuantity(document.getElementById(`manual-qty-${targetKey}`)?.value),rate=normalizeRate(document.getElementById(`manual-rate-${targetKey}`)?.value);let item=standardLibrary().find(x=>x.id===select?.value),description=item?.description||'',unit=item?.unit||'ls',category=item?.category||'architecture',groupTitle=item?.groupTitle||'';
- if(select?.value==='__new__'){description=String(document.getElementById(`manual-desc-${targetKey}`)?.value||'').trim();unit=String(document.getElementById(`manual-unit-${targetKey}`)?.value||'ls').trim()||'ls';category=document.getElementById(`manual-cat-${targetKey}`)?.value||'architecture';groupTitle=category==='structures'?'Additional Structural Works':category==='electrical'?'Additional Electrical Works':category==='preliminaries'?'Additional Preliminaries':'Additional Architectural Works';if(!description){alert('Please enter the new item description.');return}const id=`custom-${Date.now()}-${Math.random().toString(36).slice(2,8)}`;standardRateItems.push({id,description,unit,rate,category,groupTitle,custom:true});item={id,description,unit,rate,category,groupTitle,custom:true};}
- if(!description){alert('Please select or create an item.');return}const id=`manual-${Date.now()}-${Math.random().toString(36).slice(2,8)}`;const target=targetKey.startsWith('room:')?targetKey.slice(5):'project';if(targetKey==='prelim'){category='preliminaries';groupTitle='Preliminaries'}else if(targetKey==='structures'){category='structures';groupTitle='Additional Structural Works'}else if(targetKey==='electrical'){category='electrical';groupTitle='Electrical Works'}else if(targetKey.startsWith('room:')){category='architecture';groupTitle='Additional Architectural Works'}if(!manualItems.has(targetKey))manualItems.set(targetKey,[]);manualItems.get(targetKey).push({id,description,unit,qty,rate,category,groupTitle,roomId:target});updateEstimate();saveContractorState();}
+function saveManualItem(targetKey){
+ if(!IS_CONTRACTOR)return;
+ const select=document.getElementById(`manual-select-${targetKey}`);
+ const qty=normalizeQuantity(document.getElementById(`manual-qty-${targetKey}`)?.value);
+ const rate=normalizeRate(document.getElementById(`manual-rate-${targetKey}`)?.value);
+ let item=standardLibrary().find(x=>x.id===select?.value);
+ let description=item?.description||'',unit=item?.unit||'ls',category=item?.category||'',groupKey=item?.groupKey||null,groupTitle=item?.groupTitle||'';
+ if(select?.value==='__new__'){
+  description=String(document.getElementById(`manual-desc-${targetKey}`)?.value||'').trim();
+  unit=String(document.getElementById(`manual-unit-${targetKey}`)?.value||'ls').trim()||'ls';
+  if(!description){alert('Please enter the new item description.');return}
+  if(targetKey==='prelim'){category='preliminaries';groupTitle='Preliminaries'}
+  else if(targetKey==='electrical'){category='electrical';groupTitle='Electrical Works'}
+  else if(targetKey.startsWith('structures:')){category='structures';groupKey=targetKey.slice(11);groupTitle=STRUCT_GROUPS.find(g=>g.key===groupKey)?.title||groupKey}
+  else if(targetKey.startsWith('room:')){category='architecture';groupTitle='Additional Architectural Works'}
+  else {alert('Invalid item group.');return}
+  const id=`custom-${Date.now()}-${Math.random().toString(36).slice(2,8)}`;
+  standardRateItems.push({id,description,unit,rate,category,groupKey,groupTitle,custom:true});
+  item={id,description,unit,rate,category,groupKey,groupTitle,custom:true};
+ }
+ if(!description){alert('Please select or create an item.');return}
+ if(!category){alert('Please select an item from this group.');return}
+ const id=`manual-${Date.now()}-${Math.random().toString(36).slice(2,8)}`;
+ const target=targetKey.startsWith('room:')?targetKey.slice(5):'project';
+ if(targetKey==='prelim'){category='preliminaries';groupTitle='Preliminaries'}
+ else if(targetKey==='electrical'){category='electrical';groupTitle='Electrical Works'}
+ else if(targetKey.startsWith('structures:')){category='structures';groupKey=targetKey.slice(11);groupTitle=STRUCT_GROUPS.find(g=>g.key===groupKey)?.title||groupTitle||groupKey}
+ else if(targetKey.startsWith('room:')){category='architecture';groupTitle='Additional Architectural Works'}
+ if(!manualItems.has(targetKey))manualItems.set(targetKey,[]);
+ manualItems.get(targetKey).push({id,description,unit,qty,rate,category,groupKey,groupTitle,roomId:target});
+ updateEstimate();saveContractorState();
+}
 function removeManualItem(targetKey,id){if(!IS_CONTRACTOR)return;manualItems.set(targetKey,(manualItems.get(targetKey)||[]).filter(x=>x.id!==id));updateEstimate();saveContractorState()}
-function contractorProjectTarget(item){if(item.category==='architecture')return `room:${item.roomId}`;if(item.category==='preliminaries')return 'prelim';if(item.category==='structures')return 'structures';return 'electrical'}
+function contractorProjectTarget(item){if(item.category==='architecture')return `room:${item.roomId}`;if(item.category==='preliminaries')return 'prelim';if(item.category==='structures')return item.groupKey?`structures:${item.groupKey}`:'structures';return 'electrical'}
 function generateEstimateNumber(){let n=localStorage.getItem('terajuNBEst');n=n?parseInt(n,10)+1:1;localStorage.setItem('terajuNBEst',n);return'NB-EST-'+String(n).padStart(4,'0')}
 document.getElementById('estimateNumber').textContent=generateEstimateNumber();
 function applyAudienceUI(){document.body.classList.toggle('contractor-mode',IS_CONTRACTOR);if(IS_CONTRACTOR){document.getElementById('contractorIdDisplay').textContent=CONTRACTOR_ID||'Not signed in';document.getElementById('rateSchedulePanel')?.classList.add('hidden');}else{document.getElementById('rateScheduleSection')?.classList.add('homeowner-hidden');document.querySelector('button[onclick="restoreAllItems()"]')?.closest('.no-print')?.classList.add('homeowner-hidden');const h=document.querySelector('section.no-print.bg-white.rounded-2xl.shadow-sm.p-6.mt-6 h3'),s=h?.nextElementSibling;if(h)h.textContent='Get Your Quotation';if(s)s.textContent='Generate a free quotation summary, or request the detailed costing breakdown.';document.title='Build Planner | Teraju Works'}}
@@ -504,39 +558,44 @@ function renderEstimate(items,rooms,total,roomsArea,declared){
   <td class="py-3 px-2"><button type="button" onclick="excludeItem('${i.id}')" class="text-red-600 border border-red-200 px-3 py-2 rounded-lg text-xs">Delete</button></td>
  </tr>`;
 
- const heading=(title,target,add=true)=>`<tr class="quotation-section-row"><td colspan="6" class="py-3 px-2" data-manual-anchor="${escapeHtml(target)}"><div class="flex items-center justify-between gap-3"><span>${escapeHtml(title)}</span>${add?`<button type="button" class="contractor-only border px-3 py-1.5 rounded-lg text-xs bg-white" onclick="addManualItemPrompt('${target}')">+ Add Item</button>`:''}</div></td></tr>`;
- const subheading=(title,target,add=true)=>`<tr class="quotation-subsection-row"><td colspan="6" class="py-2 px-2" data-manual-anchor="${escapeHtml(target)}"><div class="flex items-center justify-between gap-3"><span>${escapeHtml(title)}</span>${add?`<button type="button" class="contractor-only border px-3 py-1.5 rounded-lg text-xs bg-white" onclick="addManualItemPrompt('${target}')">+ Add Item</button>`:''}</div></td></tr>`;
+ const heading=title=>`<tr class="quotation-section-row"><td colspan="6" class="py-3 px-2">${escapeHtml(title)}</td></tr>`;
+ const subheading=title=>`<tr class="quotation-subsection-row"><td colspan="6" class="py-2 px-2">${escapeHtml(title)}</td></tr>`;
+ const manualAddRow=target=>`<tr class="no-print"><td colspan="6" class="py-2 px-2"><div class="contractor-only" data-manual-anchor="${escapeHtml(target)}"><button type="button" class="border px-3 py-1.5 rounded-lg text-xs bg-white" onclick="addManualItemPrompt('${target}')">+ Add Item</button></div></td></tr>`;
  const rows=(arr,target)=>arr.map(i=>row(i,target)).join('');
 
  let h='<table class="w-full border-collapse text-sm detailed-quotation-table"><colgroup><col style="width:32%"><col style="width:8%"><col style="width:13%"><col style="width:15%"><col style="width:20%"><col style="width:12%"></colgroup><thead><tr class="border-b-2 text-left"><th>Description</th><th>Unit</th><th>Quantity</th><th>Rate (RM)</th><th>Amount (RM)</th><th>Action</th></tr></thead><tbody>';
 
- h+=heading('PROJECT / PRELIMINARIES','prelim');
+ h+=heading('PROJECT / PRELIMINARIES');
  h+=rows(prelim,'prelim');
+ h+=manualAddRow('prelim');
  if(prelim.length) h+=`<tr class="border-b"><td colspan="5" class="py-2 px-2 text-right font-semibold">Subtotal - Preliminaries</td><td class="py-2 px-2 text-right font-semibold">${money(prelim.reduce((s,i)=>s+i.amount,0),2)}</td></tr>`;
 
- h+=heading('STRUCTURAL WORKS','structures',false);
+ h+=heading('STRUCTURAL WORKS');
  const groups=[...new Set(structures.map(i=>i.groupKey).filter(Boolean))];
  groups.forEach(key=>{
    const arr=structures.filter(i=>i.groupKey===key);
    const title=arr[0]?.groupTitle||key;
-   h+=subheading(title,'structures');
-   h+=rows(arr,'structures');
+   h+=subheading(title);
+   h+=rows(arr,`structures:${key}`);
+   h+=manualAddRow(`structures:${key}`);
    h+=`<tr class="border-b"><td colspan="5" class="py-2 px-2 text-right font-semibold">Subtotal - ${escapeHtml(title)}</td><td class="py-2 px-2 text-right font-semibold">${money(arr.reduce((s,i)=>s+i.amount,0),2)}</td></tr>`;
  });
  const ungrouped=structures.filter(i=>!i.groupKey);
- if(ungrouped.length) h+=rows(ungrouped,'structures');
+ if(ungrouped.length){h+=subheading('Additional Structural Works');h+=rows(ungrouped,'structures');h+=manualAddRow('structures');}
 
- h+=heading('ARCHITECTURAL WORKS','architecture',false);
+ h+=heading('ARCHITECTURAL WORKS');
  rooms.forEach(r=>{
    const arr=archByRoom[r.roomId]||[];
    if(!arr.length)return;
-   h+=subheading(`${r.label} (${formatQty(r.area)} sqft)`,`room:${r.roomId}`);
+   h+=subheading(`${r.label} (${formatQty(r.area)} sqft)`);
    h+=rows(arr,`room:${r.roomId}`);
+   h+=manualAddRow(`room:${r.roomId}`);
    h+=`<tr class="border-b"><td colspan="5" class="py-2 px-2 text-right font-semibold">Subtotal - ${escapeHtml(r.label)}</td><td class="py-2 px-2 text-right font-semibold">${money(arr.reduce((s,i)=>s+i.amount,0),2)}</td></tr>`;
  });
 
- h+=heading('ELECTRICAL WORKS','electrical');
+ h+=heading('ELECTRICAL WORKS');
  h+=rows(electrical,'electrical');
+ h+=manualAddRow('electrical');
  if(electrical.length) h+=`<tr class="border-b"><td colspan="5" class="py-2 px-2 text-right font-semibold">Subtotal - Electrical Works</td><td class="py-2 px-2 text-right font-semibold">${money(electrical.reduce((s,i)=>s+i.amount,0),2)}</td></tr>`;
 
  h+='</tbody><tfoot><tr class="border-t-2"><td colspan="4" class="py-4 px-2 text-right font-bold">TOTAL</td><td class="py-4 px-2 text-right font-bold text-lg">'+money(total,2)+'</td><td class="contractor-only"></td></tr></tfoot></table>';
