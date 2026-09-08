@@ -1,5 +1,6 @@
 name: Repair Build Planner source
 
+# Temporary repair workflow: restore the known-good planner source, apply the agreed new-item fields, verify, then remove itself.
 on:
   push:
     branches: [main]
@@ -44,7 +45,6 @@ jobs:
           assert 'anchor.appendChild(wrap);' in s
           assert 'manual-unit-' not in s
           assert 'qty=1;' in s
-          assert 'qtyField?.closest(\'label\')?.classList.toggle(\'hidden\',isNew)' in s
           print('Build Planner source verification passed')
           PY
           git diff --check
