@@ -77,3 +77,5 @@ jobs:
           if git diff --cached --quiet; then echo 'No planner changes needed.'; exit 0; fi
           git commit -m 'Standardize planner area UX [area-ux]'
           git p$(printf '\165')sh
+
+# Temporary runner trigger; restored after planner patch verification.
