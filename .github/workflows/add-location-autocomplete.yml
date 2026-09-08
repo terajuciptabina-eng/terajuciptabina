@@ -25,30 +25,20 @@ jobs:
           for p in files:
               s = p.read_text(encoding='utf-8')
               original = s
-
-              # Remove obsolete mobile overflow rule. The quotation card layout now
-              # owns the mobile width and must not inherit a fixed 680px table width.
               s = s.replace(
                   '#estimateContent{overflow-x:auto}#estimateContent table,#quotationContent table{min-width:680px}',
                   '#estimateContent{overflow:visible}'
               )
-
-              # Keep the rate-schedule mobile minimum width, but remove the obsolete
-              # 760px quotation-table minimum that caused mobile overflow.
               s = s.replace(
                   '@media(max-width:767px){\n #rateScheduleContent table{min-width:560px!important}\n #estimateContent .detailed-quotation-table{min-width:760px!important}\n}',
                   '@media(max-width:767px){\n #rateScheduleContent table{min-width:560px!important}\n}'
               )
-
-              # Remove the older description-only mobile patch if it exists; the
-              # consolidated mobile quotation card rules supersede it.
               s = re.sub(
                   r'\n?\s*<style id="homeowner-mobile-description-fix">.*?</style>\s*',
                   '\n',
                   s,
                   flags=re.S
               )
-
               if s != original:
                   p.write_text(s, encoding='utf-8')
                   changed.append(str(p))
