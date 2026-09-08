@@ -300,153 +300,20 @@ main>section:not(:first-child){scroll-margin-top:92px} main>section>div:first-ch
 </div></div></div></div>
 <main class="max-w-6xl mx-auto px-6 py-8">
 <section class="planner-hero" style="--planner-hero-image:url('https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=2200&q=88')" data-planner-product-ui="planner-product-ui-v2"><span class="planner-eyebrow">TERAJU WORKS · NEW BUILD</span><h2>Build your home plan.</h2><p>Turn your room schedule into a clear preliminary construction budget, then generate your quotation.</p><div class="planner-meta"><span>01 · PLAN</span><span>02 · PRICE</span><span>03 · REVIEW</span><span>04 · QUOTE</span></div></section>
-<section class="bg-white rounded-2xl shadow-sm p-6 mb-6"><div class="flex justify-between items-center cursor-pointer" onclick="toggleProjectInfo()"><div><h3 class="font-bold text-lg">Project Information</h3><p class="text-sm text-gray-500">Provide the project details to be shown on the estimate and quotation.</p></div><span id="projectArrow">▲</span></div><div id="projectInfo" class="mt-5"><div class="grid md:grid-cols-2 gap-5"><div><label class="block text-sm font-medium mb-2">Customer Name</label><input id="customerName" type="text" placeholder="Optional" class="w-full border rounded-lg px-4 py-3" oninput="updateEstimate();saveContractorState()"></div><div><label class="block text-sm font-medium mb-2">Project Location</label><input id="projectLocation" type="text" placeholder="Start typing location..." class="w-full border rounded-lg px-4 py-3" oninput="updateEstimate();saveContractorState()"></div></div></div></section>
-<section class="contractor-only bg-gray-50 border rounded-xl p-4 mb-6"><div class="flex items-center justify-between gap-4"><div><p class="text-xs uppercase tracking-wide text-gray-500">Contractor Project</p><p class="text-sm text-gray-500 mt-1">Local project data is saved to this Contractor ID.</p></div><div class="text-right"><p class="text-xs text-gray-500">Contractor ID</p><p id="contractorIdDisplay" class="font-bold text-lg">-</p></div></div><div class="mt-4 flex justify-end"><button type="button" onclick="saveContractorState()" class="contractor-only inline-flex bg-black text-white px-4 py-2 rounded-lg text-sm font-semibold">Save Project</button></div></section>
-<section class="bg-white rounded-2xl shadow-sm p-6 mb-6"><div class="mb-5"><h3 class="font-bold text-lg">Building Specification</h3><p class="text-sm text-gray-500">Define the overall building parameters used to estimate structural works.</p></div><div class="grid md:grid-cols-2 gap-5"><div><label class="block text-sm font-medium mb-2">Total Built-up Area (sqft)</label><input id="builtUpArea" type="number" min="0" step="1" value="0" readonly class="w-full border rounded-lg px-4 py-3 bg-gray-100" title="Automatically calculated from the total area/room schedule."></div><div><label class="block text-sm font-medium mb-2">No. of Storeys</label><select id="numStoreys" class="w-full border rounded-lg px-4 py-3" onchange="updateEstimate();saveContractorState()"><option value="1" selected>1 Storey</option><option value="2">2 Storey</option></select></div></div></section>
-<section class="bg-white rounded-2xl shadow-sm p-6 mb-6"><div class="flex justify-between items-center mb-5 gap-4"><div><h3 class="font-bold text-lg">Areas</h3><p class="text-sm text-gray-500">Add each area. Architectural works are calculated individually based on room type and floor area.</p></div><button type="button" onclick="addRoom()" class="no-print bg-black text-white px-4 py-2 rounded-lg text-sm font-medium">+ Add Area</button></div><div class="no-print bg-gray-50 border rounded-xl p-4 mb-5 text-sm text-gray-600"><strong class="text-gray-800">Guidance:</strong> Select the area type and enter the floor area in sqft. Door and window quantities are assigned automatically according to room type. Your area selections are used to prepare a preliminary construction budget.</div><div id="roomsContainer" class="space-y-4"></div></section>
-<section id="rateScheduleSection" class="contractor-only no-print bg-white rounded-2xl shadow-sm p-6 mb-6"><div class="flex justify-between items-center cursor-pointer" onclick="toggleRateSchedule()"><div><h3 class="font-bold text-lg">Rate Schedule</h3><p class="text-sm text-gray-500">Hidden by default. Open this only when you need to amend standard rates.</p></div><span id="rateScheduleArrow">▼</span></div><div id="rateSchedulePanel" class="hidden mt-5"><div class="mb-3"><button type="button" onclick="resetRatesToDefault()" class="border px-4 py-2 rounded-lg text-sm">Reset to Default Rates</button></div><div id="rateScheduleContent" class="overflow-x-auto"></div></div></section>
-<section class="bg-white rounded-2xl shadow-sm p-6"><div class="flex justify-between items-start mb-6"><div><p class="text-xs uppercase tracking-wider text-gray-500">Preliminary Estimate</p><h3 class="text-2xl font-bold">Construction Budget</h3></div><div class="text-right"><p class="text-xs text-gray-500">Estimate No.</p><p id="estimateNumber" class="font-bold"></p></div></div><div id="customerSummary" class="grid md:grid-cols-4 gap-5 mb-6 text-sm"></div><div id="estimateContent" class="overflow-x-auto"></div><div class="contractor-only no-print mt-5 flex justify-end gap-3"><button type="button" onclick="showRemovedItems()" class="border px-4 py-2 rounded-lg text-sm">Show Removed Items</button><button type="button" onclick="restoreAllItems()" class="border px-4 py-2 rounded-lg text-sm">Restore All Items</button></div><div class="border-t mt-6 pt-6"><div class="flex justify-between mb-2"><span class="font-semibold text-lg">Rooms Total Area</span><span id="roomsTotalArea" class="font-bold text-xl">0 sqft</span></div><div class="flex justify-between mb-2"><span class="font-semibold text-lg">Declared Built-up Area</span><span id="totalBuiltArea" class="font-bold text-xl">600 sqft</span></div><div class="flex justify-between"><span class="font-semibold text-lg">Estimated Total</span><span id="grandTotal" class="font-bold text-3xl">RM 0</span></div></div></section>
-<section id="quotationGenerator" class="no-print bg-white rounded-2xl shadow-sm p-6 mt-6">
-  <div class="mb-5">
-    <p class="text-xs uppercase tracking-wider text-gray-500">Quotation</p>
-    <h3 class="font-bold text-xl mt-1">Choose Quotation Type</h3>
-    <p class="text-sm text-gray-500 mt-2">Select the quotation format, then generate one quotation using the final estimate values above.</p>
-  </div>
-  <div class="quotation-type-grid">
-    <label class="quotation-type-card is-selected">
-      <input type="radio" name="quotationType" value="simple" checked>
-      <span class="quotation-type-radio" aria-hidden="true"></span>
-      <span class="quotation-type-copy">
-        <strong>Simple Quotation</strong>
-        <small>Work descriptions with section / room totals only.</small>
-      </span>
-    </label>
-    <label class="quotation-type-card">
-      <input type="radio" name="quotationType" value="detail">
-      <span class="quotation-type-radio" aria-hidden="true"></span>
-      <span class="quotation-type-copy">
-        <strong>Detailed Quotation</strong>
-        <small>Full quantity, unit, rate, amount and subtotal breakdown.</small>
-        <em>~~RM49~~ FREE during promotion</em>
-      </span>
-    </label>
-  </div>
-  <div class="quotation-generator-tip">
-    <strong>Review before generating</strong>
-    <span>The quotation uses the final customer, project, room, quantity and rate values shown in the estimate.</span>
-  </div>
-  <button type="button" onclick="generateQuotation()" class="quotation-generate-btn">Generate Quotation</button>
-</section>
-
-<section id="quotationDocument" class="hidden bg-white rounded-2xl shadow-sm p-8 mt-6">
-  <div class="quotation-preview-heading no-print">
-    <div>
-      <p class="text-xs uppercase tracking-wider text-gray-500">Generated Quotation</p>
-      <h3 class="text-2xl font-bold mt-1">Quotation Preview</h3>
-      <p class="text-sm text-gray-500 mt-1">Visual document preview — scaled automatically for desktop and mobile.</p>
-    </div>
-  </div>
-  <div id="quotationPreview" class="quotation-preview-stage no-print" aria-live="polite">
-    <div class="quotation-preview-loading">Your quotation preview will appear here.</div>
-  </div>
-  <div id="quotationContent" class="quotation-render-source" aria-hidden="true"></div>
-  <div id="quotationLockOverlay" class="quotation-lock-overlay no-print hidden" aria-hidden="true"><div class="quotation-lock-card"><div class="quotation-lock-icon" aria-hidden="true">🔒</div><h3 class="text-xl font-bold">Detailed Quotation Locked</h3><p class="text-sm text-gray-600 mt-2">The detailed quotation has been generated. Unlock it to view the full item-by-item rates and amounts.</p><button type="button" onclick="unlockDetailedQuotation()" class="mt-5 w-full bg-black text-white px-5 py-3 rounded-xl font-semibold">Unlock Detailed Quotation</button></div></div>
-  <div id="quotationPrintActions" class="no-print mt-6 pt-5 border-t flex justify-end">
-    <button type="button" onclick="printQuotation()" class="bg-black text-white px-5 py-3 rounded-lg font-semibold">Download PDF</button>
-  </div>
-</section>
-</main>
-<script>
-const BASE_AREA=600;
-const DEFAULT_RATES={footingConc:550,footingFw:4.18,footingRebar:15,slabConc:550,slabBrc:6.5,beamConc:350,beamFw:4.18,beamRebar:15,colConc:550,colFw:4.18,colRebar:15,flatRoofConc:550,flatRoofFw:4.18,flatRoofBrc:6.5,cChannel:4,metalSheet:3.25,roofDesignConc:550,roofDesignFw:4.18,roofDesignRebar:70,apronConc:350,apronFw:13.72,apronBrc:15,drainage:25,ceilingInt:15,ceilingExt:20,floorTileInt:4.18,floorTileExt:5.57,paintInt:1.39,paintExt:2.32,door:600,window:600,waterTank:500,septicTank:1500,bathWallTile:4.18,bathFloorTile:4.18,bathPiping:1000,bathShower:120,bathTap:30,bathWc:500,bathBasin:400,dbBox:1000,wiring:20,powerPoint:50,switch:50,lighting:250,fan:600,aircond:300,earthing:1500,permit:8500,prelim:12000};
-let RATES={...DEFAULT_RATES};
-const AUDIENCE=new URLSearchParams(location.search).get('audience')||'homeowner';
-const IS_CONTRACTOR=AUDIENCE==='contractor';
-const IS_HOMEOWNER=!IS_CONTRACTOR;
-const CONTRACTOR_ID=new URLSearchParams(location.search).get('contractorId')||localStorage.getItem('teraju.contractor.local.v1.activeContractorId')||'';
-const CONTRACTOR_STORAGE_PREFIX='teraju.contractor.local.v1';
-let restoringContractorState=false;
-function isHomeowner(){return IS_HOMEOWNER}
-function contractorStorageKey(){return CONTRACTOR_ID?`${CONTRACTOR_STORAGE_PREFIX}.${CONTRACTOR_ID}.build`:''}
-const ROOM_TYPES={living:'Living / Family',dining:'Dining',bedroom:'Bedroom',kitchen:'Kitchen',store:'Store / Utility',bathroom:'Bathroom',porch:'Car Porch / Entrance',other:'Other Area'};
-const ROOM_DEFAULTS={living:{doors:1,windows:2},dining:{doors:0,windows:1},bedroom:{doors:1,windows:1},kitchen:{doors:1,windows:1},store:{doors:1,windows:0},bathroom:{doors:1,windows:0},porch:{doors:0,windows:0},other:{doors:0,windows:1}};
-const INTEGER_UNITS=new Set(['no','set','ls','unit']);
-function isIntegerUnit(unit){return INTEGER_UNITS.has(String(unit||'').toLowerCase())}
-const STRUCT_GROUPS=[{key:'footing',title:'Footing',items:[{id:'str-footing-conc',desc:'Concrete G15',unit:'m3',qty:.5,rateKey:'footingConc'},{id:'str-footing-fw',desc:'Formwork',unit:'sqft',qty:129.17,rateKey:'footingFw'},{id:'str-footing-rebar',desc:'Rebar',unit:'kg',qty:80.5,rateKey:'footingRebar'}]},{key:'ground-slab',title:'Ground Slab',items:[{id:'str-slab-conc',desc:'Concrete G25',unit:'m3',qty:8.361,rateKey:'slabConc'},{id:'str-slab-brc',desc:'Rebar BRC A7 double layer',unit:'sqft',qty:1200,rateKey:'slabBrc'}]},{key:'ground-beam',title:'Ground Beam',items:[{id:'str-gb-conc',desc:'Concrete G25',unit:'m3',qty:3.552,rateKey:'beamConc'},{id:'str-gb-fw',desc:'Formwork',unit:'sqft',qty:509.78,rateKey:'beamFw'},{id:'str-gb-rebar',desc:'Rebar',unit:'kg',qty:710.4,rateKey:'beamRebar'}]},{key:'roof-beam',title:'Roof Beam',items:[{id:'str-rb-conc',desc:'Concrete G25',unit:'m3',qty:3.552,rateKey:'beamConc'},{id:'str-rb-fw',desc:'Formwork',unit:'sqft',qty:509.78,rateKey:'beamFw'},{id:'str-rb-rebar',desc:'Rebar',unit:'kg',qty:710.4,rateKey:'beamRebar'}]},{key:'column',title:'Column',items:[{id:'str-col-conc',desc:'Concrete G25',unit:'m3',qty:.945,rateKey:'colConc'},{id:'str-col-fw',desc:'Formwork',unit:'sqft',qty:271.25,rateKey:'colFw'},{id:'str-col-rebar',desc:'Rebar',unit:'kg',qty:189,rateKey:'colRebar'}]},{key:'roof',title:'Flat Roof & Roofing',items:[{id:'str-fr-conc',desc:'Flat roof – Concrete G25',unit:'m3',qty:.6315,rateKey:'flatRoofConc'},{id:'str-fr-fw',desc:'Flat roof – Formwork',unit:'sqft',qty:67.97,rateKey:'flatRoofFw'},{id:'str-fr-brc',desc:'Flat roof – Rebar BRC A7 double layer',unit:'sqft',qty:135.95,rateKey:'flatRoofBrc'},{id:'str-roof-c',desc:'C-channel for roof structures',unit:'m',qty:781.2,rateKey:'cChannel'},{id:'str-roof-m',desc:'Metal roofing sheet',unit:'sqft',qty:572.2,rateKey:'metalSheet'}]},{key:'external',title:'Infrastructure / Outside Works',items:[{id:'str-apron-c',desc:'Apron – Concrete G15',unit:'m3',qty:.9,rateKey:'apronConc'},{id:'str-apron-f',desc:'Apron – Formwork',unit:'ft',qty:62.01,rateKey:'apronFw'},{id:'str-apron-b',desc:'Apron – Rebar BRC A7',unit:'kg',qty:62.99,rateKey:'apronBrc'},{id:'str-drain',desc:'Drainage – small U-shape scupper drain',unit:'ft',qty:100,rateKey:'drainage'},{id:'arch-septik',desc:'Septic tank',unit:'no',qty:1,rateKey:'septicTank',scale:false},{id:'arch-watertank',desc:'Water tank',unit:'no',qty:1,rateKey:'waterTank',scale:false}]},{key:'special',title:'Special Item',items:[{id:'str-roof-dc',desc:'Design roof structure – Concrete G25',unit:'m3',qty:.3,rateKey:'roofDesignConc'},{id:'str-roof-df',desc:'Design roof structure – Formwork',unit:'sqft',qty:161.46,rateKey:'roofDesignFw'},{id:'str-roof-dr',desc:'Design roof structure – Rebar',unit:'kg',qty:54,rateKey:'roofDesignRebar'}]}];
-const RATE_SCHEDULE=[{title:'Preliminaries',rows:[{key:'permit',label:'Building plan / permit & engineer’s drawings',unit:'ls'},{key:'prelim',label:'Preliminaries, mobilisation & project management',unit:'ls'}]},{title:'Structures',rows:[{key:'footingConc',label:'Footing – Concrete G15',unit:'m3'},{key:'slabConc',label:'Ground slab – Concrete G25',unit:'m3'},{key:'beamConc',label:'Beam – Concrete G25',unit:'m3'},{key:'colConc',label:'Column – Concrete G25',unit:'m3'}]},{title:'Architecture',rows:[{key:'ceilingInt',label:'Internal ceiling',unit:'sqft'},{key:'floorTileInt',label:'Internal floor tiles',unit:'sqft'},{key:'paintInt',label:'Internal painting',unit:'sqft'},{key:'door',label:'Door',unit:'no'},{key:'window',label:'Window',unit:'no'}]},{title:'Bathroom',rows:[{key:'bathFloorTile',label:'Bathroom floor tiles',unit:'sqft'},{key:'bathWallTile',label:'Bathroom wall tiles',unit:'sqft'},{key:'bathPiping',label:'Bathroom piping',unit:'ls'},{key:'bathWc',label:'WC',unit:'no'},{key:'bathBasin',label:'Basin',unit:'no'}]},{title:'Electrical',rows:[{key:'dbBox',label:'DB box',unit:'no'},{key:'wiring',label:'Wiring',unit:'m'},{key:'powerPoint',label:'Power point',unit:'no'},{key:'switch',label:'Switch',unit:'no'},{key:'lighting',label:'Lighting',unit:'no'},{key:'fan',label:'Ceiling fan',unit:'no'},{key:'aircond',label:'Aircond point / provision',unit:'no'},{key:'earthing',label:'Earthing',unit:'set'}]}];
-let roomCounter=0;const excludedItems=new Set(),customRates=new Map(),customQuantities=new Map(),customDescriptions=new Map(),customRoomLabels=new Map();const manualItems=new Map();let standardRateItems=[];let quotationNumber=null;
-function normalizeRate(v){return Math.max(0,Math.round((Number(v)||0)*100)/100)}
-function normalizeQuantity(v){return Math.max(0,Math.ceil(Number(v)||0))}
-function safeParseJson(v,fallback){try{return JSON.parse(v)}catch(e){return fallback}}
-function serializeMap(map){return [...map.entries()]}
-function restoreMap(map,entries){map.clear();(Array.isArray(entries)?entries:[]).forEach(([k,v])=>map.set(k,v))}
-function standardLibrary(){
- const structural=[];
- const structuralRateKeys=new Set();
- STRUCT_GROUPS.forEach(g=>g.items.forEach(s=>{
-  structuralRateKeys.add(s.rateKey);
-  structural.push({id:`rate-${s.rateKey}`,key:s.rateKey,description:s.desc,unit:s.unit,rate:normalizeRate(RATES[s.rateKey]),category:'structures',groupKey:g.key,groupTitle:g.title,custom:false});
- }));
- const items=[];
- RATE_SCHEDULE.forEach(g=>g.rows.forEach(r=>{
-  const category=g.title==='Preliminaries'?'preliminaries':g.title==='Structures'?'structures':g.title==='Electrical'?'electrical':'architecture';
-  if(category==='structures' && structuralRateKeys.has(r.key))return;
-  items.push({id:`rate-${r.key}`,key:r.key,description:r.label,unit:r.unit,rate:normalizeRate(RATES[r.key]),category,groupTitle:g.title,custom:false});
- }));
- return [...items,...structural,...standardRateItems.map(x=>({...x,rate:normalizeRate(x.rate),custom:true}))];
-}
-function standardItemOptions(targetKey){
- const list=standardLibrary().filter(x=>{
-  if(targetKey==='prelim')return x.category==='preliminaries';
-  if(targetKey==='electrical')return x.category==='electrical';
-  if(targetKey.startsWith('room:'))return x.category==='architecture';
-  if(targetKey.startsWith('structures:'))return x.category==='structures'&&x.groupKey===targetKey.slice(11);
-  return false;
- });
- return list.map(x=>`<option value="${escapeHtml(x.id)}">${escapeHtml(x.description)} — ${money(x.rate,2)}</option>`).join('');
-}
-function saveContractorState(){
- if(!IS_CONTRACTOR||restoringContractorState||!CONTRACTOR_ID)return;
- const state={customerName:document.getElementById('customerName')?.value||'',projectLocation:document.getElementById('projectLocation')?.value||'',builtUpArea:document.getElementById('builtUpArea')?.value||'',numStoreys:document.getElementById('numStoreys')?.value||'1',rooms:[...document.querySelectorAll('#roomsContainer .room-card')].map(r=>({id:r.id,name:r.querySelector('.room-name')?.value||'',type:r.querySelector('.room-type')?.value||'other',area:r.querySelector('.room-area')?.value||''})),rates:{...RATES},customRates:serializeMap(customRates),customQuantities:serializeMap(customQuantities),customDescriptions:serializeMap(customDescriptions),customRoomLabels:serializeMap(customRoomLabels),excludedItems:[...excludedItems],manualItems:[...manualItems.entries()],standardRateItems:[...standardRateItems],quotationType:getSelectedQuotationType()};
- localStorage.setItem(contractorStorageKey(),JSON.stringify(state));
-}
-function loadContractorState(){
- if(!IS_CONTRACTOR||!CONTRACTOR_ID)return false; const raw=localStorage.getItem(contractorStorageKey()); if(!raw)return false; const state=safeParseJson(raw,null); if(!state)return false;
- restoringContractorState=true;
- try{
-  if(document.getElementById('customerName'))document.getElementById('customerName').value=state.customerName||'';
-  if(document.getElementById('projectLocation'))document.getElementById('projectLocation').value=state.projectLocation||'';
-  if(document.getElementById('builtUpArea'))document.getElementById('builtUpArea').value=state.builtUpArea||0;
-  if(document.getElementById('numStoreys'))document.getElementById('numStoreys').value=state.numStoreys||'1';
-  RATES={...DEFAULT_RATES,...(state.rates||{})}; restoreMap(customRates,state.customRates);restoreMap(customQuantities,state.customQuantities);restoreMap(customDescriptions,state.customDescriptions);restoreMap(customRoomLabels,state.customRoomLabels);excludedItems.clear();(state.excludedItems||[]).forEach(x=>excludedItems.add(x));standardRateItems=Array.isArray(state.standardRateItems)?state.standardRateItems:[];manualItems.clear();(state.manualItems||[]).forEach(([k,v])=>manualItems.set(k,v));
-  document.getElementById('roomsContainer').innerHTML='';roomCounter=0;const restoredRooms=(state.rooms||[]).filter(r=>Number(r.area)>0);restoredRooms.forEach(r=>addRoom(r.type||'other',r.area||'',r.id,r.name||''));
-  const q=document.querySelector(`input[name="quotationType"][value="${state.quotationType==='detail'?'detail':'simple'}"]`);if(q)q.checked=true;
- } finally {restoringContractorState=false;}
- updateEstimate(); return true;
-}
-function addManualItemPrompt(targetKey){
- if(!IS_CONTRACTOR)return;
- const existing=document.getElementById(`manual-add-${targetKey}`);
- if(existing){existing.remove();return;}
- const anchor=[...document.querySelectorAll('[data-manual-anchor]')].find(el=>el.getAttribute('data-manual-anchor')===targetKey);
- if(!anchor)return;
- const wrap=document.createElement('div');
- wrap.id=`manual-add-${targetKey}`;
- wrap.className='no-print mt-3 border rounded-xl bg-gray-50 p-4';
- wrap.innerHTML=`<div class="flex flex-wrap items-center justify-between gap-3 mb-3"><p class="font-semibold text-sm">Add Item</p><button type="button" onclick="addManualItemPrompt('${targetKey}')" class="text-xs text-gray-500">Cancel</button></div><div class="grid md:grid-cols-[2fr_1fr_1fr_auto] gap-3 items-end"><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Standard Rate Item</span><select id="manual-select-${targetKey}" class="w-full border rounded-lg px-3 py-2 bg-white" onchange="prepareManualItem('${targetKey}')"><option value="">Select an item…</option>${standardItemOptions(targetKey)}<option value="__new__">＋ Create New Standard Item</option></select></label><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Quantity</span><input id="manual-qty-${targetKey}" type="number" min="0" step="1" value="1" class="w-full border rounded-lg px-3 py-2 bg-white"></label><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Rate (RM)</span><input id="manual-rate-${targetKey}" type="number" min="0" step="0.01" value="0.00" class="w-full border rounded-lg px-3 py-2 bg-white"></label><button type="button" onclick="saveManualItem('${targetKey}')" class="bg-black text-white px-4 py-2 rounded-lg text-sm font-semibold">Add</button></div><div id="manual-new-${targetKey}" class="hidden grid md:grid-cols-2 gap-3 mt-3"><label><span class="block text-xs font-medium text-gray-500 mb-1">New Description</span><input id="manual-desc-${targetKey}" type="text" placeholder="e.g. Additional structural work" class="w-full border rounded-lg px-3 py-2 bg-white"></label><label><span class="block text-xs font-medium text-gray-500 mb-1">Unit</span><input id="manual-unit-${targetKey}" type="text" value="ls" class="w-full border rounded-lg px-3 py-2 bg-white"></label></div>`;
+<section class="bg-white rounded-2xl shadow-sm p-6 mb-6"><div class="flex justify-between items-center cursor-pointer" onclick="toggleProjectInfo()"><div><h3 class="font-bold text-lg">Project Information</h3><p class="text-sm text-gray-500">Provide the project details to be shown on the estimate and quotation.</p></div><span id="projectArrow">▲</span></div><div id="projectInfo" class="mt-5"><div class="grid md:grid-cols-2 gap-5"><div></div>`;
  anchor.appendChild(wrap);
 }
-function prepareManualItem(targetKey){const select=document.getElementById(`manual-select-${targetKey}`),rate=document.getElementById(`manual-rate-${targetKey}`),box=document.getElementById(`manual-new-${targetKey}`),item=standardLibrary().find(x=>x.id===select?.value);if(select?.value==='__new__'){box?.classList.remove('hidden');if(rate)rate.value='0.00';return}box?.classList.add('hidden');if(item&&rate)rate.value=normalizeRate(item.rate).toFixed(2)}
+function prepareManualItem(targetKey){const select=document.getElementById(`manual-select-${targetKey}`),rate=document.getElementById(`manual-rate-${targetKey}`),box=document.getElementById(`manual-new-${targetKey}`),qtyField=document.getElementById(`manual-qty-${targetKey}`),item=standardLibrary().find(x=>x.id===select?.value),isNew=select?.value==='__new__';qtyField?.closest('label')?.classList.toggle('hidden',isNew);if(isNew){box?.classList.remove('hidden');if(rate)rate.value='0.00';return}box?.classList.add('hidden');if(item&&rate)rate.value=normalizeRate(item.rate).toFixed(2)}
 function saveManualItem(targetKey){
  if(!IS_CONTRACTOR)return;
  const select=document.getElementById(`manual-select-${targetKey}`);
- const qty=normalizeQuantity(document.getElementById(`manual-qty-${targetKey}`)?.value);
+ let qty=normalizeQuantity(document.getElementById(`manual-qty-${targetKey}`)?.value);
  const rate=normalizeRate(document.getElementById(`manual-rate-${targetKey}`)?.value);
  let item=standardLibrary().find(x=>x.id===select?.value);
  let description=item?.description||'',unit=item?.unit||'ls',category=item?.category||'',groupKey=item?.groupKey||null,groupTitle=item?.groupTitle||'';
  if(select?.value==='__new__'){
   description=String(document.getElementById(`manual-desc-${targetKey}`)?.value||'').trim();
-  unit=String(document.getElementById(`manual-unit-${targetKey}`)?.value||'ls').trim()||'ls';
+  unit="ls"; qty=1;
   if(!description){alert('Please enter the new item description.');return}
   if(targetKey==='prelim'){category='preliminaries';groupTitle='Preliminaries'}
   else if(targetKey==='electrical'){category='electrical';groupTitle='Electrical Works'}
