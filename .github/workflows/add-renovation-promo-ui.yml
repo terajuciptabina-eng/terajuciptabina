@@ -17,12 +17,11 @@ jobs:
           ref: main
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Inject promo UI script and fix mobile subtotal
+      - name: Inject promo UI script
         shell: bash
         run: |
           python - <<'PY'
           from pathlib import Path
-          import re
           path = Path('quotation/renovationplanner.html')
           text = path.read_text(encoding='utf-8')
           tag = '<script src="detailed-quotation-promo-ui.js"></script>'
@@ -31,34 +30,7 @@ jobs:
               if marker not in text:
                   raise SystemExit('Could not find </body> in renovationplanner.html')
               text = text.replace(marker, tag + '\n' + marker, 1)
-          path.write_text(text, encoding='utf-8')
-
-          files=[Path('quotation/buildplanner.html'),Path('quotation/renovationplanner.html')]
-          pattern=re.compile(r'''  #estimateContent table tr:has\(td:first-child \+ td:last-child\) td:first-child \{.*?  \}\n  #estimateContent table tr:has\(td:first-child \+ td:last-child\) td:last-child \{.*?  \}''', re.S)
-          new='''  #estimateContent table tr.border-b:has(td[colspan="4"]) td:nth-child(5) {
-    text-align:right !important;
-    white-space:nowrap !important;
-    overflow-wrap:normal !important;
-    word-break:normal !important;
-    font-size:8px !important;
-    padding-left:1px !important;
-    padding-right:1px !important;
-  }
-  #estimateContent table tr.border-b:has(td[colspan="4"]) td:nth-child(6) {
-    text-align:right !important;
-    white-space:nowrap !important;
-    overflow-wrap:normal !important;
-    word-break:normal !important;
-    font-size:8px !important;
-    padding-left:1px !important;
-    padding-right:1px !important;
-  }'''
-          for p in files:
-              s=p.read_text(encoding='utf-8')
-              s2,n=pattern.subn(new,s,count=1)
-              if n!=1:
-                  raise SystemExit(f'Expected existing mobile subtotal selector not found exactly once in {p}: {n}')
-              p.write_text(s2,encoding='utf-8')
+              path.write_text(text, encoding='utf-8')
           PY
 
       - name: Commit changes
@@ -66,10 +38,10 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add quotation/renovationplanner.html quotation/buildplanner.html
+          git add quotation/renovationplanner.html
           if git diff --cached --quiet; then
             echo "No changes needed."
             exit 0
           fi
-          git commit -m "Fix mobile subtotal alignment [subtotal-fix]"
+          git commit -m "Add Renovation Planner promo UI [renovation-promo-ui]"
           git push origin main
