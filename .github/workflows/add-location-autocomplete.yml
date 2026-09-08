@@ -26,7 +26,7 @@ jobs:
               s=p.read_text(encoding='utf-8')
               if location_tag not in s:
                   s=s.replace('</body>', location_tag+'\n</body>',1)
-              marker='/* Mobile quotation — same table structure as desktop, responsive shrink */'
+              marker='/* Mobile quotation'
               if marker not in s:
                   raise SystemExit(f'Mobile quotation block not found in {name}')
               start=s.index(marker)
