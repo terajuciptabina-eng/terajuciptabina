@@ -320,6 +320,25 @@
   @media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
 }
 
+/* TERAJU WORKS planner product UI — presentation only */
+:root{--tw-ink:#111827;--tw-muted:#6b7280;--tw-line:#e5e7eb}
+body{background:#f4f5f7!important;color:var(--tw-ink)!important}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(circle at 12% 8%,rgba(17,24,39,.07),transparent 28%),radial-gradient(circle at 88% 18%,rgba(100,116,139,.08),transparent 30%);z-index:-1}
+header{position:sticky!important;top:0!important;z-index:100!important;background:rgba(255,255,255,.88)!important;border-bottom:1px solid rgba(17,24,39,.08)!important;backdrop-filter:blur(18px)!important;-webkit-backdrop-filter:blur(18px)!important}
+header>div{max-width:1180px!important;padding-top:13px!important;padding-bottom:13px!important} header img{height:42px!important;width:auto!important;filter:drop-shadow(0 4px 10px rgba(0,0,0,.08))} header h1{letter-spacing:.12em;font-size:14px!important} header p:not(#contractorBadge){letter-spacing:.08em;text-transform:uppercase}
+main{max-width:1180px!important;padding-top:24px!important;padding-bottom:110px!important}
+main>section{border:1px solid rgba(17,24,39,.07)!important;box-shadow:0 14px 40px rgba(15,23,42,.055)!important;border-radius:24px!important;background:rgba(255,255,255,.96)!important;transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease}
+main>section:not(:first-child):hover{box-shadow:0 18px 48px rgba(15,23,42,.08)!important;border-color:rgba(17,24,39,.11)!important}
+.planner-hero{position:relative!important;overflow:hidden!important;min-height:270px!important;padding:34px!important;color:#fff!important;border:0!important;background:#111827!important;box-shadow:0 24px 60px rgba(15,23,42,.18)!important}
+.planner-hero:before{content:"";position:absolute;inset:0;background:linear-gradient(110deg,rgba(2,6,23,.93) 0%,rgba(2,6,23,.73) 48%,rgba(2,6,23,.35) 100%),var(--planner-hero-image);background-size:cover;background-position:center;z-index:0}.planner-hero>*{position:relative;z-index:1}
+.planner-eyebrow{display:inline-flex!important;padding:7px 11px;border:1px solid rgba(255,255,255,.2);border-radius:999px;background:rgba(255,255,255,.09);font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase}.planner-hero h2{font-size:clamp(34px,5vw,58px)!important;line-height:.98!important;letter-spacing:-.04em!important;margin-top:18px!important;margin-bottom:14px!important;color:#fff!important;max-width:700px}.planner-hero p{max-width:700px;color:rgba(255,255,255,.78)!important;font-size:15px!important;line-height:1.65!important;margin:0!important}.planner-meta{display:flex;flex-wrap:wrap;gap:9px;margin-top:24px}.planner-meta span{padding:8px 11px;border-radius:10px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.12);font-size:12px;font-weight:700;color:rgba(255,255,255,.9)}
+.planner-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:0 0 18px!important;padding:0!important;background:transparent!important;border:0!important;box-shadow:none!important}.planner-steps a{display:flex;align-items:center;gap:10px;padding:13px 14px;border:1px solid var(--tw-line);border-radius:16px;background:#fff;color:var(--tw-ink);text-decoration:none;font-size:12px;font-weight:800;box-shadow:0 8px 24px rgba(15,23,42,.04);transition:.2s ease}.planner-steps a:hover{transform:translateY(-2px);border-color:#9ca3af;box-shadow:0 12px 28px rgba(15,23,42,.08)}.planner-steps b{display:grid;place-items:center;width:27px;height:27px;border-radius:9px;background:#111827;color:#fff;font-size:11px;flex:0 0 27px}
+main>section:not(:first-child){scroll-margin-top:92px} main>section>div:first-child h3{letter-spacing:-.025em} main>section input,main>section select,main>section textarea{border-color:#dfe3e8!important;border-radius:14px!important;background:#fff!important;box-shadow:inset 0 1px 1px rgba(15,23,42,.02)!important;transition:border-color .18s ease,box-shadow .18s ease} main>section input:focus,main>section select:focus,main>section textarea:focus{border-color:#111827!important;box-shadow:0 0 0 4px rgba(17,24,39,.07)!important;outline:none!important}
+.room-card{border:1px solid #e5e7eb!important;border-radius:20px!important;background:linear-gradient(180deg,#fff,#fafbfc)!important;box-shadow:0 8px 25px rgba(15,23,42,.045)!important;padding:18px!important;transition:.22s ease!important}.room-card:hover{transform:translateY(-2px);border-color:#cbd5e1!important;box-shadow:0 15px 35px rgba(15,23,42,.08)!important}.room-card:before{content:"AREA";display:inline-flex;margin-bottom:12px;padding:5px 8px;border-radius:7px;background:#f1f5f9;color:#64748b;font-size:9px;font-weight:900;letter-spacing:.13em}#roomsContainer{counter-reset:area}#roomsContainer .room-card{counter-increment:area}#roomsContainer .room-card:before{content:"AREA " counter(area,decimal-leading-zero)}
+#customerSummary>div,.homeowner-summary-card{border:1px solid #e8ebef!important;border-radius:16px!important;background:#f8fafc!important;padding:15px!important}#grandTotal{font-size:clamp(28px,4vw,42px)!important;letter-spacing:-.035em!important}#quotationGenerator{background:linear-gradient(145deg,#fff,#f7f8fa)!important}.quotation-type-card,.contractor-quotation-choice{border-radius:18px!important;min-height:124px!important;box-shadow:0 7px 22px rgba(15,23,42,.04)!important}.quotation-type-card.is-selected,.contractor-quotation-choice.is-selected{border-color:#111827!important;box-shadow:0 0 0 2px rgba(17,24,39,.1),0 12px 28px rgba(15,23,42,.08)!important}.quotation-generate-btn,.contractor-generate-btn{border-radius:15px!important;min-height:54px!important;box-shadow:0 12px 25px rgba(17,24,39,.16)!important}#quotationDocument{border-radius:24px!important;box-shadow:0 22px 65px rgba(15,23,42,.12)!important}
+@media(max-width:767px){main{padding:14px!important;padding-bottom:105px!important}main>section{border-radius:20px!important;margin-bottom:14px!important}.planner-hero{min-height:300px!important;padding:23px!important;border-radius:22px!important;margin-bottom:12px!important}.planner-hero h2{font-size:38px!important;margin-top:15px!important}.planner-hero p{font-size:14px!important}.planner-meta{gap:7px!important}.planner-meta span{font-size:10px!important;padding:7px 9px!important}.planner-steps{gap:6px;margin-bottom:14px!important}.planner-steps a{justify-content:center;padding:9px 5px;border-radius:13px;font-size:9px;gap:5px;flex-direction:column;text-align:center}.planner-steps b{width:23px;height:23px;border-radius:7px;font-size:9px;flex-basis:23px}.room-card{border-radius:17px!important;padding:15px!important}#grandTotal{font-size:29px!important}#quotationGenerator{padding:18px!important}}
+@media(max-width:380px){.planner-hero{padding:19px!important}.planner-hero h2{font-size:33px!important}.planner-steps a{font-size:8px}} @media(prefers-reduced-motion:reduce){.planner-steps a,.room-card,main>section{transition:none!important}.planner-steps a:hover,.room-card:hover{transform:none!important}}
+
 </style>
 </head>
 
@@ -362,13 +381,7 @@
 
 <main class="max-w-6xl mx-auto px-6 py-8">
 
-  <section class="mb-7">
-    <h2 class="text-3xl font-bold mb-2">Renovation Planner</h2>
-    <p class="text-gray-600">
-      Select the area type and enter the estimated floor area.
-      The system will automatically generate the renovation breakdown.
-    </p>
-  </section>
+  <section class="planner-hero" style="--planner-hero-image:url('https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=2200&q=88')" data-planner-product-ui="planner-product-ui-v2"><span class="planner-eyebrow">TERAJU WORKS · RENOVATION</span><h2>Plan your renovation.</h2><p>Map the spaces you want to improve, price the works, and turn your renovation scope into a clear quotation.</p><div class="planner-meta"><span>01 · PLAN</span><span>02 · PRICE</span><span>03 · REVIEW</span><span>04 · QUOTE</span></div></section>
 
   <!-- Project Information -->
   <section class="bg-white rounded-2xl shadow-sm p-6 mb-6">
