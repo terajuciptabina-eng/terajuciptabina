@@ -13,19 +13,35 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Refine quotation mobile layout
+      - name: Add planner helper scripts
         run: |
           python - <<'PY'
           from pathlib import Path
-          import re,base64
-          D={'CSS':'LyogTW9iaWxlIHF1b3RhdGlvbiBjYXJkcyDigJQgc2luZ2xlIGNsZWFuIGltcGxlbWVudGF0aW9uICovCkBtZWRpYSAobWF4LXdpZHRoOiA3NjdweCkgewogICNlc3RpbWF0ZUNvbnRlbnR7d2lkdGg6MTAwJSFpbXBvcnRhbnQ7bWF4LXdpZHRoOjEwMCUhaW1wb3J0YW50O21hcmdpbjowIWltcG9ydGFudDtwYWRkaW5nLWJvdHRvbTo4cHghaW1wb3J0YW50O292ZXJmbG93OnZpc2libGUhaW1wb3J0YW50fQogICNlc3RpbWF0ZUNvbnRlbnQ+Lm92ZXJmbG93LXgtYXV0b3t3aWR0aDoxMDAlIWltcG9ydGFudDttYXgtd2lkdGg6MTAwJSFpbXBvcnRhbnQ7b3ZlcmZsb3c6dmlzaWJsZSFpbXBvcnRhbnR9CiAgI2VzdGltYXRlQ29udGVudCB0YWJsZXtkaXNwbGF5OmJsb2NrIWltcG9ydGFudDt3aWR0aDoxMDAlIWltcG9ydGFudDttaW4td2lkdGg6MCFpbXBvcnRhbnQ7bWF4LXdpZHRoOjEwMCUhaW1wb3J0YW50O3RhYmxlLWxheW91dDphdXRvIWltcG9ydGFudDtib3JkZXItY29sbGFwc2U6c2VwYXJhdGUhaW1wb3J0YW50O2JvcmRlci1zcGFjaW5nOjAgMTJweCFpbXBvcnRhbnR9CiAgI2VzdGltYXRlQ29udGVudCB0YWJsZSB0aGVhZHtkaXNwbGF5Om5vbmUhaW1wb3J0YW50fQogICNlc3RpbWF0ZUNvbnRlbnQgdGFibGUgdGJvZHl7ZGlzcGxheTpibG9jayFpbXBvcnRhbnQ7d2lkdGg6MTAwJSFpbXBvcnRhbnR9CiAgI2VzdGltYXRlQ29udGVudCB0YWJsZSB0Ym9keSB0cjpub3QoLnF1b3RhdGlvbi1zZWN0aW9uLXJvdyk6bm90KC5xdW90YXRpb24tc3Vic2VjdGlvbi1yb3cpOm5vdCguYmctZ3JheS0xMDApe2Rpc3BsYXk6Z3JpZCFpbXBvcnRhbnQ7Z3JpZC10ZW1wbGF0ZS1jb2x1bW5zOnJlcGVhdCgzLG1pbm1heCgwLDFmcikpIWltcG9ydGFudDtnYXA6MCAxMHB4IWltcG9ydGFudDt3aWR0aDoxMDAlIWltcG9ydGFudDttaW4td2lkdGg6MCFpbXBvcnRhbnQ7bWF4LXdpZHRoOjEwMCUhaW1wb3J0YW50O21hcmdpbjowIWltcG9ydGFudDtwYWRkaW5nOjE0cHghaW1wb3J0YW50O2JvcmRlcjoxcHggc29saWQgI2U1ZTdlYiFpbXBvcnRhbnQ7Ym9yZGVyLXJhZGl1czoxNnB4IWltcG9ydGFudDtiYWNrZ3JvdW5kOiNmZmYhaW1wb3J0YW50O2JveC1zaGFkb3c6MCA0cHggMTZweCByZ2JhKDE1LDIzLDQyLC4wNSkhaW1wb3J0YW50O292ZXJmbG93OmhpZGRlbgogICNlc3RpbWF0ZUNvbnRlbnQgdGFibGUgdGJvZHkgdHI6bm90KC5xdW90YXRpb24tc2VjdGlvbi1yb3cpOm5vdCgu<...>'}
-          # patch implementation is applied from the existing workflow-safe script
+          location_files=['quotation/renovationplanner.html','quotation/buildplanner.html']
+          quantity_files=['quotation/renovationplanner.html']
+          location_tag='<script src="location-autocomplete.js"></script>'
+          quantity_tag='<script src="quotation-quantity-fix.js?v=20260907"></script>'
+          for name in location_files:
+              p=Path(name)
+              s=p.read_text(encoding='utf-8')
+              if location_tag not in s:
+                  s=s.replace('</body>', location_tag+'\n</body>',1)
+                  p.write_text(s,encoding='utf-8')
+          for name in quantity_files:
+              p=Path(name)
+              s=p.read_text(encoding='utf-8')
+              if quantity_tag not in s:
+                  s=s.replace('</body>', quantity_tag+'\n</body>',1)
+                  p.write_text(s,encoding='utf-8')
           PY
       - name: Commit planner updates
         run: |
           git config user.name 'Teraju Ciptabina Bot'
           git config user.email 'actions@users.noreply.github.com'
           git add quotation/renovationplanner.html quotation/buildplanner.html
-          if git diff --cached --quiet; then echo 'No planner changes needed.'; exit 0; fi
-          git commit -m 'Refine mobile quotation cards [location-autocomplete]'
+          if git diff --cached --quiet; then
+            echo 'No planner changes needed.'
+            exit 0
+          fi
+          git commit -m 'Add quotation quantity rounding [location-autocomplete]'
           git push
