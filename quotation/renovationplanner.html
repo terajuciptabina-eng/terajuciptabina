@@ -243,10 +243,11 @@
     .quotation-generate-btn{margin-top:16px;width:100%;background:#111827;color:#fff;border:0;border-radius:12px;padding:14px 18px;font-weight:700;cursor:pointer;min-height:52px}
     .quotation-generate-btn:hover{background:#000}
     .quotation-preview-heading{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px}
-    .quotation-preview-stage{width:100%;display:flex;flex-direction:column;align-items:center;gap:28px;overflow-x:hidden;background:#e5e7eb;padding:28px 16px;border-radius:16px}
+    .quotation-preview-stage{width:100%;display:flex;flex-direction:column;align-items:center;gap:28px;overflow-x:hidden;background:#e5e7eb;padding:28px 16px;border-radius:16px;box-sizing:border-box}
     .quotation-preview-loading{width:100%;padding:32px 20px;text-align:center;border:1px dashed #d1d5db;border-radius:16px;background:#fafafa;color:#6b7280}
-    .quotation-preview-page{width:min(100%,794px);background:#fff;border:2px solid #cbd5e1;box-shadow:0 14px 36px rgba(15,23,42,.14);overflow:hidden}
+    .quotation-preview-page{position:relative;width:min(210mm,100%);aspect-ratio:210/297;box-sizing:border-box;background:#fff;border:1px solid #cbd5e1;box-shadow:0 14px 36px rgba(15,23,42,.14);overflow:hidden;padding:10mm}
     .quotation-preview-page img{display:block;width:100%;height:auto}
+    .quotation-preview-page-number{position:absolute;left:0;right:0;bottom:3mm;text-align:center;font-size:10px;line-height:1;color:#6b7280;font-family:Arial,sans-serif}
     .quotation-render-source{position:fixed;left:-100000px;top:0;width:794px;background:#fff;visibility:visible;pointer-events:none;z-index:-1}
     @media(max-width:767px){
       .quotation-type-grid{grid-template-columns:1fr}
@@ -1312,6 +1313,14 @@ function initContractorMode() {
       });
       saveContractorState();
     }));
+    document.querySelectorAll(".quotation-type-card").forEach(card => {
+      card.addEventListener("click", () => {
+        const input = card.querySelector('input[name="quotationType"]');
+        if (!input) return;
+        input.checked = true;
+        input.dispatchEvent(new Event("change", { bubbles: true }));
+      });
+    });
 
     if (saved?.quotationType) {
       const input = document.querySelector(`input[name="quotationType"][value="${saved.quotationType}"]`);
@@ -1328,13 +1337,6 @@ function generateQuotationNumber() {
   localStorage.setItem("terajuQuotationNumber", number);
   return "QO" + String(number).padStart(3, "0");
 }
-document.querySelectorAll('input[name="quotationType"]').forEach(input => input.addEventListener("change", () => {
-  document.querySelectorAll(".quotation-type-card").forEach(card => {
-    const radio = card.querySelector('input[name="quotationType"]');
-    if (radio) card.classList.toggle("is-selected", radio.checked);
-  });
-}));
-
 function getSelectedQuotationType() {
   return document.querySelector('input[name="quotationType"]:checked')?.value || "simple";
 }
@@ -1615,7 +1617,7 @@ async function renderQuotationPreview(){
       y+=h;
     }
     window.__quotationPreviewPages=pages;
-    stage.innerHTML=pages.map((src,i)=>`<div class="quotation-preview-page"><img src="${src}" alt="Quotation page ${i+1}"></div>`).join('');
+    stage.innerHTML=pages.map((src,i)=>`<div class="quotation-preview-page"><img src="${src}" alt="Quotation page ${i+1}"><div class="quotation-preview-page-number">Page ${i+1} of ${pages.length}</div></div>`).join('');
   }catch(err){
     console.error(err);
     stage.innerHTML='<div class="quotation-preview-loading">Unable to prepare the visual preview. You can still try Download PDF.</div>';
@@ -1640,7 +1642,7 @@ async function printQuotation(){
     await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js',()=>!!(window.jspdf&&window.jspdf.jsPDF));
     const {jsPDF}=window.jspdf;
     const pdf=new jsPDF({orientation:'p',unit:'mm',format:'a4',compress:true});
-    pages.forEach((src,index)=>{if(index)pdf.addPage();pdf.addImage(src,'JPEG',10,10,190,277,undefined,'FAST');});
+    pages.forEach((src,index)=>{if(index)pdf.addPage();pdf.addImage(src,'JPEG',10,10,190,277,undefined,'FAST');pdf.setFontSize(8);pdf.setTextColor(107,114,128);pdf.text(`Page ${index+1} of ${pages.length}`,105,293,{align:'center'});});
     const safeNumber=(quotationNumber||'quotation').replace(/[^a-z0-9_-]+/gi,'-');
     pdf.save(`Quotation-${safeNumber}.pdf`);
   }catch(err){
