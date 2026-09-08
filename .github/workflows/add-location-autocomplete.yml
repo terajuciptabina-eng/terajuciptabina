@@ -38,7 +38,6 @@ jobs:
         run: |
           python - <<'PY'
           from pathlib import Path
-          import re
 
           mobile_css = r'''/* Mobile quotation — same table structure as desktop, responsive shrink */
           @media (max-width: 767px) {
@@ -69,16 +68,12 @@ jobs:
               overflow-wrap:anywhere !important;
               word-break:break-word !important;
             }
-
-            /* Keep the six desktop columns, but give the numeric columns enough room. */
             #estimateContent table th:nth-child(1),#estimateContent table td:nth-child(1){width:31% !important}
             #estimateContent table th:nth-child(2),#estimateContent table td:nth-child(2){width:7% !important}
             #estimateContent table th:nth-child(3),#estimateContent table td:nth-child(3){width:12% !important}
             #estimateContent table th:nth-child(4),#estimateContent table td:nth-child(4){width:15% !important}
             #estimateContent table th:nth-child(5),#estimateContent table td:nth-child(5){width:20% !important}
             #estimateContent table th:nth-child(6),#estimateContent table td:nth-child(6){width:15% !important}
-
-            /* Unit, Quantity, Rate and Amount stay together instead of splitting characters. */
             #estimateContent table th:nth-child(n+2),
             #estimateContent table td:nth-child(n+2) {
               white-space:nowrap !important;
@@ -92,7 +87,6 @@ jobs:
             #estimateContent table th:nth-child(6),#estimateContent table td:nth-child(6) {
               text-align:center !important;
             }
-
             #estimateContent table input,
             #estimateContent table select,
             #estimateContent table textarea {
@@ -128,8 +122,6 @@ jobs:
               padding:8px 6px !important;
               font-size:11px !important;
             }
-
-            /* Summary/subtotal rows use the same Amount column as the desktop table. */
             #estimateContent table tr:has(td[colspan]) td:first-child {
               text-align:right !important;
               white-space:nowrap !important;
@@ -158,7 +150,9 @@ jobs:
               marker='/* Mobile quotation — same table structure as desktop, responsive shrink */'
               if marker not in s:
                   raise SystemExit(f'Mobile CSS marker not found in {name}; refusing to change file.')
-              s=s[:s.index(marker)] + mobile_css + '\n</style>' + s[s.index('</style>', s.index(marker)) + len('</style>'):]
+              start=s.index(marker)
+              end=s.index('</style>', start)
+              s=s[:start] + mobile_css + '\n' + s[end:]
               p.write_text(s,encoding='utf-8')
           PY
       - name: Commit planner updates
