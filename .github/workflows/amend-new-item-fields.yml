@@ -1,3 +1,4 @@
+# Trigger source amendment
 name: Amend new item fields
 on:
   push:
@@ -17,18 +18,14 @@ jobs:
           files = [Path('quotation/buildplanner.html'), Path('quotation/renovationplanner.html')]
           for p in files:
               s = p.read_text(encoding='utf-8')
-              # New Standard Item must request only Description + Rate.
               s = s.replace('<label><span class="block text-xs font-medium text-gray-500 mb-1">Unit</span><input id="manual-unit-${targetKey}" type="text" value="ls" class="w-full border rounded-lg px-3 py-2 bg-white"></label>', '')
               s = s.replace('<label><span class="block text-xs font-medium text-gray-500 mb-1">Unit</span><input id="manual-unit-${roomId}" type="text" value="ls" class="w-full border rounded-lg px-3 py-2 bg-white"></label>', '')
-              # Build: hide Quantity while creating a new standard item; quantity remains available after the item is added.
               old_b = 'function prepareManualItem(targetKey){const select=document.getElementById(`manual-select-${targetKey}`),rate=document.getElementById(`manual-rate-${targetKey}`),box=document.getElementById(`manual-new-${targetKey}`),item=standardLibrary().find(x=>x.id===select?.value);if(select?.value===\'__new__\'){box?.classList.remove(\'hidden\');if(rate)rate.value=\'0.00\';return}box?.classList.add(\'hidden\');if(item&&rate)rate.value=normalizeRate(item.rate).toFixed(2)}'
               new_b = 'function prepareManualItem(targetKey){const select=document.getElementById(`manual-select-${targetKey}`),rate=document.getElementById(`manual-rate-${targetKey}`),box=document.getElementById(`manual-new-${targetKey}`),qtyField=document.getElementById(`manual-qty-${targetKey}`),item=standardLibrary().find(x=>x.id===select?.value),isNew=select?.value===\'__new__\';qtyField?.closest(\'label\')?.classList.toggle(\'hidden\',isNew);if(isNew){box?.classList.remove(\'hidden\');if(rate)rate.value=\'0.00\';return}box?.classList.add(\'hidden\');if(item&&rate)rate.value=normalizeRate(item.rate).toFixed(2)}'
               s = s.replace(old_b, new_b)
-              # Renovation: same rule, scoped to the clicked room.
               old_r = 'function prepareManualItem(roomId) {\n  const select = document.getElementById(`manual-select-${roomId}`), rate = document.getElementById(`manual-rate-${roomId}`), newBox = document.getElementById(`manual-new-${roomId}`), item = getStandardRateItems(roomId).find(x => x.id === select?.value);\n  if (select?.value === "__new__") { newBox?.classList.remove("hidden"); if (rate) rate.value = "0.00"; return; }\n  newBox?.classList.add("hidden"); if (item && rate) rate.value = normalizeRate(item.rate).toFixed(2);\n}'
               new_r = 'function prepareManualItem(roomId) {\n  const select = document.getElementById(`manual-select-${roomId}`), rate = document.getElementById(`manual-rate-${roomId}`), newBox = document.getElementById(`manual-new-${roomId}`), qtyField = document.getElementById(`manual-qty-${roomId}`), item = getStandardRateItems(roomId).find(x => x.id === select?.value), isNew = select?.value === "__new__";\n  qtyField?.closest("label")?.classList.toggle("hidden", isNew);\n  if (isNew) { newBox?.classList.remove("hidden"); if (rate) rate.value = "0.00"; return; }\n  newBox?.classList.add("hidden"); if (item && rate) rate.value = normalizeRate(item.rate).toFixed(2);\n}'
               s = s.replace(old_r, new_r)
-              # Remove the Unit field dependency and force quantity=1 for a newly created standard item.
               s = s.replace('const qty=normalizeQuantity(document.getElementById(`manual-qty-${targetKey}`)?.value);', 'let qty=normalizeQuantity(document.getElementById(`manual-qty-${targetKey}`)?.value);')
               s = s.replace('unit=String(document.getElementById(`manual-unit-${targetKey}`)?.value||\'ls\').trim()||\'ls\';', 'unit=\'ls\'; qty=1;')
               s = s.replace('unit = String(document.getElementById(`manual-unit-${roomId}`)?.value || "ls").trim() || "ls";', 'unit = "ls"; qty = 1;')
@@ -36,14 +33,13 @@ jobs:
           PY
       - name: Verify planner source
         run: |
-          ! grep -R 'manual-unit-' quotation/buildplanner.html quotation/renovationplanner.html
-          ! grep -R 'manual-unit-' quotation/buildplanner.html quotation/renovationplanner.html
+          if grep -R 'manual-unit-' quotation/buildplanner.html quotation/renovationplanner.html; then exit 1; fi
           git diff --check
       - name: Commit and clean workflow
         run: |
           git config user.name 'Teraju Ciptabina Bot'
           git config user.email 'actions@users.noreply.github.com'
-          rm -f .github/workflows/amend-new-item-fields.yml
-          git add quotation/buildplanner.html quotation/renovationplanner.html .github/workflows/amend-new-item-fields.yml
+          rm -f .github/workflows/amend-new-item-fields.yml .planner-new-item-trigger
+          git add quotation/buildplanner.html quotation/renovationplanner.html .github/workflows/amend-new-item-fields.yml .planner-new-item-trigger
           git commit -m 'Standardize new item description and rate fields [new-item-fields]'
           git push
