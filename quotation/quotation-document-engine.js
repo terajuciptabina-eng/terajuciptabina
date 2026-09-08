@@ -6,6 +6,8 @@ const CONTENT_MM={width:190,height:277};
 const RENDER_WIDTH_PX=794;
 const PX_PER_MM=RENDER_WIDTH_PX/CONTENT_MM.width;
 const CONTENT_HEIGHT_PX=Math.floor(CONTENT_MM.height*PX_PER_MM);
+const PAGE_NUMBER_RESERVE_PX=Math.ceil(8*PX_PER_MM);
+const USABLE_HEIGHT_PX=CONTENT_HEIGHT_PX-PAGE_NUMBER_RESERVE_PX;
 const JPEG_QUALITY=0.94;
 
 function injectStyles(){
@@ -78,9 +80,7 @@ function makePageShell(headerNodes,tableTemplate){
  return {root,wrap,table,tbody};
 }
 
-function appendUnits(page,units){
- units.forEach(unit=>unit.forEach(row=>page.tbody.appendChild(row.cloneNode(true))));
-}
+function appendUnits(page,units){units.forEach(unit=>unit.forEach(row=>page.tbody.appendChild(row.cloneNode(true))));}
 function pageHeight(page){
  const holder=document.createElement('div');
  holder.style.cssText=`position:fixed;left:-100000px;top:0;width:${RENDER_WIDTH_PX}px;background:#fff;padding:0;margin:0;overflow:visible;visibility:hidden;z-index:-1`;
@@ -106,7 +106,7 @@ async function rasterizePages(pageRoots){
   await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
   if(document.fonts?.ready)await document.fonts.ready;
   await waitForImages(holder);
-  const canvas=await window.html2canvas(holder,{backgroundColor:'#fff',scale:Math.min(2,Math.max(1.5,window.devicePixelRatio||1)),useCORS:true,allowTaint:false,logging:false,imageTimeout:15000,scrollX:0,scrollY:0,windowWidth:RENDER_WIDTH_PX,windowHeight:Math.max(holder.scrollHeight,1)});
+  const canvas=await window.html2canvas(holder,{backgroundColor:'#fff',scale:Math.min(2,Math.max(1.5,window.devicePixelRatio||1)),useCORS:true,allowTaint:false,logging:false,imageTimeout:15000,scrollX:0,scrollY:0,windowWidth:RENDER_WIDTH_PX,windowHeight:Math.min(Math.max(holder.scrollHeight,1),CONTENT_HEIGHT_PX)});
   holder.remove();
   const heightMm=(canvas.height/Math.max(canvas.width,1))*CONTENT_MM.width;
   pages.push({src:canvas.toDataURL('image/jpeg',JPEG_QUALITY),heightMm});
@@ -118,17 +118,14 @@ async function buildPaginatedPages(source){
  const working=source.cloneNode(true);
  working.classList.remove('quotation-render-source','quotation-locked');
  working.querySelectorAll('.no-print,#quotationPrintActions,#quotationLockOverlay').forEach(el=>el.remove());
-
  const children=Array.from(working.children);
  const tableWrap=children.find(el=>el.querySelector?.('table'));
  if(!tableWrap)return [working];
-
  const table=tableWrap.querySelector('table');
  const thead=table?.querySelector('thead');
  const tbody=table?.querySelector('tbody');
  const tfoot=table?.querySelector('tfoot');
  if(!table||!tbody)return [working];
-
  const tableIndex=children.indexOf(tableWrap);
  const headerNodes=children.slice(0,tableIndex);
  const footerNodes=children.slice(tableIndex+1);
@@ -136,44 +133,43 @@ async function buildPaginatedPages(source){
  const units=collectPageUnits(tbody);
  const roots=[];
  let page=makePageShell(headerNodes,template);
+ function fits(p){return pageHeight(p)<=USABLE_HEIGHT_PX;}
+ function hasBody(p){return !!p.tbody.children.length;}
+ function pushCurrent(){if(hasBody(page))roots.push(page.root);}
+ function startNewPage(){page=makePageShell(headerNodes,template);}
 
  for(const unit of units){
   const testRows=unit.map(r=>r.cloneNode(true));
   testRows.forEach(r=>page.tbody.appendChild(r));
-
-  if(pageHeight(page)>CONTENT_HEIGHT_PX && page.tbody.children.length>testRows.length){
+  if(!fits(page)&&page.tbody.children.length>testRows.length){
    testRows.forEach(r=>r.remove());
-   roots.push(page.root);
-   page=makePageShell(headerNodes,template);
+   pushCurrent();
+   startNewPage();
    appendUnits(page,[unit]);
-
-   if(pageHeight(page)>CONTENT_HEIGHT_PX){
-    console.warn('Quotation row group exceeds one A4 content page; keeping it together as far as possible.');
-   }
+   if(!fits(page))console.warn('Quotation row group exceeds one A4 page; it will be isolated to avoid clipping.');
   }
  }
 
- if(!page.tbody.children.length && roots.length){
-  roots.push(page.root);
-  page=makePageShell(headerNodes,template);
+ const finalBlocks=[];
+ if(tfoot)finalBlocks.push({kind:'tfoot',node:tfoot});
+ footerNodes.forEach(node=>finalBlocks.push({kind:'footer',node}));
+ for(const block of finalBlocks){
+  const clone=block.node.cloneNode(true);
+  if(block.kind==='tfoot')page.table.appendChild(clone);else page.root.appendChild(clone);
+  if(!fits(page)&&(hasBody(page)||roots.length)){
+   clone.remove();
+   if(hasBody(page))pushCurrent();
+   startNewPage();
+   const fresh=block.node.cloneNode(true);
+   if(block.kind==='tfoot')page.table.appendChild(fresh);else page.root.appendChild(fresh);
+   if(!fits(page))console.warn('Quotation footer block exceeds one A4 page.');
+  }
  }
-
- // Keep TOTAL and the final notes/signature together on the last page when possible.
- if(tfoot)page.table.appendChild(tfoot.cloneNode(true));
- footerNodes.forEach(node=>page.root.appendChild(node.cloneNode(true)));
-
- if(pageHeight(page)>CONTENT_HEIGHT_PX && (tfoot||footerNodes.length)){
-  const cleanLastPage=makePageShell(headerNodes,template);
-  roots.push(page.root);
-
-  if(tfoot)cleanLastPage.table.appendChild(tfoot.cloneNode(true));
-  footerNodes.forEach(node=>cleanLastPage.root.appendChild(node.cloneNode(true)));
-  page=cleanLastPage;
- }
-
- roots.push(page.root);
+ if(!hasBody(page)&&!finalBlocks.length&&!roots.length)roots.push(page.root);
+ else if(hasBody(page)||finalBlocks.length)roots.push(page.root);
  return roots;
 }
+
 async function renderQuotationPreview(){
  injectStyles();
  const source=document.getElementById('quotationContent'),stage=document.getElementById('quotationPreview');
@@ -195,7 +191,7 @@ async function printQuotation(){
  const button=document.querySelector('#quotationPrintActions button'),originalLabel=button?button.textContent:'';
  if(button){button.disabled=true;button.textContent='Preparing PDF…';}
  try{
-  if(!window.__quotationPreviewPages?.length)await renderQuotationPreview();
+  await renderQuotationPreview();
   const pages=window.__quotationPreviewPages||[],meta=window.__quotationPreviewPageMeta||[];
   if(!pages.length)throw new Error('Quotation preview is unavailable.');
   await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js',()=>!!(window.jspdf&&window.jspdf.jsPDF));
