@@ -13,27 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Add planner helper scripts
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-          location_files=['quotation/renovationplanner.html','quotation/buildplanner.html']
-          quantity_files=['quotation/renovationplanner.html']
-          location_tag='<script src="location-autocomplete.js"></script>'
-          quantity_tag='<script src="quotation-quantity-fix.js?v=20260907"></script>'
-          for name in location_files:
-              p=Path(name)
-              s=p.read_text(encoding='utf-8')
-              if location_tag not in s:
-                  s=s.replace('</body>', location_tag+'\n</body>',1)
-                  p.write_text(s,encoding='utf-8')
-          for name in quantity_files:
-              p=Path(name)
-              s=p.read_text(encoding='utf-8')
-              if quantity_tag not in s:
-                  s=s.replace('</body>', quantity_tag+'\n</body>',1)
-                  p.write_text(s,encoding='utf-8')
-          PY
+      - name: Apply temporary planner layout cleanup
+        run: python .github/tmp_refine_mobile_quotation.py
       - name: Commit planner updates
         run: |
           git config user.name 'Teraju Ciptabina Bot'
@@ -43,5 +24,5 @@ jobs:
             echo 'No planner changes needed.'
             exit 0
           fi
-          git commit -m 'Add quotation quantity rounding [location-autocomplete]'
+          git commit -m 'Refine mobile quotation cards [location-autocomplete]'
           git push
