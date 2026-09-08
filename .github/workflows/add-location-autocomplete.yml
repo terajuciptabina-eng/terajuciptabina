@@ -13,26 +13,164 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Add planner helper scripts
+      - name: Refine quotation mobile view
         run: |
           python - <<'PY'
           from pathlib import Path
-          location_files=['quotation/renovationplanner.html','quotation/buildplanner.html']
-          quantity_files=['quotation/renovationplanner.html']
-          location_tag='<script src="location-autocomplete.js"></script>'
-          quantity_tag='<script src="quotation-quantity-fix.js?v=20260907"></script>'
-          for name in location_files:
-              p=Path(name)
+          import re
+
+          CLEAN_CSS = r'''
+          /* Mobile quotation cards — single clean implementation */
+          @media (max-width: 767px) {
+            #estimateContent,
+            #estimateContent > .overflow-x-auto {
+              width:100% !important;
+              max-width:100% !important;
+              margin:0 !important;
+              padding-bottom:8px !important;
+              overflow:visible !important;
+            }
+            #estimateContent table {
+              display:block !important;
+              width:100% !important;
+              min-width:0 !important;
+              max-width:100% !important;
+              table-layout:auto !important;
+              border-collapse:separate !important;
+              border-spacing:0 12px !important;
+            }
+            #estimateContent table thead { display:none !important; }
+            #estimateContent table tbody { display:block !important; width:100% !important; }
+            #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) {
+              display:grid !important;
+              grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+              gap:0 10px !important;
+              width:100% !important;
+              min-width:0 !important;
+              max-width:100% !important;
+              margin:0 0 12px !important;
+              padding:14px !important;
+              border:1px solid #e5e7eb !important;
+              border-radius:16px !important;
+              background:#fff !important;
+              box-shadow:0 4px 16px rgba(15,23,42,.05) !important;
+              overflow:hidden !important;
+            }
+            #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td {
+              display:block !important;
+              width:auto !important;
+              min-width:0 !important;
+              max-width:100% !important;
+              box-sizing:border-box !important;
+              padding:6px 2px !important;
+              overflow:visible !important;
+            }
+            #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:first-child {
+              grid-column:1 / -1 !important;
+              width:100% !important;
+              padding:0 0 10px !important;
+            }
+            #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(2) { display:none !important; }
+            #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(3),
+            #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(4),
+            #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(5) {
+              grid-column:auto !important;
+              width:auto !important;
+              min-width:0 !important;
+              max-width:none !important;
+            }
+            #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(3)::before { content:'Quantity'; }
+            #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(4)::before { content:'Rate'; }
+            #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(5)::before { content:'Amount'; }
+            #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(3)::before,
+            #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(4)::before,
+            #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(5)::before {
+              display:block;
+              margin:0 0 4px;
+              font-size:10px;
+              line-height:1.2;
+              font-weight:700;
+              text-transform:uppercase;
+              letter-spacing:.08em;
+              color:#9ca3af;
+            }
+            #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(3) { text-align:left !important; }
+            #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(4) { text-align:left !important; }
+            #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(5) { text-align:right !important; font-weight:700 !important; }
+            #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(3) input,
+            #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(4) input,
+            #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(3) .homeowner-locked,
+            #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(4) .homeowner-locked {
+              width:100% !important;
+              min-width:0 !important;
+              max-width:100% !important;
+              box-sizing:border-box !important;
+            }
+            #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(6) {
+              grid-column:1 / -1 !important;
+              width:100% !important;
+              margin-top:8px !important;
+              padding:12px 0 0 !important;
+              border-top:1px solid #f1f5f9 !important;
+              text-align:left !important;
+            }
+            #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(6) button {
+              width:100% !important;
+              min-width:0 !important;
+            }
+            #estimateContent table tbody tr.quotation-section-row,
+            #estimateContent table tbody tr.quotation-subsection-row,
+            #estimateContent table tbody tr.bg-gray-100 {
+              display:block !important;
+              width:100% !important;
+              min-width:0 !important;
+              max-width:100% !important;
+              padding:12px !important;
+              margin:0 0 8px !important;
+            }
+            #estimateContent table tbody tr.quotation-section-row td,
+            #estimateContent table tbody tr.quotation-subsection-row td,
+            #estimateContent table tbody tr.bg-gray-100 td {
+              display:block !important;
+              width:100% !important;
+              min-width:0 !important;
+              max-width:100% !important;
+            }
+            #estimateContent table tfoot tr { display:block !important; width:100% !important; min-width:0 !important; }
+            #estimateContent table tfoot td { display:inline-block !important; width:auto !important; min-width:0 !important; padding:6px 4px !important; }
+
+            /* Homeowner: description is display-only, never an editable textarea. */
+            body:not(.contractor-mode) #estimateContent table tbody td:first-child textarea { display:none !important; }
+            body.contractor-mode #estimateContent table tbody td:first-child .homeowner-locked { display:none !important; }
+          }
+          '''
+
+          def patch_file(path):
+              p=Path(path)
               s=p.read_text(encoding='utf-8')
-              if location_tag not in s:
-                  s=s.replace('</body>', location_tag+'\n</body>',1)
-                  p.write_text(s,encoding='utf-8')
-          for name in quantity_files:
-              p=Path(name)
-              s=p.read_text(encoding='utf-8')
-              if quantity_tag not in s:
-                  s=s.replace('</body>', quantity_tag+'\n</body>',1)
-                  p.write_text(s,encoding='utf-8')
+
+              # Remove every previous mobile quotation block so there is only one implementation.
+              s=re.sub(r'\n\s*/\* Mobile UX — keep desktop/tablet layout unchanged \*/.*?(?=\n\s*</style>)', '', s, flags=re.S)
+              s=re.sub(r'\n\s*/\* Mobile quotation cards — single clean implementation \*/.*?(?=\n\s*</style>)', '', s, flags=re.S)
+              s=s.replace('\n          '+CLEAN_CSS.strip()+'\n', '')
+              s=s.replace('</style>', '\n'+CLEAN_CSS+'\n</style>', 1)
+
+              # Build Planner legacy row: remove duplicate textarea + preview markup.
+              s=re.sub(
+                  r'<td class="py-3 px-2 min-w-\[300px\]">\s*<textarea class="w-full border rounded-lg px-3 py-2 bg-white contractor-editable" onchange="editItemDescription\(\'\$\{i\.id\}\',this\.value\)">\$\{escapeHtml\(i\.description\)\}</textarea>\s*<div class="homeowner-locked py-2">\$\{escapeHtml\(i\.description\)\}</div>\s*</td>',
+                  '''<td class="py-3 px-2">${IS_CONTRACTOR ? `<textarea class="w-full border rounded-lg px-3 py-2 bg-white" onchange="editItemDescription('${i.id}',this.value)">${escapeHtml(i.description)}</textarea>` : `<div class="homeowner-locked py-2 rounded-lg">${escapeHtml(i.description)}</div>`}</td>''',
+                  s, count=1, flags=re.S)
+
+              # Renovation legacy description cell: one display per mode, no duplicate preview.
+              s=re.sub(
+                  r'<td class="py-3 px-2 align-top">\s*<textarea rows="2" onchange="editItemDescription\(\'\$\{item\.id\}\', this\.value\)"\s*class="contractor-only no-print w-full min-w-\[280px\] border rounded-lg px-3 py-2 bg-white leading-5 resize-y">\$\{escapeHtml\(item\.description\)\}</textarea>\s*<div class="homeowner-locked no-print p-2 rounded leading-5">\$\{escapeHtml\(item\.description\)\}</div>\s*<div class="hidden print:block leading-6">\$\{escapeHtml\(item\.description\)\}</div>\s*</td>',
+                  '''<td class="py-3 px-2 align-top">${IS_CONTRACTOR ? `<textarea rows="2" onchange="editItemDescription('${item.id}', this.value)" class="w-full border rounded-lg px-3 py-2 bg-white leading-5 resize-y">${escapeHtml(item.description)}</textarea>` : `<div class="homeowner-locked p-2 rounded leading-5">${escapeHtml(item.description)}</div>`}</td>''',
+                  s, count=1, flags=re.S)
+
+              p.write_text(s,encoding='utf-8')
+
+          for f in ['quotation/buildplanner.html','quotation/renovationplanner.html']:
+              patch_file(f)
           PY
       - name: Commit planner updates
         run: |
@@ -43,5 +181,5 @@ jobs:
             echo 'No planner changes needed.'
             exit 0
           fi
-          git commit -m 'Add quotation quantity rounding [location-autocomplete]'
+          git commit -m 'Refine mobile quotation homeowner view [location-autocomplete]'
           git push
