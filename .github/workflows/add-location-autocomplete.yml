@@ -26,15 +26,13 @@ jobs:
               s=p.read_text(encoding='utf-8')
               if location_tag not in s:
                   s=s.replace('</body>', location_tag+'\n</body>',1)
-              # Surgical fix to the existing mobile subtotal row: keep the label on the left.
-              s=s.replace('tr:has(td[colspan]) td:first-child {\n    text-align:right !important;', 'tr:has(td[colspan]) td:first-child {\n    text-align:left !important;', 1)
-              p.write_text(s,encoding='utf-8')
+                  p.write_text(s,encoding='utf-8')
           for name in quantity_files:
               p=Path(name)
               s=p.read_text(encoding='utf-8')
               if quantity_tag not in s:
                   s=s.replace('</body>', quantity_tag+'\n</body>',1)
-              p.write_text(s,encoding='utf-8')
+                  p.write_text(s,encoding='utf-8')
           PY
       - name: Commit planner updates
         run: |
@@ -45,5 +43,5 @@ jobs:
             echo 'No planner changes needed.'
             exit 0
           fi
-          git commit -m 'Fix mobile subtotal alignment [subtotal-fix]'
+          git commit -m 'Add quotation quantity rounding [location-autocomplete]'
           git push
