@@ -243,15 +243,15 @@
     .quotation-generate-btn{margin-top:16px;width:100%;background:#111827;color:#fff;border:0;border-radius:12px;padding:14px 18px;font-weight:700;cursor:pointer;min-height:52px}
     .quotation-generate-btn:hover{background:#000}
     .quotation-preview-heading{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px}
-    .quotation-preview-stage{width:100%;display:flex;flex-direction:column;align-items:center;gap:22px;overflow-x:hidden}
+    .quotation-preview-stage{width:100%;display:flex;flex-direction:column;align-items:center;gap:28px;overflow-x:hidden;background:#e5e7eb;padding:28px 16px;border-radius:16px}
     .quotation-preview-loading{width:100%;padding:32px 20px;text-align:center;border:1px dashed #d1d5db;border-radius:16px;background:#fafafa;color:#6b7280}
-    .quotation-preview-page{width:min(100%,794px);background:#fff;border:1px solid #e5e7eb;box-shadow:0 12px 36px rgba(15,23,42,.10);overflow:hidden}
+    .quotation-preview-page{width:min(100%,794px);background:#fff;border:2px solid #cbd5e1;box-shadow:0 14px 36px rgba(15,23,42,.14);overflow:hidden}
     .quotation-preview-page img{display:block;width:100%;height:auto}
     .quotation-render-source{position:fixed;left:-100000px;top:0;width:794px;background:#fff;visibility:visible;pointer-events:none;z-index:-1}
     @media(max-width:767px){
       .quotation-type-grid{grid-template-columns:1fr}
       .quotation-type-card{min-height:0;padding:16px}
-      .quotation-preview-stage{gap:14px}
+      .quotation-preview-stage{gap:20px;padding:16px 8px}
       .quotation-preview-page{width:100%;box-shadow:0 8px 24px rgba(15,23,42,.08)}
       .quotation-preview-heading{margin-bottom:14px}
     }
@@ -1305,7 +1305,13 @@ function initContractorMode() {
     window.addEventListener("beforeunload", saveContractorState);
 
     const quotationTypeInputs = document.querySelectorAll('input[name="quotationType"]');
-    quotationTypeInputs.forEach(input => input.addEventListener("change", saveContractorState));
+    quotationTypeInputs.forEach(input => input.addEventListener("change", () => {
+      quotationTypeInputs.forEach(r => {
+        const card = r.closest(".quotation-type-card");
+        if (card) card.classList.toggle("is-selected", r.checked);
+      });
+      saveContractorState();
+    }));
 
     if (saved?.quotationType) {
       const input = document.querySelector(`input[name="quotationType"][value="${saved.quotationType}"]`);
@@ -1322,6 +1328,13 @@ function generateQuotationNumber() {
   localStorage.setItem("terajuQuotationNumber", number);
   return "QO" + String(number).padStart(3, "0");
 }
+document.querySelectorAll('input[name="quotationType"]').forEach(input => input.addEventListener("change", () => {
+  document.querySelectorAll(".quotation-type-card").forEach(card => {
+    const radio = card.querySelector('input[name="quotationType"]');
+    if (radio) card.classList.toggle("is-selected", radio.checked);
+  });
+}));
+
 function getSelectedQuotationType() {
   return document.querySelector('input[name="quotationType"]:checked')?.value || "simple";
 }
