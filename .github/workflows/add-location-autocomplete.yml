@@ -17,19 +17,9 @@ jobs:
         run: |
           python - <<'PY'
           from pathlib import Path
+          import re
           files=['quotation/buildplanner.html','quotation/renovationplanner.html']
-          old='''  #estimateContent table tr:has(td:first-child + td:last-child) td:first-child {
-    text-align:left !important;
-    white-space:nowrap !important;
-    overflow-wrap:normal !important;
-    word-break:normal !important;
-  }
-  #estimateContent table tr:has(td:first-child + td:last-child) td:last-child {
-    text-align:right !important;
-    white-space:nowrap !important;
-    overflow-wrap:normal !important;
-    word-break:normal !important;
-  }'''
+          pattern=re.compile(r'''  #estimateContent table tr:has\(td:first-child \+ td:last-child\) td:first-child \{.*?  \}\n  #estimateContent table tr:has\(td:first-child \+ td:last-child\) td:last-child \{.*?  \}''', re.S)
           new='''  #estimateContent table tr.border-b:has(td[colspan="4"]) td:nth-child(5) {
     text-align:right !important;
     white-space:nowrap !important;
@@ -51,10 +41,10 @@ jobs:
           for name in files:
               p=Path(name)
               s=p.read_text(encoding='utf-8')
-              if old not in s:
-                  raise SystemExit(f'Expected existing subtotal selector not found in {name}')
-              s=s.replace(old,new,1)
-              p.write_text(s,encoding='utf-8')
+              s2,n=pattern.subn(new,s,count=1)
+              if n!=1:
+                  raise SystemExit(f'Expected existing mobile subtotal selector not found exactly once in {name}: {n}')
+              p.write_text(s2,encoding='utf-8')
           PY
       - name: Commit planner updates
         run: |
