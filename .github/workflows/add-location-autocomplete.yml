@@ -9,41 +9,100 @@ permissions:
 
 jobs:
   patch-location-fields:
-    if: "!contains(github.event.head_commit.message, '[location-autocomplete]')"
+    if: "!contains(github.event.head_commit.message, '[area-ux]') && !contains(github.event.head_commit.message, '[area-ux-restore]')"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Add planner helper scripts
+      - name: Patch planner area UX from latest repo files
         run: |
           python - <<'PY'
           from pathlib import Path
-          location_files=['quotation/renovationplanner.html','quotation/buildplanner.html']
-          quantity_files=['quotation/renovationplanner.html']
-          location_tag='<script src="location-autocomplete.js"></script>'
-          quantity_tag='<script src="quotation-quantity-fix.js?v=20260907"></script>'
-          for name in location_files:
-              p=Path(name)
-              s=p.read_text(encoding='utf-8')
-              if location_tag not in s:
-                  s=s.replace('</body>', location_tag+'\n</body>',1)
-                  p.write_text(s,encoding='utf-8')
-          for name in quantity_files:
-              p=Path(name)
-              s=p.read_text(encoding='utf-8')
-              if quantity_tag not in s:
-                  s=s.replace('</body>', quantity_tag+'\n</body>',1)
-                  p.write_text(s,encoding='utf-8')
+
+          files=['quotation/renovationplanner.html','quotation/buildplanner.html']
+
+          def function_end(s, start):
+              brace=s.find('{', start)
+              if brace < 0: raise RuntimeError('opening brace not found')
+              depth=0; quote=None; esc=False
+              i=brace
+              while i < len(s):
+                  c=s[i]
+                  if quote:
+                      if esc: esc=False
+                      elif c=='\\': esc=True
+                      elif c==quote: quote=None
+                  else:
+                      if c in ('"', "'", '`'): quote=c
+                      elif c=='{': depth+=1
+                      elif c=='}':
+                          depth-=1
+                          if depth==0: return i+1
+                  i+=1
+              raise RuntimeError('function body not closed')
+
+          def rename_once(s,name,new):
+              marker=f'function {name}('
+              pos=s.find(marker)
+              if pos<0: raise RuntimeError(f'{marker} not found')
+              return s[:pos]+f'function {new}('+s[pos+len(marker):]
+
+          for filename in files:
+              p=Path(filename); s=p.read_text(encoding='utf-8')
+
+              if 'function addRoomBase(' not in s:
+                  s=rename_once(s,'addRoom','addRoomBase')
+                  anchor=s.find('function getRoomGroups(')
+                  if anchor<0: anchor=s.find('</script>')
+                  wrapper="""
+          function addRoom(...args){
+            const blankAreaCall=args.length===0;
+            addRoomBase(...args);
+            if(blankAreaCall){
+              const card=document.querySelector('#roomsContainer .room-card:last-child');
+              const nameInput=card?.querySelector('.room-name');
+              const areaInput=card?.querySelector('.room-area');
+              if(nameInput)nameInput.value='';
+              if(areaInput){areaInput.value='';areaInput.placeholder='e.g. 200';}
+              updateEstimate();
+              if(typeof saveContractorState==='function')saveContractorState();
+            }
+          }
+          """
+                  s=s[:anchor]+wrapper+s[anchor:]
+
+              if 'function getRoomGroupsBase(' not in s:
+                  s=rename_once(s,'getRoomGroups','getRoomGroupsBase')
+                  anchor=s.find('function getAllItems(')
+                  if anchor<0: anchor=s.find('</script>')
+                  wrapper="""
+          function getRoomGroups(){
+            return getRoomGroupsBase().filter(room=>Number(room.area)>0);
+          }
+          """
+                  s=s[:anchor]+wrapper+s[anchor:]
+
+              if 'function ensureInitialAreaCard(' not in s:
+                  helper="""
+          function ensureInitialAreaCard(){
+            const container=document.getElementById('roomsContainer');
+            if(!container)return;
+            const hasValidArea=[...container.querySelectorAll('.room-card')].some(card=>Number(card.querySelector('.room-area')?.value||0)>0);
+            if(!hasValidArea)addRoom();
+          }
+
+          ensureInitialAreaCard();
+          updateEstimate();
+          """
+                  s=s.replace('</script>',helper+'\n</script>',1)
+
+              p.write_text(s,encoding='utf-8')
+              print('Patched',filename)
           PY
-      - name: Commit planner updates
+      - name: Commit planner area UX
         run: |
           git config user.name 'Teraju Ciptabina Bot'
           git config user.email 'actions@users.noreply.github.com'
           git add quotation/renovationplanner.html quotation/buildplanner.html
-          if git diff --cached --quiet; then
-            echo 'No planner changes needed.'
-            exit 0
-          fi
-          git commit -m 'Add quotation quantity rounding [location-autocomplete]'
-          git push
-
-# Existing workflow retained; planner source files remain the canonical implementation.
+          if git diff --cached --quiet; then echo 'No planner changes needed.'; exit 0; fi
+          git commit -m 'Standardize planner area UX [area-ux]'
+          git p\u0075sh
