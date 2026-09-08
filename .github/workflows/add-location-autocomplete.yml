@@ -13,35 +13,56 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Add planner helper scripts
+      - name: Clean obsolete mobile quotation CSS
         run: |
           python - <<'PY'
           from pathlib import Path
-          location_files=['quotation/renovationplanner.html','quotation/buildplanner.html']
-          quantity_files=['quotation/renovationplanner.html']
-          location_tag='<script src="location-autocomplete.js"></script>'
-          quantity_tag='<script src="quotation-quantity-fix.js?v=20260907"></script>'
-          for name in location_files:
-              p=Path(name)
-              s=p.read_text(encoding='utf-8')
-              if location_tag not in s:
-                  s=s.replace('</body>', location_tag+'\n</body>',1)
-                  p.write_text(s,encoding='utf-8')
-          for name in quantity_files:
-              p=Path(name)
-              s=p.read_text(encoding='utf-8')
-              if quantity_tag not in s:
-                  s=s.replace('</body>', quantity_tag+'\n</body>',1)
-                  p.write_text(s,encoding='utf-8')
+          import re
+
+          files = [Path('quotation/buildplanner.html'), Path('quotation/renovationplanner.html')]
+          changed = []
+
+          for p in files:
+              s = p.read_text(encoding='utf-8')
+              original = s
+
+              # Remove obsolete mobile overflow rule. The quotation card layout now
+              # owns the mobile width and must not inherit a fixed 680px table width.
+              s = s.replace(
+                  '#estimateContent{overflow-x:auto}#estimateContent table,#quotationContent table{min-width:680px}',
+                  '#estimateContent{overflow:visible}'
+              )
+
+              # Keep the rate-schedule mobile minimum width, but remove the obsolete
+              # 760px quotation-table minimum that caused mobile overflow.
+              s = s.replace(
+                  '@media(max-width:767px){\n #rateScheduleContent table{min-width:560px!important}\n #estimateContent .detailed-quotation-table{min-width:760px!important}\n}',
+                  '@media(max-width:767px){\n #rateScheduleContent table{min-width:560px!important}\n}'
+              )
+
+              # Remove the older description-only mobile patch if it exists; the
+              # consolidated mobile quotation card rules supersede it.
+              s = re.sub(
+                  r'\n?\s*<style id="homeowner-mobile-description-fix">.*?</style>\s*',
+                  '\n',
+                  s,
+                  flags=re.S
+              )
+
+              if s != original:
+                  p.write_text(s, encoding='utf-8')
+                  changed.append(str(p))
+
+          print('Cleaned:', ', '.join(changed) if changed else 'none')
           PY
-      - name: Commit planner updates
+      - name: Commit planner CSS cleanup
         run: |
           git config user.name 'Teraju Ciptabina Bot'
           git config user.email 'actions@users.noreply.github.com'
-          git add quotation/renovationplanner.html quotation/buildplanner.html
+          git add quotation/buildplanner.html quotation/renovationplanner.html
           if git diff --cached --quiet; then
-            echo 'No planner changes needed.'
+            echo 'No obsolete planner CSS found.'
             exit 0
           fi
-          git commit -m 'Add quotation quantity rounding [location-autocomplete]'
+          git commit -m 'Clean obsolete planner mobile CSS [location-autocomplete]'
           git push
