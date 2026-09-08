@@ -395,7 +395,6 @@ function renderEstimate(items,rooms,total,roomsArea,declared){
   document.getElementById('grandTotal').textContent=money(total,2);
   document.getElementById('totalBuiltArea').textContent=formatQty(declared)+' sqft';
   document.getElementById('roomsTotalArea').textContent=formatQty(roomsArea)+' sqft';
-  return;
  }
  const byCategory=cat=>items.filter(i=>i.category===cat);
  const prelim=byCategory('preliminaries'), structures=byCategory('structures'), electrical=byCategory('electrical');
