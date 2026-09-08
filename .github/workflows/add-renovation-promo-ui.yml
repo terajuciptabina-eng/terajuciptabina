@@ -17,33 +17,20 @@ jobs:
           ref: main
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Inject promo UI script and fix mobile subtotal
+      - name: Inject promo UI script
         shell: bash
         run: |
           python - <<'PY'
           from pathlib import Path
-          import re
-          for name in ['quotation/buildplanner.html','quotation/renovationplanner.html']:
-              path=Path(name)
-              text=path.read_text(encoding='utf-8')
-              marker='/* Mobile quotation'
+          path = Path('quotation/renovationplanner.html')
+          text = path.read_text(encoding='utf-8')
+          tag = '<script src="detailed-quotation-promo-ui.js"></script>'
+          if tag not in text:
+              marker = '</body>'
               if marker not in text:
-                  raise SystemExit(f'Mobile quotation block not found in {name}')
-              start=text.index(marker)
-              end=text.index('</style>', start)
-              block=text[start:end]
-              new_subtotal='''  #estimateContent table tr:has(td:first-child + td:last-child) td:first-child {\n    text-align:left !important;\n    white-space:nowrap !important;\n    overflow-wrap:normal !important;\n    word-break:normal !important;\n  }\n  #estimateContent table tr:has(td:first-child + td:last-child) td:last-child {\n    text-align:right !important;\n    white-space:nowrap !important;\n    overflow-wrap:normal !important;\n    word-break:normal !important;\n  }\n'''
-              pattern=r'  #estimateContent table tr:has\(td\[colspan\]\) td:first-child \{.*?\n  \}\n  #estimateContent table tr:has\(td\[colspan\]\) td:last-child \{.*?\n  \}\n'
-              if re.search(pattern, block, flags=re.S):
-                  block=re.sub(pattern, new_subtotal, block, count=1, flags=re.S)
-              else:
-                  block=block.rstrip()+"\n"+new_subtotal
-              text=text[:start]+block+text[end:]
-              if name.endswith('renovationplanner.html'):
-                  tag='<script src="detailed-quotation-promo-ui.js"></script>'
-                  if tag not in text:
-                      text=text.replace('</body>',tag+'\n</body>',1)
-              path.write_text(text,encoding='utf-8')
+                  raise SystemExit('Could not find </body> in renovationplanner.html')
+              text = text.replace(marker, tag + '\n' + marker, 1)
+              path.write_text(text, encoding='utf-8')
           PY
 
       - name: Commit changes
@@ -51,7 +38,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add quotation/buildplanner.html quotation/renovationplanner.html
+          git add quotation/renovationplanner.html
           if git diff --cached --quiet; then
             echo "No changes needed."
             exit 0
