@@ -34,6 +34,135 @@ jobs:
                   s=s.replace('</body>', quantity_tag+'\n</body>',1)
                   p.write_text(s,encoding='utf-8')
           PY
+      - name: Patch mobile quotation cards
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          css='''<style id="mobile-quotation-and-room-fix">
+          @media (max-width: 767px) {
+            #estimateContent,
+            #estimateContent > div,
+            #estimateContent table,
+            #estimateContent table tbody {
+              width:100% !important;
+              min-width:0 !important;
+              max-width:100% !important;
+              overflow:visible !important;
+            }
+            #estimateContent table {
+              display:block !important;
+              table-layout:auto !important;
+              border-collapse:separate !important;
+              border-spacing:0 10px !important;
+            }
+            #estimateContent table thead { display:none !important; }
+            #estimateContent table tbody { display:block !important; }
+            #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) {
+              display:block !important;
+              width:100% !important;
+              min-width:0 !important;
+              max-width:100% !important;
+              margin:0 0 10px 0 !important;
+              padding:12px !important;
+              border:1px solid #e5e7eb !important;
+              border-radius:16px !important;
+              background:#fff !important;
+              box-shadow:0 4px 16px rgba(15,23,42,.05) !important;
+              overflow:hidden !important;
+            }
+            #estimateContent table tbody tr.quotation-section-row,
+            #estimateContent table tbody tr.quotation-subsection-row,
+            #estimateContent table tbody tr.bg-gray-100 {
+              display:block !important;
+              width:100% !important;
+              min-width:0 !important;
+              max-width:100% !important;
+            }
+            #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td {
+              display:block !important;
+              width:100% !important;
+              min-width:0 !important;
+              max-width:100% !important;
+              box-sizing:border-box !important;
+              padding:7px 4px !important;
+              overflow:visible !important;
+            }
+            #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:first-child {
+              width:100% !important;
+              min-width:0 !important;
+              max-width:100% !important;
+              padding-top:2px !important;
+              overflow:hidden !important;
+            }
+            #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:first-child .contractor-editable,
+            #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:first-child textarea,
+            #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:first-child .homeowner-locked {
+              display:block !important;
+              width:100% !important;
+              min-width:0 !important;
+              max-width:100% !important;
+              box-sizing:border-box !important;
+              white-space:pre-wrap !important;
+              overflow-wrap:anywhere !important;
+              word-break:break-word !important;
+              overflow:hidden !important;
+              line-height:1.5 !important;
+            }
+            #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:first-child textarea {
+              min-height:88px !important;
+              height:auto !important;
+              resize:vertical !important;
+            }
+            #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(2) { display:none !important; }
+            #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(3),
+            #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(4),
+            #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(5) {
+              display:inline-block !important;
+              width:33.333333% !important;
+              min-width:0 !important;
+              max-width:33.333333% !important;
+              vertical-align:top !important;
+              overflow:hidden !important;
+            }
+            #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(3):before { content:'Quantity';display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#9ca3af;margin-bottom:3px; }
+            #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(4):before { content:'Rate';display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#9ca3af;margin-bottom:3px; }
+            #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(5):before { content:'Amount';display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#9ca3af;margin-bottom:3px; }
+            #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(3) input,
+            #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(4) input,
+            #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(5) input {
+              width:100% !important;
+              min-width:0 !important;
+              max-width:100% !important;
+              box-sizing:border-box !important;
+            }
+            #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(5) { text-align:right !important;font-weight:700; }
+            #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(6) {
+              display:block !important;
+              width:100% !important;
+              max-width:100% !important;
+              min-width:0 !important;
+              border-top:1px solid #f1f5f9 !important;
+              margin-top:4px !important;
+              padding-top:12px !important;
+            }
+            #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(6) button { width:auto !important;min-width:84px !important; }
+            #estimateContent table tfoot tr { display:block !important;width:100% !important;min-width:0 !important; }
+            #estimateContent table tfoot td { display:inline-block !important;width:auto !important;min-width:0 !important;padding:6px 4px !important; }
+          }
+          </style>'''
+          for name in ['quotation/renovationplanner.html','quotation/buildplanner.html']:
+              p=Path(name)
+              s=p.read_text(encoding='utf-8')
+              start=s.find('<style id="mobile-quotation-and-room-fix">')
+              if start<0:
+                  raise SystemExit(f'mobile style not found in {name}')
+              end=s.find('</style>',start)
+              if end<0:
+                  raise SystemExit(f'mobile style end not found in {name}')
+              end += len('</style>')
+              s=s[:start]+css+s[end:]
+              p.write_text(s,encoding='utf-8')
+          PY
       - name: Commit planner updates
         run: |
           git config user.name 'Teraju Ciptabina Bot'
@@ -43,5 +172,5 @@ jobs:
             echo 'No planner changes needed.'
             exit 0
           fi
-          git commit -m 'Add quotation quantity rounding [location-autocomplete]'
+          git commit -m 'Patch mobile quotation card layout [location-autocomplete]'
           git push
