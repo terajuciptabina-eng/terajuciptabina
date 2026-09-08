@@ -13,35 +13,29 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Add planner helper scripts
+      - name: Fix mobile quotation field visibility
         run: |
           python - <<'PY'
           from pathlib import Path
-          location_files=['quotation/renovationplanner.html','quotation/buildplanner.html']
-          quantity_files=['quotation/renovationplanner.html']
-          location_tag='<script src="location-autocomplete.js"></script>'
-          quantity_tag='<script src="quotation-quantity-fix.js?v=20260907"></script>'
-          for name in location_files:
+          for name in ['quotation/buildplanner.html','quotation/renovationplanner.html']:
               p=Path(name)
               s=p.read_text(encoding='utf-8')
-              if location_tag not in s:
-                  s=s.replace('</body>', location_tag+'\n</body>',1)
-                  p.write_text(s,encoding='utf-8')
-          for name in quantity_files:
-              p=Path(name)
-              s=p.read_text(encoding='utf-8')
-              if quantity_tag not in s:
-                  s=s.replace('</body>', quantity_tag+'\n</body>',1)
-                  p.write_text(s,encoding='utf-8')
+              old='''  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(3) input,\n  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(4) input,\n  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(3) .homeowner-locked,\n  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(4) .homeowner-locked,\n  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(5) {\n    width:100% !important;\n    min-width:0 !important;\n    max-width:100% !important;\n    min-height:52px !important;\n    box-sizing:border-box !important;\n    border:1px solid #e5e7eb !important;\n    border-radius:12px !important;\n    padding:12px 10px !important;\n    background:#fff !important;\n    display:flex !important;\n    align-items:center !important;\n  }'''
+              new='''  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(3) input,\n  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(4) input,\n  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(3) .homeowner-locked,\n  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(4) .homeowner-locked {\n    width:100% !important;\n    min-width:0 !important;\n    max-width:100% !important;\n    min-height:52px !important;\n    box-sizing:border-box !important;\n    border:1px solid #e5e7eb !important;\n    border-radius:12px !important;\n    padding:12px 10px !important;\n    background:#fff !important;\n    display:flex !important;\n    align-items:center !important;\n  }\n  #estimateContent table tbody tr:not(.quotation-section-row):not(.quotation-subsection-row):not(.bg-gray-100) td:nth-child(5) {\n    width:100% !important;\n    min-width:0 !important;\n    max-width:100% !important;\n    min-height:52px !important;\n    box-sizing:border-box !important;\n    border:1px solid #e5e7eb !important;\n    border-radius:12px !important;\n    padding:12px 10px !important;\n    background:#f8fafc !important;\n    display:block !important;\n    text-align:right !important;\n  }'''
+              if old not in s:
+                  raise RuntimeError(f'{name}: expected mobile field block not found')
+              s=s.replace(old,new,1)
+              anchor="""  /* Delete */\n"""
+              rules="""  /* Homeowner sees one read-only value; contractor sees one editable value. */\n  body:not(.contractor-mode) #estimateContent table tbody td:nth-child(3) input,\n  body:not(.contractor-mode) #estimateContent table tbody td:nth-child(4) input { display:none !important; }\n  body.contractor-mode #estimateContent table tbody td:nth-child(3) .homeowner-locked,\n  body.contractor-mode #estimateContent table tbody td:nth-child(4) .homeowner-locked { display:none !important; }\n\n"""
+              if anchor not in s:
+                  raise RuntimeError(f'{name}: delete anchor not found')
+              s=s.replace(anchor,rules+anchor,1)
+              p.write_text(s,encoding='utf-8')
           PY
       - name: Commit planner updates
         run: |
           git config user.name 'Teraju Ciptabina Bot'
           git config user.email 'actions@users.noreply.github.com'
-          git add quotation/renovationplanner.html quotation/buildplanner.html
-          if git diff --cached --quiet; then
-            echo 'No planner changes needed.'
-            exit 0
-          fi
-          git commit -m 'Add quotation quantity rounding [location-autocomplete]'
+          git add quotation/buildplanner.html quotation/renovationplanner.html
+          git commit -m 'Fix mobile quotation field visibility [location-autocomplete]'
           git push
