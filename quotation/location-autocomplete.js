@@ -151,7 +151,7 @@
 
 // Shared planner Add Item placement.
 // Each existing Add Item control is moved to the bottom of its own rendered group.
-// Existing planner data functions remain unchanged; no extra CSS is introduced.
+// No extra CSS or duplicate control is introduced.
 (function(){
   'use strict';
 
@@ -166,7 +166,7 @@
 
   function makeBottomRow(target){
     const row=document.createElement('tr');
-    row.className='contractor-only no-print';
+    row.className='no-print';
     row.innerHTML=`<td colspan="6" class="py-2 px-2"><div data-manual-anchor="${target}" data-tc-add-bottom="true"><button type="button" class="border rounded-lg px-3 py-2 text-xs font-semibold hover:bg-gray-50">＋ Add Item</button></div></td>`;
     return row;
   }
@@ -182,7 +182,7 @@
   }
 
   function bindButton(button,target){
-    if(button.dataset.tcAddBound==='true') return;
+    if(!button || button.dataset.tcAddBound==='true') return;
     button.dataset.tcAddBound='true';
     button.removeAttribute('onclick');
     button.addEventListener('click',function(){
@@ -209,8 +209,6 @@
     button.remove();
     if(boundary) boundary.parentNode.insertBefore(bottomRow,boundary);
     else sourceRow.parentNode.insertBefore(bottomRow,sourceRow.nextSibling);
-    const anchor=bottomRow.querySelector('[data-manual-anchor]');
-    if(anchor) anchor.setAttribute('data-manual-anchor',target);
     bindButton(bottomRow.querySelector('button'),target);
     sourceRow.querySelector('[data-manual-anchor]')?.removeAttribute('data-manual-anchor');
   }
@@ -224,10 +222,6 @@
       buttons.forEach(button=>{
         const target=targetFromButton(button);
         if(target) placeButton(button,target);
-      });
-      table.querySelectorAll('button[data-tc-add-bound]').forEach(button=>{
-        const target=button.closest('[data-manual-anchor]')?.getAttribute('data-manual-anchor')||'';
-        if(target) bindButton(button,target);
       });
     });
   }
