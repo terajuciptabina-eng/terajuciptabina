@@ -108,7 +108,7 @@ async function rasterizePages(pageRoots){
   await waitForImages(holder);
   const canvas=await window.html2canvas(holder,{backgroundColor:'#fff',scale:Math.min(2,Math.max(1.5,window.devicePixelRatio||1)),useCORS:true,allowTaint:false,logging:false,imageTimeout:15000,scrollX:0,scrollY:0,windowWidth:RENDER_WIDTH_PX,windowHeight:Math.max(holder.scrollHeight,1)});
   holder.remove();
-  const heightMm=canvas.height/PX_PER_MM;
+  const heightMm=(canvas.height/Math.max(canvas.width,1))*CONTENT_MM.width;
   pages.push({src:canvas.toDataURL('image/jpeg',JPEG_QUALITY),heightMm});
  }
  return pages;
@@ -153,7 +153,7 @@ async function buildPaginatedPages(source){
   }
  }
 
- if(!page.tbody.children.length&&roots.length){
+ if(!page.tbody.children.length && roots.length){
   roots.push(page.root);
   page=makePageShell(headerNodes,template);
  }
@@ -162,7 +162,7 @@ async function buildPaginatedPages(source){
  if(tfoot)page.table.appendChild(tfoot.cloneNode(true));
  footerNodes.forEach(node=>page.root.appendChild(node.cloneNode(true)));
 
- if(pageHeight(page)>CONTENT_HEIGHT_PX&&(tfoot||footerNodes.length)){
+ if(pageHeight(page)>CONTENT_HEIGHT_PX && (tfoot||footerNodes.length)){
   const cleanLastPage=makePageShell(headerNodes,template);
   roots.push(page.root);
 
@@ -219,6 +219,6 @@ function bindQuotationTypeCards(){
  document.querySelectorAll('.quotation-type-card').forEach(card=>card.addEventListener('click',()=>{const input=card.querySelector('input[name="quotationType"]');if(!input)return;input.checked=true;input.dispatchEvent(new Event('change',{bubbles:true}));}));
  sync();
 }
-function install(){injectStyles();bindQuotationTypeCards();window.renderQuotationPreview=renderQuotationPreview;window.printQuotation=printQuotation;window.TERAJU_QUOTATION_DOCUMENT_ENGINE_VERSION='2026-09-08-page-aware-header-v3';}
+function install(){injectStyles();bindQuotationTypeCards();window.renderQuotationPreview=renderQuotationPreview;window.printQuotation=printQuotation;window.TERAJU_QUOTATION_DOCUMENT_ENGINE_VERSION='2026-09-08-page-aware-header-v4';}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install,{once:true});else install();
 })();
