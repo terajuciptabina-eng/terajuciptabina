@@ -13,45 +13,35 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Repair Build Planner source directly
+      - name: Add planner helper scripts
         run: |
-          git checkout a04a48e003a37f7038c5e4fbcbfa6b8e3bec48b4 -- quotation/buildplanner.html
           python - <<'PY'
           from pathlib import Path
-          p=Path('quotation/buildplanner.html')
-          s=p.read_text(encoding='utf-8')
-          old='''const qty=normalizeQuantity(document.getElementById(`manual-qty-${targetKey}`)?.value);'''
-          s=s.replace(old, '''let qty=normalizeQuantity(document.getElementById(`manual-qty-${targetKey}`)?.value);''', 1)
-          old='''wrap.innerHTML=`<div class="flex flex-wrap items-center justify-between gap-3 mb-3"><p class="font-semibold text-sm">Add Item</p><button type="button" onclick="addManualItemPrompt('${targetKey}')" class="text-xs text-gray-500">Cancel</button></div><div class="grid md:grid-cols-[2fr_1fr_1fr_auto] gap-3 items-end"><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Standard Rate Item</span><select id="manual-select-${targetKey}" class="w-full border rounded-lg px-3 py-2 bg-white" onchange="prepareManualItem('${targetKey}')"><option value="">Select an item…</option>${standardItemOptions(targetKey)}<option value="__new__">＋ Create New Standard Item</option></select></label><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Quantity</span><input id="manual-qty-${targetKey}" type="number" min="0" step="1" value="1" class="w-full border rounded-lg px-3 py-2 bg-white"></label><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Rate (RM)</span><input id="manual-rate-${targetKey}" type="number" min="0" step="0.01" value="0.00" class="w-full border rounded-lg px-3 py-2 bg-white"></label><button type="button" onclick="saveManualItem('${targetKey}')" class="bg-black text-white px-4 py-2 rounded-lg text-sm font-semibold">Add</button></div><div id="manual-new-${targetKey}" class="hidden grid md:grid-cols-2 gap-3 mt-3"><label><span class="block text-xs font-medium text-gray-500 mb-1">New Description</span><input id="manual-desc-${targetKey}" type="text" placeholder="e.g. Additional structural work" class="w-full border rounded-lg px-3 py-2 bg-white"></label><label><span class="block text-xs font-medium text-gray-500 mb-1">Unit</span><input id="manual-unit-${targetKey}" type="text" value="ls" class="w-full border rounded-lg px-3 py-2 bg-white"></label></div>`;'''
-          new='''wrap.innerHTML=`<div class="flex flex-wrap items-center justify-between gap-3 mb-3"><p class="font-semibold text-sm">Add Item</p><button type="button" onclick="addManualItemPrompt('${targetKey}')" class="text-xs text-gray-500">Cancel</button></div><div class="grid md:grid-cols-[2fr_1fr_1fr_auto] gap-3 items-end"><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Standard Rate Item</span><select id="manual-select-${targetKey}" class="w-full border rounded-lg px-3 py-2 bg-white" onchange="prepareManualItem('${targetKey}')"><option value="">Select an item…</option>${standardItemOptions(targetKey)}<option value="__new__">＋ Create New Standard Item</option></select></label><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Quantity</span><input id="manual-qty-${targetKey}" type="number" min="0" step="1" value="1" class="w-full border rounded-lg px-3 py-2 bg-white"></label><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Rate (RM)</span><input id="manual-rate-${targetKey}" type="number" min="0" step="0.01" value="0.00" class="w-full border rounded-lg px-3 py-2 bg-white"></label><button type="button" onclick="saveManualItem('${targetKey}')" class="bg-black text-white px-4 py-2 rounded-lg text-sm font-semibold">Add</button></div><div id="manual-new-${targetKey}" class="hidden grid md:grid-cols-2 gap-3 mt-3"><label><span class="block text-xs font-medium text-gray-500 mb-1">New Description</span><input id="manual-desc-${targetKey}" type="text" placeholder="e.g. Additional structural work" class="w-full border rounded-lg px-3 py-2 bg-white"></label></div>`;'''
-          if old not in s: raise SystemExit('manual form block not found')
-          s=s.replace(old,new,1)
-          old='''const select=document.getElementById(`manual-select-${targetKey}`),rate=document.getElementById(`manual-rate-${targetKey}`),box=document.getElementById(`manual-new-${targetKey}`),qtyField=document.getElementById(`manual-qty-${targetKey}`),item=standardLibrary().find(x=>x.id===select?.value);if(select?.value==='__new__'){box?.classList.remove('hidden');if(rate)rate.value='0.00';return}box?.classList.add('hidden');if(item&&rate)rate.value=normalizeRate(item.rate).toFixed(2)}'''
-          new='''const select=document.getElementById(`manual-select-${targetKey}`),rate=document.getElementById(`manual-rate-${targetKey}`),box=document.getElementById(`manual-new-${targetKey}`),qtyField=document.getElementById(`manual-qty-${targetKey}`),item=standardLibrary().find(x=>x.id===select?.value),isNew=select?.value==='__new__';qtyField?.closest('label')?.classList.toggle('hidden',isNew);if(isNew){box?.classList.remove('hidden');if(rate)rate.value='0.00';return}box?.classList.add('hidden');if(item&&rate)rate.value=normalizeRate(item.rate).toFixed(2)}'''
-          if old not in s: raise SystemExit('prepare block not found')
-          s=s.replace(old,new,1)
-          old='''if(select?.value==='__new__'){\n  description=String(document.getElementById(`manual-desc-${targetKey}`)?.value||'').trim();\n  unit=String(document.getElementById(`manual-unit-${targetKey}`)?.value||'ls').trim()||'ls';'''
-          new='''if(select?.value==='__new__'){\n  description=String(document.getElementById(`manual-desc-${targetKey}`)?.value||'').trim();\n  unit='ls';\n  qty=1;'''
-          if old not in s: raise SystemExit('new-item save block not found')
-          s=s.replace(old,new,1)
-          if 'manual-unit-' in s: raise SystemExit('manual-unit reference remains')
-          p.write_text(s,encoding='utf-8')
+          location_files=['quotation/renovationplanner.html','quotation/buildplanner.html']
+          quantity_files=['quotation/renovationplanner.html']
+          location_tag='<script src="location-autocomplete.js"></script>'
+          quantity_tag='<script src="quotation-quantity-fix.js?v=20260907"></script>'
+          for name in location_files:
+              p=Path(name)
+              s=p.read_text(encoding='utf-8')
+              if location_tag not in s:
+                  s=s.replace('</body>', location_tag+'\n</body>',1)
+                  p.write_text(s,encoding='utf-8')
+          for name in quantity_files:
+              p=Path(name)
+              s=p.read_text(encoding='utf-8')
+              if quantity_tag not in s:
+                  s=s.replace('</body>', quantity_tag+'\n</body>',1)
+                  p.write_text(s,encoding='utf-8')
           PY
-          python - <<'PY'
-          from pathlib import Path
-          s=Path('quotation/buildplanner.html').read_text(encoding='utf-8')
-          assert s.count('<script') == s.count('</script>'), 'script tag mismatch'
-          assert 'anchor.appendChild(wrap);' in s
-          assert 'manual-unit-' not in s
-          assert 'qty=1;' in s
-          print('Build Planner source verification passed')
-          PY
-          git diff --check
-      - name: Commit repaired source and remove temporary workflow
+      - name: Commit planner updates
         run: |
-          rm -f .github/workflows/repair-buildplanner.yml
           git config user.name 'Teraju Ciptabina Bot'
           git config user.email 'actions@users.noreply.github.com'
-          git add quotation/buildplanner.html .github/workflows/repair-buildplanner.yml
-          git commit -m 'Repair Build Planner source [location-autocomplete]'
+          git add quotation/renovationplanner.html quotation/buildplanner.html
+          if git diff --cached --quiet; then
+            echo 'No planner changes needed.'
+            exit 0
+          fi
+          git commit -m 'Add quotation quantity rounding [location-autocomplete]'
           git push
