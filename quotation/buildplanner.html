@@ -513,7 +513,8 @@ document.querySelectorAll('input[name="quotationType"]').forEach(r=>r.addEventLi
 applyAudienceUI();if(isHomeowner()){document.getElementById('roomsContainer').innerHTML='';roomCounter=0;document.getElementById('builtUpArea').value='0';updateEstimate()}else{if(!loadContractorState()){document.getElementById('roomsContainer').innerHTML='';roomCounter=0;document.getElementById('builtUpArea').value='0';saveContractorState()}document.getElementById('contractorIdDisplay').textContent=CONTRACTOR_ID||'Not signed in';updateEstimate()}
 </script>
 
-<script src="location-autocomplete.js">
+<script>
+
 function ensureInitialAreaCard(){
   const container=document.getElementById('roomsContainer');
   if(!container)return;
@@ -524,4 +525,5 @@ ensureInitialAreaCard();
 updateEstimate();
 
 </script>
+<script src="location-autocomplete.js"></script>
 </body></html>
