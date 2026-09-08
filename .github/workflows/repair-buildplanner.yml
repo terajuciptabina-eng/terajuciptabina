@@ -1,6 +1,5 @@
 name: Repair Build Planner source
 
-# Temporary repair workflow active for one pass.
 on:
   push:
     branches: [main]
@@ -16,6 +15,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Restore known-good source and apply current new-item rule
         run: |
+          git fetch --no-tags --depth=1 origin a04a48e003a37f7038c5e4fbcbfa6b8e3bec48b4
           git checkout a04a48e003a37f7038c5e4fbcbfa6b8e3bec48b4 -- quotation/buildplanner.html
           python - <<'PY'
           from pathlib import Path
