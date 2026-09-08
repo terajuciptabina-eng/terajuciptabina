@@ -22,6 +22,17 @@ function injectStyles(){
 #quotationPreview .quotation-preview-page-number{position:absolute!important;left:0!important;right:0!important;bottom:3mm!important;text-align:center!important;font-size:10px!important;line-height:1!important;color:#6b7280!important;font-family:Arial,Helvetica,sans-serif!important;pointer-events:none!important}
 #quotationPreview .quotation-preview-loading{width:100%;padding:32px 20px;text-align:center;border:1px dashed #d1d5db;border-radius:16px;background:#fafafa;color:#6b7280}
 @media(max-width:767px){#quotationPreview.quotation-preview-stage{gap:20px!important;padding:16px 8px!important}#quotationPreview .quotation-preview-page{width:100%!important;box-shadow:0 8px 24px rgba(15,23,42,.08)!important}}
+
+/* Standard planner estimate alignment — alignment only; typography unchanged. */
+#estimateContent table th:nth-child(1),#estimateContent table td:nth-child(1){text-align:left!important}
+#estimateContent table th:nth-child(2),#estimateContent table td:nth-child(2){text-align:center!important}
+#estimateContent table th:nth-child(3),#estimateContent table td:nth-child(3){text-align:center!important}
+#estimateContent table th:nth-child(4),#estimateContent table td:nth-child(4){text-align:right!important}
+#estimateContent table th:nth-child(5),#estimateContent table td:nth-child(5){text-align:right!important}
+#estimateContent table th:nth-child(6),#estimateContent table td:nth-child(6){text-align:center!important}
+#estimateContent table .quotation-section-row td,#estimateContent table .quotation-subsection-row td{text-align:left!important}
+#estimateContent table tr:has(td[colspan="5"]) td:first-child{text-align:right!important}
+#estimateContent table tfoot td[colspan]{text-align:right!important}
 `;
  document.head.appendChild(style);
 }
