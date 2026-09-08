@@ -33,13 +33,6 @@ jobs:
               if quantity_tag not in s:
                   s=s.replace('</body>', quantity_tag+'\n</body>',1)
                   p.write_text(s,encoding='utf-8')
-          p=Path('quotation/buildplanner.html')
-          s=p.read_text(encoding='utf-8')
-          old='<th class="contractor-only">Action</th>'
-          new='<th>Action</th>'
-          if old in s:
-              s=s.replace(old,new,1)
-              p.write_text(s,encoding='utf-8')
           PY
       - name: Commit planner updates
         run: |
@@ -50,5 +43,5 @@ jobs:
             echo 'No planner changes needed.'
             exit 0
           fi
-          git commit -m 'Show quotation delete action to homeowners [location-autocomplete]'
+          git commit -m 'Add quotation quantity rounding [location-autocomplete]'
           git push
