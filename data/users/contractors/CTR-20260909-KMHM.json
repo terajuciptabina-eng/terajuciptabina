@@ -20,12 +20,12 @@
         "schemaVersion": 1,
         "recordType": "quotation",
         "quotationId": "QT-BLD-MTU4H99U-GO7PU",
-        "quotationNumber": "NB-QO043",
+        "quotationNumber": "NB-QO044",
         "plannerType": "build",
         "role": "contractor",
         "contractorId": "CTR-20260909-KMHM",
         "state": "final",
-        "quotationType": "simple",
+        "quotationType": "detail",
         "client": {
           "name": "Alia Rakman"
         },
@@ -107,18 +107,27 @@
           "customRates": [],
           "customQuantities": [],
           "customDescriptions": [],
-          "customRoomLabels": [],
+          "customRoomLabels": [
+            [
+              "room-1",
+              "Living / Family"
+            ],
+            [
+              "room-2",
+              "Dining"
+            ]
+          ],
           "excludedItems": [],
           "manualItems": [],
           "standardRateItems": [],
-          "quotationType": "simple"
+          "quotationType": "detail"
         },
-        "createdAt": "2026-09-09T13:16:57.912Z",
-        "updatedAt": "2026-09-09T13:16:59.310Z"
+        "createdAt": "2026-09-09T13:17:31.628Z",
+        "updatedAt": "2026-09-09T13:17:33.021Z"
       }
     ],
     "renovation": []
   },
   "createdAt": "2026-09-09T13:15:32.117Z",
-  "updatedAt": "2026-09-09T13:16:59.310Z"
+  "updatedAt": "2026-09-09T13:17:33.021Z"
 }
