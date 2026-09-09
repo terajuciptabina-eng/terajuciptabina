@@ -409,18 +409,541 @@ main>section:not(:first-child){scroll-margin-top:92px} main>section>div:first-ch
       </div>
       <div class="grid md:grid-cols-2 gap-5">
         <div>
-          <div class=\"text-xs text-gray-500 self-end pb-2\">New item will be added to this Contractor ID's Standard Rate Schedule.</div></div>`;
+          <label class="block text-sm font-medium mb-2">Customer Name</label>
+          <input id="customerName" type="text" placeholder="Optional"
+            class="w-full border rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-gray-300"
+            oninput="updateEstimate()">
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-2">Project Location</label>
+          <input id="projectLocation" type="text" list="projectLocationSuggestions"
+            placeholder="Start typing location..." autocomplete="off"
+            class="w-full border rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-gray-300"
+            oninput="updateEstimate()">
+        </div>
+      </div>
+    </div>
+    <datalist id="projectLocationSuggestions">
+      <option value="Kuala Lumpur"><option value="Putrajaya"><option value="Cyberjaya">
+      <option value="Petaling Jaya, Selangor"><option value="Shah Alam, Selangor">
+      <option value="Subang Jaya, Selangor"><option value="Puchong, Selangor">
+      <option value="Seri Kembangan, Selangor"><option value="Kajang, Selangor">
+      <option value="Bangi, Selangor"><option value="Semenyih, Selangor">
+      <option value="Ampang, Selangor"><option value="Cheras, Selangor">
+      <option value="Rawang, Selangor"><option value="Klang, Selangor">
+      <option value="Kapar, Selangor"><option value="Kota Damansara, Selangor">
+      <option value="Ara Damansara, Selangor"><option value="Setia Alam, Selangor">
+      <option value="Bandar Kinrara, Puchong, Selangor"><option value="Taman Putra Prima, Puchong, Selangor">
+      <option value="Johor Bahru, Johor"><option value="Iskandar Puteri, Johor">
+      <option value="Pasir Gudang, Johor"><option value="Melaka">
+      <option value="Seremban, Negeri Sembilan"><option value="Ipoh, Perak">
+      <option value="Penang / George Town, Penang"><option value="Butterworth, Penang">
+      <option value="Alor Setar, Kedah"><option value="Kota Bharu, Kelantan">
+      <option value="Kuantan, Pahang"><option value="Kuala Terengganu, Terengganu">
+      <option value="Kota Kinabalu, Sabah"><option value="Kuching, Sarawak">
+    </datalist>
+  </section>
+
+  <!-- Areas -->
+  <section class="bg-white rounded-2xl shadow-sm p-6 mb-6">
+    <div class="flex justify-between items-center mb-5 gap-4">
+      <div class="min-w-0">
+        <h3 class="font-bold text-lg">Areas / Rooms</h3>
+        <p class="text-sm text-gray-500">Only select the area type and enter the sqft.</p>
+      </div>
+      <button type="button" onclick="addRoom()"
+        class="no-print bg-black text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-800 flex-shrink-0">
+        + Add Area
+      </button>
+    </div>
+    <div class="no-print bg-gray-50 border rounded-xl p-4 mb-5 text-sm text-gray-600">
+      <strong class="text-gray-800">Simple input:</strong>
+      Select the room type and enter the area. Quantities such as downlights, fans and other standard items will be calculated automatically.
+    </div>
+    <div id="roomsContainer" class="space-y-4"></div>
+  </section>
+
+  <!-- Contractor Rate Schedule -->
+  <section id="rateScheduleSection" class="contractor-only bg-white rounded-2xl shadow-sm p-6 mb-6">
+    <div class="flex justify-between items-center gap-4">
+      <div class="min-w-0">
+        <h3 class="font-bold text-lg">Contractor Rate Schedule</h3>
+        <p class="text-sm text-gray-500">Hidden by default. Open this only when you need to amend standard rates.</p>
+      </div>
+      <button type="button" id="rateScheduleToggle" onclick="toggleRateSchedule()" class="border rounded-lg px-4 py-2 text-sm font-medium hover:bg-gray-50 flex-shrink-0">
+        Show Rate Schedule
+      </button>
+    </div>
+    <div id="rateSchedulePanel" class="hidden mt-5">
+      <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <p class="text-xs text-gray-500">Changes are saved locally for this Contractor ID.</p>
+        <button type="button" onclick="resetRatesToDefault()" class="border rounded-lg px-3 py-2 text-xs font-medium hover:bg-gray-50">Reset to Default Rates</button>
+      </div>
+      <div id="rateScheduleContent" class="grid md:grid-cols-2 gap-3"></div>
+    </div>
+  </section>
+
+  <!-- Estimate -->
+  <section class="bg-white rounded-2xl shadow-sm p-6 print-card">
+    <div class="flex justify-between items-start mb-6 gap-4">
+      <div class="min-w-0">
+        <p class="text-xs uppercase tracking-wider text-gray-500">Preliminary Estimate</p>
+        <h3 class="text-2xl font-bold">Renovation Budget</h3>
+      </div>
+      <div class="text-right flex-shrink-0">
+        <p class="text-xs text-gray-500">Estimate No.</p>
+        <p id="estimateNumber" class="font-bold"></p>
+      </div>
+    </div>
+    <div id="customerSummary" class="grid md:grid-cols-4 gap-5 mb-6 text-sm"></div>
+    <div id="estimateContent" class="overflow-x-auto"></div>
+    <div class="contractor-only no-print mt-5 flex justify-end">
+      <button type="button" onclick="restoreAllItems()" class="border px-4 py-2 rounded-lg text-sm hover:bg-gray-50">
+        Restore All Items
+      </button>
+    </div>
+    <div id="removedItemsContainer" class="contractor-only mt-4"></div>
+    <div class="border-t mt-6 pt-6">
+      <div class="flex justify-between items-center gap-4 mb-2">
+        <span class="font-semibold text-lg">Total Built Area</span>
+        <span id="totalBuiltArea" class="font-bold text-xl text-gray-700">0 sqft</span>
+      </div>
+      <div class="flex justify-between items-center gap-4">
+        <span class="font-semibold text-lg">Estimated Total</span>
+        <span id="grandTotal" class="font-bold text-3xl">RM 0</span>
+      </div>
+      <p class="text-xs text-gray-500 mt-3">
+        * This is a preliminary renovation estimate only.
+        Final quotation is subject to site inspection, approved drawings, actual site conditions,
+        specifications, material selection and confirmation of final scope of works.
+      </p>
+    </div>
+  </section>
+
+  <!-- Quotation Generator -->
+  <section id="quotationGenerator" class="no-print bg-white rounded-2xl shadow-sm p-6 mt-6">
+  <div class="mb-5">
+    <p class="text-xs uppercase tracking-wider text-gray-500">Quotation</p>
+    <h3 class="font-bold text-xl mt-1">Choose Quotation Type</h3>
+    <p class="text-sm text-gray-500 mt-2">Select the quotation format, then generate one quotation using the final estimate values above.</p>
+  </div>
+  <div class="quotation-type-grid">
+    <label class="quotation-type-card is-selected">
+      <input type="radio" name="quotationType" value="simple" checked>
+      <span class="quotation-type-radio" aria-hidden="true"></span>
+      <span class="quotation-type-copy">
+        <strong>Simple Quotation</strong>
+        <small>Work descriptions with section / room totals only.</small>
+      </span>
+    </label>
+    <label class="quotation-type-card">
+      <input type="radio" name="quotationType" value="detail">
+      <span class="quotation-type-radio" aria-hidden="true"></span>
+      <span class="quotation-type-copy">
+        <strong>Detailed Quotation</strong>
+        <small>Full quantity, unit, rate, amount and subtotal breakdown.</small>
+        <em>~~RM49~~ FREE during promotion</em>
+      </span>
+    </label>
+  </div>
+  <div class="quotation-generator-tip">
+    <strong>Review before generating</strong>
+    <span>The quotation uses the final customer, project, room, quantity and rate values shown in the estimate.</span>
+  </div>
+  <button type="button" onclick="generateQuotation()" class="quotation-generate-btn">Generate Quotation</button>
+</section>
+
+<section id="quotationDocument" class="hidden bg-white rounded-2xl shadow-sm p-8 mt-6">
+  <div class="quotation-preview-heading no-print">
+    <div>
+      <p class="text-xs uppercase tracking-wider text-gray-500">Generated Quotation</p>
+      <h3 class="text-2xl font-bold mt-1">Quotation Preview</h3>
+      <p class="text-sm text-gray-500 mt-1">Visual document preview — scaled automatically for desktop and mobile.</p>
+    </div>
+  </div>
+  <div id="quotationPreview" class="quotation-preview-stage no-print" aria-live="polite">
+    <div class="quotation-preview-loading">Your quotation preview will appear here.</div>
+  </div>
+  <div id="quotationContent" class="quotation-render-source" aria-hidden="true"></div>
+  <div id="quotationLockOverlay" class="quotation-lock-overlay no-print hidden" aria-hidden="true"><div class="quotation-lock-card"><div class="quotation-lock-icon" aria-hidden="true">🔒</div><h3 class="text-xl font-bold">Detailed Quotation Locked</h3><p class="text-sm text-gray-600 mt-2">The detailed quotation has been generated. Unlock it to view the full item-by-item rates and amounts.</p><button type="button" onclick="unlockDetailedQuotation()" class="mt-5 w-full bg-black text-white px-5 py-3 rounded-xl font-semibold">Unlock Detailed Quotation</button></div></div>
+  <div id="quotationPrintActions" class="no-print mt-6 pt-5 border-t flex justify-end">
+    <button type="button" onclick="printQuotation()" class="bg-black text-white px-5 py-3 rounded-lg font-semibold">Download PDF</button>
+  </div>
+</section>
+
+  <!-- CTA -->
+  <section class="no-print bg-gray-900 text-white rounded-2xl p-8 mt-8 text-center">
+    <h3 class="text-2xl font-bold mb-3">Need an Official Quotation?</h3>
+    <p class="text-gray-300 max-w-2xl mx-auto mb-6">
+      Let Teraju Ciptabina inspect your property and prepare a detailed quotation based on the actual site condition and requirements.
+    </p>
+    <a href="../index.html#contact" class="inline-block bg-white text-black px-6 py-3 rounded-lg font-semibold hover:bg-gray-200">
+      Request Site Visit
+    </a>
+  </section>
+</main>
+
+<script>
+const RATES = {
+  ceiling: 12, spc: 14, floorTile: 22, wallTile: 22, facadeWall: 60,
+  downlight: 200, wallLight: 250, ceilingFan: 550, exhaustFan: 200,
+  curtainBoxLED: 300, barLamp: 500, diningLamp: 600,
+  kitchenFrame: 1200, kitchenMakingGood: 1000, kitchenGlassDoor: 1200,
+  bathroomSanitary: 3000, bathroomDoor: 1200,
+  gateMotor: 6400, brickwallDivider: 2800, frontFence: 5500,
+  preliminaries: 8500, extensionKitchen: 250, extensionToilet: 584
+};
+
+const RULES = { downlightPerSqft: 50, minimumDownlights: 4 };
+
+const ROOM_TYPES = {
+  living: "Living / Dining", bedroom: "Bedroom", dryKitchen: "Dry Kitchen",
+  wetKitchen: "Wet Kitchen", bathroom: "Bathroom", carPorch: "Car Porch",
+  balcony: "Balcony", extensionKitchen: "New Extension – Kitchen",
+  extensionToilet: "New Extension – Toilet"
+};
+
+const OPTIONAL_SCOPES = [
+  { key: "demolition", label: "Demolition works based on designer proposal, including careful removal, disposal, and site clearing, completed in a safe and professional manner", unit: "ls", rate: null, custom: true },
+  { key: "painting", label: "Supply labour, materials, tools, and equipment to carry out internal and external painting works, including surface preparation, minor repairs, sealer where required, two coats of premium quality paint, cleaning and touch-up upon completion", unit: "ls", rate: null, custom: true },
+  { key: "glassDoor", label: "To supply and install additional swing glass door", unit: "unit", rate: RATES.kitchenGlassDoor },
+  { key: "brickwallDivider", label: "To build additional side brickwall divider c/w plaster and paint", unit: "ls", rate: RATES.brickwallDivider },
+  { key: "frontFence", label: "To build additional front fence brickwall based on designer proposal", unit: "ls", rate: RATES.frontFence },
+  { key: "windows", label: "To supply and install additional windows", unit: "unit", rate: null, custom: true },
+  { key: "electrical", label: "Additional electrical and wiring works based on confirmed site requirements", unit: "ls", rate: null, custom: true }
+];
+
+let roomCounter = 0;
+const excludedItems = new Set();
+const customRates = new Map();
+const customQuantities = new Map();
+const customDescriptions = new Map();
+const customRoomLabels = new Map();
+const manualItems = new Map();
+let standardRateItems = [];
+
+const DEFAULT_RATES = JSON.parse(JSON.stringify(RATES));
+const AUDIENCE = new URLSearchParams(window.location.search).get("audience") || "homeowner";
+const IS_CONTRACTOR = AUDIENCE === "contractor";
+const CONTRACTOR_ID = new URLSearchParams(window.location.search).get("contractorId")
+  || localStorage.getItem("teraju.contractor.local.v1.activeContractorId")
+  || "";
+const CONTRACTOR_STORAGE_PREFIX = "teraju.contractor.local.v1";
+let restoringContractorState = false;
+
+function contractorStorageKey() {
+  return CONTRACTOR_ID ? `${CONTRACTOR_STORAGE_PREFIX}.${CONTRACTOR_ID}.renovation` : "";
+}
+
+function normalizeRate(value) {
+  return Math.max(0, Math.round((Number(value) || 0) * 100) / 100);
+}
+
+function normalizeQuantity(value) {
+  return Math.max(0, Math.ceil(Number(value) || 0));
+}
+
+function generateEstimateNumber() {
+  let number = localStorage.getItem("terajuEstimateNumber");
+  number = number ? parseInt(number, 10) + 1 : 1;
+  localStorage.setItem("terajuEstimateNumber", number);
+  return "EST-" + String(number).padStart(4, "0");
+}
+document.getElementById("estimateNumber").textContent = generateEstimateNumber();
+
+function money(value, decimals = 0) {
+  return new Intl.NumberFormat("en-MY", {
+    minimumFractionDigits: decimals, maximumFractionDigits: decimals
+  }).format(Number(value) || 0);
+}
+
+function calculateDownlights(area) {
+  if (!area || area <= 0) return 0;
+  return Math.max(RULES.minimumDownlights, Math.ceil(area / RULES.downlightPerSqft));
+}
+
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+}
+
+function formatQty(value) { return Math.round(Number(value) || 0); }
+
+function roomOptions() {
+  return Object.entries(ROOM_TYPES)
+    .map(([key, name]) => `<option value="${key}">${escapeHtml(name)}</option>`).join("");
+}
+
+function optionalScopeHtml() {
+  return OPTIONAL_SCOPES.map(scope => {
+    const fixed = scope.rate !== null;
+    return `
+      <div class="optional-scope border rounded-lg p-3 bg-white" data-scope="${scope.key}">
+        <div class="flex items-start gap-3">
+          <input type="checkbox" class="optional-check h-4 w-4" data-scope="${scope.key}">
+          <div class="flex-1 min-w-0">
+            <label class="text-sm font-medium cursor-pointer">${escapeHtml(scope.label)}</label>
+            <p class="text-xs text-gray-500 mt-1">
+              ${fixed ? `Standard rate: ${money(scope.rate)} / ${scope.unit}` : "Enter a room-specific rate if required"}
+            </p>
+          </div>
+          ${fixed
+            ? `<div class="text-sm font-semibold whitespace-nowrap flex-shrink-0">${money(scope.rate)}</div>`
+            : `<input type="number" min="0" step="1" value="" placeholder="Rate" class="optional-rate w-28 border rounded-lg px-3 py-2 text-sm flex-shrink-0">`}
+        </div>
+      </div>`;
+  }).join("");
+}
+
+function addRoomBase(defaultType = "living", defaultArea = "") {
+  roomCounter++;
+  const id = "room-" + roomCounter;
+  const container = document.getElementById("roomsContainer");
+  const div = document.createElement("div");
+  div.id = id;
+  div.className = "room-card border rounded-xl p-4 bg-gray-50";
+
+  div.innerHTML = `
+    <div class="grid md:grid-cols-[1fr_1fr_1fr_auto] gap-4 items-end">
+      <div>
+        <label class="block text-sm font-medium mb-2">Room Type</label>
+        <select class="room-type w-full border rounded-lg px-4 py-3 bg-white">${roomOptions()}</select>
+      </div>
+<div>
+        <label class="block text-sm font-medium mb-2">Room / Area Name</label>
+        <input type="text" value="${escapeHtml(customRoomLabels.get(id) || ROOM_TYPES[defaultType] || "Area")}"
+          placeholder="e.g. Living Area" class="room-name w-full border rounded-lg px-4 py-3 bg-white">
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-2">Area (sqft)</label>
+        <input type="number" min="1" step="1" value="${escapeHtml(defaultArea)}"
+          placeholder="e.g. 200" class="room-area w-full border rounded-lg px-4 py-3 bg-white">
+      </div>
+      <div class="no-print flex gap-2">
+        <button type="button" onclick="moveRoom('${id}', -1)" title="Move up" class="border rounded-lg px-3 py-3 hover:bg-gray-100">▲</button>
+        <button type="button" onclick="moveRoom('${id}', 1)" title="Move down" class="border rounded-lg px-3 py-3 hover:bg-gray-100">▼</button>
+        <button type="button" onclick="removeRoom('${id}')" class="border border-red-300 text-red-600 rounded-lg px-4 py-3 hover:bg-red-50">Remove</button>
+      </div>
+    </div>
+    <div class="mt-4 border-t pt-4">
+      <button type="button" class="optional-toggle w-full flex items-center justify-between text-left py-1 no-print"
+        onclick="toggleOptionalWorks('${id}')" aria-expanded="false">
+        <div class="min-w-0">
+          <h4 class="font-semibold text-sm">Optional Works</h4>
+          <p class="text-xs text-gray-500 mt-1">Expand only if additional works are required for this area.</p>
+        </div>
+        <span id="${id}-optional-arrow" class="text-gray-500 text-sm ml-4 flex-shrink-0">▼</span>
+      </button>
+      <div id="${id}-optional" class="hidden mt-3">
+        <div class="grid md:grid-cols-2 gap-3 optional-scopes">${optionalScopeHtml()}</div>
+      </div>
+    </div>`;
+
+  container.appendChild(div);
+  div.querySelector(".room-type").value = defaultType;
+
+  div.querySelector(".room-name").addEventListener("change", e => editRoomLabel(id, e.target.value));
+  div.querySelector(".room-type").addEventListener("change", () => {
+    if (!customRoomLabels.has(id)) {
+      div.querySelector(".room-name").value = ROOM_TYPES[div.querySelector(".room-type").value] || "Area";
+    }
+    updateEstimate();
+  });
+  div.querySelector(".room-area").addEventListener("input", updateEstimate);
+  div.querySelectorAll(".optional-check").forEach(el => el.addEventListener("change", () => { updateEstimate(); saveContractorState(); }));
+  div.querySelectorAll(".optional-rate").forEach(el => el.addEventListener("input", () => { updateEstimate(); saveContractorState(); }));
+  updateEstimate();
+}
+
+function removeRoom(id) {
+  document.getElementById(id)?.remove();
+  customRoomLabels.delete(id);
+  updateEstimate();
+  saveContractorState();
+}
+
+function moveRoom(id, direction) {
+  const room = document.getElementById(id);
+  const container = document.getElementById("roomsContainer");
+  if (!room || !container) return;
+  if (direction < 0) {
+    const prev = room.previousElementSibling;
+    if (prev) container.insertBefore(room, prev);
+  } else {
+    const next = room.nextElementSibling;
+    if (next) container.insertBefore(next, room);
+  }
+  updateEstimate();
+  saveContractorState();
+}
+
+function toggleOptionalWorks(roomId) {
+  const panel = document.getElementById(`${roomId}-optional`);
+  const arrow = document.getElementById(`${roomId}-optional-arrow`);
+  if (!panel || !arrow) return;
+  panel.classList.toggle("hidden");
+  const expanded = !panel.classList.contains("hidden");
+  arrow.textContent = expanded ? "▲" : "▼";
+  document.querySelector(`.optional-toggle[onclick="toggleOptionalWorks('${roomId}')"]`)
+    ?.setAttribute("aria-expanded", String(expanded));
+}
+
+function toggleProjectInfo() {
+  const info = document.getElementById("projectInfo");
+  const arrow = document.getElementById("projectArrow");
+  if (!info) return;
+  info.classList.toggle("hidden");
+  if (arrow) arrow.textContent = info.classList.contains("hidden") ? "▼" : "▲";
+}
+
+function pushItem(items, roomId, roomLabel, key, description, qty, unit, rate, optional = false) {
+  items.push({ id: `${roomId}-${key}`, roomId, room: roomLabel, description, qty: Number(qty) || 0, unit, rate: Number(rate) || 0, optional });
+}
+
+function generateStandardRoomItems(roomType, area, roomId, roomLabel) {
+  const items = [];
+  if (!area || area <= 0) return items;
+
+  if (roomType === "living" || roomType === "bedroom") {
+    pushItem(items, roomId, roomLabel, "ceiling", "To supply and install plaster ceiling flat c/w paint", area, "sqft", RATES.ceiling);
+    pushItem(items, roomId, roomLabel, "spc", "To supply and install spc flooring c/w skirting and floor mat", area, "sqft", RATES.spc);
+    pushItem(items, roomId, roomLabel, "downlight", `To supply and install ${calculateDownlights(area)} unit downlight c/w wiring`, calculateDownlights(area), "unit", RATES.downlight);
+    pushItem(items, roomId, roomLabel, "fan", "To supply and install 1 unit ceiling fan c/w wiring", 1, "unit", RATES.ceilingFan);
+    pushItem(items, roomId, roomLabel, "curtain", "To supply and install led light for curtain box 1 set c/w wiring", 1, "ls", RATES.curtainBoxLED);
+  }
+  if (roomType === "dryKitchen") {
+    pushItem(items, roomId, roomLabel, "ceiling", "To supply and install plaster ceiling flat c/w paint", area, "sqft", RATES.ceiling);
+    pushItem(items, roomId, roomLabel, "spc", "To supply and install spc flooring c/w skirting and floor mat", area, "sqft", RATES.spc);
+    pushItem(items, roomId, roomLabel, "downlight", `To supply and install ${calculateDownlights(area)} unit downlight c/w wiring`, calculateDownlights(area), "unit", RATES.downlight);
+    pushItem(items, roomId, roomLabel, "barlamp", "To supply and install bar lamp c/w wiring", 1, "unit", RATES.barLamp);
+    pushItem(items, roomId, roomLabel, "fan", "To supply and install baby ceiling fan c/w wiring", 1, "unit", RATES.ceilingFan);
+    pushItem(items, roomId, roomLabel, "frame", "To supply and install laminated arce frame 1 unit", 1, "ls", RATES.kitchenFrame);
+    pushItem(items, roomId, roomLabel, "makinggood", "To making good wall after demolish existing toilet", 1, "ls", RATES.kitchenMakingGood);
+    pushItem(items, roomId, roomLabel, "glassdoor", "To supply and install swing glass door", 1, "ls", RATES.kitchenGlassDoor);
+  }
+  if (roomType === "wetKitchen") {
+    pushItem(items, roomId, roomLabel, "floor", "To supply and install floor tiles c/w water proofing", area, "sqft", RATES.floorTile);
+    pushItem(items, roomId, roomLabel, "walltile", "To supply and install wall tiles", area * 2, "sqft", RATES.wallTile);
+    pushItem(items, roomId, roomLabel, "ceiling", "To supply and install plaster ceiling flat c/w paint", area, "sqft", RATES.ceiling);
+    pushItem(items, roomId, roomLabel, "downlight", `To supply and install ${calculateDownlights(area)} unit downlight c/w wiring`, calculateDownlights(area), "unit", RATES.downlight);
+    pushItem(items, roomId, roomLabel, "fan", "To supply and install 1 unit ceiling fan c/w wiring", 1, "unit", RATES.ceilingFan);
+    pushItem(items, roomId, roomLabel, "lamp", "To supply and install kitchen lighting c/w wiring", 1, "ls", RATES.barLamp);
+  }
+  if (roomType === "bathroom") {
+    pushItem(items, roomId, roomLabel, "floor", "To supply and install floor tiles c/w water proofing", area, "sqft", RATES.floorTile);
+    pushItem(items, roomId, roomLabel, "walltile", "Wall tiles", area * 6, "sqft", RATES.wallTile);
+    pushItem(items, roomId, roomLabel, "ceiling", "To supply and install plaster ceiling flat c/w paint", area, "sqft", RATES.ceiling);
+    pushItem(items, roomId, roomLabel, "sanitary", "To supply and install toilet accessories (water closet, bidet, sink and cabinet)", 1, "ls", RATES.bathroomSanitary);
+    pushItem(items, roomId, roomLabel, "door", "To supply and install toilet swing door", 1, "unit", RATES.bathroomDoor);
+    pushItem(items, roomId, roomLabel, "downlight", `To supply and install ${calculateDownlights(area)} unit downlight c/w wiring`, calculateDownlights(area), "unit", RATES.downlight);
+    pushItem(items, roomId, roomLabel, "exhaust", `To supply and install ${Math.max(1, Math.ceil(area / 50))} unit exhaust fan c/w wiring`, Math.max(1, Math.ceil(area / 50)), "unit", RATES.exhaustFan);
+  }
+  if (roomType === "carPorch") {
+    pushItem(items, roomId, roomLabel, "floor", "To supply and install floor tiles", area, "sqft", RATES.floorTile);
+    pushItem(items, roomId, roomLabel, "ceiling", "To supply and install plaster ceiling flat c/w paint", area, "sqft", RATES.ceiling);
+    pushItem(items, roomId, roomLabel, "downlight", `To supply and install ${calculateDownlights(area)} unit downlight c/w wiring`, calculateDownlights(area), "unit", RATES.downlight);
+    pushItem(items, roomId, roomLabel, "gate", "To supply and install main gate c/w automatic motor 4000mm (L) x 1830mm (H)", 1, "ls", RATES.gateMotor);
+    pushItem(items, roomId, roomLabel, "divider", "To build 1 side brickwall divider c/w plaster and paint", 1, "ls", RATES.brickwallDivider);
+    pushItem(items, roomId, roomLabel, "fence", "To build new front fence brickwall based on designer proposal", 1, "ls", RATES.frontFence);
+  }
+  if (roomType === "balcony") {
+    pushItem(items, roomId, roomLabel, "floor", "To supply and install floor tiles c/w water proofing", area, "sqft", RATES.floorTile);
+    pushItem(items, roomId, roomLabel, "facade", "Facade wall", area * 1.33, "sqft", RATES.facadeWall);
+    pushItem(items, roomId, roomLabel, "walllight", `To supply and install ${Math.max(2, Math.ceil(area / 70))} unit wall light c/w wiring`, Math.max(2, Math.ceil(area / 70)), "unit", RATES.wallLight);
+  }
+  if (roomType === "extensionKitchen") {
+    pushItem(items, roomId, roomLabel, "extension", `To build concrete foundation for new kitchen, including excavation, reinforcement and concreting works, complete with tiles finishing, safety door, casement window, accessories and concrete roof slab based on designer’s proposal. Total area ${formatQty(area)}sqft`, area, "sqft", RATES.extensionKitchen);
+    pushItem(items, roomId, roomLabel, "downlight", `To supply and install ${calculateDownlights(area)} unit downlight c/w wiring`, calculateDownlights(area), "unit", RATES.downlight);
+  }
+  if (roomType === "extensionToilet") {
+    pushItem(items, roomId, roomLabel, "extension", `To build concrete foundation for new toilet, including excavation, reinforcement and concreting works, complete with tiles finishing, safety door, casement window, toilet accessories and concrete roof slab based on designer’s proposal. Total area ${formatQty(area)}sqft`, area, "sqft", RATES.extensionToilet);
+    pushItem(items, roomId, roomLabel, "downlight", `To supply and install ${calculateDownlights(area)} unit downlight c/w wiring`, calculateDownlights(area), "unit", RATES.downlight);
+    pushItem(items, roomId, roomLabel, "exhaust", `To supply and install ${Math.max(1, Math.ceil(area / 50))} unit exhaust fan c/w wiring`, Math.max(1, Math.ceil(area / 50)), "unit", RATES.exhaustFan);
+  }
+  return items.map(item => ({ ...item, roomType }));
+}
+
+function generateOptionalRoomItems(room, roomLabel) {
+  const items = [];
+  room.querySelectorAll(".optional-scope").forEach(scopeEl => {
+    const checkbox = scopeEl.querySelector(".optional-check");
+    if (!checkbox?.checked) return;
+    const key = scopeEl.dataset.scope;
+    const definition = OPTIONAL_SCOPES.find(s => s.key === key);
+    if (!definition) return;
+    let rate = definition.rate;
+    if (definition.custom) {
+      rate = parseFloat(scopeEl.querySelector(".optional-rate")?.value) || 0;
+      if (rate <= 0) return;
+    }
+    pushItem(items, room.id, roomLabel, `optional-${key}`, definition.label, 1, definition.unit, rate, true);
+  });
+  return items;
+}
+
+function getStandardRateItems(roomId=null) {
+  const roomType=roomId ? document.getElementById(roomId)?.querySelector('.room-type')?.value || 'other' : null;
+  const roomStandardKeys={
+    living:["ceiling","spc","downlight","ceilingFan","curtainBoxLED"],
+    bedroom:["ceiling","spc","downlight","ceilingFan","curtainBoxLED"],
+    dryKitchen:["ceiling","spc","downlight","barLamp","ceilingFan","kitchenFrame","kitchenMakingGood","kitchenGlassDoor"],
+    wetKitchen:["floorTile","wallTile","ceiling","downlight","ceilingFan","barLamp"],
+    bathroom:["floorTile","wallTile","ceiling","bathroomSanitary","bathroomDoor","downlight","exhaustFan"],
+    carPorch:["floorTile","ceiling","downlight","gateMotor","brickwallDivider","frontFence"],
+    balcony:["floorTile","facadeWall","wallLight"],
+    extensionKitchen:["extensionKitchen","downlight"],
+    extensionToilet:["extensionToilet","downlight","exhaustFan"]
+  };
+  const allowed=roomStandardKeys[roomType]||[];
+  const items=[
+    ["ceiling","To supply and install plaster ceiling flat c/w paint","sqft",RATES.ceiling],
+    ["spc","To supply and install spc flooring c/w skirting and floor mat","sqft",RATES.spc],
+    ["floorTile","To supply and install floor tiles c/w water proofing","sqft",RATES.floorTile],
+    ["wallTile","To supply and install wall tiles","sqft",RATES.wallTile],
+    ["facadeWall","Facade wall","sqft",RATES.facadeWall],
+    ["downlight","To supply and install downlight c/w wiring","unit",RATES.downlight],
+    ["wallLight","To supply and install wall light c/w wiring","unit",RATES.wallLight],
+    ["ceilingFan","To supply and install ceiling fan c/w wiring","unit",RATES.ceilingFan],
+    ["exhaustFan","To supply and install exhaust fan c/w wiring","unit",RATES.exhaustFan],
+    ["curtainBoxLED","To supply and install led light for curtain box c/w wiring","ls",RATES.curtainBoxLED],
+    ["barLamp","To supply and install bar lamp c/w wiring","unit",RATES.barLamp],
+    ["diningLamp","To supply and install dining lamp c/w wiring","unit",RATES.diningLamp],
+    ["kitchenFrame","To supply and install laminated arce frame","ls",RATES.kitchenFrame],
+    ["kitchenMakingGood","To making good wall after demolish existing toilet","ls",RATES.kitchenMakingGood],
+    ["kitchenGlassDoor","To supply and install swing glass door","ls",RATES.kitchenGlassDoor],
+    ["bathroomSanitary","To supply and install toilet accessories (water closet, bidet, sink and cabinet)","ls",RATES.bathroomSanitary],
+    ["bathroomDoor","To supply and install toilet swing door","unit",RATES.bathroomDoor],
+    ["gateMotor","To supply and install main gate c/w automatic motor","ls",RATES.gateMotor],
+    ["brickwallDivider","To build side brickwall divider c/w plaster and paint","ls",RATES.brickwallDivider],
+    ["frontFence","To build new front fence brickwall based on designer proposal","ls",RATES.frontFence],
+    ["extensionKitchen","To build concrete foundation and complete new kitchen extension based on designer proposal","sqft",RATES.extensionKitchen],
+    ["extensionToilet","To build concrete foundation and complete new toilet extension based on designer proposal","sqft",RATES.extensionToilet]
+  ].map(([key,description,unit,rate])=>({id:`default-${key}`,key,description,unit,rate:normalizeRate(rate),custom:false}));
+  const defaults=roomId ? items.filter(item=>allowed.includes(item.key)).map(item=>({...item,roomType})) : items;
+  const custom=roomId ? standardRateItems.filter(item=>item.roomType===roomType) : standardRateItems;
+  return [...defaults,...custom.map(item=>({...item,rate:normalizeRate(item.rate),custom:true}))];
+}
+function standardItemOptions(roomId) { return getStandardRateItems(roomId).map(item => `<option value="${escapeHtml(item.id)}">${escapeHtml(item.description)} — ${money(item.rate, 2)}</option>`).join(""); }
+function addManualItemPrompt(roomId) {
+  if (!IS_CONTRACTOR) return;
+  const existing = document.getElementById(`manual-add-${roomId}`);
+  if (existing) { existing.remove(); return; }
+  const anchor = document.querySelector(`[data-manual-anchor=\"${roomId}\"]`);
+  if (!anchor) return;
+  const wrap = document.createElement("div");
+  wrap.id = `manual-add-${roomId}`; wrap.className = "no-print mt-3 border rounded-xl bg-gray-50 p-4";
+  wrap.innerHTML = `<div class=\"flex flex-wrap items-center justify-between gap-3 mb-3\"><p class=\"font-semibold text-sm\">Add Item</p><button type=\"button\" onclick=\"addManualItemPrompt('${roomId}')\" class=\"text-xs text-gray-500\">Cancel</button></div><div class=\"grid md:grid-cols-[2fr_1fr_1fr_auto] gap-3 items-end\"><label class=\"block\"><span class=\"block text-xs font-medium text-gray-500 mb-1\">Standard Rate Item</span><select id=\"manual-select-${roomId}\" class=\"w-full border rounded-lg px-3 py-2 bg-white\" onchange=\"prepareManualItem('${roomId}')\"><option value=\"\">Select an item…</option>${standardItemOptions(roomId)}<option value=\"__new__\">＋ Create New Standard Item</option></select></label><label class=\"block\"><span class=\"block text-xs font-medium text-gray-500 mb-1\">Quantity</span><input id=\"manual-qty-${roomId}\" type=\"number\" min=\"0\" step=\"1\" value=\"1\" class=\"w-full border rounded-lg px-3 py-2 bg-white\"></label><label class=\"block\"><span class=\"block text-xs font-medium text-gray-500 mb-1\">Rate (RM)</span><input id=\"manual-rate-${roomId}\" type=\"number\" min=\"0\" step=\"0.01\" value=\"0.00\" class=\"w-full border rounded-lg px-3 py-2 bg-white\"></label><button type=\"button\" onclick=\"saveManualItem('${roomId}')\" class=\"bg-black text-white px-4 py-2 rounded-lg text-sm font-semibold\">Add</button></div><div id=\"manual-new-${roomId}\" class=\"hidden grid md:grid-cols-3 gap-3 mt-3\"><label><span class=\"block text-xs font-medium text-gray-500 mb-1\">New Description</span><input id=\"manual-desc-${roomId}\" type=\"text\" placeholder=\"e.g. Aluminium awning\" class=\"w-full border rounded-lg px-3 py-2 bg-white\"></label><label><span class=\"block text-xs font-medium text-gray-500 mb-1\">Unit</span><input id=\"manual-unit-${roomId}\" type=\"text\" value=\"ls\" class=\"w-full border rounded-lg px-3 py-2 bg-white\"></label><div class=\"text-xs text-gray-500 self-end pb-2\">New item will be added to this Contractor ID's Standard Rate Schedule.</div></div>`;
   anchor.appendChild(wrap);
 }
 function prepareManualItem(roomId) {
-  const select = document.getElementById(`manual-select-${roomId}`), rate = document.getElementById(`manual-rate-${roomId}`), newBox = document.getElementById(`manual-new-${roomId}`), qtyField = document.getElementById(`manual-qty-${roomId}`), item = getStandardRateItems(roomId).find(x => x.id === select?.value), isNew = select?.value === "__new__";
-  qtyField?.closest("label")?.classList.toggle("hidden", isNew);
-  if (isNew) { newBox?.classList.remove("hidden"); if (rate) rate.value = "0.00"; return; }
+  const select = document.getElementById(`manual-select-${roomId}`), rate = document.getElementById(`manual-rate-${roomId}`), newBox = document.getElementById(`manual-new-${roomId}`), item = getStandardRateItems(roomId).find(x => x.id === select?.value);
+  if (select?.value === "__new__") { newBox?.classList.remove("hidden"); if (rate) rate.value = "0.00"; return; }
   newBox?.classList.add("hidden"); if (item && rate) rate.value = normalizeRate(item.rate).toFixed(2);
 }
 function saveManualItem(roomId) {
   if (!IS_CONTRACTOR) return; const select = document.getElementById(`manual-select-${roomId}`), qty = normalizeQuantity(document.getElementById(`manual-qty-${roomId}`)?.value), rateInput = document.getElementById(`manual-rate-${roomId}`); let selected = getStandardRateItems(roomId).find(x => x.id === select?.value), description = selected?.description || "", unit = selected?.unit || "ls", rate = normalizeRate(rateInput?.value);
-  if (select?.value === "__new__") { description = String(document.getElementById(`manual-desc-${roomId}`)?.value || "").trim(); unit="ls"; qty=1; if (!description) { alert("Please enter the new item description."); return; } if (rate < 0) { alert("Please enter a valid rate."); return; } const id = `custom-${Date.now()}-${Math.random().toString(36).slice(2,8)}`; standardRateItems.push({ id, description, unit, rate, roomType: document.getElementById(roomId)?.querySelector(".room-type")?.value || "other", custom: true }); selected = { id, description, unit, rate, roomType: document.getElementById(roomId)?.querySelector(".room-type")?.value || "other", custom: true }; saveContractorState(); }
+  if (select?.value === "__new__") { description = String(document.getElementById(`manual-desc-${roomId}`)?.value || "").trim(); unit = String(document.getElementById(`manual-unit-${roomId}`)?.value || "ls").trim() || "ls"; if (!description) { alert("Please enter the new item description."); return; } if (rate < 0) { alert("Please enter a valid rate."); return; } const id = `custom-${Date.now()}-${Math.random().toString(36).slice(2,8)}`; standardRateItems.push({ id, description, unit, rate, roomType: document.getElementById(roomId)?.querySelector(".room-type")?.value || "other", custom: true }); selected = { id, description, unit, rate, roomType: document.getElementById(roomId)?.querySelector(".room-type")?.value || "other", custom: true }; saveContractorState(); }
   if (!description) { alert("Please select or create an item."); return; } const id = `manual-${Date.now()}-${Math.random().toString(36).slice(2,8)}`; if (!manualItems.has(roomId)) manualItems.set(roomId, []); manualItems.get(roomId).push({ id, roomId, roomType: document.getElementById(roomId)?.querySelector(".room-type")?.value || "other", description, unit, qty, rate, amount: Math.round((qty * rate + Number.EPSILON) * 100) / 100 }); updateEstimate(); saveContractorState();
 }
 function removeManualItem(roomId, itemId) { if (!IS_CONTRACTOR) return; const list = manualItems.get(roomId) || []; manualItems.set(roomId, list.filter(item => item.id !== itemId)); updateEstimate(); saveContractorState(); }
