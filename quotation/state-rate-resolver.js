@@ -10,9 +10,11 @@
   const INDEX_URL=ROOT+'states/index.json';
   let indexPromise=null;
   let applyToken=0;
+  let extensionLoaded=false;
 
   function state(){return String(window.TERAJU_SELECTED_STATE||'').trim().toLowerCase();}
   function cloneRates(data){return data&&data.rates&&typeof data.rates==='object'?{...data.rates}:{};}
+  function cloneRateItems(data){return data&&data.rateItems&&typeof data.rateItems==='object'?{...data.rateItems}:{};}
 
   async function loadIndex(){
     if(!indexPromise) indexPromise=fetch(INDEX_URL,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('Unable to load state rate index.');return r.json()});
@@ -29,7 +31,16 @@
     const data=await response.json();
     const rates=cloneRates(data);
     if(!Object.keys(rates).length)throw new Error('Rate set is empty for '+(entry.name||stateId)+'.');
-    return {state:stateId,rateSetId:data?.rateSetId||entry.rateSetId||stateId,name:data?.state||entry.name||stateId,rates};
+    return {state:stateId,rateSetId:data?.rateSetId||entry.rateSetId||stateId,name:data?.state||entry.name||stateId,rates,rateItems:cloneRateItems(data),source:entry.source};
+  }
+
+  function loadBuildExtension(){
+    if(extensionLoaded||!/buildplanner\.html$/i.test(location.pathname))return;
+    extensionLoaded=true;
+    const script=document.createElement('script');
+    script.src='rate-items.js?v=1';
+    script.async=false;
+    document.head.appendChild(script);
   }
 
   async function apply(){
@@ -40,7 +51,9 @@
       const result=await resolve(selected);
       if(token!==applyToken)return;
       if(typeof RATES!=='undefined'&&RATES&&typeof RATES==='object')Object.assign(RATES,result.rates);
-      window.TERAJU_RATE_CONTEXT={state:result.state,rateSetId:result.rateSetId,name:result.name,source:'states/'+(result.rateSetId+'.json')};
+      window.TERAJU_RATE_ITEMS=result.rateItems;
+      window.TERAJU_RATE_CONTEXT={state:result.state,rateSetId:result.rateSetId,name:result.name,source:'states/'+result.source};
+      loadBuildExtension();
       window.dispatchEvent(new CustomEvent('teraju:ratechange',{detail:window.TERAJU_RATE_CONTEXT}));
       if(typeof updateEstimate==='function')updateEstimate();
     }catch(error){console.error('[TERAJU] Rate resolver failed:',error)}
@@ -52,5 +65,7 @@
   if(!hasQuotationId){
     if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(apply,0),{once:true});
     else setTimeout(apply,0);
+  } else {
+    loadBuildExtension();
   }
 })();
