@@ -100,7 +100,7 @@
       display: grid;
       /* Match the actual estimate table columns:
          Description | Unit | Quantity | Rate | Amount | Action */
-      grid-template-columns: 60% 5% 8% 8% 12% 7%;
+      grid-template-columns: 31% 7% 12% 15% 20% 15%;
       column-gap: 0;
       align-items: center;
       min-height: 34px;
@@ -275,8 +275,9 @@
   #estimateContent table td:nth-child(2),
   #estimateContent table td:nth-child(3),
   #estimateContent table td:nth-child(4),
-  #estimateContent table td:nth-child(5),
   #estimateContent table td:nth-child(6) { text-align:center !important; }
+  #estimateContent table th:nth-child(5),
+  #estimateContent table td:nth-child(5) { text-align:right !important; }
   #estimateContent table input,
   #estimateContent table select,
   #estimateContent table textarea {
@@ -290,6 +291,7 @@
   }
   #estimateContent table textarea { min-height:48px !important; }
   #estimateContent table td:nth-child(n+2) { vertical-align:middle !important; }
+  .estimate-total-value { padding-right:2px !important; }
   #estimateContent table td:nth-child(6) button {
     width:100% !important;
     min-width:0 !important;
@@ -1092,7 +1094,7 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
   let html = `
     <div class="overflow-x-auto">
       <table class="w-full border-collapse text-sm" style="table-layout:fixed;">
-        <colgroup><col style="width:60%"><col style="width:5%"><col style="width:8%"><col style="width:8%"><col style="width:12%"><col style="width:7%"></colgroup>
+        <colgroup><col style="width:31%"><col style="width:7%"><col style="width:12%"><col style="width:15%"><col style="width:20%"><col style="width:15%"></colgroup>
         <thead>
           <tr class="border-b-2 text-left">
             <th class="py-3 px-2">Description</th>
