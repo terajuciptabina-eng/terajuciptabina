@@ -41,6 +41,16 @@ export default async function handler(req, res) {
     return { record: JSON.parse(content), sha: result.data?.sha || null, status: 200 };
   }
 
+  function nextQuotationNumber(records, quotationType) {
+    const suffix = quotationType === 'detail' ? 'D' : 'S';
+    let max = 0;
+    for (const q of Array.isArray(records) ? records : []) {
+      const match = String(q?.quotationNumber || '').trim().match(/^Q(\d+)$/i);
+      if (match) max = Math.max(max, Number(match[1]) || 0);
+    }
+    return `Q${String(max + 1).padStart(3, '0')}${suffix}`;
+  }
+
   try {
     const source = req.method === 'GET' ? req.query : (req.body || {});
     const role = String(source?.role || '').toLowerCase();
@@ -90,12 +100,20 @@ export default async function handler(req, res) {
     current.record.plannerRecords.renovation = Array.isArray(current.record.plannerRecords.renovation) ? current.record.plannerRecords.renovation : [];
     const list = current.record.plannerRecords[plannerType];
     const index = list.findIndex(q => q?.quotationId === quotationId);
-    if (index >= 0) list[index] = normalized; else list.unshift(normalized);
+
+    if (index >= 0) {
+      normalized.quotationNumber = list[index]?.quotationNumber || normalized.quotationNumber || nextQuotationNumber(list, normalized.quotationType);
+      normalized.createdAt = list[index]?.createdAt || normalized.createdAt;
+      list[index] = normalized;
+    } else {
+      normalized.quotationNumber = nextQuotationNumber(list, normalized.quotationType);
+      list.unshift(normalized);
+    }
     current.record.updatedAt = now;
 
     const updated = await github(pathFor(role, id), {
       method: 'PUT',
-      body: JSON.stringify({ message: `${index >= 0 ? 'Update' : 'Save'} ${plannerType} quotation ${quotationId}`, content: Buffer.from(JSON.stringify(current.record, null, 2) + '\n').toString('base64'), sha: current.sha })
+      body: JSON.stringify({ message: `${index >= 0 ? 'Update' : 'Save'} ${plannerType} quotation ${normalized.quotationNumber}`, content: Buffer.from(JSON.stringify(current.record, null, 2) + '\n').toString('base64'), sha: current.sha })
     });
     if (!updated.response.ok) {
       console.error('Quotation write failed:', updated.data);
