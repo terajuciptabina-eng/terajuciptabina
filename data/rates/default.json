@@ -2,7 +2,7 @@
   "schemaVersion": "1.0",
   "rateSetId": "default",
   "name": "Default Rate",
-  "scope": "all-states-fallback",
+  "scope": "template",
   "currency": "MYR",
   "effectiveDate": null,
   "rates": {
