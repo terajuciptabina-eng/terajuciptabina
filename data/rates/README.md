@@ -1,19 +1,47 @@
 # TERAJU Rate Master
 
-The quotation rate master is now state-aware.
+The quotation rate master is state-aware, with an independent rate set for every Malaysian state and Federal Territory.
 
-## Current phase
+## Current architecture
 
-- `default.json` is the current master figure set.
-- Every Malaysian state and Federal Territory has its own `rateSetId` in `states/index.json`.
-- For the initial rollout, every state uses the same figures as `default.json`.
-- Johor, Kedah, Kelantan and Melaka already have explicit state JSON records; the remaining states currently fall back to the default master through the registry.
+```text
+rates/
+├── default.json
+└── states/
+    ├── johor.json
+    ├── kedah.json
+    ├── kelantan.json
+    ├── melaka.json
+    ├── negeri-sembilan.json
+    ├── pahang.json
+    ├── perak.json
+    ├── perlis.json
+    ├── pulau-pinang.json
+    ├── sabah.json
+    ├── sarawak.json
+    ├── selangor.json
+    ├── terengganu.json
+    ├── kuala-lumpur.json
+    ├── putrajaya.json
+    └── labuan.json
+```
+
+- `default.json` is the master/template rate set.
+- Every state / Federal Territory has its own JSON rate set.
+- State rate sets were initialized from the current Default Rate.
+- After initialization, state rates are independent. Changing one state does not change another state or the Default Rate.
+- `states/index.json` maps each state to its own JSON source.
 - Planner users must select the project state before entering quotation details.
+- The planner resolver uses the selected project state to load that state's rate set.
 
-## Future phase
+## Rate updates
 
-When a state needs different rates, its state record can be populated without changing the quotation structure. The resolver should use:
+Use **Rate Management** in the admin area to select `Default Rate` or an individual state / Federal Territory and edit its rates.
 
-`selected project state -> state rate set -> default fallback`
+Saving `Default Rate` changes only the master/template values. It does not automatically propagate to state files.
 
-A saved quotation must retain the rate snapshot used when it was generated so a later rate-master update does not silently change an old quotation.
+Saving a state changes only that state's rate file.
+
+## Quotation history
+
+A saved quotation retains the rate snapshot used for that quotation. Later rate-master or state-rate changes must not silently rewrite historical quotations.
