@@ -3,8 +3,6 @@
 // No address/postcode autocomplete or external location API is applied here.
 (function(){
   'use strict';
-
-  // Remove the legacy native datalist hook if an older planner page still contains it.
   document.querySelectorAll('#projectLocation').forEach(function(input){
     input.removeAttribute('list');
     input.setAttribute('autocomplete','off');
@@ -32,6 +30,14 @@
 (function(){
   const script=document.createElement('script');
   script.src='quotation-records.js?v='+Date.now();
+  script.async=false;
+  document.head.appendChild(script);
+})();
+
+// State/rate metadata bridge. Runs after the quotation history bootstrap and does not alter planner HTML.
+(function(){
+  const script=document.createElement('script');
+  script.src='state-rate-record-bridge.js?v='+Date.now();
   script.async=false;
   document.head.appendChild(script);
 })();
