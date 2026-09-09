@@ -148,3 +148,11 @@
   script.async=false;
   document.head.appendChild(script);
 })();
+
+// Shared quotation history bootstrap. Loaded here so the stable planner HTML bases remain untouched.
+(function(){
+  const script=document.createElement('script');
+  script.src='quotation-records.js?v='+Date.now();
+  script.async=false;
+  document.head.appendChild(script);
+})();
