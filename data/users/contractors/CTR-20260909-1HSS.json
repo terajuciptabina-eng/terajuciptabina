@@ -156,23 +156,23 @@
         "state": "final",
         "quotationType": "detail",
         "client": {
-          "name": "Arthur Ganz"
+          "name": "Juliada"
         },
         "project": {
-          "location": "penang",
-          "builtUpArea": 1085
+          "location": "kelantan",
+          "builtUpArea": 947
         },
-        "total": 208811.21,
+        "total": 187280.74,
         "plannerState": {
-          "customerName": "Arthur Ganz",
-          "projectLocation": "penang",
-          "builtUpArea": "1085",
+          "customerName": "Juliada",
+          "projectLocation": "kelantan",
+          "builtUpArea": "947",
           "rooms": [
             {
               "id": "room-3",
               "type": "living",
               "name": "Living / Family",
-              "area": "150"
+              "area": "12"
             },
             {
               "id": "room-6",
@@ -183,7 +183,7 @@
             {
               "id": "room-3",
               "type": "bedroom",
-              "name": "",
+              "name": "Bedroom",
               "area": "345"
             },
             {
@@ -256,6 +256,10 @@
             [
               "room-6",
               "Kitchen"
+            ],
+            [
+              "room-4",
+              "Bathroom"
             ]
           ],
           "excludedItems": [],
@@ -265,7 +269,7 @@
           "projectId": "PRJ-BLD-MTU7547L-9HEEU"
         },
         "createdAt": "2026-09-09T14:34:05.963Z",
-        "updatedAt": "2026-09-09T15:02:17.425Z",
+        "updatedAt": "2026-09-09T15:08:00.388Z",
         "estimateNumber": "EST-BLD-001"
       },
       {
@@ -1304,7 +1308,7 @@
     ]
   },
   "createdAt": "2026-09-09T12:47:34.713Z",
-  "updatedAt": "2026-09-09T15:07:57.059Z",
+  "updatedAt": "2026-09-09T15:08:00.388Z",
   "quotationRunningNumber": {
     "renovation": 8
   },
