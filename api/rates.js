@@ -46,6 +46,28 @@ export default async function handler(req, res) {
       rates[key] = Math.round(n * 100) / 100;
     }
 
+    const incomingItems = body.rateItems;
+    const rateItems = {};
+    if (incomingItems !== undefined) {
+      if (!incomingItems || typeof incomingItems !== 'object' || Array.isArray(incomingItems)) return res.status(400).json({ message: 'Invalid rateItems payload.' });
+      for (const [key, item] of Object.entries(incomingItems)) {
+        if (!key || !item || typeof item !== 'object' || Array.isArray(item)) return res.status(400).json({ message: `Invalid rate item ${key}.` });
+        const description = String(item.description || '').trim();
+        const unit = String(item.unit || 'ls').trim();
+        if (!description) return res.status(400).json({ message: `Missing description for ${key}.` });
+        if (!rates[key] && rates[key] !== 0) return res.status(400).json({ message: `Missing rate for ${key}.` });
+        rateItems[key] = {
+          description,
+          unit: unit || 'ls',
+          category: String(item.category || 'custom').trim() || 'custom',
+          groupKey: item.groupKey ? String(item.groupKey) : null,
+          groupTitle: item.groupTitle ? String(item.groupTitle) : 'Custom Rate Items'
+        };
+      }
+    } else if (current.rateItems && typeof current.rateItems === 'object') {
+      Object.assign(rateItems, current.rateItems);
+    }
+
     const updated = {
       ...current,
       schemaVersion: current.schemaVersion || '1.0',
@@ -54,7 +76,8 @@ export default async function handler(req, res) {
       currency: current.currency || 'MYR',
       effectiveDate: body.effectiveDate || current.effectiveDate || null,
       updatedAt: new Date().toISOString(),
-      rates
+      rates,
+      rateItems
     };
 
     const content = JSON.stringify(updated, null, 2) + '\n';
