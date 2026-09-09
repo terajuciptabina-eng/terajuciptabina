@@ -26,7 +26,7 @@
         "role": "contractor",
         "contractorId": "CTR-20260909-KMHM",
         "state": "final",
-        "quotationType": "simple",
+        "quotationType": "detail",
         "client": {
           "name": "BsnsnsAlia Rajdjckjxx"
         },
@@ -117,11 +117,11 @@
           "excludedItems": [],
           "manualItems": [],
           "standardRateItems": [],
-          "quotationType": "simple",
-          "projectId": "PRJ-BLD-MTU95EH8-HVDPW"
+          "quotationType": "detail",
+          "projectId": "PRJ-BLD-MTU951A3-B8PJD"
         },
         "createdAt": "2026-09-09T15:27:30.804Z",
-        "updatedAt": "2026-09-09T15:27:31.723Z",
+        "updatedAt": "2026-09-09T15:27:34.397Z",
         "estimateNumber": "EST-BLD-004"
       },
       {
@@ -901,7 +901,7 @@
     ]
   },
   "createdAt": "2026-09-09T13:15:32.117Z",
-  "updatedAt": "2026-09-09T15:27:31.723Z",
+  "updatedAt": "2026-09-09T15:27:34.397Z",
   "quotationRunningNumber": {
     "build": 6,
     "renovation": 3
