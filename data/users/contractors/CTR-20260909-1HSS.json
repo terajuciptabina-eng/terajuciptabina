@@ -355,6 +355,124 @@
       {
         "schemaVersion": 1,
         "recordType": "quotation",
+        "quotationId": "QT-REN-MTU7TZC4-SN1EV",
+        "projectId": "PRJ-REN-MTU7U002-6T9B2",
+        "quotationNumber": "Q004S",
+        "plannerType": "renovation",
+        "role": "contractor",
+        "contractorId": "CTR-20260909-1HSS",
+        "state": "final",
+        "quotationType": "simple",
+        "client": {
+          "name": "Azrai abu Adnan"
+        },
+        "project": {
+          "location": "Bandar Kinrara, Puchong, Selangor",
+          "builtUpArea": 0
+        },
+        "total": 159836,
+        "plannerState": {
+          "customerName": "Azrai abu Adnan",
+          "projectLocation": "Bandar Kinrara, Puchong, Selangor",
+          "builtUpArea": "",
+          "rooms": [
+            {
+              "id": "room-4",
+              "type": "living",
+              "name": "Living / Dining",
+              "area": "231"
+            },
+            {
+              "id": "room-5",
+              "type": "bedroom",
+              "name": "Bedroom",
+              "area": "100"
+            },
+            {
+              "id": "room-6",
+              "type": "dryKitchen",
+              "name": "Dry Kitchen",
+              "area": "120"
+            },
+            {
+              "id": "room-7",
+              "type": "wetKitchen",
+              "name": "Wet Kitchen",
+              "area": "80"
+            },
+            {
+              "id": "room-8",
+              "type": "bathroom",
+              "name": "Bathroom",
+              "area": "48"
+            },
+            {
+              "id": "room-9",
+              "type": "carPorch",
+              "name": "Car Porch",
+              "area": "135"
+            },
+            {
+              "id": "room-10",
+              "type": "balcony",
+              "name": "Balcony",
+              "area": "90"
+            },
+            {
+              "id": "room-11",
+              "type": "extensionKitchen",
+              "name": "New Extension – Kitchen",
+              "area": "200"
+            },
+            {
+              "id": "room-12",
+              "type": "extensionToilet",
+              "name": "New Extension – Toilet",
+              "area": "48"
+            }
+          ],
+          "rates": {
+            "ceiling": 12,
+            "spc": 14,
+            "floorTile": 22,
+            "wallTile": 22,
+            "facadeWall": 60,
+            "downlight": 200,
+            "wallLight": 250,
+            "ceilingFan": 550,
+            "exhaustFan": 200,
+            "curtainBoxLED": 300,
+            "barLamp": 500,
+            "diningLamp": 600,
+            "kitchenFrame": 1200,
+            "kitchenMakingGood": 1000,
+            "kitchenGlassDoor": 1200,
+            "bathroomSanitary": 3000,
+            "bathroomDoor": 1200,
+            "gateMotor": 6400,
+            "brickwallDivider": 2800,
+            "frontFence": 5500,
+            "preliminaries": 8500,
+            "extensionKitchen": 250,
+            "extensionToilet": 584
+          },
+          "customRates": [],
+          "customQuantities": [],
+          "customDescriptions": [],
+          "customRoomLabels": [],
+          "excludedItems": [],
+          "manualItems": [],
+          "standardRateItems": [],
+          "quotationType": "simple",
+          "projectId": "PRJ-REN-MTU7U002-6T9B2"
+        },
+        "createdAt": "2026-09-09T14:50:39.268Z",
+        "updatedAt": "2026-09-09T14:50:40.130Z",
+        "estimateNumber": "EST-REN-001"
+      },
+      {
+        "schemaVersion": 1,
+        "recordType": "quotation",
         "quotationId": "QT-REN-MTU7QOVN-343TP",
         "projectId": "PRJ-REN-MTU4YDOD-6U2G0",
         "quotationNumber": "Q003S",
@@ -586,6 +704,11 @@
     ]
   },
   "createdAt": "2026-09-09T12:47:34.713Z",
-  "updatedAt": "2026-09-09T14:48:15.091Z",
-  "quotationRunningNumber": 3
+  "updatedAt": "2026-09-09T14:50:40.130Z",
+  "quotationRunningNumber": {
+    "renovation": 4
+  },
+  "estimateRunningNumber": {
+    "renovation": 1
+  }
 }
