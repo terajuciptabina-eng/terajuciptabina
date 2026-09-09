@@ -2,7 +2,6 @@
   'use strict';
   if (window.__tcQuotationRecordsLoaded) return;
   window.__tcQuotationRecordsLoaded = true;
-
   const API_BASE = 'https://terajuciptabina.vercel.app';
   const params = new URLSearchParams(location.search);
   const plannerType = /renovationplanner\.html?$/i.test(location.pathname) ? 'renovation' : ((params.get('plannerType') || 'build').toLowerCase() === 'renovation' ? 'renovation' : 'build');
@@ -17,11 +16,9 @@
   let currentQuotationType = '';
   let restoring = false;
   let quotationCache = null;
-
   function localAccount() { try { return JSON.parse(localStorage.getItem(storageKey) || 'null'); } catch { return null; } }
   if (!activeId) activeId = String(localAccount()?.[idKey] || '').trim().toUpperCase();
   if (!activeId) return;
-
   function apiUrl() { return `${API_BASE}/api/quotations`; }
   async function request(method, body) {
     let url = apiUrl();
@@ -34,14 +31,9 @@
   }
   function mapEntries(map) { return map instanceof Map ? [...map.entries()] : []; }
   function selectedQuotationType() { return document.querySelector('input[name="quotationType"]:checked')?.value === 'detail' ? 'detail' : 'simple'; }
-  function makeProjectId() {
-    const prefix = plannerType === 'renovation' ? 'PRJ-REN' : 'PRJ-BLD';
-    return `${prefix}-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).slice(2,7).toUpperCase()}`;
-  }
+  function makeProjectId() { const prefix = plannerType === 'renovation' ? 'PRJ-REN' : 'PRJ-BLD'; return `${prefix}-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).slice(2,7).toUpperCase()}`; }
   function ensureProjectId() {
-    if (!currentProjectId) {
-      try { currentProjectId = String(localStorage.getItem(projectStorageKey) || '').trim(); } catch {}
-    }
+    if (!currentProjectId) { try { currentProjectId = String(localStorage.getItem(projectStorageKey) || '').trim(); } catch {} }
     if (!currentProjectId) currentProjectId = makeProjectId();
     try { localStorage.setItem(projectStorageKey, currentProjectId); } catch {}
     return currentProjectId;
@@ -52,104 +44,41 @@
   }
   function currentTotal(){try{return Number(getCurrentQuotationData()?.total||0)}catch{return Number(document.getElementById('grandTotal')?.textContent?.replace(/[^0-9.-]/g,'')||0)}}
   function buildQuotationRecord(){
-    const type=selectedQuotationType();
-    const customer=document.getElementById('customerName')?.value?.trim()||'Not specified';
-    const location=document.getElementById('projectLocation')?.value?.trim()||'Not specified';
-    const now=new Date().toISOString();
-    const prefix=plannerType==='renovation'?'QT-REN':'QT-BLD';
-    const fallbackNumber=plannerType==='renovation'?`NR-QO${Date.now().toString().slice(-4)}`:`NB-QO${Date.now().toString().slice(-4)}`;
-    const qId=currentQuotationId||`${prefix}-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).slice(2,7).toUpperCase()}`;
-    const qNumber=currentQuotationNumber||(typeof quotationNumber!=='undefined'&&quotationNumber?quotationNumber:fallbackNumber);
-    const plannerState=snapshotPlanner();
+    const type=selectedQuotationType(); const customer=document.getElementById('customerName')?.value?.trim()||'Not specified'; const location=document.getElementById('projectLocation')?.value?.trim()||'Not specified'; const now=new Date().toISOString(); const prefix=plannerType==='renovation'?'QT-REN':'QT-BLD'; const fallbackNumber=plannerType==='renovation'?`NR-QO${Date.now().toString().slice(-4)}`:`NB-QO${Date.now().toString().slice(-4)}`; const qId=currentQuotationId||`${prefix}-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).slice(2,7).toUpperCase()}`; const qNumber=currentQuotationNumber||(typeof quotationNumber!=='undefined'&&quotationNumber?quotationNumber:fallbackNumber); const plannerState=snapshotPlanner();
     return {schemaVersion:1,recordType:'quotation',quotationId:qId,projectId:ensureProjectId(),quotationNumber:qNumber,plannerType,role,[idKey]:activeId,state:'final',quotationType:type,client:{name:customer},project:{location,builtUpArea:Number(plannerState.builtUpArea)||0},total:Number(currentTotal().toFixed(2)),plannerState,createdAt:now,updatedAt:now};
   }
-  function injectStyles(){
-    if(document.getElementById('tc-quotation-records-style'))return;
-    const style=document.createElement('style');style.id='tc-quotation-records-style';style.textContent=`
-      .tc-quotation-tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:12px}.tc-quotation-btn{border:1px solid #d1d5db;background:#fff;color:#111827;border-radius:11px;padding:9px 13px;font-size:12px;font-weight:700;cursor:pointer;transition:.18s ease;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;min-height:42px}.tc-quotation-btn:hover{background:#f8fafc;border-color:#9ca3af;transform:translateY(-1px)}.tc-quotation-btn.primary{background:#111827;color:#fff;border-color:#111827}.tc-quotation-btn.primary:hover{background:#000}.tc-quotation-status{font-size:12px;color:#6b7280;min-height:18px}.tc-quotation-toast{position:fixed;right:18px;bottom:18px;z-index:10000;background:#111827;color:#fff;padding:12px 15px;border-radius:12px;box-shadow:0 14px 35px rgba(0,0,0,.2);font-size:13px;font-weight:700;opacity:0;transform:translateY(10px);pointer-events:none;transition:.2s ease}.tc-quotation-toast.show{opacity:1;transform:none}@media(max-width:767px){.tc-quotation-tools{display:grid;grid-template-columns:1fr 1fr}.tc-quotation-btn{width:100%}.tc-quotation-tools .tc-quotation-status{grid-column:1/-1}}`;
-    document.head.appendChild(style);
-  }
+  function injectStyles(){ if(document.getElementById('tc-quotation-records-style'))return; const style=document.createElement('style');style.id='tc-quotation-records-style';style.textContent=`.tc-quotation-tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:12px}.tc-quotation-btn{border:1px solid #d1d5db;background:#fff;color:#111827;border-radius:11px;padding:9px 13px;font-size:12px;font-weight:700;cursor:pointer;transition:.18s ease;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;min-height:42px}.tc-quotation-btn:hover{background:#f8fafc;border-color:#9ca3af;transform:translateY(-1px)}.tc-quotation-btn.primary{background:#111827;color:#fff;border-color:#111827}.tc-quotation-btn.primary:hover{background:#000}.tc-quotation-status{font-size:12px;color:#6b7280;min-height:18px}.tc-quotation-toast{position:fixed;right:18px;bottom:18px;z-index:10000;background:#111827;color:#fff;padding:12px 15px;border-radius:12px;box-shadow:0 14px 35px rgba(0,0,0,.2);font-size:13px;font-weight:700;opacity:0;transform:translateY(10px);pointer-events:none;transition:.2s ease}.tc-quotation-toast.show{opacity:1;transform:none}@media(max-width:767px){.tc-quotation-tools{display:grid;grid-template-columns:1fr 1fr}.tc-quotation-btn{width:100%}.tc-quotation-tools .tc-quotation-status{grid-column:1/-1}}`; document.head.appendChild(style); }
   function toast(message,error=false){let el=document.getElementById('tcQuotationToast');if(!el){el=document.createElement('div');el.id='tcQuotationToast';el.className='tc-quotation-toast';document.body.appendChild(el)}el.textContent=message;el.style.background=error?'#991b1b':'#111827';el.classList.add('show');clearTimeout(el.__timer);el.__timer=setTimeout(()=>el.classList.remove('show'),2400)}
   function quotationsUrl(){return `quotations.html?role=${encodeURIComponent(role)}&id=${encodeURIComponent(activeId)}&plannerType=${encodeURIComponent(plannerType)}`;}
-  function addPlannerControls(){
-    injectStyles();
-    const header=document.querySelector('header > div');
-    if(header&&!document.getElementById('tcMyQuotations')){const link=document.createElement('a');link.id='tcMyQuotations';link.className='tc-quotation-btn';link.href=quotationsUrl();link.textContent='My Quotations';header.appendChild(link)}
-    const actions=document.getElementById('quotationPrintActions');
-    if(actions&&!document.getElementById('tcSaveQuotation')){const wrap=document.createElement('div');wrap.className='tc-quotation-tools';wrap.innerHTML=`<button id="tcSaveQuotation" type="button" class="tc-quotation-btn primary">Save Quotation</button><a class="tc-quotation-btn" href="${quotationsUrl()}">My Quotations</a><span id="tcQuotationStatus" class="tc-quotation-status"></span>`;actions.insertBefore(wrap,actions.firstChild);document.getElementById('tcSaveQuotation').addEventListener('click',()=>saveQuotation(true))}
-  }
+  function addPlannerControls(){ injectStyles(); const header=document.querySelector('header > div'); if(header&&!document.getElementById('tcMyQuotations')){const link=document.createElement('a');link.id='tcMyQuotations';link.className='tc-quotation-btn';link.href=quotationsUrl();link.textContent='My Quotations';header.appendChild(link)} const actions=document.getElementById('quotationPrintActions'); if(actions&&!document.getElementById('tcSaveQuotation')){const wrap=document.createElement('div');wrap.className='tc-quotation-tools';wrap.innerHTML=`<button id="tcSaveQuotation" type="button" class="tc-quotation-btn primary">Save Quotation</button><a class="tc-quotation-btn" href="${quotationsUrl()}">My Quotations</a><span id="tcQuotationStatus" class="tc-quotation-status"></span>`;actions.insertBefore(wrap,actions.firstChild);document.getElementById('tcSaveQuotation').addEventListener('click',()=>saveQuotation(true))} }
   async function fetchQuotations(){ const data=await request('GET'); quotationCache=Array.isArray(data.quotations)?data.quotations:[]; return quotationCache; }
   async function switchQuotationVersion(type){
-    if(restoring || type === currentQuotationType) return;
-    ensureProjectId();
-    try {
-      const list = quotationCache || await fetchQuotations();
-      const match = list.find(item => item && item.plannerType === plannerType && item.projectId === currentProjectId && (item.quotationType || item.plannerState?.quotationType || 'simple') === type);
-      currentQuotationType = type;
-      if (match) {
-        currentQuotationId = match.quotationId || '';
-        currentQuotationNumber = match.quotationNumber || '';
-        toast(`${type === 'detail' ? 'Detail' : 'Simple'} quotation selected.`);
-      } else {
-        currentQuotationId = '';
-        currentQuotationNumber = '';
-        toast(`${type === 'detail' ? 'Detail' : 'Simple'} quotation will be saved as a separate version.`);
-      }
-    } catch(error) {
-      currentQuotationType = type;
-      currentQuotationId = '';
-      currentQuotationNumber = '';
-      console.error(error);
-    }
+    if(restoring || type === currentQuotationType) return; ensureProjectId();
+    try { const list = quotationCache || await fetchQuotations(); const match = list.find(item => item && item.plannerType === plannerType && item.projectId === currentProjectId && (item.quotationType || item.plannerState?.quotationType || 'simple') === type); currentQuotationType = type; if (match) { currentQuotationId = match.quotationId || ''; currentQuotationNumber = match.quotationNumber || ''; try { if (typeof quotationNumber !== 'undefined' && currentQuotationNumber) quotationNumber = currentQuotationNumber; } catch {} toast(`${type === 'detail' ? 'Detail' : 'Simple'} quotation selected.`); } else { currentQuotationId = ''; currentQuotationNumber = ''; toast(`${type === 'detail' ? 'Detail' : 'Simple'} quotation will be saved as a separate version.`); } } catch(error) { currentQuotationType = type; currentQuotationId = ''; currentQuotationNumber = ''; console.error(error); }
   }
-  function bindQuotationType(){
-    document.querySelectorAll('input[name="quotationType"]').forEach(input=>{if(input.__tcBound)return;input.__tcBound=true;input.addEventListener('change',()=>switchQuotationVersion(selectedQuotationType()))});
-  }
+  function bindQuotationType(){ document.querySelectorAll('input[name="quotationType"]').forEach(input=>{if(input.__tcBound)return;input.__tcBound=true;input.addEventListener('change',()=>switchQuotationVersion(selectedQuotationType()))}); }
   async function saveQuotation(showMessage=false){
     if(restoring||!document.getElementById('quotationDocument')||document.getElementById('quotationDocument').classList.contains('hidden'))return;
-    ensureProjectId();
-    const record=buildQuotationRecord();currentQuotationId=record.quotationId;currentQuotationNumber=record.quotationNumber;currentQuotationType=record.quotationType;
+    ensureProjectId(); const record=buildQuotationRecord(); currentQuotationId=record.quotationId; currentQuotationNumber=record.quotationNumber; currentQuotationType=record.quotationType;
     const button=document.getElementById('tcSaveQuotation'),status=document.getElementById('tcQuotationStatus');if(button){button.disabled=true;button.textContent='Saving…'}if(status)status.textContent='Saving quotation…';
-    try{await request('PUT',{role,id:activeId,plannerType,quotation:record});quotationCache=null;const url=new URL(location.href);url.searchParams.set('quotationId',currentQuotationId);history.replaceState({},'',url.toString());if(showMessage)toast(`${record.quotationType==='detail'?'Detail':'Simple'} quotation saved successfully.`);if(status)status.textContent=`Saved ${new Date().toLocaleTimeString('en-MY',{hour:'2-digit',minute:'2-digit'})}`}catch(error){if(showMessage)toast(error.message||'Unable to save quotation.',true);if(status)status.textContent='Save failed';console.error(error)}finally{if(button){button.disabled=false;button.textContent='Save Quotation'}}
+    try {
+      const result=await request('PUT',{role,id:activeId,plannerType,quotation:record});
+      const saved=result?.quotation||record;
+      currentQuotationId=saved.quotationId||currentQuotationId;
+      currentQuotationNumber=saved.quotationNumber||currentQuotationNumber;
+      currentQuotationType=saved.quotationType||currentQuotationType;
+      try { if (saved.quotationNumber && typeof quotationNumber !== 'undefined') quotationNumber=saved.quotationNumber; } catch {}
+      quotationCache=null;
+      const url=new URL(location.href);url.searchParams.set('quotationId',currentQuotationId);history.replaceState({},'',url.toString());
+      if(showMessage)toast(`${currentQuotationType==='detail'?'Detail':'Simple'} quotation ${currentQuotationNumber||''} saved successfully.`);
+      if(status)status.textContent=`Saved ${currentQuotationNumber||''} · ${new Date().toLocaleTimeString('en-MY',{hour:'2-digit',minute:'2-digit'})}`;
+    } catch(error) { if(showMessage)toast(error.message||'Unable to save quotation.',true);if(status)status.textContent='Save failed';console.error(error) } finally { if(button){button.disabled=false;button.textContent='Save Quotation'} }
   }
-  function wrapGenerate(){
-    if(typeof window.generateQuotation!=='function'||window.generateQuotation.__tcWrapped)return false;
-    const original=window.generateQuotation;const wrapped=function(){const result=original.apply(this,arguments);if(result!==false){currentQuotationType=selectedQuotationType();currentQuotationNumber=typeof quotationNumber!=='undefined'?quotationNumber:currentQuotationNumber;setTimeout(()=>saveQuotation(false),250)}return result};wrapped.__tcWrapped=true;wrapped.__tcOriginal=original;window.generateQuotation=wrapped;return true;
-  }
+  function wrapGenerate(){ if(typeof window.generateQuotation!=='function'||window.generateQuotation.__tcWrapped)return false; const original=window.generateQuotation;const wrapped=function(){const result=original.apply(this,arguments);if(result!==false){currentQuotationType=selectedQuotationType();currentQuotationNumber=typeof quotationNumber!=='undefined'?quotationNumber:currentQuotationNumber;setTimeout(()=>saveQuotation(false),250)}return result};wrapped.__tcWrapped=true;wrapped.__tcOriginal=original;window.generateQuotation=wrapped;return true; }
   function setRoomField(room,selector,value){const el=room?.querySelector(selector);if(el&&value!==undefined)el.value=value;}
-  function restoreSnapshot(state){
-    if(!state)return;restoring=true;
-    try{
-      if(state.projectId){currentProjectId=String(state.projectId);try{localStorage.setItem(projectStorageKey,currentProjectId)}catch{}}
-      if(document.getElementById('customerName'))document.getElementById('customerName').value=state.customerName||'';
-      if(document.getElementById('projectLocation'))document.getElementById('projectLocation').value=state.projectLocation||'';
-      if(document.getElementById('builtUpArea'))document.getElementById('builtUpArea').value=state.builtUpArea||'';
-      if(typeof RATES!=='undefined')RATES={...RATES,...(state.rates||{})};
-      if(typeof restoreMap==='function'){restoreMap(customRates,state.customRates);restoreMap(customQuantities,state.customQuantities);restoreMap(customDescriptions,state.customDescriptions);restoreMap(customRoomLabels,state.customRoomLabels)}
-      if(typeof excludedItems!=='undefined'){excludedItems.clear();(state.excludedItems||[]).forEach(x=>excludedItems.add(x))}
-      if(typeof manualItems!=='undefined'){manualItems.clear();(state.manualItems||[]).forEach(([k,v])=>manualItems.set(k,v))}
-      if(typeof standardRateItems!=='undefined')standardRateItems=Array.isArray(state.standardRateItems)?state.standardRateItems:[];
-      const container=document.getElementById('roomsContainer');if(container)container.innerHTML='';
-      let previousCount=typeof roomCounter!=='undefined'?Number(roomCounter)||0:0;
-      (state.rooms||[]).forEach(roomData=>{
-        if(typeof addRoom!=='function')return;
-        const before=container?[...container.querySelectorAll('.room-card')]:[];addRoom(roomData.type||'other');const after=container?[...container.querySelectorAll('.room-card')]:[];const room=after.length>before.length?after[after.length-1]:null;if(!room)return;
-        room.id=roomData.id||room.id;setRoomField(room,'.room-type',roomData.type||'other');setRoomField(room,'.room-name',roomData.name||'');setRoomField(room,'.room-area',roomData.area||'');
-      });
-      if(typeof roomCounter!=='undefined'){const ids=[...(container?.querySelectorAll('.room-card')||[])].map(x=>x.id);const maxSuffix=ids.reduce((m,id)=>Math.max(m,Number((String(id).match(/(\d+)$/)||[])[1])||0),0);roomCounter=Math.max(previousCount,maxSuffix,ids.length)}
-      const q=document.querySelector(`input[name="quotationType"][value="${state.quotationType==='detail'?'detail':'simple'}"]`);if(q){q.checked=true;q.dispatchEvent(new Event('change',{bubbles:true}))}
-      if(typeof updateRoomsEmptyState==='function')updateRoomsEmptyState();if(typeof updateEstimate==='function')updateEstimate();
-    }finally{restoring=false}
-  }
-  async function loadQuotationForEdit(){
-    if(!currentQuotationId)return;
-    try{const data=await fetchQuotations();const quotation=data.find(item=>item?.quotationId===currentQuotationId);if(!quotation){toast('Quotation record not found.',true);return}currentQuotationNumber=quotation.quotationNumber||'';currentQuotationType=quotation.quotationType||quotation.plannerState?.quotationType||'simple';currentProjectId=String(quotation.projectId||quotation.plannerState?.projectId||`LEGACY-${plannerType}-${quotation.quotationId}`);try{localStorage.setItem(projectStorageKey,currentProjectId)}catch{}restoreSnapshot(quotation.plannerState);const type=currentQuotationType;const input=document.querySelector(`input[name="quotationType"][value="${type}"]`);if(input){input.checked=true;input.dispatchEvent(new Event('change',{bubbles:true}))}toast(`Quotation ${currentQuotationNumber||currentQuotationId} loaded.`)}catch(error){console.error(error);toast(error.message||'Unable to load quotation.',true)}
-  }
-  function init(){
-    if(!document.getElementById('quotationGenerator'))return;
-    ensureProjectId();currentQuotationType=selectedQuotationType();injectStyles();addPlannerControls();bindQuotationType();if(!wrapGenerate())setTimeout(wrapGenerate,500);if(currentQuotationId)setTimeout(loadQuotationForEdit,900);
-    const observer=new MutationObserver(()=>{addPlannerControls();bindQuotationType();wrapGenerate()});observer.observe(document.documentElement,{childList:true,subtree:true});setTimeout(()=>observer.disconnect(),20000);
-  }
+  function restoreSnapshot(state){ if(!state)return;restoring=true;try{if(state.projectId){currentProjectId=String(state.projectId);try{localStorage.setItem(projectStorageKey,currentProjectId)}catch{}}if(document.getElementById('customerName'))document.getElementById('customerName').value=state.customerName||'';if(document.getElementById('projectLocation'))document.getElementById('projectLocation').value=state.projectLocation||'';if(document.getElementById('builtUpArea'))document.getElementById('builtUpArea').value=state.builtUpArea||'';if(typeof RATES!=='undefined')RATES={...RATES,...(state.rates||{})};if(typeof restoreMap==='function'){restoreMap(customRates,state.customRates);restoreMap(customQuantities,state.customQuantities);restoreMap(customDescriptions,state.customDescriptions);restoreMap(customRoomLabels,state.customRoomLabels)}if(typeof excludedItems!=='undefined'){excludedItems.clear();(state.excludedItems||[]).forEach(x=>excludedItems.add(x))}if(typeof manualItems!=='undefined'){manualItems.clear();(state.manualItems||[]).forEach(([k,v])=>manualItems.set(k,v))}if(typeof standardRateItems!=='undefined')standardRateItems=Array.isArray(state.standardRateItems)?state.standardRateItems:[];const container=document.getElementById('roomsContainer');if(container)container.innerHTML='';let previousCount=typeof roomCounter!=='undefined'?Number(roomCounter)||0:0;(state.rooms||[]).forEach(roomData=>{if(typeof addRoom!=='function')return;const before=container?[...container.querySelectorAll('.room-card')]:[];addRoom(roomData.type||'other');const after=container?[...container.querySelectorAll('.room-card')]:[];const room=after.length>before.length?after[after.length-1]:null;if(!room)return;room.id=roomData.id||room.id;setRoomField(room,'.room-type',roomData.type||'other');setRoomField(room,'.room-name',roomData.name||'');setRoomField(room,'.room-area',roomData.area||'')});if(typeof roomCounter!=='undefined'){const ids=[...(container?.querySelectorAll('.room-card')||[])].map(x=>x.id);const maxSuffix=ids.reduce((m,id)=>Math.max(m,Number((String(id).match(/(\d+)$/)||[])[1])||0),0);roomCounter=Math.max(previousCount,maxSuffix,ids.length)}const q=document.querySelector(`input[name="quotationType"][value="${state.quotationType==='detail'?'detail':'simple'}"]`);if(q){q.checked=true;q.dispatchEvent(new Event('change',{bubbles:true}))}if(typeof updateRoomsEmptyState==='function')updateRoomsEmptyState();if(typeof updateEstimate==='function')updateEstimate();}finally{restoring=false} }
+  async function loadQuotationForEdit(){ if(!currentQuotationId)return;try{const data=await fetchQuotations();const quotation=data.find(item=>item?.quotationId===currentQuotationId);if(!quotation){toast('Quotation record not found.',true);return}currentQuotationNumber=quotation.quotationNumber||'';currentQuotationType=quotation.quotationType||quotation.plannerState?.quotationType||'simple';currentProjectId=String(quotation.projectId||quotation.plannerState?.projectId||`LEGACY-${plannerType}-${quotation.quotationId}`);try{localStorage.setItem(projectStorageKey,currentProjectId)}catch{}restoreSnapshot(quotation.plannerState);try{if(currentQuotationNumber&&typeof quotationNumber!=='undefined')quotationNumber=currentQuotationNumber}catch{}const type=currentQuotationType;const input=document.querySelector(`input[name="quotationType"][value="${type}"]`);if(input){input.checked=true;input.dispatchEvent(new Event('change',{bubbles:true}))}toast(`Quotation ${currentQuotationNumber||currentQuotationId} loaded.`)}catch(error){console.error(error);toast(error.message||'Unable to load quotation.',true)} }
+  function init(){ if(!document.getElementById('quotationGenerator'))return; ensureProjectId();currentQuotationType=selectedQuotationType();injectStyles();addPlannerControls();bindQuotationType();if(!wrapGenerate())setTimeout(wrapGenerate,500);if(currentQuotationId)setTimeout(loadQuotationForEdit,900);const observer=new MutationObserver(()=>{addPlannerControls();bindQuotationType();wrapGenerate()});observer.observe(document.documentElement,{childList:true,subtree:true});setTimeout(()=>observer.disconnect(),20000); }
   window.tcQuotationRecords={saveQuotation,loadQuotationForEdit};
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
