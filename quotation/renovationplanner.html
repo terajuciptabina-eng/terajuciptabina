@@ -536,7 +536,6 @@ main>section:not(:first-child){scroll-margin-top:92px} main>section>div:first-ch
       </div>
     </div>
     <nav class="flex items-center gap-2 flex-wrap justify-end no-print" aria-label="Planner navigation">
-      <a id="myQuotationsLink" href="homeowner.html" class="planner-nav-link">My Quotations</a>
       <a href="#" onclick="history.back(); return false;" class="planner-nav-link">Back to Previous</a>
       <a href="../index.html" class="planner-nav-link">Home</a>
     </nav>
@@ -1618,13 +1617,6 @@ function initContractorMode() {
   if (badgeEl) badgeEl.textContent = IS_CONTRACTOR ? "Contractor Workspace" : "Homeowner Workspace";
   if (idLabelEl) idLabelEl.textContent = IS_CONTRACTOR ? "Contractor ID" : "Homeowner ID";
   if (idEl) idEl.textContent = activeId || "Not signed in";
-
-  const myQuotationsLink = document.getElementById("myQuotationsLink");
-  if (myQuotationsLink) {
-    myQuotationsLink.href = IS_CONTRACTOR
-      ? `contractor.html${CONTRACTOR_ID ? `?contractorId=${encodeURIComponent(CONTRACTOR_ID)}` : ""}`
-      : `homeowner.html${HOMEOWNER_ID ? `?homeownerId=${encodeURIComponent(HOMEOWNER_ID)}` : ""}`;
-  }
 
   let saved = null;
   if (IS_CONTRACTOR) {
