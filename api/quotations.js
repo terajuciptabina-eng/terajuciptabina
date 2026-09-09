@@ -41,14 +41,31 @@ export default async function handler(req, res) {
     return { record: JSON.parse(content), sha: result.data?.sha || null, status: 200 };
   }
 
-  function nextQuotationNumber(records, quotationType) {
-    const suffix = quotationType === 'detail' ? 'D' : 'S';
+  function quotationType(value) {
+    return String(value || '').toLowerCase() === 'detail' ? 'detail' : 'simple';
+  }
+
+  function highestQuotationSequence(records) {
     let max = 0;
     for (const q of Array.isArray(records) ? records : []) {
-      const match = String(q?.quotationNumber || '').trim().match(/^Q(\d+)$/i);
+      const match = String(q?.quotationNumber || '').trim().match(/^Q(\d+)(?:S|D)?$/i);
       if (match) max = Math.max(max, Number(match[1]) || 0);
     }
-    return `Q${String(max + 1).padStart(3, '0')}${suffix}`;
+    return max;
+  }
+
+  function getNextBaseNumber(record) {
+    const build = Array.isArray(record?.plannerRecords?.build) ? record.plannerRecords.build : [];
+    const renovation = Array.isArray(record?.plannerRecords?.renovation) ? record.plannerRecords.renovation : [];
+    const all = [...build, ...renovation];
+    const stored = Number(record?.quotationRunningNumber);
+    const highest = highestQuotationSequence(all);
+    const baseline = Number.isFinite(stored) && stored > 0 ? Math.max(stored, highest) : Math.max(highest, all.length);
+    return baseline + 1;
+  }
+
+  function displayQuotationNumber(baseNumber, type) {
+    return `Q${String(baseNumber).padStart(3, '0')}${quotationType(type) === 'detail' ? 'D' : 'S'}`;
   }
 
   try {
@@ -102,11 +119,13 @@ export default async function handler(req, res) {
     const index = list.findIndex(q => q?.quotationId === quotationId);
 
     if (index >= 0) {
-      normalized.quotationNumber = list[index]?.quotationNumber || normalized.quotationNumber || nextQuotationNumber(list, normalized.quotationType);
+      normalized.quotationNumber = list[index]?.quotationNumber || normalized.quotationNumber || displayQuotationNumber(getNextBaseNumber(current.record) - 1, normalized.quotationType);
       normalized.createdAt = list[index]?.createdAt || normalized.createdAt;
       list[index] = normalized;
     } else {
-      normalized.quotationNumber = nextQuotationNumber(list, normalized.quotationType);
+      const baseNumber = getNextBaseNumber(current.record);
+      normalized.quotationNumber = displayQuotationNumber(baseNumber, normalized.quotationType);
+      current.record.quotationRunningNumber = baseNumber;
       list.unshift(normalized);
     }
     current.record.updatedAt = now;
