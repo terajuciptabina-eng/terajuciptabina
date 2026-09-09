@@ -48,6 +48,9 @@
 
   window.TERAJU_RESOLVE_RATE=apply;
   window.addEventListener('teraju:statechange',apply);
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(apply,0),{once:true});
-  else setTimeout(apply,0);
+  const hasQuotationId=new URLSearchParams(location.search).has('quotationId');
+  if(!hasQuotationId){
+    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(apply,0),{once:true});
+    else setTimeout(apply,0);
+  }
 })();
