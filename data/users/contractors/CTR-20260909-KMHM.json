@@ -230,7 +230,7 @@
         "role": "contractor",
         "contractorId": "CTR-20260909-KMHM",
         "state": "final",
-        "quotationType": "simple",
+        "quotationType": "detail",
         "client": {
           "name": "Alia Rakman123ejfjd"
         },
@@ -315,11 +315,11 @@
           "excludedItems": [],
           "manualItems": [],
           "standardRateItems": [],
-          "quotationType": "simple",
+          "quotationType": "detail",
           "projectId": "PRJ-BLD-MTU4VS1T-Y91LG"
         },
         "createdAt": "2026-09-09T13:28:31.510Z",
-        "updatedAt": "2026-09-09T15:15:30.956Z",
+        "updatedAt": "2026-09-09T15:15:33.060Z",
         "estimateNumber": "EST-BLD-001"
       },
       {
@@ -503,7 +503,7 @@
     ]
   },
   "createdAt": "2026-09-09T13:15:32.117Z",
-  "updatedAt": "2026-09-09T15:15:30.956Z",
+  "updatedAt": "2026-09-09T15:15:33.060Z",
   "quotationRunningNumber": {
     "build": 4
   },
