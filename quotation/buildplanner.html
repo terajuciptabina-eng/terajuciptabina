@@ -366,7 +366,7 @@ const CONTRACTOR_STORAGE_PREFIX='teraju.contractor.local.v1';
 let restoringContractorState=false;
 function isHomeowner(){return IS_HOMEOWNER}
 function contractorStorageKey(){return CONTRACTOR_ID?`${CONTRACTOR_STORAGE_PREFIX}.${CONTRACTOR_ID}.build`:''}
-const ROOM_TYPES={living:'Living / Family',dining:'Dining',bedroom:'Bedroom',kitchen:'Kitchen',store:'Store / Utility',bathroom:'Bathroom',porch:'Car Porch / Entrance',other:'Other Area'};
+const ROOM_TYPES={living:'Living / Family',dining:'Dining',bedroom:'Bedroom',kitchen:'Kitchen',store:'Store / Utility',bathroom:'Bathroom',porch:'Car Porch / Entrance',other:'Other'};
 const ROOM_DEFAULTS={living:{doors:1,windows:2},dining:{doors:0,windows:1},bedroom:{doors:1,windows:1},kitchen:{doors:1,windows:1},store:{doors:1,windows:0},bathroom:{doors:1,windows:0},porch:{doors:0,windows:0},other:{doors:0,windows:1}};
 const INTEGER_UNITS=new Set(['no','set','ls','unit']);
 function isIntegerUnit(unit){return INTEGER_UNITS.has(String(unit||'').toLowerCase())}
