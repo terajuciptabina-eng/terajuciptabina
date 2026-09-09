@@ -385,7 +385,7 @@
         "role": "contractor",
         "contractorId": "CTR-20260909-1HSS",
         "state": "final",
-        "quotationType": "simple",
+        "quotationType": "detail",
         "client": {
           "name": "Atikah Rakman"
         },
@@ -450,11 +450,11 @@
           "excludedItems": [],
           "manualItems": [],
           "standardRateItems": [],
-          "quotationType": "simple",
+          "quotationType": "detail",
           "projectId": "PRJ-REN-MTU4YDOD-6U2G0"
         },
         "createdAt": "2026-09-09T15:00:49.638Z",
-        "updatedAt": "2026-09-09T15:10:06.506Z",
+        "updatedAt": "2026-09-09T15:10:14.219Z",
         "estimateNumber": "EST-REN-003"
       },
       {
@@ -1278,7 +1278,7 @@
     ]
   },
   "createdAt": "2026-09-09T12:47:34.713Z",
-  "updatedAt": "2026-09-09T15:10:06.506Z",
+  "updatedAt": "2026-09-09T15:10:14.219Z",
   "quotationRunningNumber": {
     "renovation": 8
   },
