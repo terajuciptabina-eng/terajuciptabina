@@ -771,12 +771,7 @@ function updateRoomsEmptyState() {
   if (!container || !empty || !btn || !anchor) return;
   const hasRooms = !!container.querySelector(".room-card");
   empty.classList.toggle("hidden", hasRooms);
-  if (hasRooms) {
-    anchor.appendChild(btn);
-  } else {
-    const header = btn.closest(".flex.justify-between");
-    if (header) header.appendChild(btn);
-  }
+  anchor.appendChild(btn);
 }
 
 function removeRoom(id) {
