@@ -148,29 +148,47 @@
         "state": "final",
         "quotationType": "simple",
         "client": {
-          "name": "Tuan Zairul"
+          "name": "Tuan Rasli"
         },
         "project": {
-          "location": "Taman Desiran Bayu",
-          "builtUpArea": 350
+          "location": "Pengkalan Kubur",
+          "builtUpArea": 640
         },
-        "total": 83800.22,
+        "total": 131496.23,
         "plannerState": {
-          "customerName": "Tuan Zairul",
-          "projectLocation": "Taman Desiran Bayu",
-          "builtUpArea": "350",
+          "customerName": "Tuan Rasli",
+          "projectLocation": "Pengkalan Kubur",
+          "builtUpArea": "640",
           "rooms": [
             {
-              "id": "room-1",
+              "id": "room-3",
               "type": "living",
               "name": "Living / Family",
-              "area": "200"
+              "area": "140"
             },
             {
-              "id": "room-2",
+              "id": "room-4",
               "type": "dining",
               "name": "Dining",
-              "area": "150"
+              "area": "230"
+            },
+            {
+              "id": "room-5",
+              "type": "bedroom",
+              "name": "Bedroom",
+              "area": "80"
+            },
+            {
+              "id": "room-6",
+              "type": "bedroom",
+              "name": "Bedroom",
+              "area": "90"
+            },
+            {
+              "id": "room-7",
+              "type": "kitchen",
+              "name": "Kitchen",
+              "area": "100"
             }
           ],
           "rates": {
@@ -236,7 +254,7 @@
           "projectId": "PRJ-BLD-MTU7547L-9HEEU"
         },
         "createdAt": "2026-09-09T14:32:23.840Z",
-        "updatedAt": "2026-09-09T14:32:38.470Z"
+        "updatedAt": "2026-09-09T14:34:25.451Z"
       }
     ],
     "renovation": [
@@ -393,6 +411,6 @@
     ]
   },
   "createdAt": "2026-09-09T12:47:34.713Z",
-  "updatedAt": "2026-09-09T14:34:06.700Z",
+  "updatedAt": "2026-09-09T14:34:25.451Z",
   "quotationRunningNumber": 3
 }
