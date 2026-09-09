@@ -19,6 +19,109 @@
       {
         "schemaVersion": 1,
         "recordType": "quotation",
+        "quotationId": "QT-BLD-MTUIOUC7-CQ1NN",
+        "projectId": "PRJ-BLD-MTUIXA7O-MJK8N",
+        "quotationNumber": "Q003S",
+        "plannerType": "build",
+        "role": "homeowner",
+        "homeownerId": "HME-20260909-RK6V",
+        "state": "final",
+        "quotationType": "simple",
+        "client": {
+          "name": "Arthur Ganz"
+        },
+        "project": {
+          "location": "pj",
+          "builtUpArea": 550
+        },
+        "total": 114735.27,
+        "plannerState": {
+          "customerName": "Arthur Ganz",
+          "projectLocation": "pj",
+          "builtUpArea": "550",
+          "rooms": [
+            {
+              "id": "room-1",
+              "type": "living",
+              "name": "Living / Family",
+              "area": "400"
+            },
+            {
+              "id": "room-2",
+              "type": "dining",
+              "name": "Dining",
+              "area": "150"
+            }
+          ],
+          "rates": {
+            "footingConc": 550,
+            "footingFw": 4.18,
+            "footingRebar": 15,
+            "slabConc": 550,
+            "slabBrc": 6.5,
+            "beamConc": 350,
+            "beamFw": 4.18,
+            "beamRebar": 15,
+            "colConc": 550,
+            "colFw": 4.18,
+            "colRebar": 15,
+            "flatRoofConc": 550,
+            "flatRoofFw": 4.18,
+            "flatRoofBrc": 6.5,
+            "cChannel": 4,
+            "metalSheet": 3.25,
+            "roofDesignConc": 550,
+            "roofDesignFw": 4.18,
+            "roofDesignRebar": 70,
+            "apronConc": 350,
+            "apronFw": 13.72,
+            "apronBrc": 15,
+            "drainage": 25,
+            "ceilingInt": 15,
+            "ceilingExt": 20,
+            "floorTileInt": 4.18,
+            "floorTileExt": 5.57,
+            "paintInt": 1.39,
+            "paintExt": 2.32,
+            "door": 600,
+            "window": 600,
+            "waterTank": 500,
+            "septicTank": 1500,
+            "bathWallTile": 4.18,
+            "bathFloorTile": 4.18,
+            "bathPiping": 1000,
+            "bathShower": 120,
+            "bathTap": 30,
+            "bathWc": 500,
+            "bathBasin": 400,
+            "dbBox": 1000,
+            "wiring": 20,
+            "powerPoint": 50,
+            "switch": 50,
+            "lighting": 250,
+            "fan": 600,
+            "aircond": 300,
+            "earthing": 1500,
+            "permit": 8500,
+            "prelim": 12000
+          },
+          "customRates": [],
+          "customQuantities": [],
+          "customDescriptions": [],
+          "customRoomLabels": [],
+          "excludedItems": [],
+          "manualItems": [],
+          "standardRateItems": [],
+          "quotationType": "simple",
+          "projectId": "PRJ-BLD-MTUIXA7O-MJK8N"
+        },
+        "createdAt": "2026-09-09T20:01:08.467Z",
+        "updatedAt": "2026-09-09T20:01:09.108Z",
+        "estimateNumber": "EST-BLD-003"
+      },
+      {
+        "schemaVersion": 1,
+        "recordType": "quotation",
         "quotationId": "QT-BLD-MTUIUKFH-6CIXB",
         "projectId": "PRJ-BLD-MTUIUKQ2-ZH3L3",
         "quotationNumber": "Q002S",
@@ -303,13 +406,13 @@
     ]
   },
   "createdAt": "2026-09-09T17:26:36.013Z",
-  "updatedAt": "2026-09-09T19:59:10.216Z",
+  "updatedAt": "2026-09-09T20:01:09.108Z",
   "quotationRunningNumber": {
     "renovation": 1,
-    "build": 2
+    "build": 3
   },
   "estimateRunningNumber": {
     "renovation": 1,
-    "build": 2
+    "build": 3
   }
 }
