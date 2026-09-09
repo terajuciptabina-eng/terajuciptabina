@@ -35,7 +35,7 @@
           "builtUpArea": 200,
           "state": "selangor"
         },
-        "total": 60543.63,
+        "total": 60168.63,
         "plannerState": {
           "customerName": "Reeza",
           "projectLocation": "Shah alam",
@@ -95,7 +95,7 @@
             "switch": 50,
             "lighting": 250,
             "fan": 600,
-            "aircond": 675,
+            "aircond": 300,
             "earthing": 1500,
             "permit": 8500,
             "prelim": 12000
@@ -112,17 +112,17 @@
           "projectState": "selangor",
           "rateSetId": "selangor",
           "rateSetName": "Selangor",
-          "rateSnapshotAt": "2026-09-09T21:42:06.181Z"
+          "rateSnapshotAt": "2026-09-09T21:43:38.215Z"
         },
         "createdAt": "2026-09-09T21:40:57.789Z",
-        "updatedAt": "2026-09-09T21:42:07.367Z",
+        "updatedAt": "2026-09-09T21:43:39.029Z",
         "estimateNumber": "EST-BLD-001"
       }
     ],
     "renovation": []
   },
   "createdAt": "2026-09-09T19:45:49.187Z",
-  "updatedAt": "2026-09-09T21:42:07.367Z",
+  "updatedAt": "2026-09-09T21:43:39.029Z",
   "quotationRunningNumber": {
     "build": 1
   },
