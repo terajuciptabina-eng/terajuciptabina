@@ -37,6 +37,7 @@ export default async function handler(req, res) {
     const now = new Date().toISOString(); const normalized = { ...quotation, quotationId, role, [idKey(role)]: id, plannerType, updatedAt: now, createdAt: quotation.createdAt || now };
     current.record.plannerRecords = current.record.plannerRecords || { build: [], renovation: [] }; current.record.plannerRecords.build = plannerList(current.record, 'build'); current.record.plannerRecords.renovation = plannerList(current.record, 'renovation');
     const list = current.record.plannerRecords[plannerType]; let index = list.findIndex(q => q?.quotationId === quotationId);
+    if (index >= 0 && !sameProjectIdentity(list[index], normalized)) index = -1;
     if (index >= 0) {
       const old = list[index];
       normalized.quotationNumber = old?.quotationNumber || normalized.quotationNumber || displayQuotationNumber(Math.max(1, nextBaseNumber(current.record, plannerType) - 1), normalized.quotationType);
@@ -58,26 +59,14 @@ export default async function handler(req, res) {
         index = list.findIndex(q => q?.quotationId === typeMatch.quotationId);
         list[index] = normalized;
       } else if (compatibleMatches.length) {
-        const match = compatibleMatches[0]; const base = baseSequence(match.quotationNumber);
-        normalized.projectId = match.projectId || incomingProjectId;
-        normalized.estimateNumber = match.estimateNumber || displayEstimateNumber(nextEstimateNumber(current.record, plannerType), plannerType);
-        normalized.quotationNumber = displayQuotationNumber(base || Math.max(1, nextBaseNumber(current.record, plannerType) - 1), normalized.quotationType);
-        normalized.plannerState = { ...(normalized.plannerState || {}), projectId: normalized.projectId };
-        list.unshift(normalized);
+        const match = compatibleMatches[0]; const base = baseSequence(match.quotationNumber); normalized.projectId = match.projectId || incomingProjectId; normalized.estimateNumber = match.estimateNumber || displayEstimateNumber(nextEstimateNumber(current.record, plannerType), plannerType); normalized.quotationNumber = displayQuotationNumber(base || Math.max(1, nextBaseNumber(current.record, plannerType) - 1), normalized.quotationType); normalized.plannerState = { ...(normalized.plannerState || {}), projectId: normalized.projectId }; list.unshift(normalized);
       } else {
-        const baseNumber = nextBaseNumber(current.record, plannerType); const estimateNumber = nextEstimateNumber(current.record, plannerType);
-        normalized.quotationNumber = displayQuotationNumber(baseNumber, normalized.quotationType);
-        normalized.estimateNumber = displayEstimateNumber(estimateNumber, plannerType);
-        normalized.projectId = `${plannerType === 'renovation' ? 'PRJ-REN' : 'PRJ-BLD'}-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).slice(2, 7).toUpperCase()}`;
-        normalized.plannerState = { ...(normalized.plannerState || {}), projectId: normalized.projectId };
-        if (!current.record.quotationRunningNumber || typeof current.record.quotationRunningNumber !== 'object') current.record.quotationRunningNumber = {};
-        current.record.quotationRunningNumber[plannerType] = baseNumber;
-        if (!current.record.estimateRunningNumber || typeof current.record.estimateRunningNumber !== 'object') current.record.estimateRunningNumber = {};
-        current.record.estimateRunningNumber[plannerType] = estimateNumber;
+        const baseNumber = nextBaseNumber(current.record, plannerType); const estimateNumber = nextEstimateNumber(current.record, plannerType); normalized.quotationNumber = displayQuotationNumber(baseNumber, normalized.quotationType); normalized.estimateNumber = displayEstimateNumber(estimateNumber, plannerType); normalized.projectId = `${plannerType === 'renovation' ? 'PRJ-REN' : 'PRJ-BLD'}-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).slice(2, 7).toUpperCase()}`; normalized.plannerState = { ...(normalized.plannerState || {}), projectId: normalized.projectId };
+        if (!current.record.quotationRunningNumber || typeof current.record.quotationRunningNumber !== 'object') current.record.quotationRunningNumber = {}; current.record.quotationRunningNumber[plannerType] = baseNumber;
+        if (!current.record.estimateRunningNumber || typeof current.record.estimateRunningNumber !== 'object') current.record.estimateRunningNumber = {}; current.record.estimateRunningNumber[plannerType] = estimateNumber;
         list.unshift(normalized);
       }
     }
-    // Backfill/normalize the estimate number for both versions of the same project.
     const projectId = String(normalized.projectId || normalized.plannerState?.projectId || '').trim();
     if (projectId) {
       const projectVersions = findProjectQuotations(current.record, plannerType, projectId);
@@ -87,8 +76,7 @@ export default async function handler(req, res) {
       normalized.estimateNumber = projectEstimate;
     }
     current.record.updatedAt = now;
-    const updated = await github(pathFor(role, id), { method: 'PUT', body: JSON.stringify({ message: `${index >= 0 ? 'Update' : 'Save'} ${plannerType} quotation ${normalized.quotationNumber} (${normalized.estimateNumber})`, content: Buffer.from(JSON.stringify(current.record, null, 2) + '\n').toString('base64'), sha: current.sha }) });
-    if (!updated.response.ok) { console.error('Quotation write failed:', updated.data); return res.status(502).json({ message: 'Unable to save quotation record.' }); }
+    const updated = await github(pathFor(role, id), { method: 'PUT', body: JSON.stringify({ message: `${index >= 0 ? 'Update' : 'Save'} ${plannerType} quotation ${normalized.quotationNumber} (${normalized.estimateNumber})`, content: Buffer.from(JSON.stringify(current.record, null, 2) + '\n').toString('base64'), sha: current.sha }) }); if (!updated.response.ok) { console.error('Quotation write failed:', updated.data); return res.status(502).json({ message: 'Unable to save quotation record.' }); }
     return res.status(200).json({ success: true, quotation: normalized });
   } catch (error) { console.error('quotation storage error:', error); return res.status(500).json({ message: 'Unable to process quotation record.' }); }
 }
