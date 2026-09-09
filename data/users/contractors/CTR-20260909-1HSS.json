@@ -836,16 +836,16 @@
         "state": "final",
         "quotationType": "detail",
         "client": {
-          "name": "Nur Alia Rakman"
+          "name": "Bella"
         },
         "project": {
-          "location": "Klang, Selangor",
+          "location": "Petaling Jaya, Selangor",
           "builtUpArea": 0
         },
-        "total": 223460,
+        "total": 238546,
         "plannerState": {
-          "customerName": "Nur Alia Rakman",
-          "projectLocation": "Klang, Selangor",
+          "customerName": "Bella",
+          "projectLocation": "Petaling Jaya, Selangor",
           "builtUpArea": "",
           "rooms": [
             {
@@ -858,7 +858,7 @@
               "id": "room-2",
               "type": "bedroom",
               "name": "Bedroom",
-              "area": "375"
+              "area": "453"
             },
             {
               "id": "room-3",
@@ -870,7 +870,7 @@
               "id": "room-4",
               "type": "wetKitchen",
               "name": "Wet Kitchen",
-              "area": "762"
+              "area": "876"
             },
             {
               "id": "room-5",
@@ -888,7 +888,7 @@
               "id": "room-7",
               "type": "balcony",
               "name": "Balcony",
-              "area": "90"
+              "area": "123"
             },
             {
               "id": "room-8",
@@ -939,7 +939,7 @@
           "projectId": "PRJ-REN-MTU4YDOD-6U2G0"
         },
         "createdAt": "2026-09-09T14:48:05.747Z",
-        "updatedAt": "2026-09-09T14:58:03.118Z",
+        "updatedAt": "2026-09-09T14:59:12.731Z",
         "estimateNumber": "EST-REN-003"
       },
       {
@@ -1095,7 +1095,7 @@
     ]
   },
   "createdAt": "2026-09-09T12:47:34.713Z",
-  "updatedAt": "2026-09-09T14:59:08.168Z",
+  "updatedAt": "2026-09-09T14:59:12.731Z",
   "quotationRunningNumber": {
     "renovation": 7
   },
