@@ -355,6 +355,124 @@
       {
         "schemaVersion": 1,
         "recordType": "quotation",
+        "quotationId": "QT-REN-MTU84VIB-SCTN5",
+        "projectId": "PRJ-REN-MTU84W08-GKSYI",
+        "quotationNumber": "Q007S",
+        "plannerType": "renovation",
+        "role": "contractor",
+        "contractorId": "CTR-20260909-1HSS",
+        "state": "final",
+        "quotationType": "simple",
+        "client": {
+          "name": "Bella"
+        },
+        "project": {
+          "location": "Petaling Jaya, Selangor",
+          "builtUpArea": 0
+        },
+        "total": 238546,
+        "plannerState": {
+          "customerName": "Bella",
+          "projectLocation": "Petaling Jaya, Selangor",
+          "builtUpArea": "",
+          "rooms": [
+            {
+              "id": "room-1",
+              "type": "living",
+              "name": "Living / Dining",
+              "area": "234"
+            },
+            {
+              "id": "room-2",
+              "type": "bedroom",
+              "name": "Bedroom",
+              "area": "453"
+            },
+            {
+              "id": "room-3",
+              "type": "dryKitchen",
+              "name": "Dry Kitchen",
+              "area": "120"
+            },
+            {
+              "id": "room-4",
+              "type": "wetKitchen",
+              "name": "Wet Kitchen",
+              "area": "876"
+            },
+            {
+              "id": "room-5",
+              "type": "bathroom",
+              "name": "Bathroom",
+              "area": "48"
+            },
+            {
+              "id": "room-6",
+              "type": "carPorch",
+              "name": "Car Porch",
+              "area": "135"
+            },
+            {
+              "id": "room-7",
+              "type": "balcony",
+              "name": "Balcony",
+              "area": "123"
+            },
+            {
+              "id": "room-8",
+              "type": "extensionKitchen",
+              "name": "New Extension – Kitchen",
+              "area": "200"
+            },
+            {
+              "id": "room-9",
+              "type": "extensionToilet",
+              "name": "New Extension – Toilet",
+              "area": "48"
+            }
+          ],
+          "rates": {
+            "ceiling": 12,
+            "spc": 14,
+            "floorTile": 22,
+            "wallTile": 22,
+            "facadeWall": 60,
+            "downlight": 200,
+            "wallLight": 250,
+            "ceilingFan": 550,
+            "exhaustFan": 200,
+            "curtainBoxLED": 300,
+            "barLamp": 500,
+            "diningLamp": 600,
+            "kitchenFrame": 1200,
+            "kitchenMakingGood": 1000,
+            "kitchenGlassDoor": 1200,
+            "bathroomSanitary": 3000,
+            "bathroomDoor": 1200,
+            "gateMotor": 6400,
+            "brickwallDivider": 2800,
+            "frontFence": 5500,
+            "preliminaries": 8500,
+            "extensionKitchen": 250,
+            "extensionToilet": 584
+          },
+          "customRates": [],
+          "customQuantities": [],
+          "customDescriptions": [],
+          "customRoomLabels": [],
+          "excludedItems": [],
+          "manualItems": [],
+          "standardRateItems": [],
+          "quotationType": "simple",
+          "projectId": "PRJ-REN-MTU84W08-GKSYI"
+        },
+        "createdAt": "2026-09-09T14:59:07.523Z",
+        "updatedAt": "2026-09-09T14:59:08.168Z",
+        "estimateNumber": "EST-REN-005"
+      },
+      {
+        "schemaVersion": 1,
+        "recordType": "quotation",
         "quotationId": "QT-REN-MTU83CIN-6LEEU",
         "projectId": "PRJ-REN-MTU83CZS-U3SON",
         "quotationNumber": "Q006S",
@@ -977,11 +1095,11 @@
     ]
   },
   "createdAt": "2026-09-09T12:47:34.713Z",
-  "updatedAt": "2026-09-09T14:58:03.118Z",
+  "updatedAt": "2026-09-09T14:59:08.168Z",
   "quotationRunningNumber": {
-    "renovation": 6
+    "renovation": 7
   },
   "estimateRunningNumber": {
-    "renovation": 4
+    "renovation": 5
   }
 }
