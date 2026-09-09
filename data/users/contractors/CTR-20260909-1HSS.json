@@ -1036,47 +1036,41 @@
           "location": "Kajang, Selangor",
           "builtUpArea": 0
         },
-        "total": 207614,
+        "total": 178582,
         "plannerState": {
           "customerName": "Atikah Rakman",
           "projectLocation": "Kajang, Selangor",
           "builtUpArea": "",
           "rooms": [
             {
-              "id": "room-4",
+              "id": "room-1",
               "type": "wetKitchen",
               "name": "Wet Kitchen",
               "area": "876"
             },
             {
-              "id": "room-5",
+              "id": "room-2",
               "type": "bathroom",
               "name": "Bathroom",
               "area": "48"
             },
             {
-              "id": "room-6",
+              "id": "room-3",
               "type": "carPorch",
               "name": "Car Porch",
               "area": "135"
             },
             {
-              "id": "room-7",
+              "id": "room-4",
               "type": "balcony",
               "name": "Balcony",
               "area": "123"
             },
             {
-              "id": "room-8",
+              "id": "room-5",
               "type": "extensionKitchen",
               "name": "New Extension – Kitchen",
               "area": "200"
-            },
-            {
-              "id": "room-9",
-              "type": "extensionToilet",
-              "name": "New Extension – Toilet",
-              "area": "48"
             }
           ],
           "rates": {
@@ -1115,7 +1109,7 @@
           "projectId": "PRJ-REN-MTU4YDOD-6U2G0"
         },
         "createdAt": "2026-09-09T14:48:05.747Z",
-        "updatedAt": "2026-09-09T15:00:19.601Z",
+        "updatedAt": "2026-09-09T15:00:54.123Z",
         "estimateNumber": "EST-REN-003"
       },
       {
@@ -1271,7 +1265,7 @@
     ]
   },
   "createdAt": "2026-09-09T12:47:34.713Z",
-  "updatedAt": "2026-09-09T15:00:50.302Z",
+  "updatedAt": "2026-09-09T15:00:54.123Z",
   "quotationRunningNumber": {
     "renovation": 8
   },
