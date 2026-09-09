@@ -446,12 +446,12 @@ main>section:not(:first-child){scroll-margin-top:92px} main>section>div:first-ch
   <section class="bg-white rounded-2xl shadow-sm p-6 mb-6">
     <div class="flex justify-between items-center mb-5 gap-4">
       <div class="min-w-0">
-        <h3 class="font-bold text-lg">Areas / Rooms</h3>
+        <h3 class="font-bold text-lg">Rooms / Areas</h3>
         <p class="text-sm text-gray-500">Only select the area type and enter the sqft.</p>
       </div>
-      <button type="button" onclick="addRoom()"
+      <button id="addRoomAreaBtn" type="button" onclick="addRoom()"
         class="no-print bg-black text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-800 flex-shrink-0">
-        + Add Area
+        + Add Room / Area
       </button>
     </div>
     <div class="no-print bg-gray-50 border rounded-xl p-4 mb-5 text-sm text-gray-600">
@@ -459,6 +459,14 @@ main>section:not(:first-child){scroll-margin-top:92px} main>section>div:first-ch
       Select the room type and enter the area. Quantities such as downlights, fans and other standard items will be calculated automatically.
     </div>
     <div id="roomsContainer" class="space-y-4"></div>
+    <div id="roomsEmptyState" class="border rounded-xl bg-gray-50 p-5 text-center">
+      <div class="mx-auto mb-3 grid place-items-center w-12 h-12 rounded-full bg-white border">
+        <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"></path><path d="M5.5 9.5V21h13V9.5"></path><path d="M9.5 21v-6h5v6"></path></svg>
+      </div>
+      <p class="font-semibold text-sm">No rooms added yet.</p>
+      <p class="text-xs text-gray-500 mt-1">Click the button above to add rooms/areas and start planning your renovation.</p>
+    </div>
+    <div id="roomsAddButtonAnchor" class="no-print mt-4"></div>
   </section>
 
   <!-- Contractor Rate Schedule -->
@@ -739,6 +747,7 @@ function addRoomBase(defaultType = "living", defaultArea = "") {
     </div>`;
 
   container.appendChild(div);
+  updateRoomsEmptyState();
   div.querySelector(".room-type").value = defaultType;
 
   div.querySelector(".room-name").addEventListener("change", e => editRoomLabel(id, e.target.value));
@@ -754,9 +763,26 @@ function addRoomBase(defaultType = "living", defaultArea = "") {
   updateEstimate();
 }
 
+function updateRoomsEmptyState() {
+  const container = document.getElementById("roomsContainer");
+  const empty = document.getElementById("roomsEmptyState");
+  const btn = document.getElementById("addRoomAreaBtn");
+  const anchor = document.getElementById("roomsAddButtonAnchor");
+  if (!container || !empty || !btn || !anchor) return;
+  const hasRooms = !!container.querySelector(".room-card");
+  empty.classList.toggle("hidden", hasRooms);
+  if (hasRooms) {
+    anchor.appendChild(btn);
+  } else {
+    const header = btn.closest(".flex.justify-between");
+    if (header) header.appendChild(btn);
+  }
+}
+
 function removeRoom(id) {
   document.getElementById(id)?.remove();
   customRoomLabels.delete(id);
+  updateRoomsEmptyState();
   updateEstimate();
   saveContractorState();
 }
@@ -1412,11 +1438,8 @@ function initContractorMode() {
     saved = loadContractorState();
   }
 
-  if (!document.getElementById("roomsContainer").children.length) {
-    addRoom("living", "");
-  } else {
-    updateEstimate();
-  }
+  updateRoomsEmptyState();
+  updateEstimate();
 
   if (IS_CONTRACTOR) {
     renderRateSchedule();
@@ -1701,13 +1724,7 @@ initContractorMode();
 <script src="detailed-quotation-promo-ui.js"></script>
 <script>
 
-function ensureInitialAreaCard(){
-  const container=document.getElementById('roomsContainer');
-  if(!container)return;
-  const hasValidArea=[...container.querySelectorAll('.room-card')].some(card=>Number(card.querySelector('.room-area')?.value||0)>0);
-  if(!hasValidArea)addRoom();
-}
-ensureInitialAreaCard();
+updateRoomsEmptyState();
 updateEstimate();
 
 </script>
