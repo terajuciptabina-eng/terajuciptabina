@@ -97,12 +97,12 @@
         "recordType": "quotation",
         "quotationId": "QT-REN-MTU4ZDZC-PNIHO",
         "projectId": "PRJ-REN-MTU4YDOD-6U2G0",
-        "quotationNumber": "QO083",
+        "quotationNumber": "QO085",
         "plannerType": "renovation",
         "role": "contractor",
         "contractorId": "CTR-20260909-1HSS",
         "state": "final",
-        "quotationType": "simple",
+        "quotationType": "detail",
         "client": {
           "name": "lembah bayu konsortium"
         },
@@ -110,7 +110,7 @@
           "location": "Puchong, Selangor",
           "builtUpArea": 0
         },
-        "total": 24500,
+        "total": 28800,
         "plannerState": {
           "customerName": "lembah bayu konsortium",
           "projectLocation": "Puchong, Selangor",
@@ -126,7 +126,7 @@
               "id": "room-2",
               "type": "dryKitchen",
               "name": "Dry Kitchen",
-              "area": "150"
+              "area": "300"
             }
           ],
           "rates": {
@@ -161,14 +161,14 @@
           "excludedItems": [],
           "manualItems": [],
           "standardRateItems": [],
-          "quotationType": "simple",
+          "quotationType": "detail",
           "projectId": "PRJ-REN-MTU4YDOD-6U2G0"
         },
-        "createdAt": "2026-09-09T13:30:52.680Z",
-        "updatedAt": "2026-09-09T13:30:53.545Z"
+        "createdAt": "2026-09-09T13:31:51.285Z",
+        "updatedAt": "2026-09-09T13:31:52.583Z"
       }
     ]
   },
   "createdAt": "2026-09-09T12:47:34.713Z",
-  "updatedAt": "2026-09-09T13:31:20.661Z"
+  "updatedAt": "2026-09-09T13:31:52.583Z"
 }
