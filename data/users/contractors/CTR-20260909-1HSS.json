@@ -355,6 +355,106 @@
       {
         "schemaVersion": 1,
         "recordType": "quotation",
+        "quotationId": "QT-REN-MTU869HA-KIU24",
+        "projectId": "PRJ-REN-MTU869Z1-507SX",
+        "quotationNumber": "Q008S",
+        "plannerType": "renovation",
+        "role": "contractor",
+        "contractorId": "CTR-20260909-1HSS",
+        "state": "final",
+        "quotationType": "simple",
+        "client": {
+          "name": "Atikah Rakman"
+        },
+        "project": {
+          "location": "Kajang, Selangor",
+          "builtUpArea": 0
+        },
+        "total": 207614,
+        "plannerState": {
+          "customerName": "Atikah Rakman",
+          "projectLocation": "Kajang, Selangor",
+          "builtUpArea": "",
+          "rooms": [
+            {
+              "id": "room-4",
+              "type": "wetKitchen",
+              "name": "Wet Kitchen",
+              "area": "876"
+            },
+            {
+              "id": "room-5",
+              "type": "bathroom",
+              "name": "Bathroom",
+              "area": "48"
+            },
+            {
+              "id": "room-6",
+              "type": "carPorch",
+              "name": "Car Porch",
+              "area": "135"
+            },
+            {
+              "id": "room-7",
+              "type": "balcony",
+              "name": "Balcony",
+              "area": "123"
+            },
+            {
+              "id": "room-8",
+              "type": "extensionKitchen",
+              "name": "New Extension – Kitchen",
+              "area": "200"
+            },
+            {
+              "id": "room-9",
+              "type": "extensionToilet",
+              "name": "New Extension – Toilet",
+              "area": "48"
+            }
+          ],
+          "rates": {
+            "ceiling": 12,
+            "spc": 14,
+            "floorTile": 22,
+            "wallTile": 22,
+            "facadeWall": 60,
+            "downlight": 200,
+            "wallLight": 250,
+            "ceilingFan": 550,
+            "exhaustFan": 200,
+            "curtainBoxLED": 300,
+            "barLamp": 500,
+            "diningLamp": 600,
+            "kitchenFrame": 1200,
+            "kitchenMakingGood": 1000,
+            "kitchenGlassDoor": 1200,
+            "bathroomSanitary": 3000,
+            "bathroomDoor": 1200,
+            "gateMotor": 6400,
+            "brickwallDivider": 2800,
+            "frontFence": 5500,
+            "preliminaries": 8500,
+            "extensionKitchen": 250,
+            "extensionToilet": 584
+          },
+          "customRates": [],
+          "customQuantities": [],
+          "customDescriptions": [],
+          "customRoomLabels": [],
+          "excludedItems": [],
+          "manualItems": [],
+          "standardRateItems": [],
+          "quotationType": "simple",
+          "projectId": "PRJ-REN-MTU869Z1-507SX"
+        },
+        "createdAt": "2026-09-09T15:00:12.286Z",
+        "updatedAt": "2026-09-09T15:00:12.925Z",
+        "estimateNumber": "EST-REN-006"
+      },
+      {
+        "schemaVersion": 1,
+        "recordType": "quotation",
         "quotationId": "QT-REN-MTU84VIB-SCTN5",
         "projectId": "PRJ-REN-MTU84W08-GKSYI",
         "quotationNumber": "Q007S",
@@ -1095,11 +1195,11 @@
     ]
   },
   "createdAt": "2026-09-09T12:47:34.713Z",
-  "updatedAt": "2026-09-09T14:59:12.731Z",
+  "updatedAt": "2026-09-09T15:00:12.925Z",
   "quotationRunningNumber": {
-    "renovation": 7
+    "renovation": 8
   },
   "estimateRunningNumber": {
-    "renovation": 5
+    "renovation": 6
   }
 }
