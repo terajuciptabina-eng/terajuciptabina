@@ -5,7 +5,7 @@
 
   const API_BASE = 'https://terajuciptabina.vercel.app';
   const params = new URLSearchParams(location.search);
-  const plannerType = 'build';
+  const plannerType = /renovationplanner\.html?$/i.test(location.pathname) ? 'renovation' : ((params.get('plannerType') || 'build').toLowerCase() === 'renovation' ? 'renovation' : 'build');
   const role = (params.get('audience') || document.body.dataset.role || 'homeowner').toLowerCase() === 'contractor' ? 'contractor' : 'homeowner';
   const idKey = role === 'contractor' ? 'contractorId' : 'homeownerId';
   const storageKey = `teraju.${role}.github.v1`;
@@ -17,6 +17,7 @@
   function localAccount() { try { return JSON.parse(localStorage.getItem(storageKey) || 'null'); } catch { return null; } }
   if (!activeId) activeId = String(localAccount()?.[idKey] || '').trim().toUpperCase();
   if (!activeId) return;
+
   function apiUrl() { return `${API_BASE}/api/quotations`; }
   async function request(method, body) {
     let url = apiUrl();
@@ -38,8 +39,10 @@
     const customer=document.getElementById('customerName')?.value?.trim()||'Not specified';
     const location=document.getElementById('projectLocation')?.value?.trim()||'Not specified';
     const now=new Date().toISOString();
-    const qId=currentQuotationId||`QT-BLD-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).slice(2,7).toUpperCase()}`;
-    const qNumber=currentQuotationNumber||(typeof quotationNumber!=='undefined'&&quotationNumber?quotationNumber:`NB-QO${Date.now().toString().slice(-4)}`);
+    const prefix=plannerType==='renovation'?'QT-REN':'QT-BLD';
+    const fallbackNumber=plannerType==='renovation'?`NR-QO${Date.now().toString().slice(-4)}`:`NB-QO${Date.now().toString().slice(-4)}`;
+    const qId=currentQuotationId||`${prefix}-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).slice(2,7).toUpperCase()}`;
+    const qNumber=currentQuotationNumber||(typeof quotationNumber!=='undefined'&&quotationNumber?quotationNumber:fallbackNumber);
     const plannerState=snapshotPlanner();
     return {schemaVersion:1,recordType:'quotation',quotationId:qId,quotationNumber:qNumber,plannerType,role,[idKey]:activeId,state:'final',quotationType:type,client:{name:customer},project:{location,builtUpArea:Number(plannerState.builtUpArea)||0},total:Number(currentTotal().toFixed(2)),plannerState,createdAt:now,updatedAt:now};
   }
@@ -50,12 +53,13 @@
     document.head.appendChild(style);
   }
   function toast(message,error=false){let el=document.getElementById('tcQuotationToast');if(!el){el=document.createElement('div');el.id='tcQuotationToast';el.className='tc-quotation-toast';document.body.appendChild(el)}el.textContent=message;el.style.background=error?'#991b1b':'#111827';el.classList.add('show');clearTimeout(el.__timer);el.__timer=setTimeout(()=>el.classList.remove('show'),2400)}
+  function quotationsUrl(){return `quotations.html?role=${encodeURIComponent(role)}&id=${encodeURIComponent(activeId)}&plannerType=${encodeURIComponent(plannerType)}`;}
   function addPlannerControls(){
     injectStyles();
     const header=document.querySelector('header > div');
-    if(header&&!document.getElementById('tcMyQuotations')){const link=document.createElement('a');link.id='tcMyQuotations';link.className='tc-quotation-btn';link.href=`quotations.html?role=${encodeURIComponent(role)}&id=${encodeURIComponent(activeId)}&plannerType=build`;link.textContent='My Quotations';header.appendChild(link)}
+    if(header&&!document.getElementById('tcMyQuotations')){const link=document.createElement('a');link.id='tcMyQuotations';link.className='tc-quotation-btn';link.href=quotationsUrl();link.textContent='My Quotations';header.appendChild(link)}
     const actions=document.getElementById('quotationPrintActions');
-    if(actions&&!document.getElementById('tcSaveQuotation')){const wrap=document.createElement('div');wrap.className='tc-quotation-tools';wrap.innerHTML=`<button id="tcSaveQuotation" type="button" class="tc-quotation-btn primary">Save Quotation</button><a class="tc-quotation-btn" href="quotations.html?role=${encodeURIComponent(role)}&id=${encodeURIComponent(activeId)}&plannerType=build">My Quotations</a><span id="tcQuotationStatus" class="tc-quotation-status"></span>`;actions.insertBefore(wrap,actions.firstChild);document.getElementById('tcSaveQuotation').addEventListener('click',()=>saveQuotation(true))}
+    if(actions&&!document.getElementById('tcSaveQuotation')){const wrap=document.createElement('div');wrap.className='tc-quotation-tools';wrap.innerHTML=`<button id="tcSaveQuotation" type="button" class="tc-quotation-btn primary">Save Quotation</button><a class="tc-quotation-btn" href="${quotationsUrl()}">My Quotations</a><span id="tcQuotationStatus" class="tc-quotation-status"></span>`;actions.insertBefore(wrap,actions.firstChild);document.getElementById('tcSaveQuotation').addEventListener('click',()=>saveQuotation(true))}
   }
   async function saveQuotation(showMessage=false){
     if(restoring||!document.getElementById('quotationDocument')||document.getElementById('quotationDocument').classList.contains('hidden'))return;
@@ -64,20 +68,33 @@
   }
   function wrapGenerate(){
     if(typeof window.generateQuotation!=='function'||window.generateQuotation.__tcWrapped)return false;
-    const original=window.generateQuotation;const wrapped=function(typeOverride){const result=original.apply(this,arguments);if(result!==false){currentQuotationNumber=typeof quotationNumber!=='undefined'?quotationNumber:currentQuotationNumber;setTimeout(()=>saveQuotation(false),250)}return result};wrapped.__tcWrapped=true;wrapped.__tcOriginal=original;window.generateQuotation=wrapped;return true;
+    const original=window.generateQuotation;const wrapped=function(){const result=original.apply(this,arguments);if(result!==false){currentQuotationNumber=typeof quotationNumber!=='undefined'?quotationNumber:currentQuotationNumber;setTimeout(()=>saveQuotation(false),250)}return result};wrapped.__tcWrapped=true;wrapped.__tcOriginal=original;window.generateQuotation=wrapped;return true;
   }
+  function setRoomField(room,selector,value){const el=room?.querySelector(selector);if(el&&value!==undefined)el.value=value;}
   function restoreSnapshot(state){
     if(!state)return;restoring=true;
     try{
       if(document.getElementById('customerName'))document.getElementById('customerName').value=state.customerName||'';
       if(document.getElementById('projectLocation'))document.getElementById('projectLocation').value=state.projectLocation||'';
+      if(document.getElementById('builtUpArea'))document.getElementById('builtUpArea').value=state.builtUpArea||'';
       if(typeof RATES!=='undefined')RATES={...RATES,...(state.rates||{})};
       if(typeof restoreMap==='function'){restoreMap(customRates,state.customRates);restoreMap(customQuantities,state.customQuantities);restoreMap(customDescriptions,state.customDescriptions);restoreMap(customRoomLabels,state.customRoomLabels)}
       if(typeof excludedItems!=='undefined'){excludedItems.clear();(state.excludedItems||[]).forEach(x=>excludedItems.add(x))}
       if(typeof manualItems!=='undefined'){manualItems.clear();(state.manualItems||[]).forEach(([k,v])=>manualItems.set(k,v))}
       if(typeof standardRateItems!=='undefined')standardRateItems=Array.isArray(state.standardRateItems)?state.standardRateItems:[];
-      const container=document.getElementById('roomsContainer');if(container)container.innerHTML='';if(typeof roomCounter!=='undefined')roomCounter=0;
-      (state.rooms||[]).forEach(room=>{if(typeof addRoom==='function')addRoom(room.type||'other',room.area||'',room.id||'',room.name||'')});
+      const container=document.getElementById('roomsContainer');if(container)container.innerHTML='';
+      let previousCount=typeof roomCounter!=='undefined'?Number(roomCounter)||0:0;
+      (state.rooms||[]).forEach(roomData=>{
+        if(typeof addRoom!=='function')return;
+        const before=container?[...container.querySelectorAll('.room-card')]:[];
+        addRoom(roomData.type||'other');
+        const after=container?[...container.querySelectorAll('.room-card')]:[];
+        const room=after.length>before.length?after[after.length-1]:null;
+        if(!room)return;
+        const savedId=roomData.id||room.id;room.id=savedId;
+        setRoomField(room,'.room-type',roomData.type||'other');setRoomField(room,'.room-name',roomData.name||'');setRoomField(room,'.room-area',roomData.area||'');
+      });
+      if(typeof roomCounter!=='undefined'){const ids=[...(container?.querySelectorAll('.room-card')||[])].map(x=>x.id);const maxSuffix=ids.reduce((m,id)=>Math.max(m,Number((String(id).match(/(\d+)$/)||[])[1])||0),0);roomCounter=Math.max(previousCount,maxSuffix,ids.length)}
       const q=document.querySelector(`input[name="quotationType"][value="${state.quotationType==='detail'?'detail':'simple'}"]`);if(q){q.checked=true;q.dispatchEvent(new Event('change',{bubbles:true}))}
       if(typeof updateRoomsEmptyState==='function')updateRoomsEmptyState();if(typeof updateEstimate==='function')updateEstimate();
     }finally{restoring=false}
