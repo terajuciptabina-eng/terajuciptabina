@@ -140,6 +140,12 @@
       border-radius: 0 !important;
     }
 
+
+    .project-header-tools { min-width: 0; }
+    @media (max-width: 767px) {
+      .project-header-tools { gap: 6px; }
+    }
+
     .contractor-only { display: none !important; }
     body.contractor-mode .contractor-only { display: block !important; }
     body.contractor-mode .contractor-only.inline-flex { display: inline-flex !important; }
@@ -466,25 +472,20 @@ main>section:not(:first-child){scroll-margin-top:92px} main>section>div:first-ch
 
   <!-- Project Information -->
   <section class="bg-white rounded-2xl shadow-sm p-4 mb-4">
-    <div class="flex justify-between items-center cursor-pointer" onclick="toggleProjectInfo()">
-      <div class="min-w-0">
+    <div class="flex justify-between items-center cursor-pointer gap-3" onclick="toggleProjectInfo()">
+      <div class="min-w-0 flex-1">
         <h3 class="font-bold text-lg">Project Information</h3>
         <p class="text-sm text-gray-500">Enter the project details used for the estimate and quotation.</p>
       </div>
-      <span id="projectArrow" class="text-gray-500 text-sm ml-4 flex-shrink-0">▲</span>
-    </div>
-    <div id="projectInfo" class="mt-3">
-      <div class="contractor-only bg-gray-50 border rounded-xl p-3 mb-3">
-        <div class="flex flex-wrap items-center justify-between gap-3">
-          <div>
-            <p class="text-xs uppercase tracking-wide text-gray-500">Contractor ID</p>
-            <p id="contractorIdDisplay" class="font-bold text-lg">-</p>
-          </div>
-          <button type="button" onclick="saveContractorState()" class="contractor-only inline-flex bg-black text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-gray-800">
-            Save Project
-          </button>
+      <div class="project-header-tools flex items-center gap-2 flex-shrink-0">
+        <div class="text-right leading-tight">
+          <p id="workspaceUserIdLabel" class="text-[10px] uppercase tracking-wide text-gray-500">User ID</p>
+          <p id="workspaceUserIdDisplay" class="font-bold text-xs">-</p>
         </div>
       </div>
+      <span id="projectArrow" class="text-gray-500 text-sm flex-shrink-0">▲</span>
+    </div>
+    <div id="projectInfo" class="mt-2">
       <div class="grid md:grid-cols-2 gap-3">
         <div>
           <label class="block text-sm font-medium mb-1">Customer Name</label>
@@ -714,6 +715,7 @@ const IS_CONTRACTOR = AUDIENCE === "contractor";
 const CONTRACTOR_ID = new URLSearchParams(window.location.search).get("contractorId")
   || localStorage.getItem("teraju.contractor.local.v1.activeContractorId")
   || "";
+const HOMEOWNER_ID = new URLSearchParams(window.location.search).get("homeownerId") || "";
 const CONTRACTOR_STORAGE_PREFIX = "teraju.contractor.local.v1";
 let restoringContractorState = false;
 
@@ -1506,8 +1508,11 @@ function initContractorMode() {
   document.body.classList.toggle("contractor-mode", IS_CONTRACTOR);
   document.body.classList.toggle("homeowner-mode", !IS_CONTRACTOR);
 
-  const idEl = document.getElementById("contractorIdDisplay");
-  if (idEl) idEl.textContent = CONTRACTOR_ID || "Not signed in";
+  const idLabelEl = document.getElementById("workspaceUserIdLabel");
+  const idEl = document.getElementById("workspaceUserIdDisplay");
+  const workspaceId = IS_CONTRACTOR ? CONTRACTOR_ID : HOMEOWNER_ID;
+  if (idLabelEl) idLabelEl.textContent = IS_CONTRACTOR ? "Contractor ID" : "Homeowner ID";
+  if (idEl) idEl.textContent = workspaceId || "Not signed in";
 
   let saved = null;
   if (IS_CONTRACTOR) {
