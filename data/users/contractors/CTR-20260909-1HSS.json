@@ -362,7 +362,7 @@
         "role": "contractor",
         "contractorId": "CTR-20260909-1HSS",
         "state": "final",
-        "quotationType": "simple",
+        "quotationType": "detail",
         "client": {
           "name": "Azrai abu Adnan"
         },
@@ -463,11 +463,11 @@
           "excludedItems": [],
           "manualItems": [],
           "standardRateItems": [],
-          "quotationType": "simple",
-          "projectId": "PRJ-REN-MTU7U002-6T9B2"
+          "quotationType": "detail",
+          "projectId": "PRJ-REN-MTU4YDOD-6U2G0"
         },
         "createdAt": "2026-09-09T14:50:39.268Z",
-        "updatedAt": "2026-09-09T14:50:40.130Z",
+        "updatedAt": "2026-09-09T14:50:53.045Z",
         "estimateNumber": "EST-REN-001"
       },
       {
@@ -704,7 +704,7 @@
     ]
   },
   "createdAt": "2026-09-09T12:47:34.713Z",
-  "updatedAt": "2026-09-09T14:50:40.130Z",
+  "updatedAt": "2026-09-09T14:50:53.045Z",
   "quotationRunningNumber": {
     "renovation": 4
   },
