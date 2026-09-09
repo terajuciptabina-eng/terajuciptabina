@@ -148,29 +148,3 @@
   script.async=false;
   document.head.appendChild(script);
 })();
-
-// Planner-only layout rule: when a planner starts with no rooms, keep the Add Room / Area
-// button below the empty-state card. This is scoped to pages that actually expose the
-// roomsAddButtonAnchor, so other pages using this shared helper are unaffected.
-(function(){
-  function keepAddRoomButtonBelowEmptyState(){
-    const anchor=document.getElementById('roomsAddButtonAnchor');
-    const btn=document.getElementById('addRoomAreaBtn');
-    if(!anchor || !btn) return;
-    if(typeof window.updateRoomsEmptyState==='function' && !window.__tcRoomsEmptyStatePatched){
-      const original=window.updateRoomsEmptyState;
-      window.updateRoomsEmptyState=function(){
-        original();
-        const currentAnchor=document.getElementById('roomsAddButtonAnchor');
-        const currentBtn=document.getElementById('addRoomAreaBtn');
-        if(currentAnchor && currentBtn) currentAnchor.appendChild(currentBtn);
-      };
-      window.__tcRoomsEmptyStatePatched=true;
-    }
-    anchor.appendChild(btn);
-  }
-
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',keepAddRoomButtonBelowEmptyState);
-  else keepAddRoomButtonBelowEmptyState();
-  window.addEventListener('load',keepAddRoomButtonBelowEmptyState);
-})();
