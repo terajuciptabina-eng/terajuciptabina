@@ -41,7 +41,7 @@
       #projectInfo, #projectInfo input { width: 100%; }
       #roomsContainer { width: 100%; }
       .room-card { width: 100%; max-width: 100%; padding: 14px !important; overflow: hidden; }
-      .room-card > div:first-child { grid-template-columns: minmax(0, 1fr) !important; gap: 12px !important; }
+      .room-card > div:first-child { grid-template-columns: minmax(0, 1fr) !important; gap: 8px !important; }
       .room-card input, .room-card select { width: 100%; max-width: 100%; }
       .room-card .room-name, .room-card .room-type, .room-card .room-area { min-width: 0; }
       .room-card .no-print.flex { display: grid !important; grid-template-columns: 1fr 1fr; gap: 8px; width: 100%; }
@@ -74,9 +74,9 @@
       #quotationContent table th, #quotationContent table td { padding: 9px 7px !important; }
       #quotationPrintActions { width: 100%; justify-content: stretch !important; }
       #quotationPrintActions button { width: 100%; min-height: 48px; }
-      main > section:last-child { padding: 24px 16px !important; }
-      main > section:last-child h3 { font-size: 22px !important; }
-      main > section:last-child a { width: 100%; text-align: center; min-height: 48px; display: flex; align-items: center; justify-content: center; }
+      main > section:last-child { padding: 14px !important; }
+      main > section:last-child h3 { font-size: 20px !important; }
+      main > section:last-child a { width: 100%; text-align: center; min-height: 42px; display: flex; align-items: center; justify-content: center; }
       input, select, textarea { font-size: 16px !important; }
       body { padding-bottom: env(safe-area-inset-bottom); }
     }
@@ -119,6 +119,18 @@
     .estimate-total-summary > p {
       margin-top: 8px;
       max-width: 100%;
+    }
+
+    /* Keep contractor editable estimate rows visually identical to homeowner rows.
+       Only editability differs; row height/spacing must not change by audience. */
+    #estimateContent table textarea {
+      min-height: 40px !important;
+      height: 40px !important;
+      resize: none !important;
+    }
+    #estimateContent table .homeowner-locked {
+      min-height: 40px !important;
+      box-sizing: border-box !important;
     }
 
     .contractor-only { display: none !important; }
@@ -209,25 +221,25 @@
 
 /* Unified quotation flow + visual document preview */
 .quotation-type-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
-.quotation-type-card{position:relative;display:flex;align-items:flex-start;gap:13px;padding:20px;border:1px solid #d9dee7;border-radius:16px;background:#fff;cursor:pointer;transition:.18s ease;min-height:112px}
+.quotation-type-card{position:relative;display:flex;align-items:flex-start;gap:10px;padding:12px;border:1px solid #d9dee7;border-radius:14px;background:#fff;cursor:pointer;transition:.18s ease;min-height:84px}
 .quotation-type-card:hover{border-color:#9ca3af;background:#fafafa}
 .quotation-type-card input{position:absolute;opacity:0;pointer-events:none}
 .quotation-type-card.is-selected{border-color:#111827;box-shadow:0 0 0 2px rgba(17,24,39,.06)}
 .quotation-type-radio{width:19px;height:19px;border:2px solid #9ca3af;border-radius:999px;flex:0 0 19px;margin-top:2px;position:relative}
 .quotation-type-card.is-selected .quotation-type-radio{border-color:#111827}
 .quotation-type-card.is-selected .quotation-type-radio:after{content:'';position:absolute;width:9px;height:9px;border-radius:999px;background:#111827;left:3px;top:3px}
-.quotation-type-copy{display:flex;flex-direction:column;gap:5px}
-.quotation-type-copy strong{font-size:16px;color:#111827}
-.quotation-type-copy small{font-size:13px;line-height:1.45;color:#6b7280}
-.quotation-type-copy em{font-size:12px;font-style:normal;color:#15803d;font-weight:700;margin-top:2px}
-.quotation-generator-tip{display:flex;flex-direction:column;gap:3px;margin-top:14px;padding:13px 15px;border-radius:12px;background:#f8fafc;border:1px solid #e5e7eb;font-size:13px;color:#6b7280}
+.quotation-type-copy{display:flex;flex-direction:column;gap:3px}
+.quotation-type-copy strong{font-size:15px;color:#111827}
+.quotation-type-copy small{font-size:12px;line-height:1.35;color:#6b7280}
+.quotation-type-copy em{font-size:11px;font-style:normal;color:#15803d;font-weight:700;margin-top:1px}
+.quotation-generator-tip{display:flex;flex-direction:column;gap:2px;margin-top:10px;padding:9px 11px;border-radius:12px;background:#f8fafc;border:1px solid #e5e7eb;font-size:13px;color:#6b7280}
 .quotation-generator-tip strong{color:#1f2937}
-.quotation-generate-btn{margin-top:16px;width:100%;background:#111827;color:#fff;border:0;border-radius:12px;padding:14px 18px;font-weight:700;cursor:pointer;min-height:52px}
+.quotation-generate-btn{margin-top:10px;width:100%;background:#111827;color:#fff;border:0;border-radius:11px;padding:11px 16px;font-weight:700;cursor:pointer;min-height:44px}
 .quotation-generate-btn:hover{background:#000}
 .quotation-preview-heading{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px}
 .quotation-render-source{position:fixed;left:-100000px;top:0;width:794px;background:#fff;visibility:visible;pointer-events:none;z-index:-1}
 @media(max-width:767px){.quotation-type-grid{grid-template-columns:1fr}
-  .quotation-type-card{min-height:0;padding:16px}
+  .quotation-type-card{min-height:0;padding:12px}
 }
 
 /* Mobile quotation — same table structure as desktop, responsive shrink */
@@ -289,7 +301,38 @@
     font-size:8px !important;
     box-sizing:border-box !important;
   }
-  #estimateContent table textarea { min-height:48px !important; }
+  #estimateContent table textarea { min-height:40px !important; height:40px !important; }
+  #estimateContent table .homeowner-locked { min-height:40px !important; box-sizing:border-box !important; }
+  #estimateContent table tr > td { padding-top:2px !important; padding-bottom:2px !important; }
+  #estimateContent table input,
+  #estimateContent table select {
+    min-height:30px !important;
+    height:30px !important;
+    padding-top:2px !important;
+    padding-bottom:2px !important;
+    line-height:1.15 !important;
+  }
+  #estimateContent table textarea {
+    min-height:40px !important;
+    height:40px !important;
+    padding:4px 6px !important;
+    line-height:16px !important;
+    resize:none !important;
+  }
+  #estimateContent table .homeowner-locked {
+    min-height:40px !important;
+    height:40px !important;
+    padding:4px 6px !important;
+    line-height:16px !important;
+    box-sizing:border-box !important;
+    overflow:hidden !important;
+  }
+  #estimateContent table td:nth-child(6) button {
+    min-height:30px !important;
+    height:30px !important;
+    padding-top:2px !important;
+    padding-bottom:2px !important;
+  }
   #estimateContent table td:nth-child(n+2) { vertical-align:middle !important; }
   .estimate-total-value { padding-right:2px !important; }
   #estimateContent table td:nth-child(6) button {
@@ -366,8 +409,8 @@ main>section:not(:first-child):hover{box-shadow:0 18px 48px rgba(15,23,42,.08)!i
 .planner-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:0 0 18px!important;padding:0!important;background:transparent!important;border:0!important;box-shadow:none!important}.planner-steps a{display:flex;align-items:center;gap:10px;padding:13px 14px;border:1px solid var(--tw-line);border-radius:16px;background:#fff;color:var(--tw-ink);text-decoration:none;font-size:12px;font-weight:800;box-shadow:0 8px 24px rgba(15,23,42,.04);transition:.2s ease}.planner-steps a:hover{transform:translateY(-2px);border-color:#9ca3af;box-shadow:0 12px 28px rgba(15,23,42,.08)}.planner-steps b{display:grid;place-items:center;width:27px;height:27px;border-radius:9px;background:#111827;color:#fff;font-size:11px;flex:0 0 27px}
 main>section:not(:first-child){scroll-margin-top:92px} main>section>div:first-child h3{letter-spacing:-.025em} main>section input,main>section select,main>section textarea{border-color:#dfe3e8!important;border-radius:14px!important;background:#fff!important;box-shadow:inset 0 1px 1px rgba(15,23,42,.02)!important;transition:border-color .18s ease,box-shadow .18s ease} main>section input:focus,main>section select:focus,main>section textarea:focus{border-color:#111827!important;box-shadow:0 0 0 4px rgba(17,24,39,.07)!important;outline:none!important}
 .room-card{border:1px solid #e5e7eb!important;border-radius:20px!important;background:linear-gradient(180deg,#fff,#fafbfc)!important;box-shadow:0 8px 25px rgba(15,23,42,.045)!important;padding:18px!important;transition:.22s ease!important}.room-card:hover{transform:translateY(-2px);border-color:#cbd5e1!important;box-shadow:0 15px 35px rgba(15,23,42,.08)!important}.room-card:before{content:"AREA";display:inline-flex;margin-bottom:12px;padding:5px 8px;border-radius:7px;background:#f1f5f9;color:#64748b;font-size:9px;font-weight:900;letter-spacing:.13em}#roomsContainer{counter-reset:area}#roomsContainer .room-card{counter-increment:area}#roomsContainer .room-card:before{content:"AREA " counter(area,decimal-leading-zero)}
-#customerSummary>div,.homeowner-summary-card{border:1px solid #e8ebef!important;border-radius:16px!important;background:#f8fafc!important;padding:15px!important}#quotationGenerator{background:linear-gradient(145deg,#fff,#f7f8fa)!important}.quotation-type-card,.contractor-quotation-choice{border-radius:18px!important;min-height:124px!important;box-shadow:0 7px 22px rgba(15,23,42,.04)!important}.quotation-type-card.is-selected,.contractor-quotation-choice.is-selected{border-color:#111827!important;box-shadow:0 0 0 2px rgba(17,24,39,.1),0 12px 28px rgba(15,23,42,.08)!important}.quotation-generate-btn,.contractor-generate-btn{border-radius:15px!important;min-height:54px!important;box-shadow:0 12px 25px rgba(17,24,39,.16)!important}#quotationDocument{border-radius:24px!important;box-shadow:0 22px 65px rgba(15,23,42,.12)!important}
-@media(max-width:767px){body{background-attachment:scroll!important}main{padding:14px!important;padding-bottom:105px!important}main>section{border-radius:20px!important;margin-bottom:14px!important}.planner-hero{min-height:300px!important;padding:23px!important;border-radius:22px!important;margin-bottom:12px!important;display:grid!important;grid-template-columns:1fr!important;grid-template-rows:auto auto auto auto!important;gap:0!important;align-items:start!important;column-gap:0!important}.planner-eyebrow{grid-column:1!important;grid-row:1!important;justify-self:start!important}.planner-hero h2{grid-column:1!important;grid-row:2!important;align-self:start!important}.planner-hero p{grid-column:1!important;grid-row:3!important;align-self:start!important}.planner-meta{grid-column:1!important;grid-row:4!important;align-self:start!important}.planner-hero h2{font-size:38px!important;margin-top:15px!important}.planner-hero p{font-size:14px!important}.planner-meta{gap:7px!important}.planner-meta span{font-size:10px!important;padding:7px 9px!important}.planner-steps{gap:6px;margin-bottom:14px!important}.planner-steps a{justify-content:center;padding:9px 5px;border-radius:13px;font-size:9px;gap:5px;flex-direction:column;text-align:center}.planner-steps b{width:23px;height:23px;border-radius:7px;font-size:9px;flex-basis:23px}.room-card{border-radius:17px!important;padding:15px!important}#quotationGenerator{padding:18px!important}}
+#customerSummary>div,.homeowner-summary-card{border:1px solid #e8ebef!important;border-radius:16px!important;background:#f8fafc!important;padding:15px!important}#quotationGenerator{background:linear-gradient(145deg,#fff,#f7f8fa)!important}.quotation-type-card,.contractor-quotation-choice{border-radius:14px!important;min-height:76px!important;box-shadow:0 7px 22px rgba(15,23,42,.04)!important}.quotation-type-card.is-selected,.contractor-quotation-choice.is-selected{border-color:#111827!important;box-shadow:0 0 0 2px rgba(17,24,39,.1),0 12px 28px rgba(15,23,42,.08)!important}.quotation-generate-btn,.contractor-generate-btn{border-radius:12px!important;min-height:46px!important;box-shadow:0 12px 25px rgba(17,24,39,.16)!important}#quotationDocument{border-radius:24px!important;box-shadow:0 22px 65px rgba(15,23,42,.12)!important}
+@media(max-width:767px){body{background-attachment:scroll!important}main{padding:14px!important;padding-bottom:105px!important}main>section{border-radius:20px!important;margin-bottom:14px!important}.planner-hero{min-height:300px!important;padding:23px!important;border-radius:22px!important;margin-bottom:12px!important;display:grid!important;grid-template-columns:1fr!important;grid-template-rows:auto auto auto auto!important;gap:0!important;align-items:start!important;column-gap:0!important}.planner-eyebrow{grid-column:1!important;grid-row:1!important;justify-self:start!important}.planner-hero h2{grid-column:1!important;grid-row:2!important;align-self:start!important}.planner-hero p{grid-column:1!important;grid-row:3!important;align-self:start!important}.planner-meta{grid-column:1!important;grid-row:4!important;align-self:start!important}.planner-hero h2{font-size:38px!important;margin-top:15px!important}.planner-hero p{font-size:14px!important}.planner-meta{gap:7px!important}.planner-meta span{font-size:10px!important;padding:7px 9px!important}.planner-steps{gap:6px;margin-bottom:14px!important}.planner-steps a{justify-content:center;padding:9px 5px;border-radius:13px;font-size:9px;gap:5px;flex-direction:column;text-align:center}.planner-steps b{width:23px;height:23px;border-radius:7px;font-size:9px;flex-basis:23px}.room-card{border-radius:17px!important;padding:15px!important}#quotationGenerator{padding:14px!important}}
 @media(max-width:380px){.planner-hero{padding:19px!important}.planner-hero h2{font-size:33px!important}.planner-steps a{font-size:8px}} @media(prefers-reduced-motion:reduce){.planner-steps a,.room-card,main>section{transition:none!important}.planner-steps a:hover,.room-card:hover{transform:none!important}}
 
 </style>
@@ -415,7 +458,7 @@ main>section:not(:first-child){scroll-margin-top:92px} main>section>div:first-ch
   <section class="planner-hero" data-planner-product-ui="planner-product-ui-v2"><span class="planner-eyebrow">TERAJU WORKS · RENOVATION</span><h2>Plan your renovation.</h2><p>Map the spaces you want to improve, price the works, and turn your renovation scope into a clear quotation.</p><div class="planner-meta"><span>01 · PLAN</span><span>02 · PRICE</span><span>03 · REVIEW</span><span>04 · QUOTE</span></div></section>
 
   <!-- Project Information -->
-  <section class="bg-white rounded-2xl shadow-sm p-6 mb-6">
+  <section class="bg-white rounded-2xl shadow-sm p-4 mb-4">
     <div class="flex justify-between items-center cursor-pointer" onclick="toggleProjectInfo()">
       <div class="min-w-0">
         <h3 class="font-bold text-lg">Project Information</h3>
@@ -423,8 +466,8 @@ main>section:not(:first-child){scroll-margin-top:92px} main>section>div:first-ch
       </div>
       <span id="projectArrow" class="text-gray-500 text-sm ml-4 flex-shrink-0">▲</span>
     </div>
-    <div id="projectInfo" class="mt-5">
-      <div class="contractor-only bg-gray-50 border rounded-xl p-4 mb-5">
+    <div id="projectInfo" class="mt-3">
+      <div class="contractor-only bg-gray-50 border rounded-xl p-3 mb-3">
         <div class="flex flex-wrap items-center justify-between gap-3">
           <div>
             <p class="text-xs uppercase tracking-wide text-gray-500">Contractor ID</p>
@@ -435,18 +478,18 @@ main>section:not(:first-child){scroll-margin-top:92px} main>section>div:first-ch
           </button>
         </div>
       </div>
-      <div class="grid md:grid-cols-2 gap-5">
+      <div class="grid md:grid-cols-2 gap-3">
         <div>
-          <label class="block text-sm font-medium mb-2">Customer Name</label>
+          <label class="block text-sm font-medium mb-1">Customer Name</label>
           <input id="customerName" type="text" placeholder="Optional"
-            class="w-full border rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-gray-300"
+            class="w-full border rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-gray-300"
             oninput="updateEstimate()">
         </div>
         <div>
-          <label class="block text-sm font-medium mb-2">Project Location</label>
+          <label class="block text-sm font-medium mb-1">Project Location</label>
           <input id="projectLocation" type="text" list="projectLocationSuggestions"
             placeholder="Start typing location..." autocomplete="off"
-            class="w-full border rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-gray-300"
+            class="w-full border rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-gray-300"
             oninput="updateEstimate()">
         </div>
       </div>
@@ -473,30 +516,30 @@ main>section:not(:first-child){scroll-margin-top:92px} main>section>div:first-ch
   </section>
 
   <!-- Areas -->
-  <section class="bg-white rounded-2xl shadow-sm p-6 mb-6">
-    <div class="flex justify-between items-center mb-5 gap-4">
+  <section class="bg-white rounded-2xl shadow-sm p-4 mb-4">
+    <div class="flex justify-between items-center mb-3 gap-3">
       <div class="min-w-0">
         <h3 class="font-bold text-lg">Rooms / Areas</h3>
         <p class="text-sm text-gray-500">Only select the area type and enter the sqft.</p>
       </div>
       <button id="addRoomAreaBtn" type="button" onclick="addRoom()"
-        class="no-print bg-black text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-800 flex-shrink-0">
+        class="no-print bg-black text-white px-3 py-2 rounded-lg text-sm font-medium hover:bg-gray-800 flex-shrink-0">
         + Add Room / Area
       </button>
     </div>
-    <div class="no-print bg-gray-50 border rounded-xl p-4 mb-5 text-sm text-gray-600">
+    <div class="no-print bg-gray-50 border rounded-xl p-3 mb-3 text-sm text-gray-600">
       <strong class="text-gray-800">Simple input:</strong>
       Select the room type and enter the area. Quantities such as downlights, fans and other standard items will be calculated automatically.
     </div>
-    <div id="roomsContainer" class="space-y-4"></div>
-    <div id="roomsEmptyState" class="border rounded-xl bg-gray-50 p-5 text-center">
-      <div class="mx-auto mb-3 grid place-items-center w-12 h-12 rounded-full bg-white border">
+    <div id="roomsContainer" class="space-y-2"></div>
+    <div id="roomsEmptyState" class="border rounded-xl bg-gray-50 p-3 text-center">
+      <div class="mx-auto mb-2 grid place-items-center w-10 h-10 rounded-full bg-white border">
         <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"></path><path d="M5.5 9.5V21h13V9.5"></path><path d="M9.5 21v-6h5v6"></path></svg>
       </div>
       <p class="font-semibold text-sm">No rooms added yet.</p>
       <p class="text-xs text-gray-500 mt-1">Click the button above to add rooms/areas and start planning your renovation.</p>
     </div>
-    <div id="roomsAddButtonAnchor" class="no-print mt-4"></div>
+    <div id="roomsAddButtonAnchor" class="no-print mt-2"></div>
   </section>
 
   <!-- Contractor Rate Schedule -->
@@ -557,11 +600,11 @@ main>section:not(:first-child){scroll-margin-top:92px} main>section>div:first-ch
   </section>
 
   <!-- Quotation Generator -->
-  <section id="quotationGenerator" class="no-print bg-white rounded-2xl shadow-sm p-6 mt-6">
-  <div class="mb-5">
+  <section id="quotationGenerator" class="no-print bg-white rounded-2xl shadow-sm p-4 mt-4">
+  <div class="mb-3">
     <p class="text-xs uppercase tracking-wider text-gray-500">Quotation</p>
-    <h3 class="font-bold text-xl mt-1">Choose Quotation Type</h3>
-    <p class="text-sm text-gray-500 mt-2">Select the quotation format, then generate one quotation using the final estimate values above.</p>
+    <h3 class="font-bold text-xl mt-0">Choose Quotation Type</h3>
+    <p class="text-sm text-gray-500 mt-1">Select the quotation format, then generate one quotation using the final estimate values above.</p>
   </div>
   <div class="quotation-type-grid">
     <label class="quotation-type-card is-selected">
@@ -608,12 +651,12 @@ main>section:not(:first-child){scroll-margin-top:92px} main>section>div:first-ch
 </section>
 
   <!-- CTA -->
-  <section class="no-print bg-gray-900 text-white rounded-2xl p-8 mt-8 text-center">
-    <h3 class="text-2xl font-bold mb-3">Need an Official Quotation?</h3>
-    <p class="text-gray-300 max-w-2xl mx-auto mb-6">
+  <section class="no-print bg-gray-900 text-white rounded-2xl p-5 mt-5 text-center">
+    <h3 class="text-2xl font-bold mb-2">Need an Official Quotation?</h3>
+    <p class="text-gray-300 max-w-2xl mx-auto mb-4">
       Let Teraju Ciptabina inspect your property and prepare a detailed quotation based on the actual site condition and requirements.
     </p>
-    <a href="../index.html#contact" class="inline-block bg-white text-black px-6 py-3 rounded-lg font-semibold hover:bg-gray-200">
+    <a href="../index.html#contact" class="inline-block bg-white text-black px-5 py-2.5 rounded-lg font-semibold hover:bg-gray-200">
       Request Site Visit
     </a>
   </section>
@@ -738,28 +781,28 @@ function addRoomBase(defaultType = "other", defaultArea = "") {
   const container = document.getElementById("roomsContainer");
   const div = document.createElement("div");
   div.id = id;
-  div.className = "room-card border rounded-xl p-4 bg-gray-50";
+  div.className = "room-card border rounded-xl p-3 bg-gray-50";
 
   div.innerHTML = `
-    <div class="grid md:grid-cols-[1fr_1fr_1fr_auto] gap-4 items-end">
+    <div class="grid md:grid-cols-[1fr_1fr_1fr_auto] gap-2 items-end">
       <div>
         <label class="block text-sm font-medium mb-2">Room Type</label>
-        <select class="room-type w-full border rounded-lg px-4 py-3 bg-white">${roomOptions()}</select>
+        <select class="room-type w-full border rounded-lg px-3 py-2 bg-white">${roomOptions()}</select>
       </div>
 <div>
         <label class="block text-sm font-medium mb-2">Room / Area Name</label>
         <input type="text" value="${escapeHtml(customRoomLabels.get(id) || (defaultType === "other" ? "" : (ROOM_TYPES[defaultType] || "Area")))}"
-          placeholder="e.g. Living Area" class="room-name w-full border rounded-lg px-4 py-3 bg-white">
+          placeholder="e.g. Living Area" class="room-name w-full border rounded-lg px-3 py-2 bg-white">
       </div>
       <div>
         <label class="block text-sm font-medium mb-2">Area (sqft)</label>
         <input type="number" min="1" step="1" value="${escapeHtml(defaultArea)}"
-          placeholder="e.g. 200" class="room-area w-full border rounded-lg px-4 py-3 bg-white">
+          placeholder="e.g. 200" class="room-area w-full border rounded-lg px-3 py-2 bg-white">
       </div>
       <div class="no-print flex gap-2">
-        <button type="button" onclick="moveRoom('${id}', -1)" title="Move up" class="border rounded-lg px-3 py-3 hover:bg-gray-100">▲</button>
-        <button type="button" onclick="moveRoom('${id}', 1)" title="Move down" class="border rounded-lg px-3 py-3 hover:bg-gray-100">▼</button>
-        <button type="button" onclick="removeRoom('${id}')" class="border border-red-300 text-red-600 rounded-lg px-4 py-3 hover:bg-red-50">Remove</button>
+        <button type="button" onclick="moveRoom('${id}', -1)" title="Move up" class="border rounded-lg px-2 py-2 hover:bg-gray-100">▲</button>
+        <button type="button" onclick="moveRoom('${id}', 1)" title="Move down" class="border rounded-lg px-2 py-2 hover:bg-gray-100">▼</button>
+        <button type="button" onclick="removeRoom('${id}')" class="border border-red-300 text-red-600 rounded-lg px-3 py-2 hover:bg-red-50">Remove</button>
       </div>
     </div>
     <div class="mt-4 border-t pt-4">
@@ -1097,12 +1140,12 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
         <colgroup><col style="width:31%"><col style="width:7%"><col style="width:12%"><col style="width:15%"><col style="width:20%"><col style="width:15%"></colgroup>
         <thead>
           <tr class="border-b-2 text-left">
-            <th class="py-3 px-2">Description</th>
-            <th class="py-3 px-2">Unit</th>
-            <th class="py-3 px-2 text-right">Quantity</th>
-            <th class="py-3 px-2 text-right">Rate (RM)</th>
-            <th class="py-3 px-2 text-right">Amount (RM)</th>
-            <th class="no-print py-3 px-2 text-center">Action</th>
+            <th class="py-1 px-2">Description</th>
+            <th class="py-1 px-2">Unit</th>
+            <th class="py-1 px-2 text-right">Quantity</th>
+            <th class="py-1 px-2 text-right">Rate (RM)</th>
+            <th class="py-1 px-2 text-right">Amount (RM)</th>
+            <th class="no-print py-1 px-2 text-center">Action</th>
           </tr>
         </thead>
         <tbody>`;
@@ -1111,51 +1154,51 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
     const prelimQty = customQuantities.has("project-preliminaries") ? normalizeQuantity(customQuantities.get("project-preliminaries")) : 1;
     const prelimRate = customRates.has("project-preliminaries") ? normalizeRate(customRates.get("project-preliminaries")) : RATES.preliminaries;
     html += `
-      <tr class="bg-gray-100 border-b"><td colspan="6" class="py-3 px-2 font-bold">Project / Preliminaries</td></tr>
+      <tr class="bg-gray-100 border-b"><td colspan="6" class="py-1 px-2 font-bold">Project / Preliminaries</td></tr>
       <tr class="border-b">
-        <td class="py-3 px-2 align-top">
+        <td class="py-1 px-2 align-top">
           <textarea rows="2" onchange="editItemDescription('project-preliminaries', this.value)"
-            class="contractor-only no-print w-full min-w-[280px] border rounded-lg px-3 py-2 bg-white leading-5 resize-y">${escapeHtml(customDescriptions.has("project-preliminaries") ? customDescriptions.get("project-preliminaries") : "Submission of Renovation Permit Application and Engineer's Drawings to the Local Authority")}</textarea>
-          <div class="homeowner-locked no-print p-2 rounded leading-5">${escapeHtml(customDescriptions.has("project-preliminaries") ? customDescriptions.get("project-preliminaries") : "Submission of Renovation Permit Application and Engineer's Drawings to the Local Authority")}</div>
+            class="contractor-only no-print w-full min-w-[280px] border rounded-lg px-2 py-1 bg-white leading-4 resize-none">${escapeHtml(customDescriptions.has("project-preliminaries") ? customDescriptions.get("project-preliminaries") : "Submission of Renovation Permit Application and Engineer's Drawings to the Local Authority")}</textarea>
+          <div class="homeowner-locked no-print p-1 rounded leading-4">${escapeHtml(customDescriptions.has("project-preliminaries") ? customDescriptions.get("project-preliminaries") : "Submission of Renovation Permit Application and Engineer's Drawings to the Local Authority")}</div>
           <div class="hidden print:block leading-6">${escapeHtml(customDescriptions.has("project-preliminaries") ? customDescriptions.get("project-preliminaries") : "Submission of Renovation Permit Application and Engineer's Drawings to the Local Authority")}</div>
         </td>
-        <td class="py-3 px-2">ls</td>
-        <td class="py-3 px-2 text-right">
+        <td class="py-1 px-2">ls</td>
+        <td class="py-1 px-2 text-right">
           <input type="number" min="0" step="1" value="${formatQty(prelimQty)}"
             onchange="editItemQuantity('project-preliminaries', this.value)"
-            class="contractor-only no-print w-24 border rounded-lg px-2 py-1.5 text-right bg-white">
-          <span class="homeowner-locked no-print inline-block px-2 py-1.5 rounded text-sm">${formatQty(prelimQty)}</span>
+            class="contractor-only no-print w-24 border rounded-lg px-1 py-1 text-right bg-white">
+          <span class="homeowner-locked no-print inline-block px-1 py-1 rounded text-sm">${formatQty(prelimQty)}</span>
           <span class="hidden print:inline">${formatQty(prelimQty)}</span>
         </td>
-        <td class="py-3 px-2 text-right">
+        <td class="py-1 px-2 text-right">
           <input type="number" min="0" step="0.01" value="${Number(prelimRate).toFixed(2)}"
             onchange="editItemRate('project-preliminaries', this.value)"
-            class="contractor-only no-print w-28 border rounded-lg px-2 py-1.5 text-right bg-white">
-          <span class="homeowner-locked no-print inline-block px-2 py-1.5 rounded text-sm">${money(prelimRate, 2)}</span>
+            class="contractor-only no-print w-28 border rounded-lg px-1 py-1 text-right bg-white">
+          <span class="homeowner-locked no-print inline-block px-1 py-1 rounded text-sm">${money(prelimRate, 2)}</span>
           <span class="hidden print:inline">${money(prelimRate, 2)}</span>
         </td>
-        <td class="py-3 px-2 text-right font-medium">${money(prelimQty * prelimRate, 2)}</td>
-        <td class="no-print py-3 px-2 text-center">
+        <td class="py-1 px-2 text-right font-medium">${money(prelimQty * prelimRate, 2)}</td>
+        <td class="no-print py-1 px-2 text-center">
           <button type="button" onclick="excludeItem('project-preliminaries')"
-            class="text-red-600 text-xs border border-red-200 rounded px-3 py-1.5 hover:bg-red-50">Delete</button>
+            class="text-red-600 text-xs border border-red-200 rounded px-2 py-1 hover:bg-red-50">Delete</button>
         </td>
       </tr>
-      <tr class="no-print"><td colspan="6" class="py-2 px-2"><div class="contractor-only" data-manual-anchor="__prelim__"><button type="button" onclick="addManualItemPrompt('__prelim__')" class="border rounded-lg px-3 py-2 text-xs font-semibold hover:bg-gray-50">＋ Add Item</button></div></td></tr>`;
+      <tr class="no-print"><td colspan="6" class="py-1 px-2"><div class="contractor-only" data-manual-anchor="__prelim__"><button type="button" onclick="addManualItemPrompt('__prelim__')" class="border rounded-lg px-2 py-1 text-xs font-semibold hover:bg-gray-50">＋ Add Item</button></div></td></tr>`;
   }
 
   const prelimManual = manualItems.get("__prelim__") || [];
-  prelimManual.forEach(item => { html += `<tr class="border-b"><td class="py-3 px-2 align-top">${IS_CONTRACTOR ? `<textarea rows="2" onchange="editItemDescription(\'${item.id}\', this.value)" class="w-full border rounded-lg px-3 py-2 bg-white leading-5 resize-y">${escapeHtml(item.description)}</textarea>` : `<div class="homeowner-locked p-2 rounded leading-5">${escapeHtml(item.description)}</div>`}</td><td class="py-3 px-2">${escapeHtml(item.unit)}</td><td class="py-3 px-2 text-right"><input type="number" min="0" step="1" value="${formatQty(item.qty)}" onchange="editItemQuantity('${item.id}', this.value)" class="contractor-only no-print w-24 border rounded-lg px-2 py-1.5 text-right bg-white"><span class="homeowner-locked no-print inline-block px-2 py-1.5 rounded text-sm">${formatQty(item.qty)}</span></td><td class="py-3 px-2 text-right"><input type="number" min="0" step="0.01" value="${normalizeRate(item.rate).toFixed(2)}" onchange="editItemRate('${item.id}', this.value)" class="contractor-only no-print w-28 border rounded-lg px-2 py-1.5 text-right bg-white"><span class="homeowner-locked no-print inline-block px-2 py-1.5 rounded text-sm">${money(item.rate, 2)}</span></td><td class="py-3 px-2 text-right font-medium">${money(item.amount, 2)}</td><td class="no-print py-3 px-2 text-center"><button type="button" onclick="removeManualItem('__prelim__','${item.id}')" class="text-red-600 text-xs border border-red-200 rounded px-3 py-1.5">Delete</button></td></tr>`; });
+  prelimManual.forEach(item => { html += `<tr class="border-b"><td class="py-1 px-2 align-top">${IS_CONTRACTOR ? `<textarea rows="2" onchange="editItemDescription(\'${item.id}\', this.value)" class="w-full border rounded-lg px-2 py-1 bg-white leading-4 resize-none">${escapeHtml(item.description)}</textarea>` : `<div class="homeowner-locked p-1 rounded leading-4">${escapeHtml(item.description)}</div>`}</td><td class="py-1 px-2">${escapeHtml(item.unit)}</td><td class="py-1 px-2 text-right"><input type="number" min="0" step="1" value="${formatQty(item.qty)}" onchange="editItemQuantity('${item.id}', this.value)" class="contractor-only no-print w-24 border rounded-lg px-1 py-1 text-right bg-white"><span class="homeowner-locked no-print inline-block px-1 py-1 rounded text-sm">${formatQty(item.qty)}</span></td><td class="py-1 px-2 text-right"><input type="number" min="0" step="0.01" value="${normalizeRate(item.rate).toFixed(2)}" onchange="editItemRate('${item.id}', this.value)" class="contractor-only no-print w-28 border rounded-lg px-1 py-1 text-right bg-white"><span class="homeowner-locked no-print inline-block px-1 py-1 rounded text-sm">${money(item.rate, 2)}</span></td><td class="py-1 px-2 text-right font-medium">${money(item.amount, 2)}</td><td class="no-print py-1 px-2 text-center"><button type="button" onclick="removeManualItem('__prelim__','${item.id}')" class="text-red-600 text-xs border border-red-200 rounded px-3 py-1.5">Delete</button></td></tr>`; });
 
   roomGroups.forEach(room => {
     const roomItems = itemsByRoom[room.roomId] || [];
     if (room.area <= 0) return;
     html += `
       <tr class="bg-gray-100 border-b">
-        <td colspan="6" class="py-3 px-2">
-          <div class="flex flex-wrap items-center gap-3">
+        <td colspan="6" class="py-1 px-2">
+          <div class="flex flex-wrap items-center gap-2">
             <label class="text-xs font-semibold uppercase tracking-wide text-gray-500">Room / Area Name</label>
             <input type="text" value="${escapeHtml(room.label)}" onchange="editRoomLabel('${room.roomId}', this.value)"
-              class="no-print flex-1 min-w-[220px] border rounded-lg px-3 py-2 bg-white font-semibold">
+              class="no-print flex-1 min-w-[220px] border rounded-lg px-2 py-1 bg-white font-semibold">
             <span class="font-normal text-gray-500">${formatQty(room.area)} sqft</span>
           </div>
           <div class="hidden print:block font-bold">
@@ -1166,37 +1209,37 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
     roomItems.forEach(item => {
       html += `
         <tr class="border-b hover:bg-gray-50">
-          <td class="py-3 px-2 align-top">
+          <td class="py-1 px-2 align-top">
             <textarea rows="2" onchange="editItemDescription('${item.id}', this.value)"
-              class="contractor-only no-print w-full min-w-[280px] border rounded-lg px-3 py-2 bg-white leading-5 resize-y">${escapeHtml(item.description)}</textarea>
-            <div class="homeowner-locked no-print p-2 rounded leading-5">${escapeHtml(item.description)}</div>
+              class="contractor-only no-print w-full min-w-[280px] border rounded-lg px-2 py-1 bg-white leading-4 resize-none">${escapeHtml(item.description)}</textarea>
+            <div class="homeowner-locked no-print p-1 rounded leading-4">${escapeHtml(item.description)}</div>
             <div class="hidden print:block leading-6">${escapeHtml(item.description)}</div>
           </td>
-          <td class="py-3 px-2">${escapeHtml(item.unit)}</td>
-          <td class="py-3 px-2 text-right">
+          <td class="py-1 px-2">${escapeHtml(item.unit)}</td>
+          <td class="py-1 px-2 text-right">
             <input type="number" min="0" step="1" value="${formatQty(item.qty)}" onchange="editItemQuantity('${item.id}', this.value)"
-              class="contractor-only no-print w-24 border rounded-lg px-2 py-1.5 text-right bg-white">
-            <span class="homeowner-locked no-print inline-block px-2 py-1.5 rounded text-sm">${formatQty(item.qty)}</span>
+              class="contractor-only no-print w-24 border rounded-lg px-1 py-1 text-right bg-white">
+            <span class="homeowner-locked no-print inline-block px-1 py-1 rounded text-sm">${formatQty(item.qty)}</span>
             <span class="hidden print:inline">${formatQty(item.qty)}</span>
           </td>
-          <td class="py-3 px-2 text-right">
+          <td class="py-1 px-2 text-right">
             <input type="number" min="0" step="0.01" value="${Number(item.rate).toFixed(2)}" onchange="editItemRate('${item.id}', this.value)"
-              class="contractor-only no-print w-28 border rounded-lg px-2 py-1.5 text-right bg-white">
-            <span class="homeowner-locked no-print inline-block px-2 py-1.5 rounded text-sm">${money(item.rate, 2)}</span>
+              class="contractor-only no-print w-28 border rounded-lg px-1 py-1 text-right bg-white">
+            <span class="homeowner-locked no-print inline-block px-1 py-1 rounded text-sm">${money(item.rate, 2)}</span>
             <span class="hidden print:inline">${money(item.rate, 2)}</span>
           </td>
-          <td class="py-3 px-2 text-right font-medium">${money(item.amount, 2)}</td>
-          <td class="no-print py-3 px-2 text-center">
+          <td class="py-1 px-2 text-right font-medium">${money(item.amount, 2)}</td>
+          <td class="no-print py-1 px-2 text-center">
             <button type="button" onclick="${String(item.id).startsWith("manual-") ? `removeManualItem('${item.roomId}','${item.id}')` : `excludeItem('${item.id}')`}"
-              class="text-red-600 text-xs border border-red-200 rounded px-3 py-1.5 hover:bg-red-50">Delete</button>
+              class="text-red-600 text-xs border border-red-200 rounded px-2 py-1 hover:bg-red-50">Delete</button>
           </td>
         </tr>`;
     });
-    html += `<tr class="no-print"><td colspan="6" class="py-2 px-2"><div class="contractor-only" data-manual-anchor="${room.roomId}"><button type="button" onclick="addManualItemPrompt('${room.roomId}')" class="border rounded-lg px-3 py-2 text-xs font-semibold hover:bg-gray-50">＋ Add Item</button></div></td></tr>`;
+    html += `<tr class="no-print"><td colspan="6" class="py-1 px-2"><div class="contractor-only" data-manual-anchor="${room.roomId}"><button type="button" onclick="addManualItemPrompt('${room.roomId}')" class="border rounded-lg px-2 py-1 text-xs font-semibold hover:bg-gray-50">＋ Add Item</button></div></td></tr>`;
     html += `
       <tr class="border-b">
-        <td colspan="4" class="py-3 px-2 text-right font-semibold">${escapeHtml(room.label)} Subtotal</td>
-        <td class="py-3 px-2 text-right font-bold">${money(roomSubtotals[room.roomId] || 0, 2)}</td>
+        <td colspan="4" class="py-1 px-2 text-right font-semibold">${escapeHtml(room.label)} Subtotal</td>
+        <td class="py-1 px-2 text-right font-bold">${money(roomSubtotals[room.roomId] || 0, 2)}</td>
         <td class="no-print"></td>
       </tr>`;
   });
@@ -1597,7 +1640,7 @@ function generateQuotationConfirmed(type) {
         <p class="font-semibold">${formatQty(totalBuiltArea)} sqft</p>
       </div>
     </div>
-    <div class="mb-5">
+    <div class="mb-3">
       <p class="text-sm text-gray-600">
         Renovation works as described below. Final quotation is subject to site inspection,
         approved drawings, actual site conditions, specifications, material selection and confirmation of final scope of works.
