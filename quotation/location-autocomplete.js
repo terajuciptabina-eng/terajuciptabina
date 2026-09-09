@@ -12,6 +12,14 @@
   document.getElementById('projectLocationSuggestions')?.remove();
 })();
 
+// State-first quotation flow. This is shared by Build and Renovation Planner.
+(function(){
+  const script=document.createElement('script');
+  script.src='state-rate-gate.js?v='+Date.now();
+  script.async=false;
+  document.head.appendChild(script);
+})();
+
 // Shared quotation document engine bootstrap. This is deliberately external to the planner bases.
 (function(){
   const script=document.createElement('script');
