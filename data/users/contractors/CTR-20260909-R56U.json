@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "contractor",
+  "contractorId": "CTR-20260909-R56U",
+  "profile": {
+    "name": "Reeza Construction",
+    "email": "terajuciptabina@gmail.com",
+    "phone": "15616"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-09-09T17:31:45.952Z",
+  "updatedAt": "2026-09-09T17:31:45.952Z"
+}
