@@ -1,0 +1,22 @@
+{
+  "schemaVersion":"1.0",
+  "source":"data/rates/default.json",
+  "states":{
+    "johor":{"name":"Johor","rateSetId":"johor","source":"johor.json"},
+    "kedah":{"name":"Kedah","rateSetId":"kedah","source":"kedah.json"},
+    "kelantan":{"name":"Kelantan","rateSetId":"kelantan","source":"kelantan.json"},
+    "melaka":{"name":"Melaka","rateSetId":"melaka","source":"melaka.json"},
+    "negeri-sembilan":{"name":"Negeri Sembilan","rateSetId":"negeri-sembilan","source":"default.json"},
+    "pahang":{"name":"Pahang","rateSetId":"pahang","source":"default.json"},
+    "perak":{"name":"Perak","rateSetId":"perak","source":"default.json"},
+    "perlis":{"name":"Perlis","rateSetId":"perlis","source":"default.json"},
+    "pulau-pinang":{"name":"Pulau Pinang","rateSetId":"pulau-pinang","source":"default.json"},
+    "sabah":{"name":"Sabah","rateSetId":"sabah","source":"default.json"},
+    "sarawak":{"name":"Sarawak","rateSetId":"sarawak","source":"default.json"},
+    "selangor":{"name":"Selangor","rateSetId":"selangor","source":"default.json"},
+    "terengganu":{"name":"Terengganu","rateSetId":"terengganu","source":"default.json"},
+    "kuala-lumpur":{"name":"Kuala Lumpur","rateSetId":"kuala-lumpur","source":"default.json"},
+    "putrajaya":{"name":"Putrajaya","rateSetId":"putrajaya","source":"default.json"},
+    "labuan":{"name":"Labuan","rateSetId":"labuan","source":"default.json"}
+  }
+}
