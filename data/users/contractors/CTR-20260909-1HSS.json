@@ -600,35 +600,71 @@
         "state": "final",
         "quotationType": "detail",
         "client": {
-          "name": "lembah bayu konsortium"
+          "name": "Arron Reeza"
         },
         "project": {
-          "location": "Puchong, Selangor",
+          "location": "Pos Malaysia Bandar Kinrara, Bandar Kinrara 5A, Selangor, Malaysia, 47180",
           "builtUpArea": 0
         },
-        "total": 44850,
+        "total": 285220,
         "plannerState": {
-          "customerName": "lembah bayu konsortium",
-          "projectLocation": "Puchong, Selangor",
+          "customerName": "Arron Reeza",
+          "projectLocation": "Pos Malaysia Bandar Kinrara, Bandar Kinrara 5A, Selangor, Malaysia, 47180",
           "builtUpArea": "",
           "rooms": [
             {
               "id": "room-1",
               "type": "living",
               "name": "Living / Dining",
-              "area": "200"
+              "area": "2345"
             },
             {
               "id": "room-2",
-              "type": "dryKitchen",
-              "name": "Dry Kitchen",
-              "area": "300"
+              "type": "bedroom",
+              "name": "Bedroom",
+              "area": "324"
             },
             {
               "id": "room-3",
+              "type": "dryKitchen",
+              "name": "Dry Kitchen",
+              "area": "120"
+            },
+            {
+              "id": "room-4",
+              "type": "wetKitchen",
+              "name": "Wet Kitchen",
+              "area": "762"
+            },
+            {
+              "id": "room-5",
+              "type": "bathroom",
+              "name": "Bathroom",
+              "area": "48"
+            },
+            {
+              "id": "room-6",
+              "type": "carPorch",
+              "name": "Car Porch",
+              "area": "135"
+            },
+            {
+              "id": "room-7",
               "type": "balcony",
               "name": "Balcony",
-              "area": "150"
+              "area": "90"
+            },
+            {
+              "id": "room-8",
+              "type": "extensionKitchen",
+              "name": "New Extension – Kitchen",
+              "area": "200"
+            },
+            {
+              "id": "room-9",
+              "type": "extensionToilet",
+              "name": "New Extension – Toilet",
+              "area": "48"
             }
           ],
           "rates": {
@@ -667,7 +703,8 @@
           "projectId": "PRJ-REN-MTU4YDOD-6U2G0"
         },
         "createdAt": "2026-09-09T14:48:05.747Z",
-        "updatedAt": "2026-09-09T14:48:15.091Z"
+        "updatedAt": "2026-09-09T14:51:59.587Z",
+        "estimateNumber": "EST-REN-003"
       },
       {
         "schemaVersion": 1,
@@ -822,7 +859,7 @@
     ]
   },
   "createdAt": "2026-09-09T12:47:34.713Z",
-  "updatedAt": "2026-09-09T14:51:53.159Z",
+  "updatedAt": "2026-09-09T14:51:59.587Z",
   "quotationRunningNumber": {
     "renovation": 5
   },
