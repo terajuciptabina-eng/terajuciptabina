@@ -134,20 +134,14 @@
         },
         "project": {
           "location": "Kuala Lumpur",
-          "builtUpArea": 640
+          "builtUpArea": 300
         },
-        "total": 127296.23,
+        "total": 74592.07,
         "plannerState": {
           "customerName": "Alia Rakman123",
           "projectLocation": "Kuala Lumpur",
-          "builtUpArea": "640",
+          "builtUpArea": "300",
           "rooms": [
-            {
-              "id": "room-1",
-              "type": "kitchen",
-              "name": "Living / Family",
-              "area": "340"
-            },
             {
               "id": "room-2",
               "type": "dining",
@@ -212,10 +206,6 @@
           "customDescriptions": [],
           "customRoomLabels": [
             [
-              "room-1",
-              "Living / Family"
-            ],
-            [
               "room-2",
               "Dining"
             ]
@@ -227,7 +217,7 @@
           "projectId": "PRJ-BLD-MTU4VS1T-Y91LG"
         },
         "createdAt": "2026-09-09T13:28:58.851Z",
-        "updatedAt": "2026-09-09T15:12:46.935Z",
+        "updatedAt": "2026-09-09T15:13:09.024Z",
         "estimateNumber": "EST-BLD-001"
       },
       {
@@ -523,7 +513,7 @@
     ]
   },
   "createdAt": "2026-09-09T13:15:32.117Z",
-  "updatedAt": "2026-09-09T15:13:06.393Z",
+  "updatedAt": "2026-09-09T15:13:09.024Z",
   "quotationRunningNumber": {
     "build": 4
   },
