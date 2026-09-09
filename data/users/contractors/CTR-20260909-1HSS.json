@@ -936,36 +936,18 @@
         "state": "final",
         "quotationType": "detail",
         "client": {
-          "name": "Bella"
+          "name": "Atikah Rakman"
         },
         "project": {
-          "location": "Petaling Jaya, Selangor",
+          "location": "Kajang, Selangor",
           "builtUpArea": 0
         },
-        "total": 238546,
+        "total": 207614,
         "plannerState": {
-          "customerName": "Bella",
-          "projectLocation": "Petaling Jaya, Selangor",
+          "customerName": "Atikah Rakman",
+          "projectLocation": "Kajang, Selangor",
           "builtUpArea": "",
           "rooms": [
-            {
-              "id": "room-1",
-              "type": "living",
-              "name": "Living / Dining",
-              "area": "234"
-            },
-            {
-              "id": "room-2",
-              "type": "bedroom",
-              "name": "Bedroom",
-              "area": "453"
-            },
-            {
-              "id": "room-3",
-              "type": "dryKitchen",
-              "name": "Dry Kitchen",
-              "area": "120"
-            },
             {
               "id": "room-4",
               "type": "wetKitchen",
@@ -1039,7 +1021,7 @@
           "projectId": "PRJ-REN-MTU4YDOD-6U2G0"
         },
         "createdAt": "2026-09-09T14:48:05.747Z",
-        "updatedAt": "2026-09-09T14:59:12.731Z",
+        "updatedAt": "2026-09-09T15:00:19.601Z",
         "estimateNumber": "EST-REN-003"
       },
       {
@@ -1195,7 +1177,7 @@
     ]
   },
   "createdAt": "2026-09-09T12:47:34.713Z",
-  "updatedAt": "2026-09-09T15:00:12.925Z",
+  "updatedAt": "2026-09-09T15:00:19.601Z",
   "quotationRunningNumber": {
     "renovation": 8
   },
