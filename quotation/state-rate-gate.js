@@ -1,0 +1,68 @@
+/* TERAJU state-first quotation flow.
+   The rate master is already partitioned by Malaysian state.
+   For now every state resolves to the current Default Rate figures.
+   The selected state is persisted so future state-specific rate sets can be swapped
+   without changing the planner data model.
+*/
+(function(){
+  'use strict';
+
+  const STATES=[
+    ['johor','Johor'],['kedah','Kedah'],['kelantan','Kelantan'],['melaka','Melaka'],
+    ['negeri-sembilan','Negeri Sembilan'],['pahang','Pahang'],['perak','Perak'],['perlis','Perlis'],
+    ['pulau-pinang','Pulau Pinang'],['sabah','Sabah'],['sarawak','Sarawak'],['selangor','Selangor'],
+    ['terengganu','Terengganu'],['kuala-lumpur','Kuala Lumpur'],['putrajaya','Putrajaya'],['labuan','Labuan']
+  ];
+  const STORAGE_KEY='teraju.planner.state.v1';
+
+  function esc(v){return String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
+  function selected(){try{return String(localStorage.getItem(STORAGE_KEY)||'').trim()}catch(e){return ''}}
+  function setSelected(v){try{localStorage.setItem(STORAGE_KEY,v)}catch(e){};window.TERAJU_SELECTED_STATE=v;}
+
+  function install(){
+    const locationInput=document.getElementById('projectLocation');
+    if(!locationInput || document.getElementById('projectState')) return;
+
+    const field=locationInput.closest('div');
+    if(!field || !field.parentElement) return;
+    const wrap=document.createElement('div');
+    wrap.innerHTML='<label for="projectState" class="block text-sm font-medium mb-2">State / Negeri <span class="text-red-600">*</span></label>'+
+      '<select id="projectState" required class="w-full border rounded-lg px-4 py-3 bg-white">'+
+      '<option value="">Select state / negeri</option>'+STATES.map(s=>`<option value="${s[0]}">${esc(s[1])}</option>`).join('')+'</select>'+
+      '<p class="text-xs text-gray-500 mt-1">Select the project state before entering the quotation details.</p>';
+    const stateField=wrap.firstElementChild;
+    field.parentElement.insertBefore(stateField,field);
+
+    const select=document.getElementById('projectState');
+    const saved=selected();
+    if(saved && STATES.some(s=>s[0]===saved)) select.value=saved;
+
+    const controls=[...document.querySelectorAll('main input, main select, main textarea, main button')].filter(el=>el!==select);
+    const lock=document.createElement('div');
+    lock.id='stateFirstOverlay';
+    lock.className='no-print fixed inset-0 z-[9000] hidden items-center justify-center p-5 bg-black/20 backdrop-blur-[1px]';
+    lock.innerHTML='<div class="w-full max-w-md rounded-2xl bg-white p-6 text-center shadow-2xl border"><div class="text-3xl mb-3">📍</div><h3 class="text-xl font-bold">Select Project State First</h3><p class="text-sm text-gray-600 mt-2">Choose the state / negeri where this project is located. The quotation will use that state\'s rate set.</p><button type="button" id="stateFirstButton" class="mt-5 w-full bg-black text-white px-5 py-3 rounded-xl font-semibold">Choose State</button></div>';
+    document.body.appendChild(lock);
+
+    function apply(){
+      const ok=!!select.value;
+      controls.forEach(el=>{el.disabled=!ok;el.setAttribute('aria-disabled',String(!ok))});
+      lock.classList.toggle('hidden',ok);
+      lock.classList.toggle('flex',!ok);
+      document.body.classList.toggle('state-selected',ok);
+      if(ok){setSelected(select.value);locationInput.removeAttribute('disabled');window.TERAJU_SELECTED_STATE=select.value;}
+    }
+    select.addEventListener('change',function(){
+      if(!select.value){apply();return}
+      setSelected(select.value);apply();
+      try{window.dispatchEvent(new CustomEvent('teraju:statechange',{detail:{state:select.value}}))}catch(e){}
+    });
+    document.getElementById('stateFirstButton')?.addEventListener('click',()=>{
+      lock.classList.add('hidden');lock.classList.remove('flex');select.focus();select.scrollIntoView({behavior:'smooth',block:'center'});
+    });
+    apply();
+  }
+
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',install,{once:true});
+  else install();
+})();
