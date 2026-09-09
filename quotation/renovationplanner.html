@@ -606,7 +606,7 @@ const ROOM_TYPES = {
   living: "Living / Dining", bedroom: "Bedroom", dryKitchen: "Dry Kitchen",
   wetKitchen: "Wet Kitchen", bathroom: "Bathroom", carPorch: "Car Porch",
   balcony: "Balcony", extensionKitchen: "New Extension – Kitchen",
-  extensionToilet: "New Extension – Toilet"
+  extensionToilet: "New Extension – Toilet", other: "Other"
 };
 
 const OPTIONAL_SCOPES = [
@@ -702,7 +702,7 @@ function optionalScopeHtml() {
   }).join("");
 }
 
-function addRoomBase(defaultType = "living", defaultArea = "") {
+function addRoomBase(defaultType = "other", defaultArea = "") {
   roomCounter++;
   const id = "room-" + roomCounter;
   const container = document.getElementById("roomsContainer");
@@ -718,7 +718,7 @@ function addRoomBase(defaultType = "living", defaultArea = "") {
       </div>
 <div>
         <label class="block text-sm font-medium mb-2">Room / Area Name</label>
-        <input type="text" value="${escapeHtml(customRoomLabels.get(id) || ROOM_TYPES[defaultType] || "Area")}"
+        <input type="text" value="${escapeHtml(customRoomLabels.get(id) || (defaultType === "other" ? "" : (ROOM_TYPES[defaultType] || "Area")))}"
           placeholder="e.g. Living Area" class="room-name w-full border rounded-lg px-4 py-3 bg-white">
       </div>
       <div>
