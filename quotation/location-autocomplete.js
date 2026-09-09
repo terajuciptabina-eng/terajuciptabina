@@ -51,16 +51,16 @@
       .tc-location-empty{font-size:13px;color:#6b7280;padding:12px 13px}
 
       /* Planner estimate summary: keep values under Amount (column 5), not Delete (column 6). */
-      .border-t:has(#grandTotal){display:grid!important;grid-template-columns:32% 8% 13% 15% 20% 12%;align-items:center;row-gap:6px;font-size:14px}
+      .border-t:has(#grandTotal){display:grid!important;grid-template-columns:32% 8% 13% 15% 20% 12%;align-items:center;row-gap:6px;font-size:11px!important}
       .border-t:has(#grandTotal)>div{display:contents}
-      .border-t:has(#grandTotal)>div>span:first-child{grid-column:1 / 5;font-weight:600}
-      .border-t:has(#grandTotal)>div>span[id]{grid-column:5;text-align:right;font-weight:700;white-space:nowrap}
-      .border-t:has(#grandTotal)>p{grid-column:1 / -1}
+      .border-t:has(#grandTotal)>div>span:first-child{grid-column:1 / 5;font-weight:600;font-size:11px!important}
+      .border-t:has(#grandTotal)>div>span[id]{grid-column:5;text-align:right;font-weight:700;white-space:nowrap;font-size:11px!important}
+      .border-t:has(#grandTotal)>p{grid-column:1 / -1;font-size:11px!important}
       @media(max-width:767px){
-        .border-t:has(#grandTotal){grid-template-columns:31% 7% 12% 15% 20% 15%;font-size:8px;row-gap:5px}
-        .border-t:has(#grandTotal)>div>span:first-child{grid-column:1 / 5}
-        .border-t:has(#grandTotal)>div>span[id]{grid-column:5;text-align:right}
-        .border-t:has(#grandTotal)>p{font-size:8px!important;line-height:1.35!important}
+        .border-t:has(#grandTotal){grid-template-columns:31% 7% 12% 15% 20% 15%;font-size:7px!important;row-gap:5px}
+        .border-t:has(#grandTotal)>div>span:first-child{grid-column:1 / 5;font-size:7px!important}
+        .border-t:has(#grandTotal)>div>span[id]{grid-column:5;text-align:right;font-size:7px!important}
+        .border-t:has(#grandTotal)>p{font-size:7px!important;line-height:1.35!important}
       }
     `;
     document.head.appendChild(style);
