@@ -152,17 +152,17 @@
         "state": "final",
         "quotationType": "detail",
         "client": {
-          "name": "Shakur Khan"
+          "name": "Arthur Ganz"
         },
         "project": {
-          "location": "Selangor",
-          "builtUpArea": 395
+          "location": "penang",
+          "builtUpArea": 1085
         },
-        "total": 91803.23,
+        "total": 208811.21,
         "plannerState": {
-          "customerName": "Shakur Khan",
-          "projectLocation": "Selangor",
-          "builtUpArea": "395",
+          "customerName": "Arthur Ganz",
+          "projectLocation": "penang",
+          "builtUpArea": "1085",
           "rooms": [
             {
               "id": "room-3",
@@ -175,6 +175,18 @@
               "type": "kitchen",
               "name": "Kitchen",
               "area": "245"
+            },
+            {
+              "id": "room-3",
+              "type": "bedroom",
+              "name": "",
+              "area": "345"
+            },
+            {
+              "id": "room-4",
+              "type": "bathroom",
+              "name": "Bathroom",
+              "area": "345"
             }
           ],
           "rates": {
@@ -236,6 +248,10 @@
             [
               "room-3",
               "Living / Family"
+            ],
+            [
+              "room-6",
+              "Kitchen"
             ]
           ],
           "excludedItems": [],
@@ -245,7 +261,8 @@
           "projectId": "PRJ-BLD-MTU7547L-9HEEU"
         },
         "createdAt": "2026-09-09T14:34:05.963Z",
-        "updatedAt": "2026-09-09T14:35:59.683Z"
+        "updatedAt": "2026-09-09T15:02:17.425Z",
+        "estimateNumber": "EST-BLD-002"
       },
       {
         "schemaVersion": 1,
@@ -1282,7 +1299,7 @@
     ]
   },
   "createdAt": "2026-09-09T12:47:34.713Z",
-  "updatedAt": "2026-09-09T15:02:13.166Z",
+  "updatedAt": "2026-09-09T15:02:17.425Z",
   "quotationRunningNumber": {
     "renovation": 8
   },
