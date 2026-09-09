@@ -436,6 +436,88 @@
       {
         "schemaVersion": 1,
         "recordType": "quotation",
+        "quotationId": "QT-REN-MTU8RU5K-GR1HQ",
+        "projectId": "PRJ-REN-MTU8RUQ7-3W8US",
+        "quotationNumber": "Q002S",
+        "plannerType": "renovation",
+        "role": "contractor",
+        "contractorId": "CTR-20260909-KMHM",
+        "state": "final",
+        "quotationType": "simple",
+        "client": {
+          "name": "Rizki walakajd"
+        },
+        "project": {
+          "location": "Shah alam",
+          "builtUpArea": 0
+        },
+        "total": 33670,
+        "plannerState": {
+          "customerName": "Rizki walakajd",
+          "projectLocation": "Shah alam",
+          "builtUpArea": "",
+          "rooms": [
+            {
+              "id": "room-3",
+              "type": "living",
+              "name": "Living / Dining",
+              "area": "200"
+            },
+            {
+              "id": "room-4",
+              "type": "bedroom",
+              "name": "Bedroom",
+              "area": "120"
+            },
+            {
+              "id": "room-5",
+              "type": "wetKitchen",
+              "name": "Wet Kitchen",
+              "area": "150"
+            }
+          ],
+          "rates": {
+            "ceiling": 12,
+            "spc": 14,
+            "floorTile": 22,
+            "wallTile": 22,
+            "facadeWall": 60,
+            "downlight": 200,
+            "wallLight": 250,
+            "ceilingFan": 550,
+            "exhaustFan": 200,
+            "curtainBoxLED": 300,
+            "barLamp": 500,
+            "diningLamp": 600,
+            "kitchenFrame": 1200,
+            "kitchenMakingGood": 1000,
+            "kitchenGlassDoor": 1200,
+            "bathroomSanitary": 3000,
+            "bathroomDoor": 1200,
+            "gateMotor": 6400,
+            "brickwallDivider": 2800,
+            "frontFence": 5500,
+            "preliminaries": 8500,
+            "extensionKitchen": 250,
+            "extensionToilet": 584
+          },
+          "customRates": [],
+          "customQuantities": [],
+          "customDescriptions": [],
+          "customRoomLabels": [],
+          "excludedItems": [],
+          "manualItems": [],
+          "standardRateItems": [],
+          "quotationType": "simple",
+          "projectId": "PRJ-REN-MTU8RUQ7-3W8US"
+        },
+        "createdAt": "2026-09-09T15:16:58.853Z",
+        "updatedAt": "2026-09-09T15:16:59.599Z",
+        "estimateNumber": "EST-REN-001"
+      },
+      {
+        "schemaVersion": 1,
+        "recordType": "quotation",
         "quotationId": "QT-REN-MTU4N6Y7-ZO9KH",
         "quotationNumber": "QO043",
         "plannerType": "renovation",
@@ -503,11 +585,13 @@
     ]
   },
   "createdAt": "2026-09-09T13:15:32.117Z",
-  "updatedAt": "2026-09-09T15:15:33.060Z",
+  "updatedAt": "2026-09-09T15:16:59.599Z",
   "quotationRunningNumber": {
-    "build": 4
+    "build": 4,
+    "renovation": 2
   },
   "estimateRunningNumber": {
-    "build": 2
+    "build": 2,
+    "renovation": 1
   }
 }
