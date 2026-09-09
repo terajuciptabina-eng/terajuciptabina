@@ -19,6 +19,126 @@
       {
         "schemaVersion": 1,
         "recordType": "quotation",
+        "quotationId": "QT-BLD-MTU78OWB-SG0D6",
+        "projectId": "PRJ-BLD-MTU7547L-9HEEU",
+        "quotationNumber": "Q003D",
+        "plannerType": "build",
+        "role": "contractor",
+        "contractorId": "CTR-20260909-1HSS",
+        "state": "final",
+        "quotationType": "detail",
+        "client": {
+          "name": "Tuan Rasli"
+        },
+        "project": {
+          "location": "Pengkalan Kubur",
+          "builtUpArea": 640
+        },
+        "total": 131496.23,
+        "plannerState": {
+          "customerName": "Tuan Rasli",
+          "projectLocation": "Pengkalan Kubur",
+          "builtUpArea": "640",
+          "rooms": [
+            {
+              "id": "room-3",
+              "type": "living",
+              "name": "Living / Family",
+              "area": "140"
+            },
+            {
+              "id": "room-4",
+              "type": "dining",
+              "name": "Dining",
+              "area": "230"
+            },
+            {
+              "id": "room-5",
+              "type": "bedroom",
+              "name": "Bedroom",
+              "area": "80"
+            },
+            {
+              "id": "room-6",
+              "type": "bedroom",
+              "name": "Bedroom",
+              "area": "90"
+            },
+            {
+              "id": "room-7",
+              "type": "kitchen",
+              "name": "Kitchen",
+              "area": "100"
+            }
+          ],
+          "rates": {
+            "footingConc": 550,
+            "footingFw": 4.18,
+            "footingRebar": 15,
+            "slabConc": 550,
+            "slabBrc": 6.5,
+            "beamConc": 350,
+            "beamFw": 4.18,
+            "beamRebar": 15,
+            "colConc": 550,
+            "colFw": 4.18,
+            "colRebar": 15,
+            "flatRoofConc": 550,
+            "flatRoofFw": 4.18,
+            "flatRoofBrc": 6.5,
+            "cChannel": 4,
+            "metalSheet": 3.25,
+            "roofDesignConc": 550,
+            "roofDesignFw": 4.18,
+            "roofDesignRebar": 70,
+            "apronConc": 350,
+            "apronFw": 13.72,
+            "apronBrc": 15,
+            "drainage": 25,
+            "ceilingInt": 15,
+            "ceilingExt": 20,
+            "floorTileInt": 4.18,
+            "floorTileExt": 5.57,
+            "paintInt": 1.39,
+            "paintExt": 2.32,
+            "door": 600,
+            "window": 600,
+            "waterTank": 500,
+            "septicTank": 1500,
+            "bathWallTile": 4.18,
+            "bathFloorTile": 4.18,
+            "bathPiping": 1000,
+            "bathShower": 120,
+            "bathTap": 30,
+            "bathWc": 500,
+            "bathBasin": 400,
+            "dbBox": 1000,
+            "wiring": 20,
+            "powerPoint": 50,
+            "switch": 50,
+            "lighting": 250,
+            "fan": 600,
+            "aircond": 300,
+            "earthing": 1500,
+            "permit": 8500,
+            "prelim": 12000
+          },
+          "customRates": [],
+          "customQuantities": [],
+          "customDescriptions": [],
+          "customRoomLabels": [],
+          "excludedItems": [],
+          "manualItems": [],
+          "standardRateItems": [],
+          "quotationType": "detail",
+          "projectId": "PRJ-BLD-MTU7547L-9HEEU"
+        },
+        "createdAt": "2026-09-09T14:34:05.963Z",
+        "updatedAt": "2026-09-09T14:34:06.700Z"
+      },
+      {
+        "schemaVersion": 1,
+        "recordType": "quotation",
         "quotationId": "QT-BLD-MTU76I3K-CFM68",
         "projectId": "PRJ-BLD-MTU7547L-9HEEU",
         "quotationNumber": "Q003S",
@@ -273,6 +393,6 @@
     ]
   },
   "createdAt": "2026-09-09T12:47:34.713Z",
-  "updatedAt": "2026-09-09T14:32:38.470Z",
+  "updatedAt": "2026-09-09T14:34:06.700Z",
   "quotationRunningNumber": 3
 }
