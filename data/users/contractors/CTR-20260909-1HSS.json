@@ -355,6 +355,87 @@
       {
         "schemaVersion": 1,
         "recordType": "quotation",
+        "quotationId": "QT-REN-MTU7QOVN-343TP",
+        "projectId": "PRJ-REN-MTU4YDOD-6U2G0",
+        "quotationNumber": "Q003S",
+        "plannerType": "renovation",
+        "role": "contractor",
+        "contractorId": "CTR-20260909-1HSS",
+        "state": "final",
+        "quotationType": "simple",
+        "client": {
+          "name": "lembah bayu konsortium"
+        },
+        "project": {
+          "location": "Puchong, Selangor",
+          "builtUpArea": 0
+        },
+        "total": 44850,
+        "plannerState": {
+          "customerName": "lembah bayu konsortium",
+          "projectLocation": "Puchong, Selangor",
+          "builtUpArea": "",
+          "rooms": [
+            {
+              "id": "room-1",
+              "type": "living",
+              "name": "Living / Dining",
+              "area": "200"
+            },
+            {
+              "id": "room-2",
+              "type": "dryKitchen",
+              "name": "Dry Kitchen",
+              "area": "300"
+            },
+            {
+              "id": "room-3",
+              "type": "balcony",
+              "name": "Balcony",
+              "area": "150"
+            }
+          ],
+          "rates": {
+            "ceiling": 12,
+            "spc": 14,
+            "floorTile": 22,
+            "wallTile": 22,
+            "facadeWall": 60,
+            "downlight": 200,
+            "wallLight": 250,
+            "ceilingFan": 550,
+            "exhaustFan": 200,
+            "curtainBoxLED": 300,
+            "barLamp": 500,
+            "diningLamp": 600,
+            "kitchenFrame": 1200,
+            "kitchenMakingGood": 1000,
+            "kitchenGlassDoor": 1200,
+            "bathroomSanitary": 3000,
+            "bathroomDoor": 1200,
+            "gateMotor": 6400,
+            "brickwallDivider": 2800,
+            "frontFence": 5500,
+            "preliminaries": 8500,
+            "extensionKitchen": 250,
+            "extensionToilet": 584
+          },
+          "customRates": [],
+          "customQuantities": [],
+          "customDescriptions": [],
+          "customRoomLabels": [],
+          "excludedItems": [],
+          "manualItems": [],
+          "standardRateItems": [],
+          "quotationType": "simple",
+          "projectId": "PRJ-REN-MTU4YDOD-6U2G0"
+        },
+        "createdAt": "2026-09-09T14:48:05.747Z",
+        "updatedAt": "2026-09-09T14:48:07.111Z"
+      },
+      {
+        "schemaVersion": 1,
+        "recordType": "quotation",
         "quotationId": "QT-REN-MTU4ZYJE-VSJ10",
         "projectId": "PRJ-REN-MTU4YDOD-6U2G0",
         "quotationNumber": "QO084",
@@ -505,6 +586,6 @@
     ]
   },
   "createdAt": "2026-09-09T12:47:34.713Z",
-  "updatedAt": "2026-09-09T14:35:59.683Z",
+  "updatedAt": "2026-09-09T14:48:07.111Z",
   "quotationRunningNumber": 3
 }
