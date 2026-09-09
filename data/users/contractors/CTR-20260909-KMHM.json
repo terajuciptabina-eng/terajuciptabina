@@ -20,7 +20,7 @@
         "schemaVersion": 1,
         "recordType": "quotation",
         "quotationId": "QT-BLD-MTU4H99U-GO7PU",
-        "quotationNumber": "NB-QO044",
+        "quotationNumber": "NB-QO045",
         "plannerType": "build",
         "role": "contractor",
         "contractorId": "CTR-20260909-KMHM",
@@ -122,12 +122,12 @@
           "standardRateItems": [],
           "quotationType": "detail"
         },
-        "createdAt": "2026-09-09T13:17:37.804Z",
-        "updatedAt": "2026-09-09T13:17:39.879Z"
+        "createdAt": "2026-09-09T13:17:57.327Z",
+        "updatedAt": "2026-09-09T13:17:58.220Z"
       }
     ],
     "renovation": []
   },
   "createdAt": "2026-09-09T13:15:32.117Z",
-  "updatedAt": "2026-09-09T13:17:39.879Z"
+  "updatedAt": "2026-09-09T13:17:58.220Z"
 }
