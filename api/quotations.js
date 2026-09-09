@@ -7,7 +7,7 @@ export default async function handler(req, res) {
   if (!['GET', 'PUT', 'DELETE'].includes(req.method)) return res.status(405).json({ message: 'Method not allowed' });
 
   const token = process.env.GITHUB_TOKEN;
-  const repo = process.env.GITHUB_REPO || 'terajuciptabina-eng/terajucipabina';
+  const repo = process.env.GITHUB_REPO || 'terajuciptabina-eng/terajuciptabina';
   if (!token) return res.status(500).json({ message: 'GitHub auth storage is not configured.' });
 
   const headers = {
