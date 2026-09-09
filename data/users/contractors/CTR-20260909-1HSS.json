@@ -362,7 +362,7 @@
         "role": "contractor",
         "contractorId": "CTR-20260909-1HSS",
         "state": "final",
-        "quotationType": "simple",
+        "quotationType": "detail",
         "client": {
           "name": "lembah bayu konsortium"
         },
@@ -427,11 +427,11 @@
           "excludedItems": [],
           "manualItems": [],
           "standardRateItems": [],
-          "quotationType": "simple",
+          "quotationType": "detail",
           "projectId": "PRJ-REN-MTU4YDOD-6U2G0"
         },
         "createdAt": "2026-09-09T14:48:05.747Z",
-        "updatedAt": "2026-09-09T14:48:07.111Z"
+        "updatedAt": "2026-09-09T14:48:15.091Z"
       },
       {
         "schemaVersion": 1,
@@ -586,6 +586,6 @@
     ]
   },
   "createdAt": "2026-09-09T12:47:34.713Z",
-  "updatedAt": "2026-09-09T14:48:07.111Z",
+  "updatedAt": "2026-09-09T14:48:15.091Z",
   "quotationRunningNumber": 3
 }
