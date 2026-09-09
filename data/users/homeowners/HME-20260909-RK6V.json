@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "homeowner",
+  "homeownerId": "HME-20260909-RK6V",
+  "profile": {
+    "name": "teraju ciptabina",
+    "email": "terajuciptabina@gmail.com",
+    "phone": "15616"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-09-09T17:26:36.013Z",
+  "updatedAt": "2026-09-09T17:26:36.013Z"
+}
