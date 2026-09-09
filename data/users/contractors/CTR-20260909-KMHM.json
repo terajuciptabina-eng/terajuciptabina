@@ -232,27 +232,21 @@
         "state": "final",
         "quotationType": "simple",
         "client": {
-          "name": "Alia Rakman123"
+          "name": "Alia Rakman123ejfjd"
         },
         "project": {
           "location": "Kuala Lumpur",
-          "builtUpArea": 640
+          "builtUpArea": 300
         },
-        "total": 127296.23,
+        "total": 75192.07,
         "plannerState": {
-          "customerName": "Alia Rakman123",
+          "customerName": "Alia Rakman123ejfjd",
           "projectLocation": "Kuala Lumpur",
-          "builtUpArea": "640",
+          "builtUpArea": "300",
           "rooms": [
             {
-              "id": "room-1",
-              "type": "kitchen",
-              "name": "Living / Family",
-              "area": "340"
-            },
-            {
               "id": "room-2",
-              "type": "dining",
+              "type": "kitchen",
               "name": "Dining",
               "area": "300"
             }
@@ -314,10 +308,6 @@
           "customDescriptions": [],
           "customRoomLabels": [
             [
-              "room-1",
-              "Living / Family"
-            ],
-            [
               "room-2",
               "Dining"
             ]
@@ -329,7 +319,7 @@
           "projectId": "PRJ-BLD-MTU4VS1T-Y91LG"
         },
         "createdAt": "2026-09-09T13:28:31.510Z",
-        "updatedAt": "2026-09-09T15:12:38.065Z",
+        "updatedAt": "2026-09-09T15:15:30.956Z",
         "estimateNumber": "EST-BLD-001"
       },
       {
@@ -513,7 +503,7 @@
     ]
   },
   "createdAt": "2026-09-09T13:15:32.117Z",
-  "updatedAt": "2026-09-09T15:13:09.024Z",
+  "updatedAt": "2026-09-09T15:15:30.956Z",
   "quotationRunningNumber": {
     "build": 4
   },
