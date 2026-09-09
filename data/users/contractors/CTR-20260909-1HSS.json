@@ -28,35 +28,23 @@
         "state": "final",
         "quotationType": "simple",
         "client": {
-          "name": "Juliada"
+          "name": "Banos"
         },
         "project": {
-          "location": "kelantan",
-          "builtUpArea": 947
+          "location": "Kedah, Malaysia",
+          "builtUpArea": 590
         },
-        "total": 187280.74,
+        "total": 129453.51,
         "plannerState": {
-          "customerName": "Juliada",
-          "projectLocation": "kelantan",
-          "builtUpArea": "947",
+          "customerName": "Banos",
+          "projectLocation": "Kedah, Malaysia",
+          "builtUpArea": "590",
           "rooms": [
-            {
-              "id": "room-3",
-              "type": "living",
-              "name": "Living / Family",
-              "area": "12"
-            },
             {
               "id": "room-6",
               "type": "kitchen",
               "name": "Kitchen",
               "area": "245"
-            },
-            {
-              "id": "room-3",
-              "type": "bedroom",
-              "name": "Bedroom",
-              "area": "345"
             },
             {
               "id": "room-4",
@@ -122,10 +110,6 @@
           "customDescriptions": [],
           "customRoomLabels": [
             [
-              "room-3",
-              "Living / Family"
-            ],
-            [
               "room-6",
               "Kitchen"
             ],
@@ -141,7 +125,7 @@
           "projectId": "PRJ-BLD-MTU7547L-9HEEU"
         },
         "createdAt": "2026-09-09T14:35:54.909Z",
-        "updatedAt": "2026-09-09T15:07:57.059Z",
+        "updatedAt": "2026-09-09T15:08:44.207Z",
         "estimateNumber": "EST-BLD-001"
       },
       {
@@ -1308,7 +1292,7 @@
     ]
   },
   "createdAt": "2026-09-09T12:47:34.713Z",
-  "updatedAt": "2026-09-09T15:08:00.388Z",
+  "updatedAt": "2026-09-09T15:08:44.207Z",
   "quotationRunningNumber": {
     "renovation": 8
   },
