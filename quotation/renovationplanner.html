@@ -142,8 +142,10 @@
 
 
     .project-header-tools { min-width: 0; }
+    .project-header-tools button { min-height: 32px !important; }
     @media (max-width: 767px) {
       .project-header-tools { gap: 6px; }
+      .project-header-tools button { padding: 6px 8px !important; }
     }
 
     .contractor-only { display: none !important; }
@@ -424,8 +426,78 @@ main>section:not(:first-child){scroll-margin-top:92px} main>section>div:first-ch
 .room-card{border:1px solid #e5e7eb!important;border-radius:20px!important;background:linear-gradient(180deg,#fff,#fafbfc)!important;box-shadow:0 8px 25px rgba(15,23,42,.045)!important;padding:18px!important;transition:.22s ease!important}.room-card:hover{transform:translateY(-2px);border-color:#cbd5e1!important;box-shadow:0 15px 35px rgba(15,23,42,.08)!important}.room-card:before{content:"AREA";display:inline-flex;margin-bottom:12px;padding:5px 8px;border-radius:7px;background:#f1f5f9;color:#64748b;font-size:9px;font-weight:900;letter-spacing:.13em}#roomsContainer{counter-reset:area}#roomsContainer .room-card{counter-increment:area}#roomsContainer .room-card:before{content:"AREA " counter(area,decimal-leading-zero)}
 #customerSummary>div,.homeowner-summary-card{border:1px solid #e8ebef!important;border-radius:16px!important;background:#f8fafc!important;padding:15px!important}#quotationGenerator{background:linear-gradient(145deg,#fff,#f7f8fa)!important}.quotation-type-card,.contractor-quotation-choice{border-radius:14px!important;min-height:76px!important;box-shadow:0 7px 22px rgba(15,23,42,.04)!important}.quotation-type-card.is-selected,.contractor-quotation-choice.is-selected{border-color:#111827!important;box-shadow:0 0 0 2px rgba(17,24,39,.1),0 12px 28px rgba(15,23,42,.08)!important}.quotation-generate-btn,.contractor-generate-btn{border-radius:12px!important;min-height:46px!important;box-shadow:0 12px 25px rgba(17,24,39,.16)!important}#quotationDocument{border-radius:24px!important;box-shadow:0 22px 65px rgba(15,23,42,.12)!important}
 @media(max-width:767px){body{background-attachment:scroll!important}main{padding:14px!important;padding-bottom:105px!important}main>section{border-radius:20px!important;margin-bottom:14px!important}.planner-hero{min-height:300px!important;padding:23px!important;border-radius:22px!important;margin-bottom:12px!important;display:grid!important;grid-template-columns:1fr!important;grid-template-rows:auto auto auto auto!important;gap:0!important;align-items:start!important;column-gap:0!important}.planner-eyebrow{grid-column:1!important;grid-row:1!important;justify-self:start!important}.planner-hero h2{grid-column:1!important;grid-row:2!important;align-self:start!important}.planner-hero p{grid-column:1!important;grid-row:3!important;align-self:start!important}.planner-meta{grid-column:1!important;grid-row:4!important;align-self:start!important}.planner-hero h2{font-size:38px!important;margin-top:15px!important}.planner-hero p{font-size:14px!important}.planner-meta{gap:7px!important}.planner-meta span{font-size:10px!important;padding:7px 9px!important}.planner-steps{gap:6px;margin-bottom:14px!important}.planner-steps a{justify-content:center;padding:9px 5px;border-radius:13px;font-size:9px;gap:5px;flex-direction:column;text-align:center}.planner-steps b{width:23px;height:23px;border-radius:7px;font-size:9px;flex-basis:23px}.room-card{border-radius:17px!important;padding:15px!important}#quotationGenerator{padding:14px!important}}
-@media(max-width:380px){.planner-hero{padding:19px!important}.planner-hero h2{font-size:33px!important}.planner-steps a{font-size:8px}} @media(prefers-reduced-motion:reduce){.planner-steps a,.room-card,main>section{transition:none!important}.planner-steps a:hover,.room-card:hover{transform:none!important}}
+@media(max-width:380px){
+     .planner-header>div{padding-left:10px!important;padding-right:10px!important}
+     .planner-nav-link{min-height:32px;padding:6px 7px;font-size:9px}
+   }.planner-hero h2{font-size:33px!important}.planner-steps a{font-size:8px}} @media(prefers-reduced-motion:reduce){.planner-steps a,.room-card,main>section{transition:none!important}.planner-steps a:hover,.room-card:hover{transform:none!important}}
 
+
+
+/* Shared workspace header/navigation — identical structure for both audiences. */
+.planner-header{font-family:'Inter',system-ui,sans-serif;background:rgba(255,255,255,.05)!important;
+  border-bottom:1px solid rgba(15,23,42,.08)!important;
+  box-shadow:0 4px 18px rgba(15,23,42,.06);
+  backdrop-filter:blur(4px)!important;
+  -webkit-backdrop-filter:blur(4px)!important;
+}
+.planner-header>div{min-height:72px;align-items:center}
+.planner-header h1{font-family:'Inter',system-ui,sans-serif;font-weight:700;letter-spacing:.06em!important;color:#111827}
+.planner-header p{font-family:'Inter',system-ui,sans-serif;font-weight:500;letter-spacing:.10em!important;color:#6b7280}
+.planner-nav-link{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:36px;
+      padding:7px 12px;
+      border:1px solid rgba(15,23,42,.08);
+      border-radius:8px;
+      background:rgba(255,255,255,.42);
+      color:#374151;
+      font-size:11px;
+      font-weight:600;
+      line-height:1;
+      text-decoration:none;
+      white-space:nowrap;
+      transition:background .18s ease,border-color .18s ease,box-shadow .18s ease,color .18s ease
+    }
+.planner-nav-link:hover{background:#fff;border-color:rgba(15,23,42,.18);transform:translateY(-1px);box-shadow:0 5px 14px rgba(15,23,42,.08)}
+.workspace-id-block{min-width:130px}
+#rateScheduleSection{background:rgba(255,255,255,.94)}
+.official-quotation-card{
+  background:rgba(17,24,39,.78)!important;
+  border:1px solid rgba(255,255,255,.12);
+  backdrop-filter:blur(4px);
+  -webkit-backdrop-filter:blur(4px);
+}
+@media(max-width:767px){
+  .planner-header>div{padding:10px 14px 11px!important;min-height:0;display:grid!important;grid-template-columns:minmax(0,1fr);gap:9px}
+  .planner-header>div>div:first-child{width:100%;gap:10px!important}
+  .planner-header img{height:36px!important;max-width:120px}
+  .planner-header h1{font-size:13px!important;letter-spacing:.045em!important;line-height:1.15}
+  .planner-header p{font-size:9px!important;line-height:1.2;margin-top:3px!important;letter-spacing:.08em!important}
+  .planner-header nav{
+       width:100%;
+       display:flex!important;
+       flex-wrap:wrap;
+       gap:6px!important;
+       justify-content:flex-end
+     }
+  .planner-nav-link{
+       width:auto;
+       flex:0 1 auto;
+       min-height:34px;
+       padding:7px 9px;
+       font-size:10px;
+       border-radius:8px
+     }
+  .workspace-id-block{min-width:0}
+}
+@media(max-width:380px){
+  .planner-header>div{padding-left:11px!important;padding-right:11px!important}
+  .planner-header img{height:33px!important}
+  .planner-header h1{font-size:12px!important}
+  .planner-nav-link{font-size:9px;min-height:34px}
+}
 </style>
 </head>
 
@@ -454,15 +526,20 @@ main>section:not(:first-child){scroll-margin-top:92px} main>section>div:first-ch
   </div>
 </div></div></div>
 
-<header class="bg-white border-b">
-  <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+<header class="planner-header">
+  <div class="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between gap-4">
     <div class="flex items-center gap-4 min-w-0">
       <img src="../images/logo.png" alt="Teraju Ciptabina Logo" class="h-12 w-auto flex-shrink-0">
       <div class="min-w-0">
-        <h1 class="font-bold text-lg">TERAJU CIPTABINA</h1>
-        <p id="contractorBadge" class="contractor-only text-xs text-gray-500 mt-1">Contractor Mode</p>
+        <h1 class="font-bold text-lg tracking-wide">TERAJU CIPTABINA</h1>
+        <p id="workspaceBadge" class="text-xs text-gray-500 mt-1 uppercase tracking-wide">Homeowner Workspace</p>
       </div>
     </div>
+    <nav class="flex items-center gap-2 flex-wrap justify-end no-print" aria-label="Planner navigation">
+      <a id="myQuotationsLink" href="homeowner.html" class="planner-nav-link">My Quotations</a>
+      <a href="#" onclick="history.back(); return false;" class="planner-nav-link">Back to Previous</a>
+      <a href="../index.html" class="planner-nav-link">Home</a>
+    </nav>
   </div>
 </header>
 
@@ -477,10 +554,10 @@ main>section:not(:first-child){scroll-margin-top:92px} main>section>div:first-ch
         <h3 class="font-bold text-lg">Project Information</h3>
         <p class="text-sm text-gray-500">Enter the project details used for the estimate and quotation.</p>
       </div>
-      <div class="project-header-tools flex items-center gap-2 flex-shrink-0">
+      <div class="workspace-id-block flex items-center flex-shrink-0">
         <div class="text-right leading-tight">
-          <p id="workspaceUserIdLabel" class="text-[10px] uppercase tracking-wide text-gray-500">User ID</p>
-          <p id="workspaceUserIdDisplay" class="font-bold text-xs">-</p>
+          <p id="workspaceIdLabel" class="text-[10px] uppercase tracking-wide text-gray-500">Homeowner ID</p>
+          <p id="workspaceIdDisplay" class="font-bold text-xs">-</p>
         </div>
       </div>
       <span id="projectArrow" class="text-gray-500 text-sm flex-shrink-0">▲</span>
@@ -551,7 +628,7 @@ main>section:not(:first-child){scroll-margin-top:92px} main>section>div:first-ch
   </section>
 
   <!-- Contractor Rate Schedule -->
-  <section id="rateScheduleSection" class="contractor-only bg-white rounded-2xl shadow-sm p-6 mb-6">
+  <section id="rateScheduleSection" class="bg-white rounded-2xl shadow-sm p-6 mb-6">
     <div class="flex justify-between items-center gap-4">
       <div class="min-w-0">
         <h3 class="font-bold text-lg">Contractor Rate Schedule</h3>
@@ -564,7 +641,7 @@ main>section:not(:first-child){scroll-margin-top:92px} main>section>div:first-ch
     <div id="rateSchedulePanel" class="hidden mt-5">
       <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
         <p class="text-xs text-gray-500">Changes are saved locally for this Contractor ID.</p>
-        <button type="button" onclick="resetRatesToDefault()" class="border rounded-lg px-3 py-2 text-xs font-medium hover:bg-gray-50">Reset to Default Rates</button>
+        <button type="button" id="resetRatesButton" onclick="resetRatesToDefault()" class="contractor-only border rounded-lg px-3 py-2 text-xs font-medium hover:bg-gray-50">Reset to Default Rates</button>
       </div>
       <div id="rateScheduleContent" class="grid md:grid-cols-2 gap-3"></div>
     </div>
@@ -659,7 +736,7 @@ main>section:not(:first-child){scroll-margin-top:92px} main>section>div:first-ch
 </section>
 
   <!-- CTA -->
-  <section class="no-print bg-gray-900 text-white rounded-2xl p-5 mt-5 text-center">
+  <section class="no-print official-quotation-card text-white rounded-2xl p-5 mt-5 text-center">
     <h3 class="text-2xl font-bold mb-2">Need an Official Quotation?</h3>
     <p class="text-gray-300 max-w-2xl mx-auto mb-4">
       Let Teraju Ciptabina inspect your property and prepare a detailed quotation based on the actual site condition and requirements.
@@ -712,10 +789,20 @@ let standardRateItems = [];
 const DEFAULT_RATES = JSON.parse(JSON.stringify(RATES));
 const AUDIENCE = new URLSearchParams(window.location.search).get("audience") || "homeowner";
 const IS_CONTRACTOR = AUDIENCE === "contractor";
-const CONTRACTOR_ID = new URLSearchParams(window.location.search).get("contractorId")
+const PARAMS = new URLSearchParams(window.location.search);
+const CONTRACTOR_ID = PARAMS.get("contractorId")
   || localStorage.getItem("teraju.contractor.local.v1.activeContractorId")
   || "";
-const HOMEOWNER_ID = new URLSearchParams(window.location.search).get("homeownerId") || "";
+let HOMEOWNER_ID = PARAMS.get("homeownerId") || "";
+try {
+  if (!HOMEOWNER_ID) {
+    const raw = localStorage.getItem("teraju.homeowner.github.v1");
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      HOMEOWNER_ID = parsed?.homeownerId || parsed?.id || parsed?.profile?.homeownerId || "";
+    }
+  }
+} catch (e) {}
 const CONTRACTOR_STORAGE_PREFIX = "teraju.contractor.local.v1";
 let restoringContractorState = false;
 
@@ -1469,7 +1556,6 @@ function loadContractorState() {
 }
 
 function toggleRateSchedule() {
-  if (!IS_CONTRACTOR) return;
   const panel = document.getElementById("rateSchedulePanel");
   const button = document.getElementById("rateScheduleToggle");
   if (!panel || !button) return;
@@ -1478,7 +1564,24 @@ function toggleRateSchedule() {
   if (!hidden) renderRateSchedule();
 }
 
-function renderRateSchedule() { const box = document.getElementById("rateScheduleContent"); if (!box || !IS_CONTRACTOR) return; box.innerHTML = getStandardRateItems().map(item => `<div class="border rounded-lg p-3 bg-white"><div class="text-xs font-medium text-gray-500 mb-2">${escapeHtml(item.description)}</div><div class="grid grid-cols-[1fr_90px] gap-2 items-center"><span class="text-xs text-gray-500">${escapeHtml(item.unit)}${item.custom ? " · Contractor item" : " · Default item"}</span><input type="number" min="0" step="0.01" value="${normalizeRate(item.rate).toFixed(2)}" onchange="editStandardRate('${item.id}', this.value)" class="w-full border rounded-lg px-3 py-2 text-right"></div></div>`).join(""); }
+function renderRateSchedule() {
+  const box = document.getElementById("rateScheduleContent");
+  if (!box) return;
+  box.innerHTML = getStandardRateItems().map(item => {
+    const rate = normalizeRate(item.rate).toFixed(2);
+    const rateControl = IS_CONTRACTOR
+      ? `<input type="number" min="0" step="0.01" value="${rate}" onchange="editStandardRate('${item.id}', this.value)" class="w-full border rounded-lg px-3 py-2 text-right">`
+      : `<span class="w-full border rounded-lg px-3 py-2 text-right bg-gray-50 text-gray-700 block" aria-label="Read only rate">${rate}</span>`;
+    return `<div class="border rounded-lg p-3 bg-white">
+      <div class="text-xs font-medium text-gray-500 mb-2">${escapeHtml(item.description)}</div>
+      <div class="grid grid-cols-[1fr_90px] gap-2 items-center">
+        <span class="text-xs text-gray-500">${escapeHtml(item.unit)}${item.custom ? " · Contractor item" : " · Default item"}</span>
+        ${rateControl}
+      </div>
+    </div>`;
+  }).join("");
+}
+
 function editStandardRate(itemId, value) { if (!IS_CONTRACTOR) return; const rate = parseFloat(value); if (!Number.isFinite(rate) || rate < 0) { alert("Please enter a valid rate."); renderRateSchedule(); return; } const custom = standardRateItems.find(item => item.id === itemId); if (custom) custom.rate = normalizeRate(rate); else { const item = getStandardRateItems().find(x => x.id === itemId); if (item?.key && item.key in RATES) RATES[item.key] = normalizeRate(rate); } updateEstimate(); saveContractorState(); renderRateSchedule(); }
 
 function editScheduleRate(key, value) {
@@ -1508,11 +1611,20 @@ function initContractorMode() {
   document.body.classList.toggle("contractor-mode", IS_CONTRACTOR);
   document.body.classList.toggle("homeowner-mode", !IS_CONTRACTOR);
 
-  const idLabelEl = document.getElementById("workspaceUserIdLabel");
-  const idEl = document.getElementById("workspaceUserIdDisplay");
-  const workspaceId = IS_CONTRACTOR ? CONTRACTOR_ID : HOMEOWNER_ID;
+  const badgeEl = document.getElementById("workspaceBadge");
+  const idLabelEl = document.getElementById("workspaceIdLabel");
+  const idEl = document.getElementById("workspaceIdDisplay");
+  const activeId = IS_CONTRACTOR ? CONTRACTOR_ID : HOMEOWNER_ID;
+  if (badgeEl) badgeEl.textContent = IS_CONTRACTOR ? "Contractor Workspace" : "Homeowner Workspace";
   if (idLabelEl) idLabelEl.textContent = IS_CONTRACTOR ? "Contractor ID" : "Homeowner ID";
-  if (idEl) idEl.textContent = workspaceId || "Not signed in";
+  if (idEl) idEl.textContent = activeId || "Not signed in";
+
+  const myQuotationsLink = document.getElementById("myQuotationsLink");
+  if (myQuotationsLink) {
+    myQuotationsLink.href = IS_CONTRACTOR
+      ? `contractor.html${CONTRACTOR_ID ? `?contractorId=${encodeURIComponent(CONTRACTOR_ID)}` : ""}`
+      : `homeowner.html${HOMEOWNER_ID ? `?homeownerId=${encodeURIComponent(HOMEOWNER_ID)}` : ""}`;
+  }
 
   let saved = null;
   if (IS_CONTRACTOR) {
@@ -1521,9 +1633,9 @@ function initContractorMode() {
 
   updateRoomsEmptyState();
   updateEstimate();
+  renderRateSchedule();
 
   if (IS_CONTRACTOR) {
-    renderRateSchedule();
     document.querySelectorAll("#customerName, #projectLocation").forEach(el => {
       el.addEventListener("change", saveContractorState);
       el.addEventListener("blur", saveContractorState);
