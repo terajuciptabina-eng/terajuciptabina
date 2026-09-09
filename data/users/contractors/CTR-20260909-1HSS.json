@@ -718,29 +718,29 @@
         "state": "final",
         "quotationType": "detail",
         "client": {
-          "name": "Arron Reeza"
+          "name": "Nur Alia Rakman"
         },
         "project": {
-          "location": "Pos Malaysia Bandar Kinrara, Bandar Kinrara 5A, Selangor, Malaysia, 47180",
+          "location": "Klang, Selangor",
           "builtUpArea": 0
         },
-        "total": 285220,
+        "total": 223460,
         "plannerState": {
-          "customerName": "Arron Reeza",
-          "projectLocation": "Pos Malaysia Bandar Kinrara, Bandar Kinrara 5A, Selangor, Malaysia, 47180",
+          "customerName": "Nur Alia Rakman",
+          "projectLocation": "Klang, Selangor",
           "builtUpArea": "",
           "rooms": [
             {
               "id": "room-1",
               "type": "living",
               "name": "Living / Dining",
-              "area": "2345"
+              "area": "234"
             },
             {
               "id": "room-2",
               "type": "bedroom",
               "name": "Bedroom",
-              "area": "324"
+              "area": "375"
             },
             {
               "id": "room-3",
@@ -821,7 +821,7 @@
           "projectId": "PRJ-REN-MTU4YDOD-6U2G0"
         },
         "createdAt": "2026-09-09T14:48:05.747Z",
-        "updatedAt": "2026-09-09T14:51:59.587Z",
+        "updatedAt": "2026-09-09T14:58:03.118Z",
         "estimateNumber": "EST-REN-003"
       },
       {
@@ -977,7 +977,7 @@
     ]
   },
   "createdAt": "2026-09-09T12:47:34.713Z",
-  "updatedAt": "2026-09-09T14:57:56.872Z",
+  "updatedAt": "2026-09-09T14:58:03.118Z",
   "quotationRunningNumber": {
     "renovation": 6
   },
