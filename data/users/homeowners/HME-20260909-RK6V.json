@@ -16,8 +16,91 @@
   "state": "active",
   "plannerRecords": {
     "build": [],
-    "renovation": []
+    "renovation": [
+      {
+        "schemaVersion": 1,
+        "recordType": "quotation",
+        "quotationId": "QT-REN-MTUHQDX5-ULUK8",
+        "projectId": "PRJ-REN-MTUHQFXB-BV7K6",
+        "quotationNumber": "Q001S",
+        "plannerType": "renovation",
+        "role": "homeowner",
+        "homeownerId": "HME-20260909-RK6V",
+        "state": "final",
+        "quotationType": "simple",
+        "client": {
+          "name": "Not specified"
+        },
+        "project": {
+          "location": "Not specified",
+          "builtUpArea": 0
+        },
+        "total": 15350,
+        "plannerState": {
+          "customerName": "",
+          "projectLocation": "",
+          "builtUpArea": "",
+          "rooms": [
+            {
+              "id": "room-1",
+              "type": "living",
+              "name": "Living / Dining",
+              "area": "200"
+            },
+            {
+              "id": "room-2",
+              "type": "other",
+              "name": "",
+              "area": ""
+            }
+          ],
+          "rates": {
+            "ceiling": 12,
+            "spc": 14,
+            "floorTile": 22,
+            "wallTile": 22,
+            "facadeWall": 60,
+            "downlight": 200,
+            "wallLight": 250,
+            "ceilingFan": 550,
+            "exhaustFan": 200,
+            "curtainBoxLED": 300,
+            "barLamp": 500,
+            "diningLamp": 600,
+            "kitchenFrame": 1200,
+            "kitchenMakingGood": 1000,
+            "kitchenGlassDoor": 1200,
+            "bathroomSanitary": 3000,
+            "bathroomDoor": 1200,
+            "gateMotor": 6400,
+            "brickwallDivider": 2800,
+            "frontFence": 5500,
+            "preliminaries": 8500,
+            "extensionKitchen": 250,
+            "extensionToilet": 584
+          },
+          "customRates": [],
+          "customQuantities": [],
+          "customDescriptions": [],
+          "customRoomLabels": [],
+          "excludedItems": [],
+          "manualItems": [],
+          "standardRateItems": [],
+          "quotationType": "simple",
+          "projectId": "PRJ-REN-MTUHQFXB-BV7K6"
+        },
+        "createdAt": "2026-09-09T19:27:47.705Z",
+        "updatedAt": "2026-09-09T19:27:50.303Z",
+        "estimateNumber": "EST-REN-001"
+      }
+    ]
   },
   "createdAt": "2026-09-09T17:26:36.013Z",
-  "updatedAt": "2026-09-09T17:26:36.013Z"
+  "updatedAt": "2026-09-09T19:27:50.303Z",
+  "quotationRunningNumber": {
+    "renovation": 1
+  },
+  "estimateRunningNumber": {
+    "renovation": 1
+  }
 }
