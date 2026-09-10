@@ -137,7 +137,7 @@
           "builtUpArea": 200,
           "state": "pahang"
         },
-        "total": 60168.63,
+        "total": 60543.63,
         "plannerState": {
           "customerName": "En Azizi",
           "projectLocation": "Makmur",
@@ -214,10 +214,10 @@
           "projectState": "pahang",
           "rateSetId": "default",
           "rateSetName": "Default Rate",
-          "rateSnapshotAt": "2026-09-10T17:15:14.789Z"
+          "rateSnapshotAt": "2026-09-10T18:25:36.678Z"
         },
         "createdAt": "2026-09-10T16:32:34.331Z",
-        "updatedAt": "2026-09-10T17:15:15.453Z",
+        "updatedAt": "2026-09-10T18:25:37.294Z",
         "estimateNumber": "EST-BLD-010"
       },
       {
@@ -2005,7 +2005,7 @@
     ]
   },
   "createdAt": "2026-09-09T13:15:32.117Z",
-  "updatedAt": "2026-09-10T18:25:21.684Z",
+  "updatedAt": "2026-09-10T18:25:37.294Z",
   "quotationRunningNumber": {
     "build": 12,
     "renovation": 7
