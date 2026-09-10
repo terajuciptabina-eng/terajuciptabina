@@ -70,10 +70,11 @@ jobs:
               text = text.replace(marker, tag + '\n' + marker, 1)
           path.write_text(text, encoding='utf-8')
 
-          # Keep the two homeowner project cards equal-height with their footer labels aligned.
+          # Keep the two homeowner project cards equal-height and align their
+          # title, description, quotation-type pills, and footer rows.
           path = Path('quotation/homeowner.html')
           text = path.read_text(encoding='utf-8')
-          card_css = '.project-card{display:flex;flex-direction:column}.project-card .mt-auto>div>div:first-child{color:#334155!important;text-shadow:0 1px 2px rgba(255,255,255,.8)}'
+          card_css = '.project-card{display:flex;flex-direction:column}.project-card .mt-7 h2{min-height:76px}.project-card .mt-7 p{min-height:84px}.project-card .mt-auto>div>div:first-child{color:#334155!important;text-shadow:0 1px 2px rgba(255,255,255,.8)}'
           if card_css not in text:
               marker = '</style>'
               if marker not in text:
@@ -98,5 +99,5 @@ jobs:
             echo "No changes needed."
             exit 0
           fi
-          git commit -m "Align homeowner project card footer [renovation-promo-ui]"
+          git commit -m "Align homeowner project cards [renovation-promo-ui]"
           git push origin main
