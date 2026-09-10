@@ -92,3 +92,5 @@ jobs:
           fi
           git commit -m "Fix Build SMM description runtime hook [repair-build-smm-runtime]"
           git push origin main
+
+# Triggered after workflow registration.
