@@ -16,9 +16,10 @@ jobs:
         with:
           ref: main
           token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Restore Build helper and patch SMM database sync
+      - name: Restore Build helper and patch SMM sync
         shell: bash
         run: |
+          git fetch --no-tags origin 93410917b87fcbbc8403ae8ea8ed9552b8836f6f
           git checkout 93410917b87fcbbc8403ae8ea8ed9552b8836f6f -- quotation/quotation-quantity-fix.js
           python - <<'PY'
           from pathlib import Path
