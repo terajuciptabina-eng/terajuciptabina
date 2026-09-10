@@ -16,8 +16,217 @@
   "state": "active",
   "plannerRecords": {
     "build": [],
-    "renovation": []
+    "renovation": [
+      {
+        "schemaVersion": 1,
+        "recordType": "quotation",
+        "quotationId": "QT-REN-MTW4H9WH-FFC86",
+        "projectId": "PRJ-REN-MTW4HB4G-ZISPI",
+        "quotationNumber": "Q001S",
+        "plannerType": "renovation",
+        "role": "homeowner",
+        "homeownerId": "HME-20260910-4BZ6",
+        "state": "final",
+        "quotationType": "simple",
+        "client": {
+          "name": "wanie"
+        },
+        "project": {
+          "location": "Shah Alam",
+          "builtUpArea": 0,
+          "state": "selangor"
+        },
+        "total": 65650,
+        "plannerState": {
+          "customerName": "wanie",
+          "projectLocation": "Shah Alam",
+          "builtUpArea": "",
+          "rooms": [
+            {
+              "id": "room-2",
+              "type": "bedroom",
+              "name": "Studio",
+              "area": "300"
+            },
+            {
+              "id": "room-3",
+              "type": "bedroom",
+              "name": "Room 1",
+              "area": "90"
+            },
+            {
+              "id": "room-4",
+              "type": "bedroom",
+              "name": "Room 2",
+              "area": "90"
+            },
+            {
+              "id": "room-5",
+              "type": "living",
+              "name": "Living & Dining",
+              "area": "160"
+            },
+            {
+              "id": "room-6",
+              "type": "wetKitchen",
+              "name": "Wet Kitchen",
+              "area": "60"
+            },
+            {
+              "id": "room-7",
+              "type": "bathroom",
+              "name": "Studio Bathroom",
+              "area": "30"
+            },
+            {
+              "id": "room-8",
+              "type": "bathroom",
+              "name": "Main Bathroom",
+              "area": "30"
+            },
+            {
+              "id": "room-9",
+              "type": "other",
+              "name": "Foyer",
+              "area": "30"
+            },
+            {
+              "id": "room-10",
+              "type": "balcony",
+              "name": "Balcony",
+              "area": "60"
+            }
+          ],
+          "rates": {
+            "ceiling": 12,
+            "spc": 14,
+            "floorTile": 22,
+            "wallTile": 22,
+            "facadeWall": 60,
+            "downlight": 200,
+            "wallLight": 250,
+            "ceilingFan": 550,
+            "exhaustFan": 200,
+            "curtainBoxLED": 300,
+            "barLamp": 500,
+            "diningLamp": 600,
+            "kitchenFrame": 1200,
+            "kitchenMakingGood": 1000,
+            "kitchenGlassDoor": 1200,
+            "bathroomSanitary": 3000,
+            "bathroomDoor": 1200,
+            "gateMotor": 6400,
+            "brickwallDivider": 2800,
+            "frontFence": 5500,
+            "preliminaries": 8500,
+            "extensionKitchen": 250,
+            "extensionToilet": 584,
+            "footingConc": 550,
+            "footingFw": 4.18,
+            "footingRebar": 15,
+            "slabConc": 550,
+            "slabBrc": 6.5,
+            "beamConc": 350,
+            "beamFw": 4.18,
+            "beamRebar": 15,
+            "colConc": 550,
+            "colFw": 4.18,
+            "colRebar": 15,
+            "flatRoofConc": 550,
+            "flatRoofFw": 4.18,
+            "flatRoofBrc": 6.5,
+            "cChannel": 4,
+            "metalSheet": 3.25,
+            "roofDesignConc": 550,
+            "roofDesignFw": 4.18,
+            "roofDesignRebar": 70,
+            "apronConc": 350,
+            "apronFw": 13.72,
+            "apronBrc": 15,
+            "drainage": 25,
+            "ceilingInt": 15,
+            "ceilingExt": 20,
+            "floorTileInt": 4.18,
+            "floorTileExt": 5.57,
+            "paintInt": 1.39,
+            "paintExt": 2.32,
+            "door": 600,
+            "window": 600,
+            "waterTank": 500,
+            "septicTank": 1500,
+            "bathWallTile": 4.18,
+            "bathFloorTile": 4.18,
+            "bathPiping": 1000,
+            "bathShower": 120,
+            "bathTap": 30,
+            "bathWc": 500,
+            "bathBasin": 400,
+            "dbBox": 1000,
+            "wiring": 20,
+            "powerPoint": 50,
+            "switch": 50,
+            "lighting": 250,
+            "fan": 600,
+            "aircond": 300,
+            "earthing": 1500,
+            "permit": 8500,
+            "prelim": 12000
+          },
+          "customRates": [],
+          "customQuantities": [],
+          "customDescriptions": [],
+          "customRoomLabels": [
+            [
+              "room-2",
+              "Studio"
+            ],
+            [
+              "room-3",
+              "Room 1"
+            ],
+            [
+              "room-4",
+              "Room 2"
+            ],
+            [
+              "room-5",
+              "Living & Dining"
+            ],
+            [
+              "room-7",
+              "Studio Bathroom"
+            ],
+            [
+              "room-8",
+              "Main Bathroom"
+            ],
+            [
+              "room-9",
+              "Foyer"
+            ]
+          ],
+          "excludedItems": [],
+          "manualItems": [],
+          "standardRateItems": [],
+          "quotationType": "simple",
+          "projectId": "PRJ-REN-MTW4HB4G-ZISPI",
+          "projectState": "selangor",
+          "rateSetId": "selangor",
+          "rateSetName": "Selangor",
+          "rateSnapshotAt": "2026-09-10T22:52:19.939Z"
+        },
+        "createdAt": "2026-09-10T22:52:19.937Z",
+        "updatedAt": "2026-09-10T22:52:21.520Z",
+        "estimateNumber": "EST-REN-001"
+      }
+    ]
   },
   "createdAt": "2026-09-10T22:06:36.159Z",
-  "updatedAt": "2026-09-10T22:06:36.159Z"
+  "updatedAt": "2026-09-10T22:52:21.520Z",
+  "quotationRunningNumber": {
+    "renovation": 1
+  },
+  "estimateRunningNumber": {
+    "renovation": 1
+  }
 }
