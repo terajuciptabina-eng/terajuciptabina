@@ -34,8 +34,6 @@
     const field=locationInput.closest('div');
     if(!field || !field.parentElement){loadResolver();return;}
 
-    // Insert the complete State field. The previous source inserted only the label
-    // (wrap.firstElementChild), leaving the select itself out of the DOM.
     const stateWrap=document.createElement('div');
     stateWrap.className='mb-4';
     stateWrap.innerHTML='<label for="projectState" class="block text-sm font-medium mb-2">State / Negeri <span class="text-red-600">*</span></label>'+
@@ -58,8 +56,6 @@
     document.body.appendChild(lock);
 
     const chooseState=()=>{
-      // The overlay is deliberately removed before opening the native select.
-      // This prevents another fixed layer from intercepting the interaction.
       lock.classList.add('hidden');
       lock.classList.remove('flex');
       select.disabled=false;
@@ -92,10 +88,11 @@
 
     select.addEventListener('change',function(){
       if(!select.value){apply();return}
+      const previousState=String(window.TERAJU_SELECTED_STATE || selected() || '').trim().toLowerCase();
       setSelected(select.value);
       window.TERAJU_SELECTED_STATE=select.value;
       apply();
-      try{window.dispatchEvent(new CustomEvent('teraju:statechange',{detail:{state:select.value}}))}catch(e){}
+      try{window.dispatchEvent(new CustomEvent('teraju:statechange',{detail:{state:select.value,previousState:previousState||null}}))}catch(e){}
     });
 
     const stateFirstButton=document.getElementById('stateFirstButton');
