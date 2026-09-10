@@ -9,7 +9,6 @@ permissions:
 
 jobs:
   repair:
-    if: "!contains(github.event.head_commit.message, '[repair-build-smm-runtime]')"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -17,6 +16,14 @@ jobs:
           ref: main
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 1
+
+      - name: Skip generated repair commit
+        shell: bash
+        run: |
+          if git log -1 --pretty=%B | grep -q '\[repair-build-smm-runtime\]'; then
+            echo 'Generated repair commit detected; nothing to do.'
+            exit 0
+          fi
 
       - name: Patch Build Planner runtime hook
         shell: bash
@@ -58,8 +65,8 @@ jobs:
   }
 '''
 
-          pattern = r'  function init\(\)\{.*?\n  \}\n\n  init\(\);'
-          updated, count = re.subn(pattern, replacement + '\n  init();', text, count=1, flags=re.S)
+          pattern = r'  function init\(\)\{.*?\n  \}\n  if\(document\.readyState===\x27loading\x27\)'
+          updated, count = re.subn(pattern, replacement + "  if(document.readyState==='loading')", text, count=1, flags=re.S)
           if count != 1:
               raise SystemExit('Could not locate quotation-quantity-fix.js init function')
           if updated == text:
@@ -79,5 +86,9 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add quotation/quotation-quantity-fix.js
+          if git diff --cached --quiet; then
+            echo 'No changes needed.'
+            exit 0
+          fi
           git commit -m "Fix Build SMM description runtime hook [repair-build-smm-runtime]"
           git push origin main
