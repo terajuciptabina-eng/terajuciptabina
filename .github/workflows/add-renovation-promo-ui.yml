@@ -17,7 +17,7 @@ jobs:
           ref: main
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Standardize quotation promo UI, card sizing, homeowner defaults, and GA4
+      - name: Standardize quotation promo UI, card sizing, homeowner defaults, GA4, and Build SMM descriptions
         shell: bash
         run: |
           python - <<'PY'
@@ -69,7 +69,6 @@ jobs:
             document.head.appendChild(script);
             if (path.endsWith('/homeowner.html') || path.endsWith('/contractor.html')) send('app_open', base);
             if (plannerType) send('planner_start', base);
-
             if (path.endsWith('/quotations.html')) {
               document.addEventListener('click', event => {
                 const link = event.target.closest?.('a[data-ga-quotation-opened]');
@@ -160,6 +159,15 @@ jobs:
           if edit_guard in text:
               text = text.replace(edit_guard, '', 1)
           path.write_text(text, encoding='utf-8')
+
+          path = Path('quotation/quotation-quantity-fix.js')
+          text = path.read_text(encoding='utf-8')
+          pattern = r'  function applyBuildDatabase\(items\)\{.*?\n  function applyRenovationDatabase'
+          replacement = '''  function applyBuildDatabase(items){const result=Array.isArray(items)?items:[];result.forEach(item=>{const key=buildRateKey(item);if(!key)return;const originalDescription=item.description,fullDescription=buildFullDescription(item),fallback={description:fullDescription||originalDescription,unit:item.unit||'unit',rate:num(item.rate),qty:num(item.qty)};const existing=db[key];if(existing&&!existing.custom&&fullDescription){existing.description=fullDescription;existing.custom=false;}addDatabaseRecord(key,fallback,false);const e=effectiveRecord(key,fallback);item.description=e.description;if(fullDescription&&!db[key]?.custom){item.description=fullDescription;db[key].description=fullDescription;}if(typeof customDescriptions!=='undefined'&&customDescriptions.has(item.id))item.description=customDescriptions.get(item.id);item.unit=e.unit;item.rate=e.rate;item.amount=num(item.qty)*e.rate;});Object.entries(db).forEach(([key,r])=>{if(!r.custom||r.included===false)return;const qty=Math.max(0,num(r.qty));if(!qty)return;result.push({id:`custom-${key}`,key,description:r.description,unit:r.unit||'unit',rate:num(r.rate),qty,amount:qty*num(r.rate),category:'Additional Contractor Item',room:'Additional / Custom'});});saveDB();return result;}
+  function applyRenovationDatabase'''
+          updated, count = re.subn(pattern, replacement, text, count=1, flags=re.S)
+          if count != 1: raise SystemExit('Could not locate applyBuildDatabase in quotation-quantity-fix.js')
+          path.write_text(updated, encoding='utf-8')
           PY
 
       - name: Commit changes
@@ -167,13 +175,14 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add quotation/renovationplanner.html quotation/buildplanner.html quotation/homeowner.html quotation/contractor.html quotation/quotations.html api/quotations.js
+          git add quotation/renovationplanner.html quotation/buildplanner.html quotation/homeowner.html quotation/contractor.html quotation/quotations.html quotation/quotation-quantity-fix.js api/quotations.js
           if git diff --cached --quiet; then
             echo "No changes needed."
             exit 0
           fi
-          git commit -m "Refresh TERAJU WORKS quotation edit behavior [renovation-promo-ui]"
+          git commit -m "Sync Build SMM descriptions with item database [renovation-promo-ui]"
           git push origin main
 
 # GA4 lifecycle sync trigger
 # quotation edit overwrite patch trigger
+# Build Planner SMM description/database sync trigger
