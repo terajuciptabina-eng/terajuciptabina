@@ -1292,9 +1292,10 @@
         },
         "project": {
           "location": "Not specified",
-          "builtUpArea": 0
+          "builtUpArea": 0,
+          "state": "johor"
         },
-        "total": 30800,
+        "total": 40650,
         "plannerState": {
           "customerName": "Rizki walakajd",
           "projectLocation": "",
@@ -1305,6 +1306,12 @@
               "type": "carPorch",
               "name": "Car Porch",
               "area": "200"
+            },
+            {
+              "id": "room-3",
+              "type": "living",
+              "name": "Living / Dining",
+              "area": "300"
             }
           ],
           "rates": {
@@ -1340,10 +1347,14 @@
           "manualItems": [],
           "standardRateItems": [],
           "quotationType": "detail",
-          "projectId": "PRJ-REN-MTUHZ6Z4-YXJQM"
+          "projectId": "PRJ-REN-MTUHZ6Z4-YXJQM",
+          "projectState": "johor",
+          "rateSetId": "default",
+          "rateSetName": "Default Rate",
+          "rateSnapshotAt": "2026-09-10T09:56:12.090Z"
         },
         "createdAt": "2026-09-09T19:34:38.060Z",
-        "updatedAt": "2026-09-09T19:34:38.608Z",
+        "updatedAt": "2026-09-10T09:56:12.993Z",
         "estimateNumber": "EST-REN-006"
       },
       {
@@ -1790,7 +1801,7 @@
     ]
   },
   "createdAt": "2026-09-09T13:15:32.117Z",
-  "updatedAt": "2026-09-10T09:55:39.960Z",
+  "updatedAt": "2026-09-10T09:56:12.993Z",
   "quotationRunningNumber": {
     "build": 11,
     "renovation": 7
