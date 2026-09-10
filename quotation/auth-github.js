@@ -56,7 +56,10 @@
     try {
       if (mode === 'signup') {
         const name = nameInput.value.trim(), email = emailInput?.value.trim() || '', phone = phoneInput?.value.trim() || ''; if (!name || !email) throw new Error('Name and email are required.');
-        const data = await postAccount({role,name,email,phone}); generated.innerHTML = `<strong>Your ${isHomeowner ? 'Homeowner' : 'Contractor'} ID:</strong><br><span class="mt-1 inline-block text-lg font-bold tracking-wide text-slate-950">${data.id}</span><br><span class="text-xs text-slate-500">Keep this ID. You will use it to sign in later.</span>`; generated.classList.remove('hidden'); showPortal(data.record);
+        const data = await postAccount({role,name,email,phone});
+        const emailNote = data.emailSent ? `<span class="text-xs text-slate-500">Your ID has also been sent to ${email}.</span>` : `<span class="text-xs text-amber-700">Account created, but the ID email could not be sent yet. Please keep this ID.</span>`;
+        generated.innerHTML = `<strong>Your ${isHomeowner ? 'Homeowner' : 'Contractor'} ID:</strong><br><span class="mt-1 inline-block text-lg font-bold tracking-wide text-slate-950">${data.id}</span><br><span class="text-xs text-slate-500">Keep this ID. You will use it to sign in later.</span><br>${emailNote}`;
+        generated.classList.remove('hidden'); showPortal(data.record);
       } else { const id = idInput.value.trim().toUpperCase(); if (!id) throw new Error(`Please enter your ${isHomeowner ? 'Homeowner' : 'Contractor'} ID.`); showPortal(await getAccount(id)); }
     } catch (err) { setError(err.message || 'Unable to complete the request.'); }
     finally { button.disabled = false; button.textContent = mode === 'signup' ? 'Create workspace' : 'Enter workspace'; }
