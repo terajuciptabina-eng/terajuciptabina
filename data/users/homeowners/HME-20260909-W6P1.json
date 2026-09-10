@@ -133,57 +133,21 @@
           "name": "Reeza"
         },
         "project": {
-          "location": "Klang",
-          "builtUpArea": 810,
+          "location": "Not specified",
+          "builtUpArea": 200,
           "state": "selangor"
         },
-        "total": 156095.15,
+        "total": 60168.63,
         "plannerState": {
           "customerName": "Reeza",
-          "projectLocation": "Klang",
-          "builtUpArea": "810",
+          "projectLocation": "",
+          "builtUpArea": "200",
           "rooms": [
             {
               "id": "room-1",
               "type": "living",
               "name": "Living / Family",
               "area": "200"
-            },
-            {
-              "id": "room-2",
-              "type": "dining",
-              "name": "Dining",
-              "area": "120"
-            },
-            {
-              "id": "room-3",
-              "type": "bedroom",
-              "name": "Bedroom",
-              "area": "100"
-            },
-            {
-              "id": "room-4",
-              "type": "bedroom",
-              "name": "Bedroom",
-              "area": "80"
-            },
-            {
-              "id": "room-5",
-              "type": "kitchen",
-              "name": "Kitchen",
-              "area": "120"
-            },
-            {
-              "id": "room-7",
-              "type": "store",
-              "name": "Store / Utility",
-              "area": "40"
-            },
-            {
-              "id": "room-8",
-              "type": "porch",
-              "name": "Car Porch / Entrance",
-              "area": "150"
             }
           ],
           "rates": {
@@ -250,10 +214,10 @@
           "projectState": "selangor",
           "rateSetId": "selangor",
           "rateSetName": "Selangor",
-          "rateSnapshotAt": "2026-09-10T12:46:23.229Z"
+          "rateSnapshotAt": "2026-09-10T19:47:21.856Z"
         },
         "createdAt": "2026-09-10T12:46:23.228Z",
-        "updatedAt": "2026-09-10T12:46:23.916Z",
+        "updatedAt": "2026-09-10T19:47:22.569Z",
         "estimateNumber": "EST-BLD-008"
       },
       {
@@ -1436,7 +1400,7 @@
     ]
   },
   "createdAt": "2026-09-09T22:23:53.088Z",
-  "updatedAt": "2026-09-10T19:46:32.853Z",
+  "updatedAt": "2026-09-10T19:47:22.569Z",
   "quotationRunningNumber": {
     "renovation": 1,
     "build": 9
