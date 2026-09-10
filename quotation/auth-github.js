@@ -19,12 +19,19 @@
   const setError = message => { error.textContent = message; error.classList.remove('hidden'); };
   const clearError = () => { error.textContent = ''; error.classList.add('hidden'); };
   const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[char]));
+  const validEmail = value => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(value || '').trim());
+  const normalizePhone = value => String(value || '').replace(/[\s().-]/g, '');
+  const validPhone = value => /^(?:01\d{8,9}|\+601\d{8,9}|601\d{8,9})$/.test(normalizePhone(value));
+
+  if (emailInput) { emailInput.type = 'email'; emailInput.autocomplete = 'email'; }
+  if (phoneInput) { phoneInput.type = 'tel'; phoneInput.autocomplete = 'tel'; phoneInput.inputMode = 'tel'; phoneInput.placeholder = '0123456789'; }
+
   function setMode(next) {
     mode = next; clearError(); generated.classList.add('hidden'); const signup = next === 'signup';
     title.textContent = signup ? `Create ${isHomeowner ? 'homeowner' : 'contractor'} account` : `${isHomeowner ? 'Homeowner' : 'Contractor'} sign in`;
     description.textContent = signup ? `Create your ${isHomeowner ? 'home project' : 'contractor'} workspace. Your record will be saved to the temporary GitHub account store.` : `Enter the ${isHomeowner ? 'Homeowner' : 'Contractor'} ID generated during Sign Up.`;
     idField.classList.toggle('hidden', signup); nameField.classList.toggle('hidden', !signup); emailInput?.parentElement.classList.toggle('hidden', !signup); phoneInput?.parentElement.classList.toggle('hidden', !signup);
-    idInput.required = !signup; nameInput.required = signup; if (emailInput) emailInput.required = signup; button.textContent = signup ? 'Create workspace' : 'Enter workspace';
+    idInput.required = !signup; nameInput.required = signup; if (emailInput) emailInput.required = signup; if (phoneInput) phoneInput.required = signup; button.textContent = signup ? 'Create workspace' : 'Enter workspace';
     signInTab.className = signup ? 'rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-500' : 'tab-active rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-950';
     signUpTab.className = signup ? 'tab-active rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-950' : 'rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-500';
   }
@@ -76,7 +83,10 @@
     event.preventDefault(); event.stopImmediatePropagation(); clearError(); button.disabled = true; button.textContent = mode === 'signup' ? 'Creating…' : 'Signing in…';
     try {
       if (mode === 'signup') {
-        const name = nameInput.value.trim(), email = emailInput?.value.trim() || '', phone = phoneInput?.value.trim() || ''; if (!name || !email) throw new Error('Name and email are required.');
+        const name = nameInput.value.trim(), email = emailInput?.value.trim() || '', phone = phoneInput?.value.trim() || '';
+        if (!name) throw new Error('Name is required.');
+        if (!validEmail(email)) throw new Error('Please enter a valid email address.');
+        if (!validPhone(phone)) throw new Error('Please enter a valid Malaysian phone number, e.g. 0123456789 or +60123456789.');
         const data = await postAccount({role,name,email,phone});
         generated.innerHTML = `<strong>Your ${isHomeowner ? 'Homeowner' : 'Contractor'} ID:</strong><br><span class="mt-1 inline-block text-lg font-bold tracking-wide text-slate-950">${escapeHtml(data.id)}</span><br><span class="text-xs text-slate-500">Keep this ID. You will use it to sign in later.</span>`;
         generated.classList.remove('hidden');
