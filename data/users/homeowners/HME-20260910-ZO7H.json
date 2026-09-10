@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "homeowner",
+  "homeownerId": "HME-20260910-ZO7H",
+  "profile": {
+    "name": "Iliya Syaz",
+    "email": "iliyasyazwana99@gmail.com",
+    "phone": "0187804363"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-09-10T15:53:00.720Z",
+  "updatedAt": "2026-09-10T15:53:00.720Z"
+}
