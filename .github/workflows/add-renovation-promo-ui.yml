@@ -153,6 +153,13 @@ jobs:
           if open_marker in text and open_replacement not in text:
               text = text.replace(open_marker, open_replacement, 1)
           path.write_text(text, encoding='utf-8')
+
+          path = Path('api/quotations.js')
+          text = path.read_text(encoding='utf-8')
+          edit_guard = "    if (index >= 0 && !sameProjectIdentity(list[index], normalized)) index = -1;\n"
+          if edit_guard in text:
+              text = text.replace(edit_guard, '', 1)
+          path.write_text(text, encoding='utf-8')
           PY
 
       - name: Commit changes
@@ -160,12 +167,12 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add quotation/renovationplanner.html quotation/buildplanner.html quotation/homeowner.html quotation/contractor.html quotation/quotations.html
+          git add quotation/renovationplanner.html quotation/buildplanner.html quotation/homeowner.html quotation/contractor.html quotation/quotations.html api/quotations.js
           if git diff --cached --quiet; then
             echo "No changes needed."
             exit 0
           fi
-          git commit -m "Refresh TERAJU WORKS GA4 instrumentation [renovation-promo-ui]"
+          git commit -m "Refresh TERAJU WORKS quotation edit behavior [renovation-promo-ui]"
           git push origin main
 
 # GA4 lifecycle sync trigger
