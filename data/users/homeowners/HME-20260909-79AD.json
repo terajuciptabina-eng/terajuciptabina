@@ -33,7 +33,7 @@
         "project": {
           "location": "Not specified",
           "builtUpArea": 1067,
-          "state": "johor"
+          "state": "selangor"
         },
         "total": 198390.95,
         "plannerState": {
@@ -145,13 +145,13 @@
           "standardRateItems": [],
           "quotationType": "detail",
           "projectId": "PRJ-BLD-MTV9XS5U-PIMZN",
-          "projectState": "johor",
-          "rateSetId": "default",
-          "rateSetName": "Default Rate",
-          "rateSnapshotAt": "2026-09-10T08:37:21.210Z"
+          "projectState": "selangor",
+          "rateSetId": "selangor",
+          "rateSetName": "Selangor",
+          "rateSnapshotAt": "2026-09-10T08:41:09.857Z"
         },
         "createdAt": "2026-09-10T08:37:21.209Z",
-        "updatedAt": "2026-09-10T08:37:22.001Z",
+        "updatedAt": "2026-09-10T08:41:10.699Z",
         "estimateNumber": "EST-BLD-003"
       },
       {
@@ -556,7 +556,7 @@
     "renovation": []
   },
   "createdAt": "2026-09-09T13:51:41.818Z",
-  "updatedAt": "2026-09-10T08:37:22.001Z",
+  "updatedAt": "2026-09-10T08:41:10.699Z",
   "quotationRunningNumber": {
     "build": 4
   },
