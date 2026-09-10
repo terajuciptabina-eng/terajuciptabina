@@ -90,6 +90,28 @@
     return null;
   }
 
+  function hideAddItemUntilArea(){
+    const hasArea=[...document.querySelectorAll('#roomsContainer .room-area')].some(input=>Number(input.value)>0);
+    document.querySelectorAll('#estimateContent tr.no-print').forEach(row=>{
+      const button=row.querySelector('button');
+      if(!button||!/^\+\s*Add Item$/i.test(button.textContent.trim()))return;
+      row.hidden=!hasArea;
+    });
+  }
+
+  function wrapEstimate(){
+    if(typeof window.updateEstimate!=='function'||window.updateEstimate.__terajuBuildAddItemGate)return false;
+    const original=window.updateEstimate;
+    const wrapped=function(){
+      const result=original.apply(this,arguments);
+      try{hideAddItemUntilArea();}catch(_){}
+      return result;
+    };
+    wrapped.__terajuBuildAddItemGate=true;
+    window.updateEstimate=wrapped;
+    return true;
+  }
+
   function enforce(){
     const section=document.getElementById('rateScheduleSection');
     section?.classList.remove('hidden');
@@ -109,9 +131,8 @@
       wrapped.__terajuUnifiedBuildRate=true;
       window.getAllItems=wrapped;
     }
-    if(typeof window.updateEstimate==='function'){
-      try{window.updateEstimate();}catch(_){}
-    }
+    wrapEstimate();
+    try{hideAddItemUntilArea();}catch(_){}
   }
 
   let tries=0;
