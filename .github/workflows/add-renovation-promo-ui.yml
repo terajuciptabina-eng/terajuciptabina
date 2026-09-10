@@ -79,6 +79,12 @@ jobs:
               if marker not in text:
                   raise SystemExit('Could not find </style> in homeowner.html')
               text = text.replace(marker, card_css + '\n' + marker, 1)
+
+          # Restore the working homeowner authentication script reference and phone input.
+          text = text.replace('<script src="quotation-auth.js"></script>', '<script src="auth-github.js"></script>')
+          broken_phone = '<label class="block" id="accountPhoneField"><span class="mb-2 block text-sm font-semibold">Phone <span class="font-normal text-slate-400">(optional)</span></label>'
+          fixed_phone = '<label class="block" id="accountPhoneField"><span class="mb-2 block text-sm font-semibold">Phone <span class="font-normal text-slate-400">(optional)</span></span><input id="accountPhoneInput" type="tel" autocomplete="tel" class="w-full rounded-2xl border border-slate-300 bg-white/90 px-4 py-3 outline-none transition focus:border-[#b58a3a] focus:ring-2 focus:ring-[#b58a3a]/15" placeholder="01X-XXXXXXX"/></label>'
+          text = text.replace(broken_phone, fixed_phone)
           path.write_text(text, encoding='utf-8')
           PY
 
