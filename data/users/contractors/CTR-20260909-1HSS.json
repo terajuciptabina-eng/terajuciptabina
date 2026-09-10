@@ -555,9 +555,10 @@
         },
         "project": {
           "location": "Kajang, Selangor",
-          "builtUpArea": 0
+          "builtUpArea": 0,
+          "state": "johor"
         },
-        "total": 145324,
+        "total": 178582,
         "plannerState": {
           "customerName": "Atikah Rakman",
           "projectLocation": "Kajang, Selangor",
@@ -568,6 +569,18 @@
               "type": "wetKitchen",
               "name": "Wet Kitchen",
               "area": "876"
+            },
+            {
+              "id": "room-2",
+              "type": "bathroom",
+              "name": "Bathroom",
+              "area": "48"
+            },
+            {
+              "id": "room-3",
+              "type": "carPorch",
+              "name": "Car Porch",
+              "area": "135"
             },
             {
               "id": "room-4",
@@ -615,10 +628,14 @@
           "manualItems": [],
           "standardRateItems": [],
           "quotationType": "detail",
-          "projectId": "PRJ-REN-MTU4YDOD-6U2G0"
+          "projectId": "PRJ-REN-MTU4YDOD-6U2G0",
+          "projectState": "johor",
+          "rateSetId": "default",
+          "rateSetName": "Default Rate",
+          "rateSnapshotAt": "2026-09-10T08:07:00.447Z"
         },
         "createdAt": "2026-09-09T15:00:49.638Z",
-        "updatedAt": "2026-09-09T15:10:14.219Z",
+        "updatedAt": "2026-09-10T08:07:03.493Z",
         "estimateNumber": "EST-REN-003"
       },
       {
@@ -1394,7 +1411,7 @@
     ]
   },
   "createdAt": "2026-09-09T12:47:34.713Z",
-  "updatedAt": "2026-09-09T16:18:05.223Z",
+  "updatedAt": "2026-09-10T08:07:03.493Z",
   "quotationRunningNumber": {
     "renovation": 8
   },
