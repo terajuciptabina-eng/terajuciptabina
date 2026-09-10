@@ -16,9 +16,10 @@
   let mode = 'signup';
   const getLocal = () => { try { return JSON.parse(localStorage.getItem(storageKey) || 'null'); } catch { return null; } };
   const setLocal = record => localStorage.setItem(storageKey, JSON.stringify(record));
+  const trackEvent = (name, extra = {}) => { try { if (typeof window.TERAJU_GA_EVENT === 'function') window.TERAJU_GA_EVENT(name, Object.fromEntries(Object.entries({ role, ...extra }).filter(([,v]) => v !== undefined && v !== ''))); } catch {} };
   const setError = message => { error.textContent = message; error.classList.remove('hidden'); };
   const clearError = () => { error.textContent = ''; error.classList.add('hidden'); };
-  const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[char]));
+  const escapeHtml = value => String(value ?? '').replace(/[&<>\"']/g, char => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '\"':'&quot;', "'":'&#39;' }[char]));
   const validEmail = value => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(value || '').trim());
   const normalizePhone = value => String(value || '').replace(/[\s().-]/g, '');
   const validPhone = value => /^(?:01\d{8,9}|\+601\d{8,9}|601\d{8,9})$/.test(normalizePhone(value));
@@ -46,7 +47,7 @@
       ? `Your ID has also been sent to ${escapeHtml(email)}.`
       : 'Account created, but the ID email could not be sent yet. Please keep this ID.';
     const noteClass = emailSent ? 'color:#64748b' : 'color:#b45309';
-    popup.innerHTML = `<div style="font-size:11px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:#64748b">Account created</div><div style="margin-top:8px;font-size:15px;font-weight:700">Your ${label} ID</div><div style="margin-top:5px;font-size:24px;font-weight:800;letter-spacing:.06em">${escapeHtml(record[idKey])}</div><div style="margin-top:10px;font-size:12px;line-height:1.5;${noteClass}">${note}</div>`;
+    popup.innerHTML = `<div style=\"font-size:11px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:#64748b\">Account created</div><div style=\"margin-top:8px;font-size:15px;font-weight:700\">Your ${label} ID</div><div style=\"margin-top:5px;font-size:24px;font-weight:800;letter-spacing:.06em\">${escapeHtml(record[idKey])}</div><div style=\"margin-top:10px;font-size:12px;line-height:1.5;${noteClass}\">${note}</div>`;
     document.body.appendChild(popup);
     requestAnimationFrame(() => { popup.style.opacity = '1'; popup.style.transform = 'translateX(-50%) translateY(0)'; });
     setTimeout(() => {
@@ -57,7 +58,7 @@
   }
   function showPortal(record) {
     setLocal(record); panel.classList.add('hidden'); portal.classList.remove('hidden'); const id = record[idKey];
-    welcome.innerHTML = `<span class="block">Welcome, ${escapeHtml(record.profile?.name || '')}.</span>`;
+    welcome.innerHTML = `<span class=\"block\">Welcome, ${escapeHtml(record.profile?.name || '')}.</span>`;
     if (buildLink) buildLink.href = `quotations.html?audience=${role}&role=${role}&${idKey}=${encodeURIComponent(id)}&id=${encodeURIComponent(id)}&plannerType=build`;
     if (renoLink) renoLink.href = `quotations.html?audience=${role}&role=${role}&${idKey}=${encodeURIComponent(id)}&id=${encodeURIComponent(id)}&plannerType=renovation`;
   }
@@ -88,11 +89,18 @@
         if (!validEmail(email)) throw new Error('Please enter a valid email address.');
         if (!validPhone(phone)) throw new Error('Please enter a valid Malaysian phone number, e.g. 0123456789 or +60123456789.');
         const data = await postAccount({role,name,email,phone});
-        generated.innerHTML = `<strong>Your ${isHomeowner ? 'Homeowner' : 'Contractor'} ID:</strong><br><span class="mt-1 inline-block text-lg font-bold tracking-wide text-slate-950">${escapeHtml(data.id)}</span><br><span class="text-xs text-slate-500">Keep this ID. You will use it to sign in later.</span>`;
+        trackEvent('sign_up', { signup_role: role, generated_id: data.id, method: 'github_account_store' });
+        generated.innerHTML = `<strong>Your ${isHomeowner ? 'Homeowner' : 'Contractor'} ID:</strong><br><span class=\"mt-1 inline-block text-lg font-bold tracking-wide text-slate-950\">${escapeHtml(data.id)}</span><br><span class=\"text-xs text-slate-500\">Keep this ID. You will use it to sign in later.</span>`;
         generated.classList.remove('hidden');
         showPortal(data.record);
         showSignupPopup(data.record, data.emailSent === true, email);
-      } else { const id = idInput.value.trim().toUpperCase(); if (!id) throw new Error(`Please enter your ${isHomeowner ? 'Homeowner' : 'Contractor'} ID.`); showPortal(await getAccount(id)); }
+      } else {
+        const id = idInput.value.trim().toUpperCase();
+        if (!id) throw new Error(`Please enter your ${isHomeowner ? 'Homeowner' : 'Contractor'} ID.`);
+        const account = await getAccount(id);
+        trackEvent('login', { login_role: role, method: 'github_account_store' });
+        showPortal(account);
+      }
     } catch (err) { setError(err.message || 'Unable to complete the request.'); }
     finally { button.disabled = false; button.textContent = mode === 'signup' ? 'Create workspace' : 'Enter workspace'; }
   }, true);
