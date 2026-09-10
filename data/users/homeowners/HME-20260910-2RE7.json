@@ -311,12 +311,12 @@
           "quotationType": "detail",
           "projectId": "PRJ-BLD-MTVFKUJX-G8C7T",
           "projectState": "terengganu",
-          "rateSetId": "terengganu",
-          "rateSetName": "Terengganu",
-          "rateSnapshotAt": "2026-09-10T11:15:15.431Z"
+          "rateSetId": "default",
+          "rateSetName": "Default Rate",
+          "rateSnapshotAt": "2026-09-10T11:16:09.777Z"
         },
         "createdAt": "2026-09-10T11:15:15.430Z",
-        "updatedAt": "2026-09-10T11:15:16.269Z",
+        "updatedAt": "2026-09-10T11:16:10.396Z",
         "estimateNumber": "EST-BLD-004"
       },
       {
@@ -1232,7 +1232,7 @@
     "renovation": []
   },
   "createdAt": "2026-09-10T10:50:14.052Z",
-  "updatedAt": "2026-09-10T11:15:16.269Z",
+  "updatedAt": "2026-09-10T11:16:10.396Z",
   "quotationRunningNumber": {
     "build": 4
   },
