@@ -33,13 +33,23 @@
     if (buildLink) buildLink.href = `quotations.html?audience=${role}&role=${role}&${idKey}=${encodeURIComponent(id)}&id=${encodeURIComponent(id)}&plannerType=build`;
     if (renoLink) renoLink.href = `quotations.html?audience=${role}&role=${role}&${idKey}=${encodeURIComponent(id)}&id=${encodeURIComponent(id)}&plannerType=renovation`;
   }
-  async function postAccount(body) {
-    const response = await fetch(`${API_BASE}/api/auth`, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).catch(() => null);
-    if (!response) throw new Error('Unable to reach the account service.'); const data = await response.json().catch(() => ({})); if (!response.ok) throw new Error(data.message || 'Account request failed.'); return data;
-  }
   async function getAccount(id) {
     const response = await fetch(`${API_BASE}/api/auth?role=${encodeURIComponent(role)}&id=${encodeURIComponent(id)}`).catch(() => null);
     if (!response) throw new Error('Unable to reach the account service.'); const data = await response.json().catch(() => ({})); if (!response.ok) throw new Error(data.message || 'Account not found.'); return data;
+  }
+  async function syncLocalAccount(record) {
+    const id = String(record?.[idKey] || '').trim().toUpperCase();
+    if (!id) return;
+    try {
+      const latest = await getAccount(id);
+      if (latest?.[idKey]) showPortal(latest);
+    } catch {
+      // Keep the locally cached account if the sync service is temporarily unavailable.
+    }
+  }
+  async function postAccount(body) {
+    const response = await fetch(`${API_BASE}/api/auth`, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).catch(() => null);
+    if (!response) throw new Error('Unable to reach the account service.'); const data = await response.json().catch(() => ({})); if (!response.ok) throw new Error(data.message || 'Account request failed.'); return data;
   }
   form.addEventListener('submit', async event => {
     event.preventDefault(); event.stopImmediatePropagation(); clearError(); button.disabled = true; button.textContent = mode === 'signup' ? 'Creating…' : 'Signing in…';
@@ -53,5 +63,5 @@
   }, true);
   signInTab.addEventListener('click', () => setMode('signin'), true); signUpTab.addEventListener('click', () => setMode('signup'), true);
   document.getElementById('logout')?.addEventListener('click', () => { localStorage.removeItem(storageKey); location.reload(); }, true);
-  const local = getLocal(); if (local?.[idKey]) showPortal(local); else setMode('signup');
+  const local = getLocal(); if (local?.[idKey]) { showPortal(local); syncLocalAccount(local); } else setMode('signup');
 })();
