@@ -30,8 +30,8 @@
   function showPortal(record) {
     setLocal(record); panel.classList.add('hidden'); portal.classList.remove('hidden'); const id = record[idKey];
     welcome.textContent = `Welcome, ${record.profile?.name || ''}. ${isHomeowner ? 'Homeowner ID' : 'Contractor ID'}: ${id}`;
-    if (buildLink) buildLink.href = `buildplanner.html?audience=${role}&${idKey}=${encodeURIComponent(id)}`;
-    if (renoLink) renoLink.href = `renovationplanner.html?audience=${role}&${idKey}=${encodeURIComponent(id)}`;
+    if (buildLink) buildLink.href = `quotations.html?audience=${role}&role=${role}&${idKey}=${encodeURIComponent(id)}&id=${encodeURIComponent(id)}&plannerType=build`;
+    if (renoLink) renoLink.href = `quotations.html?audience=${role}&role=${role}&${idKey}=${encodeURIComponent(id)}&id=${encodeURIComponent(id)}&plannerType=renovation`;
   }
   async function postAccount(body) {
     const response = await fetch(`${API_BASE}/api/auth`, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).catch(() => null);
