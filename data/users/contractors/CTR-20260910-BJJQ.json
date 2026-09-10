@@ -15,9 +15,118 @@
   },
   "state": "active",
   "plannerRecords": {
-    "build": [],
+    "build": [
+      {
+        "schemaVersion": 1,
+        "recordType": "quotation",
+        "quotationId": "QT-BLD-MTV6ONNM-Q6U8B",
+        "projectId": "PRJ-BLD-MTV6OPQD-691U6",
+        "quotationNumber": "Q001S",
+        "plannerType": "build",
+        "role": "contractor",
+        "contractorId": "CTR-20260910-BJJQ",
+        "state": "final",
+        "quotationType": "simple",
+        "client": {
+          "name": "HSBC"
+        },
+        "project": {
+          "location": "HSBC DESA PARK CITY",
+          "builtUpArea": 9980,
+          "state": "kuala-lumpur"
+        },
+        "total": 1592175.94,
+        "plannerState": {
+          "customerName": "HSBC",
+          "projectLocation": "HSBC DESA PARK CITY",
+          "builtUpArea": "9980",
+          "rooms": [
+            {
+              "id": "room-1",
+              "type": "living",
+              "name": "Living / Family",
+              "area": "9980"
+            }
+          ],
+          "rates": {
+            "footingConc": 550,
+            "footingFw": 4.18,
+            "footingRebar": 15,
+            "slabConc": 550,
+            "slabBrc": 6.5,
+            "beamConc": 350,
+            "beamFw": 4.18,
+            "beamRebar": 15,
+            "colConc": 550,
+            "colFw": 4.18,
+            "colRebar": 15,
+            "flatRoofConc": 550,
+            "flatRoofFw": 4.18,
+            "flatRoofBrc": 6.5,
+            "cChannel": 4,
+            "metalSheet": 3.25,
+            "roofDesignConc": 550,
+            "roofDesignFw": 4.18,
+            "roofDesignRebar": 70,
+            "apronConc": 350,
+            "apronFw": 13.72,
+            "apronBrc": 15,
+            "drainage": 25,
+            "ceilingInt": 15,
+            "ceilingExt": 20,
+            "floorTileInt": 4.18,
+            "floorTileExt": 5.57,
+            "paintInt": 1.39,
+            "paintExt": 2.32,
+            "door": 600,
+            "window": 600,
+            "waterTank": 500,
+            "septicTank": 1500,
+            "bathWallTile": 4.18,
+            "bathFloorTile": 4.18,
+            "bathPiping": 1000,
+            "bathShower": 120,
+            "bathTap": 30,
+            "bathWc": 500,
+            "bathBasin": 400,
+            "dbBox": 1000,
+            "wiring": 20,
+            "powerPoint": 50,
+            "switch": 50,
+            "lighting": 250,
+            "fan": 600,
+            "aircond": 675,
+            "earthing": 1500,
+            "permit": 8500,
+            "prelim": 12000
+          },
+          "customRates": [],
+          "customQuantities": [],
+          "customDescriptions": [],
+          "customRoomLabels": [],
+          "excludedItems": [],
+          "manualItems": [],
+          "standardRateItems": [],
+          "quotationType": "simple",
+          "projectId": "PRJ-BLD-MTV6OPQD-691U6",
+          "projectState": "kuala-lumpur",
+          "rateSetId": "kuala-lumpur",
+          "rateSetName": "Kuala Lumpur",
+          "rateSnapshotAt": "2026-09-10T07:06:17.411Z"
+        },
+        "createdAt": "2026-09-10T07:06:17.410Z",
+        "updatedAt": "2026-09-10T07:06:20.100Z",
+        "estimateNumber": "EST-BLD-001"
+      }
+    ],
     "renovation": []
   },
   "createdAt": "2026-09-10T07:04:18.780Z",
-  "updatedAt": "2026-09-10T07:04:18.780Z"
+  "updatedAt": "2026-09-10T07:06:20.100Z",
+  "quotationRunningNumber": {
+    "build": 1
+  },
+  "estimateRunningNumber": {
+    "build": 1
+  }
 }
