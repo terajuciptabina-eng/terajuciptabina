@@ -49,3 +49,77 @@
   script.async=false;
   document.head.appendChild(script);
 })();
+
+// Build Planner uses one master Rate Schedule for both audiences.
+// Homeowner remains read-only; Contractor may edit the same schedule.
+// This adapter removes the legacy duplicate contractor database UI/path only.
+(function(){
+  'use strict';
+  const params=new URLSearchParams(location.search);
+  const contractor=(params.get('audience')||document.body.dataset.role||'').toLowerCase()==='contractor';
+  const isBuild=/buildplanner\.html$/i.test(location.pathname);
+  if(!contractor||!isBuild)return;
+
+  function rateKey(item){
+    if(!item)return null;
+    const id=String(item.id||'');
+    const map={
+      'prelim-1':'permit','prelim-2':'prelim','elec-db':'dbBox','elec-wiring':'wiring',
+      'elec-pp':'powerPoint','elec-switch':'switch','elec-light':'lighting','elec-fan':'fan',
+      'elec-ac':'aircond','elec-earth':'earthing'
+    };
+    if(map[id])return map[id];
+    if(typeof STRUCT_GROUPS!=='undefined'){
+      for(const group of STRUCT_GROUPS||[]){
+        for(const row of group.items||[]){
+          if(row.id===id)return row.rateKey;
+        }
+      }
+    }
+    if(id.endsWith('-ceiling'))return 'ceilingInt';
+    if(id.endsWith('-walltile'))return 'bathWallTile';
+    if(id.endsWith('-piping'))return 'bathPiping';
+    if(id.endsWith('-wc'))return 'bathWc';
+    if(id.endsWith('-basin'))return 'bathBasin';
+    if(id.endsWith('-shower'))return 'bathShower';
+    if(id.endsWith('-tap'))return 'bathTap';
+    if(id.endsWith('-floortile'))return 'floorTileInt';
+    if(id.endsWith('-paint'))return 'paintInt';
+    if(id.endsWith('-door'))return 'door';
+    if(id.endsWith('-window'))return 'window';
+    return null;
+  }
+
+  function enforce(){
+    const section=document.getElementById('rateScheduleSection');
+    section?.classList.remove('hidden');
+    document.getElementById('contractorItemDatabase')?.remove();
+    if(typeof window.getAllItems==='function'&&!window.getAllItems.__terajuUnifiedBuildRate){
+      const original=window.getAllItems;
+      const wrapped=function(){
+        const items=original.apply(this,arguments);
+        const result=(Array.isArray(items)?items:[]).filter(item=>item?.category!=='Additional Contractor Item');
+        result.forEach(item=>{
+          const key=rateKey(item);
+          if(key&&typeof RATES!=='undefined'&&Object.prototype.hasOwnProperty.call(RATES,key))item.rate=Number(RATES[key])||0;
+          item.amount=(Number(item.qty)||0)*(Number(item.rate)||0);
+        });
+        return result;
+      };
+      wrapped.__terajuUnifiedBuildRate=true;
+      window.getAllItems=wrapped;
+    }
+    if(typeof window.updateEstimate==='function'){
+      try{window.updateEstimate();}catch(_){}
+    }
+  }
+
+  let tries=0;
+  const timer=setInterval(()=>{
+    enforce();
+    tries+=1;
+    if(tries>40)clearInterval(timer);
+  },250);
+  if(document.readyState!=='loading')enforce();
+  else document.addEventListener('DOMContentLoaded',enforce,{once:true});
+})();
