@@ -18,6 +18,7 @@
   const setLocal = record => localStorage.setItem(storageKey, JSON.stringify(record));
   const setError = message => { error.textContent = message; error.classList.remove('hidden'); };
   const clearError = () => { error.textContent = ''; error.classList.add('hidden'); };
+  const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[char]));
   function setMode(next) {
     mode = next; clearError(); generated.classList.add('hidden'); const signup = next === 'signup';
     title.textContent = signup ? `Create ${isHomeowner ? 'homeowner' : 'contractor'} account` : `${isHomeowner ? 'Homeowner' : 'Contractor'} sign in`;
@@ -29,7 +30,8 @@
   }
   function showPortal(record) {
     setLocal(record); panel.classList.add('hidden'); portal.classList.remove('hidden'); const id = record[idKey];
-    welcome.textContent = `Welcome, ${record.profile?.name || ''}. ${isHomeowner ? 'Homeowner ID' : 'Contractor ID'}: ${id}`;
+    const label = isHomeowner ? 'Homeowner' : 'Contractor';
+    welcome.innerHTML = `<span class="block">Welcome, ${escapeHtml(record.profile?.name || '')}.</span><span class="mt-2 inline-block rounded-full border border-[#d9c49a] bg-[#fbf7ef] px-4 py-2 text-sm font-bold tracking-wide text-slate-900">${label} ID: ${escapeHtml(id)}</span>`;
     if (buildLink) buildLink.href = `quotations.html?audience=${role}&role=${role}&${idKey}=${encodeURIComponent(id)}&id=${encodeURIComponent(id)}&plannerType=build`;
     if (renoLink) renoLink.href = `quotations.html?audience=${role}&role=${role}&${idKey}=${encodeURIComponent(id)}&id=${encodeURIComponent(id)}&plannerType=renovation`;
   }
@@ -57,8 +59,8 @@
       if (mode === 'signup') {
         const name = nameInput.value.trim(), email = emailInput?.value.trim() || '', phone = phoneInput?.value.trim() || ''; if (!name || !email) throw new Error('Name and email are required.');
         const data = await postAccount({role,name,email,phone});
-        const emailNote = data.emailSent ? `<span class="text-xs text-slate-500">Your ID has also been sent to ${email}.</span>` : `<span class="text-xs text-amber-700">Account created, but the ID email could not be sent yet. Please keep this ID.</span>`;
-        generated.innerHTML = `<strong>Your ${isHomeowner ? 'Homeowner' : 'Contractor'} ID:</strong><br><span class="mt-1 inline-block text-lg font-bold tracking-wide text-slate-950">${data.id}</span><br><span class="text-xs text-slate-500">Keep this ID. You will use it to sign in later.</span><br>${emailNote}`;
+        const emailNote = data.emailSent ? `<span class="text-xs text-slate-500">Your ID has also been sent to ${escapeHtml(email)}.</span>` : `<span class="text-xs text-amber-700">Account created, but the ID email could not be sent yet. Please keep this ID.</span>`;
+        generated.innerHTML = `<strong>Your ${isHomeowner ? 'Homeowner' : 'Contractor'} ID:</strong><br><span class="mt-1 inline-block text-lg font-bold tracking-wide text-slate-950">${escapeHtml(data.id)}</span><br><span class="text-xs text-slate-500">Keep this ID. You will use it to sign in later.</span><br>${emailNote}`;
         generated.classList.remove('hidden'); showPortal(data.record);
       } else { const id = idInput.value.trim().toUpperCase(); if (!id) throw new Error(`Please enter your ${isHomeowner ? 'Homeowner' : 'Contractor'} ID.`); showPortal(await getAccount(id)); }
     } catch (err) { setError(err.message || 'Unable to complete the request.'); }
