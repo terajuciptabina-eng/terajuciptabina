@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "contractor",
+  "contractorId": "CTR-20260910-R2MN",
+  "profile": {
+    "name": "Pembinaan Jaya Depan",
+    "email": "hanakhalilah@jayadepan.com",
+    "phone": ""
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-09-10T12:11:47.448Z",
+  "updatedAt": "2026-09-10T12:11:47.448Z"
+}
