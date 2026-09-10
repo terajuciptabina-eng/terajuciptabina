@@ -32,7 +32,8 @@
     if (!q) return;
 
     q.querySelectorAll('.quotation-type-copy em').forEach(el => {
-      setText(el, 'Included with Detailed Quotation');
+      setText(el, '');
+      el.style.display = 'none';
     });
 
     q.querySelectorAll('.detail-lock-card').forEach(card => {
@@ -55,5 +56,5 @@
   neutralize();
 
   const observer = new MutationObserver(() => neutralize());
-  observer.observe(document.body, { childList: true, subtree: true });
+  observer.observe(document.body, { childList: true, subtree: true, characterData: true });
 })();
