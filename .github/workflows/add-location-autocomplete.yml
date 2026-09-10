@@ -77,3 +77,5 @@ function installRenovation'''
           fi
           git commit -m 'Add quotation quantity rounding [location-autocomplete]'
           git push
+
+# Trigger cleanup after the temporary workflow has been removed.
