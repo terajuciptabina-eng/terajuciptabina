@@ -1,0 +1,70 @@
+name: Fix Build Planner identical rate schedule
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: "!contains(github.event.head_commit.message, '[fix-buildplanner-identical]')"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Make contractor Build Planner use the same Rate Schedule
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          path = Path('quotation/quotation-quantity-fix.js')
+          text = path.read_text(encoding='utf-8')
+
+          pattern = r"  function installBuild\(\) \{.*?\n  function installRenovation"
+          replacement = '''  function installBuild() {
+    if (!contractor || typeof window.getAllItems !== 'function' || typeof RATE_SCHEDULE === 'undefined') return false;
+    if (!window.getAllItems.__terajuBuildSmmWrapped) {
+      const original = window.getAllItems;
+      const wrapped = function(){
+        const items = original();
+        return (Array.isArray(items) ? items : []).map(item => {
+          const description = buildFullDescription(item);
+          if (description) item.description = description;
+          return item;
+        });
+      };
+      wrapped.__terajuBuildSmmWrapped = true;
+      window.getAllItems = wrapped;
+    }
+    document.getElementById('homeownerQuotationOptions')?.classList.add('hidden');
+    document.getElementById('contractorQuotationOptions')?.classList.remove('hidden');
+    const oldRate = document.getElementById('rateScheduleSection');
+    if (oldRate) oldRate.classList.remove('hidden');
+    const database = document.getElementById('contractorItemDatabase');
+    if (database) database.remove();
+    return true;
+  }
+  function installRenovation'''
+
+          updated, count = re.subn(pattern, replacement, text, count=1, flags=re.S)
+          if count != 1:
+              raise SystemExit('Could not locate installBuild()')
+          path.write_text(updated, encoding='utf-8')
+          PY
+
+      - name: Remove temporary repair workflow and commit
+        shell: bash
+        run: |
+          rm -f .github/workflows/fix-buildplanner-identical.yml
+          git config user.name 'Teraju Ciptabina Bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add quotation/quotation-quantity-fix.js .github/workflows/fix-buildplanner-identical.yml
+          git commit -m 'Make Build Planner use identical Rate Schedule [fix-buildplanner-identical]'
+          git push origin main
