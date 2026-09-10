@@ -105,7 +105,8 @@
       return /Show Removed Items/i.test(text)&&/Restore All Items/i.test(text);
     });
     if(!controls)return;
-    const hasRemoved=typeof excludedItems!=='undefined'&&excludedItems instanceof Set&&excludedItems.size>0;
+    const hasArea=[...document.querySelectorAll('#roomsContainer .room-area')].some(input=>Number(input.value)>0);
+    const hasRemoved=hasArea&&typeof excludedItems!=='undefined'&&excludedItems instanceof Set&&excludedItems.size>0;
     controls.style.setProperty('display',hasRemoved?'flex':'none','important');
   }
 
