@@ -150,7 +150,7 @@ jobs:
               text = text.replace(marker, ga4_script + '\n' + marker, 1)
           open_marker = '<a href="${edit}" class="history-action rounded-xl px-4 py-3 text-sm font-semibold">Open / Edit</a>'
           open_replacement = '<a href="${edit}" data-ga-quotation-opened="1" data-ga-role="${esc(role)}" data-ga-planner-type="${esc(type)}" data-ga-quotation-id="${esc(q.quotationId)}" data-ga-quotation-number="${esc(q.quotationNumber||q.quotationId)}" data-ga-quotation-type="${esc(q.quotationType||\'simple\')}" class="history-action rounded-xl px-4 py-3 text-sm font-semibold">Open / Edit</a>'
-          if open_marker in text and 'data-ga-quotation-opened' not in text:
+          if open_marker in text and open_replacement not in text:
               text = text.replace(open_marker, open_replacement, 1)
           path.write_text(text, encoding='utf-8')
           PY
