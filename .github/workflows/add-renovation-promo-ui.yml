@@ -29,6 +29,7 @@ jobs:
               text = text.replace('        <em>~~RM49~~ FREE during promotion</em>\n', '')
               text = text.replace('        <em>Included with Detailed Quotation</em>\n', '')
               text = text.replace('~~RM49~~ FREE during promotion', '')
+              text = text.replace('min-height:112px}', '}')
               path.write_text(text, encoding='utf-8')
 
           path = Path('quotation/renovationplanner.html')
@@ -52,5 +53,5 @@ jobs:
             echo "No changes needed."
             exit 0
           fi
-          git commit -m "Standardize Detailed Quotation promo label [renovation-promo-ui]"
+          git commit -m "Standardize Detailed Quotation card sizing [renovation-promo-ui]"
           git push origin main
