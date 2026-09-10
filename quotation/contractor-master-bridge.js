@@ -6,6 +6,7 @@
   const plannerType = /renovationplanner\.html/i.test(location.pathname) ? 'renovation' : 'build';
   const contractorId = (qs.get('contractorId') || '').trim();
   const MARKET_API = 'https://terajuciptabina.vercel.app/api/contractor-market';
+  const buildStorageKey = contractorId ? `teraju.contractor.local.v1.${contractorId}.build` : '';
 
   const BUILD_MASTER = {
     permit:'Submission of building plan / permit application and Engineer’s drawings to the Local Authority, including preparation of required documents, submission, coordination and necessary authority liaison, complete.',
@@ -67,113 +68,62 @@
 
   function applyBuildMaster(){
     if(plannerType!=='build')return;
-    if(Array.isArray(window.RATE_SCHEDULE)){
-      for(const group of window.RATE_SCHEDULE){
-        for(const row of group.rows||[]) if(BUILD_MASTER[row.key]) row.label=BUILD_MASTER[row.key];
-      }
-    }
-    if(Array.isArray(window.STRUCT_GROUPS)){
-      for(const group of window.STRUCT_GROUPS){
-        for(const item of group.items||[]) if(STRUCT_MASTER[item.id]) item.desc=STRUCT_MASTER[item.id];
-      }
-    }
+    if(Array.isArray(window.RATE_SCHEDULE))for(const group of window.RATE_SCHEDULE)for(const row of group.rows||[])if(BUILD_MASTER[row.key])row.label=BUILD_MASTER[row.key];
+    if(Array.isArray(window.STRUCT_GROUPS))for(const group of window.STRUCT_GROUPS)for(const item of group.items||[])if(STRUCT_MASTER[item.id])item.desc=STRUCT_MASTER[item.id];
   }
 
   function protectGlobalRateSchedule(){
     if(plannerType!=='build')return;
-    const originalEdit=window.editScheduleRate;
-    window.editScheduleRate=() => false;
-    window.resetRatesToDefault=() => false;
+    window.editScheduleRate=()=>false;
+    window.resetRatesToDefault=()=>false;
     const originalRender=window.renderRateSchedule;
-    if(typeof originalRender==='function' && !originalRender.__terajuProtected){
+    if(typeof originalRender==='function'&&!originalRender.__terajuProtected){
       const render=function(){
-        applyBuildMaster();
-        originalRender();
-        document.querySelectorAll('#rateScheduleContent input').forEach(input => {
-          const span=document.createElement('span');
-          span.className='inline-block min-w-[7rem] px-2 py-1.5 text-right text-gray-700';
-          span.textContent=Number(input.value||0).toFixed(2);
-          span.setAttribute('aria-label','Global master rate — read only');
-          input.replaceWith(span);
-        });
+        applyBuildMaster();originalRender();
+        document.querySelectorAll('#rateScheduleContent input').forEach(input=>{const span=document.createElement('span');span.className='inline-block min-w-[7rem] px-2 py-1.5 text-right text-gray-700';span.textContent=Number(input.value||0).toFixed(2);span.setAttribute('aria-label','Global master rate — read only');input.replaceWith(span)});
         document.querySelectorAll('#rateScheduleContent [onclick*="resetRatesToDefault"]').forEach(el=>el.remove());
-      };
-      render.__terajuProtected=true;
-      window.renderRateSchedule=render;
+      };render.__terajuProtected=true;window.renderRateSchedule=render;
     }
-    applyBuildMaster();
-    try{ window.renderRateSchedule?.(); }catch(_){ }
+    applyBuildMaster();try{window.renderRateSchedule?.()}catch(_){ }
   }
 
   const captureSignatures=new Map();
   async function captureItem(item){
     if(!contractor||!contractorId||!item||!item.custom)return;
-    const payload={
-      contractorId,plannerType,
-      customItemId:item.customItemId||item.id,
-      sourceGlobalId:item.sourceGlobalId||null,
-      description:String(item.description||'').trim(),
-      unit:String(item.unit||'unit').trim(),
-      rate:Number(item.rate)||0,
-      category:String(item.category||'custom'),
-      groupKey:item.groupKey||null,
-      groupTitle:String(item.groupTitle||'Custom Items')
-    };
-    if(!payload.description)return;
-    const sig=JSON.stringify(payload);
-    if(captureSignatures.get(payload.customItemId)===sig)return;
-    try{
-      const r=await fetch(MARKET_API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
-      if(r.ok)captureSignatures.set(payload.customItemId,sig);
-    }catch(_){ }
+    const payload={contractorId,plannerType,customItemId:item.customItemId||item.id,sourceGlobalId:item.sourceGlobalId||null,description:String(item.description||'').trim(),unit:String(item.unit||'unit').trim(),rate:Number(item.rate)||0,category:String(item.category||'custom'),groupKey:item.groupKey||null,groupTitle:String(item.groupTitle||'Custom Items')};
+    if(!payload.description)return;const sig=JSON.stringify(payload);if(captureSignatures.get(payload.customItemId)===sig)return;
+    try{const r=await fetch(MARKET_API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});if(r.ok)captureSignatures.set(payload.customItemId,sig)}catch(_){ }
   }
 
-  function captureCurrentCustomItems(){
-    if(!contractor)return;
-    const items=Array.isArray(window.standardRateItems)?window.standardRateItems:[];
-    items.filter(x=>x&&x.custom).forEach(captureItem);
+  function readBuildCustomItems(){
+    if(!contractor||plannerType!=='build'||!buildStorageKey)return [];
+    try{const state=JSON.parse(localStorage.getItem(buildStorageKey)||'null');return Array.isArray(state?.standardRateItems)?state.standardRateItems:[]}catch(_){return []}
   }
+  function captureCurrentCustomItems(){readBuildCustomItems().filter(x=>x&&x.custom).forEach(captureItem)}
 
   function wrapSaveManualItem(){
     if(!contractor||plannerType!=='build'||typeof window.saveManualItem!=='function'||window.saveManualItem.__terajuWrapped)return false;
     const original=window.saveManualItem;
     const wrapped=function(targetKey){
-      const select=document.getElementById(`manual-select-${targetKey}`);
-      const selected=select?.value||'';
+      const select=document.getElementById(`manual-select-${targetKey}`);const selected=select?.value||'';
       const result=original.apply(this,arguments);
-      const items=Array.isArray(window.standardRateItems)?window.standardRateItems:[];
-      const item=items[items.length-1];
-      if(item&&item.custom){
-        if(selected&&selected!=='__new__')item.sourceGlobalId=selected;
-        item.customItemId=item.customItemId||item.id;
-        try{window.saveContractorState?.()}catch(_){ }
-        captureItem(item);
-      }
+      setTimeout(()=>{
+        try{
+          const state=JSON.parse(localStorage.getItem(buildStorageKey)||'null');
+          const items=Array.isArray(state?.standardRateItems)?state.standardRateItems:[];const item=items[items.length-1];
+          if(item&&item.custom){if(selected&&selected!=='__new__')item.sourceGlobalId=selected;item.customItemId=item.customItemId||item.id;state.standardRateItems=items;localStorage.setItem(buildStorageKey,JSON.stringify(state));captureItem(item)}
+        }catch(_){ }
+      },50);
       return result;
     };
-    wrapped.__terajuWrapped=true;
-    window.saveManualItem=wrapped;
-    return true;
+    wrapped.__terajuWrapped=true;window.saveManualItem=wrapped;return true;
   }
 
   function wrapQuotationSave(){
     if(!contractor||typeof window.saveQuotation!=='function'||window.saveQuotation.__terajuMarketWrapped)return false;
-    const original=window.saveQuotation;
-    const wrapped=async function(){
-      captureCurrentCustomItems();
-      return original.apply(this,arguments);
-    };
-    wrapped.__terajuMarketWrapped=true;
-    window.saveQuotation=wrapped;
-    return true;
+    const original=window.saveQuotation;const wrapped=async function(){captureCurrentCustomItems();return original.apply(this,arguments)};wrapped.__terajuMarketWrapped=true;window.saveQuotation=wrapped;return true;
   }
 
-  function init(){
-    applyBuildMaster();
-    protectGlobalRateSchedule();
-    const a=wrapSaveManualItem();
-    const b=wrapQuotationSave();
-    if(contractor && (!a || !b))setTimeout(init,200);
-  }
+  function init(){applyBuildMaster();protectGlobalRateSchedule();const a=wrapSaveManualItem(),b=wrapQuotationSave();if(contractor&&(!a||!b))setTimeout(init,200)}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
