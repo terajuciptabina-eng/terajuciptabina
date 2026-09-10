@@ -28,6 +28,10 @@
     const q = document.getElementById('quotationContent');
     if (!q) return;
 
+    q.querySelectorAll('.quotation-type-copy em').forEach(el => {
+      setText(el, 'Included with Detailed Quotation');
+    });
+
     q.querySelectorAll('.detail-lock-card').forEach(card => {
       const promo = card.querySelector('p.mt-3');
       setText(promo, 'Your detailed quotation is ready. Unlock it to view the full pricing details.');
@@ -48,5 +52,5 @@
   neutralize();
 
   const observer = new MutationObserver(() => neutralize());
-  observer.observe(document.body, { childList: true, subtree: true, characterData: true });
+  observer.observe(document.body, { childList: true, subtree: true });
 })();
