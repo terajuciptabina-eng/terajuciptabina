@@ -24,8 +24,73 @@
     bathroomDoor:'Toilet swing door', gateMotor:'Main gate c/w automatic motor', wallDivider:'Side brickwall divider c/w plaster and paint', frontFence:'Front fence brickwall',
     preliminaries:'Renovation permit / professional submission', extensionKitchen:'New kitchen extension works', extensionToilet:'New toilet extension works'
   };
+
+  // Build Planner descriptions use a fuller SMM-style scope wording while keeping
+  // the existing item IDs, quantities, units and rates unchanged.
+  const BUILD_FULL_DESCRIPTIONS = {
+    'prelim-1':'Submission of building plan / permit application and Engineer’s drawings to the Local Authority, including preparation of required documents, submission, coordination and necessary authority liaison, complete.',
+    'prelim-2':'Preliminaries, site mobilisation, temporary facilities, site protection, insurance, project coordination, supervision and general project management, complete.',
+    'str-footing-conc':'To supply and place concrete Grade 15 for pad footings, including mixing, placing, compacting, levelling and curing, complete.',
+    'str-footing-fw':'To supply, erect and dismantle formwork to pad footings, including supports, bracing, release treatment and all necessary accessories, complete.',
+    'str-footing-rebar':'To supply, cut, bend and fix reinforcement steel bars for pad footings, including tying wire, spacers, chairs and all necessary supports, complete.',
+    'str-slab-conc':'To supply and place concrete Grade 25 for ground slab, including preparation, placing, compacting, levelling, finishing and curing, complete.',
+    'str-slab-brc':'To supply and fix BRC A7 reinforcement mesh, double layer, including laps, tying wire, spacers and supports, complete.',
+    'str-gb-conc':'To supply and place concrete Grade 25 for ground beams, including placing, compacting, levelling and curing, complete.',
+    'str-gb-fw':'To supply, erect and dismantle formwork to ground beams, including supports, bracing, alignment and all necessary accessories, complete.',
+    'str-gb-rebar':'To supply, cut, bend and fix reinforcement steel bars for ground beams, including tying wire, spacers, chairs and all necessary supports, complete.',
+    'str-rb-conc':'To supply and place concrete Grade 25 for roof beams, including placing, compacting, levelling and curing, complete.',
+    'str-rb-fw':'To supply, erect and dismantle formwork to roof beams, including supports, bracing, alignment and all necessary accessories, complete.',
+    'str-rb-rebar':'To supply, cut, bend and fix reinforcement steel bars for roof beams, including tying wire, spacers, chairs and all necessary supports, complete.',
+    'str-col-conc':'To supply and place concrete Grade 25 for reinforced concrete columns, including placing, compacting, alignment and curing, complete.',
+    'str-col-fw':'To supply, erect and dismantle formwork to reinforced concrete columns, including supports, bracing, alignment and all necessary accessories, complete.',
+    'str-col-rebar':'To supply, cut, bend and fix reinforcement steel bars for reinforced concrete columns, including tying wire, spacers, chairs and all necessary supports, complete.',
+    'str-fr-conc':'To supply and place concrete Grade 25 for flat roof slab, including placing, compacting, levelling, finishing and curing, complete.',
+    'str-fr-fw':'To supply, erect and dismantle formwork to flat roof slab, including supports, bracing, alignment and all necessary accessories, complete.',
+    'str-fr-brc':'To supply and fix BRC A7 reinforcement mesh, double layer, to flat roof slab, including laps, tying wire, spacers and supports, complete.',
+    'str-roof-c':'To supply and install C-channel steel members for roof structure, including cutting, fabrication, fixing, connection accessories, alignment and protective treatment, complete.',
+    'str-roof-m':'To supply and install metal roofing sheets, including necessary laps, flashing, fasteners, sealant and all accessories, complete.',
+    'str-apron-c':'To supply and place concrete Grade 15 for external apron works, including preparation, placing, compacting, levelling, finishing and curing, complete.',
+    'str-apron-f':'To supply, erect and dismantle formwork to external apron works, including supports, alignment and all necessary accessories, complete.',
+    'str-apron-b':'To supply and fix BRC A7 reinforcement mesh for external apron works, including laps, tying wire, spacers and supports, complete.',
+    'str-drain':'To supply and construct small U-shape scupper drainage, including excavation, base preparation, concrete / masonry works, finishing and making good, complete.',
+    'arch-septik':'To supply and install septic tank system, including excavation, bedding, tank, inlet / outlet connections, backfilling and all necessary accessories, complete.',
+    'arch-watertank':'To supply and install water storage tank, including tank base / support, inlet and outlet connections, fittings and all necessary accessories, complete.',
+    'str-roof-dc':'To supply and place concrete Grade 25 for designed roof structure, including placing, compacting, levelling and curing, complete.',
+    'str-roof-df':'To supply, erect and dismantle formwork to designed roof structure, including supports, bracing, alignment and all necessary accessories, complete.',
+    'str-roof-dr':'To supply, cut, bend and fix reinforcement steel bars for designed roof structure, including tying wire, spacers, chairs and all necessary supports, complete.',
+    'elec-db':'To supply and install distribution board (DB) complete with main protective devices, circuit breakers, labels, connections, testing and commissioning.',
+    'elec-wiring':'To supply, install and test electrical wiring and cables for the building, including conduits / containment, connections, termination and necessary accessories, complete.',
+    'elec-pp':'To supply and install electrical power points, including wiring, conduits, back boxes, accessories, termination and testing, complete.',
+    'elec-switch':'To supply and install electrical switches, including wiring, back boxes, accessories, termination and testing, complete.',
+    'elec-light':'To supply and install lighting points / fittings, including wiring, conduits, switches, connections, testing and commissioning, complete.',
+    'elec-fan':'To supply and install ceiling fan points / provisions, including wiring, switch control, support and testing, complete.',
+    'elec-ac':'To supply and install air-conditioning points / provisions, including electrical wiring, isolator, containment and necessary accessories, complete.',
+    'elec-earth':'To supply and install complete electrical earthing system, including earth electrodes, conductors, connections, testing and commissioning, complete.'
+  };
+
   const esc = value => String(value ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;').replace(/'/g,'&#039;');
   const num = value => Number.isFinite(Number(value)) ? Number(value) : 0;
+
+  function buildFullDescription(item) {
+    if (!item || plannerType !== 'build') return null;
+    const id = String(item.id || '');
+    if (BUILD_FULL_DESCRIPTIONS[id]) return BUILD_FULL_DESCRIPTIONS[id];
+    if (item.category === 'architecture') {
+      const room = String(item.room || 'area').trim();
+      if (id.endsWith('-ceiling')) return `To supply and install plaster / skim ceiling c/w paint to ${room}, including surface preparation, joint treatment and finishing, complete.`;
+      if (id.endsWith('-floortile')) return `To supply and install floor tiles to ${room}, including surface preparation, adhesive / mortar, cutting, laying, grouting and finishing, complete.`;
+      if (id.endsWith('-walltile')) return `To supply and install wall tiles to ${room}, including surface preparation, adhesive, cutting, laying, grouting and finishing, complete.`;
+      if (id.endsWith('-piping')) return `To supply and install sanitary and water supply piping works to ${room}, including fittings, connections, testing and making good, complete.`;
+      if (id.endsWith('-wc')) return `To supply and install water closet (WC) to ${room}, including flush fittings, connections, testing and all necessary accessories, complete.`;
+      if (id.endsWith('-basin')) return `To supply and install wash hand basin to ${room}, including taps, waste fittings, connections, testing and all necessary accessories, complete.`;
+      if (id.endsWith('-shower')) return `To supply and install shower rose and fittings to ${room}, including connections, testing and all necessary accessories, complete.`;
+      if (id.endsWith('-tap')) return `To supply and install tap fittings to ${room}, including connections, testing and all necessary accessories, complete.`;
+      if (id.endsWith('-paint')) return `To supply labour and materials for internal painting works to ${room}, including surface preparation, sealer where required, two coats of paint, cleaning and touch-up upon completion.`;
+      if (id.endsWith('-door')) return `To supply and install door to ${room}, including frame, ironmongery, hinges, lockset, alignment and finishing, complete.`;
+      if (id.endsWith('-window')) return `To supply and install window to ${room}, including frame, glazing, ironmongery, sealant, fixing and making good, complete.`;
+    }
+    return null;
+  }
 
   function readDB() {
     try { return JSON.parse(localStorage.getItem(DB_KEY) || '{}') || {}; } catch (_) { return {}; }
@@ -105,10 +170,15 @@
     result.forEach(item => {
       const key = buildRateKey(item);
       if (!key) return;
-      const fallback = {description:item.description, unit:item.unit || 'unit', rate:num(item.rate), qty:num(item.qty)};
+      const originalDescription = item.description;
+      const fullDescription = buildFullDescription(item);
+      const fallback = {description:fullDescription || originalDescription, unit:item.unit || 'unit', rate:num(item.rate), qty:num(item.qty)};
       addDatabaseRecord(key, fallback, false);
       const e = effectiveRecord(key, fallback);
-      item.description=e.description; item.unit=e.unit; item.rate=e.rate; item.amount=num(item.qty)*e.rate;
+      item.description=e.description;
+      if (fullDescription && db[key] && !db[key].custom && (!db[key].description || db[key].description === originalDescription)) item.description=fullDescription;
+      if (typeof customDescriptions !== 'undefined' && customDescriptions.has(item.id)) item.description=customDescriptions.get(item.id);
+      item.unit=e.unit; item.rate=e.rate; item.amount=num(item.qty)*e.rate;
     });
     Object.entries(db).forEach(([key,r]) => {
       if (!r.custom || r.included === false) return;
