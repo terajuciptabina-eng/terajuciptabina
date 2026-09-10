@@ -8,7 +8,9 @@
 
   const ROOT='../data/rates/';
   const INDEX_URL=ROOT+'states/index.json';
+  const DEFAULT_URL=ROOT+'default.json';
   let indexPromise=null;
+  let defaultPromise=null;
   let applyToken=0;
   let extensionLoaded=false;
 
@@ -21,6 +23,11 @@
     return indexPromise;
   }
 
+  async function loadDefault(){
+    if(!defaultPromise) defaultPromise=fetch(DEFAULT_URL,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('Unable to load master rate metadata.');return r.json()});
+    return defaultPromise;
+  }
+
   async function resolve(stateId){
     const index=await loadIndex();
     const entry=index?.states?.[stateId];
@@ -31,14 +38,16 @@
     const data=await response.json();
     const rates=cloneRates(data);
     if(!Object.keys(rates).length)throw new Error('Rate set is empty for '+(entry.name||stateId)+'.');
-    return {state:stateId,rateSetId:data?.rateSetId||entry.rateSetId||stateId,name:data?.state||entry.name||stateId,rates,rateItems:cloneRateItems(data),source:entry.source};
+    const defaultData=await loadDefault();
+    const rateItems=Object.keys(cloneRateItems(data)).length?cloneRateItems(data):cloneRateItems(defaultData);
+    return {state:stateId,rateSetId:data?.rateSetId||entry.rateSetId||stateId,name:data?.state||entry.name||stateId,rates,rateItems,source:entry.source};
   }
 
   function loadBuildExtension(){
     if(extensionLoaded||!/buildplanner\.html$/i.test(location.pathname))return;
     extensionLoaded=true;
     const script=document.createElement('script');
-    script.src='rate-items.js?v=1';
+    script.src='rate-items.js?v=2';
     script.async=false;
     document.head.appendChild(script);
   }
