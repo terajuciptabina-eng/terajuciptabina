@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "homeowner",
+  "homeownerId": "HME-20260910-ILIT",
+  "profile": {
+    "name": "soleh albert",
+    "email": "cricketsoleh@gmail.com",
+    "phone": "0123456789"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-09-10T12:59:17.182Z",
+  "updatedAt": "2026-09-10T12:59:17.182Z"
+}
