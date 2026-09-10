@@ -19,6 +19,120 @@
       {
         "schemaVersion": 1,
         "recordType": "quotation",
+        "quotationId": "QT-BLD-MTV0A6FU-XOAFC",
+        "projectId": "PRJ-BLD-MTV0A7ZI-TYA2D",
+        "quotationNumber": "Q002S",
+        "plannerType": "build",
+        "role": "homeowner",
+        "homeownerId": "HME-20260909-W6P1",
+        "state": "final",
+        "quotationType": "simple",
+        "client": {
+          "name": "Test 123 rt60"
+        },
+        "project": {
+          "location": "Not specified",
+          "builtUpArea": 328,
+          "state": "selangor"
+        },
+        "total": 81433.58,
+        "plannerState": {
+          "customerName": "Test 123 rt60",
+          "projectLocation": "",
+          "builtUpArea": "328",
+          "rooms": [
+            {
+              "id": "room-1",
+              "type": "living",
+              "name": "Living / Family",
+              "area": "150"
+            },
+            {
+              "id": "room-2",
+              "type": "dining",
+              "name": "Dining",
+              "area": "130"
+            },
+            {
+              "id": "room-3",
+              "type": "bedroom",
+              "name": "Bedroom",
+              "area": "48"
+            }
+          ],
+          "rates": {
+            "footingConc": 550,
+            "footingFw": 4.18,
+            "footingRebar": 15,
+            "slabConc": 550,
+            "slabBrc": 6.5,
+            "beamConc": 350,
+            "beamFw": 4.18,
+            "beamRebar": 15,
+            "colConc": 550,
+            "colFw": 4.18,
+            "colRebar": 15,
+            "flatRoofConc": 550,
+            "flatRoofFw": 4.18,
+            "flatRoofBrc": 6.5,
+            "cChannel": 4,
+            "metalSheet": 3.25,
+            "roofDesignConc": 550,
+            "roofDesignFw": 4.18,
+            "roofDesignRebar": 70,
+            "apronConc": 350,
+            "apronFw": 13.72,
+            "apronBrc": 15,
+            "drainage": 25,
+            "ceilingInt": 15,
+            "ceilingExt": 20,
+            "floorTileInt": 4.18,
+            "floorTileExt": 5.57,
+            "paintInt": 1.39,
+            "paintExt": 2.32,
+            "door": 600,
+            "window": 600,
+            "waterTank": 500,
+            "septicTank": 1500,
+            "bathWallTile": 4.18,
+            "bathFloorTile": 4.18,
+            "bathPiping": 1000,
+            "bathShower": 120,
+            "bathTap": 30,
+            "bathWc": 500,
+            "bathBasin": 400,
+            "dbBox": 1000,
+            "wiring": 20,
+            "powerPoint": 50,
+            "switch": 50,
+            "lighting": 250,
+            "fan": 600,
+            "aircond": 300,
+            "earthing": 1500,
+            "permit": 8500,
+            "prelim": 12000
+          },
+          "customRates": [],
+          "customQuantities": [],
+          "customDescriptions": [],
+          "customRoomLabels": [],
+          "excludedItems": [],
+          "manualItems": [],
+          "standardRateItems": [],
+          "quotationType": "simple",
+          "projectId": "PRJ-BLD-MTV0A7ZI-TYA2D",
+          "projectState": "selangor",
+          "rateSetId": "selangor",
+          "rateSetName": "Selangor",
+          "rateSnapshotAt": "2026-09-10T04:07:04.219Z"
+        },
+        "createdAt": "2026-09-10T04:07:04.218Z",
+        "updatedAt": "2026-09-10T04:07:06.222Z",
+        "estimateNumber": "EST-BLD-002"
+      },
+      {
+        "schemaVersion": 1,
+        "recordType": "quotation",
         "quotationId": "QT-BLD-MTUZEEWW-0NMJK",
         "projectId": "PRJ-BLD-MTUZEGAC-KL8EA",
         "quotationNumber": "Q001S",
@@ -260,13 +374,13 @@
     ]
   },
   "createdAt": "2026-09-09T22:23:53.088Z",
-  "updatedAt": "2026-09-10T03:42:23.988Z",
+  "updatedAt": "2026-09-10T04:07:06.222Z",
   "quotationRunningNumber": {
     "renovation": 1,
-    "build": 1
+    "build": 2
   },
   "estimateRunningNumber": {
     "renovation": 1,
-    "build": 1
+    "build": 2
   }
 }
