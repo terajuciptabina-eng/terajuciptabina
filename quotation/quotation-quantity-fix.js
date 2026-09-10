@@ -173,10 +173,12 @@
       const originalDescription = item.description;
       const fullDescription = buildFullDescription(item);
       const fallback = {description:fullDescription || originalDescription, unit:item.unit || 'unit', rate:num(item.rate), qty:num(item.qty)};
+      const existing = db[key];
+      if (existing && !existing.custom && fullDescription) existing.description = fullDescription;
       addDatabaseRecord(key, fallback, false);
       const e = effectiveRecord(key, fallback);
       item.description=e.description;
-      if (fullDescription && db[key] && !db[key].custom && (!db[key].description || db[key].description === originalDescription)) item.description=fullDescription;
+      if (fullDescription && db[key] && !db[key].custom) { item.description=fullDescription; db[key].description=fullDescription; }
       if (typeof customDescriptions !== 'undefined' && customDescriptions.has(item.id)) item.description=customDescriptions.get(item.id);
       item.unit=e.unit; item.rate=e.rate; item.amount=num(item.qty)*e.rate;
     });
@@ -273,7 +275,17 @@
 
   function init(){
     window.TERAJU_AUDIENCE=contractor?'contractor':'homeowner'; document.body.classList.toggle('contractor-mode',contractor); document.body.classList.toggle('homeowner-mode',!contractor);
-    if(!contractor)return;
+    if(!contractor){
+      if(plannerType==='build'){
+        if(typeof window.getAllItems!=='function'){setTimeout(init,100);return;}
+        if(!window.getAllItems.__terajuBuildSmmWrapped){
+          const original=window.getAllItems;
+          const wrapped=function(){const items=original();return (Array.isArray(items)?items:[]).map(item=>{if(typeof customDescriptions!=='undefined'&&customDescriptions.has(item.id))return item;const description=buildFullDescription(item);if(description)item.description=description;return item;});};
+          wrapped.__terajuBuildSmmWrapped=true; window.getAllItems=wrapped;
+        }
+      }
+      return;
+    }
     const ok=plannerType==='build'?installBuild():installRenovation();
     if(!ok){setTimeout(init,100);return;}
   }
