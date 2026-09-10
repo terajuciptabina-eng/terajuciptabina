@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "homeowner",
+  "homeownerId": "HME-20260910-ZJZ8",
+  "profile": {
+    "name": "aini",
+    "email": "ainisyrmla@gmail.com",
+    "phone": "+601137406624"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-09-10T09:51:14.693Z",
+  "updatedAt": "2026-09-10T09:51:14.693Z"
+}
