@@ -61,6 +61,7 @@
   const send = (name, extra = {}) => {
     try { window.gtag('event', name, Object.fromEntries(Object.entries(extra).filter(([,v]) => v !== undefined && v !== ''))); } catch {}
   };
+  window.TERAJU_GA_EVENT = send;
   const base = { role: role || undefined, planner_type: plannerType || undefined, page_path: location.pathname };
   const script = document.createElement('script');
   script.async = true;
@@ -68,31 +69,6 @@
   document.head.appendChild(script);
   if (path.endsWith('/homeowner.html') || path.endsWith('/contractor.html')) send('app_open', base);
   if (plannerType) send('planner_start', base);
-  if (path.endsWith('/quotations.html')) {
-    const q = params.get('quotationId');
-    if (q) send('quotation_opened', { ...base, quotation_id: q });
-  }
-  const observer = new MutationObserver(() => {
-    const popup = document.getElementById('terajuSignupPopup');
-    if (popup && !popup.dataset.tcGaTracked) {
-      popup.dataset.tcGaTracked = '1';
-      const match = (popup.textContent || '').match(/(?:HME|CTR)-[A-Z0-9-]+/i);
-      send('sign_up', { ...base, signup_role: role || undefined, generated_id: match ? match[0] : undefined });
-    }
-    const portal = document.getElementById('portal');
-    if (portal && !portal.classList.contains('hidden') && !portal.dataset.tcGaTracked) {
-      portal.dataset.tcGaTracked = '1';
-      send('login', { ...base, login_role: role || undefined });
-    }
-    const status = document.getElementById('tcQuotationStatus');
-    if (status && /saved/i.test(status.textContent || '') && !status.dataset.tcGaTracked) {
-      status.dataset.tcGaTracked = '1';
-      const quotationId = new URLSearchParams(location.search).get('quotationId') || undefined;
-      const selected = document.querySelector('input[name="quotationType"]:checked')?.value;
-      send('quotation_created', { ...base, quotation_id: quotationId, quotation_type: selected === 'detail' ? 'detailed' : 'simple' });
-    }
-  });
-  observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['class'] });
 })();
 </script>
 </body>
