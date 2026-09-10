@@ -24,7 +24,9 @@ jobs:
           from pathlib import Path
           path = Path('quotation/renovationplanner.html')
           text = path.read_text(encoding='utf-8')
-          text = text.replace('~~RM49~~ FREE during promotion', 'Included with Detailed Quotation')
+          text = text.replace('        <em>~~RM49~~ FREE during promotion</em>\n', '')
+          text = text.replace('        <em>Included with Detailed Quotation</em>\n', '')
+          text = text.replace('~~RM49~~ FREE during promotion', '')
           tag = '<script src="detailed-quotation-promo-ui.js"></script>'
           if tag not in text:
               marker = '</body>'
@@ -44,5 +46,5 @@ jobs:
             echo "No changes needed."
             exit 0
           fi
-          git commit -m "Remove Detailed Quotation promo pricing [renovation-promo-ui]"
+          git commit -m "Remove Detailed Quotation promo label [renovation-promo-ui]"
           git push origin main
