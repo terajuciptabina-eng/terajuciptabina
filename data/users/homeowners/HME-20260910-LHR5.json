@@ -661,7 +661,7 @@
           "builtUpArea": 0,
           "state": "pahang"
         },
-        "total": 14830,
+        "total": 24760,
         "plannerState": {
           "customerName": "Iskandar Zul",
           "projectLocation": "Merapoh 2",
@@ -671,6 +671,12 @@
               "id": "room-1",
               "type": "living",
               "name": "Living / Dining",
+              "area": "180"
+            },
+            {
+              "id": "room-2",
+              "type": "dryKitchen",
+              "name": "Dry Kitchen",
               "area": "180"
             }
           ],
@@ -759,12 +765,12 @@
           "quotationType": "simple",
           "projectId": "PRJ-REN-MTVQU1CG-KHUY7",
           "projectState": "pahang",
-          "rateSetId": "pahang",
-          "rateSetName": "Pahang",
-          "rateSnapshotAt": "2026-09-10T16:30:19.665Z"
+          "rateSetId": "default",
+          "rateSetName": "Default Rate",
+          "rateSnapshotAt": "2026-09-10T16:31:08.246Z"
         },
         "createdAt": "2026-09-10T16:30:19.664Z",
-        "updatedAt": "2026-09-10T16:30:20.752Z",
+        "updatedAt": "2026-09-10T16:31:08.963Z",
         "estimateNumber": "EST-REN-004"
       },
       {
@@ -1318,7 +1324,7 @@
     ]
   },
   "createdAt": "2026-09-10T15:20:20.944Z",
-  "updatedAt": "2026-09-10T16:30:20.752Z",
+  "updatedAt": "2026-09-10T16:31:08.963Z",
   "quotationRunningNumber": {
     "build": 5,
     "renovation": 4
