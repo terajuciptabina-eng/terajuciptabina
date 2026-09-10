@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "homeowner",
+  "homeownerId": "HME-20260910-12J5",
+  "profile": {
+    "name": "Nurul Syamimi",
+    "email": "symimisfpddn@gmail.com",
+    "phone": "0169555570"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-09-10T14:53:34.659Z",
+  "updatedAt": "2026-09-10T14:53:34.659Z"
+}
