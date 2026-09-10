@@ -99,15 +99,25 @@
     });
   }
 
+  function hideRemovedItemControlsUntilNeeded(){
+    const controls=[...document.querySelectorAll('#estimateContent .contractor-only')].find(el=>{
+      const text=[...el.querySelectorAll('button')].map(b=>b.textContent.trim()).join(' ');
+      return /Show Removed Items/i.test(text)&&/Restore All Items/i.test(text);
+    });
+    if(!controls)return;
+    const hasRemoved=typeof excludedItems!=='undefined'&&excludedItems instanceof Set&&excludedItems.size>0;
+    controls.style.setProperty('display',hasRemoved?'flex':'none','important');
+  }
+
   function wrapEstimate(){
-    if(typeof window.updateEstimate!=='function'||window.updateEstimate.__terajuBuildAddItemGate)return false;
+    if(typeof window.updateEstimate!=='function'||window.updateEstimate.__terajuBuildUiGate)return false;
     const original=window.updateEstimate;
     const wrapped=function(){
       const result=original.apply(this,arguments);
-      try{hideAddItemUntilArea();}catch(_){}
+      try{hideAddItemUntilArea();hideRemovedItemControlsUntilNeeded();}catch(_){}
       return result;
     };
-    wrapped.__terajuBuildAddItemGate=true;
+    wrapped.__terajuBuildUiGate=true;
     window.updateEstimate=wrapped;
     return true;
   }
@@ -132,7 +142,7 @@
       window.getAllItems=wrapped;
     }
     wrapEstimate();
-    try{hideAddItemUntilArea();}catch(_){}
+    try{hideAddItemUntilArea();hideRemovedItemControlsUntilNeeded();}catch(_){}
   }
 
   let tries=0;
