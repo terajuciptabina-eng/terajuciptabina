@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "homeowner",
+  "homeownerId": "HME-20260910-K6SY",
+  "profile": {
+    "name": "Fakrul Fahmi",
+    "email": "eden435396@gmail.com",
+    "phone": "01125735802"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-09-10T03:09:54.670Z",
+  "updatedAt": "2026-09-10T03:09:54.670Z"
+}
