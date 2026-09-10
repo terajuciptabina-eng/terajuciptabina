@@ -41,3 +41,11 @@
   script.async=false;
   document.head.appendChild(script);
 })();
+
+// Global Rate Schedule protection + contractor custom/override market capture.
+(function(){
+  const script=document.createElement('script');
+  script.src='contractor-master-bridge.js?v='+Date.now();
+  script.async=false;
+  document.head.appendChild(script);
+})();
