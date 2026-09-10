@@ -19,6 +19,144 @@
       {
         "schemaVersion": 1,
         "recordType": "quotation",
+        "quotationId": "QT-BLD-MTV9XRJT-46IBO",
+        "projectId": "PRJ-BLD-MTV9XS5U-PIMZN",
+        "quotationNumber": "Q004D",
+        "plannerType": "build",
+        "role": "homeowner",
+        "homeownerId": "HME-20260909-79AD",
+        "state": "final",
+        "quotationType": "detail",
+        "client": {
+          "name": "Nur"
+        },
+        "project": {
+          "location": "Not specified",
+          "builtUpArea": 1067,
+          "state": "johor"
+        },
+        "total": 198390.95,
+        "plannerState": {
+          "customerName": "Nur",
+          "projectLocation": "",
+          "builtUpArea": "1067",
+          "rooms": [
+            {
+              "id": "room-1",
+              "type": "living",
+              "name": "Living / Family",
+              "area": "255"
+            },
+            {
+              "id": "room-2",
+              "type": "bedroom",
+              "name": "Bedroom",
+              "area": "168"
+            },
+            {
+              "id": "room-3",
+              "type": "bedroom",
+              "name": "Bedroom",
+              "area": "120"
+            },
+            {
+              "id": "room-4",
+              "type": "bathroom",
+              "name": "Bathroom",
+              "area": "45"
+            },
+            {
+              "id": "room-5",
+              "type": "bathroom",
+              "name": "Bathroom",
+              "area": "35"
+            },
+            {
+              "id": "room-6",
+              "type": "kitchen",
+              "name": "Kitchen",
+              "area": "120"
+            },
+            {
+              "id": "room-7",
+              "type": "porch",
+              "name": "Car Porch / Entrance",
+              "area": "324"
+            }
+          ],
+          "rates": {
+            "footingConc": 550,
+            "footingFw": 4.18,
+            "footingRebar": 15,
+            "slabConc": 550,
+            "slabBrc": 6.5,
+            "beamConc": 350,
+            "beamFw": 4.18,
+            "beamRebar": 15,
+            "colConc": 550,
+            "colFw": 4.18,
+            "colRebar": 15,
+            "flatRoofConc": 550,
+            "flatRoofFw": 4.18,
+            "flatRoofBrc": 6.5,
+            "cChannel": 4,
+            "metalSheet": 3.25,
+            "roofDesignConc": 550,
+            "roofDesignFw": 4.18,
+            "roofDesignRebar": 70,
+            "apronConc": 350,
+            "apronFw": 13.72,
+            "apronBrc": 15,
+            "drainage": 25,
+            "ceilingInt": 15,
+            "ceilingExt": 20,
+            "floorTileInt": 4.18,
+            "floorTileExt": 5.57,
+            "paintInt": 1.39,
+            "paintExt": 2.32,
+            "door": 600,
+            "window": 600,
+            "waterTank": 500,
+            "septicTank": 1500,
+            "bathWallTile": 4.18,
+            "bathFloorTile": 4.18,
+            "bathPiping": 1000,
+            "bathShower": 120,
+            "bathTap": 30,
+            "bathWc": 500,
+            "bathBasin": 400,
+            "dbBox": 1000,
+            "wiring": 20,
+            "powerPoint": 50,
+            "switch": 50,
+            "lighting": 250,
+            "fan": 600,
+            "aircond": 300,
+            "earthing": 1500,
+            "permit": 8500,
+            "prelim": 12000
+          },
+          "customRates": [],
+          "customQuantities": [],
+          "customDescriptions": [],
+          "customRoomLabels": [],
+          "excludedItems": [],
+          "manualItems": [],
+          "standardRateItems": [],
+          "quotationType": "detail",
+          "projectId": "PRJ-BLD-MTV9XS5U-PIMZN",
+          "projectState": "johor",
+          "rateSetId": "default",
+          "rateSetName": "Default Rate",
+          "rateSnapshotAt": "2026-09-10T08:37:21.210Z"
+        },
+        "createdAt": "2026-09-10T08:37:21.209Z",
+        "updatedAt": "2026-09-10T08:37:22.001Z",
+        "estimateNumber": "EST-BLD-003"
+      },
+      {
+        "schemaVersion": 1,
+        "recordType": "quotation",
         "quotationId": "QT-BLD-MTU855X1-LM2SG",
         "projectId": "PRJ-BLD-MTU856EG-5MX12",
         "quotationNumber": "Q003D",
@@ -418,11 +556,11 @@
     "renovation": []
   },
   "createdAt": "2026-09-09T13:51:41.818Z",
-  "updatedAt": "2026-09-09T15:00:06.998Z",
+  "updatedAt": "2026-09-10T08:37:22.001Z",
   "quotationRunningNumber": {
-    "build": 3
+    "build": 4
   },
   "estimateRunningNumber": {
-    "build": 2
+    "build": 3
   }
 }
