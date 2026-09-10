@@ -33,9 +33,9 @@
         "project": {
           "location": "Makmur",
           "builtUpArea": 200,
-          "state": "pahang"
+          "state": "selangor"
         },
-        "total": 60543.63,
+        "total": 60168.63,
         "plannerState": {
           "customerName": "En Azizi",
           "projectLocation": "Makmur",
@@ -95,7 +95,7 @@
             "switch": 50,
             "lighting": 250,
             "fan": 600,
-            "aircond": 675,
+            "aircond": 300,
             "earthing": 1500,
             "permit": 8500,
             "prelim": 12000
@@ -109,13 +109,13 @@
           "standardRateItems": [],
           "quotationType": "simple",
           "projectId": "PRJ-BLD-MTVQWX4G-6CK21",
-          "projectState": "pahang",
-          "rateSetId": "default",
-          "rateSetName": "Default Rate",
-          "rateSnapshotAt": "2026-09-10T18:25:21.020Z"
+          "projectState": "selangor",
+          "rateSetId": "selangor",
+          "rateSetName": "Selangor",
+          "rateSnapshotAt": "2026-09-10T19:46:29.758Z"
         },
         "createdAt": "2026-09-10T18:25:21.019Z",
-        "updatedAt": "2026-09-10T18:25:21.684Z",
+        "updatedAt": "2026-09-10T19:46:31.081Z",
         "estimateNumber": "EST-BLD-010"
       },
       {
@@ -2005,7 +2005,7 @@
     ]
   },
   "createdAt": "2026-09-09T13:15:32.117Z",
-  "updatedAt": "2026-09-10T18:25:37.294Z",
+  "updatedAt": "2026-09-10T19:46:31.081Z",
   "quotationRunningNumber": {
     "build": 12,
     "renovation": 7
