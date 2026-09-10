@@ -167,3 +167,5 @@ jobs:
           fi
           git commit -m "Refresh TERAJU WORKS GA4 instrumentation [renovation-promo-ui]"
           git push origin main
+
+# GA4 lifecycle sync trigger
