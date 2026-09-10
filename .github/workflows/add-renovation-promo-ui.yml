@@ -24,13 +24,14 @@ jobs:
           from pathlib import Path
           path = Path('quotation/renovationplanner.html')
           text = path.read_text(encoding='utf-8')
+          text = text.replace('~~RM49~~ FREE during promotion', 'Included with Detailed Quotation')
           tag = '<script src="detailed-quotation-promo-ui.js"></script>'
           if tag not in text:
               marker = '</body>'
               if marker not in text:
                   raise SystemExit('Could not find </body> in renovationplanner.html')
               text = text.replace(marker, tag + '\n' + marker, 1)
-              path.write_text(text, encoding='utf-8')
+          path.write_text(text, encoding='utf-8')
           PY
 
       - name: Commit changes
@@ -43,5 +44,5 @@ jobs:
             echo "No changes needed."
             exit 0
           fi
-          git commit -m "Add Renovation Planner promo UI [renovation-promo-ui]"
+          git commit -m "Remove Detailed Quotation promo pricing [renovation-promo-ui]"
           git push origin main
