@@ -10,7 +10,7 @@
   const originalStandardLibrary=window.standardLibrary;
   const originalRenderRateSchedule=window.renderRateSchedule;
 
-  function esc(v){return typeof window.escapeHtml==='function'?window.escapeHtml(v):String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;')}
+  function esc(v){return typeof window.escapeHtml==='function'?window.escapeHtml(v):String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;').replace(/'/g,'&#039;')}
   function rate(v){return typeof window.normalizeRate==='function'?window.normalizeRate(v):Math.max(0,Math.round((Number(v)||0)*100)/100)}
   function itemsFromState(){
     const src=window.TERAJU_RATE_ITEMS||{};
@@ -20,7 +20,31 @@
     }));
   }
 
+  // The state file owns rates; the shared default master owns description/unit metadata.
+  // Apply that metadata to the existing native master structures so Homeowner and Contractor
+  // render the same description/unit. Contractor editability remains controlled by buildplanner.html.
+  function applyMasterMetadata(){
+    const meta=window.TERAJU_RATE_ITEMS||{};
+    if(!meta||typeof meta!=='object')return;
+    const visit=value=>{
+      if(!value||typeof value!=='object')return;
+      if(Array.isArray(value)){value.forEach(visit);return;}
+      const key=String(value.rateKey||value.key||value.id||'');
+      const m=meta[key];
+      if(m){
+        if(m.description)value.description=m.description;
+        if(m.description)value.desc=m.description;
+        if(m.description)value.label=m.description;
+        if(m.unit)value.unit=m.unit;
+      }
+      Object.values(value).forEach(child=>{if(child&&typeof child==='object')visit(child)});
+    };
+    visit(typeof RATE_SCHEDULE!=='undefined'?RATE_SCHEDULE:null);
+    visit(typeof STRUCT_GROUPS!=='undefined'?STRUCT_GROUPS:null);
+  }
+
   window.standardLibrary=function(){
+    applyMasterMetadata();
     const base=typeof originalStandardLibrary==='function'?originalStandardLibrary():[];
     const globalItems=itemsFromState();
     const localItems=Array.isArray(window.standardRateItems)?window.standardRateItems:[];
@@ -55,7 +79,7 @@
     }
     box.innerHTML=html;c.appendChild(box);
     box.querySelectorAll('[data-local-rate-id]').forEach(input=>input.addEventListener('change',()=>{const item=(window.standardRateItems||[]).find(x=>x.id===input.dataset.localRateId);if(item){item.rate=rate(input.value);if(typeof window.saveContractorState==='function')window.saveContractorState();if(typeof window.updateEstimate==='function')window.updateEstimate();}}));
-    box.querySelectorAll('[data-remove-local-rate]').forEach(btn=>btn.addEventListener('click',()=>{if(!Array.isArray(window.standardRateItems))return;window.standardRateItems=window.standardRateItems.filter(x=>x.id!==btn.dataset.removeLocalRate);if(typeof window.saveContractorState==='function')window.saveContractorState();if(typeof window.updateEstimate==='function')window.updateEstimate();if(typeof window.toggleRateSchedule==='function')window.renderRateSchedule();}));
+    box.querySelectorAll('[data-remove-local-rate]').forEach(btn=>btn.addEventListener('click',()=>{if(!Array.isArray(window.standardRateItems))return;window.standardRateItems=window.standardRateItems.filter(x=>x.id!==btn.dataset.removeLocalRate);if(typeof window.saveContractorState==='function')window.saveContractorState();if(typeof window.updateEstimate==='function')window.updateEstimate();if(typeof window.renderRateSchedule==='function')window.renderRateSchedule();}));
     box.querySelector('#addProjectRateItemBtn')?.addEventListener('click',()=>{
       const description=String(box.querySelector('#newRateItemDescription')?.value||'').trim();
       const unit=String(box.querySelector('#newRateItemUnit')?.value||'ls');
@@ -70,14 +94,17 @@
   }
 
   window.renderRateSchedule=function(){
+    applyMasterMetadata();
     if(typeof originalRenderRateSchedule==='function')originalRenderRateSchedule();
     renderCustomRateRows();
   };
 
   window.addEventListener('teraju:ratechange',()=>{
+    applyMasterMetadata();
     if(!document.getElementById('rateSchedulePanel')?.classList.contains('hidden'))window.renderRateSchedule();
   });
   setTimeout(()=>{
+    applyMasterMetadata();
     if(!document.getElementById('rateSchedulePanel')?.classList.contains('hidden'))window.renderRateSchedule();
   },250);
 })();
