@@ -7,7 +7,7 @@
   const contractorId = (qs.get('contractorId') || '').trim();
   const MARKET_API = 'https://terajuciptabina.vercel.app/api/contractor-market';
   const state = (window.TERAJU_SELECTED_STATE || window.TERAJU_RATE_CONTEXT?.state || qs.get('state') || '').trim().toLowerCase();
-  const buildStorageKey = contractorId && state ? `teraju.contractor.local.v2.${contractorId}.${state}.build` : '';
+  const buildStorageKey = contractorId ? `teraju.contractor.local.v1.${encodeURIComponent(contractorId)}.build` : '';
 
   const captureSignatures = new Map();
   async function captureItem(item) {
@@ -30,11 +30,7 @@
     const sig = JSON.stringify(payload);
     if (captureSignatures.get(payload.customItemId) === sig) return;
     try {
-      const r = await fetch(MARKET_API, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
+      const r = await fetch(MARKET_API, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) });
       if (r.ok) captureSignatures.set(payload.customItemId, sig);
     } catch (_) {}
   }
@@ -82,21 +78,17 @@
   function wrapQuotationSave() {
     if (!contractor || typeof window.saveQuotation !== 'function' || window.saveQuotation.__terajuMarketWrapped) return false;
     const original = window.saveQuotation;
-    const wrapped = async function() {
-      captureCurrentCustomItems();
-      return original.apply(this, arguments);
-    };
+    const wrapped = async function() { captureCurrentCustomItems(); return original.apply(this, arguments); };
     wrapped.__terajuMarketWrapped = true;
     window.saveQuotation = wrapped;
     return true;
   }
 
   function init() {
-    const a = wrapSaveManualItem();
-    const b = wrapQuotationSave();
+    const a = wrapSaveManualItem(), b = wrapQuotationSave();
     if (contractor && (!a || !b)) setTimeout(init, 200);
   }
 
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, { once: true });
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, {once:true});
   else init();
 })();
