@@ -17,7 +17,7 @@ jobs:
           ref: main
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Standardize quotation promo UI
+      - name: Standardize quotation promo UI and card sizing
         shell: bash
         run: |
           python - <<'PY'
