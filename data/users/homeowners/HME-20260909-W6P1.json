@@ -935,7 +935,7 @@
         "project": {
           "location": "Kota bharu",
           "builtUpArea": 0,
-          "state": "selangor"
+          "state": "johor"
         },
         "total": 28148,
         "plannerState": {
@@ -1046,19 +1046,19 @@
           "standardRateItems": [],
           "quotationType": "detail",
           "projectId": "PRJ-REN-MTUO28U7-V1TS0",
-          "projectState": "selangor",
-          "rateSetId": "selangor",
-          "rateSetName": "Selangor",
-          "rateSnapshotAt": "2026-09-09T22:24:57.623Z"
+          "projectState": "johor",
+          "rateSetId": "default",
+          "rateSetName": "Default Rate",
+          "rateSnapshotAt": "2026-09-10T08:15:55.155Z"
         },
         "createdAt": "2026-09-09T22:24:57.622Z",
-        "updatedAt": "2026-09-09T22:24:58.686Z",
+        "updatedAt": "2026-09-10T08:15:55.883Z",
         "estimateNumber": "EST-REN-001"
       }
     ]
   },
   "createdAt": "2026-09-09T22:23:53.088Z",
-  "updatedAt": "2026-09-10T07:41:49.971Z",
+  "updatedAt": "2026-09-10T08:15:55.883Z",
   "quotationRunningNumber": {
     "renovation": 1,
     "build": 6
