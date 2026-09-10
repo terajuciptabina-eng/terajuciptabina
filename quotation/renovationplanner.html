@@ -1917,5 +1917,27 @@ updateEstimate();
 <script src="quotation-quantity-fix.js?v=20260907">
 </script>
 <script src="quotation-quantity-fix.js?v=20260907"></script>
+<script id="tc-homeowner-customer-default">
+(() => {
+  const params = new URLSearchParams(location.search);
+  const role = (params.get('audience') || document.body.dataset.role || 'homeowner').toLowerCase();
+  if (role !== 'homeowner' || params.get('quotationId')) return;
+  const storageKey = 'teraju.homeowner.github.v1';
+  function applyHomeownerName() {
+    const input = document.getElementById('customerName');
+    if (!input || input.value.trim()) return;
+    try {
+      const account = JSON.parse(localStorage.getItem(storageKey) || 'null');
+      const name = String(account?.profile?.name || '').trim();
+      if (!name) return;
+      input.value = name;
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+      input.dispatchEvent(new Event('change', { bubbles: true }));
+    } catch {}
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', applyHomeownerName, { once: true });
+  else applyHomeownerName();
+})();
+</script>
 </body>
 </html>
