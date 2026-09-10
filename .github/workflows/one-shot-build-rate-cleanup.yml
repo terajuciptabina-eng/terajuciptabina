@@ -54,3 +54,5 @@ function installRenovation'''
           git add quotation/quotation-quantity-fix.js
           git commit -m "Use one Build Rate Schedule for all roles [one-shot-build-rate-cleanup]"
           git push origin main
+
+# Triggered once after creation so the cleanup is actually executed.
