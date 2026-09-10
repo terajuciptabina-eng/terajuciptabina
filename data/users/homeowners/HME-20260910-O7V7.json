@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "homeowner",
+  "homeownerId": "HME-20260910-O7V7",
+  "profile": {
+    "name": "Intan suraya",
+    "email": "intankula@gmail.com",
+    "phone": "0166485759"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-09-10T10:49:20.349Z",
+  "updatedAt": "2026-09-10T10:49:20.349Z"
+}
