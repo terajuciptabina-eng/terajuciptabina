@@ -17,11 +17,34 @@ jobs:
           ref: main
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Standardize quotation promo UI and card sizing
+      - name: Standardize quotation promo UI, card sizing, and homeowner defaults
         shell: bash
         run: |
           python - <<'PY'
           from pathlib import Path
+
+          homeowner_default_script = '''<script id="tc-homeowner-customer-default">
+          (() => {
+            const params = new URLSearchParams(location.search);
+            const role = (params.get('audience') || document.body.dataset.role || 'homeowner').toLowerCase();
+            if (role !== 'homeowner' || params.get('quotationId')) return;
+            const storageKey = 'teraju.homeowner.github.v1';
+            function applyHomeownerName() {
+              const input = document.getElementById('customerName');
+              if (!input || input.value.trim()) return;
+              try {
+                const account = JSON.parse(localStorage.getItem(storageKey) || 'null');
+                const name = String(account?.profile?.name || '').trim();
+                if (!name) return;
+                input.value = name;
+                input.dispatchEvent(new Event('input', { bubbles: true }));
+                input.dispatchEvent(new Event('change', { bubbles: true }));
+              } catch {}
+            }
+            if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', applyHomeownerName, { once: true });
+            else applyHomeownerName();
+          })();
+          </script>'''
 
           for filename in ('quotation/renovationplanner.html', 'quotation/buildplanner.html'):
               path = Path(filename)
@@ -30,6 +53,11 @@ jobs:
               text = text.replace('        <em>Included with Detailed Quotation</em>\n', '')
               text = text.replace('~~RM49~~ FREE during promotion', '')
               text = text.replace('min-height:112px}', '}')
+              if 'id="tc-homeowner-customer-default"' not in text:
+                  marker = '</body>'
+                  if marker not in text:
+                      raise SystemExit(f'Could not find </body> in {filename}')
+                  text = text.replace(marker, homeowner_default_script + '\n' + marker, 1)
               path.write_text(text, encoding='utf-8')
 
           path = Path('quotation/renovationplanner.html')
@@ -53,5 +81,5 @@ jobs:
             echo "No changes needed."
             exit 0
           fi
-          git commit -m "Standardize Detailed Quotation card sizing [renovation-promo-ui]"
+          git commit -m "Apply homeowner quotation defaults [renovation-promo-ui]"
           git push origin main
