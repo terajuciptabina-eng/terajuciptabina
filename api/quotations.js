@@ -37,7 +37,6 @@ export default async function handler(req, res) {
     const now = new Date().toISOString(); const normalized = { ...quotation, quotationId, role, [idKey(role)]: id, plannerType, updatedAt: now, createdAt: quotation.createdAt || now };
     current.record.plannerRecords = current.record.plannerRecords || { build: [], renovation: [] }; current.record.plannerRecords.build = plannerList(current.record, 'build'); current.record.plannerRecords.renovation = plannerList(current.record, 'renovation');
     const list = current.record.plannerRecords[plannerType]; let index = list.findIndex(q => q?.quotationId === quotationId);
-    if (index >= 0 && !sameProjectIdentity(list[index], normalized)) index = -1;
     if (index >= 0) {
       const old = list[index];
       normalized.quotationNumber = old?.quotationNumber || normalized.quotationNumber || displayQuotationNumber(Math.max(1, nextBaseNumber(current.record, plannerType) - 1), normalized.quotationType);
