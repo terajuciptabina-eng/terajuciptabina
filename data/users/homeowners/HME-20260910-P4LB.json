@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "homeowner",
+  "homeownerId": "HME-20260910-P4LB",
+  "profile": {
+    "name": "Farha A’syireen",
+    "email": "syireen69@gmail.com",
+    "phone": ""
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-09-10T02:24:55.856Z",
+  "updatedAt": "2026-09-10T02:24:55.856Z"
+}
