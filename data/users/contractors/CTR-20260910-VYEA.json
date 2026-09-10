@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "contractor",
+  "contractorId": "CTR-20260910-VYEA",
+  "profile": {
+    "name": "Teraju Ciptabina Mobile",
+    "email": "terajuciptabina@gmail.com",
+    "phone": "+601125476214"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-09-10T20:27:55.981Z",
+  "updatedAt": "2026-09-10T20:27:55.981Z"
+}
