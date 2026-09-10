@@ -46,6 +46,21 @@
   document.head.appendChild(script);
   if (path.endsWith('/homeowner.html') || path.endsWith('/contractor.html')) send('app_open', base);
   if (plannerType) send('planner_start', base);
+
+  if (path.endsWith('/quotations.html')) {
+    document.addEventListener('click', event => {
+      const link = event.target.closest?.('a[data-ga-quotation-opened]');
+      if (!link) return;
+      send('quotation_opened', {
+        role: link.dataset.gaRole || role || undefined,
+        planner_type: link.dataset.gaPlannerType || undefined,
+        quotation_id: link.dataset.gaQuotationId || undefined,
+        quotation_number: link.dataset.gaQuotationNumber || undefined,
+        quotation_type: link.dataset.gaQuotationType || undefined,
+        page_path: location.pathname
+      });
+    }, true);
+  }
 })();
 </script>
 </body>
