@@ -1,5 +1,20 @@
 (() => {
   const STATE_KEY = 'terajuBuildPlannerStateBeforeDetailedUnlock';
+  const params = new URLSearchParams(location.search);
+  const hasQuotationId = Boolean((params.get('quotationId') || '').trim());
+  const role = (params.get('audience') || document.body.dataset.role || 'homeowner').toLowerCase() === 'contractor' ? 'contractor' : 'homeowner';
+  const PROJECT_KEY = `teraju.${role}.build.projectId.v1`;
+
+  function clearNewPlannerState() {
+    if (hasQuotationId) return;
+    try {
+      sessionStorage.removeItem(STATE_KEY);
+      localStorage.removeItem(STATE_KEY);
+      localStorage.removeItem(PROJECT_KEY);
+    } catch (e) {
+      console.warn('Unable to clear Build Planner state for new quotation', e);
+    }
+  }
 
   function captureControls(container) {
     if (!container) return [];
@@ -40,6 +55,7 @@
   }
 
   function loadPlannerState() {
+    if (!hasQuotationId) return null;
     try {
       const raw = sessionStorage.getItem(STATE_KEY) || localStorage.getItem(STATE_KEY);
       return raw ? JSON.parse(raw) : null;
@@ -115,6 +131,7 @@
   }
 
   function init() {
+    clearNewPlannerState();
     restorePlannerState();
     hookLivePersistence();
     hookPaymentButton();
