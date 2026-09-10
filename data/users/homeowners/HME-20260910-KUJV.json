@@ -15,9 +15,187 @@
   },
   "state": "active",
   "plannerRecords": {
-    "build": [],
+    "build": [
+      {
+        "schemaVersion": 1,
+        "recordType": "quotation",
+        "quotationId": "QT-BLD-MTV9WPLV-HOI7D",
+        "projectId": "PRJ-BLD-MTV9WZCP-4QCF1",
+        "quotationNumber": "Q001D",
+        "plannerType": "build",
+        "role": "homeowner",
+        "homeownerId": "HME-20260910-KUJV",
+        "state": "final",
+        "quotationType": "detail",
+        "client": {
+          "name": "MUHAMMAD NAUFAL BIN ABDUL LATIB"
+        },
+        "project": {
+          "location": "SIBU",
+          "builtUpArea": 626,
+          "state": "sarawak"
+        },
+        "total": 137110.11,
+        "plannerState": {
+          "customerName": "MUHAMMAD NAUFAL BIN ABDUL LATIB",
+          "projectLocation": "SIBU",
+          "builtUpArea": "626",
+          "rooms": [
+            {
+              "id": "room-1",
+              "type": "bedroom",
+              "name": "Bedroom1",
+              "area": "100"
+            },
+            {
+              "id": "room-2",
+              "type": "bedroom",
+              "name": "Bedroom2",
+              "area": "80"
+            },
+            {
+              "id": "room-3",
+              "type": "bedroom",
+              "name": "Bedroom3",
+              "area": "72"
+            },
+            {
+              "id": "room-4",
+              "type": "living",
+              "name": "Living / Family",
+              "area": "120"
+            },
+            {
+              "id": "room-6",
+              "type": "kitchen",
+              "name": "Kitchen",
+              "area": "64"
+            },
+            {
+              "id": "room-7",
+              "type": "bathroom",
+              "name": "Bathroom1",
+              "area": "30"
+            },
+            {
+              "id": "room-8",
+              "type": "bathroom",
+              "name": "Bathroom2",
+              "area": "30"
+            },
+            {
+              "id": "room-9",
+              "type": "porch",
+              "name": "Car Porch / Entrance",
+              "area": "50"
+            },
+            {
+              "id": "room-10",
+              "type": "dining",
+              "name": "Dining",
+              "area": "80"
+            }
+          ],
+          "rates": {
+            "footingConc": 550,
+            "footingFw": 4.18,
+            "footingRebar": 15,
+            "slabConc": 550,
+            "slabBrc": 6.5,
+            "beamConc": 350,
+            "beamFw": 4.18,
+            "beamRebar": 15,
+            "colConc": 550,
+            "colFw": 4.18,
+            "colRebar": 15,
+            "flatRoofConc": 550,
+            "flatRoofFw": 4.18,
+            "flatRoofBrc": 6.5,
+            "cChannel": 4,
+            "metalSheet": 3.25,
+            "roofDesignConc": 550,
+            "roofDesignFw": 4.18,
+            "roofDesignRebar": 70,
+            "apronConc": 350,
+            "apronFw": 13.72,
+            "apronBrc": 15,
+            "drainage": 25,
+            "ceilingInt": 15,
+            "ceilingExt": 20,
+            "floorTileInt": 4.18,
+            "floorTileExt": 5.57,
+            "paintInt": 1.39,
+            "paintExt": 2.32,
+            "door": 600,
+            "window": 600,
+            "waterTank": 500,
+            "septicTank": 1500,
+            "bathWallTile": 4.18,
+            "bathFloorTile": 4.18,
+            "bathPiping": 1000,
+            "bathShower": 120,
+            "bathTap": 30,
+            "bathWc": 500,
+            "bathBasin": 400,
+            "dbBox": 1000,
+            "wiring": 20,
+            "powerPoint": 50,
+            "switch": 50,
+            "lighting": 250,
+            "fan": 600,
+            "aircond": 675,
+            "earthing": 1500,
+            "permit": 8500,
+            "prelim": 12000
+          },
+          "customRates": [],
+          "customQuantities": [],
+          "customDescriptions": [],
+          "customRoomLabels": [
+            [
+              "room-1",
+              "Bedroom1"
+            ],
+            [
+              "room-2",
+              "Bedroom2"
+            ],
+            [
+              "room-3",
+              "Bedroom3"
+            ],
+            [
+              "room-7",
+              "Bathroom1"
+            ],
+            [
+              "room-8",
+              "Bathroom2"
+            ]
+          ],
+          "excludedItems": [],
+          "manualItems": [],
+          "standardRateItems": [],
+          "quotationType": "detail",
+          "projectId": "PRJ-BLD-MTV9WZCP-4QCF1",
+          "projectState": "sarawak",
+          "rateSetId": "sarawak",
+          "rateSetName": "Sarawak",
+          "rateSnapshotAt": "2026-09-10T08:36:32.036Z"
+        },
+        "createdAt": "2026-09-10T08:36:32.035Z",
+        "updatedAt": "2026-09-10T08:36:44.664Z",
+        "estimateNumber": "EST-BLD-001"
+      }
+    ],
     "renovation": []
   },
   "createdAt": "2026-09-10T08:11:44.461Z",
-  "updatedAt": "2026-09-10T08:11:44.461Z"
+  "updatedAt": "2026-09-10T08:36:44.664Z",
+  "quotationRunningNumber": {
+    "build": 1
+  },
+  "estimateRunningNumber": {
+    "build": 1
+  }
 }
