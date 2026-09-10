@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "homeowner",
+  "homeownerId": "HME-20260910-2KZ9",
+  "profile": {
+    "name": "Abang Fadzli",
+    "email": "abgfadzli89@yahoo.com.sg",
+    "phone": ""
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-09-10T02:50:46.008Z",
+  "updatedAt": "2026-09-10T02:50:46.008Z"
+}
