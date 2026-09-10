@@ -19,6 +19,309 @@
       {
         "schemaVersion": 1,
         "recordType": "quotation",
+        "quotationId": "QT-BLD-MTVFDNKD-97OSD",
+        "projectId": "PRJ-BLD-MTVFDO17-2IZ3X",
+        "quotationNumber": "Q003D",
+        "plannerType": "build",
+        "role": "homeowner",
+        "homeownerId": "HME-20260910-2RE7",
+        "state": "final",
+        "quotationType": "detail",
+        "client": {
+          "name": "Ammar"
+        },
+        "project": {
+          "location": "Not specified",
+          "builtUpArea": 229,
+          "state": "terengganu"
+        },
+        "total": 90628.62,
+        "plannerState": {
+          "customerName": "Ammar",
+          "projectLocation": "",
+          "builtUpArea": "229",
+          "rooms": [
+            {
+              "id": "room-1",
+              "type": "porch",
+              "name": "Car Porch / Entrance",
+              "area": "26.45"
+            },
+            {
+              "id": "room-3",
+              "type": "other",
+              "name": "Foyer",
+              "area": "5.76"
+            },
+            {
+              "id": "room-4",
+              "type": "other",
+              "name": "Dry Kitchen",
+              "area": "27.90"
+            },
+            {
+              "id": "room-5",
+              "type": "other",
+              "name": "Wet Kitchen",
+              "area": "7.20"
+            },
+            {
+              "id": "room-6",
+              "type": "living",
+              "name": "Family Area",
+              "area": "26"
+            },
+            {
+              "id": "room-7",
+              "type": "bedroom",
+              "name": "Master Bedroom",
+              "area": "28.97"
+            },
+            {
+              "id": "room-8",
+              "type": "bedroom",
+              "name": "Bedroom 2",
+              "area": "14.04"
+            },
+            {
+              "id": "room-9",
+              "type": "bedroom",
+              "name": "Bedroom 3",
+              "area": "14.04"
+            },
+            {
+              "id": "room-10",
+              "type": "bedroom",
+              "name": "Bedroom 4",
+              "area": "14.04"
+            },
+            {
+              "id": "room-11",
+              "type": "bedroom",
+              "name": "Bedroom 5",
+              "area": "11.70"
+            },
+            {
+              "id": "room-12",
+              "type": "store",
+              "name": "Store",
+              "area": "2.70"
+            },
+            {
+              "id": "room-13",
+              "type": "other",
+              "name": "Closet",
+              "area": "5.67"
+            },
+            {
+              "id": "room-14",
+              "type": "other",
+              "name": "Laundry",
+              "area": "7.20"
+            },
+            {
+              "id": "room-15",
+              "type": "bathroom",
+              "name": "Bathroom 1",
+              "area": "5.04"
+            },
+            {
+              "id": "room-16",
+              "type": "bathroom",
+              "name": "Bathroom 2",
+              "area": "3.15"
+            },
+            {
+              "id": "room-17",
+              "type": "bathroom",
+              "name": "Bathroom 3",
+              "area": "2.70"
+            },
+            {
+              "id": "room-18",
+              "type": "bathroom",
+              "name": "Bathroom 4",
+              "area": "2.70"
+            },
+            {
+              "id": "room-19",
+              "type": "bathroom",
+              "name": "Bathroom 5",
+              "area": "4.50"
+            },
+            {
+              "id": "room-20",
+              "type": "other",
+              "name": "Terrace 1",
+              "area": "5.76"
+            },
+            {
+              "id": "room-21",
+              "type": "other",
+              "name": "Terrace 2",
+              "area": "9.72"
+            },
+            {
+              "id": "room-22",
+              "type": "other",
+              "name": "Terrace 3",
+              "area": "3.60"
+            }
+          ],
+          "rates": {
+            "footingConc": 550,
+            "footingFw": 4.18,
+            "footingRebar": 15,
+            "slabConc": 550,
+            "slabBrc": 6.5,
+            "beamConc": 350,
+            "beamFw": 4.18,
+            "beamRebar": 15,
+            "colConc": 550,
+            "colFw": 4.18,
+            "colRebar": 15,
+            "flatRoofConc": 550,
+            "flatRoofFw": 4.18,
+            "flatRoofBrc": 6.5,
+            "cChannel": 4,
+            "metalSheet": 3.25,
+            "roofDesignConc": 550,
+            "roofDesignFw": 4.18,
+            "roofDesignRebar": 70,
+            "apronConc": 350,
+            "apronFw": 13.72,
+            "apronBrc": 15,
+            "drainage": 25,
+            "ceilingInt": 15,
+            "ceilingExt": 20,
+            "floorTileInt": 4.18,
+            "floorTileExt": 5.57,
+            "paintInt": 1.39,
+            "paintExt": 2.32,
+            "door": 600,
+            "window": 600,
+            "waterTank": 500,
+            "septicTank": 1500,
+            "bathWallTile": 4.18,
+            "bathFloorTile": 4.18,
+            "bathPiping": 1000,
+            "bathShower": 120,
+            "bathTap": 30,
+            "bathWc": 500,
+            "bathBasin": 400,
+            "dbBox": 1000,
+            "wiring": 20,
+            "powerPoint": 50,
+            "switch": 50,
+            "lighting": 250,
+            "fan": 600,
+            "aircond": 675,
+            "earthing": 1500,
+            "permit": 8500,
+            "prelim": 12000
+          },
+          "customRates": [],
+          "customQuantities": [],
+          "customDescriptions": [],
+          "customRoomLabels": [
+            [
+              "room-3",
+              "Foyer"
+            ],
+            [
+              "room-4",
+              "Dry Kitchen"
+            ],
+            [
+              "room-5",
+              "Wet Kitchen"
+            ],
+            [
+              "room-6",
+              "Family Area"
+            ],
+            [
+              "room-7",
+              "Master Bedroom"
+            ],
+            [
+              "room-8",
+              "Bedroom 2"
+            ],
+            [
+              "room-9",
+              "Bedroom 3"
+            ],
+            [
+              "room-10",
+              "Bedroom 4"
+            ],
+            [
+              "room-11",
+              "Bedroom 5"
+            ],
+            [
+              "room-12",
+              "Store"
+            ],
+            [
+              "room-13",
+              "Closet"
+            ],
+            [
+              "room-14",
+              "Laundry"
+            ],
+            [
+              "room-15",
+              "Bathroom 1"
+            ],
+            [
+              "room-16",
+              "Bathroom 2"
+            ],
+            [
+              "room-17",
+              "Bathroom 3"
+            ],
+            [
+              "room-18",
+              "Bathroom 4"
+            ],
+            [
+              "room-19",
+              "Bathroom 5"
+            ],
+            [
+              "room-20",
+              "Terrace 1"
+            ],
+            [
+              "room-21",
+              "Terrace 2"
+            ],
+            [
+              "room-22",
+              "Terrace 3"
+            ]
+          ],
+          "excludedItems": [],
+          "manualItems": [],
+          "standardRateItems": [],
+          "quotationType": "detail",
+          "projectId": "PRJ-BLD-MTVFDO17-2IZ3X",
+          "projectState": "terengganu",
+          "rateSetId": "terengganu",
+          "rateSetName": "Terengganu",
+          "rateSnapshotAt": "2026-09-10T11:09:40.622Z"
+        },
+        "createdAt": "2026-09-10T11:09:40.621Z",
+        "updatedAt": "2026-09-10T11:09:41.227Z",
+        "estimateNumber": "EST-BLD-003"
+      },
+      {
+        "schemaVersion": 1,
+        "recordType": "quotation",
         "quotationId": "QT-BLD-MTVFBDX6-0LGR1",
         "projectId": "PRJ-BLD-MTVFDAJ9-7C4ZX",
         "quotationNumber": "Q002S",
@@ -626,11 +929,11 @@
     "renovation": []
   },
   "createdAt": "2026-09-10T10:50:14.052Z",
-  "updatedAt": "2026-09-10T11:09:23.732Z",
+  "updatedAt": "2026-09-10T11:09:41.227Z",
   "quotationRunningNumber": {
-    "build": 2
+    "build": 3
   },
   "estimateRunningNumber": {
-    "build": 2
+    "build": 3
   }
 }
