@@ -22,6 +22,7 @@ jobs:
         run: |
           python - <<'PY'
           from pathlib import Path
+          import re
 
           homeowner_default_script = '''<script id="tc-homeowner-customer-default">
           (() => {
@@ -60,6 +61,7 @@ jobs:
             const send = (name, extra = {}) => {
               try { window.gtag('event', name, Object.fromEntries(Object.entries(extra).filter(([,v]) => v !== undefined && v !== ''))); } catch {}
             };
+            window.TERAJU_GA_EVENT = send;
             const base = { role: role || undefined, planner_type: plannerType || undefined, page_path: location.pathname };
             const script = document.createElement('script');
             script.async = true;
@@ -67,31 +69,6 @@ jobs:
             document.head.appendChild(script);
             if (path.endsWith('/homeowner.html') || path.endsWith('/contractor.html')) send('app_open', base);
             if (plannerType) send('planner_start', base);
-            if (path.endsWith('/quotations.html')) {
-              const q = params.get('quotationId');
-              if (q) send('quotation_opened', { ...base, quotation_id: q });
-            }
-            const observer = new MutationObserver(() => {
-              const popup = document.getElementById('terajuSignupPopup');
-              if (popup && !popup.dataset.tcGaTracked) {
-                popup.dataset.tcGaTracked = '1';
-                const match = (popup.textContent || '').match(/(?:HME|CTR)-[A-Z0-9-]+/i);
-                send('sign_up', { ...base, signup_role: role || undefined, generated_id: match ? match[0] : undefined });
-              }
-              const portal = document.getElementById('portal');
-              if (portal && !portal.classList.contains('hidden') && !portal.dataset.tcGaTracked) {
-                portal.dataset.tcGaTracked = '1';
-                send('login', { ...base, login_role: role || undefined });
-              }
-              const status = document.getElementById('tcQuotationStatus');
-              if (status && /saved/i.test(status.textContent || '') && !status.dataset.tcGaTracked) {
-                status.dataset.tcGaTracked = '1';
-                const quotationId = new URLSearchParams(location.search).get('quotationId') || undefined;
-                const selected = document.querySelector('input[name="quotationType"]:checked')?.value;
-                send('quotation_created', { ...base, quotation_id: quotationId, quotation_type: selected === 'detail' ? 'detailed' : 'simple' });
-              }
-            });
-            observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['class'] });
           })();
           </script>'''
 
@@ -106,6 +83,7 @@ jobs:
                   marker = '</body>'
                   if marker not in text: raise SystemExit(f'Could not find </body> in {filename}')
                   text = text.replace(marker, homeowner_default_script + '\n' + marker, 1)
+              text = re.sub(r'<script id="tc-teraju-ga4">.*?</script>', ga4_script, text, count=1, flags=re.S)
               if 'id="tc-teraju-ga4"' not in text:
                   marker = '</body>'
                   if marker not in text: raise SystemExit(f'Could not find </body> in {filename}')
@@ -132,6 +110,7 @@ jobs:
           broken_phone = '<label class="block" id="accountPhoneField"><span class="mb-2 block text-sm font-semibold">Phone <span class="font-normal text-slate-400">(optional)</span></label>'
           fixed_phone = '<label class="block" id="accountPhoneField"><span class="mb-2 block text-sm font-semibold">Phone <span class="font-normal text-slate-400">(optional)</span></span><input id="accountPhoneInput" type="tel" autocomplete="tel" class="w-full rounded-2xl border border-slate-300 bg-white/90 px-4 py-3 outline-none transition focus:border-[#b58a3a] focus:ring-2 focus:ring-[#b58a3a]/15" placeholder="01X-XXXXXXX"/></label>'
           text = text.replace(broken_phone, fixed_phone)
+          text = re.sub(r'<script id="tc-teraju-ga4">.*?</script>', ga4_script, text, count=1, flags=re.S)
           if 'id="tc-teraju-ga4"' not in text:
               marker = '</body>'
               if marker not in text: raise SystemExit('Could not find </body> in homeowner.html')
@@ -140,6 +119,7 @@ jobs:
 
           path = Path('quotation/contractor.html')
           text = path.read_text(encoding='utf-8')
+          text = re.sub(r'<script id="tc-teraju-ga4">.*?</script>', ga4_script, text, count=1, flags=re.S)
           if 'id="tc-teraju-ga4"' not in text:
               marker = '</body>'
               if marker not in text: raise SystemExit('Could not find </body> in contractor.html')
@@ -148,6 +128,7 @@ jobs:
 
           path = Path('quotation/quotations.html')
           text = path.read_text(encoding='utf-8')
+          text = re.sub(r'<script id="tc-teraju-ga4">.*?</script>', ga4_script, text, count=1, flags=re.S)
           if 'id="tc-teraju-ga4"' not in text:
               marker = '</body>'
               if marker not in text: raise SystemExit('Could not find </body> in quotations.html')
@@ -165,5 +146,5 @@ jobs:
             echo "No changes needed."
             exit 0
           fi
-          git commit -m "Add GA4 tracking to TERAJU WORKS [renovation-promo-ui]"
+          git commit -m "Refresh TERAJU WORKS GA4 instrumentation [renovation-promo-ui]"
           git push origin main
