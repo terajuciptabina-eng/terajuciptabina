@@ -54,12 +54,32 @@
     const lock=document.createElement('div');
     lock.id='stateFirstOverlay';
     lock.className='no-print fixed inset-0 z-[9000] hidden items-center justify-center p-5 bg-black/20 backdrop-blur-[1px]';
-    lock.innerHTML='<div class="w-full max-w-md rounded-2xl bg-white p-6 text-center shadow-2xl border"><div class="text-3xl mb-3">📍</div><h3 class="text-xl font-bold">Select Project State First</h3><p class="text-sm text-gray-600 mt-2">Choose the state / negeri where this project is located. The quotation will use that state\'s rate set.</p><button type="button" id="stateFirstButton" class="mt-5 w-full bg-black text-white px-5 py-3 rounded-xl font-semibold">Choose State</button></div>';
+    lock.innerHTML='<div id="stateFirstCard" class="w-full max-w-md rounded-2xl bg-white p-6 text-center shadow-2xl border"><div class="text-3xl mb-3">📍</div><h3 class="text-xl font-bold">Select Project State First</h3><p class="text-sm text-gray-600 mt-2">Choose the state / negeri where this project is located. The quotation will use that state\'s rate set.</p><button type="button" id="stateFirstButton" class="mt-5 w-full bg-black text-white px-5 py-3 rounded-xl font-semibold">Choose State</button></div>';
     document.body.appendChild(lock);
+
+    const chooseState=()=>{
+      // The overlay is deliberately removed before opening the native select.
+      // This prevents another fixed layer from intercepting the interaction.
+      lock.classList.add('hidden');
+      lock.classList.remove('flex');
+      select.disabled=false;
+      select.removeAttribute('aria-disabled');
+      select.scrollIntoView({behavior:'smooth',block:'center'});
+      setTimeout(()=>{
+        try{
+          if(typeof select.showPicker==='function') select.showPicker();
+          else select.focus();
+        }catch(e){select.focus();}
+      },120);
+    };
 
     function apply(){
       const ok=!!select.value;
-      controls.forEach(el=>{el.disabled=!ok;el.setAttribute('aria-disabled',String(!ok))});
+      controls.forEach(el=>{
+        el.disabled=!ok;
+        el.setAttribute('aria-disabled',String(!ok));
+      });
+      select.disabled=false;
       lock.classList.toggle('hidden',ok);
       lock.classList.toggle('flex',!ok);
       if(ok){
@@ -78,10 +98,17 @@
       try{window.dispatchEvent(new CustomEvent('teraju:statechange',{detail:{state:select.value}}))}catch(e){}
     });
 
-    document.getElementById('stateFirstButton')?.addEventListener('click',()=>{
-      select.focus();
-      select.scrollIntoView({behavior:'smooth',block:'center'});
-    });
+    const stateFirstButton=document.getElementById('stateFirstButton');
+    if(stateFirstButton){
+      stateFirstButton.addEventListener('click',function(event){
+        event.preventDefault();
+        event.stopPropagation();
+        chooseState();
+      });
+      stateFirstButton.addEventListener('pointerdown',function(event){
+        event.stopPropagation();
+      });
+    }
 
     apply();
     loadResolver();
