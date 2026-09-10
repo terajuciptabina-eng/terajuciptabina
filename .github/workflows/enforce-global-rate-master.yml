@@ -1,0 +1,105 @@
+name: Enforce Global Rate Master
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+jobs:
+  enforce:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch global master and contractor capture
+        shell: bash
+        run: |
+          python3 <<'PY'
+          from pathlib import Path
+          import re
+
+          p = Path('quotation/buildplanner.html')
+          s = p.read_text()
+
+          rate = '''const RATE_SCHEDULE=[{title:'Preliminaries',rows:[{key:'permit',label:'Submission of building plan / permit application and Engineer’s drawings to the Local Authority, including preparation of required documents, submission, coordination and necessary authority liaison, complete.',unit:'ls'},{key:'prelim',label:'Preliminaries, site mobilisation, temporary facilities, site protection, insurance, project coordination, supervision and general project management, complete.',unit:'ls'}]},{title:'Structures',rows:[{key:'footingConc',label:'Concrete Grade 15 to pad footings including placing, compacting, levelling and curing complete.',unit:'m3'},{key:'slabConc',label:'Concrete Grade 25 to ground slab including preparation, placing, compacting, levelling, finishing and curing complete.',unit:'m3'},{key:'beamConc',label:'Concrete Grade 25 to ground and roof beams including placing, compacting, levelling and curing complete.',unit:'m3'},{key:'colConc',label:'Concrete Grade 25 to reinforced concrete columns including placing, compacting, alignment and curing complete.',unit:'m3'}]},{title:'Architecture',rows:[{key:'ceilingInt',label:'Plaster / skim ceiling c/w paint including surface preparation, joint treatment, application and finishing complete.',unit:'sqft'},{key:'floorTileInt',label:'Internal floor tiles including surface preparation, adhesive / mortar bedding, cutting, laying, grouting and finishing complete.',unit:'sqft'},{key:'paintInt',label:'Internal wall and ceiling painting including surface preparation, sealer / undercoat, finishing coats, cleaning and touch-up complete.',unit:'sqft'},{key:'door',label:'Door set including door leaf, frame, ironmongery, installation, alignment and finishing complete.',unit:'no'},{key:'window',label:'Window set including frame, glazing, ironmongery, sealant, installation and finishing complete.',unit:'no'}]},{title:'Bathroom',rows:[{key:'bathFloorTile',label:'Bathroom floor tiles c/w waterproofing including surface preparation, waterproofing membrane, laying, grouting and finishing complete.',unit:'sqft'},{key:'bathWallTile',label:'Bathroom wall tiles including surface preparation, laying, grouting, trimming and finishing complete.',unit:'sqft'},{key:'bathPiping',label:'Bathroom sanitary and water supply piping including fittings, connections, testing and commissioning complete.',unit:'ls'},{key:'bathWc',label:'Water closet (WC) including pan, cistern, fittings, connection, testing and commissioning complete.',unit:'no'},{key:'bathBasin',label:'Wash hand basin including basin, tap / fittings, waste connection, installation, testing and commissioning complete.',unit:'no'}]},{title:'Electrical',rows:[{key:'dbBox',label:'Distribution board (DB) box including enclosure, circuit protection devices, busbar, labelling and installation complete.',unit:'no'},{key:'wiring',label:'Electrical wiring including cables, conduits / trunking, terminations, supports, testing and commissioning complete.',unit:'m'},{key:'powerPoint',label:'13A switched power point including wiring, accessories, mounting, termination, testing and commissioning complete.',unit:'no'},{key:'switch',label:'Lighting switch including wiring, accessories, mounting, termination, testing and commissioning complete.',unit:'no'},{key:'lighting',label:'Light fitting including fitting, wiring connection, mounting, testing and commissioning complete.',unit:'no'},{key:'fan',label:'Ceiling fan including fan unit, regulator / control, wiring connection, mounting, testing and commissioning complete.',unit:'no'},{key:'aircond',label:'Air-conditioning point / provision including power wiring, isolator, containment, termination, testing and commissioning complete.',unit:'no'},{key:'earthing',label:'Electrical earthing system including earth electrode, conductor, connections, testing and commissioning complete.',unit:'set'}]}];'''
+          s2, n = re.subn(r"const RATE_SCHEDULE=\[.*?\];", rate, s, count=1, flags=re.S)
+          if n != 1:
+              raise SystemExit('RATE_SCHEDULE marker not found')
+          s = s2
+
+          replacements = {
+            "desc:'Concrete G15'":"desc:'Concrete Grade 15 to pad footings including placing, compacting, levelling and curing complete.'",
+            "desc:'Formwork'":"desc:'Formwork to pad footings including erection, support, alignment, striking and making good complete.'",
+            "desc:'Rebar'":"desc:'Reinforcement steel bars to pad footings including cutting, bending, fixing and tying complete.'",
+            "desc:'Concrete G25'":"desc:'Concrete Grade 25 to reinforced concrete structural members including placing, compacting, levelling and curing complete.'",
+            "desc:'Rebar BRC A7 double layer'":"desc:'Welded steel fabric reinforcement BRC A7, double layer, including laps, spacers and fixing complete.'",
+            "desc:'Flat roof – Concrete G25'":"desc:'Concrete Grade 25 to flat roof slab including placing, compacting, levelling, finishing and curing complete.'",
+            "desc:'Flat roof – Formwork'":"desc:'Formwork to flat roof slab including erection, support, alignment, striking and making good complete.'",
+            "desc:'Flat roof – Rebar BRC A7 double layer'":"desc:'Welded steel fabric reinforcement BRC A7, double layer, to flat roof slab including laps, spacers and fixing complete.'",
+            "desc:'C-channel for roof structures'":"desc:'Galvanised steel C-channel roof framing including cutting, fabrication, fixing, connections, alignment and protective treatment complete.'",
+            "desc:'Metal roofing sheet'":"desc:'Metal roofing sheets including supply, cutting, fixing, laps, flashing, sealant, fasteners and complete installation.'",
+            "desc:'Apron – Concrete G15'":"desc:'Concrete Grade 15 to external apron including preparation, placing, compacting, levelling, finishing and curing complete.'",
+            "desc:'Apron – Formwork'":"desc:'Formwork to external apron including erection, support, alignment, striking and making good complete.'",
+            "desc:'Apron – Rebar BRC A7'":"desc:'Welded steel fabric reinforcement BRC A7 to external apron including laps, spacers and fixing complete.'",
+            "desc:'Drainage – small U-shape scupper drain'":"desc:'Small U-shape scupper drain including excavation, base preparation, construction, finishing and making good complete.'",
+            "desc:'Septic tank'":"desc:'Septic tank including excavation, bedding, tank, inlet / outlet connections, backfilling and all necessary accessories complete.'",
+            "desc:'Water tank'":"desc:'Water storage tank including tank base / support, inlet and outlet connections, fittings and all necessary accessories complete.'",
+            "desc:'Design roof structure – Concrete G25'":"desc:'Concrete Grade 25 to designed roof structural member including placing, compacting, levelling and curing complete.'",
+            "desc:'Design roof structure – Formwork'":"desc:'Formwork to designed roof structural member including erection, support, alignment, striking and making good complete.'",
+            "desc:'Design roof structure – Rebar'":"desc:'Reinforcement steel bars to designed roof structural member including cutting, bending, fixing and tying complete.'",
+          }
+          for a,b in replacements.items():
+              s = s.replace(a,b)
+
+          helper = "function masterRateDescription(key,fallback=''){for(const g of RATE_SCHEDULE||[]){const row=(g.rows||[]).find(r=>r.key===key);if(row?.label)return row.label;}return fallback;}"
+          marker = 'function generateElectricalItems('
+          if marker in s and 'function masterRateDescription(' not in s:
+              s = s.replace(marker, helper + marker, 1)
+          elec = {
+            "'DB box'":"masterRateDescription('dbBox','Distribution board (DB) box including enclosure, circuit protection devices, busbar, labelling and installation complete.')",
+            "'Wirings'":"masterRateDescription('wiring','Electrical wiring including cables, conduits / trunking, terminations, supports, testing and commissioning complete.')",
+            "'Power point'":"masterRateDescription('powerPoint','13A switched power point including wiring, accessories, mounting, termination, testing and commissioning complete.')",
+            "'Switch'":"masterRateDescription('switch','Lighting switch including wiring, accessories, mounting, termination, testing and commissioning complete.')",
+            "'Lighting'":"masterRateDescription('lighting','Light fitting including fitting, wiring connection, mounting, testing and commissioning complete.')",
+            "'Ceiling fan'":"masterRateDescription('fan','Ceiling fan including fan unit, regulator / control, wiring connection, mounting, testing and commissioning complete.')",
+            "'Aircond point / provision'":"masterRateDescription('aircond','Air-conditioning point / provision including power wiring, isolator, containment, termination, testing and commissioning complete.')",
+            "'Earthing'":"masterRateDescription('earthing','Electrical earthing system including earth electrode, conductor, connections, testing and commissioning complete.')",
+          }
+          for a,b in elec.items():
+              s = s.replace(a,b)
+          p.write_text(s)
+
+          # Make the existing qfix Build wrapper respect the master descriptions for
+          # global structural/electrical items, while retaining room-specific wording.
+          q = Path('quotation/quotation-quantity-fix.js')
+          qs = q.read_text()
+          old = "const description = buildFullDescription(item);"
+          new = "const master = typeof masterRateDescription === 'function' ? masterRateDescription(buildRateKey(item), '') : ''; const description = master || buildFullDescription(item);"
+          qs = qs.replace(old, new, 1)
+          q.write_text(qs)
+
+          # Contractor market capture: store only contractor custom/override items,
+          # with contractor ownership and an immutable observation timestamp.
+          api = Path('api/quotations.js')
+          a = api.read_text()
+          needle = "const projectId = String(normalized.projectId || normalized.plannerState?.projectId || '').trim();"
+          capture = "if (role === 'contractor') { normalized.contractorMarketCapture = (Array.isArray(normalized.contractorMarketCapture) ? normalized.contractorMarketCapture : []).map(x => ({...x, capturedAt:x.capturedAt || now})); }\n    "
+          if needle in a and 'contractorMarketCapture' not in a:
+              a = a.replace(needle, capture + needle, 1)
+          api.write_text(a)
+          PY
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add quotation/buildplanner.html quotation/quotation-quantity-fix.js api/quotations.js
+          if git diff --cached --quiet; then
+            echo 'No changes required.'
+          else
+            git commit -m 'Make Rate Schedule global read-only and align full descriptions'
+            git push
+          fi
+
+      - name: Remove one-shot workflow
+        if: success()
+        shell: bash
+        run: |
+          git rm .github/workflows/enforce-global-rate-master.yml
+          git commit -m 'Remove one-shot global rate master workflow'
+          git push
