@@ -83,15 +83,19 @@
     if(id.endsWith('-basin'))return 'bathBasin';
     if(id.endsWith('-shower'))return 'bathShower';
     if(id.endsWith('-tap'))return 'bathTap';
-    if(id.endsWith('-floortile'))return 'floorTileInt';
+    if(id.endsWith('-floortile'))return item.room&&/car porch|entrance/i.test(item.room)?'floorTileExt':(String(item.description||'').toLowerCase().includes('waterproofing')?'bathFloorTile':'floorTileInt');
     if(id.endsWith('-paint'))return 'paintInt';
     if(id.endsWith('-door'))return 'door';
     if(id.endsWith('-window'))return 'window';
     return null;
   }
 
+  function hasRoomArea(){
+    return [...document.querySelectorAll('#roomsContainer .room-area')].some(input=>Number(input.value)>0);
+  }
+
   function hideAddItemUntilArea(){
-    const hasArea=[...document.querySelectorAll('#roomsContainer .room-area')].some(input=>Number(input.value)>0);
+    const hasArea=hasRoomArea();
     document.querySelectorAll('#estimateContent tr.no-print').forEach(row=>{
       const button=row.querySelector('button');
       if(!button||!/^\+\s*Add Item$/i.test(button.textContent.trim()))return;
@@ -100,13 +104,12 @@
   }
 
   function hideRemovedItemControlsUntilNeeded(){
-    const controls=[...document.querySelectorAll('#estimateContent .contractor-only')].find(el=>{
+    const controls=[...document.querySelectorAll('.contractor-only')].find(el=>{
       const text=[...el.querySelectorAll('button')].map(b=>b.textContent.trim()).join(' ');
       return /Show Removed Items/i.test(text)&&/Restore All Items/i.test(text);
     });
     if(!controls)return;
-    const hasArea=[...document.querySelectorAll('#roomsContainer .room-area')].some(input=>Number(input.value)>0);
-    const hasRemoved=hasArea&&typeof excludedItems!=='undefined'&&excludedItems instanceof Set&&excludedItems.size>0;
+    const hasRemoved=hasRoomArea()&&typeof excludedItems!=='undefined'&&excludedItems instanceof Set&&excludedItems.size>0;
     controls.style.setProperty('display',hasRemoved?'flex':'none','important');
   }
 
