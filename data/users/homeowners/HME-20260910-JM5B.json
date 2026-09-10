@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "homeowner",
+  "homeownerId": "HME-20260910-JM5B",
+  "profile": {
+    "name": "Abdullah Isa Hoo Kee Kuan",
+    "email": "solaris.acres@gmail.com",
+    "phone": "0162154316"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-09-10T01:06:09.577Z",
+  "updatedAt": "2026-09-10T01:06:09.577Z"
+}
