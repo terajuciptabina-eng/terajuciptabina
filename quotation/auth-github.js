@@ -28,16 +28,29 @@
     signInTab.className = signup ? 'rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-500' : 'tab-active rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-950';
     signUpTab.className = signup ? 'tab-active rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-950' : 'rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-500';
   }
-  function showPortal(record, signupEmailSent = null) {
-    setLocal(record); panel.classList.add('hidden'); portal.classList.remove('hidden'); const id = record[idKey];
+  function showSignupPopup(record, emailSent, email) {
+    const existing = document.getElementById('terajuSignupPopup');
+    existing?.remove();
     const label = isHomeowner ? 'Homeowner' : 'Contractor';
-    const email = String(record.profile?.email || '').trim();
-    const emailNote = signupEmailSent === true && email
-      ? `<span class="mt-2 block text-xs text-slate-500">Your ID has also been sent to ${escapeHtml(email)}.</span>`
-      : signupEmailSent === false
-        ? `<span class="mt-2 block text-xs text-amber-700">Account created, but the ID email could not be sent yet. Please keep this ID.</span>`
-        : '';
-    welcome.innerHTML = `<span class="block">Welcome, ${escapeHtml(record.profile?.name || '')}.</span><span class="mt-2 inline-block rounded-full border border-[#d9c49a] bg-[#fbf7ef] px-4 py-2 text-sm font-bold tracking-wide text-slate-900">${label} ID: ${escapeHtml(id)}</span>${emailNote}`;
+    const popup = document.createElement('div');
+    popup.id = 'terajuSignupPopup';
+    popup.style.cssText = 'position:fixed;top:24px;left:50%;transform:translateX(-50%);z-index:99999;width:min(92vw,460px);padding:20px 22px;border:1px solid #d9c49a;border-radius:18px;background:rgba(255,255,255,.97);box-shadow:0 18px 55px rgba(15,23,42,.18);font-family:inherit;color:#0f172a;opacity:0;transition:opacity .25s ease,transform .25s ease';
+    const note = emailSent
+      ? `Your ID has also been sent to ${escapeHtml(email)}.`
+      : 'Account created, but the ID email could not be sent yet. Please keep this ID.';
+    const noteClass = emailSent ? 'color:#64748b' : 'color:#b45309';
+    popup.innerHTML = `<div style="font-size:11px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:#64748b">Account created</div><div style="margin-top:8px;font-size:15px;font-weight:700">Your ${label} ID</div><div style="margin-top:5px;font-size:24px;font-weight:800;letter-spacing:.06em">${escapeHtml(record[idKey])}</div><div style="margin-top:10px;font-size:12px;line-height:1.5;${noteClass}">${note}</div>`;
+    document.body.appendChild(popup);
+    requestAnimationFrame(() => { popup.style.opacity = '1'; popup.style.transform = 'translateX(-50%) translateY(0)'; });
+    setTimeout(() => {
+      popup.style.opacity = '0';
+      popup.style.transform = 'translateX(-50%) translateY(-8px)';
+      setTimeout(() => popup.remove(), 300);
+    }, 5000);
+  }
+  function showPortal(record) {
+    setLocal(record); panel.classList.add('hidden'); portal.classList.remove('hidden'); const id = record[idKey];
+    welcome.innerHTML = `<span class="block">Welcome, ${escapeHtml(record.profile?.name || '')}.</span>`;
     if (buildLink) buildLink.href = `quotations.html?audience=${role}&role=${role}&${idKey}=${encodeURIComponent(id)}&id=${encodeURIComponent(id)}&plannerType=build`;
     if (renoLink) renoLink.href = `quotations.html?audience=${role}&role=${role}&${idKey}=${encodeURIComponent(id)}&id=${encodeURIComponent(id)}&plannerType=renovation`;
   }
@@ -65,9 +78,10 @@
       if (mode === 'signup') {
         const name = nameInput.value.trim(), email = emailInput?.value.trim() || '', phone = phoneInput?.value.trim() || ''; if (!name || !email) throw new Error('Name and email are required.');
         const data = await postAccount({role,name,email,phone});
-        const emailNote = data.emailSent ? `<span class="text-xs text-slate-500">Your ID has also been sent to ${escapeHtml(email)}.</span>` : `<span class="text-xs text-amber-700">Account created, but the ID email could not be sent yet. Please keep this ID.</span>`;
-        generated.innerHTML = `<strong>Your ${isHomeowner ? 'Homeowner' : 'Contractor'} ID:</strong><br><span class="mt-1 inline-block text-lg font-bold tracking-wide text-slate-950">${escapeHtml(data.id)}</span><br><span class="text-xs text-slate-500">Keep this ID. You will use it to sign in later.</span><br>${emailNote}`;
-        generated.classList.remove('hidden'); showPortal(data.record, data.emailSent === true ? true : false);
+        generated.innerHTML = `<strong>Your ${isHomeowner ? 'Homeowner' : 'Contractor'} ID:</strong><br><span class="mt-1 inline-block text-lg font-bold tracking-wide text-slate-950">${escapeHtml(data.id)}</span><br><span class="text-xs text-slate-500">Keep this ID. You will use it to sign in later.</span>`;
+        generated.classList.remove('hidden');
+        showPortal(data.record);
+        showSignupPopup(data.record, data.emailSent === true, email);
       } else { const id = idInput.value.trim().toUpperCase(); if (!id) throw new Error(`Please enter your ${isHomeowner ? 'Homeowner' : 'Contractor'} ID.`); showPortal(await getAccount(id)); }
     } catch (err) { setError(err.message || 'Unable to complete the request.'); }
     finally { button.disabled = false; button.textContent = mode === 'signup' ? 'Create workspace' : 'Enter workspace'; }
