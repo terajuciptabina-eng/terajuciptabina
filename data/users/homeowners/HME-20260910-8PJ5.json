@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "homeowner",
+  "homeownerId": "HME-20260910-8PJ5",
+  "profile": {
+    "name": "ivan",
+    "email": "solaris.acres@gmail.com",
+    "phone": "0162154316"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-09-10T00:35:49.422Z",
+  "updatedAt": "2026-09-10T00:35:49.422Z"
+}
