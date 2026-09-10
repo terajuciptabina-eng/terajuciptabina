@@ -343,7 +343,7 @@
           "builtUpArea": 0,
           "state": "perlis"
         },
-        "total": 15350,
+        "total": 226200,
         "plannerState": {
           "customerName": "Iskandar Zul",
           "projectLocation": "",
@@ -366,6 +366,12 @@
               "type": "other",
               "name": "",
               "area": "399"
+            },
+            {
+              "id": "room-4",
+              "type": "balcony",
+              "name": "Balcony",
+              "area": "2000"
             }
           ],
           "rates": {
@@ -455,10 +461,10 @@
           "projectState": "perlis",
           "rateSetId": "default",
           "rateSetName": "Default Rate",
-          "rateSnapshotAt": "2026-09-10T15:55:59.065Z"
+          "rateSnapshotAt": "2026-09-10T16:07:02.916Z"
         },
         "createdAt": "2026-09-10T15:52:32.377Z",
-        "updatedAt": "2026-09-10T15:55:59.911Z",
+        "updatedAt": "2026-09-10T16:07:03.653Z",
         "estimateNumber": "EST-REN-003"
       },
       {
@@ -869,7 +875,7 @@
     ]
   },
   "createdAt": "2026-09-10T15:20:20.944Z",
-  "updatedAt": "2026-09-10T15:55:59.911Z",
+  "updatedAt": "2026-09-10T16:07:03.653Z",
   "quotationRunningNumber": {
     "build": 2,
     "renovation": 3
