@@ -343,7 +343,7 @@
           "builtUpArea": 0,
           "state": "kelantan"
         },
-        "total": 19834,
+        "total": 33002,
         "plannerState": {
           "customerName": "Iskandar Zul",
           "projectLocation": "Ketereh",
@@ -360,6 +360,12 @@
               "type": "bedroom",
               "name": "Bedroom",
               "area": "120"
+            },
+            {
+              "id": "room-3",
+              "type": "bathroom",
+              "name": "Bathroom",
+              "area": "48"
             }
           ],
           "rates": {
@@ -449,10 +455,10 @@
           "projectState": "kelantan",
           "rateSetId": "default",
           "rateSetName": "Default Rate",
-          "rateSnapshotAt": "2026-09-10T15:30:08.961Z"
+          "rateSnapshotAt": "2026-09-10T15:36:06.591Z"
         },
         "createdAt": "2026-09-10T15:30:08.960Z",
-        "updatedAt": "2026-09-10T15:30:10.402Z",
+        "updatedAt": "2026-09-10T15:36:07.338Z",
         "estimateNumber": "EST-REN-001"
       },
       {
@@ -589,7 +595,7 @@
     ]
   },
   "createdAt": "2026-09-10T15:20:20.944Z",
-  "updatedAt": "2026-09-10T15:30:10.402Z",
+  "updatedAt": "2026-09-10T15:36:07.338Z",
   "quotationRunningNumber": {
     "build": 2,
     "renovation": 1
