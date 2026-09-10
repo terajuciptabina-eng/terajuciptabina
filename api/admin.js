@@ -1,22 +1,22 @@
 export default async function handler(req, res) {
   const origin = 'https://terajuciptabina-eng.github.io';
   res.setHeader('Access-Control-Allow-Origin', origin);
-  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, DELETE, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-Admin-Key');
   if (req.method === 'OPTIONS') return res.status(200).end();
-  if (req.method !== 'GET') return res.status(405).json({ message: 'Method not allowed.' });
+  if (req.method !== 'GET' && req.method !== 'DELETE') return res.status(405).json({ message: 'Method not allowed.' });
 
   const expectedKey = process.env.ADMIN_KEY;
   const suppliedKey = String(req.headers['x-admin-key'] || '').trim();
   if (!expectedKey || !suppliedKey || suppliedKey !== expectedKey) return res.status(401).json({ message: 'Unauthorized.' });
 
   const token = process.env.GITHUB_TOKEN;
-  const repo = process.env.GITHUB_REPO || 'terajuciptabina-eng/terajuciptabina';
+  const repo = process.env.GITHUB_REPO || 'terajuciptabina-eng/terajucipina';
   if (!token) return res.status(500).json({ message: 'GitHub auth storage is not configured.' });
 
   const headers = { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' };
-  async function github(path) {
-    const response = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, { headers });
+  async function github(path, options = {}) {
+    const response = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, { ...options, headers: { ...headers, ...(options.headers || {}) } });
     const text = await response.text(); let data = null; try { data = text ? JSON.parse(text) : null; } catch { data = text; }
     return { response, data };
   }
@@ -36,6 +36,26 @@ export default async function handler(req, res) {
     const q = String(req.query?.q || '').trim().toLowerCase();
     const includeRecords = String(req.query?.records || '') === '1';
     const roles = roleFilter === 'homeowner' || roleFilter === 'contractor' ? [roleFilter] : ['homeowner', 'contractor'];
+    if (req.method === 'DELETE') {
+      const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {});
+      const role = String(body.role || '').toLowerCase();
+      const id = String(body.id || '').trim();
+      if (!['homeowner', 'contractor'].includes(role) || !id) return res.status(400).json({ message: 'Valid role and account ID are required.' });
+      const folder = role === 'homeowner' ? 'homeowners' : 'contractors';
+      const listing = await github(`data/users/${folder}`);
+      if (!listing.response.ok || !Array.isArray(listing.data)) return res.status(404).json({ message: 'Database folder not found.' });
+      let target = null;
+      for (const item of listing.data.filter(x => x.type === 'file' && x.name.endsWith('.json'))) {
+        const record = await readJson(`data/users/${folder}/${item.name}`);
+        const recordId = String(record?.homeownerId || record?.contractorId || '').trim();
+        if (recordId === id) { target = { item, record }; break; }
+      }
+      if (!target) return res.status(404).json({ message: 'User not found.' });
+      const result = await github(`data/users/${folder}/${target.item.name}`, { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: `Delete ${role} ${id} from admin database`, sha: target.item.sha }) });
+      if (!result.response.ok) return res.status(result.response.status).json({ message: result.data?.message || 'Unable to delete user.' });
+      return res.status(200).json({ ok: true, id, role, message: 'User deleted.' });
+    }
+
     const accounts = [];
     for (const role of roles) {
       const folder = role === 'homeowner' ? 'homeowners' : 'contractors';
