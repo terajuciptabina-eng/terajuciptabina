@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "homeowner",
+  "homeownerId": "HME-20260910-8MD9",
+  "profile": {
+    "name": "Wahida",
+    "email": "wahidaathirah@gmail.com",
+    "phone": "0175774745"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-09-10T05:12:15.278Z",
+  "updatedAt": "2026-09-10T05:12:15.278Z"
+}
