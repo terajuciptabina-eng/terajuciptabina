@@ -17,16 +17,22 @@ jobs:
           ref: main
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Inject promo UI script
+      - name: Standardize quotation promo UI
         shell: bash
         run: |
           python - <<'PY'
           from pathlib import Path
+
+          for filename in ('quotation/renovationplanner.html', 'quotation/buildplanner.html'):
+              path = Path(filename)
+              text = path.read_text(encoding='utf-8')
+              text = text.replace('        <em>~~RM49~~ FREE during promotion</em>\n', '')
+              text = text.replace('        <em>Included with Detailed Quotation</em>\n', '')
+              text = text.replace('~~RM49~~ FREE during promotion', '')
+              path.write_text(text, encoding='utf-8')
+
           path = Path('quotation/renovationplanner.html')
           text = path.read_text(encoding='utf-8')
-          text = text.replace('        <em>~~RM49~~ FREE during promotion</em>\n', '')
-          text = text.replace('        <em>Included with Detailed Quotation</em>\n', '')
-          text = text.replace('~~RM49~~ FREE during promotion', '')
           tag = '<script src="detailed-quotation-promo-ui.js"></script>'
           if tag not in text:
               marker = '</body>'
@@ -41,10 +47,10 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add quotation/renovationplanner.html
+          git add quotation/renovationplanner.html quotation/buildplanner.html
           if git diff --cached --quiet; then
             echo "No changes needed."
             exit 0
           fi
-          git commit -m "Remove Detailed Quotation promo label [renovation-promo-ui]"
+          git commit -m "Standardize Detailed Quotation promo label [renovation-promo-ui]"
           git push origin main
