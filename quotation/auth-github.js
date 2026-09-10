@@ -28,10 +28,16 @@
     signInTab.className = signup ? 'rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-500' : 'tab-active rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-950';
     signUpTab.className = signup ? 'tab-active rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-950' : 'rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-500';
   }
-  function showPortal(record) {
+  function showPortal(record, signupEmailSent = null) {
     setLocal(record); panel.classList.add('hidden'); portal.classList.remove('hidden'); const id = record[idKey];
     const label = isHomeowner ? 'Homeowner' : 'Contractor';
-    welcome.innerHTML = `<span class="block">Welcome, ${escapeHtml(record.profile?.name || '')}.</span><span class="mt-2 inline-block rounded-full border border-[#d9c49a] bg-[#fbf7ef] px-4 py-2 text-sm font-bold tracking-wide text-slate-900">${label} ID: ${escapeHtml(id)}</span>`;
+    const email = String(record.profile?.email || '').trim();
+    const emailNote = signupEmailSent === true && email
+      ? `<span class="mt-2 block text-xs text-slate-500">Your ID has also been sent to ${escapeHtml(email)}.</span>`
+      : signupEmailSent === false
+        ? `<span class="mt-2 block text-xs text-amber-700">Account created, but the ID email could not be sent yet. Please keep this ID.</span>`
+        : '';
+    welcome.innerHTML = `<span class="block">Welcome, ${escapeHtml(record.profile?.name || '')}.</span><span class="mt-2 inline-block rounded-full border border-[#d9c49a] bg-[#fbf7ef] px-4 py-2 text-sm font-bold tracking-wide text-slate-900">${label} ID: ${escapeHtml(id)}</span>${emailNote}`;
     if (buildLink) buildLink.href = `quotations.html?audience=${role}&role=${role}&${idKey}=${encodeURIComponent(id)}&id=${encodeURIComponent(id)}&plannerType=build`;
     if (renoLink) renoLink.href = `quotations.html?audience=${role}&role=${role}&${idKey}=${encodeURIComponent(id)}&id=${encodeURIComponent(id)}&plannerType=renovation`;
   }
@@ -61,7 +67,7 @@
         const data = await postAccount({role,name,email,phone});
         const emailNote = data.emailSent ? `<span class="text-xs text-slate-500">Your ID has also been sent to ${escapeHtml(email)}.</span>` : `<span class="text-xs text-amber-700">Account created, but the ID email could not be sent yet. Please keep this ID.</span>`;
         generated.innerHTML = `<strong>Your ${isHomeowner ? 'Homeowner' : 'Contractor'} ID:</strong><br><span class="mt-1 inline-block text-lg font-bold tracking-wide text-slate-950">${escapeHtml(data.id)}</span><br><span class="text-xs text-slate-500">Keep this ID. You will use it to sign in later.</span><br>${emailNote}`;
-        generated.classList.remove('hidden'); showPortal(data.record);
+        generated.classList.remove('hidden'); showPortal(data.record, data.emailSent === true ? true : false);
       } else { const id = idInput.value.trim().toUpperCase(); if (!id) throw new Error(`Please enter your ${isHomeowner ? 'Homeowner' : 'Contractor'} ID.`); showPortal(await getAccount(id)); }
     } catch (err) { setError(err.message || 'Unable to complete the request.'); }
     finally { button.disabled = false; button.textContent = mode === 'signup' ? 'Create workspace' : 'Enter workspace'; }
