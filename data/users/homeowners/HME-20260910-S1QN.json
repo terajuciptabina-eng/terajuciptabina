@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "homeowner",
+  "homeownerId": "HME-20260910-S1QN",
+  "profile": {
+    "name": "Nursyafiqa",
+    "email": "syafiqabadur@icloud.com",
+    "phone": "0184696207"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-09-10T02:51:25.066Z",
+  "updatedAt": "2026-09-10T02:51:25.066Z"
+}
