@@ -7,13 +7,16 @@
     const m = document.getElementById('paymentModal');
     if (m) {
       const price = m.querySelector('.rounded-2xl.bg-gray-50.border.p-5.mb-5 .text-2xl');
-      setText(price, 'Included');
+      if (price) {
+        const html = '<span class="line-through text-gray-400 text-base mr-2">RM 49</span><span class="text-green-700">FREE</span>';
+        if (price.innerHTML !== html) price.innerHTML = html;
+      }
 
       const note = m.querySelector('.p-6 > p.mt-5');
-      setText(note, 'Detailed quotation is currently available without an additional charge.');
+      setText(note, 'Limited-time promotion: Detailed Quotation normally RM49, now FREE until 31 October 2026. No payment is required.');
 
       const button = m.querySelector('#paymentProceedButton');
-      setText(button, 'Unlock Detailed Quotation');
+      setText(button, 'Unlock Detailed Quotation — FREE');
 
       const paymentTitle = m.querySelector('p.text-xs.uppercase');
       setText(paymentTitle, 'Detailed Quotation');
