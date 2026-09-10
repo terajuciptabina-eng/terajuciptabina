@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "contractor",
+  "contractorId": "CTR-20260910-3PO6",
+  "profile": {
+    "name": "Wan",
+    "email": "nwanmohamad@gmail.com",
+    "phone": "+601133445685"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-09-10T02:57:49.650Z",
+  "updatedAt": "2026-09-10T02:57:49.650Z"
+}
