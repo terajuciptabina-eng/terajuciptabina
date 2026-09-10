@@ -21,6 +21,9 @@ export default async function handler(req, res) {
   const idKey = role => role === 'homeowner' ? 'homeownerId' : 'contractorId';
   const makeId = role => `${role === 'homeowner' ? 'HME' : 'CTR'}-${new Date().toISOString().slice(0,10).replace(/-/g,'')}-${Math.random().toString(36).slice(2,6).toUpperCase()}`;
   const pathFor = (role, id) => `data/users/${folder(role)}/${encodeURIComponent(id)}.json`;
+  const validEmail = value => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(value || '').trim());
+  const normalizePhone = value => String(value || '').replace(/[\s().-]/g, '');
+  const validPhone = value => /^(?:01\d{8,9}|\+601\d{8,9}|601\d{8,9})$/.test(normalizePhone(value));
 
   async function github(path, options = {}) {
     const response = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
@@ -82,7 +85,9 @@ export default async function handler(req, res) {
     const email = String(body.email || '').trim().toLowerCase();
     const phone = String(body.phone || '').trim();
     if (!validRole(role)) return res.status(400).json({ message: 'Invalid role.' });
-    if (!name || !email) return res.status(400).json({ message: 'Name and email are required.' });
+    if (!name) return res.status(400).json({ message: 'Name is required.' });
+    if (!validEmail(email)) return res.status(400).json({ message: 'Please enter a valid email address.' });
+    if (!validPhone(phone)) return res.status(400).json({ message: 'Please enter a valid Malaysian phone number, e.g. 0123456789 or +60123456789.' });
 
     let id = '';
     for (let attempt = 0; attempt < 5; attempt++) {
