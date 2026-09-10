@@ -56,3 +56,4 @@ function installRenovation'''
           git push origin main
 
 # Triggered once after creation so the cleanup is actually executed.
+# Force execution after verification.
