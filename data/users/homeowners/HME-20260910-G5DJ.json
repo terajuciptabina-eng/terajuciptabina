@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "homeowner",
+  "homeownerId": "HME-20260910-G5DJ",
+  "profile": {
+    "name": "BAITIEBADRON",
+    "email": "ahmedfahdafridi@gmail.com",
+    "phone": "+601112829562"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-09-10T08:36:32.934Z",
+  "updatedAt": "2026-09-10T08:36:32.934Z"
+}
