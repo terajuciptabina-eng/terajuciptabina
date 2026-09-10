@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "homeowner",
+  "homeownerId": "HME-20260910-A4EI",
+  "profile": {
+    "name": "Irfan Mazlan",
+    "email": "irfanmazlan94@gmail.com",
+    "phone": "01990906909"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-09-10T12:34:46.035Z",
+  "updatedAt": "2026-09-10T12:34:46.035Z"
+}
