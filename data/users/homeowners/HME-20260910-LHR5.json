@@ -19,6 +19,108 @@
       {
         "schemaVersion": 1,
         "recordType": "quotation",
+        "quotationId": "QT-BLD-MTVOF8EW-N252I",
+        "projectId": "PRJ-BLD-MTVOKE07-2DF9T",
+        "quotationNumber": "Q002S",
+        "plannerType": "build",
+        "role": "homeowner",
+        "homeownerId": "HME-20260910-LHR5",
+        "state": "final",
+        "quotationType": "simple",
+        "client": {
+          "name": "Iskandar Zul"
+        },
+        "project": {
+          "location": "Melaka",
+          "builtUpArea": 200,
+          "state": "melaka"
+        },
+        "total": 60168.63,
+        "plannerState": {
+          "customerName": "Iskandar Zul",
+          "projectLocation": "Melaka",
+          "builtUpArea": "200",
+          "rooms": [
+            {
+              "id": "room-1",
+              "type": "living",
+              "name": "Living / Family",
+              "area": "200"
+            }
+          ],
+          "rates": {
+            "footingConc": 550,
+            "footingFw": 4.18,
+            "footingRebar": 15,
+            "slabConc": 550,
+            "slabBrc": 6.5,
+            "beamConc": 350,
+            "beamFw": 4.18,
+            "beamRebar": 15,
+            "colConc": 550,
+            "colFw": 4.18,
+            "colRebar": 15,
+            "flatRoofConc": 550,
+            "flatRoofFw": 4.18,
+            "flatRoofBrc": 6.5,
+            "cChannel": 4,
+            "metalSheet": 3.25,
+            "roofDesignConc": 550,
+            "roofDesignFw": 4.18,
+            "roofDesignRebar": 70,
+            "apronConc": 350,
+            "apronFw": 13.72,
+            "apronBrc": 15,
+            "drainage": 25,
+            "ceilingInt": 15,
+            "ceilingExt": 20,
+            "floorTileInt": 4.18,
+            "floorTileExt": 5.57,
+            "paintInt": 1.39,
+            "paintExt": 2.32,
+            "door": 600,
+            "window": 600,
+            "waterTank": 500,
+            "septicTank": 1500,
+            "bathWallTile": 4.18,
+            "bathFloorTile": 4.18,
+            "bathPiping": 1000,
+            "bathShower": 120,
+            "bathTap": 30,
+            "bathWc": 500,
+            "bathBasin": 400,
+            "dbBox": 1000,
+            "wiring": 20,
+            "powerPoint": 50,
+            "switch": 50,
+            "lighting": 250,
+            "fan": 600,
+            "aircond": 300,
+            "earthing": 1500,
+            "permit": 8500,
+            "prelim": 12000
+          },
+          "customRates": [],
+          "customQuantities": [],
+          "customDescriptions": [],
+          "customRoomLabels": [],
+          "excludedItems": [],
+          "manualItems": [],
+          "standardRateItems": [],
+          "quotationType": "simple",
+          "projectId": "PRJ-BLD-MTVOKE07-2DF9T",
+          "projectState": "melaka",
+          "rateSetId": "default",
+          "rateSetName": "Default Rate",
+          "rateSnapshotAt": "2026-09-10T15:26:50.625Z"
+        },
+        "createdAt": "2026-09-10T15:26:50.624Z",
+        "updatedAt": "2026-09-10T15:26:51.367Z",
+        "estimateNumber": "EST-BLD-002"
+      },
+      {
+        "schemaVersion": 1,
+        "recordType": "quotation",
         "quotationId": "QT-BLD-MTVOHTY1-5R2ZU",
         "projectId": "PRJ-BLD-MTVOF9FD-24LWP",
         "quotationNumber": "Q001D",
@@ -224,11 +326,11 @@
     "renovation": []
   },
   "createdAt": "2026-09-10T15:20:20.944Z",
-  "updatedAt": "2026-09-10T15:24:52.839Z",
+  "updatedAt": "2026-09-10T15:26:51.367Z",
   "quotationRunningNumber": {
-    "build": 1
+    "build": 2
   },
   "estimateRunningNumber": {
-    "build": 1
+    "build": 2
   }
 }
