@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "homeowner",
+  "homeownerId": "HME-20260910-EEK1",
+  "profile": {
+    "name": "Afrina",
+    "email": "anisaqeelah56@gmail.com",
+    "phone": "0173439480"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-09-10T13:22:23.842Z",
+  "updatedAt": "2026-09-10T13:22:23.842Z"
+}
