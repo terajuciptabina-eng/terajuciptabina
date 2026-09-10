@@ -18,7 +18,7 @@ jobs:
           python - <<'PY'
           from pathlib import Path
           location_files=['quotation/renovationplanner.html','quotation/buildplanner.html']
-          quantity_files=['quotation/renovationplanner.html']
+          quantity_files=['quotation/renovationplanner.html','quotation/buildplanner.html']
           location_tag='<script src="location-autocomplete.js"></script>'
           quantity_tag='<script src="quotation-quantity-fix.js?v=20260907"></script>'
           for name in location_files:
