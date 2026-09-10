@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "homeowner",
+  "homeownerId": "HME-20260910-RQ5I",
+  "profile": {
+    "name": "taufik mazin",
+    "email": "taufikmazin@gmail.com",
+    "phone": "0177446595"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-09-10T07:52:22.958Z",
+  "updatedAt": "2026-09-10T07:52:22.958Z"
+}
