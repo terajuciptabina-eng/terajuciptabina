@@ -149,6 +149,18 @@
     if (typeof window.updateEstimate === 'function') window.updateEstimate();
   }
 
+  function saveForState(targetState) {
+    const normalized = String(targetState || '').trim().toLowerCase();
+    if (!normalized) return;
+    try {
+      const record = collect();
+      if (!record) return;
+      record.state = normalized;
+      record.rateSetId = normalized === selectedState() ? (window.TERAJU_RATE_CONTEXT?.rateSetId || normalized) : (record.rateSetId || normalized);
+      localStorage.setItem(keyFor(normalized), JSON.stringify(record));
+    } catch (e) { console.warn('[Teraju] local contractor state save failed', e); }
+  }
+
   function save() {
     try {
       const activeState = selectedState();
@@ -161,17 +173,19 @@
   window.__tcSaveLocalContractorData = save;
   window.__tcLoadLocalContractorData = restore;
 
-  window.addEventListener('teraju:ratechange', () => {
-    const activeState = selectedState();
-    if (!activeState || activeState === currentState) return;
+  window.addEventListener('teraju:statechange', event => {
+    const activeState = String(event?.detail?.state || '').trim().toLowerCase();
+    const previousState = String(event?.detail?.previousState || '').trim().toLowerCase();
+    if (!activeState) return;
+    if (previousState && previousState !== activeState) saveForState(previousState);
     switchKey(activeState, false);
     restore();
   });
-  window.addEventListener('teraju:statechange', event => {
-    const activeState = String(event?.detail?.state || '').trim().toLowerCase();
+
+  window.addEventListener('teraju:ratechange', () => {
+    const activeState = selectedState();
     if (!activeState) return;
-    save();
-    switchKey(activeState, false);
+    if (activeState !== currentState) switchKey(activeState, false);
     restore();
   });
 
