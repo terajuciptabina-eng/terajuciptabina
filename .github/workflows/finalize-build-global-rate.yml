@@ -74,10 +74,12 @@ jobs:
           s=p.read_text(encoding='utf-8')
           s=s.replace("window.editScheduleRate=()=>false;\n    window.resetRatesToDefault=()=>false;\n","")
           old="""        document.querySelectorAll('#rateScheduleContent input').forEach(input=>{const span=document.createElement('span');span.className='inline-block min-w-[7rem] px-2 py-1.5 text-right text-gray-700';span.textContent=Number(input.value||0).toFixed(2);span.setAttribute('aria-label','Global master rate — read only');input.replaceWith(span)});
-        document.querySelectorAll('#rateScheduleContent [onclick*=\"resetRatesToDefault\"]').forEach(el=>el.remove());
+        document.querySelectorAll('#rateScheduleContent [onclick*="resetRatesToDefault"]').forEach(el=>el.remove());
 """
           s=s.replace(old,'')
-          s=s.replace("const payload={contractorId,plannerType,customItemId:item.customItemId||item.id,sourceGlobalId:item.sourceGlobalId||null,description:String(item.description||'').trim(),unit:String(item.unit||'unit').trim(),rate:Number(item.rate)||0,category:String(item.category||'custom'),groupKey:item.groupKey||null,groupTitle:String(item.groupTitle||'Custom Items')};","const stateId=String(window.TERAJU_SELECTED_STATE||window.TERAJU_RATE_CONTEXT?.state||qs.get('state')||'').trim().toLowerCase(); const payload={contractorId,plannerType,state:stateId||null,rateSetId:window.TERAJU_RATE_CONTEXT?.rateSetId||stateId||null,customItemId:item.customItemId||item.id,sourceGlobalId:item.sourceGlobalId||null,description:String(item.description||'').trim(),unit:String(item.unit||'unit').trim(),rate:Number(item.rate)||0,category:String(item.category||'custom'),groupKey:item.groupKey||null,groupTitle:String(item.groupTitle||'Custom Items')};")
+          old_payload="const payload={contractorId,plannerType,customItemId:item.customItemId||item.id,sourceGlobalId:item.sourceGlobalId||null,description:String(item.description||'').trim(),unit:String(item.unit||'unit').trim(),rate:Number(item.rate)||0,category:String(item.category||'custom'),groupKey:item.groupKey||null,groupTitle:String(item.groupTitle||'Custom Items')}"
+          new_payload="const stateId=String(window.TERAJU_SELECTED_STATE||window.TERAJU_RATE_CONTEXT?.state||qs.get('state')||'').trim().toLowerCase(); const payload={contractorId,plannerType,state:stateId||null,rateSetId:window.TERAJU_RATE_CONTEXT?.rateSetId||stateId||null,customItemId:item.customItemId||item.id,sourceGlobalId:item.sourceGlobalId||null,description:String(item.description||'').trim(),unit:String(item.unit||'unit').trim(),rate:Number(item.rate)||0,category:String(item.category||'custom'),groupKey:item.groupKey||null,groupTitle:String(item.groupTitle||'Custom Items')}"
+          s=s.replace(old_payload,new_payload)
           p.write_text(s,encoding='utf-8')
           PY
       - name: Commit final changes and remove workflow
