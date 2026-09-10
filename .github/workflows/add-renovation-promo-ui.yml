@@ -17,7 +17,7 @@ jobs:
           ref: main
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Standardize quotation promo UI, card sizing, and homeowner defaults
+      - name: Standardize quotation promo UI, card sizing, homeowner defaults, and GA4
         shell: bash
         run: |
           python - <<'PY'
@@ -46,6 +46,55 @@ jobs:
           })();
           </script>'''
 
+          ga4_script = '''<script id="tc-teraju-ga4">
+          (() => {
+            const MEASUREMENT_ID = 'G-50XR3XER7B';
+            const path = location.pathname.toLowerCase();
+            const params = new URLSearchParams(location.search);
+            const role = (params.get('audience') || document.body.dataset.role || '').toLowerCase();
+            const plannerType = path.includes('renovationplanner') ? 'renovation' : path.includes('buildplanner') ? 'build' : '';
+            window.dataLayer = window.dataLayer || [];
+            window.gtag = window.gtag || function(){ window.dataLayer.push(arguments); };
+            window.gtag('js', new Date());
+            window.gtag('config', MEASUREMENT_ID, { send_page_view: true });
+            const send = (name, extra = {}) => {
+              try { window.gtag('event', name, Object.fromEntries(Object.entries(extra).filter(([,v]) => v !== undefined && v !== ''))); } catch {}
+            };
+            const base = { role: role || undefined, planner_type: plannerType || undefined, page_path: location.pathname };
+            const script = document.createElement('script');
+            script.async = true;
+            script.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(MEASUREMENT_ID);
+            document.head.appendChild(script);
+            if (path.endsWith('/homeowner.html') || path.endsWith('/contractor.html')) send('app_open', base);
+            if (plannerType) send('planner_start', base);
+            if (path.endsWith('/quotations.html')) {
+              const q = params.get('quotationId');
+              if (q) send('quotation_opened', { ...base, quotation_id: q });
+            }
+            const observer = new MutationObserver(() => {
+              const popup = document.getElementById('terajuSignupPopup');
+              if (popup && !popup.dataset.tcGaTracked) {
+                popup.dataset.tcGaTracked = '1';
+                const match = (popup.textContent || '').match(/(?:HME|CTR)-[A-Z0-9-]+/i);
+                send('sign_up', { ...base, signup_role: role || undefined, generated_id: match ? match[0] : undefined });
+              }
+              const portal = document.getElementById('portal');
+              if (portal && !portal.classList.contains('hidden') && !portal.dataset.tcGaTracked) {
+                portal.dataset.tcGaTracked = '1';
+                send('login', { ...base, login_role: role || undefined });
+              }
+              const status = document.getElementById('tcQuotationStatus');
+              if (status && /saved/i.test(status.textContent || '') && !status.dataset.tcGaTracked) {
+                status.dataset.tcGaTracked = '1';
+                const quotationId = new URLSearchParams(location.search).get('quotationId') || undefined;
+                const selected = document.querySelector('input[name="quotationType"]:checked')?.value;
+                send('quotation_created', { ...base, quotation_id: quotationId, quotation_type: selected === 'detail' ? 'detailed' : 'simple' });
+              }
+            });
+            observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['class'] });
+          })();
+          </script>'''
+
           for filename in ('quotation/renovationplanner.html', 'quotation/buildplanner.html'):
               path = Path(filename)
               text = path.read_text(encoding='utf-8')
@@ -55,9 +104,12 @@ jobs:
               text = text.replace('min-height:112px}', '}')
               if 'id="tc-homeowner-customer-default"' not in text:
                   marker = '</body>'
-                  if marker not in text:
-                      raise SystemExit(f'Could not find </body> in {filename}')
+                  if marker not in text: raise SystemExit(f'Could not find </body> in {filename}')
                   text = text.replace(marker, homeowner_default_script + '\n' + marker, 1)
+              if 'id="tc-teraju-ga4"' not in text:
+                  marker = '</body>'
+                  if marker not in text: raise SystemExit(f'Could not find </body> in {filename}')
+                  text = text.replace(marker, ga4_script + '\n' + marker, 1)
               path.write_text(text, encoding='utf-8')
 
           path = Path('quotation/renovationplanner.html')
@@ -65,27 +117,41 @@ jobs:
           tag = '<script src="detailed-quotation-promo-ui.js"></script>'
           if tag not in text:
               marker = '</body>'
-              if marker not in text:
-                  raise SystemExit('Could not find </body> in renovationplanner.html')
+              if marker not in text: raise SystemExit('Could not find </body> in renovationplanner.html')
               text = text.replace(marker, tag + '\n' + marker, 1)
           path.write_text(text, encoding='utf-8')
 
-          # Keep the two homeowner project cards equal-height and align their
-          # title, description, quotation-type pills, and footer rows.
           path = Path('quotation/homeowner.html')
           text = path.read_text(encoding='utf-8')
           card_css = '.project-card{display:flex;flex-direction:column}.project-card .mt-7 h2{min-height:76px}.project-card .mt-7 p{min-height:84px}.project-card .mt-auto>div>div:first-child{color:#334155!important;text-shadow:0 1px 2px rgba(255,255,255,.8)}'
           if card_css not in text:
               marker = '</style>'
-              if marker not in text:
-                  raise SystemExit('Could not find </style> in homeowner.html')
+              if marker not in text: raise SystemExit('Could not find </style> in homeowner.html')
               text = text.replace(marker, card_css + '\n' + marker, 1)
-
-          # Restore the working homeowner authentication script reference and phone input.
           text = text.replace('<script src="quotation-auth.js"></script>', '<script src="auth-github.js"></script>')
           broken_phone = '<label class="block" id="accountPhoneField"><span class="mb-2 block text-sm font-semibold">Phone <span class="font-normal text-slate-400">(optional)</span></label>'
           fixed_phone = '<label class="block" id="accountPhoneField"><span class="mb-2 block text-sm font-semibold">Phone <span class="font-normal text-slate-400">(optional)</span></span><input id="accountPhoneInput" type="tel" autocomplete="tel" class="w-full rounded-2xl border border-slate-300 bg-white/90 px-4 py-3 outline-none transition focus:border-[#b58a3a] focus:ring-2 focus:ring-[#b58a3a]/15" placeholder="01X-XXXXXXX"/></label>'
           text = text.replace(broken_phone, fixed_phone)
+          if 'id="tc-teraju-ga4"' not in text:
+              marker = '</body>'
+              if marker not in text: raise SystemExit('Could not find </body> in homeowner.html')
+              text = text.replace(marker, ga4_script + '\n' + marker, 1)
+          path.write_text(text, encoding='utf-8')
+
+          path = Path('quotation/contractor.html')
+          text = path.read_text(encoding='utf-8')
+          if 'id="tc-teraju-ga4"' not in text:
+              marker = '</body>'
+              if marker not in text: raise SystemExit('Could not find </body> in contractor.html')
+              text = text.replace(marker, ga4_script + '\n' + marker, 1)
+          path.write_text(text, encoding='utf-8')
+
+          path = Path('quotation/quotations.html')
+          text = path.read_text(encoding='utf-8')
+          if 'id="tc-teraju-ga4"' not in text:
+              marker = '</body>'
+              if marker not in text: raise SystemExit('Could not find </body> in quotations.html')
+              text = text.replace(marker, ga4_script + '\n' + marker, 1)
           path.write_text(text, encoding='utf-8')
           PY
 
@@ -94,10 +160,10 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add quotation/renovationplanner.html quotation/buildplanner.html quotation/homeowner.html
+          git add quotation/renovationplanner.html quotation/buildplanner.html quotation/homeowner.html quotation/contractor.html quotation/quotations.html
           if git diff --cached --quiet; then
             echo "No changes needed."
             exit 0
           fi
-          git commit -m "Align homeowner project cards [renovation-promo-ui]"
+          git commit -m "Add GA4 tracking to TERAJU WORKS [renovation-promo-ui]"
           git push origin main
