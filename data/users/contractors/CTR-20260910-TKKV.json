@@ -19,6 +19,237 @@
       {
         "schemaVersion": 1,
         "recordType": "quotation",
+        "quotationId": "QT-BLD-MTVG25E9-2XS9X",
+        "projectId": "PRJ-BLD-MTVG26L0-1XSIO",
+        "quotationNumber": "Q002D",
+        "plannerType": "build",
+        "role": "contractor",
+        "contractorId": "CTR-20260910-TKKV",
+        "state": "final",
+        "quotationType": "detail",
+        "client": {
+          "name": "Pn Shahida"
+        },
+        "project": {
+          "location": "Bukit Damar, Dengkil, Sepang, Selangor.",
+          "builtUpArea": 1268,
+          "state": "selangor"
+        },
+        "total": 284544.43,
+        "plannerState": {
+          "customerName": "Pn Shahida",
+          "projectLocation": "Bukit Damar, Dengkil, Sepang, Selangor.",
+          "builtUpArea": "1268",
+          "rooms": [
+            {
+              "id": "room-1",
+              "type": "living",
+              "name": "Living",
+              "area": "260"
+            },
+            {
+              "id": "room-2",
+              "type": "bedroom",
+              "name": "Bedroom 1",
+              "area": "168"
+            },
+            {
+              "id": "room-3",
+              "type": "bedroom",
+              "name": "Bedroom 2",
+              "area": "168"
+            },
+            {
+              "id": "room-4",
+              "type": "bedroom",
+              "name": "Bedroom 3",
+              "area": "168"
+            },
+            {
+              "id": "room-6",
+              "type": "kitchen",
+              "name": "Kitchen & Dining",
+              "area": "240"
+            },
+            {
+              "id": "room-7",
+              "type": "bathroom",
+              "name": "Bathroom 1",
+              "area": "48"
+            },
+            {
+              "id": "room-8",
+              "type": "bathroom",
+              "name": "Bathroom 2",
+              "area": "48"
+            },
+            {
+              "id": "room-9",
+              "type": "bathroom",
+              "name": "Bathroom Guest",
+              "area": "48"
+            },
+            {
+              "id": "room-10",
+              "type": "bathroom",
+              "name": "Washroom",
+              "area": "120"
+            }
+          ],
+          "rates": {
+            "footingConc": 550,
+            "footingFw": 4.18,
+            "footingRebar": 15,
+            "slabConc": 550,
+            "slabBrc": 6.5,
+            "beamConc": 350,
+            "beamFw": 4.18,
+            "beamRebar": 15,
+            "colConc": 550,
+            "colFw": 4.18,
+            "colRebar": 15,
+            "flatRoofConc": 550,
+            "flatRoofFw": 4.18,
+            "flatRoofBrc": 6.5,
+            "cChannel": 4,
+            "metalSheet": 3.25,
+            "roofDesignConc": 550,
+            "roofDesignFw": 4.18,
+            "roofDesignRebar": 70,
+            "apronConc": 350,
+            "apronFw": 13.72,
+            "apronBrc": 15,
+            "drainage": 25,
+            "ceilingInt": 15,
+            "ceilingExt": 20,
+            "floorTileInt": 4.18,
+            "floorTileExt": 5.57,
+            "paintInt": 1.39,
+            "paintExt": 2.32,
+            "door": 600,
+            "window": 600,
+            "waterTank": 500,
+            "septicTank": 1500,
+            "bathWallTile": 4.18,
+            "bathFloorTile": 4.18,
+            "bathPiping": 1000,
+            "bathShower": 120,
+            "bathTap": 30,
+            "bathWc": 500,
+            "bathBasin": 400,
+            "dbBox": 1000,
+            "wiring": 20,
+            "powerPoint": 50,
+            "switch": 50,
+            "lighting": 250,
+            "fan": 600,
+            "aircond": 300,
+            "earthing": 1500,
+            "permit": 8500,
+            "prelim": 12000
+          },
+          "customRates": [],
+          "customQuantities": [
+            [
+              "manual-1789039100599-lttmgu",
+              416
+            ],
+            [
+              "room-10-basin",
+              2
+            ]
+          ],
+          "customDescriptions": [],
+          "customRoomLabels": [
+            [
+              "room-2",
+              "Bedroom 1"
+            ],
+            [
+              "room-3",
+              "Bedroom 2"
+            ],
+            [
+              "room-4",
+              "Bedroom 3"
+            ],
+            [
+              "room-6",
+              "Kitchen & Dining"
+            ],
+            [
+              "room-1",
+              "Living"
+            ],
+            [
+              "room-7",
+              "Bathroom 1"
+            ],
+            [
+              "room-8",
+              "Bathroom 2"
+            ],
+            [
+              "room-9",
+              "Bathroom Guest"
+            ],
+            [
+              "room-10",
+              "Washroom"
+            ]
+          ],
+          "excludedItems": [
+            "str-roof-dr",
+            "str-roof-df",
+            "str-roof-dc",
+            "room-10-wc",
+            "room-10-shower",
+            "room-10-door"
+          ],
+          "manualItems": [
+            [
+              "structures:special",
+              [
+                {
+                  "id": "manual-1789039100599-lttmgu",
+                  "description": "5 foot height brickwall for boundary fencing including plaster & paint.",
+                  "unit": "ls",
+                  "qty": 1,
+                  "rate": 120,
+                  "category": "structures",
+                  "groupKey": "special",
+                  "groupTitle": "Special Item",
+                  "roomId": "project"
+                }
+              ]
+            ]
+          ],
+          "standardRateItems": [
+            {
+              "id": "custom-1789039100599-e746ou",
+              "description": "5 foot height brickwall for boundary fencing including plaster & paint.",
+              "unit": "ls",
+              "rate": 120,
+              "category": "structures",
+              "groupKey": "special",
+              "groupTitle": "Special Item",
+              "custom": true
+            }
+          ],
+          "quotationType": "detail",
+          "projectId": "PRJ-BLD-MTVG26L0-1XSIO",
+          "projectState": "selangor",
+          "rateSetId": "selangor",
+          "rateSetName": "Selangor",
+          "rateSnapshotAt": "2026-09-10T11:28:43.475Z"
+        },
+        "createdAt": "2026-09-10T11:28:43.473Z",
+        "updatedAt": "2026-09-10T11:28:45.011Z",
+        "estimateNumber": "EST-BLD-002"
+      },
+      {
+        "schemaVersion": 1,
+        "recordType": "quotation",
         "quotationId": "QT-BLD-MTVFUVXY-BACHD",
         "projectId": "PRJ-BLD-MTVFUXFI-421OJ",
         "quotationNumber": "Q001S",
@@ -251,11 +482,11 @@
     "renovation": []
   },
   "createdAt": "2026-09-10T10:58:30.455Z",
-  "updatedAt": "2026-09-10T11:25:08.184Z",
+  "updatedAt": "2026-09-10T11:28:45.011Z",
   "quotationRunningNumber": {
-    "build": 1
+    "build": 2
   },
   "estimateRunningNumber": {
-    "build": 1
+    "build": 2
   }
 }
