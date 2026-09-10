@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "homeowner",
+  "homeownerId": "HME-20260910-I8DX",
+  "profile": {
+    "name": "Helmi",
+    "email": "m.ashran.helmi@gmail.com",
+    "phone": "0193363808"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-09-10T00:49:15.584Z",
+  "updatedAt": "2026-09-10T00:49:15.584Z"
+}
