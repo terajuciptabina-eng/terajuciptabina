@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "homeowner",
+  "homeownerId": "HME-20260910-3773",
+  "profile": {
+    "name": "Kamarnorhadri",
+    "email": "knhadri@gmail.com",
+    "phone": "0123040360"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-09-10T12:18:52.365Z",
+  "updatedAt": "2026-09-10T12:18:52.365Z"
+}
