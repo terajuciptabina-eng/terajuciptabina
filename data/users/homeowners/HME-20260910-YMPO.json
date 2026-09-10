@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "homeowner",
+  "homeownerId": "HME-20260910-YMPO",
+  "profile": {
+    "name": "Farha A’syireen",
+    "email": "syireen69@gmail.com",
+    "phone": "0127715771"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-09-10T02:24:22.118Z",
+  "updatedAt": "2026-09-10T02:24:22.118Z"
+}
