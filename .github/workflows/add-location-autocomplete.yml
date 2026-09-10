@@ -71,10 +71,8 @@ function installRenovation'''
         run: |
           python - <<'PY'
           from pathlib import Path
-
           p=Path('quotation/buildplanner.html')
           text=p.read_text(encoding='utf-8')
-
           replacements={
             "desc:'Concrete G15'":"desc:'To supply and place concrete Grade 15 for pad footings, including mixing, placing, compacting, levelling and curing, complete.'",
             "desc:'Formwork'":"desc:'To supply, erect and dismantle formwork to the respective reinforced concrete element, including supports, bracing, alignment, release treatment and all necessary accessories, complete.'",
@@ -116,12 +114,9 @@ function installRenovation'''
             "label:'Aircond point / provision'":"label:'To supply and install air-conditioning points / provisions, including electrical wiring, isolator, containment and necessary accessories, complete.'",
             "label:'Earthing'":"label:'To supply and install complete electrical earthing system, including earth electrodes, conductors, connections, testing and commissioning, complete.'",
           }
-
           for old,new in replacements.items():
-              if old not in text:
-                  raise SystemExit(f'Missing expected Build Rate Schedule source: {old}')
+              if old not in text: raise SystemExit(f'Missing expected Build Rate Schedule source: {old}')
               text=text.replace(old,new)
-
           p.write_text(text,encoding='utf-8')
           print('Build Rate Schedule master descriptions updated.')
           PY
@@ -134,7 +129,5 @@ function installRenovation'''
             echo 'No planner changes needed.'
             exit 0
           fi
-          git commit -m 'Add quotation quantity rounding [location-autocomplete]'
+          git commit -m 'Force Build Planner contractor cleanup [location-autocomplete]'
           git push
-
-# Trigger cleanup after the temporary workflow has been removed.
