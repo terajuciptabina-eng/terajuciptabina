@@ -69,6 +69,17 @@ jobs:
                   raise SystemExit('Could not find </body> in renovationplanner.html')
               text = text.replace(marker, tag + '\n' + marker, 1)
           path.write_text(text, encoding='utf-8')
+
+          # Keep the two homeowner project cards equal-height with their footer labels aligned.
+          path = Path('quotation/homeowner.html')
+          text = path.read_text(encoding='utf-8')
+          card_css = '.project-card{display:flex;flex-direction:column}.project-card .mt-auto>div>div:first-child{color:#334155!important;text-shadow:0 1px 2px rgba(255,255,255,.8)}'
+          if card_css not in text:
+              marker = '</style>'
+              if marker not in text:
+                  raise SystemExit('Could not find </style> in homeowner.html')
+              text = text.replace(marker, card_css + '\n' + marker, 1)
+          path.write_text(text, encoding='utf-8')
           PY
 
       - name: Commit changes
@@ -76,10 +87,10 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add quotation/renovationplanner.html quotation/buildplanner.html
+          git add quotation/renovationplanner.html quotation/buildplanner.html quotation/homeowner.html
           if git diff --cached --quiet; then
             echo "No changes needed."
             exit 0
           fi
-          git commit -m "Apply homeowner quotation defaults [renovation-promo-ui]"
+          git commit -m "Align homeowner project card footer [renovation-promo-ui]"
           git push origin main
