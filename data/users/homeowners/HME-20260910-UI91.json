@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "homeowner",
+  "homeownerId": "HME-20260910-UI91",
+  "profile": {
+    "name": "a",
+    "email": "moyachomel@gmail.com",
+    "phone": "0124956795"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-09-10T15:26:33.473Z",
+  "updatedAt": "2026-09-10T15:26:33.473Z"
+}
