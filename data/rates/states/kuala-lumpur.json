@@ -134,9 +134,13 @@
     "rule_gate_81": 7000,
     "rule_external_drain_82": 25,
     "rule_driveway_83": 6500,
-    "rule_landscaping_84": 4250
+    "rule_landscaping_84": 4250,
+    "rule_main_building_floor_tiles_internal_46": 45,
+    "rule_main_building_floor_tiles_external_47": 55,
+    "rule_main_building_bathroom_wall_tiles_52": 45,
+    "rule_main_building_bathroom_floor_tiles_53": 55
   },
-  "updatedAt": "2026-09-11T22:31:15.066Z",
+  "updatedAt": "2026-09-11T22:32:19.846Z",
   "effectiveDate": null,
   "rateItems": {
     "rule_submission_of_building_plan_permit_application_and_engineer_s_drawings_to_the_local_authority_0": {
@@ -691,6 +695,34 @@
       "category": "calculation-rule",
       "groupKey": "EXTERNAL WORK",
       "groupTitle": "EXTERNAL WORK"
+    },
+    "rule_main_building_floor_tiles_internal_46": {
+      "description": "Supply and install internal floor tiles to non-bathroom floor areas.",
+      "unit": "m²",
+      "category": "calculation-rule",
+      "groupKey": "ARCHITECTURES",
+      "groupTitle": "ARCHITECTURES"
+    },
+    "rule_main_building_floor_tiles_external_47": {
+      "description": "Supply and install external floor tiles to the external tiled area.",
+      "unit": "m²",
+      "category": "calculation-rule",
+      "groupKey": "ARCHITECTURES",
+      "groupTitle": "ARCHITECTURES"
+    },
+    "rule_main_building_bathroom_wall_tiles_52": {
+      "description": "Supply and install bathroom wall tiles to 10ft wall height.",
+      "unit": "m²",
+      "category": "calculation-rule",
+      "groupKey": "ARCHITECTURES",
+      "groupTitle": "ARCHITECTURES"
+    },
+    "rule_main_building_bathroom_floor_tiles_53": {
+      "description": "Supply and install bathroom floor tiles.",
+      "unit": "m²",
+      "category": "calculation-rule",
+      "groupKey": "ARCHITECTURES",
+      "groupTitle": "ARCHITECTURES"
     }
   }
 }
