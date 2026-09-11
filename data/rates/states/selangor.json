@@ -102,7 +102,7 @@
     "rule_main_building_brickwall_external_wall_45": 50,
     "rule_main_building_floor_tiles_internal_46": 65,
     "rule_main_building_floor_tiles_external_47": 70,
-    "rule_main_building_painting_internal_48": 0.1,
+    "rule_main_building_painting_internal_48": 15,
     "rule_main_building_bathroom_piping_55": 1000,
     "rule_main_building_bathroom_wc_56": 300,
     "rule_main_building_bathroom_basin_57": 200,
@@ -132,9 +132,15 @@
     "rule_gate_81": 6000,
     "rule_external_drain_82": 25,
     "rule_driveway_83": 5000,
-    "rule_landscaping_84": 2000
+    "rule_landscaping_84": 2000,
+    "rule_main_building_painting_external_49": 15,
+    "rule_main_building_ceiling_internal_50": 162,
+    "rule_main_building_ceiling_external_51": 172,
+    "rule_main_building_bathroom_wall_tiles_52": 70,
+    "rule_main_building_bathroom_floor_tiles_53": 75,
+    "rule_main_building_bathroom_ceiling_54": 162
   },
-  "updatedAt": "2026-09-11T22:24:40.954Z",
+  "updatedAt": "2026-09-11T22:26:19.651Z",
   "effectiveDate": null,
   "rateItems": {
     "rule_submission_of_building_plan_permit_application_and_engineer_s_drawings_to_the_local_authority_0": {
@@ -675,6 +681,48 @@
       "category": "calculation-rule",
       "groupKey": "EXTERNAL WORK",
       "groupTitle": "EXTERNAL WORK"
+    },
+    "rule_main_building_painting_external_49": {
+      "description": "Prepare and apply external paint finish to external wall areas.",
+      "unit": "m²",
+      "category": "calculation-rule",
+      "groupKey": "ARCHITECTURES",
+      "groupTitle": "ARCHITECTURES"
+    },
+    "rule_main_building_ceiling_internal_50": {
+      "description": "Supply and install internal ceiling finish to non-bathroom areas.",
+      "unit": "m²",
+      "category": "calculation-rule",
+      "groupKey": "ARCHITECTURES",
+      "groupTitle": "ARCHITECTURES"
+    },
+    "rule_main_building_ceiling_external_51": {
+      "description": "Supply and install external ceiling finish to the external ceiling area.",
+      "unit": "m²",
+      "category": "calculation-rule",
+      "groupKey": "ARCHITECTURES",
+      "groupTitle": "ARCHITECTURES"
+    },
+    "rule_main_building_bathroom_wall_tiles_52": {
+      "description": "Supply and install bathroom wall tiles to 10ft wall height.",
+      "unit": "m²",
+      "category": "calculation-rule",
+      "groupKey": "ARCHITECTURES",
+      "groupTitle": "ARCHITECTURES"
+    },
+    "rule_main_building_bathroom_floor_tiles_53": {
+      "description": "Supply and install bathroom floor tiles.",
+      "unit": "m²",
+      "category": "calculation-rule",
+      "groupKey": "ARCHITECTURES",
+      "groupTitle": "ARCHITECTURES"
+    },
+    "rule_main_building_bathroom_ceiling_54": {
+      "description": "Supply and install bathroom ceiling finish.",
+      "unit": "m²",
+      "category": "calculation-rule",
+      "groupKey": "ARCHITECTURES",
+      "groupTitle": "ARCHITECTURES"
     }
   }
 }
