@@ -6,27 +6,26 @@ permissions:
   contents: write
 jobs:
   update:
-    if: "!contains(github.event.head_commit.message, 'Apply Calculation Rules hierarchy')"
+    if: "!contains(github.event.head_commit.message, 'Apply four-level Calculation Rules hierarchy')"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Apply hierarchy display
+      - name: Rebuild Calculation Rules renderer
         run: |
           python3 - <<'PY'
           from pathlib import Path
           p=Path('quotation/calculation-rules.html')
-          s=p.read_text()
-          s=s.replace('.header-row{max-width:none;', '.header-row{max-width:none;')
-          s=s.replace('.section-head h2{font-size:16px;margin:0}', '.section-head h2{font-size:16px;margin:0}.hierarchy{display:flex;flex-direction:column;gap:3px;min-width:0}.hierarchy .group-heading{font-size:11px;letter-spacing:.08em;color:var(--muted);font-weight:800}.hierarchy .main-heading{font-size:14px;font-weight:800}.hierarchy .sub-heading{font-size:13px;font-weight:700}.hierarchy .subsub-heading{font-size:13px;font-weight:600;color:var(--text)}')
-          old='<tr><td class="path" data-label="Area">${esc(parts[0])}</td><td class="path" data-label="Section">${esc(parts.slice(1,-1).join(\' / \'))}</td><td class="path" data-label="Item">${esc(parts[parts.length-1])}</td><td class="desc" data-label="Description">${esc(r.description)}</td>'
-          new='<tr><td class="path" data-label="Area"><div class="hierarchy"><div class="group-heading">GROUP MAIN HEADING</div><div class="main-heading">${esc(r.group)}</div></div></td><td class="path" data-label="Section"><div class="hierarchy"><div class="group-heading">MAIN HEADING</div><div class="main-heading">${esc(parts[0])}</div></div></td><td class="path" data-label="Item"><div class="hierarchy"><div class="sub-heading">SUB HEADING</div><div class="subsub-heading">${esc(parts.slice(1,-1).join(\' / \'))}</div><div class="sub-heading">SUB-SUB HEADING</div><div class="subsub-heading">${esc(parts[parts.length-1])}</div></div></td><td class="desc" data-label="Description">${esc(r.description)}</td>'
-          if old not in s:
-              raise SystemExit('target row renderer not found')
-          s=s.replace(old,new,1)
-          p.write_text(s)
+          s=p.read_text(encoding='utf-8')
+          start=s.index('const rules=[')
+          end=s.index('</script>', start)
+          rules=s[start:end]
+          new='''<script>\n'''+rules+'''\nconst search=document.getElementById('search');\nconst group=document.getElementById('group');\nconst sections=document.getElementById('sections');\nconst summary=document.getElementById('summary');\nconst empty=document.getElementById('empty');\nfunction esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}\nfunction parts(path){return path.split('/').map(x=>x.trim()).filter(Boolean);}\nfunction render(){\n const q=(search.value||'').trim().toLowerCase(), g=group.value;\n const filtered=rules.filter(r=>{const t=[r.group,r.path,r.description,r.method,r.ref,r.coeff,r.formula,r.output,r.basis,r.note].join(' ').toLowerCase();return(!q||t.includes(q))&&(g==='all'||r.group===g)});\n summary.textContent=`${filtered.length} calculation rules`;\n empty.classList.toggle('hidden',filtered.length>0);\n const groups=[];\n for(const r of filtered){const a=parts(r.path);const main=a[0]||'';const sub=a[1]||'';const subsub=a.slice(2).join(' / ');let G=groups.find(x=>x.name===r.group);if(!G){G={name:r.group,mains:[]};groups.push(G)}let M=G.mains.find(x=>x.name===main);if(!M){M={name:main,subs:[]};G.mains.push(M)}let S=M.subs.find(x=>x.name===sub);if(!S){S={name:sub,items:[]};M.subs.push(S)}S.items.push({...r,subsub});}\n sections.innerHTML=groups.map(G=>`<section class="section"><div class="section-head"><div><div class="group-heading">${esc(G.name)}</div><div class="main-heading">GROUP HEADING</div></div><div class="count">${G.mains.reduce((n,m)=>n+m.subs.reduce((a,x)=>a+x.items.length,0),0)} rules</div></div>${G.mains.map(M=>`<div style="padding:18px"><div class="main-heading">${esc(M.name)}</div><div style="font-size:11px;color:var(--muted);margin-top:2px">MAIN HEADING</div>${M.subs.map(S=>`<div style="margin:16px 0 0 22px"><div class="sub-heading">${esc(S.name)}</div><div style="font-size:11px;color:var(--muted);margin-top:2px">SUB HEADING</div><div class="table-wrap" style="margin:8px 0 0 22px"><table class="rule-table"><thead><tr><th>Sub-sub Heading</th><th>Description</th><th>Method</th><th>Source / Reference</th><th>Conversion / Coefficient</th><th>Formula</th><th>Output</th><th>Explanation / Derivation</th></tr></thead><tbody>${S.items.map(r=>`<tr><td data-label="Sub-sub Heading" class="path">${esc(r.subsub)}</td><td data-label="Description" class="desc">${esc(r.description)}</td><td data-label="Method" class="method">${esc(r.method)}</td><td data-label="Source / Reference" class="ref">${esc(r.ref)}</td><td data-label="Conversion / Coefficient">${esc(r.coeff)}</td><td data-label="Formula" class="formula">${esc(r.formula)}</td><td data-label="Output">${esc(r.output)}</td><td data-label="Explanation / Derivation" class="note"><b>Source:</b> ${esc(r.ref)}<br><b>Derivation:</b> ${esc(r.basis)}<br><b>Rule:</b> ${esc(r.formula)}</td></tr>`).join('')}</tbody></table></div></div>`).join('')}</div>`).join('')}</section>`).join('');\n}\nsearch.addEventListener('input',render);group.addEventListener('change',render);render();\n</script>'''
+          s=s[:start]+new+s[end+9:]
+          s=s.replace('→','').replace('←','')
+          p.write_text(s,encoding='utf-8')
           PY
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add quotation/calculation-rules.html
-          git commit -m "Apply Calculation Rules hierarchy"
+          git commit -m "Apply four-level Calculation Rules hierarchy"
           git push
