@@ -32,14 +32,14 @@
           "name": "Naim Hata"
         },
         "project": {
-          "location": "Pontian",
+          "location": "Not specified",
           "builtUpArea": 0,
           "state": "johor"
         },
         "total": 63330,
         "plannerState": {
           "customerName": "Naim Hata",
-          "projectLocation": "Pontian",
+          "projectLocation": "",
           "builtUpArea": "",
           "rooms": [
             {
@@ -162,20 +162,20 @@
           "manualItems": [],
           "standardRateItems": [],
           "quotationType": "detail",
-          "projectId": "PRJ-REN-MTWAW6KL-WVVES",
+          "projectId": "PRJ-REN-MTWA9AUY-XFRGR",
           "projectState": "johor",
           "rateSetId": "johor",
           "rateSetName": "Johor",
-          "rateSnapshotAt": "2026-09-11T01:51:52.169Z"
+          "rateSnapshotAt": "2026-09-11T01:54:39.774Z"
         },
         "createdAt": "2026-09-11T01:51:52.169Z",
-        "updatedAt": "2026-09-11T01:51:53.157Z",
+        "updatedAt": "2026-09-11T01:54:41.072Z",
         "estimateNumber": "EST-REN-001"
       }
     ]
   },
   "createdAt": "2026-09-11T01:33:44.622Z",
-  "updatedAt": "2026-09-11T01:51:53.157Z",
+  "updatedAt": "2026-09-11T01:54:41.072Z",
   "quotationRunningNumber": {
     "renovation": 1
   },
