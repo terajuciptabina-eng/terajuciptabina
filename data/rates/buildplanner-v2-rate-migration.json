@@ -9,38 +9,31 @@
   "unitConversion": {
     "sqftToM2": 0.09290304,
     "mToFt": 3.280839895,
-    "note": "Rates are converted when the V1 rate unit differs from the settled V2 output unit. No conversion is applied to LS, No., Set, kg or already matching units."
+    "note": "Rates are converted when the V1 rate unit differs from the settled V2 output unit. No conversion is applied to LS, No., Set or kg when the V2 item uses the same unit basis."
   },
   "mapping": [
-    {"v1RateKey":"permit","v2ItemId":"PRELIM-001","status":"MATCH","rate":8500,"unit":"LS"},
-    {"v1RateKey":"prelim","v2ItemId":"PRELIM-002","status":"MATCH","rate":12000,"unit":"LS"},
-
-    {"v1RateKey":"footingConc","v2ItemId":"STRUCT-MB-FOOTING-CONCRETE","status":"MATCH","rate":550,"unit":"m³"},
+    {"v1RateKey":"permit","v2ItemId":"PRELIM-001","status":"MATCH","rate":8500,"unit":"RM/LS"},
+    {"v1RateKey":"prelim","v2ItemId":"PRELIM-002","status":"MATCH","rate":12000,"unit":"RM/LS"},
+    {"v1RateKey":"footingConc","v2ItemId":"STRUCT-MB-FOOTING-CONCRETE","status":"MATCH","rate":550,"unit":"RM/m³"},
     {"v1RateKey":"footingFw","v2ItemId":"STRUCT-MB-FOOTING-FORMWORK","status":"CONVERTED","sourceRate":4.18,"sourceUnit":"RM/sqft","rate":44.99,"unit":"RM/m²"},
     {"v1RateKey":"footingRebar","v2ItemId":"STRUCT-MB-FOOTING-REBAR","status":"MATCH","rate":15,"unit":"RM/kg"},
-
     {"v1RateKey":"beamConc","v2ItemId":"STRUCT-MB-GROUND-BEAM-CONCRETE","status":"MATCH","rate":350,"unit":"RM/m³"},
     {"v1RateKey":"beamFw","v2ItemId":"STRUCT-MB-GROUND-BEAM-FORMWORK","status":"CONVERTED","sourceRate":4.18,"sourceUnit":"RM/sqft","rate":44.99,"unit":"RM/m²"},
     {"v1RateKey":"beamRebar","v2ItemId":"STRUCT-MB-GROUND-BEAM-REBAR","status":"MATCH","rate":15,"unit":"RM/kg"},
-
     {"v1RateKey":"slabConc","v2ItemId":"STRUCT-MB-GROUND-SLAB-CONCRETE","status":"MATCH","rate":550,"unit":"RM/m³"},
     {"v1RateKey":"slabBrc","v2ItemId":"STRUCT-MB-GROUND-SLAB-BRC","status":"CONVERTED","sourceRate":6.5,"sourceUnit":"RM/sqft","rate":69.97,"unit":"RM/m²"},
-
     {"v1RateKey":"colConc","v2ItemId":"STRUCT-MB-COLUMN-CONCRETE","status":"MATCH","rate":550,"unit":"RM/m³"},
     {"v1RateKey":"colFw","v2ItemId":"STRUCT-MB-COLUMN-FORMWORK","status":"CONVERTED","sourceRate":4.18,"sourceUnit":"RM/sqft","rate":44.99,"unit":"RM/m²"},
     {"v1RateKey":"colRebar","v2ItemId":"STRUCT-MB-COLUMN-REBAR","status":"MATCH","rate":15,"unit":"RM/kg"},
-
     {"v1RateKey":"flatRoofConc","v2ItemId":"STRUCT-MB-FLAT-ROOF-CONCRETE","status":"MATCH","rate":550,"unit":"RM/m³"},
     {"v1RateKey":"flatRoofFw","v2ItemId":"STRUCT-MB-FLAT-ROOF-FORMWORK","status":"CONVERTED","sourceRate":4.18,"sourceUnit":"RM/sqft","rate":44.99,"unit":"RM/m²"},
     {"v1RateKey":"flatRoofBrc","v2ItemId":"STRUCT-MB-FLAT-ROOF-BRC","status":"CONVERTED","sourceRate":6.5,"sourceUnit":"RM/sqft","rate":69.97,"unit":"RM/m²"},
     {"v1RateKey":"metalSheet","v2ItemId":"STRUCT-MB-ROOF-METAL-SHEET","status":"CONVERTED","sourceRate":3.25,"sourceUnit":"RM/sqft","rate":34.98,"unit":"RM/m²"},
-
     {"v1RateKey":"apronConc","v2ItemId":"STRUCT-APRON-CONCRETE","status":"MATCH","rate":350,"unit":"RM/m³"},
     {"v1RateKey":"apronFw","v2ItemId":"STRUCT-APRON-FORMWORK","status":"CONVERTED","sourceRate":13.72,"sourceUnit":"RM/ft","rate":45.01,"unit":"RM/m"},
-    {"v1RateKey":"apronBrc","v2ItemId":"STRUCT-APRON-BRC","status":"MATCH","rate":15,"unit":"RM/m²"},
-
-    {"v1RateKey":"ceilingInt","v2ItemId":"ARCH-MB-INTERNAL-CEILING","status":"MATCH","rate":15,"unit":"RM/m²"},
-    {"v1RateKey":"ceilingExt","v2ItemId":"ARCH-MB-EXTERNAL-CEILING","status":"MATCH","rate":20,"unit":"RM/m²"},
+    {"v1RateKey":"apronBrc","v2ItemId":"STRUCT-APRON-BRC","status":"UNIT-MISMATCH","sourceRate":15,"sourceUnit":"RM/kg","rate":null,"unit":"RM/m²","note":"V2 output is m² but the legacy rate is kg-based. No invented conversion is applied; rate must be resolved in the global rate master before wiring this item."},
+    {"v1RateKey":"ceilingInt","v2ItemId":"ARCH-MB-INTERNAL-CEILING","status":"CONVERTED","sourceRate":15,"sourceUnit":"RM/sqft","rate":161.46,"unit":"RM/m²"},
+    {"v1RateKey":"ceilingExt","v2ItemId":"ARCH-MB-EXTERNAL-CEILING","status":"CONVERTED","sourceRate":20,"sourceUnit":"RM/sqft","rate":215.28,"unit":"RM/m²"},
     {"v1RateKey":"floorTileInt","v2ItemId":"ARCH-MB-INTERNAL-FLOOR-TILES","status":"CONVERTED","sourceRate":4.18,"sourceUnit":"RM/sqft","rate":44.99,"unit":"RM/m²"},
     {"v1RateKey":"floorTileExt","v2ItemId":"ARCH-PORCH-FLOOR-TILES","status":"CONVERTED","sourceRate":5.57,"sourceUnit":"RM/sqft","rate":59.95,"unit":"RM/m²"},
     {"v1RateKey":"paintInt","v2ItemId":"ARCH-MB-INTERNAL-PAINTING","status":"CONVERTED","sourceRate":1.39,"sourceUnit":"RM/sqft","rate":14.96,"unit":"RM/m²"},
@@ -54,7 +47,6 @@
     {"v1RateKey":"bathTap","v2ItemId":"ARCH-BATHROOM-TAP","status":"MATCH","rate":30,"unit":"RM/No."},
     {"v1RateKey":"waterTank","v2ItemId":"ARCH-WATER-TANK","status":"MATCH","rate":500,"unit":"RM/No."},
     {"v1RateKey":"septicTank","v2ItemId":"ARCH-SEPTIC-TANK","status":"MATCH","rate":1500,"unit":"RM/No."},
-
     {"v1RateKey":"dbBox","v2ItemId":"ELEC-DB-BOX","status":"MATCH","rate":1000,"unit":"RM/No."},
     {"v1RateKey":"wiring","v2ItemId":"ELEC-WIRING","status":"MATCH","rate":20,"unit":"RM/m"},
     {"v1RateKey":"powerPoint","v2ItemId":"ELEC-MB-POWER-POINT","status":"MATCH","rate":50,"unit":"RM/No."},
@@ -63,7 +55,6 @@
     {"v1RateKey":"fan","v2ItemId":"ELEC-MB-FAN","status":"MATCH","rate":600,"unit":"RM/No."},
     {"v1RateKey":"aircond","v2ItemId":"ELEC-MB-AIRCOND-POINT","status":"MATCH","rate":300,"unit":"RM/No."},
     {"v1RateKey":"earthing","v2ItemId":"ELEC-EARTHING","status":"MATCH","rate":1500,"unit":"RM/Set"},
-
     {"v1RateKey":"door","v2ItemId":"DOOR-V2-MASTER","status":"RENAMED","rate":600,"unit":"RM/No."},
     {"v1RateKey":"window","v2ItemId":"WINDOW-V2-MASTER","status":"RENAMED","rate":600,"unit":"RM/No."},
     {"v1RateKey":"drainage","v2ItemId":"EXT-EXTERNAL-DRAIN","status":"CONVERTED","sourceRate":25,"sourceUnit":"RM/ft","rate":82.02,"unit":"RM/m"}
@@ -76,6 +67,7 @@
     "retiredIncludedInV2": false,
     "reviewIncludedInV2": false,
     "ratesWithUnitConversion": true,
+    "unitMismatchLeftUninvented": true,
     "v1CalculationLogicCarried": false
   }
 }
