@@ -174,6 +174,15 @@
       }
       if (method === 'DEPENDENCY') {
         if (/internal floor tiles/i.test(lower)) return Math.max(0,ctx.mainAreaM2-ctx.bathAreaM2);
+        if (/internal painting/i.test(lower)) {
+          const wall = produced.find(x => /brickwall \/ internal wall/i.test(String(x.path||'')));
+          return wall ? Number(wall._rawQty || wall.qty) : 0;
+        }
+        if (/external painting/i.test(lower)) {
+          const wall = produced.find(x => /brickwall \/ external wall/i.test(String(x.path||'')));
+          return wall ? Number(wall._rawQty || wall.qty) : 0;
+        }
+        if (/internal ceiling/i.test(lower)) return Math.max(0,ctx.mainAreaM2-ctx.bathAreaM2);
         return 0;
       }
       if (method === 'AREA') return 0;
