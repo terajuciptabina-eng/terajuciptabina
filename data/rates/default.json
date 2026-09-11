@@ -6,72 +6,424 @@
   "currency": "MYR",
   "effectiveDate": null,
   "rates": {
-    "footingConc": 550, "footingFw": 4.18, "footingRebar": 15,
-    "slabConc": 550, "slabBrc": 6.5,
-    "beamConc": 350, "beamFw": 4.18, "beamRebar": 15,
-    "colConc": 550, "colFw": 4.18, "colRebar": 15,
-    "flatRoofConc": 550, "flatRoofFw": 4.18, "flatRoofBrc": 6.5,
-    "cChannel": 4, "metalSheet": 3.25,
-    "roofDesignConc": 550, "roofDesignFw": 4.18, "roofDesignRebar": 70,
-    "apronConc": 350, "apronFw": 13.72, "apronBrc": 15, "drainage": 25,
-    "ceilingInt": 15, "ceilingExt": 20, "floorTileInt": 4.18, "floorTileExt": 5.57,
-    "paintInt": 1.39, "paintExt": 2.32, "door": 600, "window": 600,
-    "waterTank": 500, "septicTank": 1500, "bathWallTile": 4.18, "bathFloorTile": 4.18,
-    "bathPiping": 1000, "bathShower": 120, "bathTap": 30, "bathWc": 500, "bathBasin": 400,
-    "dbBox": 1000, "wiring": 23, "powerPoint": 50, "switch": 50, "lighting": 250,
-    "fan": 600, "aircond": 300, "earthing": 1500, "permit": 8500, "prelim": 8500
+    "footingConc": 550,
+    "footingFw": 4.18,
+    "footingRebar": 15,
+    "slabConc": 550,
+    "slabBrc": 6.5,
+    "beamConc": 350,
+    "beamFw": 4.18,
+    "beamRebar": 15,
+    "colConc": 550,
+    "colFw": 4.18,
+    "colRebar": 15,
+    "flatRoofConc": 550,
+    "flatRoofFw": 4.18,
+    "flatRoofBrc": 6.5,
+    "cChannel": 4,
+    "metalSheet": 3.25,
+    "roofDesignConc": 550,
+    "roofDesignFw": 4.18,
+    "roofDesignRebar": 70,
+    "apronConc": 350,
+    "apronFw": 13.72,
+    "apronBrc": 15,
+    "drainage": 25,
+    "ceilingInt": 15,
+    "ceilingExt": 20,
+    "floorTileInt": 4.18,
+    "floorTileExt": 5.57,
+    "paintInt": 1.39,
+    "paintExt": 2.32,
+    "door": 900,
+    "window": 1200,
+    "waterTank": 600,
+    "septicTank": 2500,
+    "bathWallTile": 4.18,
+    "bathFloorTile": 4.18,
+    "bathPiping": 1000,
+    "bathShower": 250,
+    "bathTap": 70,
+    "bathWc": 300,
+    "bathBasin": 200,
+    "dbBox": 2500,
+    "wiring": 20,
+    "powerPoint": 6.5,
+    "switch": 6.5,
+    "lighting": 120,
+    "fan": 150,
+    "aircond": 300,
+    "earthing": 1500,
+    "permit": 8500,
+    "prelim": 8500,
+    "internalWall": 50,
+    "externalWall": 50
   },
   "rateItems": {
-    "footingConc":{"description":"Supply and place Grade 15 concrete for pad footings, including mixing, placing, compacting, levelling and curing, complete.","unit":"m³"},
-    "footingFw":{"description":"Supply, erect and dismantle formwork to pad footings, including supports, bracing, release treatment and all necessary accessories, complete.","unit":"sqft"},
-    "footingRebar":{"description":"Supply, cut, bend and fix reinforcement steel bars for pad footings, including tying wire, spacers, chairs and all necessary supports, complete.","unit":"kg"},
-    "slabConc":{"description":"Supply and place Grade 25 concrete for ground slab, including preparation, placing, compacting, levelling, finishing and curing, complete.","unit":"m³"},
-    "slabBrc":{"description":"Supply and fix BRC A7 reinforcement mesh, double layer, to ground slab, including laps, tying wire, spacers and supports, complete.","unit":"sqft"},
-    "beamConc":{"description":"Supply and place Grade 25 concrete for ground beams, including placing, compacting, levelling and curing, complete.","unit":"m³"},
-    "beamFw":{"description":"Supply, erect and dismantle formwork to ground beams, including supports, bracing, alignment and all necessary accessories, complete.","unit":"sqft"},
-    "beamRebar":{"description":"Supply, cut, bend and fix reinforcement steel bars for ground beams, including tying wire, spacers, chairs and all necessary supports, complete.","unit":"kg"},
-    "colConc":{"description":"Supply and place Grade 25 reinforced concrete for columns, including placing, compacting, alignment and curing, complete.","unit":"m³"},
-    "colFw":{"description":"Supply, erect and dismantle formwork to reinforced concrete columns, including supports, bracing, alignment and all necessary accessories, complete.","unit":"sqft"},
-    "colRebar":{"description":"Supply, cut, bend and fix reinforcement steel bars for reinforced concrete columns, including tying wire, spacers, chairs and all necessary supports, complete.","unit":"kg"},
-    "flatRoofConc":{"description":"Supply and place Grade 25 concrete for flat roof slab, including placing, compacting, levelling, finishing and curing, complete.","unit":"m³"},
-    "flatRoofFw":{"description":"Supply, erect and dismantle formwork to flat roof slab, including supports, bracing, alignment and all necessary accessories, complete.","unit":"sqft"},
-    "flatRoofBrc":{"description":"Supply and fix BRC A7 reinforcement mesh, double layer, to flat roof slab, including laps, tying wire, spacers and supports, complete.","unit":"sqft"},
-    "cChannel":{"description":"Supply and install C-channel steel members for roof structure, including cutting, fabrication, fixing, connection accessories, alignment and protective treatment, complete.","unit":"m"},
-    "metalSheet":{"description":"Supply and install metal roofing sheets, including necessary laps, flashing, fasteners, sealant and all accessories, complete.","unit":"sqft"},
-    "roofDesignConc":{"description":"Supply and place Grade 25 concrete for designed roof structure, including placing, compacting, levelling and curing, complete.","unit":"m³"},
-    "roofDesignFw":{"description":"Supply, erect and dismantle formwork to designed roof structure, including supports, bracing, alignment and all necessary accessories, complete.","unit":"sqft"},
-    "roofDesignRebar":{"description":"Supply, cut, bend and fix reinforcement steel bars for designed roof structure, including tying wire, spacers, chairs and all necessary supports, complete.","unit":"kg"},
-    "apronConc":{"description":"Supply and place Grade 15 concrete for external apron works, including preparation, placing, compacting, levelling, finishing and curing, complete.","unit":"m³"},
-    "apronFw":{"description":"Supply, erect and dismantle formwork to external apron works, including supports, alignment and all necessary accessories, complete.","unit":"sqft"},
-    "apronBrc":{"description":"Supply and fix BRC A7 reinforcement mesh for external apron works, including laps, tying wire, spacers and supports, complete.","unit":"sqft"},
-    "drainage":{"description":"Supply and construct small U-shape scupper drainage, including excavation, base preparation, concrete / masonry works, finishing and making good, complete.","unit":"m"},
-    "ceilingInt":{"description":"Supply and install internal plaster / skim ceiling c/w paint, including framing / substrate preparation, joint treatment, surface preparation and finishing, complete.","unit":"sqft"},
-    "ceilingExt":{"description":"Supply and install external ceiling / soffit c/w paint, including framing / substrate preparation, joint treatment, surface preparation and finishing, complete.","unit":"sqft"},
-    "floorTileInt":{"description":"Supply and install internal floor tiles, including surface preparation, adhesive / mortar, cutting, laying, grouting and finishing, complete.","unit":"sqft"},
-    "floorTileExt":{"description":"Supply and install external floor tiles, including surface preparation, adhesive / mortar, cutting, laying, grouting and finishing, complete.","unit":"sqft"},
-    "paintInt":{"description":"Supply labour and materials for internal painting works, including surface preparation, sealer where required, two coats of paint, cleaning and touch-up upon completion.","unit":"sqft"},
-    "paintExt":{"description":"Supply labour and materials for external painting works, including surface preparation, primer / sealer where required, two coats of weather-resistant paint, cleaning and touch-up upon completion.","unit":"sqft"},
-    "door":{"description":"Supply and install door, including frame, ironmongery, hinges, lockset, alignment and finishing, complete.","unit":"unit"},
-    "window":{"description":"Supply and install window, including frame, glazing, ironmongery, sealant, fixing and making good, complete.","unit":"unit"},
-    "waterTank":{"description":"Supply and install water storage tank, including tank base / support, inlet and outlet connections, fittings and all necessary accessories, complete.","unit":"unit"},
-    "septicTank":{"description":"Supply and install septic tank system, including excavation, bedding, tank, inlet / outlet connections, backfilling and all necessary accessories, complete.","unit":"unit"},
-    "bathWallTile":{"description":"Supply and install bathroom wall tiles c/w waterproofing, including surface preparation, waterproofing system, adhesive, cutting, laying, grouting and finishing, complete.","unit":"sqft"},
-    "bathFloorTile":{"description":"Supply and install bathroom floor tiles c/w waterproofing, including surface preparation, waterproofing system, adhesive / mortar, cutting, laying, grouting and finishing, complete.","unit":"sqft"},
-    "bathPiping":{"description":"Supply and install sanitary and water supply piping works, including fittings, connections, testing and making good, complete.","unit":"set"},
-    "bathShower":{"description":"Supply and install shower rose and fittings, including connections, testing and all necessary accessories, complete.","unit":"unit"},
-    "bathTap":{"description":"Supply and install tap fittings, including connections, testing and all necessary accessories, complete.","unit":"unit"},
-    "bathWc":{"description":"Supply and install water closet (WC), including flush fittings, connections, testing and all necessary accessories, complete.","unit":"unit"},
-    "bathBasin":{"description":"Supply and install wash hand basin, including taps, waste fittings, connections, testing and all necessary accessories, complete.","unit":"unit"},
-    "dbBox":{"description":"Supply and install distribution board (DB) complete with main protective devices, circuit breakers, labels, connections, testing and commissioning.","unit":"unit"},
-    "wiring":{"description":"Supply, install and test electrical wiring and cables, including conduits / containment, connections, termination and necessary accessories, complete.","unit":"point"},
-    "powerPoint":{"description":"Supply and install electrical power point, including wiring, conduits, back box, accessories, termination and testing, complete.","unit":"point"},
-    "switch":{"description":"Supply and install electrical switch point, including wiring, back box, accessories, termination and testing, complete.","unit":"point"},
-    "lighting":{"description":"Supply and install lighting point / fitting, including wiring, conduits, switch control, connections, testing and commissioning, complete.","unit":"point"},
-    "fan":{"description":"Supply and install ceiling fan point / provision, including wiring, switch control, support and testing, complete.","unit":"point"},
-    "aircond":{"description":"Supply and install air-conditioning point / provision, including electrical wiring, isolator, containment and necessary accessories, complete.","unit":"point"},
-    "earthing":{"description":"Supply and install complete electrical earthing system, including earth electrodes, conductors, connections, testing and commissioning.","unit":"point"},
-    "permit":{"description":"Building plan / renovation permit application and professional submission, including preparation of required documents, submission, coordination and authority liaison, complete.","unit":"lot"},
-    "prelim":{"description":"Preliminaries, site mobilisation, temporary facilities, site protection, insurance, project coordination, supervision and general project management, complete.","unit":"lot"}
+    "footingConc": {
+      "description": "Supply and construct Grade 15 concrete footing.",
+      "unit": "m³",
+      "category": "custom",
+      "groupKey": null,
+      "groupTitle": "Custom Rate Items"
+    },
+    "footingFw": {
+      "description": "Provide formwork to concrete footing.",
+      "unit": "m²",
+      "category": "custom",
+      "groupKey": null,
+      "groupTitle": "Custom Rate Items"
+    },
+    "footingRebar": {
+      "description": "Supply and install reinforcement bars to concrete footing.",
+      "unit": "kg",
+      "category": "custom",
+      "groupKey": null,
+      "groupTitle": "Custom Rate Items"
+    },
+    "slabConc": {
+      "description": "Supply and construct 150mm thick Grade 25 concrete ground slab.",
+      "unit": "m³",
+      "category": "custom",
+      "groupKey": null,
+      "groupTitle": "Custom Rate Items"
+    },
+    "slabBrc": {
+      "description": "Supply and install BRC A7 reinforcement, double layer.",
+      "unit": "m²",
+      "category": "custom",
+      "groupKey": null,
+      "groupTitle": "Custom Rate Items"
+    },
+    "beamConc": {
+      "description": "Supply and construct 150mm × 400mm Grade 25 reinforced concrete ground beam.",
+      "unit": "m³",
+      "category": "custom",
+      "groupKey": null,
+      "groupTitle": "Custom Rate Items"
+    },
+    "beamFw": {
+      "description": "Provide formwork to 150mm × 400mm reinforced concrete ground beam.",
+      "unit": "m²",
+      "category": "custom",
+      "groupKey": null,
+      "groupTitle": "Custom Rate Items"
+    },
+    "beamRebar": {
+      "description": "Supply and install reinforcement bars to 150mm × 400mm ground beam.",
+      "unit": "kg",
+      "category": "custom",
+      "groupKey": null,
+      "groupTitle": "Custom Rate Items"
+    },
+    "colConc": {
+      "description": "Supply and construct 150mm × 150mm Grade 25 reinforced concrete column, 3m height.",
+      "unit": "m³",
+      "category": "custom",
+      "groupKey": null,
+      "groupTitle": "Custom Rate Items"
+    },
+    "colFw": {
+      "description": "Provide formwork to 150mm × 150mm reinforced concrete columns, 3m height.",
+      "unit": "m²",
+      "category": "custom",
+      "groupKey": null,
+      "groupTitle": "Custom Rate Items"
+    },
+    "colRebar": {
+      "description": "Supply and install reinforcement bars to 150mm × 150mm concrete columns, 3m height.",
+      "unit": "kg",
+      "category": "custom",
+      "groupKey": null,
+      "groupTitle": "Custom Rate Items"
+    },
+    "flatRoofConc": {
+      "description": "Supply and construct 100mm thick Grade 25 concrete flat roof slab including waterproofing.",
+      "unit": "m³",
+      "category": "custom",
+      "groupKey": null,
+      "groupTitle": "Custom Rate Items"
+    },
+    "flatRoofFw": {
+      "description": "Provide underside formwork to concrete flat roof slab.",
+      "unit": "m²",
+      "category": "custom",
+      "groupKey": null,
+      "groupTitle": "Custom Rate Items"
+    },
+    "flatRoofBrc": {
+      "description": "Supply and install BRC A7 reinforcement to flat roof slab, double layer.",
+      "unit": "m²",
+      "category": "custom",
+      "groupKey": null,
+      "groupTitle": "Custom Rate Items"
+    },
+    "cChannel": {
+      "description": "Supply and install C-channel steel members for roof structure, including cutting, fabrication, fixing, connection accessories, alignment and protective treatment, complete.",
+      "unit": "m",
+      "category": "custom",
+      "groupKey": null,
+      "groupTitle": "Custom Rate Items"
+    },
+    "metalSheet": {
+      "description": "Supply and install metal roofing sheet to selected roof, 25° pitch with 3ft overhang.",
+      "unit": "m²",
+      "category": "custom",
+      "groupKey": null,
+      "groupTitle": "Custom Rate Items"
+    },
+    "roofDesignConc": {
+      "description": "Supply and place Grade 25 concrete for designed roof structure, including placing, compacting, levelling and curing, complete.",
+      "unit": "m³",
+      "category": "custom",
+      "groupKey": null,
+      "groupTitle": "Custom Rate Items"
+    },
+    "roofDesignFw": {
+      "description": "Supply, erect and dismantle formwork to designed roof structure, including supports, bracing, alignment and all necessary accessories, complete.",
+      "unit": "sqft",
+      "category": "custom",
+      "groupKey": null,
+      "groupTitle": "Custom Rate Items"
+    },
+    "roofDesignRebar": {
+      "description": "Supply, cut, bend and fix reinforcement steel bars for designed roof structure, including tying wire, spacers, chairs and all necessary supports, complete.",
+      "unit": "kg",
+      "category": "custom",
+      "groupKey": null,
+      "groupTitle": "Custom Rate Items"
+    },
+    "apronConc": {
+      "description": "Supply and construct 50mm thick Grade 15 concrete apron.",
+      "unit": "m³",
+      "category": "custom",
+      "groupKey": null,
+      "groupTitle": "Custom Rate Items"
+    },
+    "apronFw": {
+      "description": "Provide edge formwork to 50mm thick concrete apron.",
+      "unit": "m²",
+      "category": "custom",
+      "groupKey": null,
+      "groupTitle": "Custom Rate Items"
+    },
+    "apronBrc": {
+      "description": "Supply and install BRC A7 reinforcement to concrete apron, single layer.",
+      "unit": "m²",
+      "category": "custom",
+      "groupKey": null,
+      "groupTitle": "Custom Rate Items"
+    },
+    "drainage": {
+      "description": "Supply and construct drainage along the outer edge of the apron.",
+      "unit": "m",
+      "category": "custom",
+      "groupKey": null,
+      "groupTitle": "Custom Rate Items"
+    },
+    "ceilingInt": {
+      "description": "Supply and install internal plaster / skim ceiling c/w paint, including framing / substrate preparation, joint treatment, surface preparation and finishing, complete.",
+      "unit": "sqft",
+      "category": "custom",
+      "groupKey": null,
+      "groupTitle": "Custom Rate Items"
+    },
+    "ceilingExt": {
+      "description": "Supply and install external ceiling / soffit c/w paint, including framing / substrate preparation, joint treatment, surface preparation and finishing, complete.",
+      "unit": "sqft",
+      "category": "custom",
+      "groupKey": null,
+      "groupTitle": "Custom Rate Items"
+    },
+    "floorTileInt": {
+      "description": "Supply and install internal floor tiles, including surface preparation, adhesive / mortar, cutting, laying, grouting and finishing, complete.",
+      "unit": "sqft",
+      "category": "custom",
+      "groupKey": null,
+      "groupTitle": "Custom Rate Items"
+    },
+    "floorTileExt": {
+      "description": "Supply and install external floor tiles, including surface preparation, adhesive / mortar, cutting, laying, grouting and finishing, complete.",
+      "unit": "sqft",
+      "category": "custom",
+      "groupKey": null,
+      "groupTitle": "Custom Rate Items"
+    },
+    "paintInt": {
+      "description": "Supply labour and materials for internal painting works, including surface preparation, sealer where required, two coats of paint, cleaning and touch-up upon completion.",
+      "unit": "sqft",
+      "category": "custom",
+      "groupKey": null,
+      "groupTitle": "Custom Rate Items"
+    },
+    "paintExt": {
+      "description": "Supply labour and materials for external painting works, including surface preparation, primer / sealer where required, two coats of weather-resistant paint, cleaning and touch-up upon completion.",
+      "unit": "sqft",
+      "category": "custom",
+      "groupKey": null,
+      "groupTitle": "Custom Rate Items"
+    },
+    "door": {
+      "description": "Single-leaf timber flush door, complete with timber frame, hinges, lockset, handles, door stops, architraves and necessary ironmongery, including fixing and making good, installed complete. (Bedroom / Kitchen / Family / applicable areas)",
+      "unit": "No.",
+      "category": "custom",
+      "groupKey": null,
+      "groupTitle": "Custom Rate Items"
+    },
+    "window": {
+      "description": "Aluminium-framed glazed windows, size 1200 × 1200 mm, complete with aluminium frames, glazing, glazing beads, handles, locking mechanisms, sealant and necessary ironmongery, including fixing and making good, installed complete. (Bedroom 1 / Bedroom 2 / applicable bedrooms)",
+      "unit": "No.",
+      "category": "custom",
+      "groupKey": null,
+      "groupTitle": "Custom Rate Items"
+    },
+    "waterTank": {
+      "description": "Supply and install one water tank for the project.",
+      "unit": "No.",
+      "category": "custom",
+      "groupKey": null,
+      "groupTitle": "Custom Rate Items"
+    },
+    "septicTank": {
+      "description": "Supply and install one septic tank for the project.",
+      "unit": "No.",
+      "category": "custom",
+      "groupKey": null,
+      "groupTitle": "Custom Rate Items"
+    },
+    "bathWallTile": {
+      "description": "Supply and install bathroom wall tiles c/w waterproofing, including surface preparation, waterproofing system, adhesive, cutting, laying, grouting and finishing, complete.",
+      "unit": "sqft",
+      "category": "custom",
+      "groupKey": null,
+      "groupTitle": "Custom Rate Items"
+    },
+    "bathFloorTile": {
+      "description": "Supply and install bathroom floor tiles c/w waterproofing, including surface preparation, waterproofing system, adhesive / mortar, cutting, laying, grouting and finishing, complete.",
+      "unit": "sqft",
+      "category": "custom",
+      "groupKey": null,
+      "groupTitle": "Custom Rate Items"
+    },
+    "bathPiping": {
+      "description": "Supply and install sanitary and water supply piping works, including fittings, connections, testing and making good, complete.",
+      "unit": "set",
+      "category": "custom",
+      "groupKey": null,
+      "groupTitle": "Custom Rate Items"
+    },
+    "bathShower": {
+      "description": "Supply and install one shower fitting per bathroom.",
+      "unit": "No.",
+      "category": "custom",
+      "groupKey": null,
+      "groupTitle": "Custom Rate Items"
+    },
+    "bathTap": {
+      "description": "Supply and install one tap fitting per bathroom.",
+      "unit": "No.",
+      "category": "custom",
+      "groupKey": null,
+      "groupTitle": "Custom Rate Items"
+    },
+    "bathWc": {
+      "description": "Supply and install one WC sanitary fitting per bathroom.",
+      "unit": "No.",
+      "category": "custom",
+      "groupKey": null,
+      "groupTitle": "Custom Rate Items"
+    },
+    "bathBasin": {
+      "description": "Supply and install one basin sanitary fitting per bathroom.",
+      "unit": "No.",
+      "category": "custom",
+      "groupKey": null,
+      "groupTitle": "Custom Rate Items"
+    },
+    "dbBox": {
+      "description": "Distribution board complete with suitable enclosure, main switch, circuit protective devices, neutral and earth bars, circuit identification and all necessary internal accessories, including mounting, wiring connections and testing, installed complete.",
+      "unit": "No.",
+      "category": "custom",
+      "groupKey": null,
+      "groupTitle": "Custom Rate Items"
+    },
+    "wiring": {
+      "description": "Electrical wiring comprising PVC insulated copper conductor cables of appropriate sizes for lighting, socket-outlets, switches, fans and air-conditioning points, including conduits or other approved containment, terminations, connections, supports, identification, testing and all necessary accessories, installed complete.",
+      "unit": "m",
+      "category": "custom",
+      "groupKey": null,
+      "groupTitle": "Custom Rate Items"
+    },
+    "powerPoint": {
+      "description": "13A switched socket outlets, single-gang flush type, BS 1363 / MS-compliant, complete with socket plates, flush boxes, wiring connections and all necessary accessories, installed complete. (Bedroom / Kitchen / applicable Main Building rooms)",
+      "unit": "No.",
+      "category": "custom",
+      "groupKey": null,
+      "groupTitle": "Custom Rate Items"
+    },
+    "switch": {
+      "description": "10A 1-gang 1-way flush switches, complete with switch plates, flush boxes, wiring connections and all necessary accessories, installed complete. (Main Building rooms)",
+      "unit": "No.",
+      "category": "custom",
+      "groupKey": null,
+      "groupTitle": "Custom Rate Items"
+    },
+    "lighting": {
+      "description": "LED ceiling-mounted light fittings, 230V, 50Hz, suitable for residential installation, complete with LED lamp/module, driver, mounting, wiring connection and all necessary accessories, installed complete. (Main Building rooms/areas)",
+      "unit": "No.",
+      "category": "custom",
+      "groupKey": null,
+      "groupTitle": "Custom Rate Items"
+    },
+    "fan": {
+      "description": "Ceiling-mounted electric fans, suitable for 230V, 50Hz residential installation, complete with fan regulator/controller, ceiling mounting accessories, wiring connection and all necessary accessories, installed complete. (Eligible Main Building areas)",
+      "unit": "No.",
+      "category": "custom",
+      "groupKey": null,
+      "groupTitle": "Custom Rate Items"
+    },
+    "aircond": {
+      "description": "Air-conditioning power supply points for split-unit air-conditioning equipment, complete with appropriate isolator/switch, wiring connection, containment and all necessary accessories, installed complete. (Designated air-conditioned areas)",
+      "unit": "No.",
+      "category": "custom",
+      "groupKey": null,
+      "groupTitle": "Custom Rate Items"
+    },
+    "earthing": {
+      "description": "Complete earthing system comprising earth electrode(s), earth conductor, earth clamp/connection, earth pit and all associated accessories, including excavation, installation, testing and connection to the electrical installation, complete.",
+      "unit": "Set",
+      "category": "custom",
+      "groupKey": null,
+      "groupTitle": "Custom Rate Items"
+    },
+    "permit": {
+      "description": "Building plan / renovation permit application and professional submission, including preparation of required documents, submission, coordination and authority liaison, complete.",
+      "unit": "lot",
+      "category": "custom",
+      "groupKey": null,
+      "groupTitle": "Custom Rate Items"
+    },
+    "prelim": {
+      "description": "Preliminaries, site mobilisation, temporary facilities, site protection, insurance, project coordination, supervision and general project management, complete.",
+      "unit": "lot",
+      "category": "custom",
+      "groupKey": null,
+      "groupTitle": "Custom Rate Items"
+    },
+    "internalWall": {
+      "description": "Supply and construct internal brick/block wall including cement screed and plaster.",
+      "unit": "m²",
+      "category": "custom",
+      "groupKey": null,
+      "groupTitle": "Custom Rate Items"
+    },
+    "externalWall": {
+      "description": "Supply and construct external brick/block wall including cement screed and plaster.",
+      "unit": "m²",
+      "category": "custom",
+      "groupKey": null,
+      "groupTitle": "Custom Rate Items"
+    }
   },
-  "updatedAt": "2026-09-11T04:05:00+08:00"
+  "updatedAt": "2026-09-11T21:41:48.644Z"
 }
