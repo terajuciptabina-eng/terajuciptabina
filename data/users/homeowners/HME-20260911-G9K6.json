@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "homeowner",
+  "homeownerId": "HME-20260911-G9K6",
+  "profile": {
+    "name": "Nur",
+    "email": "sue89moi@gmail.com",
+    "phone": "01160927175"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-09-11T09:55:52.002Z",
+  "updatedAt": "2026-09-11T09:55:52.002Z"
+}
