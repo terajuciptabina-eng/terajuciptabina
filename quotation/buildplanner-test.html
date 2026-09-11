@@ -1,147 +1,748 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Build Planner — Calculation Engine Test</title></head>
-<body>
-<h1>Build Planner — Calculation Engine Test</h1>
-<p>TEST COPY ONLY. Original quotation/buildplanner.html is untouched.</p>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>Build Planner | Teraju Ciptabina</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    *{box-sizing:border-box}html,body{max-width:100%;overflow-x:hidden}body{font-family:Arial,Helvetica,sans-serif;-webkit-text-size-adjust:100%;text-rendering:optimizeLegibility}button,input,select,textarea{font:inherit}button,input,select{min-height:44px}textarea{min-height:88px}button,a,input,select,textarea{-webkit-tap-highlight-color:transparent}button{touch-action:manipulation}input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}input[type=number]{-moz-appearance:textfield;appearance:textfield}.homeowner-hidden{display:none!important}.homeowner-summary-card{border:1px solid #e5e7eb;border-radius:16px;background:#f9fafb;padding:20px}.homeowner-lock{border:1px dashed #d1d5db;border-radius:16px;background:#fafafa;padding:22px}.homeowner-lock .lock-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:#111827;color:#fff;font-size:20px;margin:0 auto 12px}.detailed-quotation-table,.simple-quotation-table{width:100%;table-layout:fixed}.payment-modal-backdrop{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(17,24,39,.62);backdrop-filter:blur(4px)}.payment-modal-backdrop.show,.payment-modal-backdrop.open{display:flex}.payment-modal{width:min(100%,520px);max-height:min(90vh,760px);overflow-y:auto;background:#fff;border-radius:22px;box-shadow:0 25px 70px rgba(0,0,0,.25)}.payment-modal input{width:100%;border:1px solid #d1d5db;border-radius:10px;padding:12px 14px;outline:none}.payment-modal input:focus{border-color:#111827;box-shadow:0 0 0 3px rgba(17,24,39,.08)}.payment-error{display:none}.payment-error.show{display:block}@media(max-width:767px){main{padding:16px!important}main>section{padding:16px!important;border-radius:16px!important}.room-card{padding:14px!important;overflow:hidden}.room-card>div:first-child{grid-template-columns:1fr!important}.room-card .no-print.flex{display:grid!important;grid-template-columns:1fr 1fr;gap:8px;width:100%}.room-card .no-print.flex button{width:100%}.room-card .no-print.flex button:last-child{grid-column:1/-1}#estimateContent{overflow:visible}#quotationDocument{padding:16px!important}#quotationPrintActions button{width:100%}}@media print {
+  @page { size: A4 portrait; margin: 12mm; }
+
+  html, body {
+    width: 100% !important; margin: 0 !important; padding: 0 !important;
+    background: #fff !important;
+    -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important;
+  }
+
+  /* Print only the generated quotation. Keep its normal web styling. */
+  body.print-quotation > header,
+  body.print-quotation > main > section:not(#quotationDocument),
+  body.print-quotation .no-print,
+  body.print-quotation #quotationPrintActions { display: none !important; }
+
+  body.print-quotation > main {
+    display: block !important; width: 100% !important; max-width: none !important;
+    margin: 0 !important; padding: 0 !important;
+  }
+
+  body.print-quotation #quotationDocument {
+    display: block !important; width: 100% !important; max-width: none !important;
+    margin: 0 !important; padding: 24px !important;
+    background: #fff !important; box-shadow: none !important;
+    border: none !important; border-radius: 0 !important;
+  }
+
+  body.print-quotation #quotationContent {
+    width: 100% !important; max-width: none !important;
+    font-size: inherit !important; line-height: inherit !important;
+  }
+
+  body.print-quotation #quotationContent .overflow-x-auto {
+    overflow: visible !important; width: 100% !important;
+  }
+
+  body.print-quotation #quotationContent table {
+    width: 100% !important; table-layout: fixed !important; border-collapse: collapse !important;
+  }
+
+  body.print-quotation #quotationContent table thead { display: table-header-group !important; }
+  body.print-quotation #quotationContent table tr {
+    break-inside: avoid !important; page-break-inside: avoid !important;
+  }
+  body.print-quotation #quotationContent table th,
+  body.print-quotation #quotationContent table td { vertical-align: top !important; }
+
+  body.print-quotation .quotation-section-row td,
+  body.print-quotation .quotation-subsection-row td {
+    -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important;
+  }
+
+  body.print-quotation #quotationContent tfoot {
+    break-inside: avoid !important; page-break-inside: avoid !important;
+  }
+}@media(max-width:767px){.payment-modal-backdrop{padding:12px;align-items:flex-end}.payment-modal{max-height:92vh;border-radius:20px 20px 0 0}}
+  
+.simple-quotation-table,.detailed-quotation-table{width:100%!important;table-layout:fixed!important;border-collapse:collapse!important}.simple-quotation-table col:nth-child(1){width:6%!important}.simple-quotation-table col:nth-child(2){width:18%!important}.simple-quotation-table col:nth-child(3){width:56%!important}.simple-quotation-table col:nth-child(4){width:20%!important}.detailed-quotation-table col:nth-child(1){width:48%!important}.detailed-quotation-table col:nth-child(2){width:10%!important}.detailed-quotation-table col:nth-child(3){width:10%!important}.detailed-quotation-table col:nth-child(4){width:16%!important}.detailed-quotation-table col:nth-child(5){width:16%!important}.quotation-section-row td{background:#f3f4f6;font-weight:700;text-transform:uppercase;letter-spacing:.03em;border-top:1px solid #d1d5db}.quotation-subsection-row td{background:#fafafa;font-weight:700;color:#374151}
+
+.contractor-only{display:none!important}
+body.contractor-mode .contractor-only{display:block!important}
+body.contractor-mode .contractor-only.inline-flex{display:inline-flex!important}
+body.contractor-mode .contractor-only.flex{display:flex!important}
+body.contractor-mode td.contractor-only,body.contractor-mode th.contractor-only{display:table-cell!important}
+.contractor-editable{display:none}
+body.contractor-mode .contractor-editable{display:inline-block}
+.homeowner-locked{background:#f9fafb!important;color:#4b5563}
+body.contractor-mode .homeowner-locked{display:none!important}
+
+#rateScheduleContent table{width:100%!important;table-layout:fixed!important;border-collapse:collapse!important}
+#rateScheduleContent table th:nth-child(1),#rateScheduleContent table td:nth-child(1){width:55%!important}
+#rateScheduleContent table th:nth-child(2),#rateScheduleContent table td:nth-child(2){width:15%!important}
+#rateScheduleContent table th:nth-child(3),#rateScheduleContent table td:nth-child(3){width:30%!important}
+#rateScheduleContent table input{box-sizing:border-box!important;max-width:100%!important}
+.detailed-quotation-table{width:100%!important;table-layout:fixed!important}
+.detailed-quotation-table th:nth-child(1),.detailed-quotation-table td:nth-child(1){width:32%!important}
+.detailed-quotation-table th:nth-child(2),.detailed-quotation-table td:nth-child(2){width:8%!important}
+.detailed-quotation-table th:nth-child(3),.detailed-quotation-table td:nth-child(3){width:13%!important}
+.detailed-quotation-table th:nth-child(4),.detailed-quotation-table td:nth-child(4){width:15%!important}
+.detailed-quotation-table th:nth-child(5),.detailed-quotation-table td:nth-child(5){width:20%!important}
+.detailed-quotation-table th:nth-child(6),.detailed-quotation-table td:nth-child(6){width:12%!important}
+.detailed-quotation-table textarea{width:100%!important;min-width:0!important;box-sizing:border-box!important;resize:vertical}
+.detailed-quotation-table td,.detailed-quotation-table th{vertical-align:top}
+@media(max-width:767px){
+ #rateScheduleContent table{min-width:560px!important}
+}
+
+    /* Detailed quotation access gate */
+    #quotationDocument { position: relative; }
+    #quotationContent.quotation-locked { filter: blur(7px); user-select: none; pointer-events: none; }
+    #quotationDocument.detailed-locked #quotationPrintActions { opacity: .45; pointer-events: none; }
+    .quotation-lock-overlay { position:absolute; inset:0; z-index:20; display:flex; align-items:center; justify-content:center; padding:24px; background:rgba(255,255,255,.30); backdrop-filter:blur(1px); -webkit-backdrop-filter:blur(1px); }
+    .quotation-lock-card { width:min(420px,100%); background:rgba(255,255,255,.97); border:1px solid rgba(0,0,0,.12); border-radius:20px; padding:28px; text-align:center; box-shadow:0 18px 50px rgba(0,0,0,.18); }
+    .quotation-lock-icon { width:54px; height:54px; margin:0 auto 14px; border-radius:999px; display:flex; align-items:center; justify-content:center; background:#111; color:#fff; font-size:25px; }
+    @media print { .quotation-lock-overlay { display:none !important; } #quotationContent.quotation-locked { filter:none !important; } }
+
+.contractor-quotation-panel{display:block!important}.contractor-quotation-choice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.contractor-quotation-choice{position:relative;display:flex;align-items:flex-start;gap:13px;padding:20px;border:1px solid #d9dee7;border-radius:16px;background:#fff;cursor:pointer;transition:.18s ease;min-height:116px}.contractor-quotation-choice:hover{border-color:#9ca3af;background:#fafafa}.contractor-quotation-choice input{position:absolute;opacity:0;pointer-events:none}.contractor-quotation-choice.is-selected{border-color:#111827;box-shadow:0 0 0 2px rgba(17,24,39,.06)}.choice-radio{width:19px;height:19px;border:2px solid #9ca3af;border-radius:999px;flex:0 0 19px;margin-top:2px;position:relative}.contractor-quotation-choice.is-selected .choice-radio{border-color:#111827}.contractor-quotation-choice.is-selected .choice-radio:after{content:'';position:absolute;width:9px;height:9px;border-radius:999px;background:#111827;left:3px;top:3px}.choice-copy{display:flex;flex-direction:column;gap:5px}.choice-copy strong{font-size:16px;color:#111827}.choice-copy small{font-size:13px;line-height:1.45;color:#6b7280}.choice-copy em{font-size:12px;font-style:normal;color:#15803d;font-weight:700;margin-top:2px}.contractor-quotation-tip{display:flex;flex-direction:column;gap:3px;margin-top:14px;padding:13px 15px;border-radius:12px;background:#f8fafc;border:1px solid #e5e7eb;font-size:13px;color:#6b7280}.contractor-quotation-tip strong{color:#1f2937}.contractor-generate-btn{margin-top:16px;width:100%;background:#111827;color:#fff;border:0;border-radius:12px;padding:13px 18px;font-weight:700;cursor:pointer}.contractor-generate-btn:hover{background:#000}@media(max-width:767px){.contractor-quotation-choice-grid{grid-template-columns:1fr}.contractor-quotation-choice{min-height:0}.contractor-generate-btn{min-height:48px}}
+
+
+
+/* Unified quotation flow + visual document preview */
+.quotation-type-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.quotation-type-card{position:relative;display:flex;align-items:flex-start;gap:13px;padding:20px;border:1px solid #d9dee7;border-radius:16px;background:#fff;cursor:pointer;transition:.18s ease;}
+.quotation-type-card:hover{border-color:#9ca3af;background:#fafafa}
+.quotation-type-card input{position:absolute;opacity:0;pointer-events:none}
+.quotation-type-card.is-selected{border-color:#111827;box-shadow:0 0 0 2px rgba(17,24,39,.06)}
+.quotation-type-radio{width:19px;height:19px;border:2px solid #9ca3af;border-radius:999px;flex:0 0 19px;margin-top:2px;position:relative}
+.quotation-type-card.is-selected .quotation-type-radio{border-color:#111827}
+.quotation-type-card.is-selected .quotation-type-radio:after{content:'';position:absolute;width:9px;height:9px;border-radius:999px;background:#111827;left:3px;top:3px}
+.quotation-type-copy{display:flex;flex-direction:column;gap:5px}
+.quotation-type-copy strong{font-size:16px;color:#111827}
+.quotation-type-copy small{font-size:13px;line-height:1.45;color:#6b7280}
+.quotation-type-copy em{font-size:12px;font-style:normal;color:#15803d;font-weight:700;margin-top:2px}
+.quotation-generator-tip{display:flex;flex-direction:column;gap:3px;margin-top:14px;padding:13px 15px;border-radius:12px;background:#f8fafc;border:1px solid #e5e7eb;font-size:13px;color:#6b7280}
+.quotation-generator-tip strong{color:#1f2937}
+.quotation-generate-btn{margin-top:16px;width:100%;background:#111827;color:#fff;border:0;border-radius:12px;padding:14px 18px;font-weight:700;cursor:pointer;min-height:52px}
+.quotation-generate-btn:hover{background:#000}
+.quotation-preview-heading{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px}
+.quotation-render-source{position:fixed;left:-100000px;top:0;width:794px;background:#fff;visibility:visible;pointer-events:none;z-index:-1}
+@media(max-width:767px){.quotation-type-grid{grid-template-columns:1fr}
+  .quotation-type-card{min-height:0;padding:16px}
+}
+
+/* Mobile quotation — same table structure as desktop, responsive shrink */
+@media (max-width: 767px) {
+  #estimateContent,
+  #estimateContent > .overflow-x-auto {
+    width:100% !important;
+    max-width:100% !important;
+    overflow-x:hidden !important;
+    overflow-y:visible !important;
+  }
+  #estimateContent table {
+    width:100% !important;
+    min-width:0 !important;
+    max-width:100% !important;
+    table-layout:fixed !important;
+    border-collapse:collapse !important;
+    font-size:8px !important;
+  }
+  #estimateContent table thead { display:table-header-group !important; }
+  #estimateContent table tbody,
+  #estimateContent table tfoot { display:table-row-group !important; }
+  #estimateContent table tr { display:table-row !important; }
+  #estimateContent table th,
+  #estimateContent table td {
+    display:table-cell !important;
+    padding:5px 2px !important;
+    vertical-align:top !important;
+  }
+  #estimateContent table th:nth-child(1),#estimateContent table td:nth-child(1){width:31% !important}
+  #estimateContent table th:nth-child(2),#estimateContent table td:nth-child(2){width:7% !important}
+  #estimateContent table th:nth-child(3),#estimateContent table td:nth-child(3){width:12% !important}
+  #estimateContent table th:nth-child(4),#estimateContent table td:nth-child(4){width:15% !important}
+  #estimateContent table th:nth-child(5),#estimateContent table td:nth-child(5){width:20% !important}
+  #estimateContent table th:nth-child(6),#estimateContent table td:nth-child(6){width:15% !important}
+  #estimateContent table th,
+  #estimateContent table td { overflow-wrap:normal !important; word-break:normal !important; }
+  #estimateContent table th:first-child,
+  #estimateContent table td:first-child { overflow-wrap:anywhere !important; word-break:break-word !important; }
+  #estimateContent table th:nth-child(n+2),
+  #estimateContent table td:nth-child(n+2) { white-space:nowrap !important; }
+  #estimateContent table td:nth-child(2),
+  #estimateContent table td:nth-child(3),
+  #estimateContent table td:nth-child(4),
+  #estimateContent table td:nth-child(5),
+  #estimateContent table td:nth-child(6) { text-align:center !important; }
+  #estimateContent table input,
+  #estimateContent table select,
+  #estimateContent table textarea {
+    width:100% !important;
+    min-width:0 !important;
+    max-width:100% !important;
+    min-height:30px !important;
+    padding:4px 2px !important;
+    font-size:8px !important;
+    box-sizing:border-box !important;
+  }
+  #estimateContent table textarea { min-height:48px !important; }
+  #estimateContent table td:nth-child(n+2) { vertical-align:middle !important; }
+  #estimateContent table td:nth-child(6) button {
+    width:100% !important;
+    min-width:0 !important;
+    min-height:30px !important;
+    padding:3px 1px !important;
+    font-size:8px !important;
+    line-height:1.1 !important;
+    white-space:nowrap !important;
+  }
+  #estimateContent table .homeowner-locked {
+    width:100% !important;
+    min-width:0 !important;
+    max-width:100% !important;
+    white-space:normal !important;
+    overflow-wrap:anywhere !important;
+    word-break:break-word !important;
+  }
+  #estimateContent table .quotation-section-row td,
+  #estimateContent table .quotation-subsection-row td {
+    text-align:left !important;
+    padding:7px 5px !important;
+    font-size:10px !important;
+    white-space:normal !important;
+    overflow-wrap:normal !important;
+    word-break:normal !important;
+  }
+  #estimateContent table tr.border-b:has(td[colspan="4"]) td:nth-child(5) {
+    text-align:left !important;
+    white-space:nowrap !important;
+    overflow-wrap:normal !important;
+    word-break:normal !important;
+  }
+  #estimateContent table tr.border-b:has(td[colspan="4"]) td:nth-child(6) {
+    text-align:right !important;
+    white-space:nowrap !important;
+    overflow-wrap:normal !important;
+    word-break:normal !important;
+  }
+}/* TERAJU PLANNER UI REFRESH */
+
+@media screen {
+  :root{--tp-ink:#111827;--tp-line:rgba(15,23,42,.10);--tp-shadow:0 18px 55px rgba(15,23,42,.10)}
+  body{background:linear-gradient(180deg,#f8fafc,#eef2f7);color:var(--tp-ink)}
+  header{background:rgba(255,255,255,.84)!important;border-bottom:1px solid var(--tp-line)!important;box-shadow:0 8px 30px rgba(15,23,42,.06)!important;backdrop-filter:blur(18px);position:sticky;top:0;z-index:50}
+  main{max-width:1180px!important;margin:auto!important;padding-top:28px!important;padding-bottom:60px!important}
+  main>section{border:1px solid var(--tp-line)!important;border-radius:24px!important;box-shadow:var(--tp-shadow)!important;background:rgba(255,255,255,.94)!important;backdrop-filter:blur(14px);transition:transform .2s ease,box-shadow .2s ease}
+  main>section:first-child{position:relative;overflow:hidden;min-height:250px;padding:42px!important;border:0!important;background:transparent!important;color:#fff!important}
+  main>section:first-child>*{position:relative;z-index:1}
+  main>section:first-child h2{font-size:clamp(30px,5vw,52px)!important;line-height:1.02!important;letter-spacing:-.035em!important;text-shadow:0 8px 30px rgba(0,0,0,.25)}
+  main>section:first-child p{color:rgba(255,255,255,.84)!important;max-width:700px}
+  .room-card{border:1px solid var(--tp-line)!important;border-radius:20px!important;background:linear-gradient(145deg,#fff,#f8fafc)!important;box-shadow:0 10px 30px rgba(15,23,42,.07)!important;transition:transform .2s ease,box-shadow .2s ease!important}
+  .room-card:hover{transform:translateY(-2px);box-shadow:0 16px 38px rgba(15,23,42,.11)!important}
+  .optional-scope,.contractor-quotation-choice,.quotation-type-card{border-radius:16px!important;transition:transform .2s ease,box-shadow .2s ease!important}
+  .optional-scope:hover,.contractor-quotation-choice:hover,.quotation-type-card:hover{transform:translateY(-1px);box-shadow:0 10px 26px rgba(15,23,42,.08)!important}
+  .quotation-generate-btn,.contractor-generate-btn{border-radius:14px!important;box-shadow:0 10px 24px rgba(15,23,42,.16);transition:transform .18s ease,box-shadow .18s ease!important}
+  .quotation-generate-btn:hover,.contractor-generate-btn:hover{transform:translateY(-1px);box-shadow:0 14px 30px rgba(15,23,42,.21)}
+  #quotationDocument{border-radius:24px!important;box-shadow:0 20px 60px rgba(15,23,42,.12)!important}
+  @media(max-width:767px){main{padding:18px 14px 42px!important}main>section{border-radius:20px!important}main>section:first-child{min-height:270px;padding:28px 20px!important;border-radius:20px!important}.room-card{border-radius:18px!important}}
+  @media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
+}
+
+/* TERAJU WORKS planner product UI — presentation only */
+:root{--tw-ink:#111827;--tw-muted:#6b7280;--tw-line:#e5e7eb}
+body{--planner-page-image:url('https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=2200&q=88');background-color:#0f172a!important;color:var(--tw-ink)!important;background-image:linear-gradient(180deg,rgba(2,6,23,.64),rgba(2,6,23,.78)),var(--planner-page-image)!important;background-size:cover!important;background-position:center top!important;background-attachment:fixed!important}
+header{position:sticky!important;top:0!important;z-index:100!important;background:rgba(255,255,255,.72)!important;border-bottom:1px solid rgba(255,255,255,.45)!important;backdrop-filter:blur(18px)!important;-webkit-backdrop-filter:blur(18px)!important}
+header>div{max-width:1180px!important;padding-top:13px!important;padding-bottom:13px!important} header img{height:42px!important;width:auto!important;filter:drop-shadow(0 4px 10px rgba(0,0,0,.08))} header h1{letter-spacing:.12em;font-size:14px!important} header p:not(#contractorBadge){letter-spacing:.08em;text-transform:uppercase}
+main{max-width:1180px!important;padding-top:24px!important;padding-bottom:110px!important}
+main>section{border:1px solid rgba(255,255,255,.22)!important;box-shadow:0 14px 40px rgba(2,6,23,.18)!important;border-radius:24px!important;background:rgba(255,255,255,.90)!important;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease}
+main>section:not(:first-child):hover{box-shadow:0 18px 48px rgba(15,23,42,.08)!important;border-color:rgba(17,24,39,.11)!important}
+.planner-hero{position:relative!important;overflow:visible!important;min-height:270px!important;padding:34px!important;color:#fff!important;border:0!important;background:transparent!important;box-shadow:none!important;display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;grid-template-rows:auto auto 1fr!important;column-gap:42px!important;align-items:center!important}.planner-eyebrow{grid-column:1;grid-row:1;justify-self:start}.planner-hero h2{grid-column:1;grid-row:2 / span 2;align-self:center}.planner-hero p{grid-column:2;grid-row:2;align-self:end}.planner-meta{grid-column:2;grid-row:3;align-self:start}.planner-hero:before{display:none!important}.planner-hero>*{position:relative;z-index:1}
+.planner-eyebrow{display:inline-flex!important;padding:7px 11px;border:1px solid rgba(255,255,255,.2);border-radius:999px;background:rgba(255,255,255,.09);font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase}.planner-hero h2{font-size:clamp(34px,5vw,58px)!important;line-height:.98!important;letter-spacing:-.04em!important;margin-top:18px!important;margin-bottom:14px!important;color:#fff!important;max-width:700px}.planner-hero p{max-width:700px;color:rgba(255,255,255,.78)!important;font-size:15px!important;line-height:1.65!important;margin:0!important}.planner-meta{display:flex;flex-wrap:wrap;gap:9px;margin-top:24px}.planner-meta span{padding:8px 11px;border-radius:10px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.12);font-size:12px;font-weight:700;color:rgba(255,255,255,.9)}
+.planner-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:0 0 18px!important;padding:0!important;background:transparent!important;border:0!important;box-shadow:none!important}.planner-steps a{display:flex;align-items:center;gap:10px;padding:13px 14px;border:1px solid var(--tw-line);border-radius:16px;background:#fff;color:var(--tw-ink);text-decoration:none;font-size:12px;font-weight:800;box-shadow:0 8px 24px rgba(15,23,42,.04);transition:.2s ease}.planner-steps a:hover{transform:translateY(-2px);border-color:#9ca3af;box-shadow:0 12px 28px rgba(15,23,42,.08)}.planner-steps b{display:grid;place-items:center;width:27px;height:27px;border-radius:9px;background:#111827;color:#fff;font-size:11px;flex:0 0 27px}
+main>section:not(:first-child){scroll-margin-top:92px} main>section>div:first-child h3{letter-spacing:-.025em} main>section input,main>section select,main>section textarea{border-color:#dfe3e8!important;border-radius:14px!important;background:#fff!important;box-shadow:inset 0 1px 1px rgba(15,23,42,.02)!important;transition:border-color .18s ease,box-shadow .18s ease} main>section input:focus,main>section select:focus,main>section textarea:focus{border-color:#111827!important;box-shadow:0 0 0 4px rgba(17,24,39,.07)!important;outline:none!important}
+.room-card{border:1px solid #e5e7eb!important;border-radius:20px!important;background:linear-gradient(180deg,#fff,#fafbfc)!important;box-shadow:0 8px 25px rgba(15,23,42,.045)!important;padding:18px!important;transition:.22s ease!important}.room-card:hover{transform:translateY(-2px);border-color:#cbd5e1!important;box-shadow:0 15px 35px rgba(15,23,42,.08)!important}.room-card:before{content:"AREA";display:inline-flex;margin-bottom:12px;padding:5px 8px;border-radius:7px;background:#f1f5f9;color:#64748b;font-size:9px;font-weight:900;letter-spacing:.13em}#roomsContainer{counter-reset:area}#roomsContainer .room-card{counter-increment:area}#roomsContainer .room-card:before{content:"AREA " counter(area,decimal-leading-zero)}
+#customerSummary>div,.homeowner-summary-card{border:1px solid #e8ebef!important;border-radius:16px!important;background:#f8fafc!important;padding:15px!important}#quotationGenerator{background:linear-gradient(145deg,#fff,#f7f8fa)!important}.quotation-type-card,.contractor-quotation-choice{border-radius:18px!important;min-height:124px!important;box-shadow:0 7px 22px rgba(15,23,42,.04)!important}.quotation-type-card.is-selected,.contractor-quotation-choice.is-selected{border-color:#111827!important;box-shadow:0 0 0 2px rgba(17,24,39,.1),0 12px 28px rgba(15,23,42,.08)!important}.quotation-generate-btn,.contractor-generate-btn{border-radius:15px!important;min-height:54px!important;box-shadow:0 12px 25px rgba(17,24,39,.16)!important}#quotationDocument{border-radius:24px!important;box-shadow:0 22px 65px rgba(15,23,42,.12)!important}
+@media(max-width:767px){body{background-attachment:scroll!important}main{padding:14px!important;padding-bottom:105px!important}main>section{border-radius:20px!important;margin-bottom:14px!important}.planner-hero{min-height:300px!important;padding:23px!important;border-radius:22px!important;margin-bottom:12px!important;display:grid!important;grid-template-columns:1fr!important;grid-template-rows:auto auto auto auto!important;gap:0!important;align-items:start!important;column-gap:0!important}.planner-eyebrow{grid-column:1!important;grid-row:1!important;justify-self:start!important}.planner-hero h2{grid-column:1!important;grid-row:2!important;align-self:start!important}.planner-hero p{grid-column:1!important;grid-row:3!important;align-self:start!important}.planner-meta{grid-column:1!important;grid-row:4!important;align-self:start!important}.planner-hero h2{font-size:38px!important;margin-top:15px!important}.planner-hero p{font-size:14px!important}.planner-meta{gap:7px!important}.planner-meta span{font-size:10px!important;padding:7px 9px!important}.planner-steps{gap:6px;margin-bottom:14px!important}.planner-steps a{justify-content:center;padding:9px 5px;border-radius:13px;font-size:9px;gap:5px;flex-direction:column;text-align:center}.planner-steps b{width:23px;height:23px;border-radius:7px;font-size:9px;flex-basis:23px}.room-card{border-radius:17px!important;padding:15px!important}#quotationGenerator{padding:18px!important}}
+@media(max-width:380px){.planner-hero{padding:19px!important}.planner-hero h2{font-size:33px!important}.planner-steps a{font-size:8px}} @media(prefers-reduced-motion:reduce){.planner-steps a,.room-card,main>section{transition:none!important}.planner-steps a:hover,.room-card:hover{transform:none!important}}
+
+/* Unified workspace header */
+.planner-header{font-family:'Inter',system-ui,sans-serif;background:rgba(255,255,255,.05)!important;border-bottom:1px solid rgba(15,23,42,.08)!important;box-shadow:0 4px 18px rgba(15,23,42,.06);backdrop-filter:blur(4px)!important;-webkit-backdrop-filter:blur(4px)!important}
+.planner-header>div{flex-wrap:wrap}.planner-nav-link{display:inline-flex;align-items:center;justify-content:center;min-height:36px;padding:7px 12px;border:1px solid rgba(15,23,42,.08);border-radius:8px;background:rgba(255,255,255,.42);color:#374151;font-size:11px;font-weight:600;line-height:1;text-decoration:none;white-space:nowrap;transition:background .18s ease,border-color .18s ease,box-shadow .18s ease,color .18s ease}.planner-nav-link:hover{background:rgba(255,255,255,.7);border-color:rgba(15,23,42,.14);box-shadow:0 4px 12px rgba(15,23,42,.06);color:#111827}.workspace-id-block{min-height:36px;padding:0 10px;border-left:1px solid rgba(15,23,42,.08)}
+@media(max-width:767px){.planner-header>div{padding:10px 14px 11px!important;display:grid!important;grid-template-columns:minmax(0,1fr) auto;gap:9px!important}.planner-header nav{grid-column:1/-1;width:100%;display:flex!important;gap:6px!important}.planner-nav-link{flex:1;min-height:36px;padding:7px 5px;font-size:10px;border-radius:9px}.workspace-id-block{padding-left:8px}.projectUserIdDisplay{font-size:11px}}
+@media(max-width:380px){.planner-nav-link{font-size:9px;padding-left:4px;padding-right:4px}.workspace-id-block{padding-left:6px}}
+
+</style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+<header class="planner-header"><div class="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between gap-4"><div class="flex items-center gap-4 min-w-0"><img src="../images/logo.png" alt="Teraju Ciptabina Logo" class="h-12 w-auto flex-shrink-0"><div class="min-w-0"><h1 class="font-bold text-lg tracking-wide">TERAJU CIPTABINA</h1><p id="workspaceBadge" class="text-xs text-gray-500 mt-1 uppercase tracking-wide">Homeowner Workspace</p></div></div><div class="workspace-id-block flex items-center flex-shrink-0"><div class="text-right leading-tight"><p id="workspaceIdLabel" class="text-[10px] uppercase tracking-wide text-gray-500">Homeowner ID</p><p id="workspaceIdDisplay" class="font-bold text-xs">-</p></div></div><nav class="flex items-center gap-2 flex-wrap justify-end no-print" aria-label="Planner navigation"><a id="myQuotationsLink" href="quotations.html" class="planner-nav-link">My Quotations</a><a href="#" onclick="history.back(); return false;" class="planner-nav-link">Back to Previous</a><a href="index.html" class="planner-nav-link">Home</a></nav></div></header>
+<div id="paymentModal" class="payment-modal-backdrop no-print" aria-hidden="true">
+<div class="payment-modal" role="dialog" aria-modal="true" aria-labelledby="promoModalTitle">
+  <div class="p-6 border-b flex items-start justify-between gap-4">
+    <div>
+      <p data-detailed-modal-title class="text-xs uppercase tracking-wider text-gray-500">Limited-Time Promotion</p>
+      <h3 id="promoModalTitle" class="text-2xl font-bold mt-1">Detailed Quotation</h3>
+      <p class="text-sm text-gray-500 mt-2">The detailed quotation is generated first, then locked until you unlock it.</p>
+    </div>
+    <button type="button" onclick="closePaymentModal()" class="text-gray-400 text-2xl" aria-label="Close">&times;</button>
+  </div>
+  <div class="p-6">
+    <div class="rounded-2xl bg-gray-50 border p-5 mb-5 flex items-center justify-between gap-4">
+      <div>
+        <p class="text-sm text-gray-500">Detailed Quotation</p>
+        <p class="text-xs text-gray-500 mt-1">Full scope, quantity, unit, rate & amount</p>
+      </div>
+      <div data-detailed-price class="text-2xl font-bold whitespace-nowrap"><span class="line-through text-gray-400 text-base mr-2">RM 49</span><span class="text-green-700">FREE</span></div>
+    </div>
+    <div data-detailed-promo-note class="rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800">
+      <strong>Promo:</strong> Detailed Quotation is FREE until 31 October 2026.
+    </div>
+    <p class="mt-5 text-sm text-gray-600">Your quotation will still show the <strong>actual project rates and amounts</strong>. Only the Detailed Quotation service fee is FREE during this promotion.</p>
+    <div class="mt-6 flex gap-3">
+      <button type="button" onclick="closePaymentModal()" class="flex-1 border px-4 py-3 rounded-xl font-semibold">Cancel</button>
+      <button id="paymentProceedButton" type="button" onclick="confirmDetailedQuotationPromo()" class="flex-1 bg-black text-white px-4 py-3 rounded-xl font-semibold">Unlock Detailed Quotation — FREE</button>
+    </div>
+  </div>
+</div></div></div></div>
+<main class="max-w-6xl mx-auto px-6 py-8">
+<section class="planner-hero" data-planner-product-ui="planner-product-ui-v2"><span class="planner-eyebrow">TERAJU WORKS · NEW BUILD</span><h2>Build your home plan.</h2><p>Turn your room schedule into a clear preliminary construction budget, then generate your quotation.</p><div class="planner-meta"><span>01 · PLAN</span><span>02 · PRICE</span><span>03 · REVIEW</span><span>04 · QUOTE</span></div></section>
+<section class="bg-white rounded-2xl shadow-sm p-6 mb-6"><div class="flex justify-between items-center cursor-pointer" onclick="toggleProjectInfo()"><div><h3 class="font-bold text-lg">Project Information</h3><p class="text-sm text-gray-500">Provide the project details to be shown on the estimate and quotation.</p></div><div class="flex items-center gap-4 flex-shrink-0"><div class="text-right leading-tight"><p id="projectUserIdLabel" class="text-[10px] uppercase tracking-wide text-gray-500">Homeowner ID</p><p id="projectUserIdDisplay" class="font-bold text-xs">-</p></div><span id="projectArrow">▲</span></div></div><div id="projectInfo" class="mt-5"><div class="grid md:grid-cols-2 gap-5"><div><label class="block text-sm font-medium mb-2">Customer Name</label><input id="customerName" type="text" placeholder="Optional" class="w-full border rounded-lg px-4 py-3" oninput="updateEstimate();saveContractorState()"></div><div><label class="block text-sm font-medium mb-2">Project Location</label><input id="projectLocation" type="text" placeholder="Start typing location..." class="w-full border rounded-lg px-4 py-3" oninput="updateEstimate();saveContractorState()"></div></div></div></section>
+<section class="bg-white rounded-2xl shadow-sm p-6 mb-6"><div class="mb-5"><h3 class="font-bold text-lg">Building Specification</h3><p class="text-sm text-gray-500">Define the overall building parameters used to estimate structural works.</p></div><div class="grid md:grid-cols-2 gap-5"><div><label class="block text-sm font-medium mb-2">Total Built-up Area (sqft)</label><input id="builtUpArea" type="number" min="0" step="1" value="0" readonly class="w-full border rounded-lg px-4 py-3 bg-gray-100" title="Automatically calculated from the total area/room schedule."></div></div></section>
+<section class="bg-white rounded-2xl shadow-sm p-6 mb-6"><div class="flex justify-between items-center mb-5 gap-4"><div><h3 class="font-bold text-lg">Rooms / Areas</h3><p class="text-sm text-gray-500">Add each area. Architectural works are calculated individually based on room type and floor area.</p></div><button id="addRoomAreaBtn" type="button" onclick="addRoom()" class="no-print bg-black text-white px-4 py-2 rounded-lg text-sm font-medium">+ Add Room / Area</button></div><div class="no-print bg-gray-50 border rounded-xl p-4 mb-5 text-sm text-gray-600"><strong class="text-gray-800">Guidance:</strong> Select the area type and enter the floor area in sqft. Door and window quantities are assigned automatically according to room type. Your area selections are used to prepare a preliminary construction budget.</div><div id="roomsContainer" class="space-y-4"></div><div id="roomsEmptyState" class="border rounded-xl bg-gray-50 p-5 text-center"><div class="mx-auto mb-3 grid place-items-center w-12 h-12 rounded-full bg-white border"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"></path><path d="M5.5 9.5V21h13V9.5"></path><path d="M9.5 21v-6h5v6"></path></svg></div><p class="font-semibold text-sm">No rooms added yet.</p><p class="text-xs text-gray-500 mt-1">Click the button above to add rooms/areas and start planning your project.</p></div><div id="roomsAddButtonAnchor" class="no-print mt-4"></div></section>
+<section id="rateScheduleSection" class="no-print bg-white rounded-2xl shadow-sm p-6 mb-6"><div class="flex justify-between items-center cursor-pointer" onclick="toggleRateSchedule()"><div><h3 class="font-bold text-lg">Rate Schedule</h3><p class="text-sm text-gray-500">Hidden by default. Open this only when you need to amend standard rates.</p></div><span id="rateScheduleArrow">▼</span></div><div id="rateSchedulePanel" class="hidden mt-5"><div class="mb-3"><button type="button" onclick="resetRatesToDefault()" class="border px-4 py-2 rounded-lg text-sm">Reset to Default Rates</button></div><div id="rateScheduleContent" class="overflow-x-auto"></div></div></section>
+<section class="bg-white rounded-2xl shadow-sm p-6"><div class="flex justify-between items-start mb-6"><div><p class="text-xs uppercase tracking-wider text-gray-500">Preliminary Estimate</p><h3 class="text-2xl font-bold">Construction Budget</h3></div><div class="text-right"><p class="text-xs text-gray-500">Estimate No.</p><p id="estimateNumber" class="font-bold"></p></div></div><div id="customerSummary" class="grid md:grid-cols-4 gap-5 mb-6 text-sm"></div><div id="estimateContent" class="overflow-x-auto"></div><div class="contractor-only no-print mt-5 flex justify-end gap-3"><button type="button" onclick="showRemovedItems()" class="border px-4 py-2 rounded-lg text-sm">Show Removed Items</button><button type="button" onclick="restoreAllItems()" class="border px-4 py-2 rounded-lg text-sm">Restore All Items</button></div><div class="border-t mt-6 pt-6"><div class="flex justify-between mb-2"><span class="font-semibold text-sm">Rooms Total Area</span><span id="roomsTotalArea" class="font-bold text-sm">0 sqft</span></div><div class="flex justify-between mb-2"><span class="font-semibold text-sm">Declared Built-up Area</span><span id="totalBuiltArea" class="font-bold text-sm">600 sqft</span></div><div class="flex justify-between"><span class="font-semibold text-sm">Estimated Total</span><span id="grandTotal" class="font-bold text-sm">RM 0</span></div></div></section>
+<section id="quotationGenerator" class="no-print bg-white rounded-2xl shadow-sm p-6 mt-6">
+  <div class="mb-5">
+    <p class="text-xs uppercase tracking-wider text-gray-500">Quotation</p>
+    <h3 class="font-bold text-xl mt-1">Choose Quotation Type</h3>
+    <p class="text-sm text-gray-500 mt-2">Select the quotation format, then generate one quotation using the final estimate values above.</p>
+  </div>
+  <div class="quotation-type-grid">
+    <label class="quotation-type-card is-selected">
+      <input type="radio" name="quotationType" value="simple" checked>
+      <span class="quotation-type-radio" aria-hidden="true"></span>
+      <span class="quotation-type-copy">
+        <strong>Simple Quotation</strong>
+        <small>Work descriptions with section / room totals only.</small>
+      </span>
+    </label>
+    <label class="quotation-type-card">
+      <input type="radio" name="quotationType" value="detail">
+      <span class="quotation-type-radio" aria-hidden="true"></span>
+      <span class="quotation-type-copy">
+        <strong>Detailed Quotation</strong>
+        <small>Full quantity, unit, rate, amount and subtotal breakdown.</small>
+      </span>
+    </label>
+  </div>
+  <div class="quotation-generator-tip">
+    <strong>Review before generating</strong>
+    <span>The quotation uses the final customer, project, room, quantity and rate values shown in the estimate.</span>
+  </div>
+  <button type="button" onclick="generateQuotation()" class="quotation-generate-btn">Generate Quotation</button>
+</section>
+
+<section id="quotationDocument" class="hidden bg-white rounded-2xl shadow-sm p-8 mt-6">
+  <div class="quotation-preview-heading no-print">
+    <div>
+      <p class="text-xs uppercase tracking-wider text-gray-500">Generated Quotation</p>
+      <h3 class="text-2xl font-bold mt-1">Quotation Preview</h3>
+      <p class="text-sm text-gray-500 mt-1">Visual document preview — scaled automatically for desktop and mobile.</p>
+    </div>
+  </div>
+  <div id="quotationPreview" class="quotation-preview-stage no-print" aria-live="polite">
+    <div class="quotation-preview-loading">Your quotation preview will appear here.</div>
+  </div>
+  <div id="quotationContent" class="quotation-render-source" aria-hidden="true"></div>
+  <div id="quotationLockOverlay" class="quotation-lock-overlay no-print hidden" aria-hidden="true"><div class="quotation-lock-card"><div class="quotation-lock-icon" aria-hidden="true">🔒</div><h3 class="text-xl font-bold">Detailed Quotation Locked</h3><p class="text-sm text-gray-600 mt-2">The detailed quotation has been generated. Unlock it to view the full item-by-item rates and amounts.</p><button type="button" onclick="unlockDetailedQuotation()" class="mt-5 w-full bg-black text-white px-5 py-3 rounded-xl font-semibold">Unlock Detailed Quotation</button></div></div>
+  <div id="quotationPrintActions" class="no-print mt-6 pt-5 border-t flex justify-end">
+    <button type="button" onclick="printQuotation()" class="bg-black text-white px-5 py-3 rounded-lg font-semibold">Download PDF</button>
+  </div>
+</section>
+</main>
 <script>
-/*
- * TEST HARNESS
- * Calculation Rules are the intended quantity source of truth.
- * Rates are deliberately excluded from this test layer.
- */
-const CALCULATION_RULES_VERSION = '2026-09-11-test-1';
-const UNIT = { SQFT_TO_M2: 0.09290304, FT_TO_M: 0.3048 };
+const BASE_AREA=600;
+const DEFAULT_RATES={footingConc:550,footingFw:4.18,footingRebar:15,slabConc:550,slabBrc:6.5,beamConc:350,beamFw:4.18,beamRebar:15,colConc:550,colFw:4.18,colRebar:15,flatRoofConc:550,flatRoofFw:4.18,flatRoofBrc:6.5,cChannel:4,metalSheet:3.25,roofDesignConc:550,roofDesignFw:4.18,roofDesignRebar:70,apronConc:350,apronFw:13.72,apronBrc:15,drainage:25,ceilingInt:15,ceilingExt:20,floorTileInt:4.18,floorTileExt:5.57,paintInt:1.39,paintExt:2.32,door:600,window:600,waterTank:500,septicTank:1500,bathWallTile:4.18,bathFloorTile:4.18,bathPiping:1000,bathShower:120,bathTap:30,bathWc:500,bathBasin:400,dbBox:1000,wiring:20,powerPoint:50,switch:50,lighting:250,fan:600,aircond:300,earthing:1500,permit:8500,prelim:12000};
+let RATES={...DEFAULT_RATES};
+const AUDIENCE=new URLSearchParams(location.search).get('audience')||'homeowner';
+const IS_CONTRACTOR=AUDIENCE==='contractor';
+const IS_HOMEOWNER=!IS_CONTRACTOR;
+const CONTRACTOR_ID=new URLSearchParams(location.search).get('contractorId')||localStorage.getItem('teraju.contractor.local.v1.activeContractorId')||'';
+const CONTRACTOR_STORAGE_PREFIX='teraju.contractor.local.v1';
+let restoringContractorState=false;
+function isHomeowner(){return IS_HOMEOWNER}
+function contractorStorageKey(){return CONTRACTOR_ID?`${CONTRACTOR_STORAGE_PREFIX}.${CONTRACTOR_ID}.build`:''}
+const ROOM_TYPES={living:'Living / Family',dining:'Dining',bedroom:'Bedroom',kitchen:'Kitchen',store:'Store / Utility',bathroom:'Bathroom',porch:'Car Porch / Entrance',other:'Other'};
+const ROOM_DEFAULTS={living:{doors:1,windows:2},dining:{doors:0,windows:1},bedroom:{doors:1,windows:1},kitchen:{doors:1,windows:1},store:{doors:1,windows:0},bathroom:{doors:1,windows:0},porch:{doors:0,windows:0},other:{doors:0,windows:1}};
+const INTEGER_UNITS=new Set(['no','set','ls','unit']);
+function isIntegerUnit(unit){return INTEGER_UNITS.has(String(unit||'').toLowerCase())}
+const STRUCT_GROUPS=[{key:'footing',title:'Footing',items:[{id:'str-footing-conc',desc:'Concrete G15',unit:'m3',qty:.5,rateKey:'footingConc'},{id:'str-footing-fw',desc:'Formwork',unit:'sqft',qty:129.17,rateKey:'footingFw'},{id:'str-footing-rebar',desc:'Rebar',unit:'kg',qty:80.5,rateKey:'footingRebar'}]},{key:'ground-slab',title:'Ground Slab',items:[{id:'str-slab-conc',desc:'Concrete G25',unit:'m3',qty:8.361,rateKey:'slabConc'},{id:'str-slab-brc',desc:'Rebar BRC A7 double layer',unit:'sqft',qty:1200,rateKey:'slabBrc'}]},{key:'ground-beam',title:'Ground Beam',items:[{id:'str-gb-conc',desc:'Concrete G25',unit:'m3',qty:3.552,rateKey:'beamConc'},{id:'str-gb-fw',desc:'Formwork',unit:'sqft',qty:509.78,rateKey:'beamFw'},{id:'str-gb-rebar',desc:'Rebar',unit:'kg',qty:710.4,rateKey:'beamRebar'}]},{key:'roof-beam',title:'Roof Beam',items:[{id:'str-rb-conc',desc:'Concrete G25',unit:'m3',qty:3.552,rateKey:'beamConc'},{id:'str-rb-fw',desc:'Formwork',unit:'sqft',qty:509.78,rateKey:'beamFw'},{id:'str-rb-rebar',desc:'Rebar',unit:'kg',qty:710.4,rateKey:'beamRebar'}]},{key:'column',title:'Column',items:[{id:'str-col-conc',desc:'Concrete G25',unit:'m3',qty:.945,rateKey:'colConc'},{id:'str-col-fw',desc:'Formwork',unit:'sqft',qty:271.25,rateKey:'colFw'},{id:'str-col-rebar',desc:'Rebar',unit:'kg',qty:189,rateKey:'colRebar'}]},{key:'roof',title:'Flat Roof & Roofing',items:[{id:'str-fr-conc',desc:'Flat roof – Concrete G25',unit:'m3',qty:.6315,rateKey:'flatRoofConc'},{id:'str-fr-fw',desc:'Flat roof – Formwork',unit:'sqft',qty:67.97,rateKey:'flatRoofFw'},{id:'str-fr-brc',desc:'Flat roof – Rebar BRC A7 double layer',unit:'sqft',qty:135.95,rateKey:'flatRoofBrc'},{id:'str-roof-c',desc:'C-channel for roof structures',unit:'m',qty:781.2,rateKey:'cChannel'},{id:'str-roof-m',desc:'Metal roofing sheet',unit:'sqft',qty:572.2,rateKey:'metalSheet'}]},{key:'external',title:'Infrastructure / Outside Works',items:[{id:'str-apron-c',desc:'Apron – Concrete G15',unit:'m3',qty:.9,rateKey:'apronConc'},{id:'str-apron-f',desc:'Apron – Formwork',unit:'ft',qty:62.01,rateKey:'apronFw'},{id:'str-apron-b',desc:'Apron – Rebar BRC A7',unit:'kg',qty:62.99,rateKey:'apronBrc'},{id:'str-drain',desc:'Drainage – small U-shape scupper drain',unit:'ft',qty:100,rateKey:'drainage'},{id:'arch-septik',desc:'Septic tank',unit:'no',qty:1,rateKey:'septicTank',scale:false},{id:'arch-watertank',desc:'Water tank',unit:'no',qty:1,rateKey:'waterTank',scale:false}]},{key:'special',title:'Special Item',items:[{id:'str-roof-dc',desc:'Design roof structure – Concrete G25',unit:'m3',qty:.3,rateKey:'roofDesignConc'},{id:'str-roof-df',desc:'Design roof structure – Formwork',unit:'sqft',qty:161.46,rateKey:'roofDesignFw'},{id:'str-roof-dr',desc:'Design roof structure – Rebar',unit:'kg',qty:54,rateKey:'roofDesignRebar'}]}];
+const RATE_SCHEDULE=[{title:'Preliminaries',rows:[{key:'permit',label:'Building plan / permit & engineer’s drawings',unit:'ls'},{key:'prelim',label:'Preliminaries, mobilisation & project management',unit:'ls'}]},{title:'Structures',rows:[{key:'footingConc',label:'Footing – Concrete G15',unit:'m3'},{key:'slabConc',label:'Ground slab – Concrete G25',unit:'m3'},{key:'beamConc',label:'Beam – Concrete G25',unit:'m3'},{key:'colConc',label:'Column – Concrete G25',unit:'m3'}]},{title:'Architecture',rows:[{key:'ceilingInt',label:'Internal ceiling',unit:'sqft'},{key:'floorTileInt',label:'Internal floor tiles',unit:'sqft'},{key:'paintInt',label:'Internal painting',unit:'sqft'},{key:'door',label:'Door',unit:'no'},{key:'window',label:'Window',unit:'no'}]},{title:'Bathroom',rows:[{key:'bathFloorTile',label:'Bathroom floor tiles',unit:'sqft'},{key:'bathWallTile',label:'Bathroom wall tiles',unit:'sqft'},{key:'bathPiping',label:'Bathroom piping',unit:'ls'},{key:'bathWc',label:'WC',unit:'no'},{key:'bathBasin',label:'Basin',unit:'no'}]},{title:'Electrical',rows:[{key:'dbBox',label:'DB box',unit:'no'},{key:'wiring',label:'Wiring',unit:'m'},{key:'powerPoint',label:'Power point',unit:'no'},{key:'switch',label:'Switch',unit:'no'},{key:'lighting',label:'Lighting',unit:'no'},{key:'fan',label:'Ceiling fan',unit:'no'},{key:'aircond',label:'Aircond point / provision',unit:'no'},{key:'earthing',label:'Earthing',unit:'set'}]}];
+let roomCounter=0;const excludedItems=new Set(),customRates=new Map(),customQuantities=new Map(),customDescriptions=new Map(),customRoomLabels=new Map();const manualItems=new Map();let standardRateItems=[];let quotationNumber=null;
+function normalizeRate(v){return Math.max(0,Math.round((Number(v)||0)*100)/100)}
+function normalizeQuantity(v){return Math.max(0,Math.ceil(Number(v)||0))}
+function safeParseJson(v,fallback){try{return JSON.parse(v)}catch(e){return fallback}}
+function serializeMap(map){return [...map.entries()]}
+function restoreMap(map,entries){map.clear();(Array.isArray(entries)?entries:[]).forEach(([k,v])=>map.set(k,v))}
+function standardLibrary(){
+ const structural=[];
+ const structuralRateKeys=new Set();
+ STRUCT_GROUPS.forEach(g=>g.items.forEach(s=>{
+  structuralRateKeys.add(s.rateKey);
+  structural.push({id:`rate-${s.rateKey}`,key:s.rateKey,description:s.desc,unit:s.unit,rate:normalizeRate(RATES[s.rateKey]),category:'structures',groupKey:g.key,groupTitle:g.title,custom:false});
+ }));
+ const items=[];
+ RATE_SCHEDULE.forEach(g=>g.rows.forEach(r=>{
+  const category=g.title==='Preliminaries'?'preliminaries':g.title==='Structures'?'structures':g.title==='Electrical'?'electrical':'architecture';
+  if(category==='structures' && structuralRateKeys.has(r.key))return;
+  items.push({id:`rate-${r.key}`,key:r.key,description:r.label,unit:r.unit,rate:normalizeRate(RATES[r.key]),category,groupTitle:g.title,custom:false});
+ }));
+ return [...items,...structural,...standardRateItems.map(x=>({...x,rate:normalizeRate(x.rate),custom:true}))];
+}
+function standardItemOptions(targetKey){
+ const list=standardLibrary().filter(x=>{
+  if(targetKey==='prelim')return x.category==='preliminaries';
+  if(targetKey==='electrical')return x.category==='electrical';
+  if(targetKey.startsWith('room:'))return x.category==='architecture';
+  if(targetKey.startsWith('structures:'))return x.category==='structures'&&x.groupKey===targetKey.slice(11);
+  return false;
+ });
+ return list.map(x=>`<option value="${escapeHtml(x.id)}">${escapeHtml(x.description)} — ${money(x.rate,2)}</option>`).join('');
+}
+function saveContractorState(){
+ if(!IS_CONTRACTOR||restoringContractorState||!CONTRACTOR_ID)return;
+ const state={customerName:document.getElementById('customerName')?.value||'',projectLocation:document.getElementById('projectLocation')?.value||'',builtUpArea:document.getElementById('builtUpArea')?.value||'',rooms:[...document.querySelectorAll('#roomsContainer .room-card')].map(r=>({id:r.id,name:r.querySelector('.room-name')?.value||'',type:r.querySelector('.room-type')?.value||'other',area:r.querySelector('.room-area')?.value||''})),rates:{...RATES},customRates:serializeMap(customRates),customQuantities:serializeMap(customQuantities),customDescriptions:serializeMap(customDescriptions),customRoomLabels:serializeMap(customRoomLabels),excludedItems:[...excludedItems],manualItems:[...manualItems.entries()],standardRateItems:[...standardRateItems],quotationType:getSelectedQuotationType()};
+ localStorage.setItem(contractorStorageKey(),JSON.stringify(state));
+}
+function loadContractorState(){
+ if(!IS_CONTRACTOR||!CONTRACTOR_ID)return false; const raw=localStorage.getItem(contractorStorageKey()); if(!raw)return false; const state=safeParseJson(raw,null); if(!state)return false;
+ restoringContractorState=true;
+ try{
+  if(document.getElementById('customerName'))document.getElementById('customerName').value=state.customerName||'';
+  if(document.getElementById('projectLocation'))document.getElementById('projectLocation').value=state.projectLocation||'';
+  if(document.getElementById('builtUpArea'))document.getElementById('builtUpArea').value=state.builtUpArea||0;
+  RATES={...DEFAULT_RATES,...(state.rates||{})}; restoreMap(customRates,state.customRates);restoreMap(customQuantities,state.customQuantities);restoreMap(customDescriptions,state.customDescriptions);restoreMap(customRoomLabels,state.customRoomLabels);excludedItems.clear();(state.excludedItems||[]).forEach(x=>excludedItems.add(x));standardRateItems=Array.isArray(state.standardRateItems)?state.standardRateItems:[];manualItems.clear();(state.manualItems||[]).forEach(([k,v])=>manualItems.set(k,v));
+  document.getElementById('roomsContainer').innerHTML='';roomCounter=0;const restoredRooms=(state.rooms||[]).filter(r=>Number(r.area)>0);restoredRooms.forEach(r=>addRoom(r.type||'other',r.area||'',r.id,r.name||''));
+  const q=document.querySelector(`input[name="quotationType"][value="${state.quotationType==='detail'?'detail':'simple'}"]`);if(q)q.checked=true;
+ } finally {restoringContractorState=false;}
+ updateEstimate(); return true;
+}
+function addManualItemPrompt(targetKey){
+ if(!IS_CONTRACTOR)return;
+ const existing=document.getElementById(`manual-add-${targetKey}`);
+ if(existing){existing.remove();return;}
+ const anchor=[...document.querySelectorAll('[data-manual-anchor]')].find(el=>el.getAttribute('data-manual-anchor')===targetKey);
+ if(!anchor)return;
+ const wrap=document.createElement('div');
+ wrap.id=`manual-add-${targetKey}`;
+ wrap.className='no-print mt-3 border rounded-xl bg-gray-50 p-4';
+ wrap.innerHTML=`<div class="flex flex-wrap items-center justify-between gap-3 mb-3"><p class="font-semibold text-sm">Add Item</p><button type="button" onclick="addManualItemPrompt('${targetKey}')" class="text-xs text-gray-500">Cancel</button></div><div class="grid md:grid-cols-[2fr_1fr_1fr_auto] gap-3 items-end"><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Standard Rate Item</span><select id="manual-select-${targetKey}" class="w-full border rounded-lg px-3 py-2 bg-white" onchange="prepareManualItem('${targetKey}')"><option value="">Select an item…</option>${standardItemOptions(targetKey)}<option value="__new__">＋ Create New Standard Item</option></select></label><label id="manual-qty-wrap-${targetKey}" class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Quantity</span><input id="manual-qty-${targetKey}" type="number" min="0" step="1" value="1" class="w-full border rounded-lg px-3 py-2 bg-white"></label><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Rate (RM)</span><input id="manual-rate-${targetKey}" type="number" min="0" step="0.01" value="0.00" class="w-full border rounded-lg px-3 py-2 bg-white"></label><button type="button" onclick="saveManualItem('${targetKey}')" class="bg-black text-white px-4 py-2 rounded-lg text-sm font-semibold">Add</button></div><div id="manual-new-${targetKey}" class="hidden mt-3"><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">New Description</span><input id="manual-desc-${targetKey}" type="text" placeholder="e.g. Additional structural work" class="w-full border rounded-lg px-3 py-2 bg-white"></label></div>`;
+ anchor.appendChild(wrap);
+}
+function prepareManualItem(targetKey){const select=document.getElementById(`manual-select-${targetKey}`),rate=document.getElementById(`manual-rate-${targetKey}`),qtyWrap=document.getElementById(`manual-qty-wrap-${targetKey}`),box=document.getElementById(`manual-new-${targetKey}`),item=standardLibrary().find(x=>x.id===select?.value);if(select?.value==='__new__'){box?.classList.remove('hidden');qtyWrap?.classList.add('hidden');if(rate)rate.value='0.00';return}box?.classList.add('hidden');qtyWrap?.classList.remove('hidden');if(item&&rate)rate.value=normalizeRate(item.rate).toFixed(2)}
+function saveManualItem(targetKey){
+ if(!IS_CONTRACTOR)return;
+ const select=document.getElementById(`manual-select-${targetKey}`);
+ let qty=normalizeQuantity(document.getElementById(`manual-qty-${targetKey}`)?.value);
+ const rate=normalizeRate(document.getElementById(`manual-rate-${targetKey}`)?.value);
+ let item=standardLibrary().find(x=>x.id===select?.value);
+ let description=item?.description||'',unit=item?.unit||'ls',category=item?.category||'',groupKey=item?.groupKey||null,groupTitle=item?.groupTitle||'';
+ if(select?.value==='__new__'){
+  description=String(document.getElementById(`manual-desc-${targetKey}`)?.value||'').trim();
+  unit='ls';
+  qty=1;
+  if(!description){alert('Please enter the new item description.');return}
+  if(targetKey==='prelim'){category='preliminaries';groupTitle='Preliminaries'}
+  else if(targetKey==='electrical'){category='electrical';groupTitle='Electrical Works'}
+  else if(targetKey.startsWith('structures:')){category='structures';groupKey=targetKey.slice(11);groupTitle=STRUCT_GROUPS.find(g=>g.key===groupKey)?.title||groupKey}
+  else if(targetKey.startsWith('room:')){category='architecture';groupTitle='Additional Architectural Works'}
+  else {alert('Invalid item group.');return}
+  const id=`custom-${Date.now()}-${Math.random().toString(36).slice(2,8)}`;
+  standardRateItems.push({id,description,unit,rate,category,groupKey,groupTitle,custom:true});
+  item={id,description,unit,rate,category,groupKey,groupTitle,custom:true};
+ }
+ if(!description){alert('Please select or create an item.');return}
+ if(!category){alert('Please select an item from this group.');return}
+ const id=`manual-${Date.now()}-${Math.random().toString(36).slice(2,8)}`;
+ const target=targetKey.startsWith('room:')?targetKey.slice(5):'project';
+ if(targetKey==='prelim'){category='preliminaries';groupTitle='Preliminaries'}
+ else if(targetKey==='electrical'){category='electrical';groupTitle='Electrical Works'}
+ else if(targetKey.startsWith('structures:')){category='structures';groupKey=targetKey.slice(11);groupTitle=STRUCT_GROUPS.find(g=>g.key===groupKey)?.title||groupTitle||groupKey}
+ else if(targetKey.startsWith('room:')){category='architecture';groupTitle='Additional Architectural Works'}
+ if(!manualItems.has(targetKey))manualItems.set(targetKey,[]);
+ manualItems.get(targetKey).push({id,description,unit,qty,rate,category,groupKey,groupTitle,roomId:target});
+ updateEstimate();saveContractorState();
+}
+function removeManualItem(targetKey,id){if(!IS_CONTRACTOR)return;manualItems.set(targetKey,(manualItems.get(targetKey)||[]).filter(x=>x.id!==id));updateEstimate();saveContractorState()}
+function contractorProjectTarget(item){if(item.category==='architecture')return `room:${item.roomId}`;if(item.category==='preliminaries')return 'prelim';if(item.category==='structures')return item.groupKey?`structures:${item.groupKey}`:'structures';return 'electrical'}
+function generateEstimateNumber(){let n=localStorage.getItem('terajuNBEst');n=n?parseInt(n,10)+1:1;localStorage.setItem('terajuNBEst',n);return'NB-EST-'+String(n).padStart(4,'0')}
+document.getElementById('estimateNumber').textContent=generateEstimateNumber();
+function applyAudienceUI(){
+ document.body.classList.toggle('contractor-mode',IS_CONTRACTOR);
+ const homeownerId=new URLSearchParams(location.search).get('homeownerId')||(() => {try{return JSON.parse(localStorage.getItem('teraju.homeowner.github.v1')||'null')?.homeownerId||''}catch{return ''}})();
+ const workspaceId=IS_CONTRACTOR?CONTRACTOR_ID:homeownerId;
+ const label=IS_CONTRACTOR?'Contractor ID':'Homeowner ID';
+ const badge=IS_CONTRACTOR?'Contractor Workspace':'Homeowner Workspace';
+ ['workspaceIdLabel','projectUserIdLabel'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=label});
+ ['workspaceIdDisplay','projectUserIdDisplay'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=workspaceId||'Not signed in'});
+ const badgeEl=document.getElementById('workspaceBadge');if(badgeEl)badgeEl.textContent=badge;
+ const my=document.getElementById('myQuotationsLink');if(my)my.href=IS_CONTRACTOR?`quotations.html?role=contractor&id=${encodeURIComponent(CONTRACTOR_ID)}&plannerType=build`:`quotations.html?role=homeowner&id=${encodeURIComponent(homeownerId)}&plannerType=build`;
+ if(IS_CONTRACTOR){document.getElementById('rateSchedulePanel')?.classList.add('hidden');}else{const h=document.querySelector('section.no-print.bg-white.rounded-2xl.shadow-sm.p-6.mt-6 h3'),s=h?.nextElementSibling;if(h)h.textContent='Get Your Quotation';if(s)s.textContent='Generate a free quotation summary, or request the detailed costing breakdown.';document.title='Build Planner | Teraju Works'}
+}
+function money(v,d=2){return new Intl.NumberFormat('en-MY',{minimumFractionDigits:d,maximumFractionDigits:d}).format(Math.round((Number(v)||0)*100)/100)}
+function escapeHtml(v){return String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;').replace(/'/g,'&#039;')}
+function formatQty(v){const n=Number(v)||0;return Math.ceil(n)}
+function roundQty(v){const n=Number(v)||0;return Math.max(0,Math.ceil(n))}
+function toggleProjectInfo(){const p=document.getElementById('projectInfo'),a=document.getElementById('projectArrow');if(!p)return;p.classList.toggle('hidden');if(a)a.textContent=p.classList.contains('hidden')?'▼':'▲'}
+function toggleRateSchedule(){const p=document.getElementById('rateSchedulePanel'),a=document.getElementById('rateScheduleArrow');if(!p)return;p.classList.toggle('hidden');if(a)a.textContent=p.classList.contains('hidden')?'▼':'▲';if(!p.classList.contains('hidden'))renderRateSchedule()}
+function renderRateSchedule(){
+  const c=document.getElementById('rateScheduleContent');
+  if(!c)return;
+  let h='<div class="overflow-x-auto"><table class="w-full border-collapse text-sm"><colgroup><col style="width:55%"><col style="width:15%"><col style="width:30%"></colgroup><thead><tr class="border-b-2 text-left"><th class="py-2 px-2">Description</th><th class="py-2 px-2">Unit</th><th class="py-2 px-2 text-right">Rate (RM)</th></tr></thead><tbody>';
+  const heading=(title,cls='')=>{h+=`<tr class="bg-gray-100 border-b"><td colspan="3" class="py-2 px-2 font-bold uppercase ${cls}">${escapeHtml(title)}</td></tr>`};
+  const subheading=(title)=>{h+=`<tr class="bg-gray-50 border-b"><td colspan="3" class="py-2 px-2 pl-5 font-semibold">${escapeHtml(title)}</td></tr>`};
+  const row=(label,unit,key,indent='')=>{const rate=Number(RATES[key]??0).toFixed(2);const control=IS_CONTRACTOR?`<input type="number" min="0" step="0.01" value="${rate}" onchange="editScheduleRate('${key}',this.value)" class="w-28 border rounded-lg px-2 py-1.5 text-right bg-white">`:`<span class="inline-block min-w-[7rem] px-2 py-1.5 text-right text-gray-700" aria-label="Read only rate">${rate}</span>`;h+=`<tr class="border-b"><td class="py-2 px-2 ${indent}">${escapeHtml(label||'')}</td><td class="py-2 px-2">${escapeHtml(unit||'')}</td><td class="py-2 px-2 text-right">${control}</td></tr>`};
+  heading('Preliminaries');
+  const prelim=(RATE_SCHEDULE.find(g=>String(g.title).toLowerCase()==='preliminaries')||{}).rows||[]; prelim.forEach(r=>row(r.label,r.unit,r.key));
+  heading('Structural Works');
+  if(typeof STRUCT_GROUPS!=='undefined') STRUCT_GROUPS.forEach(g=>{subheading(g.title);(g.items||[]).forEach(x=>row(x.desc,x.unit,x.rateKey,'pl-8'))});
+  heading('Architectural Works');
+  const arch=(RATE_SCHEDULE.find(g=>String(g.title).toLowerCase()==='architecture')||{}).rows||[]; if(arch.length){subheading('General / Room Works');arch.forEach(r=>row(r.label,r.unit,r.key,'pl-8'))}
+  const bath=(RATE_SCHEDULE.find(g=>String(g.title).toLowerCase()==='bathroom')||{}).rows||[]; if(bath.length){subheading('Bathroom');bath.forEach(r=>row(r.label,r.unit,r.key,'pl-8'))}
+  heading('Electrical Works');
+  const elec=(RATE_SCHEDULE.find(g=>String(g.title).toLowerCase()==='electrical')||{}).rows||[]; elec.forEach(r=>row(r.label,r.unit,r.key));
+  h+='</tbody></table></div>'; c.innerHTML=h;
+}
+function editScheduleRate(k,v){if(!IS_CONTRACTOR)return;const n=parseFloat(v);if(!Number.isFinite(n)||n<0){alert('Please enter a valid rate.');renderRateSchedule();return}RATES[k]=Math.round(n*100)/100;customRates.clear();saveContractorState();updateEstimate()}
+function resetRatesToDefault(){if(!IS_CONTRACTOR)return;RATES={...DEFAULT_RATES};customRates.clear();renderRateSchedule();updateEstimate()}
+function roomOptions(){return Object.entries(ROOM_TYPES).map(([k,n])=>`<option value="${k}">${escapeHtml(n)}</option>`).join('')}
+function addRoomBase(defaultType='other',defaultArea='',forcedId='',forcedName=''){roomCounter++;const id=forcedId||('room-'+roomCounter),container=document.getElementById('roomsContainer'),div=document.createElement('div');div.id=id;div.className='room-card border rounded-xl p-4 bg-gray-50';div.innerHTML=`<div class="grid md:grid-cols-[1fr_1fr_1fr_auto] gap-4 items-end"><div><label class="block text-sm font-medium mb-2">Room Type</label><select class="room-type w-full border rounded-lg px-4 py-3 bg-white">${roomOptions()}</select></div>
+<div><label class="block text-sm font-medium mb-2">Room / Area Name</label><input type="text" value="${escapeHtml(forcedName||ROOM_TYPES[defaultType]||'Area')}" class="room-name w-full border rounded-lg px-4 py-3 bg-white"></div><div><label class="block text-sm font-medium mb-2">Area (sqft)</label><input type="number" min="1" step="1" value="${escapeHtml(defaultArea)}" class="room-area w-full border rounded-lg px-4 py-3 bg-white"></div><div class="no-print flex gap-2"><button type="button" onclick="moveRoom('${id}',-1)" class="border rounded-lg px-3">▲</button><button type="button" onclick="moveRoom('${id}',1)" class="border rounded-lg px-3">▼</button><button type="button" onclick="removeRoom('${id}')" class="border border-red-300 text-red-600 rounded-lg px-4">Remove</button></div></div>`;container.appendChild(div);updateRoomsEmptyState();div.querySelector('.room-type').value=defaultType;div.querySelector('.room-name').addEventListener('change',e=>{const l=String(e.target.value||'').trim();if(l)customRoomLabels.set(id,l);updateEstimate()});div.querySelector('.room-type').addEventListener('change',()=>{if(!customRoomLabels.has(id))div.querySelector('.room-name').value=ROOM_TYPES[div.querySelector('.room-type').value]||'Area';updateEstimate()});div.querySelector('.room-area').addEventListener('input',()=>{updateEstimate();saveContractorState()});div.querySelector('.room-name').addEventListener('input',()=>{if(IS_CONTRACTOR)saveContractorState()});if(IS_CONTRACTOR&&!customRoomLabels.has(id)){const initial=String(forcedName||'').trim();if(initial)customRoomLabels.set(id,initial)}updateEstimate();if(!restoringContractorState)saveContractorState()}
+function updateRoomsEmptyState(){const container=document.getElementById('roomsContainer'),empty=document.getElementById('roomsEmptyState'),btn=document.getElementById('addRoomAreaBtn'),anchor=document.getElementById('roomsAddButtonAnchor');if(!container||!empty||!btn||!anchor)return;const hasRooms=!!container.querySelector('.room-card');empty.classList.toggle('hidden',hasRooms);anchor.appendChild(btn)}
+function removeRoom(id){document.getElementById(id)?.remove();customRoomLabels.delete(id);updateRoomsEmptyState();updateEstimate()}
+function moveRoom(id,d){const r=document.getElementById(id),c=document.getElementById('roomsContainer');if(!r||!c)return;if(d<0&&r.previousElementSibling)c.insertBefore(r,r.previousElementSibling);if(d>0&&r.nextElementSibling)c.insertBefore(r.nextElementSibling,r);updateEstimate()}
 
-const rules = {
-  preliminaries: [
-    {id:'prelim-permit', method:'FIXED PROJECT', unit:'LS', qty:1, description:'Submission of building plan / permit application and Engineer’s drawings to Local Authority'},
-    {id:'prelim-general', method:'FIXED PROJECT', unit:'LS', qty:1, description:'Preliminaries, site mobilisation, temporary facilities, insurance and project management'}
-  ],
-  structures: {
-    main: {
-      footingConcrete: a => a * 0.0008333,
-      footingFormwork: a => a * 0.02,
-      footingRebar: q => q * 100,
-      groundSlabConcrete: m2 => m2 * 0.15,
-      groundSlabBrc: m2 => m2 * 2,
-      groundBeamConcrete: a => a * 0.00592,
-      groundBeamFormwork: a => a * 0.0789333,
-      groundBeamRebar: q => q * 200,
-      roofBeamConcrete: a => a * 0.00592,
-      roofBeamFormwork: a => a * 0.0789333,
-      roofBeamRebar: q => q * 200,
-      columnConcrete: a => a * 0.001575,
-      columnFormwork: a => a * 0.042,
-      columnRebar: q => q * 200,
-      flatRoofConcrete: m2 => m2 * 0.10,
-      flatRoofFormwork: m2 => m2,
-      flatRoofBrc: m2 => m2 * 2,
-      cChannel: a => a * 1.30033,
-      metalRoofSheet: a => a * 0.159883
-    },
-    apron: {
-      concrete: m2 => m2 * 0.05,
-      formwork: perimeterM => perimeterM * 0.05,
-      brc: m2 => m2,
-      drainage: perimeterM => perimeterM
-    }
-  },
-  architecture: {
-    brickwallInternal: a => a * 0.1185,
-    brickwallExternal: a => a * 0.052333,
-    floorTilesExternal: apronM2 => apronM2,
-    paintingInternal: wallM2 => wallM2,
-    paintingExternal: wallM2 => wallM2,
-    ceilingInternal: (mainM2, totalBathroomM2) => mainM2 - totalBathroomM2,
-    ceilingExternal: apronM2 => apronM2,
-    bathroomWallTiles: (perimeterFt, heightFt=10) => perimeterFt * UNIT.FT_TO_M * heightFt * UNIT.FT_TO_M,
-    bathroomFloorTiles: bathroomM2 => bathroomM2,
-    bathroomCeiling: bathroomM2 => bathroomM2,
-    bathroomPiping: () => 1,
-    bathroomWC: () => 1,
-    bathroomBasin: () => 1,
-    bathroomShower: () => 1,
-    bathroomTap: () => 1,
-    waterTank: () => 1,
-    septicTank: () => 1,
-    porchFloorTiles: porchM2 => porchM2
-  },
-  electrical: {
-    powerPointPerRoom: rooms => rooms * 2,
-    switchPerRoom: rooms => rooms * 2,
-    lightingPerRoom: sqft => sqft <= 50 ? 1 : Math.ceil(sqft * 0.0266667),
-    fanPerRoom: () => 1,
-    aircondPerEligibleRoom: () => 1,
-    wiring: sqft => Math.ceil(sqft * 0.666667),
-    earthing: () => 1,
-    dbBox: () => 1,
-    porchLighting: sqft => sqft <= 50 ? 1 : Math.ceil(sqft * 0.0266667),
-    porchFan: () => 1,
-    porchPowerPoint: () => 1
-  },
-  doorsWindows: {
-    door: () => 1,
-    window: () => 1
-  },
-  external: {
-    boundaryFencing: () => 1,
-    gate: () => 1
+function addRoom(...args){
+  const blankAreaCall=args.length===0;
+  addRoomBase(...args);
+  if(blankAreaCall){
+    const card=document.querySelector('#roomsContainer .room-card:last-child');
+    const nameInput=card?.querySelector('.room-name');
+    const areaInput=card?.querySelector('.room-area');
+    if(nameInput)nameInput.value='';
+    if(areaInput){areaInput.value='';areaInput.placeholder='e.g. 200';}
+    updateEstimate();
+    if(typeof saveContractorState==='function')saveContractorState();
   }
-};
-
-function includedRoofItems(roofType){
-  if(roofType === 'Flat Roof') return ['Flat Roof'];
-  if(roofType === 'Roof Tiles') return ['Roof Tiles'];
-  if(roofType === 'Metal Roofing Sheet') return ['Metal Roofing Sheet','C-Channel'];
-  return [];
 }
+function getRoomGroupsBase(){const rooms=[...document.querySelectorAll('#roomsContainer .room-card')],idx={};return rooms.map(r=>{const id=r.id,t=r.querySelector('.room-type')?.value||'other',a=parseFloat(r.querySelector('.room-area')?.value)||0;idx[t]=(idx[t]||0)+1;const b=ROOM_TYPES[t]||'Area',label=customRoomLabels.has(id)?customRoomLabels.get(id):(idx[t]>1?`${b} ${idx[t]}`:b);return{roomId:id,roomType:t,label,area:a}})}
 
-function eligibleRooms(rooms, type){
-  return rooms.filter(r => {
-    if(type === 'door') return r.type !== 'dining' && r.type !== 'porch' && r.type !== 'other';
-    if(type === 'window') return r.type !== 'porch' && r.type !== 'store' && r.type !== 'other';
-    if(type === 'fan') return r.type !== 'bathroom' && r.type !== 'porch';
-    if(type === 'aircond') return !['bathroom','dining','kitchen','porch'].includes(r.type);
-    return true;
-  });
+function getRoomGroups(){
+  return getRoomGroupsBase().filter(room=>Number(room.area)>0);
 }
+function getScaleFactor(){const rooms=getRoomGroups();const totalArea=rooms.reduce((s,r)=>s+(r.area||0),0);return totalArea>0?totalArea/BASE_AREA:0}
+function pushItem(items,id,roomId,roomLabel,category,description,qty,unit,rate,groupKey=null,groupTitle=null){let q=customQuantities.has(id)?customQuantities.get(id):qty,r=customRates.has(id)?customRates.get(id):rate,d=customDescriptions.has(id)?customDescriptions.get(id):description;q=isIntegerUnit(unit)?Math.max(0,Math.round(Number(q)||0)):Math.round((Number(q)||0)*100)/100;items.push({id,roomId,room:roomLabel,category,description:d,qty:Number(q)||0,unit,rate:Number(r)||0,amount:(Number(q)||0)*(Number(r)||0),groupKey,groupTitle})}
+function generateStructureItems(){const scale=getScaleFactor(),items=[];if(scale<=0)return items;pushItem(items,'prelim-1','project','Project','preliminaries','Submission of building plan / permit application and Engineer’s drawings to Local Authority',1,'ls',RATES.permit);pushItem(items,'prelim-2','project','Project','preliminaries','Preliminaries, site mobilisation, temporary facilities, insurance and project management',1,'ls',RATES.prelim);STRUCT_GROUPS.forEach(g=>g.items.forEach(s=>{let q=s.scale===false?s.qty:s.qty*scale;q=roundQty(q,s.unit);if(isIntegerUnit(s.unit)&&s.qty>=1&&q<1)q=1;pushItem(items,s.id,'project','Project','structures',s.desc,q,s.unit,RATES[s.rateKey],g.key,g.title)}));return items}
+function generateRoomArchitectureItems(room){const items=[];if(!room.area||room.area<=0)return items;const{roomId,roomType,label,area}=room,a=roundQty(area,'sqft'),defs=ROOM_DEFAULTS[roomType]||ROOM_DEFAULTS.other;if(roomType!=='porch')pushItem(items,`${roomId}-ceiling`,roomId,label,'architecture',`Plaster / skim ceiling c/w paint – ${label}`,a,'sqft',RATES.ceilingInt);if(roomType==='bathroom'){pushItem(items,`${roomId}-floortile`,roomId,label,'architecture',`Floor tiles c/w waterproofing – ${label}`,a,'sqft',RATES.bathFloorTile);pushItem(items,`${roomId}-walltile`,roomId,label,'architecture',`Wall tiles – ${label}`,roundQty(a*6,'sqft'),'sqft',RATES.bathWallTile);pushItem(items,`${roomId}-piping`,roomId,label,'architecture',`Piping works – ${label}`,1,'ls',RATES.bathPiping);pushItem(items,`${roomId}-wc`,roomId,label,'architecture',`WC – ${label}`,1,'no',RATES.bathWc);pushItem(items,`${roomId}-basin`,roomId,label,'architecture',`Basin – ${label}`,1,'no',RATES.bathBasin);pushItem(items,`${roomId}-shower`,roomId,label,'architecture',`Shower rose – ${label}`,1,'no',RATES.bathShower);pushItem(items,`${roomId}-tap`,roomId,label,'architecture',`Tap – ${label}`,1,'no',RATES.bathTap)}else if(roomType==='porch')pushItem(items,`${roomId}-floortile`,roomId,label,'architecture',`Floor tiles – ${label}`,a,'sqft',RATES.floorTileExt);else pushItem(items,`${roomId}-floortile`,roomId,label,'architecture',`Floor tiles – ${label}`,a,'sqft',RATES.floorTileInt);if(roomType!=='porch'&&roomType!=='bathroom')pushItem(items,`${roomId}-paint`,roomId,label,'architecture',`Internal painting – ${label}`,roundQty(a*2.8,'sqft'),'sqft',RATES.paintInt);if(defs.doors>0)pushItem(items,`${roomId}-door`,roomId,label,'architecture',`Door – ${label}`,defs.doors,'no',RATES.door);if(defs.windows>0)pushItem(items,`${roomId}-window`,roomId,label,'architecture',`Window – ${label}`,defs.windows,'no',RATES.window);return items}
+function generateElectricalItems(rooms){const items=[],totalArea=rooms.reduce((s,r)=>s+(r.area||0),0);if(totalArea<=0)return items;const scale=totalArea/BASE_AREA;pushItem(items,'elec-db','project','Project','electrical','DB box',1,'no',RATES.dbBox);pushItem(items,'elec-wiring','project','Project','electrical','Wirings',Math.round(400*scale),'m',RATES.wiring);pushItem(items,'elec-pp','project','Project','electrical','Power point',Math.round(10*scale),'no',RATES.powerPoint);pushItem(items,'elec-switch','project','Project','electrical','Switch',Math.round(10*scale),'no',RATES.switch);pushItem(items,'elec-light','project','Project','electrical','Lighting',Math.round(16*scale),'no',RATES.lighting);pushItem(items,'elec-fan','project','Project','electrical','Ceiling fan',Math.round(4*scale),'no',RATES.fan);pushItem(items,'elec-ac','project','Project','electrical','Aircond point / provision',Math.round(3*scale),'no',RATES.aircond);pushItem(items,'elec-earth','project','Project','electrical','Earthing',1,'set',RATES.earthing);return items}
+function getAllItems(){const rooms=getRoomGroups(),items=[...generateStructureItems()];rooms.forEach(r=>items.push(...generateRoomArchitectureItems(r)));items.push(...generateElectricalItems(rooms));const manual=[];for(const [target,list] of manualItems.entries()){(list||[]).forEach(x=>manual.push({...x,roomId:x.roomId||'project',room:x.roomId&&x.roomId!=='project'?(rooms.find(r=>r.roomId===x.roomId)?.label||x.roomId):'Project'}))}items.push(...manual);items.forEach(i=>{i.qty=customQuantities.has(i.id)?customQuantities.get(i.id):i.qty;i.rate=customRates.has(i.id)?customRates.get(i.id):i.rate;i.description=customDescriptions.has(i.id)?customDescriptions.get(i.id):i.description;i.qty=normalizeQuantity(i.qty);i.rate=normalizeRate(i.rate);i.amount=Math.round((i.qty*i.rate+Number.EPSILON)*100)/100});return items}
+function syncBuiltUpAreaFromRooms(){const total=[...document.querySelectorAll('#roomsContainer .room-area')].reduce((s,e)=>s+(parseFloat(e.value)||0),0);const el=document.getElementById('builtUpArea');if(el){el.value=String(Math.max(0,Math.ceil(total)));el.readOnly=true;el.classList.add('bg-gray-100');el.title='Automatically calculated from the total area/room schedule.'}}
+function updateEstimate(){syncBuiltUpAreaFromRooms();const all=getAllItems(),active=all.filter(i=>!excludedItems.has(i.id)),rooms=getRoomGroups(),roomsArea=rooms.reduce((s,r)=>s+(r.area||0),0),declared=parseFloat(document.getElementById('builtUpArea')?.value)||0,total=active.reduce((s,i)=>s+i.amount,0);renderEstimate(active,rooms,total,roomsArea,declared);saveContractorState()}
+function renderEstimate(items,rooms,total,roomsArea,declared){
+ const c=document.getElementById('estimateContent'),
+ customer=document.getElementById('customerName')?.value||'Not specified',
+ location=document.getElementById('projectLocation')?.value||'Not specified';
+ document.getElementById('customerSummary').innerHTML=`<div><p class="text-gray-500">Customer</p><p class="font-medium">${escapeHtml(customer)}</p></div><div><p class="text-gray-500">Location</p><p class="font-medium">${escapeHtml(location)}</p></div><div><p class="text-gray-500">Built-up / Rooms</p><p class="font-medium">${formatQty(declared)} sqft declared · ${formatQty(roomsArea)} sqft rooms</p></div><div><p class="text-gray-500">Estimate Type</p><p class="font-medium">Preliminary Construction Estimate</p></div>`;
+ const byCategory=cat=>items.filter(i=>i.category===cat);
+ const prelim=byCategory('preliminaries'), structures=byCategory('structures'), electrical=byCategory('electrical');
+ const archByRoom={}; rooms.forEach(r=>archByRoom[r.roomId]=items.filter(i=>i.category==='architecture'&&i.roomId===r.roomId));
 
-function assert(name, actual, expected){
-  const ok = Math.abs(actual-expected) < 0.00001;
-  console[ok?'log':'error'](`${ok?'PASS':'FAIL'} — ${name}: ${actual} (expected ${expected})`);
-  return ok;
+ const row=(i,target)=>`<tr class="border-b align-top">
+  <td class="py-3 px-2">${IS_CONTRACTOR ? `<textarea class="w-full border rounded-lg px-3 py-2 bg-white" onchange="editItemDescription(\'${i.id}\',this.value)">${escapeHtml(i.description)}</textarea>` : `<div class="homeowner-locked py-2 rounded-lg">${escapeHtml(i.description)}</div>`}</td>
+  <td class="py-3 px-2">${escapeHtml(i.unit)}</td>
+  <td class="py-3 px-2"><input type="number" min="0" step="1" value="${normalizeQuantity(i.qty)}" class="w-24 border rounded-lg px-2 py-2 text-right contractor-editable" onchange="editItemQuantity('${i.id}',this.value)"><div class="homeowner-locked text-right py-2">${formatQty(i.qty)}</div></td>
+  <td class="py-3 px-2"><input type="number" min="0" step="0.01" value="${normalizeRate(i.rate).toFixed(2)}" class="w-28 border rounded-lg px-2 py-2 text-right contractor-editable" onchange="editItemRate('${i.id}',this.value)"><div class="homeowner-locked text-right py-2">${money(i.rate,2)}</div></td>
+  <td class="py-3 px-2 text-right font-medium">${money(i.amount,2)}</td>
+  <td class="py-3 px-2"><button type="button" onclick="excludeItem('${i.id}')" class="text-red-600 border border-red-200 px-3 py-2 rounded-lg text-xs">Delete</button></td>
+ </tr>`;
+
+ const heading=title=>`<tr class="quotation-section-row"><td colspan="6" class="py-3 px-2">${escapeHtml(title)}</td></tr>`;
+ const subheading=title=>`<tr class="quotation-subsection-row"><td colspan="6" class="py-2 px-2">${escapeHtml(title)}</td></tr>`;
+ const manualAddRow=target=>`<tr class="no-print"><td colspan="6" class="py-2 px-2"><div class="contractor-only" data-manual-anchor="${escapeHtml(target)}"><button type="button" class="border px-3 py-1.5 rounded-lg text-xs bg-white" onclick="addManualItemPrompt('${target}')">+ Add Item</button></div></td></tr>`;
+ const rows=(arr,target)=>arr.map(i=>row(i,target)).join('');
+
+ let h='<table class="w-full border-collapse text-sm detailed-quotation-table"><colgroup><col style="width:32%"><col style="width:8%"><col style="width:13%"><col style="width:15%"><col style="width:20%"><col style="width:12%"></colgroup><thead><tr class="border-b-2 text-left"><th>Description</th><th>Unit</th><th>Quantity</th><th>Rate (RM)</th><th>Amount (RM)</th><th>Action</th></tr></thead><tbody>';
+
+ h+=heading('PROJECT / PRELIMINARIES');
+ h+=rows(prelim,'prelim');
+ h+=manualAddRow('prelim');
+ if(prelim.length) h+=`<tr class="border-b"><td colspan="5" class="py-2 px-2 text-right font-semibold">Subtotal - Preliminaries</td><td class="py-2 px-2 text-right font-semibold">${money(prelim.reduce((s,i)=>s+i.amount,0),2)}</td></tr>`;
+
+ h+=heading('STRUCTURAL WORKS');
+ const groups=[...new Set(structures.map(i=>i.groupKey).filter(Boolean))];
+ groups.forEach(key=>{
+   const arr=structures.filter(i=>i.groupKey===key);
+   const title=arr[0]?.groupTitle||key;
+   h+=subheading(title);
+   h+=rows(arr,`structures:${key}`);
+   h+=manualAddRow(`structures:${key}`);
+   h+=`<tr class="border-b"><td colspan="5" class="py-2 px-2 text-right font-semibold">Subtotal - ${escapeHtml(title)}</td><td class="py-2 px-2 text-right font-semibold">${money(arr.reduce((s,i)=>s+i.amount,0),2)}</td></tr>`;
+ });
+ const ungrouped=structures.filter(i=>!i.groupKey);
+ if(ungrouped.length){h+=subheading('Additional Structural Works');h+=rows(ungrouped,'structures');h+=manualAddRow('structures');}
+
+ h+=heading('ARCHITECTURAL WORKS');
+ rooms.forEach(r=>{
+   const arr=archByRoom[r.roomId]||[];
+   if(!arr.length)return;
+   h+=subheading(`${r.label} (${formatQty(r.area)} sqft)`);
+   h+=rows(arr,`room:${r.roomId}`);
+   h+=manualAddRow(`room:${r.roomId}`);
+   h+=`<tr class="border-b"><td colspan="5" class="py-2 px-2 text-right font-semibold">Subtotal - ${escapeHtml(r.label)}</td><td class="py-2 px-2 text-right font-semibold">${money(arr.reduce((s,i)=>s+i.amount,0),2)}</td></tr>`;
+ });
+
+ h+=heading('ELECTRICAL WORKS');
+ h+=rows(electrical,'electrical');
+ h+=manualAddRow('electrical');
+ if(electrical.length) h+=`<tr class="border-b"><td colspan="5" class="py-2 px-2 text-right font-semibold">Subtotal - Electrical Works</td><td class="py-2 px-2 text-right font-semibold">${money(electrical.reduce((s,i)=>s+i.amount,0),2)}</td></tr>`;
+
+ h+='</tbody><tfoot><tr class="border-t-2"><td colspan="4" class="py-4 px-2 text-right font-bold">TOTAL</td><td class="py-4 px-2 text-right font-bold text-lg">'+money(total,2)+'</td><td class="contractor-only"></td></tr></tfoot></table>';
+ c.innerHTML=h;
+ document.getElementById('grandTotal').textContent=money(total,2);
+ document.getElementById('totalBuiltArea').textContent=formatQty(declared)+' sqft';
+ document.getElementById('roomsTotalArea').textContent=formatQty(roomsArea)+' sqft';
 }
+function showRemovedItems(){if(!IS_CONTRACTOR)return;const removed=[...excludedItems];if(!removed.length){alert('No removed items.');return}const all=getAllItems(),labels=removed.map(id=>all.find(i=>i.id===id)?.description||id);alert('Removed items:\n\n'+labels.join('\\n'));}
+function editItemDescription(id,v){if(!IS_CONTRACTOR)return;const d=String(v||'').trim();if(!d){alert('Please enter a description.');updateEstimate();return}customDescriptions.set(id,d);updateEstimate();saveContractorState()}
+function editItemQuantity(id,v){if(!IS_CONTRACTOR)return;let q=parseFloat(v);if(!Number.isFinite(q)||q<0){alert('Please enter a valid quantity.');updateEstimate();return}customQuantities.set(id,normalizeQuantity(q));updateEstimate();saveContractorState()}
+function editItemRate(id,v){if(!IS_CONTRACTOR)return;const r=parseFloat(v);if(!Number.isFinite(r)||r<0){alert('Please enter a valid rate.');updateEstimate();return}customRates.set(id,normalizeRate(r));updateEstimate();saveContractorState()}
+function excludeItem(id){if(!IS_CONTRACTOR&&!isHomeowner())return;excludedItems.add(id);updateEstimate();saveContractorState()}
+function restoreAllItems(){if(!IS_CONTRACTOR)return;excludedItems.clear();updateEstimate();saveContractorState()}
+function generateQuotationNumber(){let n=localStorage.getItem('terajuNBQO');n=n?parseInt(n,10)+1:1;localStorage.setItem('terajuNBQO',n);return'NB-QO'+String(n).padStart(3,'0')}
+function getSelectedQuotationType(){return document.querySelector('input[name="quotationType"]:checked')?.value||'simple'}
+function getCurrentQuotationData(){const all=getAllItems().filter(i=>!excludedItems.has(i.id)),rooms=getRoomGroups(),prelim=all.filter(i=>i.category==='preliminaries'),structures=all.filter(i=>i.category==='structures'),electrical=all.filter(i=>i.category==='electrical'),archByRoom={},roomSubtotals={};rooms.forEach(r=>{archByRoom[r.roomId]=[];roomSubtotals[r.roomId]=0});all.filter(i=>i.category==='architecture').forEach(i=>{(archByRoom[i.roomId]??=[]).push(i);roomSubtotals[i.roomId]=(roomSubtotals[i.roomId]||0)+i.amount});return{allItems:all,rooms,prelim,structures,electrical,archByRoom,roomSubtotals,total:all.reduce((s,i)=>s+i.amount,0)}}
+function quotationDescriptionList(items){return items.length?items.map(i=>escapeHtml(i.description)).join('<br>'):'No selected works'}
+const DETAILED_QUOTATION_PROMO = true;
+const DETAILED_QUOTATION_PRICE = 49;
+const DETAILED_QUOTATION_PROMO_END = '31 October 2026';
+function setDetailedQuotationLocked(locked){const doc=document.getElementById('quotationDocument'),content=document.getElementById('quotationContent'),overlay=document.getElementById('quotationLockOverlay');if(!doc||!content||!overlay)return;doc.classList.toggle('detailed-locked',!!locked);content.classList.toggle('quotation-locked',!!locked);overlay.classList.toggle('hidden',!locked);overlay.setAttribute('aria-hidden',locked?'false':'true');}
+function openDetailedQuotationPromo(){const modal=document.getElementById('paymentModal');if(!modal){DETAILED_QUOTATION_PROMO?unlockDetailedQuotation():startDetailedQuotationPayment();return;}const price=modal.querySelector('[data-detailed-price]'),note=modal.querySelector('[data-detailed-promo-note]'),button=document.getElementById('paymentProceedButton'),title=modal.querySelector('[data-detailed-modal-title]');if(DETAILED_QUOTATION_PROMO){if(price)price.innerHTML='<span class="line-through text-gray-400 text-base mr-2">RM 49</span><span class="text-green-700">FREE</span>';if(note)note.innerHTML='<strong>Promo:</strong> Detailed Quotation is FREE until 31 October 2026.';if(button){button.textContent='Unlock Detailed Quotation — FREE';button.onclick=confirmDetailedQuotationPromo;}if(title)title.textContent='Limited-Time Promotion';}else{if(price)price.innerHTML='<span class="text-gray-900">RM 49</span>';if(note)note.innerHTML='<strong>Price:</strong> Detailed Quotation service fee is RM 49.';if(button){button.textContent='Pay RM 49 & Unlock';button.onclick=startDetailedQuotationPayment;}if(title)title.textContent='Detailed Quotation';}modal.classList.add('open');modal.setAttribute('aria-hidden','false');}
+function closePaymentModal(){const modal=document.getElementById('paymentModal');if(!modal)return;modal.classList.remove('open');modal.classList.remove('show');modal.setAttribute('aria-hidden','true');}
+function unlockDetailedQuotation(){setDetailedQuotationLocked(false);closePaymentModal();}
+function confirmDetailedQuotationPromo(){if(!DETAILED_QUOTATION_PROMO)return startDetailedQuotationPayment();unlockDetailedQuotation();}
+function startDetailedQuotationPayment(){if(DETAILED_QUOTATION_PROMO){unlockDetailedQuotation();return;}if(typeof window.TERAJU_START_DETAILED_PAYMENT==='function'){window.TERAJU_START_DETAILED_PAYMENT({amount:DETAILED_QUOTATION_PRICE,onVerified:completeDetailedQuotationPayment});return;}alert('Payment gateway is not active yet.');}
+function completeDetailedQuotationPayment(verified){if(verified)unlockDetailedQuotation();}
 
-window.BuildPlannerCalculationTest = {
-  version: CALCULATION_RULES_VERSION,
-  rules,
-  includedRoofItems,
-  eligibleRooms,
-  assert,
-  smokeTest(){
-    let passed = 0, failed = 0;
-    const t = (n,a,e) => Math.abs(a-e)<0.00001 ? passed++ : failed++;
-    t('footing concrete 600 sqft', rules.structures.main.footingConcrete(600), .49998);
-    t('footing formwork 600 sqft', rules.structures.main.footingFormwork(600), 12);
-    t('ground slab concrete 600 sqft', rules.structures.main.groundSlabConcrete(600*UNIT.SQFT_TO_M2), 8.3612736);
-    t('ground beam concrete 600 sqft', rules.structures.main.groundBeamConcrete(600), 3.552);
-    t('column concrete 600 sqft', rules.structures.main.columnConcrete(600), .945);
-    t('column formwork 600 sqft', rules.structures.main.columnFormwork(600), 25.2);
-    t('C-channel 600 sqft', rules.structures.main.cChannel(600), 780.198);
-    t('metal sheet 600 sqft reference coefficient', rules.structures.main.metalRoofSheet(600), 95.9298);
-    t('lighting <=50 sqft', rules.electrical.lightingPerRoom(50), 1);
-    t('lighting 100 sqft', rules.electrical.lightingPerRoom(100), 3);
-    t('wiring 600 sqft', rules.electrical.wiring(600), 400);
-    t('power point 4 rooms', rules.electrical.powerPointPerRoom(4), 8);
-    t('switch 4 rooms', rules.electrical.switchPerRoom(4), 8);
-    t('fixed project quantity', rules.external.boundaryFencing(), 1);
-    const roofOk = JSON.stringify(includedRoofItems('Flat Roof')) === JSON.stringify(['Flat Roof']) && JSON.stringify(includedRoofItems('Roof Tiles')) === JSON.stringify(['Roof Tiles']) && JSON.stringify(includedRoofItems('Metal Roofing Sheet')) === JSON.stringify(['Metal Roofing Sheet','C-Channel']);
-    roofOk ? passed++ : failed++;
-    console.log(`Smoke test: ${passed} passed, ${failed} failed`);
-    return {passed, failed, roofOk};
-  }
-};
+function requestDetailedQuotation(){generateQuotation('detail');}
+
+function generateQuotation(typeOverride){
+ const selectedType=typeOverride||getSelectedQuotationType();
+ const rooms=getRoomGroups();
+ if(!rooms.some(r=>r.area>0)){alert('Please add at least one area with a valid area before generating the quotation.');return}
+ const data=getCurrentQuotationData();
+ quotationNumber=generateQuotationNumber();
+ const type=typeOverride||getSelectedQuotationType(), customer=document.getElementById('customerName')?.value||'Not specified', location=document.getElementById('projectLocation')?.value||'Not specified', declared=rooms.reduce((s,r)=>s+(r.area||0),0), today=new Intl.DateTimeFormat('en-MY',{day:'2-digit',month:'long',year:'numeric'}).format(new Date()), content=document.getElementById('quotationContent');
+ const structuralGroups=[];
+ data.structures.forEach(i=>{const key=i.groupKey||'other',title=i.groupTitle||'Other Structural Works';let g=structuralGroups.find(x=>x.key===key);if(!g){g={key,title,items:[]};structuralGroups.push(g)}g.items.push(i)});
+ const archGroups=rooms.map(r=>({room:r,items:data.archByRoom[r.roomId]||[]})).filter(x=>x.items.length);
+ const sectionTotal=items=>items.reduce((sum,i)=>sum+i.amount,0);
+ let body=`<div class="flex justify-between items-start gap-6 border-b pb-5 mb-6"><div><div class="flex items-center gap-4 mb-4"><img src="../images/logo.png" class="h-14 w-auto"><div><h1 class="text-xl font-bold">TERAJU CIPTABINA RESOURCES</h1><p class="text-xs text-gray-500">No 10A, Jalan PP 2/1, Taman Putra Prima, 47100 Puchong, Selangor</p></div></div><h2 class="text-2xl font-bold uppercase">Quotation</h2></div><div class="text-right text-sm"><p>Quotation No.<br><strong>${escapeHtml(quotationNumber)}</strong></p><p class="mt-2">Date<br><strong>${today}</strong></p></div></div><div class="grid md:grid-cols-3 gap-6 mb-7 text-sm"><div><p class="text-xs text-gray-500">Customer</p><p class="font-semibold">${escapeHtml(customer)}</p></div><div><p class="text-xs text-gray-500">Project Location</p><p class="font-semibold">${escapeHtml(location)}</p></div><div><p class="text-xs text-gray-500">Built-up Area</p><p class="font-semibold">${formatQty(declared)} sqft</p></div></div>`;
+ if(type==='simple'){
+  body+=`<div class="overflow-x-auto"><table class="w-full border-collapse text-sm simple-quotation-table"><colgroup><col style="width:6%"><col style="width:22%"><col style="width:52%"><col style="width:20%"></colgroup><thead><tr class="border-b-2 text-left"><th class="py-3 px-2">No.</th><th class="py-3 px-2">Work Section</th><th class="py-3 px-2">Description of Works</th><th class="py-3 px-2 text-right">Amount (RM)</th></tr></thead><tbody>`;
+  let no=1;
+  const simpleSection=(title,items,subs=[])=>{if(!items.length&&!subs.length)return;body+=`<tr class="quotation-section-row"><td class="py-3 px-2">${no++}</td><td colspan="3" class="py-3 px-2">${escapeHtml(title)}</td></tr>`;if(items.length)body+=`<tr><td></td><td class="py-2 px-2 font-semibold">${escapeHtml(title)}</td><td class="py-2 px-2">${items.map(i=>escapeHtml(i.description)).join('<br>')}</td><td class="py-2 px-2 text-right font-semibold">${money(sectionTotal(items),2)}</td></tr>`;subs.forEach(sub=>{body+=`<tr><td></td><td class="py-2 px-2 font-semibold">${escapeHtml(sub.title)}</td><td class="py-2 px-2">${sub.items.map(i=>escapeHtml(i.description)).join('<br>')}</td><td class="py-2 px-2 text-right font-semibold">${money(sectionTotal(sub.items),2)}</td></tr>`})};
+  if(data.prelim.length) simpleSection('PRELIMINARIES',data.prelim);
+  if(structuralGroups.length) simpleSection('STRUCTURAL WORKS',[],structuralGroups);
+  if(archGroups.length) simpleSection('ARCHITECTURAL WORKS',[],archGroups.map(x=>({title:x.room.label,items:x.items})));
+  if(data.electrical.length) simpleSection('ELECTRICAL WORKS',data.electrical);
+  body+=`</tbody><tfoot><tr class="border-t-2"><td colspan="3" class="py-4 px-2 text-right font-bold">TOTAL</td><td class="py-4 px-2 text-right font-bold text-lg">${money(data.total,2)}</td></tr></tfoot></table></div>`;
+ }else{
+  body+=`<div class="mb-5 rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm"><span class="font-semibold">Detailed Quotation:</span> <span class="line-through text-gray-400">RM 49</span> <span class="font-bold text-green-700 ml-1">FREE</span> <span class="text-gray-600 ml-1">— Limited-time promotion until 31 October 2026.</span></div>`;
+  body+=`<div class="overflow-x-auto"><table class="w-full border-collapse text-sm detailed-quotation-table"><colgroup><col style="width:48%"><col style="width:10%"><col style="width:10%"><col style="width:16%"><col style="width:16%"></colgroup><thead><tr class="border-b-2 text-left"><th class="py-3 px-2">Description</th><th class="py-3 px-2">Unit</th><th class="py-3 px-2 text-right">Quantity</th><th class="py-3 px-2 text-right">Rate (RM)</th><th class="py-3 px-2 text-right">Amount (RM)</th></tr></thead><tbody>`;
+  const itemRow=i=>`<tr class="border-b align-top"><td class="py-3 px-2">${escapeHtml(i.description)}</td><td class="py-3 px-2">${escapeHtml(i.unit)}</td><td class="py-3 px-2 text-right">${formatQty(i.qty,i.unit)}</td><td class="py-3 px-2 text-right">${money(i.rate,2)}</td><td class="py-3 px-2 text-right font-medium">${money(i.amount,2)}</td></tr>`;
+  if(data.prelim.length){body+=`<tr class="quotation-section-row"><td colspan="5" class="py-3 px-2">PRELIMINARIES</td></tr>`;body+=data.prelim.map(itemRow).join('');body+=`<tr class="border-b"><td colspan="3"></td><td class="py-2 px-2 text-right font-semibold">Subtotal - Preliminaries</td><td class="py-2 px-2 text-right font-semibold">${money(data.prelim.reduce((s,i)=>s+i.amount,0),2)}</td></tr>`}
+  if(structuralGroups.length){body+=`<tr class="quotation-section-row"><td colspan="5" class="py-3 px-2">STRUCTURAL WORKS</td></tr>`;structuralGroups.forEach(g=>{body+=`<tr class="quotation-subsection-row"><td colspan="5" class="py-2 px-2">${escapeHtml(g.title)}</td></tr>`;body+=g.items.map(itemRow).join('');body+=`<tr class="border-b"><td colspan="3"></td><td class="py-2 px-2 text-right font-semibold">Subtotal - ${escapeHtml(g.title)}</td><td class="py-2 px-2 text-right font-semibold">${money(g.items.reduce((s,i)=>s+i.amount,0),2)}</td></tr>`})}
+  if(archGroups.length){body+=`<tr class="quotation-section-row"><td colspan="5" class="py-3 px-2">ARCHITECTURAL WORKS</td></tr>`;archGroups.forEach(g=>{body+=`<tr class="quotation-subsection-row"><td colspan="5" class="py-2 px-2">${escapeHtml(g.room.label)} <span class="font-normal">(${formatQty(g.room.area)} sqft)</span></td></tr>`;body+=g.items.map(itemRow).join('');body+=`<tr class="border-b"><td colspan="3"></td><td class="py-2 px-2 text-right font-semibold">Subtotal - ${escapeHtml(g.room.label)}</td><td class="py-2 px-2 text-right font-semibold">${money(g.items.reduce((s,i)=>s+i.amount,0),2)}</td></tr>`})}
+  if(data.electrical.length){body+=`<tr class="quotation-section-row"><td colspan="5" class="py-3 px-2">ELECTRICAL WORKS</td></tr>`;body+=data.electrical.map(itemRow).join('');body+=`<tr class="border-b"><td colspan="3"></td><td class="py-2 px-2 text-right font-semibold">Subtotal - Electrical Works</td><td class="py-2 px-2 text-right font-semibold">${money(data.electrical.reduce((s,i)=>s+i.amount,0),2)}</td></tr>`}
+  body+=`</tbody><tfoot><tr class="border-t-2"><td colspan="4" class="py-4 px-2 text-right font-bold">TOTAL</td><td class="py-4 px-2 text-right font-bold text-lg">${money(data.total,2)}</td></tr></tfoot></table></div>`;
+ }
+ body+=`<div class="mt-8 pt-5 border-t text-sm"><p class="font-semibold mb-2">Terms / Notes</p><ul class="list-disc pl-5 text-gray-600"><li>This quotation is based on the stated built-up area, area schedule and rates applied herein.</li><li>Final scope, specifications, site conditions and pricing remain subject to site inspection and written confirmation.</li><li>Any additional works or authority requirements not listed above shall be quoted separately.</li></ul></div><div class="mt-12 text-sm"><p>Yours sincerely,</p><p class="font-bold mt-8">TERAJU CIPTABINA RESOURCES</p></div>`;
+ content.innerHTML=body;document.getElementById('quotationDocument').classList.remove('hidden');document.getElementById('quotationPrintActions').classList.remove('hidden');setDetailedQuotationLocked(type==='detail');renderQuotationPreview();document.getElementById('quotationDocument').scrollIntoView({behavior:'smooth',block:'start'})
+if(type==='detail')openDetailedQuotationPromo();return true;
+}
+document.querySelectorAll('input[name="quotationType"]').forEach(r=>r.addEventListener('change',()=>{document.querySelectorAll('.quotation-type-card').forEach(c=>c.classList.toggle('is-selected',c.querySelector('input')?.checked));if(typeof saveContractorState==='function')saveContractorState();}));
+applyAudienceUI();if(isHomeowner()){document.getElementById('roomsContainer').innerHTML='';roomCounter=0;document.getElementById('builtUpArea').value='0';updateEstimate()}else{if(!loadContractorState()){document.getElementById('roomsContainer').innerHTML='';roomCounter=0;document.getElementById('builtUpArea').value='0';saveContractorState()}document.getElementById('contractorIdDisplay').textContent=CONTRACTOR_ID||'Not signed in';updateEstimate()}
 </script>
-</body>
-</html>
+
+<script>
+
+updateRoomsEmptyState();
+updateEstimate();
+
+</script>
+<script src="location-autocomplete.js"></script>
+<script id="tc-homeowner-customer-default">
+(() => {
+  const params = new URLSearchParams(location.search);
+  const role = (params.get('audience') || document.body.dataset.role || 'homeowner').toLowerCase();
+  if (role !== 'homeowner' || params.get('quotationId')) return;
+  const storageKey = 'teraju.homeowner.github.v1';
+  function applyHomeownerName() {
+    const input = document.getElementById('customerName');
+    if (!input || input.value.trim()) return;
+    try {
+      const account = JSON.parse(localStorage.getItem(storageKey) || 'null');
+      const name = String(account?.profile?.name || '').trim();
+      if (!name) return;
+      input.value = name;
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+      input.dispatchEvent(new Event('change', { bubbles: true }));
+    } catch {}
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', applyHomeownerName, { once: true });
+  else applyHomeownerName();
+})();
+</script>
+<script id="tc-teraju-ga4">
+(() => {
+  const MEASUREMENT_ID = 'G-50XR3XER7B';
+  const path = location.pathname.toLowerCase();
+  const params = new URLSearchParams(location.search);
+  const role = (params.get('audience') || document.body.dataset.role || '').toLowerCase();
+  const plannerType = path.includes('renovationplanner') ? 'renovation' : path.includes('buildplanner') ? 'build' : '';
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = window.gtag || function(){ window.dataLayer.push(arguments); };
+  window.gtag('js', new Date());
+  window.gtag('config', MEASUREMENT_ID, { send_page_view: true });
+  const send = (name, extra = {}) => {
+    try { window.gtag('event', name, Object.fromEntries(Object.entries(extra).filter(([,v]) => v !== undefined && v !== ''))); } catch {}
+  };
+  window.TERAJU_GA_EVENT = send;
+  const base = { role: role || undefined, planner_type: plannerType || undefined, page_path: location.pathname };
+  const script = document.createElement('script');
+  script.async = true;
+  script.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(MEASUREMENT_ID);
+  document.head.appendChild(script);
+  if (path.endsWith('/homeowner.html') || path.endsWith('/contractor.html')) send('app_open', base);
+  if (plannerType) send('planner_start', base);
+
+  if (path.endsWith('/quotations.html')) {
+    document.addEventListener('click', event => {
+      const link = event.target.closest?.('a[data-ga-quotation-opened]');
+      if (!link) return;
+      send('quotation_opened', {
+        role: link.dataset.gaRole || role || undefined,
+        planner_type: link.dataset.gaPlannerType || undefined,
+        quotation_id: link.dataset.gaQuotationId || undefined,
+        quotation_number: link.dataset.gaQuotationNumber || undefined,
+        quotation_type: link.dataset.gaQuotationType || undefined,
+        page_path: location.pathname
+      });
+    }, true);
+  }
+})();
+</script>
+<script src="quotation-quantity-fix.js?v=20260907"></script>
+</body></html>
