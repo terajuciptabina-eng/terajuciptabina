@@ -22,6 +22,7 @@ main{max-width:none;margin:0 auto;padding:24px clamp(16px,4vw,48px) 48px}.notice
 <div id="summary" class="summary"></div><div id="sections"></div><div id="empty" class="empty hidden">No matching rules. Clear the search or choose All groups.</div>
 </main>
 <script>
+<script>
 const rules=[
 {group:'STRUCTURES',path:'MAIN BUILDING  /  Footing  /  Concrete',description:'Supply and construct Grade 15 concrete footing.',method:'AREA / COEFFICIENT',ref:'600 sqft  /  0.50 m³',coeff:'0.0008333 m³/sqft',formula:'Area (sqft) × 0.0008333',output:'m³',basis:'Reference value from 600 sqft bungalow.',note:'Area may be entered in m²; convert to sqft before applying this coefficient.'},
 {group:'STRUCTURES',path:'MAIN BUILDING  /  Footing  /  Formwork',description:'Provide formwork to concrete footing.',method:'AREA / COEFFICIENT',ref:'600 sqft  /  12 m²',coeff:'0.02 m²/sqft',formula:'Area (sqft) × 0.02',output:'m²',basis:'12 ÷ 600 = 0.02 m²/sqft.',note:'Formwork quantity is metric area.'},
@@ -112,6 +113,24 @@ function render(){
  document.getElementById('empty').classList.toggle('hidden',filtered.length!==0);
 }
 document.getElementById('search').addEventListener('input',render);document.getElementById('group').addEventListener('change',render);render();
+
+const search=document.getElementById('search');
+const group=document.getElementById('group');
+const sections=document.getElementById('sections');
+const summary=document.getElementById('summary');
+const empty=document.getElementById('empty');
+function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function parts(path){return path.split('/').map(x=>x.trim()).filter(Boolean);}
+function render(){
+ const q=(search.value||'').trim().toLowerCase(), g=group.value;
+ const filtered=rules.filter(r=>{const t=[r.group,r.path,r.description,r.method,r.ref,r.coeff,r.formula,r.output,r.basis,r.note].join(' ').toLowerCase();return(!q||t.includes(q))&&(g==='all'||r.group===g)});
+ summary.textContent=`${filtered.length} calculation rules`;
+ empty.classList.toggle('hidden',filtered.length>0);
+ const groups=[];
+ for(const r of filtered){const a=parts(r.path);const main=a[0]||'';const sub=a[1]||'';const subsub=a.slice(2).join(' / ');let G=groups.find(x=>x.name===r.group);if(!G){G={name:r.group,mains:[]};groups.push(G)}let M=G.mains.find(x=>x.name===main);if(!M){M={name:main,subs:[]};G.mains.push(M)}let S=M.subs.find(x=>x.name===sub);if(!S){S={name:sub,items:[]};M.subs.push(S)}S.items.push({...r,subsub});}
+ sections.innerHTML=groups.map(G=>`<section class="section"><div class="section-head"><div><div class="group-heading">${esc(G.name)}</div><div class="main-heading">GROUP HEADING</div></div><div class="count">${G.mains.reduce((n,m)=>n+m.subs.reduce((a,x)=>a+x.items.length,0),0)} rules</div></div>${G.mains.map(M=>`<div style="padding:18px"><div class="main-heading">${esc(M.name)}</div><div style="font-size:11px;color:var(--muted);margin-top:2px">MAIN HEADING</div>${M.subs.map(S=>`<div style="margin:16px 0 0 22px"><div class="sub-heading">${esc(S.name)}</div><div style="font-size:11px;color:var(--muted);margin-top:2px">SUB HEADING</div><div class="table-wrap" style="margin:8px 0 0 22px"><table class="rule-table"><thead><tr><th>Sub-sub Heading</th><th>Description</th><th>Method</th><th>Source / Reference</th><th>Conversion / Coefficient</th><th>Formula</th><th>Output</th><th>Explanation / Derivation</th></tr></thead><tbody>${S.items.map(r=>`<tr><td data-label="Sub-sub Heading" class="path">${esc(r.subsub)}</td><td data-label="Description" class="desc">${esc(r.description)}</td><td data-label="Method" class="method">${esc(r.method)}</td><td data-label="Source / Reference" class="ref">${esc(r.ref)}</td><td data-label="Conversion / Coefficient">${esc(r.coeff)}</td><td data-label="Formula" class="formula">${esc(r.formula)}</td><td data-label="Output">${esc(r.output)}</td><td data-label="Explanation / Derivation" class="note"><b>Source:</b> ${esc(r.ref)}<br><b>Derivation:</b> ${esc(r.basis)}<br><b>Rule:</b> ${esc(r.formula)}</td></tr>`).join('')}</tbody></table></div></div>`).join('')}</div>`).join('')}</section>`).join('');
+}
+search.addEventListener('input',render);group.addEventListener('change',render);render();
 </script>
 </body>
 </html>
