@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "homeowner",
+  "homeownerId": "HME-20260911-KXYI",
+  "profile": {
+    "name": "syeerarawr’s",
+    "email": "wansyahirah2607@gmail.com",
+    "phone": "013 426 8235"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-09-11T02:58:18.105Z",
+  "updatedAt": "2026-09-11T02:58:18.105Z"
+}
