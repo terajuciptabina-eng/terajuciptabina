@@ -18,7 +18,7 @@ main{max-width:none;margin:0 auto;padding:24px clamp(16px,4vw,48px) 48px}.notice
 <header><div class="header-row"><div><div class="eyebrow">TERAJU WORKS</div><h1>Calculation Rules</h1><p class="sub">Area, calculation logic, quantity and derivation are shown for audit and engine reference.</p></div><div class="tag locked">ROUND UP · NO DECIMAL</div></div></header>
 <main>
 <div class="notice"><strong>System principle</strong><p>User provides area in <b>sqft or m²</b>. Rules convert units where required. Construction quantity is returned in metric units. No detailed measurement is required from the user unless a rule explicitly derives a dependency from an existing planner value. Rates remain editable separately and are not part of this panel.</p></div>
-<div class="toolbar"><input id="search" type="search" placeholder="Search item, description, formula, unit..." aria-label="Search calculation rules"><select id="group" aria-label="Filter rule group"><option value="all">All groups</option><option value="STRUCTURES">STRUCTURES</option><option value="ARCHITECTURES">ARCHITECTURES</option></select></div>
+<div class="toolbar"><input id="search" type="search" placeholder="Search item, description, formula, unit..." aria-label="Search calculation rules"><select id="group" aria-label="Filter rule group"><option value="all">All groups</option><option value="PRELIMINARIES">PRELIMINARIES</option><option value="STRUCTURES">STRUCTURES</option><option value="ARCHITECTURES">ARCHITECTURES</option><option value="ELECTRICAL">ELECTRICAL</option><option value="DOORS &amp; WINDOWS">DOORS &amp; WINDOWS</option><option value="EXTERNAL WORK">EXTERNAL WORK</option><option value="OTHERS">OTHERS</option></select></div>
 <div id="summary" class="summary"></div><div id="sections"></div><div id="empty" class="empty hidden">No matching rules. Clear the search or choose All groups.</div>
 </main>
 <script>
@@ -118,31 +118,27 @@ const group=document.getElementById('group');
 const sections=document.getElementById('sections');
 const summary=document.getElementById('summary');
 const empty=document.getElementById('empty');
+const groupOrder=['PRELIMINARIES','STRUCTURES','ARCHITECTURES','ELECTRICAL','DOORS & WINDOWS','EXTERNAL WORK','OTHERS'];
 function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-function parts(path){return path.split('/').map(x=>x.trim()).filter(Boolean);}
+function parts(v){return String(v||'').split('/').map(x=>x.trim()).filter(Boolean);}
 function render(){
-  const q=(search.value||'').trim().toLowerCase(), g=group.value;
-  const filtered=rules.filter(r=>{const t=[r.group,r.path,r.description,r.method,r.ref,r.coeff,r.formula,r.output,r.basis,r.note].join(' ').toLowerCase();return(!q||t.includes(q))&&(g==='all'||r.group===g)});
-  summary.textContent=`${filtered.length} calculation rules`;
-  empty.classList.toggle('hidden',filtered.length>0);
-  const groups=[];
-  for(const r of filtered){
-    const a=parts(r.path); const main=a[0]||''; const sub=a[1]||''; const item=a.slice(2).join(' / ');
-    let G=groups.find(x=>x.name===r.group); if(!G){G={name:r.group,mains:[]};groups.push(G)}
-    let M=G.mains.find(x=>x.name===main); if(!M){M={name:main,subs:[]};G.mains.push(M)}
-    let S=M.subs.find(x=>x.name===sub); if(!S){S={name:sub,items:[]};M.subs.push(S)}
-    S.items.push({...r,item});
+  const q=(search.value||'').trim().toLowerCase(), selected=group.value;
+  const filtered=rules.filter(r=>{const t=[r.group,r.path,r.description,r.method,r.ref,r.coeff,r.formula,r.output,r.basis,r.note].join(' ').toLowerCase();return(!q||t.includes(q))&&(selected==='all'||r.group===selected);});
+  summary.textContent=`Showing ${filtered.length} of ${rules.length} calculation rules`;
+  sections.innerHTML='';
+  for(const groupName of groupOrder){
+    if(selected!=='all' && selected!==groupName) continue;
+    const rows=filtered.filter(r=>r.group===groupName);
+    const sec=document.createElement('section'); sec.className='section';
+    sec.innerHTML=`<div class="section-head"><h2>${esc(groupName)}</h2><span class="count">${rows.length} rules</span></div>`;
+    if(!rows.length){sec.innerHTML+=`<div class="empty">No source-backed calculation rules are defined for this category yet.</div>`; sections.appendChild(sec); continue;}
+    const tree={};
+    for(const r of rows){const ps=parts(r.path);let n=tree;for(let i=0;i<ps.length-1;i++)n=(n[ps[i]] ||= {});(n.__items ||= []).push({...r,item:ps[ps.length-1]||r.path});}
+    function nodeHtml(n,depth){let h=''; for(const k of Object.keys(n).filter(x=>x!=='__items')){h+=`<div class="hierarchy-block ${depth===0?'main-block':''}"><div class="${depth===0?'main-heading':'sub-heading'}">${esc(k)}</div>${nodeHtml(n[k],depth+1)}</div>`;} if(n.__items){h+='<div class="table-wrap"><table class="rule-table"><thead><tr><th>Item</th><th>Description</th><th>Method</th><th>Source / Reference</th><th>Conversion / Coefficient</th><th>Formula</th><th>Output</th><th>Explanation / Derivation</th></tr></thead><tbody>';h+=n.__items.map(r=>`<tr><td class="path" data-label="Item">${esc(r.item)}</td><td class="desc" data-label="Description">${esc(r.description)}</td><td class="method" data-label="Method">${esc(r.method)}</td><td class="ref" data-label="Source / Reference">${esc(r.ref)}</td><td data-label="Conversion / Coefficient">${esc(r.coeff)}</td><td class="formula" data-label="Formula">${esc(r.formula)}</td><td data-label="Output">${esc(r.output)}</td><td class="note" data-label="Explanation / Derivation"><b>Source:</b> ${esc(r.ref)}<br><b>Derivation:</b> ${esc(r.basis)}<br><b>Rule:</b> ${esc(r.formula)}</td></tr>`).join('');h+='</tbody></table></div>';} return h;}
+    sec.innerHTML+=`<div class="hierarchy-block">${nodeHtml(tree,0)}</div>`;
+    sections.appendChild(sec);
   }
-  sections.innerHTML=groups.map(G=>`<section class="section">
-    <div class="section-head"><div class="group-heading">${esc(G.name)}</div><div class="count">${G.mains.reduce((n,m)=>n+m.subs.reduce((a,x)=>a+x.items.length,0),0)} rules</div></div>
-    ${G.mains.map(M=>`<div class="hierarchy-block main-block"><div class="main-heading">${esc(M.name)}</div>
-      ${M.subs.map(S=>`<div class="hierarchy-block sub-block"><div class="sub-heading">${esc(S.name)}</div>
-        <div class="table-wrap"><table class="rule-table"><thead><tr><th>Sub-sub Heading</th><th>Description</th><th>Method</th><th>Source / Reference</th><th>Conversion / Coefficient</th><th>Formula</th><th>Output</th><th>Explanation / Derivation</th></tr></thead><tbody>
-          ${S.items.map(r=>`<tr><td data-label="Sub-sub Heading" class="path">${esc(r.item)}</td><td data-label="Description" class="desc">${esc(r.description)}</td><td data-label="Method" class="method">${esc(r.method)}</td><td data-label="Source / Reference" class="ref">${esc(r.ref)}</td><td data-label="Conversion / Coefficient">${esc(r.coeff)}</td><td data-label="Formula" class="formula">${esc(r.formula)}</td><td data-label="Output">${esc(r.output)}</td><td data-label="Explanation / Derivation" class="note"><b>Source:</b> ${esc(r.ref)}<br><b>Derivation:</b> ${esc(r.basis)}<br><b>Rule:</b> ${esc(r.formula)}</td></tr>`).join('')}
-        </tbody></table></div>
-      </div>`).join('')}
-    </div>`).join('')}
-  </section>`).join('');
+  empty.classList.toggle('hidden',filtered.length!==0);
 }
 search.addEventListener('input',render); group.addEventListener('change',render); render();
 </script>
