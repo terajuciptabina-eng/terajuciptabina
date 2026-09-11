@@ -14,13 +14,15 @@ jobs:
         run: |
           python3 - <<'PY'
           from pathlib import Path
-          import re
           p=Path('quotation/calculation-rules.html')
           s=p.read_text()
           s=s.replace('Area → calculation logic → quantity. Reference values are shown for audit; they do not replace the rule.','Area, calculation logic, quantity and derivation are shown for audit and engine reference.')
           s=s.replace('→',' / ')
           s=s.replace('min-width:1280px','min-width:1500px')
           s=s.replace('.desc{min-width:300px;line-height:1.45}', '.desc{min-width:300px;line-height:1.45}.note{min-width:360px;line-height:1.5}')
+          s=s.replace('max-width:1400px','max-width:none')
+          s=s.replace('main{max-width:1400px;','main{max-width:none;')
+          s=s.replace('.header-row{max-width:1400px;', '.header-row{max-width:none;')
           marker='const esc=s=>String(s).replace'
           explanation='''function explain(r){
            const c=r.coeff, ref=r.ref, b=r.basis, n=r.note;
