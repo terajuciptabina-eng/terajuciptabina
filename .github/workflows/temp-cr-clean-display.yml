@@ -6,7 +6,7 @@ permissions:
   contents: write
 jobs:
   clean:
-    if: "!contains(github.event.head_commit.message, 'Clean Calculation Rules display')"
+    if: "!contains(github.event.head_commit.message, 'APPLIED_CR_CLEAN')"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -18,7 +18,6 @@ jobs:
           s=p.read_text(encoding='utf-8')
           start=s.index('const search=document.getElementById(\'search\');')
           end=s.index('</script>', start)
-          old=s[start:end]
           new='''const search=document.getElementById('search');
           const group=document.getElementById('group');
           const sections=document.getElementById('sections');
@@ -54,7 +53,6 @@ jobs:
           '''
           s=s[:start]+new+s[end:]
           s=s.replace(".hierarchy{display:flex;flex-direction:column;gap:3px;min-width:0}.hierarchy .group-heading{font-size:11px;letter-spacing:.08em;color:var(--muted);font-weight:800}.hierarchy .main-heading{font-size:14px;font-weight:800}.hierarchy .sub-heading{font-size:13px;font-weight:700}.hierarchy .subsub-heading{font-size:13px;font-weight:600;color:var(--text)}", ".hierarchy-block{padding:16px 18px}.main-block{padding-top:18px}.sub-block{padding:14px 0 0 24px}.hierarchy .group-heading,.group-heading{font-size:11px;letter-spacing:.08em;color:var(--muted);font-weight:800}.main-heading{font-size:14px;font-weight:800}.sub-heading{font-size:13px;font-weight:700}")
-          s=s.replace('GROUP MAIN HEADING','GROUP HEADING').replace('MAIN HEADING','MAIN HEADING').replace('SUB-SUB HEADING','Sub-sub Heading')
           s=s.replace('→','').replace('←','')
           p.write_text(s,encoding='utf-8')
           PY
@@ -62,5 +60,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add quotation/calculation-rules.html .github/workflows/temp-cr-clean-display.yml
-          git commit -m "Clean Calculation Rules display"
+          git commit -m "APPLIED_CR_CLEAN"
           git push
