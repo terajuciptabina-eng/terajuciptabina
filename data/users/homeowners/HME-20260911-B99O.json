@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "homeowner",
+  "homeownerId": "HME-20260911-B99O",
+  "profile": {
+    "name": "Fazril",
+    "email": "fazril85@gmail.com",
+    "phone": "0146423763"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-09-11T02:59:12.950Z",
+  "updatedAt": "2026-09-11T02:59:12.950Z"
+}
