@@ -27,7 +27,7 @@
     const moneyRound = v => Math.round((Number(v) || 0) * 100) / 100;
     const ceilQty = v => Math.max(0, Math.ceil(Number(v) || 0));
     const sqftToM2 = v => (Number(v) || 0) * 0.09290304;
-    const esc = value => String(value ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+    const esc = value => String(value ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;').replace(/'/g,'&#039;');
     const parts = path => String(path || '').split('/').map(x => x.trim()).filter(Boolean);
 
     let liveRules = [];
@@ -119,7 +119,8 @@
 
     function itemBase(rule,index,qty,rate,extra={}) {
       const p = parts(rule.path);
-      const hierarchy = p.slice(1,-1);
+      const rawHierarchy = p.slice(1,-1);
+      const hierarchy = rawHierarchy.filter((name, idx) => !(idx === 0 && String(name).toUpperCase() === String(rule.group).toUpperCase()));
       return {id:'rule-item-'+index,ruleIndex:index,ruleKey:ruleKey(rule,index),category:rule.group.toLowerCase(),description:rule.description,unit:rule.output,qty:moneyRound(qty),rate:moneyRound(rate),amount:moneyRound(qty*rate),path:rule.path,hierarchy,groupKey:hierarchy.join(' / ') || rule.group,groupTitle:hierarchy.join(' / ') || rule.group,roomId:extra.roomId || 'project',room:extra.room || 'Project',rule};
     }
 
