@@ -1,22 +1,23 @@
 <!doctype html>
 <html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>TERAJU WORKS — Build Planner Calculation Test</title>
+<title>TERAJU WORKS — Build Planner Global Header Test</title>
 <style>
 html,body{margin:0;height:100%;font-family:Inter,system-ui,-apple-system,sans-serif;background:#0f172a}
-#bar{position:fixed;z-index:10;top:10px;left:10px;right:10px;background:rgba(255,255,255,.97);border:1px solid #e5e7eb;border-radius:14px;padding:10px 14px;box-shadow:0 10px 30px rgba(0,0,0,.18);display:flex;gap:12px;align-items:center;flex-wrap:wrap;font-size:12px}#status{font-weight:700}#app{width:100%;height:100%;border:0;display:block;padding-top:62px;box-sizing:border-box}
-.global-head{margin:0 24px 4px 24px}.global-head table,.engine-table{width:100%;table-layout:fixed;border-collapse:collapse;font-size:12px}.global-head th,.engine-table td{padding:7px 12px;text-align:left;vertical-align:top}.global-head th:nth-child(1),.engine-table td:nth-child(1){width:56%}.global-head th:nth-child(2),.engine-table td:nth-child(2){width:7%}.global-head th:nth-child(3),.engine-table td:nth-child(3){width:8%}.global-head th:nth-child(4),.engine-table td:nth-child(4){width:14%;text-align:right}.global-head th:nth-child(5),.engine-table td:nth-child(5){width:15%;text-align:right}.engine-table td{border-bottom:1px solid #e5e7eb}.engine-table thead{display:none}.engine-table{margin-left:24px;width:calc(100% - 24px)}
+#bar{position:fixed;z-index:10;top:10px;left:10px;right:10px;background:rgba(255,255,255,.97);border:1px solid #e5e7eb;border-radius:14px;padding:10px 14px;box-shadow:0 10px 30px rgba(0,0,0,.18);display:flex;gap:12px;align-items:center;flex-wrap:wrap;font-size:12px}#status{font-weight:700}
+#app{width:100%;height:100%;border:0;display:block;padding-top:62px;box-sizing:border-box}
+.global-head{margin:0 24px 8px 24px}.global-head table,.engine-table{width:100%;table-layout:fixed;border-collapse:collapse;font-size:12px}.global-head th,.engine-table td{padding:7px 12px;text-align:left;vertical-align:top}.global-head th:nth-child(1),.engine-table td:nth-child(1){width:56%}.global-head th:nth-child(2),.engine-table td:nth-child(2){width:7%}.global-head th:nth-child(3),.engine-table td:nth-child(3){width:8%}.global-head th:nth-child(4),.engine-table td:nth-child(4){width:14%;text-align:right}.global-head th:nth-child(5),.engine-table td:nth-child(5){width:15%;text-align:right}.engine-table td{border-bottom:1px solid #e5e7eb}.engine-table{margin-left:24px;width:calc(100% - 24px)}
 </style></head><body>
-<div id="bar"><span id="status">Testing global column header…</span></div>
+<div id="bar"><span id="status">Fixing test renderer…</span></div>
 <iframe id="app" src="buildplanner-calculation-test.html"></iframe>
 <script>
 const frame=document.getElementById('app'),status=document.getElementById('status');
 function normalize(){try{const d=frame.contentDocument;if(!d)return;const target=d.getElementById('estimateContent');if(!target)return;
 const tables=[...target.querySelectorAll('table')];if(!tables.length)return;
-for(const t of tables){t.classList.add('engine-table');const th=t.querySelector('thead');if(th)th.remove();}
+for(const t of tables){t.classList.add('engine-table');t.querySelectorAll('thead').forEach(x=>x.remove());t.querySelectorAll('tr').forEach(tr=>{const text=tr.textContent.replace(/\s+/g,' ').trim().toLowerCase();if(text.includes('description')&&text.includes('unit')&&text.includes('qty')&&text.includes('rate')&&text.includes('amount'))tr.remove();});}
 let old=d.getElementById('globalColumnHeader');if(old)old.remove();
 const wrap=d.createElement('div');wrap.id='globalColumnHeader';wrap.className='global-head';wrap.innerHTML='<table><thead><tr><th>Description</th><th>Unit</th><th>Qty</th><th>Rate (RM)</th><th>Amount (RM)</th></tr></thead></table>';
-const first=target.querySelector('.h1');if(first)target.insertBefore(wrap,first);else target.prepend(wrap);
-status.textContent='TEST: single global Description / Unit / Qty / Rate / Amount header';
+target.prepend(wrap);
+status.textContent='TEST FIXED: ONE global Description / Unit / Qty / Rate / Amount header';
 }catch(e){status.textContent='TEST ERROR: '+e.message}}
-frame.addEventListener('load',()=>{setTimeout(normalize,500);setTimeout(normalize,1500)});
+frame.addEventListener('load',()=>{setTimeout(normalize,300);setTimeout(normalize,1000);setTimeout(normalize,2000)});
 </script></body></html>
