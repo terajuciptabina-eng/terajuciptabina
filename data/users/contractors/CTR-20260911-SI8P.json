@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "contractor",
+  "contractorId": "CTR-20260911-SI8P",
+  "profile": {
+    "name": "Construction of other engineering projects n.e.c.",
+    "email": "ynlbina99@gmail.com",
+    "phone": "+60126365576"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-09-11T18:17:50.033Z",
+  "updatedAt": "2026-09-11T18:17:50.033Z"
+}
