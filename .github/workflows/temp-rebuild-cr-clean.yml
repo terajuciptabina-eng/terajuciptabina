@@ -1,0 +1,106 @@
+name: Temp Rebuild Calculation Rules Cleanly
+on:
+  push:
+    paths:
+      - '.github/workflows/temp-rebuild-cr-clean.yml'
+permissions:
+  contents: write
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Rebuild Calculation Rules renderer and groups
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('quotation/calculation-rules.html')
+          s=p.read_text()
+          start=s.find('const rules=[')
+          end=s.find('];\nfunction explain', start)
+          if start==-1 or end==-1: raise SystemExit('rules array boundary not found')
+          rules_block=s[start:end+2]
+          additions="""
+{group:'ELECTRICAL',path:'MAIN BUILDING / POWER POINT',description:'Supply and install power points to main building.',method:'FIXED PROJECT',ref:'Excel row 114',coeff:'10 no.',formula:'Fixed project quantity',output:'No.',basis:'Excel row 114: quantity 10.',note:'Reference quantity only; rate is not part of Calculation Rules.'},
+{group:'ELECTRICAL',path:'MAIN BUILDING / SWITCH',description:'Supply and install switches to main building.',method:'FIXED PROJECT',ref:'Excel row 115',coeff:'10 no.',formula:'Fixed project quantity',output:'No.',basis:'Excel row 115: quantity 10.',note:'Reference quantity only; rate is not part of Calculation Rules.'},
+{group:'ELECTRICAL',path:'MAIN BUILDING / LIGHTING',description:'Supply and install lighting points to main building.',method:'FIXED PROJECT',ref:'Excel row 116',coeff:'16 no.',formula:'Fixed project quantity',output:'No.',basis:'Excel row 116: quantity 16.',note:'Reference quantity only; rate is not part of Calculation Rules.'},
+{group:'ELECTRICAL',path:'MAIN BUILDING / FAN',description:'Supply and install fan points to main building.',method:'FIXED PROJECT',ref:'Excel row 117',coeff:'4 no.',formula:'Fixed project quantity',output:'No.',basis:'Excel row 117: quantity 4.',note:'Reference quantity only; rate is not part of Calculation Rules.'},
+{group:'ELECTRICAL',path:'MAIN BUILDING / AIRCOND POINT',description:'Provide air-conditioning points to main building.',method:'FIXED PROJECT',ref:'Excel row 118',coeff:'3 no.',formula:'Fixed project quantity',output:'No.',basis:'Excel row 118: quantity 3.',note:'Reference quantity only; rate is not part of Calculation Rules.'},
+{group:'ELECTRICAL',path:'PORCH / LIGHTING',description:'Supply and install lighting points to porch.',method:'PROJECT DEPENDENCY',ref:'Electrical layout',coeff:'Not fixed in supplied Excel',formula:'Defined by electrical layout',output:'No.',basis:'The supplied Excel has no separate porch lighting quantity.',note:'No invented quantity is applied.'},
+{group:'ELECTRICAL',path:'PORCH / FAN',description:'Provide fan points to porch.',method:'PROJECT DEPENDENCY',ref:'Electrical layout',coeff:'Not fixed in supplied Excel',formula:'Defined by electrical layout',output:'No.',basis:'The supplied Excel has no separate porch fan quantity.',note:'No invented quantity is applied.'},
+{group:'ELECTRICAL',path:'PORCH / POWER POINT',description:'Supply and install power points to porch.',method:'PROJECT DEPENDENCY',ref:'Electrical layout',coeff:'Not fixed in supplied Excel',formula:'Defined by electrical layout',output:'No.',basis:'The supplied Excel has no separate porch power point quantity.',note:'No invented quantity is applied.'},
+{group:'ELECTRICAL',path:'EARTHING',description:'Provide complete electrical earthing system.',method:'FIXED PROJECT',ref:'Excel row 119',coeff:'1 set',formula:'Fixed project quantity',output:'Set',basis:'Excel row 119: quantity 1 set.',note:'Reference quantity only; rate is not part of Calculation Rules.'},
+{group:'ELECTRICAL',path:'DB BOX',description:'Supply and install distribution board box.',method:'FIXED PROJECT',ref:'Excel row 112',coeff:'1 no.',formula:'Fixed project quantity',output:'No.',basis:'Excel row 112: quantity 1.',note:'Reference quantity only; rate is not part of Calculation Rules.'},
+{group:'ELECTRICAL',path:'WIRING',description:'Supply and install electrical wiring.',method:'FIXED PROJECT',ref:'Excel row 113',coeff:'400 m',formula:'Fixed project quantity',output:'m',basis:'Excel row 113: quantity 400 m.',note:'Reference quantity only; rate is not part of Calculation Rules.'},
+{group:'DOORS & WINDOWS',path:'MAIN BUILDING / DOORS / TYPE 1',description:'Supply and install Door Type 1.',method:'FIXED PROJECT',ref:'Excel row 74',coeff:'2 no.',formula:'Fixed project quantity',output:'No.',basis:'Excel row 74: quantity 2.',note:'Source-backed type count; dimensions and specification remain project-specific.'},
+{group:'DOORS & WINDOWS',path:'MAIN BUILDING / DOORS / TYPE 2',description:'Supply and install Door Type 2.',method:'FIXED PROJECT',ref:'Excel row 75',coeff:'2 no.',formula:'Fixed project quantity',output:'No.',basis:'Excel row 75: quantity 2.',note:'Source-backed type count; dimensions and specification remain project-specific.'},
+{group:'DOORS & WINDOWS',path:'MAIN BUILDING / DOORS / TYPE 3',description:'Supply and install Door Type 3.',method:'FIXED PROJECT',ref:'Excel row 76',coeff:'2 no.',formula:'Fixed project quantity',output:'No.',basis:'Excel row 76: quantity 2.',note:'Source-backed type count; dimensions and specification remain project-specific.'},
+{group:'DOORS & WINDOWS',path:'MAIN BUILDING / WINDOWS / TYPE 1',description:'Supply and install Window Type 1.',method:'FIXED PROJECT',ref:'Excel row 79',coeff:'2 no.',formula:'Fixed project quantity',output:'No.',basis:'Excel row 79: quantity 2.',note:'Source-backed type count; dimensions and specification remain project-specific.'},
+{group:'DOORS & WINDOWS',path:'MAIN BUILDING / WINDOWS / TYPE 2',description:'Supply and install Window Type 2.',method:'FIXED PROJECT',ref:'Excel row 80',coeff:'2 no.',formula:'Fixed project quantity',output:'No.',basis:'Excel row 80: quantity 2.',note:'Source-backed type count; dimensions and specification remain project-specific.'},
+{group:'DOORS & WINDOWS',path:'MAIN BUILDING / WINDOWS / TYPE 3',description:'Supply and install Window Type 3.',method:'FIXED PROJECT',ref:'Excel row 81',coeff:'2 no.',formula:'Fixed project quantity',output:'No.',basis:'Excel row 81: quantity 2.',note:'Source-backed type count; dimensions and specification remain project-specific.'},
+"""
+          if "path:'MAIN BUILDING / POWER POINT'" not in rules_block:
+              rules_block=rules_block[:-2] + additions + ']'
+          s=s[:start]+rules_block+s[end+2:]
+          old='<option value="all">All groups</option><option value="STRUCTURES">STRUCTURES</option><option value="ARCHITECTURES">ARCHITECTURES</option>'
+          new='<option value="all">All groups</option><option value="PRELIMINARIES">PRELIMINARIES</option><option value="STRUCTURES">STRUCTURES</option><option value="ARCHITECTURES">ARCHITECTURES</option><option value="ELECTRICAL">ELECTRICAL</option><option value="DOORS & WINDOWS">DOORS &amp; WINDOWS</option><option value="EXTERNAL WORK">EXTERNAL WORK</option><option value="OTHERS">OTHERS</option>'
+          s=s.replace(old,new,1)
+          script_start=s.find('<script>', s.find('const rules=['))
+          script_end=s.rfind('</script>')
+          if script_start==-1 or script_end==-1: raise SystemExit('script boundaries not found')
+          clean=r'''<script>
+function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function explain(r){
+  const c=r.coeff||'', b=r.basis||'', n=r.note||'';
+  if(/kg\/m³/.test(c)) return `Coefficient explanation: ${c} defines reinforcement weight per 1 m³ of referenced concrete. ${b} ${n}`;
+  if(/m²\/m²|m\/m/.test(c)) return `Coefficient explanation: ${c} applies the referenced area or length directly. ${b} ${n}`;
+  if(/\/sqft/.test(c)) return `Coefficient explanation: ${c} is the reference output divided by the stated sqft basis. ${b} ${n}`;
+  if(/mm =|ft wall height|ft height/.test(c)) return `Parameter explanation: ${c} is the fixed construction dimension used by the formula. ${b} ${n}`;
+  if(/no\.|LS|set|Not fixed/.test(c)) return `Quantity explanation: ${c} is the stated project or dependency quantity. ${b} ${n}`;
+  return `Calculation explanation: ${b} ${n}`;
+}
+const search=document.getElementById('search');
+const group=document.getElementById('group');
+const sections=document.getElementById('sections');
+const summary=document.getElementById('summary');
+const empty=document.getElementById('empty');
+const groupOrder=['PRELIMINARIES','STRUCTURES','ARCHITECTURES','ELECTRICAL','DOORS & WINDOWS','EXTERNAL WORK','OTHERS'];
+function parts(path){return String(path||'').split('/').map(x=>x.trim()).filter(Boolean);}
+function render(){
+  const q=(search.value||'').trim().toLowerCase();
+  const selected=group.value;
+  const filtered=rules.filter(r=>{const text=[r.group,r.path,r.description,r.method,r.ref,r.coeff,r.formula,r.output,r.basis,r.note].join(' ').toLowerCase();return(!q||text.includes(q))&&(selected==='all'||r.group===selected);});
+  summary.textContent=`Showing ${filtered.length} of ${rules.length} calculation rules`;
+  sections.innerHTML='';
+  for(const groupName of groupOrder){
+    if(selected!=='all' && selected!==groupName) continue;
+    const rows=filtered.filter(r=>r.group===groupName);
+    const sec=document.createElement('section');sec.className='section';
+    const head=document.createElement('div');head.className='section-head';head.innerHTML=`<h2>${esc(groupName)}</h2><span class="count">${rows.length} rules</span>`;sec.appendChild(head);
+    if(!rows.length){const note=document.createElement('div');note.className='empty';note.textContent='No source-backed calculation rules are defined for this category yet.';sec.appendChild(note);sections.appendChild(sec);continue;}
+    const tree={};
+    for(const r of rows){const ps=parts(r.path);let node=tree;for(let i=0;i<ps.length-1;i++) node=(node[ps[i]] ||= {});(node.__items ||= []).push({...r,item:ps[ps.length-1]||r.path});}
+    function renderNode(node,depth){
+      let html='';
+      for(const key of Object.keys(node).filter(k=>k!=='__items')){const child=node[key];html+=`<div class="hierarchy-block ${depth===0?'main-block':''}"><div class="${depth===0?'main-heading':'sub-heading'}">${esc(key)}</div>${renderNode(child,depth+1)}</div>`;}
+      if(node.__items){html+='<div class="table-wrap"><table class="rule-table"><thead><tr><th>Item</th><th>Description</th><th>Method</th><th>Source / Reference</th><th>Conversion / Coefficient</th><th>Formula</th><th>Output</th><th>Explanation / Derivation</th></tr></thead><tbody>';html+=node.__items.map(r=>`<tr><td data-label="Item" class="path">${esc(r.item)}</td><td data-label="Description" class="desc">${esc(r.description)}</td><td data-label="Method" class="method">${esc(r.method)}</td><td data-label="Source / Reference" class="ref">${esc(r.ref)}</td><td data-label="Conversion / Coefficient">${esc(r.coeff)}</td><td data-label="Formula" class="formula">${esc(r.formula)}</td><td data-label="Output">${esc(r.output)}</td><td data-label="Explanation / Derivation" class="note"><b>Source:</b> ${esc(r.ref)}<br><b>Derivation:</b> ${esc(r.basis)}<br><b>Rule:</b> ${esc(r.formula)}</td></tr>`).join('');html+='</tbody></table></div>';}
+      return html;
+    }
+    const body=document.createElement('div');body.className='hierarchy-block';body.innerHTML=renderNode(tree,0);sec.appendChild(body);sections.appendChild(sec);
+  }
+  empty.classList.toggle('hidden',filtered.length!==0);
+}
+search.addEventListener('input',render);group.addEventListener('change',render);render();
+</script>'''
+          s=s[:script_start]+clean+s[script_end+9:]
+          s=s.replace('.note{min-width:360px;line-height:1.5}.note{min-width:360px;line-height:1.5}', '.note{min-width:360px;line-height:1.5}')
+          s=s.replace('←','').replace('→','')
+          p.write_text(s)
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add quotation/calculation-rules.html
+          git commit -m 'Rebuild Calculation Rules category structure cleanly'
+          git rm .github/workflows/temp-rebuild-cr-clean.yml
+          git commit -m 'Remove temporary Calculation Rules workflow'
+          git push
