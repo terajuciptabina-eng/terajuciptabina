@@ -15,9 +15,124 @@
   },
   "state": "active",
   "plannerRecords": {
-    "build": [],
+    "build": [
+      {
+        "schemaVersion": 1,
+        "recordType": "quotation",
+        "quotationId": "QT-BLD-MTWLWZDO-ZT7FY",
+        "projectId": "PRJ-BLD-MTWLWYWU-CVWQK",
+        "quotationNumber": "Q001D",
+        "plannerType": "build",
+        "role": "contractor",
+        "contractorId": "CTR-20260911-WBGT",
+        "state": "final",
+        "quotationType": "detail",
+        "client": {
+          "name": "AKBAR"
+        },
+        "project": {
+          "location": "BANDAR TIRAM",
+          "builtUpArea": 500,
+          "state": "johor"
+        },
+        "total": 106509.55,
+        "plannerState": {
+          "customerName": "AKBAR",
+          "projectLocation": "BANDAR TIRAM ",
+          "builtUpArea": "500",
+          "rooms": [
+            {
+              "id": "room-1",
+              "type": "living",
+              "name": "Living / Family",
+              "area": "300"
+            },
+            {
+              "id": "room-2",
+              "type": "bedroom",
+              "name": "Bedroom",
+              "area": "200"
+            }
+          ],
+          "rates": {
+            "footingConc": 550,
+            "footingFw": 4.18,
+            "footingRebar": 15,
+            "slabConc": 550,
+            "slabBrc": 6.5,
+            "beamConc": 350,
+            "beamFw": 4.18,
+            "beamRebar": 15,
+            "colConc": 550,
+            "colFw": 4.18,
+            "colRebar": 15,
+            "flatRoofConc": 550,
+            "flatRoofFw": 4.18,
+            "flatRoofBrc": 6.5,
+            "cChannel": 4,
+            "metalSheet": 3.25,
+            "roofDesignConc": 550,
+            "roofDesignFw": 4.18,
+            "roofDesignRebar": 70,
+            "apronConc": 350,
+            "apronFw": 13.72,
+            "apronBrc": 15,
+            "drainage": 25,
+            "ceilingInt": 15,
+            "ceilingExt": 20,
+            "floorTileInt": 4.18,
+            "floorTileExt": 5.57,
+            "paintInt": 1.39,
+            "paintExt": 2.32,
+            "door": 600,
+            "window": 600,
+            "waterTank": 500,
+            "septicTank": 1500,
+            "bathWallTile": 4.18,
+            "bathFloorTile": 4.18,
+            "bathPiping": 1000,
+            "bathShower": 120,
+            "bathTap": 30,
+            "bathWc": 500,
+            "bathBasin": 400,
+            "dbBox": 1000,
+            "wiring": 20,
+            "powerPoint": 50,
+            "switch": 50,
+            "lighting": 250,
+            "fan": 600,
+            "aircond": 300,
+            "earthing": 1500,
+            "permit": 8500,
+            "prelim": 12000
+          },
+          "customRates": [],
+          "customQuantities": [],
+          "customDescriptions": [],
+          "customRoomLabels": [],
+          "excludedItems": [],
+          "manualItems": [],
+          "standardRateItems": [],
+          "quotationType": "detail",
+          "projectId": "PRJ-BLD-MTWLWYWU-CVWQK",
+          "projectState": "johor",
+          "rateSetId": "johor",
+          "rateSetName": "Johor",
+          "rateSnapshotAt": "2026-09-11T07:00:26.269Z"
+        },
+        "createdAt": "2026-09-11T07:00:26.268Z",
+        "updatedAt": "2026-09-11T07:00:25.662Z",
+        "estimateNumber": "EST-BLD-001"
+      }
+    ],
     "renovation": []
   },
   "createdAt": "2026-09-11T04:41:40.077Z",
-  "updatedAt": "2026-09-11T04:41:40.077Z"
+  "updatedAt": "2026-09-11T07:00:25.662Z",
+  "quotationRunningNumber": {
+    "build": 1
+  },
+  "estimateRunningNumber": {
+    "build": 1
+  }
 }
