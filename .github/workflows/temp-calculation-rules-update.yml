@@ -1,0 +1,63 @@
+name: temporary-calculation-rules-update
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+jobs:
+  update:
+    if: "!contains(github.event.head_commit.message, 'Apply Calculation Rules explanation')"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Update Calculation Rules
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          p=Path('quotation/calculation-rules.html')
+          s=p.read_text()
+          s=s.replace('Area → calculation logic → quantity. Reference values are shown for audit; they do not replace the rule.','Area, calculation logic, quantity and derivation are shown for audit and engine reference.')
+          s=s.replace('→',' / ')
+          s=s.replace('min-width:1280px','min-width:1500px')
+          s=s.replace('.desc{min-width:300px;line-height:1.45}', '.desc{min-width:300px;line-height:1.45}.note{min-width:360px;line-height:1.5}')
+          marker='const esc=s=>String(s).replace'
+          explanation='''function explain(r){
+           const c=r.coeff, ref=r.ref, b=r.basis, n=r.note;
+           if(/kg\\/m³/.test(c)) return `Coefficient explanation: ${c} means the rule allows ${c.split(' ')[0]} kg of reinforcement for each 1 m³ of the referenced concrete volume. ${n}`;
+           if(/m²\\/m²|m\\/m/.test(c)) return `Coefficient explanation: ${c} means the output follows the referenced area or length at a direct one-to-one rate. ${b} ${n}`;
+           if(/ft\\/sqft|m²\\/sqft|m³\\/sqft/.test(c) && /600 sqft/.test(ref)){
+             const nums=ref.match(/600 sqft[^0-9]*([0-9]+(?:\\.[0-9]+)?)/);
+             return nums ? `Coefficient explanation: ${nums[1]} is the reference quantity divided by 600 sqft to establish ${c}. ${b} ${n}` : `Coefficient explanation: ${c} is the reference quantity per sqft. ${b} ${n}`;
+           }
+           if(/mm =|ft wall height/.test(c)) return `Parameter explanation: ${c} is the fixed construction dimension used by the formula. ${b} ${n}`;
+           if(/no\\.|LS/.test(c)) return `Quantity explanation: ${c} is a fixed allowance for the stated project or room dependency. ${b} ${n}`;
+           return `Calculation explanation: ${b} ${n}`;
+          }
+          '''
+          s=s.replace(marker, explanation+marker)
+          start=s.index('function render(){')
+          end=s.index("document.getElementById('search').addEventListener", start)
+          render='''function render(){
+           const q=document.getElementById('search').value.trim().toLowerCase();
+           const g=document.getElementById('group').value;
+           const filtered=rules.filter(r=>(g==='all'||r.group===g)&&(!q||Object.values(r).join(' ').toLowerCase().includes(q)));
+           const host=document.getElementById('sections');host.innerHTML='';
+           document.getElementById('summary').textContent=`Showing ${filtered.length} of ${rules.length} calculation rules`;
+           ['STRUCTURES','ARCHITECTURES'].forEach(group=>{
+            const rows=filtered.filter(r=>r.group===group);if(!rows.length)return;
+            const sec=document.createElement('section');sec.className='section';
+            sec.innerHTML=`<div class="section-head"><h2>${group}</h2><span class="count">${rows.length} rules</span></div><div class="table-wrap"><table class="rule-table"><thead><tr><th>Area</th><th>Section</th><th>Item</th><th>Description</th><th>Method</th><th>Reference</th><th>Coefficient / Parameter</th><th>Formula</th><th>Output</th><th>Explanation / Derivation</th></tr></thead><tbody>${rows.map(r=>{const parts=r.path.split(' / ');return `<tr><td class="path" data-label="Area">${esc(parts[0])}</td><td class="path" data-label="Section">${esc(parts.slice(1,-1).join(' / '))}</td><td class="path" data-label="Item">${esc(parts[parts.length-1])}</td><td class="desc" data-label="Description">${esc(r.description)}</td><td class="method" data-label="Method"><span class="tag">${esc(r.method)}</span></td><td class="ref" data-label="Reference">${esc(r.ref)}</td><td data-label="Coefficient / Parameter"><b>${esc(r.coeff)}</b></td><td class="formula" data-label="Formula">${esc(r.formula)}</td><td data-label="Output"><b>${esc(r.output)}</b></td><td class="note" data-label="Explanation / Derivation">${esc(explain(r))}</td></tr>`}).join('')}</tbody></table></div>`;
+            host.appendChild(sec);
+           });
+           document.getElementById('empty').classList.toggle('hidden',filtered.length!==0);
+          }
+          '''
+          s=s[:start]+render+s[end:]
+          p.write_text(s)
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add quotation/calculation-rules.html
+          git commit -m "Apply Calculation Rules explanation" || exit 0
+          git push
