@@ -144,9 +144,14 @@
       if (method === 'FIXED PER KITCHEN') return ctx.kitchens.length;
       if (method === 'FIXED PER BEDROOM') return ctx.bedrooms.length;
       if (method === 'FIXED PER BATHROOM') return ctx.bathrooms.length;
-      if (method === 'FIXED PER ROOM') return ctx.mainRooms.length;
+      if (method === 'FIXED PER ROOM') return /power point|switch/i.test(path) ? ctx.mainRooms.length * coeff : ctx.mainRooms.length;
       if (method === 'FIXED PER PORCH') return ctx.porches.length;
       if (method === 'FIXED PER ELIGIBLE AREA') return ctx.mainRooms.filter(r => !['kitchen','bathroom'].includes(r.roomType)).length;
+      if (method === 'FIXED PER APPLICABLE LOCATION') {
+        if (/doors \/ type 1/i.test(path)) return ctx.mainRooms.filter(r => ['living','bedroom','kitchen'].includes(r.roomType)).length;
+        if (/doors \/ type 2/i.test(path)) return ctx.livingDining.length;
+        return 0;
+      }
       if (method === 'FIXED PER DESIGNATED AREA') return 0;
       if (method === 'AREA ALLOWANCE') {
         if (/porch/i.test(path)) return ctx.porches.reduce((s,r) => s + Math.ceil(Number(r.area||0)/100),0);
@@ -193,7 +198,7 @@
       liveRules.forEach((rule,index) => {
         if (isExcludedRule(rule)) return;
         const lower = String(rule.path).toLowerCase();
-        let qty = ruleQuantity(rule,ctx,items);
+        const qty = ruleQuantity(rule,ctx,items);
         if (rule.group === 'ARCHITECTURES' && /bathroom \/ floor tiles|bathroom \/ ceiling/i.test(lower)) {
           ctx.bathrooms.forEach(room => { const q=sqftToM2(room.area); if(q>0) add(items,rule,index,q,ctx,{roomId:room.roomId,room:room.label}); });
           return;
