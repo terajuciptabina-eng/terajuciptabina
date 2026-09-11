@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Build Planner — Calculation Engine Test</title></head>
+<body>
+<h1>Build Planner — Calculation Engine Test</h1>
+<p>TEST COPY ONLY. Original quotation/buildplanner.html is untouched.</p>
+<script>
+/*
+ * TEST HARNESS
+ * Calculation Rules are the intended quantity source of truth.
+ * Rates are deliberately excluded from this test layer.
+ */
+const CALCULATION_RULES_VERSION = '2026-09-11-test-1';
+const UNIT = { SQFT_TO_M2: 0.09290304, FT_TO_M: 0.3048 };
+
+const rules = {
+  preliminaries: [
+    {id:'prelim-permit', method:'FIXED PROJECT', unit:'LS', qty:1, description:'Submission of building plan / permit application and Engineer’s drawings to Local Authority'},
+    {id:'prelim-general', method:'FIXED PROJECT', unit:'LS', qty:1, description:'Preliminaries, site mobilisation, temporary facilities, insurance and project management'}
+  ],
+  structures: {
+    main: {
+      footingConcrete: a => a * 0.0008333,
+      footingFormwork: a => a * 0.02,
+      footingRebar: q => q * 100,
+      groundSlabConcrete: m2 => m2 * 0.15,
+      groundSlabBrc: m2 => m2 * 2,
+      groundBeamConcrete: a => a * 0.00592,
+      groundBeamFormwork: a => a * 0.0789333,
+      groundBeamRebar: q => q * 200,
+      roofBeamConcrete: a => a * 0.00592,
+      roofBeamFormwork: a => a * 0.0789333,
+      roofBeamRebar: q => q * 200,
+      columnConcrete: a => a * 0.001575,
+      columnFormwork: a => a * 0.042,
+      columnRebar: q => q * 200,
+      flatRoofConcrete: m2 => m2 * 0.10,
+      flatRoofFormwork: m2 => m2,
+      flatRoofBrc: m2 => m2 * 2,
+      cChannel: a => a * 1.30033,
+      metalRoofSheet: a => a * 0.159883
+    },
+    apron: {
+      concrete: m2 => m2 * 0.05,
+      formwork: perimeterM => perimeterM * 0.05,
+      brc: m2 => m2,
+      drainage: perimeterM => perimeterM
+    }
+  },
+  architecture: {
+    brickwallInternal: a => a * 0.1185,
+    brickwallExternal: a => a * 0.052333,
+    floorTilesExternal: apronM2 => apronM2,
+    paintingInternal: wallM2 => wallM2,
+    paintingExternal: wallM2 => wallM2,
+    ceilingInternal: (mainM2, totalBathroomM2) => mainM2 - totalBathroomM2,
+    ceilingExternal: apronM2 => apronM2,
+    bathroomWallTiles: (perimeterFt, heightFt=10) => perimeterFt * UNIT.FT_TO_M * heightFt * UNIT.FT_TO_M,
+    bathroomFloorTiles: bathroomM2 => bathroomM2,
+    bathroomCeiling: bathroomM2 => bathroomM2,
+    bathroomPiping: () => 1,
+    bathroomWC: () => 1,
+    bathroomBasin: () => 1,
+    bathroomShower: () => 1,
+    bathroomTap: () => 1,
+    waterTank: () => 1,
+    septicTank: () => 1,
+    porchFloorTiles: porchM2 => porchM2
+  },
+  electrical: {
+    powerPointPerRoom: rooms => rooms * 2,
+    switchPerRoom: rooms => rooms * 2,
+    lightingPerRoom: sqft => sqft <= 50 ? 1 : Math.ceil(sqft * 0.0266667),
+    fanPerRoom: () => 1,
+    aircondPerEligibleRoom: () => 1,
+    wiring: sqft => Math.ceil(sqft * 0.666667),
+    earthing: () => 1,
+    dbBox: () => 1,
+    porchLighting: sqft => sqft <= 50 ? 1 : Math.ceil(sqft * 0.0266667),
+    porchFan: () => 1,
+    porchPowerPoint: () => 1
+  },
+  doorsWindows: {
+    door: () => 1,
+    window: () => 1
+  },
+  external: {
+    boundaryFencing: () => 1,
+    gate: () => 1
+  }
+};
+
+function includedRoofItems(roofType){
+  if(roofType === 'Flat Roof') return ['Flat Roof'];
+  if(roofType === 'Roof Tiles') return ['Roof Tiles'];
+  if(roofType === 'Metal Roofing Sheet') return ['Metal Roofing Sheet','C-Channel'];
+  return [];
+}
+
+function eligibleRooms(rooms, type){
+  return rooms.filter(r => {
+    if(type === 'door') return r.type !== 'dining' && r.type !== 'porch' && r.type !== 'other';
+    if(type === 'window') return r.type !== 'porch' && r.type !== 'store' && r.type !== 'other';
+    if(type === 'fan') return r.type !== 'bathroom' && r.type !== 'porch';
+    if(type === 'aircond') return !['bathroom','dining','kitchen','porch'].includes(r.type);
+    return true;
+  });
+}
+
+function assert(name, actual, expected){
+  const ok = Math.abs(actual-expected) < 0.00001;
+  console[ok?'log':'error'](`${ok?'PASS':'FAIL'} — ${name}: ${actual} (expected ${expected})`);
+  return ok;
+}
+
+window.BuildPlannerCalculationTest = {
+  version: CALCULATION_RULES_VERSION,
+  rules,
+  includedRoofItems,
+  eligibleRooms,
+  assert,
+  smokeTest(){
+    let passed = 0, failed = 0;
+    const t = (n,a,e) => Math.abs(a-e)<0.00001 ? passed++ : failed++;
+    t('footing concrete 600 sqft', rules.structures.main.footingConcrete(600), .49998);
+    t('footing formwork 600 sqft', rules.structures.main.footingFormwork(600), 12);
+    t('ground slab concrete 600 sqft', rules.structures.main.groundSlabConcrete(600*UNIT.SQFT_TO_M2), 8.3612736);
+    t('ground beam concrete 600 sqft', rules.structures.main.groundBeamConcrete(600), 3.552);
+    t('column concrete 600 sqft', rules.structures.main.columnConcrete(600), .945);
+    t('column formwork 600 sqft', rules.structures.main.columnFormwork(600), 25.2);
+    t('C-channel 600 sqft', rules.structures.main.cChannel(600), 780.198);
+    t('metal sheet 600 sqft reference coefficient', rules.structures.main.metalRoofSheet(600), 95.9298);
+    t('lighting <=50 sqft', rules.electrical.lightingPerRoom(50), 1);
+    t('lighting 100 sqft', rules.electrical.lightingPerRoom(100), 3);
+    t('wiring 600 sqft', rules.electrical.wiring(600), 400);
+    t('power point 4 rooms', rules.electrical.powerPointPerRoom(4), 8);
+    t('switch 4 rooms', rules.electrical.switchPerRoom(4), 8);
+    t('fixed project quantity', rules.external.boundaryFencing(), 1);
+    const roofOk = JSON.stringify(includedRoofItems('Flat Roof')) === JSON.stringify(['Flat Roof']) && JSON.stringify(includedRoofItems('Roof Tiles')) === JSON.stringify(['Roof Tiles']) && JSON.stringify(includedRoofItems('Metal Roofing Sheet')) === JSON.stringify(['Metal Roofing Sheet','C-Channel']);
+    roofOk ? passed++ : failed++;
+    console.log(`Smoke test: ${passed} passed, ${failed} failed`);
+    return {passed, failed, roofOk};
+  }
+};
+</script>
+</body>
+</html>
