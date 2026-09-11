@@ -57,7 +57,21 @@
     "permit": 8500,
     "prelim": 12000,
     "internalWall": 50,
-    "externalWall": 50
+    "externalWall": 50,
+    "rule_main_building_floor_tiles_internal_46": 45,
+    "rule_main_building_floor_tiles_external_47": 55,
+    "rule_main_building_painting_internal_48": 15,
+    "rule_main_building_painting_external_49": 15,
+    "rule_main_building_ceiling_internal_50": 162,
+    "rule_main_building_ceiling_external_51": 162,
+    "rule_main_building_bathroom_wall_tiles_52": 55,
+    "rule_main_building_bathroom_floor_tiles_53": 50,
+    "rule_main_building_bathroom_ceiling_54": 162,
+    "rule_main_building_bathroom_piping_55": 1000,
+    "rule_boundary_fencing_80": 45000,
+    "rule_gate_81": 6000,
+    "rule_driveway_83": 5000,
+    "rule_landscaping_84": 2000
   },
   "rateItems": {
     "footingConc": {
@@ -423,7 +437,105 @@
       "category": "custom",
       "groupKey": "ARCHITECTURES",
       "groupTitle": "ARCHITECTURES"
+    },
+    "rule_main_building_floor_tiles_internal_46": {
+      "description": "Supply and install internal floor tiles to non-bathroom floor areas.",
+      "unit": "m²",
+      "category": "calculation-rule",
+      "groupKey": "ARCHITECTURES",
+      "groupTitle": "ARCHITECTURES"
+    },
+    "rule_main_building_floor_tiles_external_47": {
+      "description": "Supply and install external floor tiles to the external tiled area.",
+      "unit": "m²",
+      "category": "calculation-rule",
+      "groupKey": "ARCHITECTURES",
+      "groupTitle": "ARCHITECTURES"
+    },
+    "rule_main_building_painting_internal_48": {
+      "description": "Prepare and apply internal paint finish to internal wall areas.",
+      "unit": "m²",
+      "category": "calculation-rule",
+      "groupKey": "ARCHITECTURES",
+      "groupTitle": "ARCHITECTURES"
+    },
+    "rule_main_building_painting_external_49": {
+      "description": "Prepare and apply external paint finish to external wall areas.",
+      "unit": "m²",
+      "category": "calculation-rule",
+      "groupKey": "ARCHITECTURES",
+      "groupTitle": "ARCHITECTURES"
+    },
+    "rule_main_building_ceiling_internal_50": {
+      "description": "Supply and install internal ceiling finish to non-bathroom areas.",
+      "unit": "m²",
+      "category": "calculation-rule",
+      "groupKey": "ARCHITECTURES",
+      "groupTitle": "ARCHITECTURES"
+    },
+    "rule_main_building_ceiling_external_51": {
+      "description": "Supply and install external ceiling finish to the external ceiling area.",
+      "unit": "m²",
+      "category": "calculation-rule",
+      "groupKey": "ARCHITECTURES",
+      "groupTitle": "ARCHITECTURES"
+    },
+    "rule_main_building_bathroom_wall_tiles_52": {
+      "description": "Supply and install bathroom wall tiles to 10ft wall height.",
+      "unit": "m²",
+      "category": "calculation-rule",
+      "groupKey": "ARCHITECTURES",
+      "groupTitle": "ARCHITECTURES"
+    },
+    "rule_main_building_bathroom_floor_tiles_53": {
+      "description": "Supply and install bathroom floor tiles.",
+      "unit": "m²",
+      "category": "calculation-rule",
+      "groupKey": "ARCHITECTURES",
+      "groupTitle": "ARCHITECTURES"
+    },
+    "rule_main_building_bathroom_ceiling_54": {
+      "description": "Supply and install bathroom ceiling finish.",
+      "unit": "m²",
+      "category": "calculation-rule",
+      "groupKey": "ARCHITECTURES",
+      "groupTitle": "ARCHITECTURES"
+    },
+    "rule_main_building_bathroom_piping_55": {
+      "description": "Provide plumbing piping installation to each bathroom.",
+      "unit": "LS",
+      "category": "calculation-rule",
+      "groupKey": "ARCHITECTURES",
+      "groupTitle": "ARCHITECTURES"
+    },
+    "rule_boundary_fencing_80": {
+      "description": "Boundary fencing, including posts, fencing panels/mesh or other approved fencing system, foundations, concrete footings, fixing accessories, excavation, installation and all necessary associated works, complete.",
+      "unit": "LS",
+      "category": "calculation-rule",
+      "groupKey": "EXTERNAL WORK",
+      "groupTitle": "EXTERNAL WORK"
+    },
+    "rule_gate_81": {
+      "description": "Double-leaf mild steel swing gate, complete with mild steel frames, hinges, locking mechanism, handles, gate stops and protective finishing, including fixing, installation and all necessary associated works, complete. (Main Entrance)",
+      "unit": "No.",
+      "category": "calculation-rule",
+      "groupKey": "EXTERNAL WORK",
+      "groupTitle": "EXTERNAL WORK"
+    },
+    "rule_driveway_83": {
+      "description": "Driveway works, including site preparation, excavation where required, sub-base/hardcore, compaction, formwork, reinforcement, concrete/paving finish, joints, edge treatment and all necessary associated works, complete. (Driveway)",
+      "unit": "LS",
+      "category": "calculation-rule",
+      "groupKey": "EXTERNAL WORK",
+      "groupTitle": "EXTERNAL WORK"
+    },
+    "rule_landscaping_84": {
+      "description": "Landscaping works, including site preparation, soil preparation, planting of grass, plants and/or shrubs, planting accessories, trimming, watering, maintenance during establishment period and all necessary associated works, complete. (External Areas)",
+      "unit": "LS",
+      "category": "calculation-rule",
+      "groupKey": "EXTERNAL WORK",
+      "groupTitle": "EXTERNAL WORK"
     }
   },
-  "updatedAt": "2026-09-11T22:00:27.328Z"
+  "updatedAt": "2026-09-11T22:06:28.838Z"
 }
