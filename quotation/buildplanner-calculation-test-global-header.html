@@ -5,7 +5,8 @@
 html,body{margin:0;height:100%;font-family:Inter,system-ui,-apple-system,sans-serif;background:#0f172a}
 #bar{position:fixed;z-index:10;top:10px;left:10px;right:10px;background:rgba(255,255,255,.97);border:1px solid #e5e7eb;border-radius:14px;padding:10px 14px;box-shadow:0 10px 30px rgba(0,0,0,.18);display:flex;gap:12px;align-items:center;flex-wrap:wrap;font-size:12px}#status{font-weight:700}
 #app{width:100%;height:100%;border:0;display:block;padding-top:62px;box-sizing:border-box}
-.global-head{margin:0 24px 8px 24px}.global-head table,.engine-table{width:100%;table-layout:fixed;border-collapse:collapse;font-size:12px}.global-head th,.engine-table td{padding:7px 12px;text-align:left;vertical-align:top}.global-head th:nth-child(1),.engine-table td:nth-child(1){width:56%}.global-head th:nth-child(2),.engine-table td:nth-child(2){width:7%}.global-head th:nth-child(3),.engine-table td:nth-child(3){width:8%}.global-head th:nth-child(4),.engine-table td:nth-child(4){width:14%;text-align:right}.global-head th:nth-child(5),.engine-table td:nth-child(5){width:15%;text-align:right}.engine-table td{border-bottom:1px solid #e5e7eb}.engine-table{margin-left:24px;width:calc(100% - 24px)}
+.global-head{margin:0 24px 6px 24px}.global-head table{width:calc(100% - 24px);margin-left:24px;table-layout:fixed;border-collapse:collapse;font-size:12px}.global-head th{padding:7px 12px;text-align:left;vertical-align:top;border-bottom:1px solid #e5e7eb}.global-head th:nth-child(1){width:56%}.global-head th:nth-child(2){width:7%}.global-head th:nth-child(3){width:8%}.global-head th:nth-child(4){width:14%;text-align:right}.global-head th:nth-child(5){width:15%;text-align:right}
+.engine-table{table-layout:fixed!important;border-collapse:collapse!important;font-size:12px!important;width:100%!important}.engine-table td{padding:7px 12px!important;text-align:left;vertical-align:top}.engine-table td:nth-child(1){width:56%}.engine-table td:nth-child(2){width:7%}.engine-table td:nth-child(3){width:8%}.engine-table td:nth-child(4){width:14%;text-align:right}.engine-table td:nth-child(5){width:15%;text-align:right}.engine-table thead{display:none!important}
 </style></head><body>
 <div id="bar"><span id="status">Fixing test renderer…</span></div>
 <iframe id="app" src="buildplanner-calculation-test.html"></iframe>
@@ -19,5 +20,5 @@ const wrap=d.createElement('div');wrap.id='globalColumnHeader';wrap.className='g
 target.prepend(wrap);
 status.textContent='TEST FIXED: ONE global Description / Unit / Qty / Rate / Amount header';
 }catch(e){status.textContent='TEST ERROR: '+e.message}}
-frame.addEventListener('load',()=>{setTimeout(normalize,300);setTimeout(normalize,1000);setTimeout(normalize,2000)});
+frame.addEventListener('load',()=>{let last='';const watch=setInterval(()=>{try{const d=frame.contentDocument,t=d&&d.getElementById('estimateContent');if(t){const sig=t.innerHTML.length+':'+t.querySelectorAll('table').length;if(sig!==last){last=sig;normalize();}}}catch(e){}},300);setTimeout(normalize,500);setTimeout(normalize,1500);setTimeout(normalize,3000)});
 </script></body></html>
