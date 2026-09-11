@@ -15,9 +15,177 @@
   },
   "state": "active",
   "plannerRecords": {
-    "build": [],
+    "build": [
+      {
+        "schemaVersion": 1,
+        "recordType": "quotation",
+        "quotationId": "QT-BLD-MTWDRELN-6QFA9",
+        "projectId": "PRJ-BLD-MTWDRG68-2P7C2",
+        "quotationNumber": "Q001D",
+        "plannerType": "build",
+        "role": "homeowner",
+        "homeownerId": "HME-20260911-B99O",
+        "state": "final",
+        "quotationType": "detail",
+        "client": {
+          "name": "Fazril"
+        },
+        "project": {
+          "location": "Rawang",
+          "builtUpArea": 1144,
+          "state": "selangor"
+        },
+        "total": 215353.77,
+        "plannerState": {
+          "customerName": "Fazril",
+          "projectLocation": "Rawang",
+          "builtUpArea": "1144",
+          "rooms": [
+            {
+              "id": "room-1",
+              "type": "dining",
+              "name": "Dining",
+              "area": "80"
+            },
+            {
+              "id": "room-2",
+              "type": "kitchen",
+              "name": "Kitchen",
+              "area": "100"
+            },
+            {
+              "id": "room-3",
+              "type": "bedroom",
+              "name": "Master Bedroom",
+              "area": "240"
+            },
+            {
+              "id": "room-4",
+              "type": "bedroom",
+              "name": "Bedroom",
+              "area": "120"
+            },
+            {
+              "id": "room-5",
+              "type": "bedroom",
+              "name": "Bedroom",
+              "area": "120"
+            },
+            {
+              "id": "room-6",
+              "type": "store",
+              "name": "Store / Utility",
+              "area": "24"
+            },
+            {
+              "id": "room-7",
+              "type": "bathroom",
+              "name": "Bathroom",
+              "area": "48"
+            },
+            {
+              "id": "room-8",
+              "type": "bathroom",
+              "name": "Bathroom",
+              "area": "52"
+            },
+            {
+              "id": "room-9",
+              "type": "living",
+              "name": "Living / Family",
+              "area": "160"
+            },
+            {
+              "id": "room-10",
+              "type": "porch",
+              "name": "Car Porch / Entrance",
+              "area": "200"
+            }
+          ],
+          "rates": {
+            "footingConc": 550,
+            "footingFw": 4.18,
+            "footingRebar": 15,
+            "slabConc": 550,
+            "slabBrc": 6.5,
+            "beamConc": 350,
+            "beamFw": 4.18,
+            "beamRebar": 15,
+            "colConc": 550,
+            "colFw": 4.18,
+            "colRebar": 15,
+            "flatRoofConc": 550,
+            "flatRoofFw": 4.18,
+            "flatRoofBrc": 6.5,
+            "cChannel": 4,
+            "metalSheet": 3.25,
+            "roofDesignConc": 550,
+            "roofDesignFw": 4.18,
+            "roofDesignRebar": 70,
+            "apronConc": 350,
+            "apronFw": 13.72,
+            "apronBrc": 15,
+            "drainage": 25,
+            "ceilingInt": 15,
+            "ceilingExt": 20,
+            "floorTileInt": 4.18,
+            "floorTileExt": 5.57,
+            "paintInt": 1.39,
+            "paintExt": 2.32,
+            "door": 600,
+            "window": 600,
+            "waterTank": 500,
+            "septicTank": 1500,
+            "bathWallTile": 4.18,
+            "bathFloorTile": 4.18,
+            "bathPiping": 1000,
+            "bathShower": 120,
+            "bathTap": 30,
+            "bathWc": 500,
+            "bathBasin": 400,
+            "dbBox": 1000,
+            "wiring": 20,
+            "powerPoint": 50,
+            "switch": 50,
+            "lighting": 250,
+            "fan": 600,
+            "aircond": 300,
+            "earthing": 1500,
+            "permit": 8500,
+            "prelim": 12000
+          },
+          "customRates": [],
+          "customQuantities": [],
+          "customDescriptions": [],
+          "customRoomLabels": [
+            [
+              "room-3",
+              "Master Bedroom"
+            ]
+          ],
+          "excludedItems": [],
+          "manualItems": [],
+          "standardRateItems": [],
+          "quotationType": "detail",
+          "projectId": "PRJ-BLD-MTWDRG68-2P7C2",
+          "projectState": "selangor",
+          "rateSetId": "selangor",
+          "rateSetName": "Selangor",
+          "rateSnapshotAt": "2026-09-11T03:12:09.134Z"
+        },
+        "createdAt": "2026-09-11T03:12:09.131Z",
+        "updatedAt": "2026-09-11T03:12:11.168Z",
+        "estimateNumber": "EST-BLD-001"
+      }
+    ],
     "renovation": []
   },
   "createdAt": "2026-09-11T02:59:12.950Z",
-  "updatedAt": "2026-09-11T02:59:12.950Z"
+  "updatedAt": "2026-09-11T03:12:11.168Z",
+  "quotationRunningNumber": {
+    "build": 1
+  },
+  "estimateRunningNumber": {
+    "build": 1
+  }
 }
