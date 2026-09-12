@@ -202,9 +202,10 @@
     "rule_windows_type_1_78": 1200,
     "rule_windows_type_2_79": 1400,
     "rule_windows_type_3_80": 800,
-    "rule_external_work_drain_81": 20
+    "rule_external_work_drain_81": 20,
+    "rule_main_building_wiring_69": 8000
   },
-  "updatedAt": "2026-09-12T00:26:49.517Z",
+  "updatedAt": "2026-09-12T00:27:45.887Z",
   "effectiveDate": null,
   "rateItems": {
     "rule_submission_of_building_plan_permit_application_and_engineer_s_drawings_to_the_local_authority_0": {
@@ -1235,6 +1236,13 @@
       "category": "calculation-rule",
       "groupKey": "EXTERNAL WORK",
       "groupTitle": "EXTERNAL WORK"
+    },
+    "rule_main_building_wiring_69": {
+      "description": "Electrical wiring allowance.",
+      "unit": "LS",
+      "category": "calculation-rule",
+      "groupKey": "ELECTRICAL",
+      "groupTitle": "ELECTRICAL"
     }
   }
 }
