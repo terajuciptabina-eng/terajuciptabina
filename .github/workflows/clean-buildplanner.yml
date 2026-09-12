@@ -1,0 +1,43 @@
+name: Clean Build Planner V2
+on:
+  push:
+    branches:
+      - temp-clean-buildplanner
+permissions:
+  contents: write
+jobs:
+  clean:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Remove legacy calculator and bump V2 script
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+          p = Path('quotation/buildplanner-v2.html')
+          s = p.read_text(encoding='utf-8')
+          scripts = re.findall(r'<script\b[^>]*>.*?</script>', s, flags=re.I|re.S)
+          removed = 0
+          out = s
+          for block in scripts:
+              low = block.lower()
+              if ('generatestructureitems' in low and 'generateroomarchitectureitems' in low and 'generateelectricalitems' in low):
+                  out = out.replace(block, '', 1)
+                  removed += 1
+          out = re.sub(r'(?s)<script>\s*updateRoomsEmptyState\(\);\s*updateEstimate\(\);\s*</script>', '', out, count=1)
+          out = out.replace('quotation-quantity-fix.js?v=20260907', 'quotation-quantity-fix.js?v=20260912')
+          if removed != 1:
+              raise SystemExit(f'Expected exactly one legacy calculator block, removed={removed}')
+          p.write_text(out, encoding='utf-8')
+          print(f'legacy_blocks_removed={removed}')
+      - name: Commit clean page and remove temporary workflow
+        run: |
+          rm -f .github/workflows/clean-buildplanner.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add quotation/buildplanner-v2.html .github/workflows/clean-buildplanner.yml
+          git commit -m 'Clean Build Planner V2 HTML and isolate calculation engine'
+          git push origin HEAD:temp-clean-buildplanner
