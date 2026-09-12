@@ -33,11 +33,11 @@
   }
 
   async function load(){
-    const response=await fetch('calculation-rules.html',{cache:'no-store'});
+    const response=await fetch('calculation-rules.html?source=master&v=20260912',{cache:'no-store'});
     if(!response.ok)throw new Error('Unable to load Calculation Rules');
     const source=await response.text();
     const rules=extractRules(source);
-    descriptions=new Map(rules.map(r=>[String(r[1]),String(r[2])]));
+    descriptions=new Map((rules||[]).map(r=>[String(r?.path||''),String(r?.description||'')]).filter(([path,description])=>path&&description));
   }
 
   function normalizePath(value){
