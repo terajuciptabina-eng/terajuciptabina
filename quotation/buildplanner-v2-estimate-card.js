@@ -4,6 +4,7 @@
   if(window.__terajuV2RuleHierarchyEstimateCard) return;
   window.__terajuV2RuleHierarchyEstimateCard = true;
   const TOP_ORDER=['PRELIMINARIES','STRUCTURES','ARCHITECTURES','ELECTRICAL','DOORS & WINDOWS','EXTERNAL WORK'];
+  let RULES_BY_PATH=new Map();
   function esc(v){return String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;')}
   function num(v){return Number(v)||0}
   function qty(v){return Math.max(0,Math.ceil(num(v)))}
@@ -11,6 +12,29 @@
   function money(v){return new Intl.NumberFormat('en-MY',{minimumFractionDigits:2,maximumFractionDigits:2}).format(rate(v))}
   function isContractor(){return typeof IS_CONTRACTOR!=='undefined'&&!!IS_CONTRACTOR}
   function ruleItemName(path){const p=String(path||'').split(' / ');return p.length>1?p.slice(-2).join(' / '):p[0]||'Item'}
+  function ruleUnit(path){const rule=RULES_BY_PATH.get(String(path||'').trim());return rule&&rule.output?String(rule.output):''}
+  function extractRules(source){
+    const marker='const rules=[';
+    const start=source.indexOf(marker);
+    if(start<0)throw new Error('Calculation Rules array not found');
+    let i=start+marker.length-1,depth=0,quote=null,escaped=false;
+    for(;i<source.length;i++){
+      const ch=source[i];
+      if(quote){
+        if(escaped)escaped=false; else if(ch==='\\')escaped=true; else if(ch===quote)quote=null;
+        continue;
+      }
+      if(ch==='\''||ch==='"'||ch==='`'){quote=ch;continue}
+      if(ch==='[')depth++; else if(ch===']'){depth--;if(depth===0){return Function('"use strict";return '+source.slice(start+marker.length-1,i+1))();}}
+    }
+    throw new Error('Calculation Rules array is incomplete');
+  }
+  async function loadGlobalRules(){
+    const response=await fetch('calculation-rules.html',{cache:'no-store'});
+    if(!response.ok)throw new Error('Unable to load global Calculation Rules');
+    const rules=extractRules(await response.text());
+    RULES_BY_PATH=new Map(rules.map(rule=>[String(rule.path||'').trim(),rule]));
+  }
   function classify(item,rooms){
     const id=String(item?.id||''),desc=String(item?.description||''),lower=desc.toLowerCase(),room=(rooms||[]).find(r=>r.roomId===item.roomId);
     if(/^prelim-/.test(id)||item.category==='preliminaries')return {top:'PRELIMINARIES',path:id==='prelim-1'?'PRELIMINARIES / Building Plan / Submission':'PRELIMINARIES / Site Mobilisation / Project Management',target:'prelim'};
@@ -56,7 +80,7 @@
     const c=document.getElementById('estimateContent'); if(!c)return;
     const active=(items||[]).filter(i=>!(typeof excludedItems!=='undefined'&&excludedItems instanceof Set&&excludedItems.has(i.id)));
     const groups=new Map(TOP_ORDER.map(k=>[k,[]])); active.forEach(item=>{const meta=classify(item,rooms||[]);groups.get(meta.top)?.push({...item,_meta:meta})});
-    const row=i=>`<tr class="border-b align-top" data-rule-item-id="${esc(i.id)}"><td class="py-3 px-2">${isContractor()?`<textarea class="w-full border rounded-lg px-3 py-2 bg-white" onchange="editItemDescription('${esc(i.id)}',this.value)">${esc(ruleItemName(i._meta.path))}</textarea>`:`<div class="homeowner-locked py-2 rounded-lg">${esc(ruleItemName(i._meta.path))}</div>`}</td><td class="py-3 px-2">${esc(i.unit)}</td><td class="py-3 px-2">${isContractor()?`<input type="number" min="0" step="1" value="${qty(i.qty)}" class="w-24 border rounded-lg px-2 py-2 text-right" onchange="editItemQuantity('${esc(i.id)}',this.value)">`:`<div class="homeowner-locked text-right py-2">${qty(i.qty)}</div>`}</td><td class="py-3 px-2">${isContractor()?`<input type="number" min="0" step="0.01" value="${rate(i.rate).toFixed(2)}" class="w-28 border rounded-lg px-2 py-2 text-right" onchange="editItemRate('${esc(i.id)}',this.value)">`:`<div class="homeowner-locked text-right py-2">${money(i.rate)}</div>`}</td><td class="py-3 px-2 text-right font-medium">${money(i.amount)}</td><td class="py-3 px-2"><button type="button" onclick="excludeItem('${esc(i.id)}')" class="text-red-600 border border-red-200 px-3 py-2 rounded-lg text-xs">Delete</button></td></tr>`;
+    const row=i=>`<tr class="border-b align-top" data-rule-item-id="${esc(i.id)}"><td class="py-3 px-2">${isContractor()?`<textarea class="w-full border rounded-lg px-3 py-2 bg-white" onchange="editItemDescription('${esc(i.id)}',this.value)">${esc(ruleItemName(i._meta.path))}</textarea>`:`<div class="homeowner-locked py-2 rounded-lg">${esc(ruleItemName(i._meta.path))}</div>`}</td><td class="py-3 px-2">${esc(ruleUnit(i._meta.path))}</td><td class="py-3 px-2">${isContractor()?`<input type="number" min="0" step="1" value="${qty(i.qty)}" class="w-24 border rounded-lg px-2 py-2 text-right" onchange="editItemQuantity('${esc(i.id)}',this.value)">`:`<div class="homeowner-locked text-right py-2">${qty(i.qty)}</div>`}</td><td class="py-3 px-2">${isContractor()?`<input type="number" min="0" step="0.01" value="${rate(i.rate).toFixed(2)}" class="w-28 border rounded-lg px-2 py-2 text-right" onchange="editItemRate('${esc(i.id)}',this.value)">`:`<div class="homeowner-locked text-right py-2">${money(i.rate)}</div>`}</td><td class="py-3 px-2 text-right font-medium">${money(i.amount)}</td><td class="py-3 px-2"><button type="button" onclick="excludeItem('${esc(i.id)}')" class="text-red-600 border border-red-200 px-3 py-2 rounded-lg text-xs">Delete</button></td></tr>`;
     const heading=t=>`<tr class="quotation-section-row"><td colspan="6" class="py-3 px-2">${esc(t)}</td></tr>`,sub=t=>`<tr class="quotation-subsection-row"><td colspan="6" class="py-2 px-2">${esc(t)}</td></tr>`;
     const add=target=>isContractor()&&target?`<tr class="no-print"><td colspan="6" class="py-2 px-2"><div class="contractor-only" data-manual-anchor="${esc(target)}"><button type="button" class="border px-3 py-1.5 rounded-lg text-xs bg-white" onclick="addManualItemPrompt('${esc(target)}')">+ Add Item</button></div></td></tr>`:'';
     const subtotal=arr=>arr.reduce((s,i)=>s+num(i.amount),0);
@@ -75,6 +99,16 @@
     }
     h+='</tbody><tfoot><tr class="border-t-2"><td colspan="4" class="py-4 px-2 text-right font-bold">TOTAL</td><td class="py-4 px-2 text-right font-bold text-lg">'+money(total)+'</td><td></td></tr></tfoot></table>'; c.innerHTML=h;
   }
-  function install(){if(typeof window.renderEstimate!=='function')return false;if(window.renderEstimate.__terajuRuleHierarchyWrapped)return true;const original=window.renderEstimate;const wrapped=function(items,rooms,total,roomsArea,declared){const result=original.apply(this,arguments);try{render(items,rooms,total)}catch(err){console.error('[TERAJU V2 estimate card]',err)}return result};wrapped.__terajuRuleHierarchyWrapped=true;window.renderEstimate=wrapped;if(typeof window.updateEstimate==='function')window.updateEstimate();return true}
-  let tries=0;const timer=setInterval(()=>{if(install()||++tries>40)clearInterval(timer)},250);if(document.readyState!=='loading')install();else document.addEventListener('DOMContentLoaded',install,{once:true});
+  async function install(){
+    if(typeof window.renderEstimate!=='function')return false;
+    if(window.renderEstimate.__terajuRuleHierarchyWrapped)return true;
+    try{await loadGlobalRules();}catch(err){console.error('[TERAJU V2 global Calculation Rules]',err);return false;}
+    const original=window.renderEstimate;
+    const wrapped=function(items,rooms,total,roomsArea,declared){const result=original.apply(this,arguments);try{render(items,rooms,total)}catch(err){console.error('[TERAJU V2 estimate card]',err)}return result};
+    wrapped.__terajuRuleHierarchyWrapped=true;
+    window.renderEstimate=wrapped;
+    if(typeof window.updateEstimate==='function')window.updateEstimate();
+    return true;
+  }
+  let tries=0;const timer=setInterval(()=>{install().then(ok=>{if(ok||++tries>40)clearInterval(timer)})},250);if(document.readyState!=='loading')install();else document.addEventListener('DOMContentLoaded',install,{once:true});
 })();
