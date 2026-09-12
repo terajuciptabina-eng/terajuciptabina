@@ -32,7 +32,7 @@ jobs:
       - name: Restore workflow and commit V2 update
         shell: bash
         run: |
-          git checkout HEAD~1 -- .github/workflows/add-location-autocomplete.yml
+          git show 5f75f37296a3c44b5bbfc94e6b6d5c60eaf3470f:.github/workflows/add-location-autocomplete.yml > .github/workflows/add-location-autocomplete.yml
           git config user.name 'Teraju Ciptabina Bot'
           git config user.email 'actions@users.noreply.github.com'
           git add quotation/buildplanner-v2.html .github/workflows/add-location-autocomplete.yml
