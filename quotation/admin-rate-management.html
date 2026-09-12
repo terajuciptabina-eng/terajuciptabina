@@ -1,1 +1,66 @@
-<!doctype html><html><body style="margin:0;background:#f3f4f6;font-family:system-ui"><div id="gate" style="min-height:100vh;display:grid;place-items:center"><div style="background:#fff;padding:28px;border-radius:18px;max-width:430px"><b>TERAJU WORKS</b><h2>Admin Authentication</h2><p>Rate Management is controlled by the Admin Control Panel.</p><button onclick="location.href='../admin.html'">Open Admin Control</button></div></div><iframe id="app" src="admin-rate-management-app.html" style="display:none;position:fixed;inset:0;width:100%;height:100%;border:0"></iframe><script>const k=sessionStorage.getItem('teraju.admin.key')||'',API='https://terajuciptabina.vercel.app/api/admin',g=document.getElementById('gate'),f=document.getElementById('app');if(!k)location.href='../admin.html';else fetch(API+'?records=0',{headers:{'X-Admin-Key':k},cache:'no-store'}).then(r=>{if(!r.ok)throw 0;g.style.display='none';f.style.display='block';f.onload=()=>{try{const i=f.contentDocument.getElementById('key');if(i){i.value=k;const b=f.contentDocument.getElementById('load');if(b)b.click()}}catch{}}}).catch(()=>{sessionStorage.removeItem('teraju.admin.key');location.href='../admin.html'});</script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TERAJU WORKS — Rate Management</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f3f4f6;color:#111827}
+#gate{min-height:100vh;display:grid;place-items:center;padding:20px}
+.box{width:min(460px,100%);background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:28px;box-shadow:0 18px 55px rgba(0,0,0,.12)}
+.eyebrow{font-size:11px;font-weight:800;letter-spacing:.12em;color:#6b7280;text-transform:uppercase}
+h1{font-size:24px;margin:6px 0 8px}
+p{margin:0;color:#6b7280;font-size:13px;line-height:1.5}
+#error{margin-top:12px;color:#b91c1c;font-size:12px}
+#app{display:none;position:fixed;inset:0;width:100%;height:100%;border:0;background:#f5f7fa}
+</style>
+</head>
+<body>
+<div id="gate">
+  <div class="box">
+    <div class="eyebrow">TERAJU WORKS</div>
+    <h1>Opening Rate Management…</h1>
+    <p>Checking the authenticated Admin session.</p>
+    <div id="error"></div>
+  </div>
+</div>
+<iframe id="app" src="admin-rate-management-app.html" title="Rate Management"></iframe>
+<script>
+const ADMIN_API='https://terajuciptabina.vercel.app/api/admin';
+const USER_KEY='teraju.admin.username';
+const PASS_KEY='teraju.admin.key';
+const gate=document.getElementById('gate');
+const frame=document.getElementById('app');
+const errorEl=document.getElementById('error');
+
+async function openRateManagement(){
+  const username=sessionStorage.getItem(USER_KEY)||'';
+  const password=sessionStorage.getItem(PASS_KEY)||'';
+  if(!username||!password){
+    location.href='admin.html';
+    return;
+  }
+  try{
+    const r=await fetch(ADMIN_API+'?records=0',{
+      headers:{
+        'X-Admin-Username':username,
+        'X-Admin-Password':password
+      },
+      cache:'no-store'
+    });
+    if(!r.ok)throw new Error('Admin session expired.');
+    gate.style.display='none';
+    frame.style.display='block';
+  }catch(e){
+    sessionStorage.removeItem(USER_KEY);
+    sessionStorage.removeItem(PASS_KEY);
+    errorEl.textContent=e.message||'Unable to verify Admin session.';
+    setTimeout(()=>location.href='admin.html',700);
+  }
+}
+
+openRateManagement();
+</script>
+</body>
+</html>
