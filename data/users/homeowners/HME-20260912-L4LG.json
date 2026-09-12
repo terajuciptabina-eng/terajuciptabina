@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "homeowner",
+  "homeownerId": "HME-20260912-L4LG",
+  "profile": {
+    "name": "syukri",
+    "email": "syukrie422@icloud.com",
+    "phone": "0182175144"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-09-12T14:18:20.523Z",
+  "updatedAt": "2026-09-12T14:18:20.523Z"
+}
