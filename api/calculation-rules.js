@@ -5,7 +5,7 @@ export default async function handler(req,res){
   res.setHeader('Access-Control-Allow-Headers','Content-Type,X-Admin-Key,X-Admin-Username,X-Admin-Password');
   if(req.method==='OPTIONS')return res.status(200).end();
   if(!['GET','POST','PUT','DELETE'].includes(req.method))return res.status(405).json({message:'Method not allowed.'});
-  const token=process.env.GITHUB_TOKEN,repo=process.env.GITHUB_REPO||'terajuciptabina-eng/terajuciptabina',path='quotation/calculation-rules.html';
+  const token=process.env.GITHUB_TOKEN,repo=process.env.GITHUB_REPO||'terajuciptabina-eng/terajuciptabina',path='quotation/calculation-rules-master.html';
   if(!token)return res.status(500).json({message:'GitHub auth storage is not configured.'});
   const expectedUser=String(process.env.ADMIN_USERNAME||'admin').trim(),expectedPass=String(process.env.ADMIN_PASSWORD||process.env.ADMIN_KEY||'').trim();
   const suppliedUser=String(req.headers['x-admin-username']||'').trim(),suppliedPass=String(req.headers['x-admin-password']||req.headers['x-admin-key']||'').trim();
