@@ -201,12 +201,12 @@
           "quotationType": "simple",
           "projectId": "PRJ-BLD-MTVQWX4G-6CK21",
           "projectState": "selangor",
-          "rateSetId": "selangor",
-          "rateSetName": "Selangor",
-          "rateSnapshotAt": "2026-09-12T14:52:25.375Z"
+          "rateSetId": "default",
+          "rateSetName": "Default Rate",
+          "rateSnapshotAt": "2026-09-12T15:00:15.145Z"
         },
         "createdAt": "2026-09-10T18:25:21.019Z",
-        "updatedAt": "2026-09-12T14:52:26.631Z",
+        "updatedAt": "2026-09-12T15:00:17.206Z",
         "estimateNumber": "EST-BLD-010"
       },
       {
@@ -2096,7 +2096,7 @@
     ]
   },
   "createdAt": "2026-09-09T13:15:32.117Z",
-  "updatedAt": "2026-09-12T14:52:26.631Z",
+  "updatedAt": "2026-09-12T15:00:17.206Z",
   "quotationRunningNumber": {
     "build": 12,
     "renovation": 7
