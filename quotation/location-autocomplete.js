@@ -158,3 +158,15 @@
   if(document.readyState!=='loading')enforce();
   else document.addEventListener('DOMContentLoaded',enforce,{once:true});
 })();
+
+// V2 Estimate Construction Budget card only.
+// This is deliberately path-gated: no calculation engine, Rate Schedule,
+// quotation preview, or other planner UI is changed by this adapter.
+(function(){
+  'use strict';
+  if(!/buildplanner-v2\.html$/i.test(location.pathname))return;
+  const script=document.createElement('script');
+  script.src='buildplanner-v2-estimate-card.js?v=20260912';
+  script.async=false;
+  document.head.appendChild(script);
+})();
