@@ -125,7 +125,7 @@ function quantity(r,c,out){
    if(/windows\s*\/.*type 2/i.test(l))return c.kitchen.length;
    if(/windows\s*\/.*type 3/i.test(l))return c.bath.length;
    return 0;
-  case'AREA ALLOWANCE':return(isPorch?c.porch:c.main).reduce((s,x)=>s+Math.ceil(x.area/100),0);
+  case'AREA ALLOWANCE':return(porch?c.porch:c.main).reduce((s,x)=>s+Math.ceil(x.area/100),0);
   case'AREA / COEFFICIENT':
   case'BASELINE COEFFICIENT':
   case'COEFFICIENT':return A*k;
@@ -332,7 +332,7 @@ function extractRules(text){
   if(ch==='[')depth++;
   else if(ch===']'){
    depth--;
-   if(depth===0)return Function(`"use strict";return ${text.slice(start,i+1)}`)();
+   if(depth===0)return Function(`\"use strict\";return ${text.slice(start,i+1)}`)();
   }
  }
  throw Error('Calculation Rules array is incomplete');
