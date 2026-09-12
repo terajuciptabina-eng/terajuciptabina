@@ -138,9 +138,73 @@
     "rule_main_building_ceiling_external_51": 172,
     "rule_main_building_bathroom_wall_tiles_52": 70,
     "rule_main_building_bathroom_floor_tiles_53": 75,
-    "rule_main_building_bathroom_ceiling_54": 162
+    "rule_main_building_bathroom_ceiling_54": 162,
+    "rule_preliminaries_building_plan_submission_0": 8500,
+    "rule_preliminaries_site_mobilisation_project_management_1": 12000,
+    "rule_main_building_roof_metal_roofing_sheet_19": 3.25,
+    "rule_main_building_apron_concrete_20": 350,
+    "rule_main_building_apron_formwork_21": 13.72,
+    "rule_main_building_apron_brc_22": 15,
+    "rule_main_building_drainage_23": 25,
+    "rule_porch_footing_concrete_24": 550,
+    "rule_porch_footing_formwork_25": 4.18,
+    "rule_porch_footing_rebar_26": 15,
+    "rule_porch_ground_slab_concrete_27": 550,
+    "rule_porch_ground_slab_brc_28": 6.5,
+    "rule_porch_ground_beam_concrete_29": 350,
+    "rule_porch_ground_beam_formwork_30": 4.18,
+    "rule_porch_ground_beam_rebar_31": 15,
+    "rule_porch_roof_beam_concrete_32": 350,
+    "rule_porch_roof_beam_formwork_33": 4.18,
+    "rule_porch_roof_beam_rebar_34": 15,
+    "rule_porch_column_concrete_35": 550,
+    "rule_porch_column_formwork_36": 4.18,
+    "rule_porch_column_rebar_37": 15,
+    "rule_porch_flat_roof_concrete_38": 550,
+    "rule_porch_flat_roof_formwork_39": 4.18,
+    "rule_porch_flat_roof_brc_40": 6.5,
+    "rule_porch_roof_metal_roofing_sheet_41": 3.25,
+    "rule_roof_design_concrete_42": 550,
+    "rule_roof_design_formwork_43": 4.18,
+    "rule_roof_design_rebar_44": 70,
+    "rule_main_building_brickwall_internal_wall_45": 50,
+    "rule_main_building_brickwall_external_wall_46": 50,
+    "rule_main_building_floor_tiles_internal_47": 45,
+    "rule_main_building_floor_tiles_external_48": 45,
+    "rule_main_building_painting_internal_49": 15,
+    "rule_main_building_painting_external_50": 15,
+    "rule_main_building_ceiling_internal_51": 162,
+    "rule_main_building_ceiling_external_52": 162,
+    "rule_bathroom_wall_tiles_53": 45,
+    "rule_bathroom_floor_tiles_54": 45,
+    "rule_bathroom_ceiling_55": 162,
+    "rule_bathroom_piping_56": 1100,
+    "rule_bathroom_wc_57": 300,
+    "rule_bathroom_basin_58": 200,
+    "rule_bathroom_shower_59": 250,
+    "rule_bathroom_tap_60": 70,
+    "rule_main_building_water_tank_61": 600,
+    "rule_main_building_septic_tank_62": 2500,
+    "rule_main_building_db_box_63": 2500,
+    "rule_main_building_power_point_64": 6.5,
+    "rule_main_building_switch_65": 6.5,
+    "rule_main_building_lighting_66": 120,
+    "rule_main_building_fan_67": 150,
+    "rule_main_building_aircond_point_68": 300,
+    "rule_main_building_earthing_70": 1500,
+    "rule_porch_lighting_71": 120,
+    "rule_porch_fan_72": 150,
+    "rule_porch_power_point_73": 6.5,
+    "rule_doors_type_1_74": 2400,
+    "rule_doors_type_2_75": 2000,
+    "rule_doors_type_3_76": 900,
+    "rule_doors_type_4_77": 800,
+    "rule_windows_type_1_78": 1200,
+    "rule_windows_type_2_79": 1400,
+    "rule_windows_type_3_80": 800,
+    "rule_external_work_drain_81": 20
   },
-  "updatedAt": "2026-09-11T22:26:19.651Z",
+  "updatedAt": "2026-09-12T00:26:49.517Z",
   "effectiveDate": null,
   "rateItems": {
     "rule_submission_of_building_plan_permit_application_and_engineer_s_drawings_to_the_local_authority_0": {
@@ -207,7 +271,7 @@
       "groupTitle": "STRUCTURES"
     },
     "rule_main_building_ground_beam_rebar_9": {
-      "description": "Supply and install reinforcement bars to 150mm × 400mm ground beam.",
+      "description": "Supply and install reinforcement bars to ground beam.",
       "unit": "kg",
       "category": "calculation-rule",
       "groupKey": "STRUCTURES",
@@ -221,14 +285,14 @@
       "groupTitle": "STRUCTURES"
     },
     "rule_main_building_roof_beam_formwork_11": {
-      "description": "Provide formwork to 150mm × 400mm reinforced concrete roof beam.",
+      "description": "Provide formwork to reinforced concrete roof beam.",
       "unit": "m²",
       "category": "calculation-rule",
       "groupKey": "STRUCTURES",
       "groupTitle": "STRUCTURES"
     },
     "rule_main_building_roof_beam_rebar_12": {
-      "description": "Supply and install reinforcement bars to 150mm × 400mm roof beam.",
+      "description": "Supply and install reinforcement bars to roof beam.",
       "unit": "kg",
       "category": "calculation-rule",
       "groupKey": "STRUCTURES",
@@ -242,14 +306,14 @@
       "groupTitle": "STRUCTURES"
     },
     "rule_main_building_column_formwork_14": {
-      "description": "Provide formwork to 150mm × 150mm reinforced concrete columns, 3m height.",
+      "description": "Provide formwork to reinforced concrete columns, 3m height.",
       "unit": "m²",
       "category": "calculation-rule",
       "groupKey": "STRUCTURES",
       "groupTitle": "STRUCTURES"
     },
     "rule_main_building_column_rebar_15": {
-      "description": "Supply and install reinforcement bars to 150mm × 150mm concrete columns, 3m height.",
+      "description": "Supply and install reinforcement bars to concrete columns.",
       "unit": "kg",
       "category": "calculation-rule",
       "groupKey": "STRUCTURES",
@@ -723,6 +787,454 @@
       "category": "calculation-rule",
       "groupKey": "ARCHITECTURES",
       "groupTitle": "ARCHITECTURES"
+    },
+    "rule_preliminaries_building_plan_submission_0": {
+      "description": "Submission of building plan / permit application and Engineer’s drawings to Local Authority.",
+      "unit": "LS",
+      "category": "calculation-rule",
+      "groupKey": "PRELIMINARIES",
+      "groupTitle": "PRELIMINARIES"
+    },
+    "rule_preliminaries_site_mobilisation_project_management_1": {
+      "description": "Preliminaries, site mobilisation, temporary facilities, insurance and project management.",
+      "unit": "LS",
+      "category": "calculation-rule",
+      "groupKey": "PRELIMINARIES",
+      "groupTitle": "PRELIMINARIES"
+    },
+    "rule_main_building_roof_metal_roofing_sheet_19": {
+      "description": "Supply and install metal roofing sheet to selected roof, 25° pitch with 3ft overhang.",
+      "unit": "m²",
+      "category": "calculation-rule",
+      "groupKey": "STRUCTURES",
+      "groupTitle": "STRUCTURES"
+    },
+    "rule_main_building_apron_concrete_20": {
+      "description": "Supply and construct 50mm thick Grade 15 concrete apron.",
+      "unit": "m³",
+      "category": "calculation-rule",
+      "groupKey": "STRUCTURES",
+      "groupTitle": "STRUCTURES"
+    },
+    "rule_main_building_apron_formwork_21": {
+      "description": "Provide edge formwork to 50mm thick concrete apron.",
+      "unit": "m²",
+      "category": "calculation-rule",
+      "groupKey": "STRUCTURES",
+      "groupTitle": "STRUCTURES"
+    },
+    "rule_main_building_apron_brc_22": {
+      "description": "Supply and install BRC A7 reinforcement to concrete apron, single layer.",
+      "unit": "m²",
+      "category": "calculation-rule",
+      "groupKey": "STRUCTURES",
+      "groupTitle": "STRUCTURES"
+    },
+    "rule_main_building_drainage_23": {
+      "description": "Supply and construct drainage along the outer edge of the apron.",
+      "unit": "m",
+      "category": "calculation-rule",
+      "groupKey": "STRUCTURES",
+      "groupTitle": "STRUCTURES"
+    },
+    "rule_porch_footing_concrete_24": {
+      "description": "Supply and construct Grade 15 concrete footing to porch.",
+      "unit": "m³",
+      "category": "calculation-rule",
+      "groupKey": "STRUCTURES",
+      "groupTitle": "STRUCTURES"
+    },
+    "rule_porch_footing_formwork_25": {
+      "description": "Provide formwork to porch footing.",
+      "unit": "m²",
+      "category": "calculation-rule",
+      "groupKey": "STRUCTURES",
+      "groupTitle": "STRUCTURES"
+    },
+    "rule_porch_footing_rebar_26": {
+      "description": "Supply and install reinforcement bars to porch footing.",
+      "unit": "kg",
+      "category": "calculation-rule",
+      "groupKey": "STRUCTURES",
+      "groupTitle": "STRUCTURES"
+    },
+    "rule_porch_ground_slab_concrete_27": {
+      "description": "Supply and construct 150mm thick Grade 25 concrete porch ground slab.",
+      "unit": "m³",
+      "category": "calculation-rule",
+      "groupKey": "STRUCTURES",
+      "groupTitle": "STRUCTURES"
+    },
+    "rule_porch_ground_slab_brc_28": {
+      "description": "Supply and install BRC A7 reinforcement to porch ground slab, double layer.",
+      "unit": "m²",
+      "category": "calculation-rule",
+      "groupKey": "STRUCTURES",
+      "groupTitle": "STRUCTURES"
+    },
+    "rule_porch_ground_beam_concrete_29": {
+      "description": "Supply and construct 150mm × 400mm Grade 25 porch ground beam.",
+      "unit": "m³",
+      "category": "calculation-rule",
+      "groupKey": "STRUCTURES",
+      "groupTitle": "STRUCTURES"
+    },
+    "rule_porch_ground_beam_formwork_30": {
+      "description": "Provide formwork to porch ground beam.",
+      "unit": "m²",
+      "category": "calculation-rule",
+      "groupKey": "STRUCTURES",
+      "groupTitle": "STRUCTURES"
+    },
+    "rule_porch_ground_beam_rebar_31": {
+      "description": "Supply and install reinforcement bars to porch ground beam.",
+      "unit": "kg",
+      "category": "calculation-rule",
+      "groupKey": "STRUCTURES",
+      "groupTitle": "STRUCTURES"
+    },
+    "rule_porch_roof_beam_concrete_32": {
+      "description": "Supply and construct 150mm × 400mm Grade 25 porch roof beam.",
+      "unit": "m³",
+      "category": "calculation-rule",
+      "groupKey": "STRUCTURES",
+      "groupTitle": "STRUCTURES"
+    },
+    "rule_porch_roof_beam_formwork_33": {
+      "description": "Provide formwork to porch roof beam.",
+      "unit": "m²",
+      "category": "calculation-rule",
+      "groupKey": "STRUCTURES",
+      "groupTitle": "STRUCTURES"
+    },
+    "rule_porch_roof_beam_rebar_34": {
+      "description": "Supply and install reinforcement bars to porch roof beam.",
+      "unit": "kg",
+      "category": "calculation-rule",
+      "groupKey": "STRUCTURES",
+      "groupTitle": "STRUCTURES"
+    },
+    "rule_porch_column_concrete_35": {
+      "description": "Supply and construct 150mm × 150mm Grade 25 porch column, 3m height.",
+      "unit": "m³",
+      "category": "calculation-rule",
+      "groupKey": "STRUCTURES",
+      "groupTitle": "STRUCTURES"
+    },
+    "rule_porch_column_formwork_36": {
+      "description": "Provide formwork to porch concrete columns.",
+      "unit": "m²",
+      "category": "calculation-rule",
+      "groupKey": "STRUCTURES",
+      "groupTitle": "STRUCTURES"
+    },
+    "rule_porch_column_rebar_37": {
+      "description": "Supply and install reinforcement bars to porch columns.",
+      "unit": "kg",
+      "category": "calculation-rule",
+      "groupKey": "STRUCTURES",
+      "groupTitle": "STRUCTURES"
+    },
+    "rule_porch_flat_roof_concrete_38": {
+      "description": "Supply and construct 100mm thick Grade 25 porch flat roof slab including waterproofing.",
+      "unit": "m³",
+      "category": "calculation-rule",
+      "groupKey": "STRUCTURES",
+      "groupTitle": "STRUCTURES"
+    },
+    "rule_porch_flat_roof_formwork_39": {
+      "description": "Provide underside formwork to porch flat roof slab.",
+      "unit": "m²",
+      "category": "calculation-rule",
+      "groupKey": "STRUCTURES",
+      "groupTitle": "STRUCTURES"
+    },
+    "rule_porch_flat_roof_brc_40": {
+      "description": "Supply and install BRC A7 reinforcement to porch flat roof slab, double layer.",
+      "unit": "m²",
+      "category": "calculation-rule",
+      "groupKey": "STRUCTURES",
+      "groupTitle": "STRUCTURES"
+    },
+    "rule_porch_roof_metal_roofing_sheet_41": {
+      "description": "Supply and install metal roofing sheet to porch selected roof.",
+      "unit": "m²",
+      "category": "calculation-rule",
+      "groupKey": "STRUCTURES",
+      "groupTitle": "STRUCTURES"
+    },
+    "rule_roof_design_concrete_42": {
+      "description": "Designed roof structure — Grade 25 concrete.",
+      "unit": "m³",
+      "category": "calculation-rule",
+      "groupKey": "STRUCTURES",
+      "groupTitle": "STRUCTURES"
+    },
+    "rule_roof_design_formwork_43": {
+      "description": "Designed roof structure — formwork.",
+      "unit": "sqft",
+      "category": "calculation-rule",
+      "groupKey": "STRUCTURES",
+      "groupTitle": "STRUCTURES"
+    },
+    "rule_roof_design_rebar_44": {
+      "description": "Designed roof structure — reinforcement steel.",
+      "unit": "kg",
+      "category": "calculation-rule",
+      "groupKey": "STRUCTURES",
+      "groupTitle": "STRUCTURES"
+    },
+    "rule_main_building_brickwall_internal_wall_45": {
+      "description": "Internal brickwall construction.",
+      "unit": "m²",
+      "category": "calculation-rule",
+      "groupKey": "ARCHITECTURES",
+      "groupTitle": "ARCHITECTURES"
+    },
+    "rule_main_building_brickwall_external_wall_46": {
+      "description": "External brickwall construction.",
+      "unit": "m²",
+      "category": "calculation-rule",
+      "groupKey": "ARCHITECTURES",
+      "groupTitle": "ARCHITECTURES"
+    },
+    "rule_main_building_floor_tiles_internal_47": {
+      "description": "Supply and install internal floor tiles.",
+      "unit": "m²",
+      "category": "calculation-rule",
+      "groupKey": "ARCHITECTURES",
+      "groupTitle": "ARCHITECTURES"
+    },
+    "rule_main_building_floor_tiles_external_48": {
+      "description": "Supply and install external floor tiles.",
+      "unit": "m²",
+      "category": "calculation-rule",
+      "groupKey": "ARCHITECTURES",
+      "groupTitle": "ARCHITECTURES"
+    },
+    "rule_main_building_painting_internal_49": {
+      "description": "Internal wall painting.",
+      "unit": "m²",
+      "category": "calculation-rule",
+      "groupKey": "ARCHITECTURES",
+      "groupTitle": "ARCHITECTURES"
+    },
+    "rule_main_building_painting_external_50": {
+      "description": "External wall painting.",
+      "unit": "m²",
+      "category": "calculation-rule",
+      "groupKey": "ARCHITECTURES",
+      "groupTitle": "ARCHITECTURES"
+    },
+    "rule_main_building_ceiling_internal_51": {
+      "description": "Internal ceiling works.",
+      "unit": "m²",
+      "category": "calculation-rule",
+      "groupKey": "ARCHITECTURES",
+      "groupTitle": "ARCHITECTURES"
+    },
+    "rule_main_building_ceiling_external_52": {
+      "description": "External ceiling works.",
+      "unit": "m²",
+      "category": "calculation-rule",
+      "groupKey": "ARCHITECTURES",
+      "groupTitle": "ARCHITECTURES"
+    },
+    "rule_bathroom_wall_tiles_53": {
+      "description": "Supply and install bathroom wall tiles.",
+      "unit": "m²",
+      "category": "calculation-rule",
+      "groupKey": "ARCHITECTURES",
+      "groupTitle": "ARCHITECTURES"
+    },
+    "rule_bathroom_floor_tiles_54": {
+      "description": "Supply and install bathroom floor tiles.",
+      "unit": "m²",
+      "category": "calculation-rule",
+      "groupKey": "ARCHITECTURES",
+      "groupTitle": "ARCHITECTURES"
+    },
+    "rule_bathroom_ceiling_55": {
+      "description": "Supply and install bathroom ceiling.",
+      "unit": "m²",
+      "category": "calculation-rule",
+      "groupKey": "ARCHITECTURES",
+      "groupTitle": "ARCHITECTURES"
+    },
+    "rule_bathroom_piping_56": {
+      "description": "Bathroom water and sanitary piping works.",
+      "unit": "LS",
+      "category": "calculation-rule",
+      "groupKey": "ARCHITECTURES",
+      "groupTitle": "ARCHITECTURES"
+    },
+    "rule_bathroom_wc_57": {
+      "description": "Supply and install WC.",
+      "unit": "No.",
+      "category": "calculation-rule",
+      "groupKey": "ARCHITECTURES",
+      "groupTitle": "ARCHITECTURES"
+    },
+    "rule_bathroom_basin_58": {
+      "description": "Supply and install wash basin.",
+      "unit": "No.",
+      "category": "calculation-rule",
+      "groupKey": "ARCHITECTURES",
+      "groupTitle": "ARCHITECTURES"
+    },
+    "rule_bathroom_shower_59": {
+      "description": "Supply and install shower set.",
+      "unit": "No.",
+      "category": "calculation-rule",
+      "groupKey": "ARCHITECTURES",
+      "groupTitle": "ARCHITECTURES"
+    },
+    "rule_bathroom_tap_60": {
+      "description": "Supply and install bathroom tap.",
+      "unit": "No.",
+      "category": "calculation-rule",
+      "groupKey": "ARCHITECTURES",
+      "groupTitle": "ARCHITECTURES"
+    },
+    "rule_main_building_water_tank_61": {
+      "description": "Supply and install water storage tank complete.",
+      "unit": "No.",
+      "category": "calculation-rule",
+      "groupKey": "ARCHITECTURES",
+      "groupTitle": "ARCHITECTURES"
+    },
+    "rule_main_building_septic_tank_62": {
+      "description": "Supply and install septic tank system complete.",
+      "unit": "No.",
+      "category": "calculation-rule",
+      "groupKey": "ARCHITECTURES",
+      "groupTitle": "ARCHITECTURES"
+    },
+    "rule_main_building_db_box_63": {
+      "description": "Supply and install distribution board complete.",
+      "unit": "No.",
+      "category": "calculation-rule",
+      "groupKey": "ELECTRICAL",
+      "groupTitle": "ELECTRICAL"
+    },
+    "rule_main_building_power_point_64": {
+      "description": "Electrical power point.",
+      "unit": "No.",
+      "category": "calculation-rule",
+      "groupKey": "ELECTRICAL",
+      "groupTitle": "ELECTRICAL"
+    },
+    "rule_main_building_switch_65": {
+      "description": "Electrical switch point.",
+      "unit": "No.",
+      "category": "calculation-rule",
+      "groupKey": "ELECTRICAL",
+      "groupTitle": "ELECTRICAL"
+    },
+    "rule_main_building_lighting_66": {
+      "description": "Electrical lighting point.",
+      "unit": "No.",
+      "category": "calculation-rule",
+      "groupKey": "ELECTRICAL",
+      "groupTitle": "ELECTRICAL"
+    },
+    "rule_main_building_fan_67": {
+      "description": "Ceiling fan point.",
+      "unit": "No.",
+      "category": "calculation-rule",
+      "groupKey": "ELECTRICAL",
+      "groupTitle": "ELECTRICAL"
+    },
+    "rule_main_building_aircond_point_68": {
+      "description": "Air-conditioning point.",
+      "unit": "No.",
+      "category": "calculation-rule",
+      "groupKey": "ELECTRICAL",
+      "groupTitle": "ELECTRICAL"
+    },
+    "rule_main_building_earthing_70": {
+      "description": "Complete electrical earthing system.",
+      "unit": "Set",
+      "category": "calculation-rule",
+      "groupKey": "ELECTRICAL",
+      "groupTitle": "ELECTRICAL"
+    },
+    "rule_porch_lighting_71": {
+      "description": "Porch lighting point.",
+      "unit": "No.",
+      "category": "calculation-rule",
+      "groupKey": "ELECTRICAL",
+      "groupTitle": "ELECTRICAL"
+    },
+    "rule_porch_fan_72": {
+      "description": "Porch ceiling fan point.",
+      "unit": "No.",
+      "category": "calculation-rule",
+      "groupKey": "ELECTRICAL",
+      "groupTitle": "ELECTRICAL"
+    },
+    "rule_porch_power_point_73": {
+      "description": "Porch power point.",
+      "unit": "No.",
+      "category": "calculation-rule",
+      "groupKey": "ELECTRICAL",
+      "groupTitle": "ELECTRICAL"
+    },
+    "rule_doors_type_1_74": {
+      "description": "Main entrance door complete with frame, hardware and installation.",
+      "unit": "No.",
+      "category": "calculation-rule",
+      "groupKey": "DOORS & WINDOWS",
+      "groupTitle": "DOORS & WINDOWS"
+    },
+    "rule_doors_type_2_75": {
+      "description": "Internal solid timber / sliding door.",
+      "unit": "No.",
+      "category": "calculation-rule",
+      "groupKey": "DOORS & WINDOWS",
+      "groupTitle": "DOORS & WINDOWS"
+    },
+    "rule_doors_type_3_76": {
+      "description": "Bedroom door.",
+      "unit": "No.",
+      "category": "calculation-rule",
+      "groupKey": "DOORS & WINDOWS",
+      "groupTitle": "DOORS & WINDOWS"
+    },
+    "rule_doors_type_4_77": {
+      "description": "Bathroom door.",
+      "unit": "No.",
+      "category": "calculation-rule",
+      "groupKey": "DOORS & WINDOWS",
+      "groupTitle": "DOORS & WINDOWS"
+    },
+    "rule_windows_type_1_78": {
+      "description": "Standard window Type 1.",
+      "unit": "No.",
+      "category": "calculation-rule",
+      "groupKey": "DOORS & WINDOWS",
+      "groupTitle": "DOORS & WINDOWS"
+    },
+    "rule_windows_type_2_79": {
+      "description": "Standard window Type 2.",
+      "unit": "No.",
+      "category": "calculation-rule",
+      "groupKey": "DOORS & WINDOWS",
+      "groupTitle": "DOORS & WINDOWS"
+    },
+    "rule_windows_type_3_80": {
+      "description": "Bathroom window Type 3.",
+      "unit": "No.",
+      "category": "calculation-rule",
+      "groupKey": "DOORS & WINDOWS",
+      "groupTitle": "DOORS & WINDOWS"
+    },
+    "rule_external_work_drain_81": {
+      "description": "External drain works.",
+      "unit": "m",
+      "category": "calculation-rule",
+      "groupKey": "EXTERNAL WORK",
+      "groupTitle": "EXTERNAL WORK"
     }
   }
 }
