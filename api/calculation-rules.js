@@ -6,14 +6,16 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (!['GET', 'DELETE'].includes(req.method)) return res.status(405).json({ message: 'Method not allowed.' });
 
-  const expectedKey = process.env.ADMIN_KEY;
-  const suppliedKey = String(req.headers['x-admin-key'] || '').trim();
-  if (!expectedKey || !suppliedKey || suppliedKey !== expectedKey) return res.status(401).json({ message: 'Unauthorized.' });
-
   const token = process.env.GITHUB_TOKEN;
   const repo = process.env.GITHUB_REPO || 'terajuciptabina-eng/terajuciptabina';
   const path = 'quotation/calculation-rules.html';
   if (!token) return res.status(500).json({ message: 'GitHub auth storage is not configured.' });
+
+  if (req.method === 'DELETE') {
+    const expectedKey = process.env.ADMIN_KEY;
+    const suppliedKey = String(req.headers['x-admin-key'] || '').trim();
+    if (!expectedKey || !suppliedKey || suppliedKey !== expectedKey) return res.status(401).json({ message: 'Unauthorized.' });
+  }
 
   const headers = { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' };
   async function github(options = {}) {
@@ -28,7 +30,7 @@ export default async function handler(req, res) {
     let rules;
     try { rules = Function(`"use strict"; return (${match[1]});`)(); } catch { throw new Error('Calculation Rules source is invalid.'); }
     if (!Array.isArray(rules)) throw new Error('Calculation Rules source is invalid.');
-    return { rules, start: match.index, length: match[0].length, text: match[1] };
+    return { rules, start: match.index, length: match[0].length };
   }
   try {
     const current = await github();
