@@ -9,8 +9,8 @@ export default async function handler(req,res){
   if(!token)return res.status(500).json({message:'GitHub auth storage is not configured.'});
   const expectedUser=String(process.env.ADMIN_USERNAME||'admin').trim(),expectedPass=String(process.env.ADMIN_PASSWORD||process.env.ADMIN_KEY||'').trim();
   const suppliedUser=String(req.headers['x-admin-username']||'').trim(),suppliedPass=String(req.headers['x-admin-password']||req.headers['x-admin-key']||'').trim();
-  const protectedRead=req.method==='GET'&&String(req.query?.admin||'')==='1';
-  if(req.method!=='GET'||protectedRead){if(!expectedPass||suppliedPass!==expectedPass||(suppliedUser&&suppliedUser!==expectedUser))return res.status(401).json({message:'Unauthorized.'})}
+  const protectedRead=req.method==='GET'&&String(req.query?.admin||'')==='1',hasCredentials=!!(suppliedUser||suppliedPass);
+  if(req.method!=='GET'||protectedRead||hasCredentials){if(!expectedPass||suppliedPass!==expectedPass||suppliedUser!==expectedUser)return res.status(401).json({message:'Invalid Admin username or password.'})}
   const headers={Authorization:`Bearer ${token}`,Accept:'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'};
   async function github(options={}){const r=await fetch(`https://api.github.com/repos/${repo}/contents/${path}`,{...options,headers:{...headers,...(options.headers||{})}});const t=await r.text();let d=null;try{d=t?JSON.parse(t):null}catch{d=t}return{r,d}}
   function parse(s){const m=s.match(/const\s+rules\s*=\s*(\[[\s\S]*?\]);/);if(!m)throw new Error('Calculation Rules source array not found.');const raw=Function(`"use strict";return (${m[1]});`)();if(!Array.isArray(raw))throw new Error('Calculation Rules source is invalid.');const rules=raw.map((x,i)=>Array.isArray(x)?{group:x[0]||'',path:x[1]||'',description:x[2]||'',method:x[3]||'',coefficient:x[4]||'',formula:x[5]||'',output:x[6]||'',basis:x[7]||'',note:x[8]||'',_index:i}:x&&typeof x==='object'?{...x,_index:i}:null).filter(Boolean);return{rules,start:m.index,length:m[0].length}}
