@@ -2,48 +2,23 @@ export default async function handler(req,res){
   const origin='https://terajuciptabina-eng.github.io';
   res.setHeader('Access-Control-Allow-Origin',origin);
   res.setHeader('Access-Control-Allow-Methods','GET,POST,PUT,DELETE,OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers','Content-Type,X-Admin-Key');
+  res.setHeader('Access-Control-Allow-Headers','Content-Type,X-Admin-Key,X-Admin-Username,X-Admin-Password');
   if(req.method==='OPTIONS')return res.status(200).end();
   if(!['GET','POST','PUT','DELETE'].includes(req.method))return res.status(405).json({message:'Method not allowed.'});
   const token=process.env.GITHUB_TOKEN,repo=process.env.GITHUB_REPO||'terajuciptabina-eng/terajuciptabina',path='quotation/calculation-rules.html';
   if(!token)return res.status(500).json({message:'GitHub auth storage is not configured.'});
-  const expectedKey=String(process.env.ADMIN_KEY||'').trim(),suppliedKey=String(req.headers['x-admin-key']||'').trim();
-  if(req.method!=='GET'&&(!expectedKey||suppliedKey!==expectedKey))return res.status(401).json({message:'Unauthorized.'});
+  const expectedUser=String(process.env.ADMIN_USERNAME||'admin').trim(),expectedPass=String(process.env.ADMIN_PASSWORD||process.env.ADMIN_KEY||'').trim();
+  const suppliedUser=String(req.headers['x-admin-username']||'').trim(),suppliedPass=String(req.headers['x-admin-password']||req.headers['x-admin-key']||'').trim();
+  if(req.method!=='GET'&&(!expectedPass||suppliedPass!==expectedPass||(suppliedUser&&suppliedUser!==expectedUser)))return res.status(401).json({message:'Unauthorized.'});
   const headers={Authorization:`Bearer ${token}`,Accept:'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'};
   async function github(options={}){const r=await fetch(`https://api.github.com/repos/${repo}/contents/${path}`,{...options,headers:{...headers,...(options.headers||{})}});const t=await r.text();let d=null;try{d=t?JSON.parse(t):null}catch{d=t}return{r,d}}
   function parse(s){const m=s.match(/const\s+rules\s*=\s*(\[[\s\S]*?\]);/);if(!m)throw new Error('Calculation Rules source array not found.');const raw=Function(`"use strict";return (${m[1]});`)();if(!Array.isArray(raw))throw new Error('Calculation Rules source is invalid.');const rules=raw.map((x,i)=>Array.isArray(x)?{group:x[0]||'',path:x[1]||'',description:x[2]||'',method:x[3]||'',coefficient:x[4]||'',formula:x[5]||'',output:x[6]||'',basis:x[7]||'',note:x[8]||'',_index:i}:x&&typeof x==='object'?{...x,_index:i}:null).filter(Boolean);return{rules,start:m.index,length:m[0].length}}
-  const groups=['PRELIMINARIES','STRUCTURES','ARCHITECTURES','ELECTRICAL','DOORS & WINDOWS','EXTERNAL WORK'];
-  const fields=['group','path','description','method','coefficient','formula','output','basis','note'];
+  const groups=['PRELIMINARIES','STRUCTURES','ARCHITECTURES','ELECTRICAL','DOORS & WINDOWS','EXTERNAL WORK'],fields=['group','path','description','method','coefficient','formula','output','basis','note'];
   function clean(body){const out={};for(const f of fields)out[f]=String(body?.[f]??'').trim();return out}
   function validate(rule){if(!rule.group||!groups.includes(rule.group))return 'Valid group is required.';if(!rule.path)return 'Item / hierarchy path is required.';if(!rule.description)return 'Full contractor description is required.';if(!rule.method)return 'Method is required.';if(!rule.coefficient)return 'Coefficient / factor is required.';if(!rule.formula)return 'Formula is required.';if(!rule.output)return 'Output unit is required.';if(!rule.basis)return 'Basis / reference is required.';return ''}
   function asSource(rules){return rules.map(r=>[r.group,r.path,r.description,r.method,r.coefficient,r.formula,r.output,r.basis,r.note||''])}
-  try{
-    const cur=await github();if(!cur.r.ok)return res.status(cur.r.status).json({message:cur.d?.message||'Unable to read Calculation Rules.'});
-    const source=Buffer.from(cur.d?.content||'','base64').toString('utf8'),p=parse(source);
-    if(req.method==='GET')return res.status(200).json({ok:true,count:p.rules.length,rules:p.rules.map(({_index,...r})=>r)});
-    const body=typeof req.body==='string'?JSON.parse(req.body||'{}'):(req.body||{});
-    let next=p.rules.map(({_index,...r})=>r);
-    if(req.method==='DELETE'){
-      const target=String(body.path||'').trim(),i=next.findIndex(x=>x.path===target);if(i<0)return res.status(404).json({message:'Calculation Rule not found.'});
-      if(next.length===1)return res.status(400).json({message:'At least one global Calculation Rule must remain.'});
-      const deleted=next[i];next.splice(i,1);
-      const nextSource=source.slice(0,p.start)+`const rules=${JSON.stringify(asSource(next),null,2)};`+source.slice(p.start+p.length);
-      const saved=await github({method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:`Permanently delete calculation rule: ${target}`,content:Buffer.from(nextSource,'utf8').toString('base64'),sha:cur.d?.sha})});
-      if(!saved.r.ok)return res.status(saved.r.status).json({message:saved.d?.message||'Unable to permanently delete Calculation Rule.'});
-      return res.status(200).json({ok:true,deleted,message:'Calculation Rule permanently deleted from the global master source.',remaining:next.length});
-    }
-    const rule=clean(body.rule||body),error=validate(rule);if(error)return res.status(400).json({message:error});
-    if(req.method==='POST'){
-      if(next.some(x=>x.path===rule.path))return res.status(409).json({message:'A Calculation Rule with this path already exists.'});
-      next.push(rule);
-    }else{
-      const originalPath=String(body.originalPath||'').trim(),i=next.findIndex(x=>x.path===originalPath);if(i<0)return res.status(404).json({message:'Original Calculation Rule not found.'});
-      if(next.some((x,j)=>j!==i&&x.path===rule.path))return res.status(409).json({message:'A Calculation Rule with this path already exists.'});
-      next[i]=rule;
-    }
-    const action=req.method==='POST'?'add':'edit',nextSource=source.slice(0,p.start)+`const rules=${JSON.stringify(asSource(next),null,2)};`+source.slice(p.start+p.length);
-    const saved=await github({method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:`${action==='add'?'Add':'Edit'} calculation rule: ${rule.path}`,content:Buffer.from(nextSource,'utf8').toString('base64'),sha:cur.d?.sha})});
-    if(!saved.r.ok)return res.status(saved.r.status).json({message:saved.d?.message||`Unable to ${action} Calculation Rule.`});
-    return res.status(200).json({ok:true,rule,remaining:next.length,message:`Calculation Rule ${action==='add'?'added':'updated'} in the global master source.`});
+  try{const cur=await github();if(!cur.r.ok)return res.status(cur.r.status).json({message:cur.d?.message||'Unable to read Calculation Rules.'});const source=Buffer.from(cur.d?.content||'','base64').toString('utf8'),p=parse(source);if(req.method==='GET')return res.status(200).json({ok:true,count:p.rules.length,rules:p.rules.map(({_index,...r})=>r)});const body=typeof req.body==='string'?JSON.parse(req.body||'{}'):(req.body||{});let next=p.rules.map(({_index,...r})=>r);
+    if(req.method==='DELETE'){const target=String(body.path||'').trim(),i=next.findIndex(x=>x.path===target);if(i<0)return res.status(404).json({message:'Calculation Rule not found.'});if(next.length===1)return res.status(400).json({message:'At least one global Calculation Rule must remain.'});const deleted=next[i];next.splice(i,1);const nextSource=source.slice(0,p.start)+`const rules=${JSON.stringify(asSource(next),null,2)};`+source.slice(p.start+p.length);const saved=await github({method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:`Permanently delete calculation rule: ${target}`,content:Buffer.from(nextSource,'utf8').toString('base64'),sha:cur.d?.sha})});if(!saved.r.ok)return res.status(saved.r.status).json({message:saved.d?.message||'Unable to permanently delete Calculation Rule.'});return res.status(200).json({ok:true,deleted,message:'Calculation Rule permanently deleted from the global master source.',remaining:next.length})}
+    const rule=clean(body.rule||body),error=validate(rule);if(error)return res.status(400).json({message:error});if(req.method==='POST'){if(next.some(x=>x.path===rule.path))return res.status(409).json({message:'A Calculation Rule with this path already exists.'});next.push(rule)}else{const originalPath=String(body.originalPath||'').trim(),i=next.findIndex(x=>x.path===originalPath);if(i<0)return res.status(404).json({message:'Original Calculation Rule not found.'});if(next.some((x,j)=>j!==i&&x.path===rule.path))return res.status(409).json({message:'A Calculation Rule with this path already exists.'});next[i]=rule}const action=req.method==='POST'?'add':'edit',nextSource=source.slice(0,p.start)+`const rules=${JSON.stringify(asSource(next),null,2)};`+source.slice(p.start+p.length);const saved=await github({method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:`${action==='add'?'Add':'Edit'} calculation rule: ${rule.path}`,content:Buffer.from(nextSource,'utf8').toString('base64'),sha:cur.d?.sha})});if(!saved.r.ok)return res.status(saved.r.status).json({message:saved.d?.message||`Unable to ${action} Calculation Rule.`});return res.status(200).json({ok:true,rule,remaining:next.length,message:`Calculation Rule ${action==='add'?'added':'updated'} in the global master source.`})
   }catch(e){console.error(e);return res.status(500).json({message:e.message||'Unable to update Calculation Rules.'})}
 }
