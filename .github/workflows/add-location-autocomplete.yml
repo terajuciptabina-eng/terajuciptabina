@@ -120,14 +120,37 @@ function installRenovation'''
           p.write_text(text,encoding='utf-8')
           print('Build Rate Schedule master descriptions updated.')
           PY
+      - name: Add Build Planner V2 room types
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('quotation/buildplanner.html')
+          text=p.read_text(encoding='utf-8')
+          old="const ROOM_TYPES={living:'Living / Family',dining:'Dining',bedroom:'Bedroom',kitchen:'Kitchen',store:'Store / Utility',bathroom:'Bathroom',porch:'Car Porch / Entrance',other:'Other'};"
+          new="const ROOM_TYPES={living:'Living',dining:'Dining',bedroom:'Bedroom',masterBedroom:'Master Bedroom',family:'Family',kitchen:'Kitchen',store:'Store',utility:'Utility',bathroom:'Bathroom',porch:'Porch',other:'Other'};"
+          if old not in text:
+              raise SystemExit('Expected existing ROOM_TYPES mapping not found.')
+          text=text.replace(old,new,1)
+          old_defaults="const ROOM_DEFAULTS={living:{doors:1,windows:2},dining:{doors:0,windows:1},bedroom:{doors:1,windows:1},kitchen:{doors:1,windows:1},store:{doors:1,windows:0},bathroom:{doors:1,windows:0},porch:{doors:0,windows:0},other:{doors:0,windows:1}};"
+          new_defaults="const ROOM_DEFAULTS={living:{doors:1,windows:2},dining:{doors:0,windows:1},bedroom:{doors:1,windows:1},masterBedroom:{doors:1,windows:1},family:{doors:1,windows:2},kitchen:{doors:1,windows:1},store:{doors:1,windows:0},utility:{doors:1,windows:0},bathroom:{doors:1,windows:0},porch:{doors:0,windows:0},other:{doors:0,windows:1}};"
+          if old_defaults not in text:
+              raise SystemExit('Expected existing ROOM_DEFAULTS mapping not found.')
+          text=text.replace(old_defaults,new_defaults,1)
+          p.write_text(text,encoding='utf-8')
+          print('Build Planner V2 room types updated: Living, Dining, Bedroom, Master Bedroom, Family, Kitchen, Store, Utility, Bathroom, Porch, Other.')
+          PY
       - name: Commit planner updates
         run: |
+          # This workflow file is only being used as a one-shot patch carrier.
+          # Restore it before committing so the repository keeps its original workflow unchanged.
+          git checkout -- .github/workflows/add-location-autocomplete.yml
           git config user.name 'Teraju Ciptabina Bot'
           git config user.email 'actions@users.noreply.github.com'
-          git add quotation/renovationplanner.html quotation/buildplanner.html quotation/quotation-quantity-fix.js
+          git add quotation/renovationplanner.html quotation/buildplanner.html quotation/quotation-quantity-fix.js .github/workflows/add-location-autocomplete.yml
           if git diff --cached --quiet; then
             echo 'No planner changes needed.'
             exit 0
           fi
-          git commit -m 'Force Build Planner contractor cleanup [location-autocomplete]'
+          git commit -m 'Update Build Planner V2 room types [location-autocomplete]'
           git push
