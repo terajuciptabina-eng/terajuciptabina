@@ -80,10 +80,10 @@
     "rule_earthing_71": 1500,
     "rule_db_box_72": 2500,
     "rule_wiring_73": 20,
-    "rule_doors_type_1_single_leaf_74": 900,
-    "rule_doors_type_2_sliding_75": 900,
-    "rule_doors_type_3_bathroom_76": 900,
-    "rule_doors_type_4_double_leaf_main_door_77": 900,
+    "rule_doors_type_1_single_leaf_74": 1200,
+    "rule_doors_type_2_sliding_75": 2500,
+    "rule_doors_type_3_bathroom_76": 850,
+    "rule_doors_type_4_double_leaf_main_door_77": 2400,
     "rule_windows_type_1_1200_1200_78": 1200,
     "rule_windows_type_2_1800_1200_79": 1400,
     "rule_windows_type_3_900_600_80": 950,
@@ -697,5 +697,5 @@
       "groupTitle": "EXTERNAL WORK"
     }
   },
-  "updatedAt": "2026-09-12T01:17:19.086Z"
+  "updatedAt": "2026-09-12T01:20:35.037Z"
 }
