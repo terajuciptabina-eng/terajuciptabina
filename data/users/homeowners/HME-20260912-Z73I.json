@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "homeowner",
+  "homeownerId": "HME-20260912-Z73I",
+  "profile": {
+    "name": "Akmal Ubaidillah",
+    "email": "2023223042@student.uitm.edu.my",
+    "phone": "0179786752"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-09-12T12:16:21.483Z",
+  "updatedAt": "2026-09-12T12:16:21.483Z"
+}
