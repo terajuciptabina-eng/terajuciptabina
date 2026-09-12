@@ -98,7 +98,7 @@
     const hasArea=hasRoomArea();
     document.querySelectorAll('#estimateContent tr.no-print').forEach(row=>{
       const button=row.querySelector('button');
-      if(!button||!/^\+\s*Add Item$/i.test(button.textContent.trim()))return;
+      if(!button||!/^[+]\s*Add Item$/i.test(button.textContent.trim()))return;
       row.hidden=!hasArea;
     });
   }
@@ -169,4 +169,8 @@
   script.src='buildplanner-v2-estimate-card.js?v=20260912';
   script.async=false;
   document.head.appendChild(script);
+  const descriptions=document.createElement('script');
+  descriptions.src='buildplanner-v2-rule-descriptions.js?v=20260912';
+  descriptions.async=false;
+  document.head.appendChild(descriptions);
 })();
