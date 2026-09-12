@@ -1,4 +1,4 @@
-name: Add location autocomplete
+name: Apply Build Planner V2 room types
 
 on:
   push:
@@ -8,147 +8,33 @@ permissions:
   contents: write
 
 jobs:
-  patch-location-fields:
-    if: "!contains(github.event.head_commit.message, '[location-autocomplete]')"
+  patch-v2:
+    if: "!contains(github.event.head_commit.message, '[v2-room-types]')"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Add planner helper scripts
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-          location_files=['quotation/renovationplanner.html','quotation/buildplanner.html']
-          quantity_files=['quotation/renovationplanner.html','quotation/buildplanner.html']
-          location_tag='<script src="location-autocomplete.js"></script>'
-          quantity_tag='<script src="quotation-quantity-fix.js?v=20260907"></script>'
-          for name in location_files:
-              p=Path(name)
-              s=p.read_text(encoding='utf-8')
-              if location_tag not in s:
-                  s=s.replace('</body>', location_tag+'\n</body>',1)
-                  p.write_text(s,encoding='utf-8')
-          for name in quantity_files:
-              p=Path(name)
-              s=p.read_text(encoding='utf-8')
-              if quantity_tag not in s:
-                  s=s.replace('</body>', quantity_tag+'\n</body>',1)
-                  p.write_text(s,encoding='utf-8')
-          PY
-      - name: Remove duplicate Build contractor database path
+      - name: Apply Build Planner V2 room types and defaults
         shell: bash
         run: |
           python - <<'PY'
           from pathlib import Path
-          import re
-          p=Path('quotation/quotation-quantity-fix.js')
+          p=Path('quotation/buildplanner-v2.html')
           text=p.read_text(encoding='utf-8')
-          pattern=r'  function installBuild\(\) \{.*?\n  function installRenovation'
-          replacement='''  function installBuild() {
-    if (!contractor || typeof window.getAllItems !== 'function' || typeof RATE_SCHEDULE === 'undefined') return false;
-    if (!window.getAllItems.__terajuBuildMasterWrapped) {
-      const original=window.getAllItems;
-      const wrapped=function(){
-        const items=original();
-        const result=Array.isArray(items)?items:[];
-        result.forEach(item=>{const description=buildFullDescription(item);if(description)item.description=description;});
-        return result;
-      };
-      wrapped.__terajuBuildMasterWrapped=true;
-      window.getAllItems=wrapped;
-    }
-    document.getElementById('homeownerQuotationOptions')?.classList.add('hidden');
-    document.getElementById('contractorQuotationOptions')?.classList.remove('hidden');
-    document.getElementById('rateScheduleSection')?.classList.remove('hidden');
-    return true;
-  }
-function installRenovation'''
-          text,n=re.subn(pattern,replacement,text,count=1,flags=re.S)
-          if n!=1: raise SystemExit('installBuild not found')
-          p.write_text(text,encoding='utf-8')
-          PY
-      - name: Make Build Rate Schedule descriptions full
-        shell: bash
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-          p=Path('quotation/buildplanner.html')
-          text=p.read_text(encoding='utf-8')
-          replacements={
-            "desc:'Concrete G15'":"desc:'To supply and place concrete Grade 15 for pad footings, including mixing, placing, compacting, levelling and curing, complete.'",
-            "desc:'Formwork'":"desc:'To supply, erect and dismantle formwork to the respective reinforced concrete element, including supports, bracing, alignment, release treatment and all necessary accessories, complete.'",
-            "desc:'Rebar'":"desc:'To supply, cut, bend and fix reinforcement steel bars for the respective reinforced concrete element, including tying wire, spacers, chairs and all necessary supports, complete.'",
-            "desc:'Concrete G25'":"desc:'To supply and place concrete Grade 25 for the respective reinforced concrete element, including placing, compacting, levelling and curing, complete.'",
-            "desc:'Rebar BRC A7 double layer'":"desc:'To supply and fix BRC A7 reinforcement mesh, double layer, including laps, tying wire, spacers and supports, complete.'",
-            "desc:'Flat roof – Concrete G25'":"desc:'To supply and place concrete Grade 25 for flat roof slab, including placing, compacting, levelling, finishing and curing, complete.'",
-            "desc:'Flat roof – Formwork'":"desc:'To supply, erect and dismantle formwork to flat roof slab, including supports, bracing, alignment and all necessary accessories, complete.'",
-            "desc:'Flat roof – Rebar BRC A7 double layer'":"desc:'To supply and fix BRC A7 reinforcement mesh, double layer, to flat roof slab, including laps, tying wire, spacers and supports, complete.'",
-            "desc:'C-channel for roof structures'":"desc:'To supply and install C-channel steel members for roof structure, including cutting, fabrication, fixing, connection accessories, alignment and protective treatment, complete.'",
-            "desc:'Metal roofing sheet'":"desc:'To supply and install metal roofing sheets, including necessary laps, flashing, fasteners, sealant and all accessories, complete.'",
-            "desc:'Apron – Concrete G15'":"desc:'To supply and place concrete Grade 15 for external apron works, including preparation, placing, compacting, levelling, finishing and curing, complete.'",
-            "desc:'Apron – Formwork'":"desc:'To supply, erect and dismantle formwork to external apron works, including supports, alignment and all necessary accessories, complete.'",
-            "desc:'Apron – Rebar BRC A7'":"desc:'To supply and fix BRC A7 reinforcement mesh for external apron works, including laps, tying wire, spacers and supports, complete.'",
-            "desc:'Drainage – small U-shape scupper drain'":"desc:'To supply and construct small U-shape scupper drainage, including excavation, base preparation, concrete / masonry works, finishing and making good, complete.'",
-            "desc:'Septic tank'":"desc:'To supply and install septic tank system, including excavation, bedding, tank, inlet / outlet connections, backfilling and all necessary accessories, complete.'",
-            "desc:'Water tank'":"desc:'To supply and install water storage tank, including tank base / support, inlet and outlet connections, fittings and all necessary accessories, complete.'",
-            "desc:'Design roof structure – Concrete G25'":"desc:'To supply and place concrete Grade 25 for designed roof structure, including placing, compacting, levelling and curing, complete.'",
-            "desc:'Design roof structure – Formwork'":"desc:'To supply, erect and dismantle formwork to designed roof structure, including supports, bracing, alignment and all necessary accessories, complete.'",
-            "desc:'Design roof structure – Rebar'":"desc:'To supply, cut, bend and fix reinforcement steel bars for designed roof structure, including tying wire, spacers, chairs and all necessary supports, complete.'",
-            "label:'Building plan / permit & engineer’s drawings'":"label:'Submission of building plan / permit application and Engineer’s drawings to the Local Authority, including preparation of required documents, submission, coordination and necessary authority liaison, complete.'",
-            "label:'Preliminaries, mobilisation & project management'":"label:'Preliminaries, site mobilisation, temporary facilities, site protection, insurance, project coordination, supervision and general project management, complete.'",
-            "label:'Internal ceiling'":"label:'To supply and install plaster / skim ceiling c/w paint, including surface preparation, joint treatment and finishing, complete.'",
-            "label:'Internal floor tiles'":"label:'To supply and install internal floor tiles, including surface preparation, adhesive / mortar, cutting, laying, grouting and finishing, complete.'",
-            "label:'Internal painting'":"label:'To supply labour and materials for internal painting works, including surface preparation, sealer where required, two coats of paint, cleaning and touch-up upon completion.'",
-            "label:'Door'":"label:'To supply and install door complete with frame, ironmongery, hinges, lockset, alignment and finishing, complete.'",
-            "label:'Window'":"label:'To supply and install window complete with frame, glazing, ironmongery, sealant, fixing and making good, complete.'",
-            "label:'Bathroom floor tiles'":"label:'To supply and install bathroom floor tiles c/w waterproofing, including surface preparation, waterproofing system, adhesive / mortar, cutting, laying, grouting and finishing, complete.'",
-            "label:'Bathroom wall tiles'":"label:'To supply and install bathroom wall tiles c/w waterproofing, including surface preparation, waterproofing system, adhesive, cutting, laying, grouting and finishing, complete.'",
-            "label:'Bathroom piping'":"label:'To supply and install sanitary and water supply piping works, including fittings, connections, testing and making good, complete.'",
-            "label:'WC'":"label:'To supply and install water closet (WC), including flush fittings, connections, testing and all necessary accessories, complete.'",
-            "label:'Basin'":"label:'To supply and install wash hand basin, including taps, waste fittings, connections, testing and all necessary accessories, complete.'",
-            "label:'DB box'":"label:'To supply and install distribution board (DB) complete with main protective devices, circuit breakers, labels, connections, testing and commissioning.'",
-            "label:'Wiring'":"label:'To supply, install and test electrical wiring and cables for the building, including conduits / containment, connections, termination and necessary accessories, complete.'",
-            "label:'Power point'":"label:'To supply and install electrical power points, including wiring, conduits, back boxes, accessories, termination and testing, complete.'",
-            "label:'Switch'":"label:'To supply and install electrical switches, including wiring, back boxes, accessories, termination and testing, complete.'",
-            "label:'Lighting'":"label:'To supply and install lighting points / fittings, including wiring, conduits, switches, connections, testing and commissioning, complete.'",
-            "label:'Ceiling fan'":"label:'To supply and install ceiling fan points / provisions, including wiring, switch control, support and testing, complete.'",
-            "label:'Aircond point / provision'":"label:'To supply and install air-conditioning points / provisions, including electrical wiring, isolator, containment and necessary accessories, complete.'",
-            "label:'Earthing'":"label:'To supply and install complete electrical earthing system, including earth electrodes, conductors, connections, testing and commissioning, complete.'",
-          }
-          for old,new in replacements.items():
-              if old not in text: raise SystemExit(f'Missing expected Build Rate Schedule source: {old}')
-              text=text.replace(old,new)
-          p.write_text(text,encoding='utf-8')
-          print('Build Rate Schedule master descriptions updated.')
-          PY
-      - name: Add Build Planner V2 room types
-        shell: bash
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-          p=Path('quotation/buildplanner.html')
-          text=p.read_text(encoding='utf-8')
-          old="const ROOM_TYPES={living:'Living / Family',dining:'Dining',bedroom:'Bedroom',kitchen:'Kitchen',store:'Store / Utility',bathroom:'Bathroom',porch:'Car Porch / Entrance',other:'Other'};"
-          new="const ROOM_TYPES={living:'Living',dining:'Dining',bedroom:'Bedroom',masterBedroom:'Master Bedroom',family:'Family',kitchen:'Kitchen',store:'Store',utility:'Utility',bathroom:'Bathroom',porch:'Porch',other:'Other'};"
-          if old not in text:
-              raise SystemExit('Expected existing ROOM_TYPES mapping not found.')
-          text=text.replace(old,new,1)
+          old_types="const ROOM_TYPES={living:'Living / Family',dining:'Dining',bedroom:'Bedroom',kitchen:'Kitchen',store:'Store / Utility',bathroom:'Bathroom',porch:'Car Porch / Entrance',other:'Other'};"
+          new_types="const ROOM_TYPES={living:'Living',dining:'Dining',bedroom:'Bedroom',masterBedroom:'Master Bedroom',family:'Family',kitchen:'Kitchen',store:'Store',utility:'Utility',bathroom:'Bathroom',porch:'Porch',other:'Other'};"
           old_defaults="const ROOM_DEFAULTS={living:{doors:1,windows:2},dining:{doors:0,windows:1},bedroom:{doors:1,windows:1},kitchen:{doors:1,windows:1},store:{doors:1,windows:0},bathroom:{doors:1,windows:0},porch:{doors:0,windows:0},other:{doors:0,windows:1}};"
-          new_defaults="const ROOM_DEFAULTS={living:{doors:1,windows:2},dining:{doors:0,windows:1},bedroom:{doors:1,windows:1},masterBedroom:{doors:1,windows:1},family:{doors:1,windows:2},kitchen:{doors:1,windows:1},store:{doors:1,windows:0},utility:{doors:1,windows:0},bathroom:{doors:1,windows:0},porch:{doors:0,windows:0},other:{doors:0,windows:1}};"
-          if old_defaults not in text:
-              raise SystemExit('Expected existing ROOM_DEFAULTS mapping not found.')
-          text=text.replace(old_defaults,new_defaults,1)
+          new_defaults="const ROOM_DEFAULTS={living:{doors:1,windows:1},dining:{doors:0,windows:1},bedroom:{doors:1,windows:1},masterBedroom:{doors:1,windows:1},family:{doors:0,windows:0},kitchen:{doors:1,windows:1},store:{doors:1,windows:0},utility:{doors:1,windows:0},bathroom:{doors:1,windows:0},porch:{doors:0,windows:0},other:{doors:0,windows:0}};"
+          if old_types not in text: raise SystemExit('Expected V2 ROOM_TYPES mapping not found.')
+          if old_defaults not in text: raise SystemExit('Expected V2 ROOM_DEFAULTS mapping not found.')
+          text=text.replace(old_types,new_types,1).replace(old_defaults,new_defaults,1)
           p.write_text(text,encoding='utf-8')
-          print('Build Planner V2 room types updated: Living, Dining, Bedroom, Master Bedroom, Family, Kitchen, Store, Utility, Bathroom, Porch, Other.')
           PY
-      - name: Commit planner updates
+      - name: Restore workflow and commit V2 update
+        shell: bash
         run: |
-          git checkout -- .github/workflows/add-location-autocomplete.yml
+          git checkout HEAD~1 -- .github/workflows/add-location-autocomplete.yml
           git config user.name 'Teraju Ciptabina Bot'
           git config user.email 'actions@users.noreply.github.com'
-          git add quotation/renovationplanner.html quotation/buildplanner.html quotation/quotation-quantity-fix.js .github/workflows/add-location-autocomplete.yml
-          if git diff --cached --quiet; then
-            echo 'No planner changes needed.'
-            exit 0
-          fi
-          git commit -m 'Update Build Planner V2 room types [location-autocomplete]'
+          git add quotation/buildplanner-v2.html .github/workflows/add-location-autocomplete.yml
+          git commit -m 'Update Build Planner V2 room types and defaults [v2-room-types]'
           git push
