@@ -1,6 +1,10 @@
 /* TERAJU WORKS — Global Calculation Rules UI
-   Shared hierarchy renderer. Pages supply their own page-specific columns. */
+   Shared hierarchy renderer + global column-width standard.
+   Every consumer that loads this file receives the latest global UI widths. */
 (function(global){
+  const UI_API='https://terajuciptabina.vercel.app/api/calculation-rules?ui=1';
+  const UI_KEYS=['item','description','method','coefficient','formula','unit','basis','note','actions'];
+  const DEFAULTS={item:'15%',description:'22%',method:'10%',coefficient:'11%',formula:'12%',unit:'6%',basis:'10%',note:'7%',actions:'7%'};
   const UI={
     esc(value){
       return String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -25,7 +29,28 @@
     },
     groupRow(group,count,colSpan){
       return '<tr class="cr-group-row"><td colspan="'+(Number(colSpan)||1)+'">'+this.esc(group)+' · '+Number(count||0)+' rules</td></tr>';
+    },
+    applyWidths(widths){
+      const values={...DEFAULTS,...(widths||{})};
+      for(const key of UI_KEYS){
+        const value=/^\d+(?:\.\d+)?%$/.test(String(values[key]))?values[key]:DEFAULTS[key];
+        document.documentElement.style.setProperty('--cr-col-'+key,value);
+      }
+      return values;
+    },
+    async loadWidths(){
+      try{
+        const r=await fetch(UI_API,{cache:'no-store'});
+        const d=await r.json().catch(()=>({}));
+        if(!r.ok||!d.columnWidths)throw new Error('Global Calculation Rules UI standard unavailable.');
+        this.applyWidths(d.columnWidths);
+        return d.columnWidths;
+      }catch(_){
+        return this.applyWidths(DEFAULTS);
+      }
     }
   };
   global.TerajuCalculationRulesUI=UI;
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>UI.loadWidths(),{once:true});
+  else UI.loadWidths();
 })(window);
