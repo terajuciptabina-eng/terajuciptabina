@@ -40,7 +40,8 @@
     },
     async loadWidths(){
       try{
-        const r=await fetch(UI_API,{cache:'no-store'});
+        const url=UI_API+'&v='+Date.now();
+        const r=await fetch(url,{cache:'no-store',headers:{'Cache-Control':'no-cache'}});
         const d=await r.json().catch(()=>({}));
         if(!r.ok||!d.columnWidths)throw new Error('Global Calculation Rules UI standard unavailable.');
         this.applyWidths(d.columnWidths);
