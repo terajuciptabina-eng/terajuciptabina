@@ -5,11 +5,10 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Contractor Market Database | TERAJU WORKS</title>
 <style>
-html,body{margin:0!important;padding:0!important;width:100%!important;height:100%!important;min-width:100%!important;min-height:100%!important;overflow:hidden!important;background:#f3f4f6}
+html,body{margin:0;padding:0;width:100%;min-height:100%;background:#f3f4f6;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
 *{box-sizing:border-box}
-#gate{position:fixed;left:0;top:0;width:100vw;height:100vh;min-width:100vw;min-height:100vh;display:grid;place-items:center;background:#f3f4f6;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+#gate{position:fixed;inset:0;width:100vw;height:100vh;display:grid;place-items:center;background:#f3f4f6}
 #gate-card{width:min(430px,calc(100vw - 32px));background:#fff;padding:28px;border-radius:18px;box-shadow:0 8px 30px rgba(15,23,42,.08)}
-#app{display:none;position:fixed!important;left:0!important;top:0!important;width:100vw!important;height:100vh!important;min-width:0!important;min-height:0!important;max-width:none!important;max-height:none!important;margin:0!important;padding:0!important;border:0!important}
 </style>
 </head>
 <body>
@@ -21,38 +20,17 @@ html,body{margin:0!important;padding:0!important;width:100%!important;height:100
     <button onclick="location.href='../admin.html'">Open Admin Control</button>
   </div>
 </div>
-<iframe id="app" src="admin-contractor-market-app.html" title="Contractor Market Database"></iframe>
 <script>
 const k=sessionStorage.getItem('teraju.admin.key')||'';
 const API='https://terajuciptabina.vercel.app/api/admin';
 const gate=document.getElementById('gate');
-const app=document.getElementById('app');
-
-function fitVisualViewport(){
-  const vv=window.visualViewport;
-  const width=vv&&Number.isFinite(vv.width)?vv.width:window.innerWidth;
-  const height=vv&&Number.isFinite(vv.height)?vv.height:window.innerHeight;
-  app.style.width=width+'px';
-  app.style.height=height+'px';
-}
-
-fitVisualViewport();
-if(window.visualViewport){
-  window.visualViewport.addEventListener('resize',fitVisualViewport);
-  window.visualViewport.addEventListener('scroll',fitVisualViewport);
-}
-window.addEventListener('resize',fitVisualViewport);
-
 if(!k){
   location.href='../admin.html';
 }else{
   fetch(API+'?records=0',{headers:{'X-Admin-Key':k},cache:'no-store'})
     .then(r=>{
       if(!r.ok)throw new Error('Unauthorized');
-      fitVisualViewport();
-      gate.style.display='none';
-      app.style.display='block';
-      fitVisualViewport();
+      location.replace('admin-contractor-market-app.html');
     })
     .catch(()=>{
       sessionStorage.removeItem('teraju.admin.key');
