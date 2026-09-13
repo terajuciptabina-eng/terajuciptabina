@@ -82,9 +82,13 @@ export default async function handler(req,res){
     const located=locateRulesArray(s);
     const raw=Function(`"use strict";return (${located.array});`)();
     if(!Array.isArray(raw))throw new Error('Calculation Rules source is invalid.');
+    if(raw.length===0)throw new Error('Calculation Rules source array is empty.');
     const rules=raw.map((x,i)=>Array.isArray(x)?{group:x[0]||'',path:x[1]||'',description:x[2]||'',method:x[3]||'',coefficient:x[4]||'',formula:x[5]||'',output:x[6]||'',basis:x[7]||'',note:x[8]||'',_index:i}:x&&typeof x==='object'?{...x,_index:i}:null).filter(Boolean);
+    if(!rules.length)throw new Error('Calculation Rules source array is empty.');
     return{rules,start:located.start,length:located.length};
   }
+
+  function shouldSeed(e){return e.message==='Calculation Rules source array not found.'||e.message==='Calculation Rules source array is empty.'}
 
   async function readPublic(){
     const current=await rawAt('main',path);
@@ -92,7 +96,7 @@ export default async function handler(req,res){
     try{
       return{ok:true,source:current.source,parsed:parse(current.source)};
     }catch(e){
-      if(e.message!=='Calculation Rules source array not found.')throw e;
+      if(!shouldSeed(e))throw e;
       const seed=await rawAt(seedRef,seedPath);
       if(!seed.r.ok)throw new Error('Calculation Rules master source is missing and legacy seed could not be loaded.');
       const seedParsed=parse(seed.source);
@@ -106,7 +110,7 @@ export default async function handler(req,res){
     if(!cur.r.ok)return{ok:false,status:cur.r.status,message:cur.d?.message||'Unable to read Calculation Rules.'};
     const source=Buffer.from(cur.d?.content||'','base64').toString('utf8');
     try{return{ok:true,cur,source,parsed:parse(source)}}catch(e){
-      if(e.message!=='Calculation Rules source array not found.')throw e;
+      if(!shouldSeed(e))throw e;
       const seed=await githubAt(seedRef,seedPath);
       if(!seed.r.ok)throw new Error('Calculation Rules master source is missing and legacy seed could not be loaded.');
       const seedSource=Buffer.from(seed.d?.content||'','base64').toString('utf8');
