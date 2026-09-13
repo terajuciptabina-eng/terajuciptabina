@@ -21,7 +21,8 @@ export default async function handler(req,res){
   const isUI=String(req.query?.ui||'')==='1';
   const protectedRead=req.method==='GET'&&String(req.query?.admin||'')==='1';
   const hasCredentials=!!(suppliedUser||suppliedPass);
-  if(req.method!=='GET'||protectedRead||hasCredentials){
+  const requiresAuth=isUI?(req.method!=='GET'):(req.method!=='GET'||protectedRead||hasCredentials);
+  if(requiresAuth){
     if(!expectedPass||suppliedPass!==expectedPass||suppliedUser!==expectedUser)return res.status(401).json({message:'Invalid Admin username or password.'});
   }
 
@@ -40,7 +41,9 @@ export default async function handler(req,res){
     return{r,d};
   }
   async function rawAt(ref,filePath){
-    const r=await fetch(`${rawBase}/${encodeURIComponent(ref)}/${filePath.split('/').map(encodeURIComponent).join('/')}`,{cache:'no-store'});
+    const cacheBust=String(req.query?._||req.query?.v||Date.now());
+    const url=`${rawBase}/${encodeURIComponent(ref)}/${filePath.split('/').map(encodeURIComponent).join('/')}?v=${encodeURIComponent(cacheBust)}`;
+    const r=await fetch(url,{cache:'no-store'});
     return{r,source:await r.text()};
   }
 
@@ -77,7 +80,6 @@ export default async function handler(req,res){
   try{
     if(isUI){
       if(req.method==='GET'){
-        // UI persistence reads use GitHub Contents API so the latest main-branch blob is authoritative.
         const current=await githubFile(uiPath);
         if(!current.r.ok)return res.status(current.r.status).json({message:'Unable to read shared Calculation Rules UI standard.'});
         const source=Buffer.from(current.d?.content||'','base64').toString('utf8');
@@ -93,7 +95,7 @@ export default async function handler(req,res){
       const nextSource=writeUI(source,widths);
       const saved=await githubFile(uiPath,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:'Update Calculation Rules global UI column widths',content:Buffer.from(nextSource,'utf8').toString('base64'),sha:cur.d?.sha})});
       if(!saved.r.ok)return res.status(saved.r.status).json({message:saved.d?.message||'Unable to save shared Calculation Rules UI standard.'});
-      return res.status(200).json({ok:true,columnWidths:widths,message:'Calculation Rules UI column widths saved as the global default.'});
+      return res.status(200).json({ok:true,columnWidths:widths,sourceSha:saved.d?.content?.sha||null,message:'Calculation Rules UI column widths saved as the global default.'});
     }
 
     function locateRulesArray(s){
