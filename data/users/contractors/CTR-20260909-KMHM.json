@@ -232,20 +232,20 @@
         },
         "project": {
           "location": "Makmur",
-          "builtUpArea": 100,
-          "state": "selangor"
+          "builtUpArea": 200,
+          "state": "perak"
         },
-        "total": 45721.48,
+        "total": 59568.63,
         "plannerState": {
           "customerName": "En Azizi",
           "projectLocation": "Makmur",
-          "builtUpArea": "100",
+          "builtUpArea": "200",
           "rooms": [
             {
-              "id": "room-2",
+              "id": "room-1",
               "type": "living",
               "name": "Living / Family",
-              "area": "100"
+              "area": "200"
             }
           ],
           "rates": {
@@ -391,7 +391,7 @@
           "customDescriptions": [],
           "customRoomLabels": [
             [
-              "room-2",
+              "room-1",
               "Living / Family"
             ]
           ],
@@ -400,13 +400,13 @@
           "standardRateItems": [],
           "quotationType": "simple",
           "projectId": "PRJ-BLD-MTVQWX4G-6CK21",
-          "projectState": "selangor",
-          "rateSetId": "default",
-          "rateSetName": "Default Rate",
-          "rateSnapshotAt": "2026-09-12T15:00:15.145Z"
+          "projectState": "perak",
+          "rateSetId": "perak",
+          "rateSetName": "Perak",
+          "rateSnapshotAt": "2026-09-13T15:25:55.329Z"
         },
         "createdAt": "2026-09-10T18:25:21.019Z",
-        "updatedAt": "2026-09-12T15:00:17.206Z",
+        "updatedAt": "2026-09-13T15:25:56.146Z",
         "estimateNumber": "EST-BLD-010"
       },
       {
@@ -2394,7 +2394,7 @@
     ]
   },
   "createdAt": "2026-09-09T13:15:32.117Z",
-  "updatedAt": "2026-09-13T05:02:20.853Z",
+  "updatedAt": "2026-09-13T15:25:56.146Z",
   "quotationRunningNumber": {
     "build": 13,
     "renovation": 7
