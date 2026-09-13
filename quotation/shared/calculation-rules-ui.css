@@ -1,13 +1,13 @@
 :root{
-  --cr-col-item:8.32%;
-  --cr-col-description:29.63%;
+  --cr-col-item:8.41%;
+  --cr-col-description:29.55%;
   --cr-col-method:9.85%;
   --cr-col-coefficient:10.83%;
   --cr-col-formula:11.82%;
   --cr-col-unit:5.91%;
   --cr-col-basis:9.85%;
   --cr-col-note:6.89%;
-  --cr-col-actions:6.90%;
+  --cr-col-actions:6.89%;
 }
 /* TERAJU WORKS — Global Calculation Rules UI
    Shared visual standard for every page that renders Calculation Rules. */
