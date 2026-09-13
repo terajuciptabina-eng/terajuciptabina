@@ -1,3 +1,14 @@
+:root{
+  --cr-col-item:15%;
+  --cr-col-description:22%;
+  --cr-col-method:10%;
+  --cr-col-coefficient:11%;
+  --cr-col-formula:12%;
+  --cr-col-unit:6%;
+  --cr-col-basis:10%;
+  --cr-col-note:7%;
+  --cr-col-actions:7%;
+}
 /* TERAJU WORKS — Global Calculation Rules UI
    Shared visual standard for every page that renders Calculation Rules. */
 .cr-group-row td{background:#eef2f7;font-weight:850;font-size:12px;color:#111827;padding:10px 12px;border-top:1px solid #dce2ea;border-bottom:1px solid #dce2ea}
@@ -8,3 +19,19 @@
 .cr-description{font-weight:600;line-height:1.45}
 .cr-unit{white-space:nowrap}
 .cr-group-count{float:right;font-size:11px;font-weight:700;color:#687386}
+
+/* Standard widths for every Calculation Rules consumer. */
+table:has(td.cr-leaf-item) th:nth-child(1),table:has(td.cr-leaf-item) td:nth-child(1){width:var(--cr-col-item)!important}
+table:has(td.cr-description) th:nth-child(2),table:has(td.cr-description) td:nth-child(2){width:var(--cr-col-description)!important}
+table:has(td.cr-unit) th:nth-child(3),table:has(td.cr-unit) td:nth-child(3){width:var(--cr-col-unit)!important}
+
+/* Full nine-column standard for the Global Calculation Rules master. */
+table[data-cr-ui="admin"] th:nth-child(1),table[data-cr-ui="admin"] td:nth-child(1){width:var(--cr-col-item)!important}
+table[data-cr-ui="admin"] th:nth-child(2),table[data-cr-ui="admin"] td:nth-child(2){width:var(--cr-col-description)!important}
+table[data-cr-ui="admin"] th:nth-child(3),table[data-cr-ui="admin"] td:nth-child(3){width:var(--cr-col-method)!important}
+table[data-cr-ui="admin"] th:nth-child(4),table[data-cr-ui="admin"] td:nth-child(4){width:var(--cr-col-coefficient)!important}
+table[data-cr-ui="admin"] th:nth-child(5),table[data-cr-ui="admin"] td:nth-child(5){width:var(--cr-col-formula)!important}
+table[data-cr-ui="admin"] th:nth-child(6),table[data-cr-ui="admin"] td:nth-child(6){width:var(--cr-col-unit)!important}
+table[data-cr-ui="admin"] th:nth-child(7),table[data-cr-ui="admin"] td:nth-child(7){width:var(--cr-col-basis)!important}
+table[data-cr-ui="admin"] th:nth-child(8),table[data-cr-ui="admin"] td:nth-child(8){width:var(--cr-col-note)!important}
+table[data-cr-ui="admin"] th:nth-child(9),table[data-cr-ui="admin"] td:nth-child(9){width:var(--cr-col-actions)!important}
