@@ -3,6 +3,9 @@ export default async function handler(req,res){
   res.setHeader('Access-Control-Allow-Origin',origin);
   res.setHeader('Access-Control-Allow-Methods','GET,POST,PUT,DELETE,OPTIONS');
   res.setHeader('Access-Control-Allow-Headers','Content-Type,X-Admin-Key,X-Admin-Username,X-Admin-Password');
+  res.setHeader('Cache-Control','no-store, no-cache, must-revalidate, proxy-revalidate');
+  res.setHeader('Pragma','no-cache');
+  res.setHeader('Expires','0');
   if(req.method==='OPTIONS')return res.status(200).end();
   if(!['GET','POST','PUT','DELETE'].includes(req.method))return res.status(405).json({message:'Method not allowed.'});
 
@@ -27,12 +30,12 @@ export default async function handler(req,res){
   const apiBase=`https://api.github.com/repos/${repo}`;
 
   async function githubFile(filePath,options={}){
-    const r=await fetch(`${apiBase}/contents/${filePath}`,{...options,headers:{...headers,...(options.headers||{})}});
+    const r=await fetch(`${apiBase}/contents/${filePath}`,{...options,headers:{...headers,...(options.headers||{})},cache:'no-store'});
     const t=await r.text();let d=null;try{d=t?JSON.parse(t):null}catch{d=t}
     return{r,d};
   }
   async function githubAt(ref,filePath){
-    const r=await fetch(`${apiBase}/contents/${filePath}?ref=${encodeURIComponent(ref)}`,{headers});
+    const r=await fetch(`${apiBase}/contents/${filePath}?ref=${encodeURIComponent(ref)}`,{headers,cache:'no-store'});
     const t=await r.text();let d=null;try{d=t?JSON.parse(t):null}catch{d=t}
     return{r,d};
   }
@@ -74,9 +77,11 @@ export default async function handler(req,res){
   try{
     if(isUI){
       if(req.method==='GET'){
-        const current=await rawAt('main',uiPath);
+        // UI persistence reads use GitHub Contents API so the latest main-branch blob is authoritative.
+        const current=await githubFile(uiPath);
         if(!current.r.ok)return res.status(current.r.status).json({message:'Unable to read shared Calculation Rules UI standard.'});
-        return res.status(200).json({ok:true,columnWidths:parseUI(current.source)});
+        const source=Buffer.from(current.d?.content||'','base64').toString('utf8');
+        return res.status(200).json({ok:true,columnWidths:parseUI(source),sourceSha:current.d?.sha||null});
       }
       if(req.method!=='PUT')return res.status(405).json({message:'Calculation Rules UI supports GET and PUT only.'});
       if(!token)throw new Error('GitHub auth storage is not configured.');
