@@ -21,9 +21,9 @@
 .cr-group-count{float:right;font-size:11px;font-weight:700;color:#687386}
 
 /* Standard widths for every Calculation Rules consumer. */
-table:has(td.cr-leaf-item) th:nth-child(1),table:has(td.cr-leaf-item) td:nth-child(1){width:var(--cr-col-item)!important}
-table:has(td.cr-description) th:nth-child(2),table:has(td.cr-description) td:nth-child(2){width:var(--cr-col-description)!important}
-table:has(td.cr-unit) th:nth-child(3),table:has(td.cr-unit) td:nth-child(3){width:var(--cr-col-unit)!important}
+table:has(td.cr-leaf-item) th:nth-child(1),table:has(td.cr-leaf-item) td:nth-child(1){width:var(--cr-col-item)!important;min-width:0!important}
+table:has(td.cr-description) th:nth-child(2),table:has(td.cr-description) td:nth-child(2){width:var(--cr-col-description)!important;min-width:0!important}
+table:has(td.cr-unit) th:nth-child(3),table:has(td.cr-unit) td:nth-child(3){width:var(--cr-col-unit)!important;min-width:0!important}
 
 /* Full nine-column standard for the Global Calculation Rules master. */
 table[data-cr-ui="admin"] th:nth-child(1),table[data-cr-ui="admin"] td:nth-child(1){width:var(--cr-col-item)!important}
