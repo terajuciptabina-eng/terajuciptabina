@@ -432,32 +432,32 @@
         },
         "project": {
           "location": "Makmur",
-          "builtUpArea": 380,
+          "builtUpArea": 500,
           "state": "selangor"
         },
-        "total": 89582.87,
+        "total": 110678.35,
         "plannerState": {
           "customerName": "En Azizi",
           "projectLocation": "Makmur",
-          "builtUpArea": "380",
+          "builtUpArea": "500",
           "rooms": [
             {
-              "id": "room-3",
+              "id": "room-2",
               "type": "living",
               "name": "Living",
               "area": "200"
             },
             {
-              "id": "room-4",
-              "type": "dining",
-              "name": "Dining",
-              "area": "100"
-            },
-            {
-              "id": "room-5",
+              "id": "room-3",
               "type": "bedroom",
               "name": "Bedroom",
-              "area": "80"
+              "area": "200"
+            },
+            {
+              "id": "room-4",
+              "type": "bathroom",
+              "name": "Bathroom",
+              "area": "100"
             }
           ],
           "rates": {
@@ -610,10 +610,10 @@
           "projectState": "selangor",
           "rateSetId": "selangor",
           "rateSetName": "Selangor",
-          "rateSnapshotAt": "2026-09-13T05:02:19.530Z"
+          "rateSnapshotAt": "2026-09-13T15:49:59.157Z"
         },
         "createdAt": "2026-09-10T16:32:34.331Z",
-        "updatedAt": "2026-09-13T05:02:20.853Z",
+        "updatedAt": "2026-09-13T15:49:59.940Z",
         "estimateNumber": "EST-BLD-010"
       },
       {
@@ -2401,7 +2401,7 @@
     ]
   },
   "createdAt": "2026-09-09T13:15:32.117Z",
-  "updatedAt": "2026-09-13T15:49:50.230Z",
+  "updatedAt": "2026-09-13T15:49:59.940Z",
   "quotationRunningNumber": {
     "build": 13,
     "renovation": 7
