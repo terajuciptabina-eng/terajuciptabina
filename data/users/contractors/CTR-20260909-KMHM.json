@@ -440,7 +440,7 @@
           "builtUpArea": 500,
           "state": "selangor"
         },
-        "total": 110678.35,
+        "total": 109678.35,
         "plannerState": {
           "customerName": "En Azizi",
           "projectLocation": "Makmur",
@@ -603,7 +603,12 @@
             "rule_driveway_84": 5000,
             "rule_landscaping_85": 2000
           },
-          "customRates": [],
+          "customRates": [
+            [
+              "prelim-1",
+              7500
+            ]
+          ],
           "customQuantities": [],
           "customDescriptions": [],
           "customRoomLabels": [],
@@ -613,12 +618,12 @@
           "quotationType": "detail",
           "projectId": "PRJ-BLD-MTVQWX4G-6CK21",
           "projectState": "selangor",
-          "rateSetId": "selangor",
-          "rateSetName": "Selangor",
-          "rateSnapshotAt": "2026-09-13T15:49:59.157Z"
+          "rateSetId": "default",
+          "rateSetName": "Default Rate",
+          "rateSnapshotAt": "2026-09-13T19:16:48.187Z"
         },
         "createdAt": "2026-09-10T16:32:34.331Z",
-        "updatedAt": "2026-09-13T15:49:59.940Z",
+        "updatedAt": "2026-09-13T19:16:49.058Z",
         "estimateNumber": "EST-BLD-010"
       },
       {
@@ -2406,7 +2411,7 @@
     ]
   },
   "createdAt": "2026-09-09T13:15:32.117Z",
-  "updatedAt": "2026-09-13T19:16:32.921Z",
+  "updatedAt": "2026-09-13T19:16:49.058Z",
   "quotationRunningNumber": {
     "build": 13,
     "renovation": 7
