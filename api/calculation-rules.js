@@ -44,13 +44,46 @@ export default async function handler(req,res){
     return{r,source};
   }
 
-  function parse(s){
-    const m=s.match(/(?:const|let)\s+rules\s*=\s*(\[[\s\S]*?\]);/);
+  function locateRulesArray(s){
+    const m=/(?:const|let)\s+rules\s*=\s*\[/.exec(s);
     if(!m)throw new Error('Calculation Rules source array not found.');
-    const raw=Function(`"use strict";return (${m[1]});`)();
+    const startArray=s.indexOf('[',m.index);
+    let depth=0,quote='',escape=false,template=false;
+    for(let i=startArray;i<s.length;i++){
+      const ch=s[i];
+      if(escape){escape=false;continue;}
+      if(quote){
+        if(ch==='\\')escape=true;
+        else if(ch===quote)quote='';
+        continue;
+      }
+      if(template){
+        if(ch==='\\')escape=true;
+        else if(ch==='`')template=false;
+        continue;
+      }
+      if(ch==='\''||ch==='"'){quote=ch;continue;}
+      if(ch==='`'){template=true;continue;}
+      if(ch==='['){depth++;continue;}
+      if(ch===']'){
+        depth--;
+        if(depth===0){
+          let end=i+1;
+          while(end<s.length&&/\s/.test(s[end]))end++;
+          if(s[end]===';')end++;
+          return{start:m.index,length:end-m.index,array:s.slice(startArray,i+1)};
+        }
+      }
+    }
+    throw new Error('Calculation Rules source array is incomplete.');
+  }
+
+  function parse(s){
+    const located=locateRulesArray(s);
+    const raw=Function(`"use strict";return (${located.array});`)();
     if(!Array.isArray(raw))throw new Error('Calculation Rules source is invalid.');
     const rules=raw.map((x,i)=>Array.isArray(x)?{group:x[0]||'',path:x[1]||'',description:x[2]||'',method:x[3]||'',coefficient:x[4]||'',formula:x[5]||'',output:x[6]||'',basis:x[7]||'',note:x[8]||'',_index:i}:x&&typeof x==='object'?{...x,_index:i}:null).filter(Boolean);
-    return{rules,start:m.index,length:m[0].length};
+    return{rules,start:located.start,length:located.length};
   }
 
   async function readPublic(){
