@@ -38,6 +38,15 @@
       }
       return values;
     },
+    readCssWidths(source){
+      const out={};
+      for(const key of UI_KEYS){
+        const m=String(source||'').match(new RegExp('--cr-col-'+key+'\\s*:\\s*([^;]+);'));
+        const value=m?String(m[1]).trim():'';
+        out[key]=/^\d+(?:\.\d+)?%$/.test(value)?value:DEFAULTS[key];
+      }
+      return out;
+    },
     async loadWidths(){
       try{
         const url=UI_API+'&v='+Date.now();
@@ -47,7 +56,15 @@
         this.applyWidths(d.columnWidths);
         return d.columnWidths;
       }catch(_){
-        return this.applyWidths(DEFAULTS);
+        try{
+          const cssUrl='shared/calculation-rules-ui.css?v='+Date.now();
+          const css=await fetch(cssUrl,{cache:'no-store'}).then(r=>r.ok?r.text():Promise.reject(new Error('CSS unavailable')));
+          const widths=this.readCssWidths(css);
+          this.applyWidths(widths);
+          return widths;
+        }catch(__){
+          return this.applyWidths();
+        }
       }
     }
   };
