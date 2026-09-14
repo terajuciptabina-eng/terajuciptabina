@@ -51,8 +51,9 @@ async function loadMaster(){
   RULES=new Map((rules||[]).map(x=>[String(x[1]||'').trim(),x]));
 }
 function setQty(item,q,unit){
-  const v=String(unit||item.unit||'').toLowerCase();
-  item.qty=['no','set','ls','unit'].includes(v)?ceil(q):round(q);
+  // TERAJU quotation rule: displayed Quantity is always an integer.
+  // Formula result is rounded up to the next whole number BEFORE rate multiplication.
+  item.qty=ceil(q);
   item.amount=round(item.qty*num(item.rate));
   return item;
 }
@@ -161,7 +162,10 @@ function updateExisting(items,s){
 function applyMasterPresentation(items){
   for(const item of items){
     const room=getRooms().find(r=>r.roomId===item.roomId),path=pathForId(item.id,room),rule=path?RULES.get(path):null;
-    if(rule){if(rule[2])item.description=String(rule[2]);if(rule[6])item.unit=String(rule[6])}
+    if(rule){
+      if(rule[2])item.description=String(rule[2]);
+      if(rule[6])item.unit=String(rule[6]);
+    }
   }
   return items;
 }
@@ -170,7 +174,8 @@ function addItem(arr,base){
   if(typeof customQuantities!=='undefined'&&customQuantities.has(item.id))item.qty=customQuantities.get(item.id);
   if(typeof customRates!=='undefined'&&customRates.has(item.id))item.rate=customRates.get(item.id);
   if(typeof customDescriptions!=='undefined'&&customDescriptions.has(item.id))item.description=customDescriptions.get(item.id);
-  item.amount=round(num(item.qty)*num(item.rate));
+  item.qty=ceil(item.qty);
+  item.amount=round(item.qty*num(item.rate));
   arr.push(item);
 }
 function addMissing(s,items){
@@ -201,19 +206,23 @@ function addMissing(s,items){
       addItem(items,{id,roomId:'project',room:'Project',category:'structures',description:desc,qty,unit,rate:rate(rateKey),groupKey:path.split(' / ')[1].toLowerCase().replace(/\s+/g,'-'),groupTitle:path.split(' / ')[1]});
     });
   }
+  // Project-level master items not present in the legacy engine.
   [['door-main','DOORS / Type 4 Double Leaf Main Door','Main Door','no',1,'door'],['external-boundary-fencing','BOUNDARY FENCING','Boundary fencing','ls',1,'prelim'],['external-gate','GATE','Main entrance gate','no',1,'door'],['external-driveway','DRIVEWAY','Driveway works','ls',1,'prelim'],['external-landscaping','LANDSCAPING','Landscaping works','ls',1,'prelim']].forEach(([id,path,desc,unit,qty,rateKey])=>{
     if(ids.has(id))return;
     const category=path.startsWith('DOORS')?'doors':'external';
     addItem(items,{id,roomId:'project',room:'Project',category,description:desc,qty,unit,rate:rate(rateKey),groupKey:'external',groupTitle:path});
   });
-  if(s.B>0)[['elec-porch-light','Porch lighting','no',Math.ceil(s.B/100),'lighting'],['elec-porch-fan','Porch fan','no',1,'fan'],['elec-porch-pp','Porch power point','no',1,'powerPoint']].forEach(([id,desc,unit,qty,rateKey])=>{
-    if(ids.has(id))return;
-    addItem(items,{id,roomId:'project',room:'Project',category:'electrical',description:desc,qty,unit,rate:rate(rateKey),groupKey:'porch',groupTitle:'PORCH'});
-  });
+  // Missing porch electrical items are consolidated into project rows.
+  if(s.B>0){
+    [['elec-porch-light','Porch lighting','no',Math.ceil(s.B/100),'lighting'],['elec-porch-fan','Porch fan','no',1,'fan'],['elec-porch-pp','Porch power point','no',1,'powerPoint']].forEach(([id,desc,unit,qty,rateKey])=>{
+      if(ids.has(id))return;
+      addItem(items,{id,roomId:'project',room:'Project',category:'electrical',description:desc,qty,unit,rate:rate(rateKey),groupKey:'porch',groupTitle:'PORCH'});
+    });
+  }
   return items;
 }
 async function install(){
-  try{await loadMaster()}catch(e){console.error('[TERAJU V2 Master Quantity Engine]',e);return}
+  try{await loadMaster();}catch(e){console.error('[TERAJU V2 Master Quantity Engine]',e);return;}
   originalGetAllItems=window.getAllItems;
   if(typeof originalGetAllItems!=='function')return;
   window.getAllItems=function(){
@@ -223,10 +232,18 @@ async function install(){
     applyMasterPresentation(updated);
     const added=addMissing(s,updated);
     applyMasterPresentation(added);
-    added.forEach(i=>{i.qty=typeof normalizeQuantity==='function'?normalizeQuantity(i.qty):ceil(i.qty);i.rate=typeof normalizeRate==='function'?normalizeRate(i.rate):round(i.rate);i.amount=round(i.qty*i.rate)});
+    // Final quotation normalization: every quantity is an integer, then Quantity × Rate = Amount.
+    added.forEach(i=>{
+      i.qty=ceil(i.qty);
+      i.rate=typeof normalizeRate==='function'?normalizeRate(i.rate):round(i.rate);
+      i.amount=round(i.qty*i.rate);
+    });
+    // Re-apply Master presentation after all item additions so Description + Unit remain Global Master values.
+    applyMasterPresentation(added);
     return added;
   };
   if(typeof window.updateEstimate==='function')window.updateEstimate();
 }
-if(document.readyState!=='loading')install();else document.addEventListener('DOMContentLoaded',install,{once:true});
+if(document.readyState!=='loading')install();
+else document.addEventListener('DOMContentLoaded',install,{once:true});
 })();
