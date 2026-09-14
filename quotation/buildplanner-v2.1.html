@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Build Planner V2.1 | Teraju Ciptabina</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+*{box-sizing:border-box}body{font-family:Arial,Helvetica,sans-serif;margin:0;background:#f8fafc;color:#111827}main{max-width:1100px;margin:auto;padding:24px}.card{background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:22px;box-shadow:0 4px 18px rgba(0,0,0,.04)}.eyebrow{font-size:12px;font-weight:700;letter-spacing:.08em;color:#6b7280;text-transform:uppercase}.title{font-size:22px;font-weight:800;margin:4px 0 0}.budget{margin-top:16px;border:1px solid #e5e7eb;border-radius:14px;padding:18px;background:#fff}.budget-head{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}.budget-label{font-size:13px;color:#6b7280}.budget-value{font-size:30px;font-weight:800;margin-top:4px}.budget-note{font-size:12px;color:#9ca3af;margin-top:6px}.empty-state{margin-top:16px;padding:18px;border:1px dashed #d1d5db;border-radius:12px;color:#6b7280;font-size:13px;background:#fafafa}@media(max-width:767px){main{padding:16px}.card{padding:16px}.budget-head{display:block}.budget-value{font-size:26px}}
+</style>
+</head>
+<body>
+<main>
+<section class="card">
+<div class="eyebrow">Preliminary Estimate</div>
+<h1 class="title">Construction Budget</h1>
+
+<div class="budget" id="constructionBudgetCard">
+  <div class="budget-head">
+    <div>
+      <div class="budget-label">Estimated Construction Budget</div>
+      <div class="budget-value" id="constructionBudgetValue">RM 0.00</div>
+      <div class="budget-note">V2.1 — new card foundation</div>
+    </div>
+  </div>
+  <div class="empty-state" id="constructionBudgetState">
+    Construction Budget calculation will be rebuilt here from a clean base.
+  </div>
+</div>
+</section>
+</main>
+</body>
+</html>
