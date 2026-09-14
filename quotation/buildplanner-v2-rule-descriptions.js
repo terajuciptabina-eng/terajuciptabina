@@ -38,7 +38,7 @@
     if(!response.ok)throw new Error('Unable to load Calculation Rules');
     const source=await response.text();
     const rules=extractRules(source);
-    descriptions=new Map((rules||[]).map(r=>[String(r?.path||''),String(r?.description||'')]).filter(([path,description])=>path&&description));
+    descriptions=new Map((rules||[]).map(r=>[String(r?.[1]||''),String(r?.[2]||'')]).filter(([path,description])=>path&&description));
   }
 
   function normalizePath(value){
