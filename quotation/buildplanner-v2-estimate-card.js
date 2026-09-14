@@ -14,7 +14,7 @@
   function ruleItemName(path){const p=String(path||'').split(' / ');return p.length>1?p.slice(-2).join(' / '):p[0]||'Item'}
   function ruleUnit(path){const rule=RULES_BY_PATH.get(String(path||'').trim());return rule&&rule.output?String(rule.output):''}
   function extractRules(source){
-    const marker='const rules=[';
+    const marker='let rules=[';
     const start=source.indexOf(marker);
     if(start<0)throw new Error('Calculation Rules array not found');
     let i=start+marker.length-1,depth=0,quote=null,escaped=false;
@@ -30,7 +30,7 @@
     throw new Error('Calculation Rules array is incomplete');
   }
   async function loadGlobalRules(){
-    const response=await fetch('calculation-rules.html',{cache:'no-store'});
+    const response=await fetch('admin-calculation-rules.html',{cache:'no-store'});
     if(!response.ok)throw new Error('Unable to load global Calculation Rules');
     const rules=extractRules(await response.text());
     RULES_BY_PATH=new Map(rules.map(rule=>[String(rule.path||'').trim(),rule]));
@@ -51,7 +51,7 @@
       return {top:'DOORS & WINDOWS',path:'DOORS & WINDOWS / '+path,target:null};
     }
     if(item.category==='structures'){
-      const map={'str-footing-conc':'MAIN BUILDING / Footing / Concrete','str-footing-fw':'MAIN BUILDING / Footing / Formwork','str-footing-rebar':'MAIN BUILDING / Footing / Rebar','str-slab-conc':'MAIN BUILDING / Ground Slab / Concrete','str-slab-brc':'MAIN BUILDING / Ground Slab / BRC','str-gb-conc':'MAIN BUILDING / Ground Beam / Concrete','str-gb-fw':'MAIN BUILDING / Ground Beam / Formwork','str-gb-rebar':'MAIN BUILDING / Ground Beam / Rebar','str-rb-conc':'MAIN BUILDING / Roof Beam / Concrete','str-rb-fw':'MAIN BUILDING / Roof Beam / Formwork','str-rb-rebar':'MAIN BUILDING / Roof Beam / Rebar','str-col-conc':'MAIN BUILDING / Column / Concrete','str-col-fw':'MAIN BUILDING / Column / Formwork','str-col-rebar':'MAIN BUILDING / Column / Rebar','str-fr-conc':'MAIN BUILDING / Flat Roof / Concrete','str-fr-fw':'MAIN BUILDING / Flat Roof / Formwork','str-fr-brc':'MAIN BUILDING / Flat Roof / BRC','str-roof-m':'MAIN BUILDING / Roof / Metal Roofing Sheet','str-apron-c':'MAIN BUILDING / Apron / Concrete','str-apron-f':'MAIN BUILDING / Apron / Formwork','str-apron-b':'MAIN BUILDING / Apron / BRC','str-drain':'MAIN BUILDING / Drainage','str-roof-dc':'ROOF DESIGN / Concrete','str-roof-df':'ROOF DESIGN / Formwork','str-roof-dr':'ROOF DESIGN / Rebar'};
+      const map={'str-footing-conc':'MAIN BUILDING / Footing / Concrete','str-footing-fw':'MAIN BUILDING / Footing / Formwork','str-footing-rebar':'MAIN BUILDING / Footing / Rebar','str-slab-conc':'MAIN BUILDING / Ground Slab / Concrete','str-slab-brc':'MAIN BUILDING / Ground Slab / BRC','str-gb-conc':'MAIN BUILDING / Ground Beam / Concrete','str-gb-fw':'MAIN BUILDING / Ground Beam / Formwork','str-gb-rebar':'MAIN BUILDING / Ground Beam / Rebar','str-rb-conc':'MAIN BUILDING / Roof Beam / Concrete','str-rb-fw':'MAIN BUILDING / Roof Beam / Formwork','str-rb-rebar':'MAIN BUILDING / Roof Beam / Rebar','str-col-conc':'MAIN BUILDING / Column / Concrete','str-col-fw':'MAIN BUILDING / Column / Formwork','str-col-rebar':'MAIN BUILDING / Column / Rebar','str-fr-conc':'MAIN BUILDING / Flat Roof / Concrete','str-fr-fw':'MAIN BUILDING / Flat Roof / Formwork','str-fr-brc':'MAIN BUILDING / Flat Roof / BRC','str-roof-m':'MAIN BUILDING / Roof / Metal Roofing Sheet','str-apron-c':'MAIN BUILDING / Apron / Concrete','str-apron-f':'MAIN BUILDING / Apron / Formwork','str-apron-b':'MAIN BUILDING / Apron / BRC','str-drain':'MAIN BUILDING / Drainage'};
       return {top:'STRUCTURES',path:map[id]||('STRUCTURES / '+(item.groupTitle||'Additional Structural Works')),target:item.groupKey?`structures:${item.groupKey}`:'structures'};
     }
     if(item.category==='architecture'){
