@@ -179,6 +179,9 @@ main>section:not(:first-child){scroll-margin-top:92px} main>section>div:first-ch
 @media(max-width:767px){.planner-header>div{padding:10px 14px 11px!important;display:grid!important;grid-template-columns:minmax(0,1fr) auto;gap:9px!important}.planner-header nav{grid-column:1/-1;width:100%;display:flex!important;gap:6px!important}.planner-nav-link{flex:1;min-height:36px;padding:7px 5px;font-size:10px;border-radius:9px}.workspace-id-block{padding-left:8px}.projectUserIdDisplay{font-size:11px}}
 @media(max-width:380px){.planner-nav-link{font-size:9px;padding-left:4px;padding-right:4px}.workspace-id-block{padding-left:6px}}
 
+
+/* Global Calculation Rules UI standard — applied inside Construction Budget */
+.cr-group-row td{background:#eef2f7;font-weight:850;font-size:12px;color:#111827;padding:10px 12px;border-top:1px solid #dce2ea;border-bottom:1px solid #dce2ea}.cr-hierarchy-row td{background:#f8fafc;border-bottom:1px solid #e5e9f0;font-weight:800;text-transform:uppercase;letter-spacing:.05em}.cr-hierarchy-row.cr-level-2 td{font-size:11px;color:#687386;padding:8px 13px 8px 25px}.cr-description{font-weight:600;line-height:1.45}.cr-unit{white-space:nowrap}.cr-group-count{float:right;font-size:11px;font-weight:700;color:#687386}.cr-budget-table{min-width:900px}.cr-budget-table th{font-weight:700;color:#374151}
 </style>
 </head>
 <body class="bg-gray-100 text-gray-800">
@@ -228,6 +231,7 @@ main>section:not(:first-child){scroll-margin-top:92px} main>section>div:first-ch
       <p id="estimateNumber" class="font-bold"></p>
     </div>
   </div>
+  <div id="constructionBudgetContent" class="mt-6 overflow-x-auto"></div>
 </section>
 <section id="quotationGenerator" class="no-print bg-white rounded-2xl shadow-sm p-6 mt-6">
   <div class="mb-5">
@@ -294,7 +298,6 @@ const ROOM_TYPES={living:'Living',dining:'Dining',bedroom:'Bedroom',masterBedroo
 const ROOM_DEFAULTS={living:{doors:1,windows:1},dining:{doors:0,windows:1},bedroom:{doors:1,windows:1},masterBedroom:{doors:1,windows:1},family:{doors:0,windows:0},kitchen:{doors:1,windows:1},store:{doors:1,windows:0},utility:{doors:1,windows:0},bathroom:{doors:1,windows:0},porch:{doors:0,windows:0},other:{doors:0,windows:0}};
 const INTEGER_UNITS=new Set(['no','set','ls','unit']);
 function isIntegerUnit(unit){return INTEGER_UNITS.has(String(unit||'').toLowerCase())}
-const STRUCT_GROUPS=[{key:'footing',title:'Footing',items:[{id:'str-footing-conc',desc:'Concrete G15',unit:'m3',qty:.5,rateKey:'footingConc'},{id:'str-footing-fw',desc:'Formwork',unit:'sqft',qty:129.17,rateKey:'footingFw'},{id:'str-footing-rebar',desc:'Rebar',unit:'kg',qty:80.5,rateKey:'footingRebar'}]},{key:'ground-slab',title:'Ground Slab',items:[{id:'str-slab-conc',desc:'Concrete G25',unit:'m3',qty:8.361,rateKey:'slabConc'},{id:'str-slab-brc',desc:'Rebar BRC A7 double layer',unit:'sqft',qty:1200,rateKey:'slabBrc'}]},{key:'ground-beam',title:'Ground Beam',items:[{id:'str-gb-conc',desc:'Concrete G25',unit:'m3',qty:3.552,rateKey:'beamConc'},{id:'str-gb-fw',desc:'Formwork',unit:'sqft',qty:509.78,rateKey:'beamFw'},{id:'str-gb-rebar',desc:'Rebar',unit:'kg',qty:710.4,rateKey:'beamRebar'}]},{key:'roof-beam',title:'Roof Beam',items:[{id:'str-rb-conc',desc:'Concrete G25',unit:'m3',qty:3.552,rateKey:'beamConc'},{id:'str-rb-fw',desc:'Formwork',unit:'sqft',qty:509.78,rateKey:'beamFw'},{id:'str-rb-rebar',desc:'Rebar',unit:'kg',qty:710.4,rateKey:'beamRebar'}]},{key:'column',title:'Column',items:[{id:'str-col-conc',desc:'Concrete G25',unit:'m3',qty:.945,rateKey:'colConc'},{id:'str-col-fw',desc:'Formwork',unit:'sqft',qty:271.25,rateKey:'colFw'},{id:'str-col-rebar',desc:'Rebar',unit:'kg',qty:189,rateKey:'colRebar'}]},{key:'roof',title:'Flat Roof & Roofing',items:[{id:'str-fr-conc',desc:'Flat roof – Concrete G25',unit:'m3',qty:.6315,rateKey:'flatRoofConc'},{id:'str-fr-fw',desc:'Flat roof – Formwork',unit:'sqft',qty:67.97,rateKey:'flatRoofFw'},{id:'str-fr-brc',desc:'Flat roof – Rebar BRC A7 double layer',unit:'sqft',qty:135.95,rateKey:'flatRoofBrc'},{id:'str-roof-c',desc:'C-channel for roof structures',unit:'m',qty:781.2,rateKey:'cChannel'},{id:'str-roof-m',desc:'Metal roofing sheet',unit:'sqft',qty:572.2,rateKey:'metalSheet'}]},{key:'external',title:'Infrastructure / Outside Works',items:[{id:'str-apron-c',desc:'Apron – Concrete G15',unit:'m3',qty:.9,rateKey:'apronConc'},{id:'str-apron-f',desc:'Apron – Formwork',unit:'ft',qty:62.01,rateKey:'apronFw'},{id:'str-apron-b',desc:'Apron – Rebar BRC A7',unit:'kg',qty:62.99,rateKey:'apronBrc'},{id:'str-drain',desc:'Drainage – small U-shape scupper drain',unit:'ft',qty:100,rateKey:'drainage'},{id:'arch-septik',desc:'Septic tank',unit:'no',qty:1,rateKey:'septicTank',scale:false},{id:'arch-watertank',desc:'Water tank',unit:'no',qty:1,rateKey:'waterTank',scale:false}]},{key:'special',title:'Special Item',items:[{id:'str-roof-dc',desc:'Design roof structure – Concrete G25',unit:'m3',qty:.3,rateKey:'roofDesignConc'},{id:'str-roof-df',desc:'Design roof structure – Formwork',unit:'sqft',qty:161.46,rateKey:'roofDesignFw'},{id:'str-roof-dr',desc:'Design roof structure – Rebar',unit:'kg',qty:54,rateKey:'roofDesignRebar'}]}];
 const RATE_SCHEDULE=[{title:'Preliminaries',rows:[{key:'permit',label:'Building plan / permit & engineer’s drawings',unit:'ls'},{key:'prelim',label:'Preliminaries, mobilisation & project management',unit:'ls'}]},{title:'Structures',rows:[{key:'footingConc',label:'Footing – Concrete G15',unit:'m3'},{key:'slabConc',label:'Ground slab – Concrete G25',unit:'m3'},{key:'beamConc',label:'Beam – Concrete G25',unit:'m3'},{key:'colConc',label:'Column – Concrete G25',unit:'m3'}]},{title:'Architecture',rows:[{key:'ceilingInt',label:'Internal ceiling',unit:'sqft'},{key:'floorTileInt',label:'Internal floor tiles',unit:'sqft'},{key:'paintInt',label:'Internal painting',unit:'sqft'},{key:'door',label:'Door',unit:'no'},{key:'window',label:'Window',unit:'no'}]},{title:'Bathroom',rows:[{key:'bathFloorTile',label:'Bathroom floor tiles',unit:'sqft'},{key:'bathWallTile',label:'Bathroom wall tiles',unit:'sqft'},{key:'bathPiping',label:'Bathroom piping',unit:'ls'},{key:'bathWc',label:'WC',unit:'no'},{key:'bathBasin',label:'Basin',unit:'no'}]},{title:'Electrical',rows:[{key:'dbBox',label:'DB box',unit:'no'},{key:'wiring',label:'Wiring',unit:'m'},{key:'powerPoint',label:'Power point',unit:'no'},{key:'switch',label:'Switch',unit:'no'},{key:'lighting',label:'Lighting',unit:'no'},{key:'fan',label:'Ceiling fan',unit:'no'},{key:'aircond',label:'Aircond point / provision',unit:'no'},{key:'earthing',label:'Earthing',unit:'set'}]}];
 let roomCounter=0;const excludedItems=new Set(),customRates=new Map(),customQuantities=new Map(),customDescriptions=new Map(),customRoomLabels=new Map();const manualItems=new Map();let standardRateItems=[];let quotationNumber=null;
 function normalizeRate(v){return Math.max(0,Math.round((Number(v)||0)*100)/100)}
@@ -303,19 +306,12 @@ function safeParseJson(v,fallback){try{return JSON.parse(v)}catch(e){return fall
 function serializeMap(map){return [...map.entries()]}
 function restoreMap(map,entries){map.clear();(Array.isArray(entries)?entries:[]).forEach(([k,v])=>map.set(k,v))}
 function standardLibrary(){
- const structural=[];
- const structuralRateKeys=new Set();
- STRUCT_GROUPS.forEach(g=>g.items.forEach(s=>{
-  structuralRateKeys.add(s.rateKey);
-  structural.push({id:`rate-${s.rateKey}`,key:s.rateKey,description:s.desc,unit:s.unit,rate:normalizeRate(RATES[s.rateKey]),category:'structures',groupKey:g.key,groupTitle:g.title,custom:false});
- }));
  const items=[];
  RATE_SCHEDULE.forEach(g=>g.rows.forEach(r=>{
   const category=g.title==='Preliminaries'?'preliminaries':g.title==='Structures'?'structures':g.title==='Electrical'?'electrical':'architecture';
-  if(category==='structures' && structuralRateKeys.has(r.key))return;
   items.push({id:`rate-${r.key}`,key:r.key,description:r.label,unit:r.unit,rate:normalizeRate(RATES[r.key]),category,groupTitle:g.title,custom:false});
  }));
- return [...items,...structural,...standardRateItems.map(x=>({...x,rate:normalizeRate(x.rate),custom:true}))];
+ return [...items,...standardRateItems.map(x=>({...x,rate:normalizeRate(x.rate),custom:true}))];
 }
 function standardItemOptions(targetKey){
  const list=standardLibrary().filter(x=>{
@@ -372,7 +368,7 @@ function saveManualItem(targetKey){
   if(!description){alert('Please enter the new item description.');return}
   if(targetKey==='prelim'){category='preliminaries';groupTitle='Preliminaries'}
   else if(targetKey==='electrical'){category='electrical';groupTitle='Electrical Works'}
-  else if(targetKey.startsWith('structures:')){category='structures';groupKey=targetKey.slice(11);groupTitle=STRUCT_GROUPS.find(g=>g.key===groupKey)?.title||groupKey}
+  else if(targetKey.startsWith('structures:')){category='structures';groupKey=targetKey.slice(11);groupTitle=groupKey}
   else if(targetKey.startsWith('room:')){category='architecture';groupTitle='Additional Architectural Works'}
   else {alert('Invalid item group.');return}
   const id=`custom-${Date.now()}-${Math.random().toString(36).slice(2,8)}`;
@@ -385,7 +381,7 @@ function saveManualItem(targetKey){
  const target=targetKey.startsWith('room:')?targetKey.slice(5):'project';
  if(targetKey==='prelim'){category='preliminaries';groupTitle='Preliminaries'}
  else if(targetKey==='electrical'){category='electrical';groupTitle='Electrical Works'}
- else if(targetKey.startsWith('structures:')){category='structures';groupKey=targetKey.slice(11);groupTitle=STRUCT_GROUPS.find(g=>g.key===groupKey)?.title||groupTitle||groupKey}
+ else if(targetKey.startsWith('structures:')){category='structures';groupKey=targetKey.slice(11);groupTitle=groupTitle||groupKey}
  else if(targetKey.startsWith('room:')){category='architecture';groupTitle='Additional Architectural Works'}
  if(!manualItems.has(targetKey))manualItems.set(targetKey,[]);
  manualItems.get(targetKey).push({id,description,unit,qty,rate,category,groupKey,groupTitle,roomId:target});
@@ -423,7 +419,7 @@ function renderRateSchedule(){
   heading('Preliminaries');
   const prelim=(RATE_SCHEDULE.find(g=>String(g.title).toLowerCase()==='preliminaries')||{}).rows||[]; prelim.forEach(r=>row(r.label,r.unit,r.key));
   heading('Structural Works');
-  if(typeof STRUCT_GROUPS!=='undefined') STRUCT_GROUPS.forEach(g=>{subheading(g.title);(g.items||[]).forEach(x=>row(x.desc,x.unit,x.rateKey,'pl-8'))});
+  const structural=(RATE_SCHEDULE.find(g=>String(g.title).toLowerCase()==='structures')||{}).rows||[]; structural.forEach(r=>row(r.label,r.unit,r.key));
   heading('Architectural Works');
   const arch=(RATE_SCHEDULE.find(g=>String(g.title).toLowerCase()==='architecture')||{}).rows||[]; if(arch.length){subheading('General / Room Works');arch.forEach(r=>row(r.label,r.unit,r.key,'pl-8'))}
   const bath=(RATE_SCHEDULE.find(g=>String(g.title).toLowerCase()==='bathroom')||{}).rows||[]; if(bath.length){subheading('Bathroom');bath.forEach(r=>row(r.label,r.unit,r.key,'pl-8'))}
@@ -460,17 +456,31 @@ function getRoomGroups(){
 }
 function getScaleFactor(){const rooms=getRoomGroups();const totalArea=rooms.reduce((s,r)=>s+(r.area||0),0);return totalArea>0?totalArea/BASE_AREA:0}
 function pushItem(items,id,roomId,roomLabel,category,description,qty,unit,rate,groupKey=null,groupTitle=null){let q=customQuantities.has(id)?customQuantities.get(id):qty,r=customRates.has(id)?customRates.get(id):rate,d=customDescriptions.has(id)?customDescriptions.get(id):description;q=isIntegerUnit(unit)?Math.max(0,Math.round(Number(q)||0)):Math.round((Number(q)||0)*100)/100;items.push({id,roomId,room:roomLabel,category,description:d,qty:Number(q)||0,unit,rate:Number(r)||0,amount:(Number(q)||0)*(Number(r)||0),groupKey,groupTitle})}
-function generateStructureItems(){const scale=getScaleFactor(),items=[];if(scale<=0)return items;pushItem(items,'prelim-1','project','Project','preliminaries','Submission of building plan / permit application and Engineer’s drawings to Local Authority',1,'ls',RATES.permit);pushItem(items,'prelim-2','project','Project','preliminaries','Preliminaries, site mobilisation, temporary facilities, insurance and project management',1,'ls',RATES.prelim);STRUCT_GROUPS.forEach(g=>g.items.forEach(s=>{let q=s.scale===false?s.qty:s.qty*scale;q=roundQty(q,s.unit);if(isIntegerUnit(s.unit)&&s.qty>=1&&q<1)q=1;pushItem(items,s.id,'project','Project','structures',s.desc,q,s.unit,RATES[s.rateKey],g.key,g.title)}));return items}
+function generateStructureItems(){const scale=getScaleFactor(),items=[];if(scale<=0)return items;pushItem(items,'prelim-1','project','Project','preliminaries','Submission of building plan / permit application and Engineer’s drawings to Local Authority',1,'ls',RATES.permit);pushItem(items,'prelim-2','project','Project','preliminaries','Preliminaries, site mobilisation, temporary facilities, insurance and project management',1,'ls',RATES.prelim);return items}
 function generateRoomArchitectureItems(room){const items=[];if(!room.area||room.area<=0)return items;const{roomId,roomType,label,area}=room,a=roundQty(area,'sqft'),defs=ROOM_DEFAULTS[roomType]||ROOM_DEFAULTS.other;if(roomType!=='porch')pushItem(items,`${roomId}-ceiling`,roomId,label,'architecture',`Plaster / skim ceiling c/w paint – ${label}`,a,'sqft',RATES.ceilingInt);if(roomType==='bathroom'){pushItem(items,`${roomId}-floortile`,roomId,label,'architecture',`Floor tiles c/w waterproofing – ${label}`,a,'sqft',RATES.bathFloorTile);pushItem(items,`${roomId}-walltile`,roomId,label,'architecture',`Wall tiles – ${label}`,roundQty(a*6,'sqft'),'sqft',RATES.bathWallTile);pushItem(items,`${roomId}-piping`,roomId,label,'architecture',`Piping works – ${label}`,1,'ls',RATES.bathPiping);pushItem(items,`${roomId}-wc`,roomId,label,'architecture',`WC – ${label}`,1,'no',RATES.bathWc);pushItem(items,`${roomId}-basin`,roomId,label,'architecture',`Basin – ${label}`,1,'no',RATES.bathBasin);pushItem(items,`${roomId}-shower`,roomId,label,'architecture',`Shower rose – ${label}`,1,'no',RATES.bathShower);pushItem(items,`${roomId}-tap`,roomId,label,'architecture',`Tap – ${label}`,1,'no',RATES.bathTap)}else if(roomType==='porch')pushItem(items,`${roomId}-floortile`,roomId,label,'architecture',`Floor tiles – ${label}`,a,'sqft',RATES.floorTileExt);else pushItem(items,`${roomId}-floortile`,roomId,label,'architecture',`Floor tiles – ${label}`,a,'sqft',RATES.floorTileInt);if(roomType!=='porch'&&roomType!=='bathroom')pushItem(items,`${roomId}-paint`,roomId,label,'architecture',`Internal painting – ${label}`,roundQty(a*2.8,'sqft'),'sqft',RATES.paintInt);if(defs.doors>0)pushItem(items,`${roomId}-door`,roomId,label,'architecture',`Door – ${label}`,defs.doors,'no',RATES.door);if(defs.windows>0)pushItem(items,`${roomId}-window`,roomId,label,'architecture',`Window – ${label}`,defs.windows,'no',RATES.window);return items}
 function generateElectricalItems(rooms){const items=[],totalArea=rooms.reduce((s,r)=>s+(r.area||0),0);if(totalArea<=0)return items;const scale=totalArea/BASE_AREA;pushItem(items,'elec-db','project','Project','electrical','DB box',1,'no',RATES.dbBox);pushItem(items,'elec-wiring','project','Project','electrical','Wirings',Math.round(400*scale),'m',RATES.wiring);pushItem(items,'elec-pp','project','Project','electrical','Power point',Math.round(10*scale),'no',RATES.powerPoint);pushItem(items,'elec-switch','project','Project','electrical','Switch',Math.round(10*scale),'no',RATES.switch);pushItem(items,'elec-light','project','Project','electrical','Lighting',Math.round(16*scale),'no',RATES.lighting);pushItem(items,'elec-fan','project','Project','electrical','Ceiling fan',Math.round(4*scale),'no',RATES.fan);pushItem(items,'elec-ac','project','Project','electrical','Aircond point / provision',Math.round(3*scale),'no',RATES.aircond);pushItem(items,'elec-earth','project','Project','electrical','Earthing',1,'set',RATES.earthing);return items}
 function getAllItems(){const rooms=getRoomGroups(),items=[...generateStructureItems()];rooms.forEach(r=>items.push(...generateRoomArchitectureItems(r)));items.push(...generateElectricalItems(rooms));const manual=[];for(const [target,list] of manualItems.entries()){(list||[]).forEach(x=>manual.push({...x,roomId:x.roomId||'project',room:x.roomId&&x.roomId!=='project'?(rooms.find(r=>r.roomId===x.roomId)?.label||x.roomId):'Project'}))}items.push(...manual);items.forEach(i=>{i.qty=customQuantities.has(i.id)?customQuantities.get(i.id):i.qty;i.rate=customRates.has(i.id)?customRates.get(i.id):i.rate;i.description=customDescriptions.has(i.id)?customDescriptions.get(i.id):i.description;i.qty=normalizeQuantity(i.qty);i.rate=normalizeRate(i.rate);i.amount=Math.round((i.qty*i.rate+Number.EPSILON)*100)/100});return items}
 function syncBuiltUpAreaFromRooms(){const total=[...document.querySelectorAll('#roomsContainer .room-area')].reduce((s,e)=>s+(parseFloat(e.value)||0),0);const el=document.getElementById('builtUpArea');if(el){el.value=String(Math.max(0,Math.ceil(total)));el.readOnly=true;el.classList.add('bg-gray-100');el.title='Automatically calculated from the total area/room schedule.'}}
+function renderConstructionBudget(){
+ const c=document.getElementById('constructionBudgetContent'); if(!c)return;
+ const gate=window.__TERAJU_MASTER_RULE_GATE_READY;
+ if(!gate){c.innerHTML='<div class="border rounded-xl bg-gray-50 p-5 text-center text-sm text-gray-500">Loading Global Calculation Rules…</div>';return}
+ const active=getAllItems().filter(i=>!excludedItems.has(i.id));
+ if(!active.length){c.innerHTML='<div class="border rounded-xl bg-gray-50 p-5 text-center text-sm text-gray-500">Add rooms / areas to calculate the preliminary construction budget.</div>';return}
+ const groups=[['preliminaries','PRELIMINARIES'],['structures','STRUCTURAL WORKS'],['architecture','ARCHITECTURAL WORKS'],['electrical','ELECTRICAL WORKS']]; let no=1;
+ let h='<table class="w-full border-collapse text-sm cr-budget-table"><thead><tr class="border-b-2 text-left"><th class="py-3 px-2">Item</th><th class="py-3 px-2">Description</th><th class="py-3 px-2">Unit</th><th class="py-3 px-2 text-right">Quantity</th><th class="py-3 px-2 text-right">Rate (RM)</th><th class="py-3 px-2 text-right">Amount (RM)</th></tr></thead><tbody>';
+ groups.forEach(([cat,title])=>{const items=active.filter(i=>i.category===cat);if(!items.length)return;h+=`<tr class="cr-group-row"><td colspan="6">${escapeHtml(title)}<span class="cr-group-count">${items.length} item${items.length===1?'':'s'}</span></td></tr>`;if(cat==='structures'||cat==='architecture'){const gs=[];items.forEach(i=>{const key=cat==='structures'?(i.groupKey||'other'):(i.roomId||'project'),label=cat==='structures'?(i.groupTitle||'Other Structural Works'):(i.room||'Project');let g=gs.find(x=>x.key===key);if(!g){g={key,label,items:[]};gs.push(g)}g.items.push(i)});gs.forEach(g=>{h+=`<tr class="cr-hierarchy-row cr-level-2"><td colspan="6">${escapeHtml(g.label)}</td></tr>`;g.items.forEach(i=>{h+=budgetRow(i,no++)})})}else items.forEach(i=>{h+=budgetRow(i,no++)})});
+ const total=active.reduce((sum,i)=>sum+i.amount,0);h+=`</tbody><tfoot><tr class="border-t-2"><td colspan="5" class="py-4 px-2 text-right font-bold">TOTAL PRELIMINARY ESTIMATE</td><td class="py-4 px-2 text-right font-bold text-lg">RM ${money(total,2)}</td></tr></tfoot></table>`;c.innerHTML=h;
+}
+function budgetRow(i,no){return `<tr class="border-b align-top"><td class="py-2 px-2 text-gray-500">${no}</td><td class="py-2 px-2 cr-description">${escapeHtml(i.description)}</td><td class="py-2 px-2 cr-unit">${escapeHtml(i.unit)}</td><td class="py-2 px-2 text-right">${isIntegerUnit(i.unit)?String(Math.round(i.qty)):money(i.qty,2)}</td><td class="py-2 px-2 text-right">${money(i.rate,2)}</td><td class="py-2 px-2 text-right font-semibold">${money(i.amount,2)}</td></tr>`}
+
 function updateEstimate(){
  syncBuiltUpAreaFromRooms();
  const all=getAllItems(),active=all.filter(i=>!excludedItems.has(i.id)),rooms=getRoomGroups(),
  roomsArea=rooms.reduce((s,r)=>s+(r.area||0),0),
  declared=parseFloat(document.getElementById('builtUpArea')?.value)||0,
  total=active.reduce((s,i)=>s+i.amount,0);
+ renderConstructionBudget();
  saveContractorState();
 }
 function generateQuotationNumber(){let n=localStorage.getItem('terajuNBQO');n=n?parseInt(n,10)+1:1;localStorage.setItem('terajuNBQO',n);return'NB-QO'+String(n).padStart(3,'0')}
@@ -597,5 +607,49 @@ updateEstimate();
   }
 })();
 </script>
-<script src="quotation-quantity-fix.js?v=20260907"></script>
-</body></html>
+
+
+<script>
+/* TERAJU WORKS — master-driven calculation catalogue bootstrap.
+   No calculation-item catalogue is hardcoded in Build Planner. Global Calculation Rules is the source. */
+(function(){
+  if(!/buildplanner-v2\.html$/i.test(location.pathname))return;
+  const RULE_URL='admin-calculation-rules.html?source=master&v=20260915';
+  const BINDINGS={
+    'MAIN BUILDING / Footing / Concrete':['str-footing-conc','footingConc','Footing'],
+    'MAIN BUILDING / Footing / Formwork':['str-footing-fw','footingFw','Footing'],
+    'MAIN BUILDING / Footing / Rebar':['str-footing-rebar','footingRebar','Footing'],
+    'MAIN BUILDING / Ground Slab / Concrete':['str-slab-conc','slabConc','Ground Slab'],
+    'MAIN BUILDING / Ground Slab / BRC':['str-slab-brc','slabBrc','Ground Slab'],
+    'MAIN BUILDING / Ground Beam / Concrete':['str-gb-conc','beamConc','Ground Beam'],
+    'MAIN BUILDING / Ground Beam / Formwork':['str-gb-fw','beamFw','Ground Beam'],
+    'MAIN BUILDING / Ground Beam / Rebar':['str-gb-rebar','beamRebar','Ground Beam'],
+    'MAIN BUILDING / Roof Beam / Concrete':['str-rb-conc','beamConc','Roof Beam'],
+    'MAIN BUILDING / Roof Beam / Formwork':['str-rb-fw','beamFw','Roof Beam'],
+    'MAIN BUILDING / Roof Beam / Rebar':['str-rb-rebar','beamRebar','Roof Beam'],
+    'MAIN BUILDING / Column / Concrete':['str-col-conc','colConc','Column'],
+    'MAIN BUILDING / Column / Formwork':['str-col-fw','colFw','Column'],
+    'MAIN BUILDING / Column / Rebar':['str-col-rebar','colRebar','Column'],
+    'MAIN BUILDING / Flat Roof / Concrete':['str-fr-conc','flatRoofConc','Flat Roof'],
+    'MAIN BUILDING / Flat Roof / Formwork':['str-fr-fw','flatRoofFw','Flat Roof'],
+    'MAIN BUILDING / Flat Roof / BRC':['str-fr-brc','flatRoofBrc','Flat Roof'],
+    'MAIN BUILDING / Roof / Metal Roofing Sheet':['str-roof-m','metalSheet','Roof']
+  };
+  const parseRules=src=>{const m=src.match(/(?:const|let)\s+rules\s*=\s*\[/);if(!m)throw Error('Global Calculation Rules array not found');const st=src.indexOf('[',m.index);let d=0,q=null,e=false;for(let i=st;i<src.length;i++){const c=src[i];if(q){if(e)e=false;else if(c==='\\')e=true;else if(c===q)q=null;continue}if(c==='"'||c==="'"||c==='`'){q=c;continue}if(c==='[')d++;else if(c===']'&&--d===0)return Function('"use strict";return '+src.slice(st,i+1))()}throw Error('Global Calculation Rules array incomplete')};
+  fetch(RULE_URL,{cache:'no-store'}).then(r=>r.ok?r.text():Promise.reject(new Error('Unable to load Global Calculation Rules Master'))).then(src=>{
+    const rules=parseRules(src),byPath=new Map(rules.map(x=>[String(x[1]||'').trim(),x]));
+    const masterItems=[];
+    Object.entries(BINDINGS).forEach(([path,b])=>{const r=byPath.get(path);if(!r)return;masterItems.push({path,id:b[0],rateKey:b[1],groupTitle:b[2],description:String(r[2]||''),unit:String(r[6]||'')})});
+    window.__TERAJU_MASTER_STRUCT_RULES=masterItems;
+    window.__TERAJU_MASTER_RULE_PATHS=new Set(rules.map(x=>String(x[1]||'').trim()).filter(Boolean));
+    const oldGenerate=window.generateStructureItems;
+    window.generateStructureItems=function(){
+      const items=typeof oldGenerate==='function'?oldGenerate.apply(this,arguments):[];
+      const scale=typeof getScaleFactor==='function'?getScaleFactor():0;if(scale<=0)return items;
+      masterItems.forEach(r=>{if(items.some(i=>i.id===r.id))return;const rate=typeof RATES!=='undefined'?Number(RATES[r.rateKey]||0):0;items.push({id:r.id,roomId:'project',room:'Project',category:'structures',description:r.description,qty:0,unit:r.unit,rate,amount:0,groupKey:r.groupTitle.toLowerCase().replace(/\s+/g,'-'),groupTitle:r.groupTitle})});
+      return items;
+    };
+    const tag=document.createElement('script');tag.src='quotation-quantity-fix.js?v=20260907';tag.onload=()=>{window.__TERAJU_MASTER_RULE_GATE_READY=true;if(typeof updateEstimate==='function')updateEstimate()};tag.onerror=()=>console.error('[TERAJU V2] Unable to load master calculation engine');document.body.appendChild(tag);
+  }).catch(e=>console.error('[TERAJU V2 MASTER BOOTSTRAP]',e));
+})();
+</script></body></html>
