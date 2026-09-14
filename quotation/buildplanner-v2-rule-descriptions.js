@@ -7,10 +7,11 @@
   let descriptions=new Map();
 
   function extractRules(source){
-    const marker='const rules=[';
-    const start=source.indexOf(marker);
-    if(start<0)throw new Error('Calculation Rules array not found');
-    let i=start+marker.length-1,depth=0,quote=null,escaped=false;
+    const match=source.match(/(?:const|let)\s+rules\s*=\s*\[/);
+    if(!match)throw new Error('Calculation Rules array not found');
+    const start=match.index;
+    const arrayStart=source.indexOf('[',start);
+    let i=arrayStart,depth=0,quote=null,escaped=false;
     for(;i<source.length;i++){
       const ch=source[i];
       if(quote){
@@ -24,7 +25,7 @@
       else if(ch===']'){
         depth--;
         if(depth===0){
-          const literal=source.slice(start+marker.length-1,i+1);
+          const literal=source.slice(arrayStart,i+1);
           return Function('"use strict";return '+literal)();
         }
       }
@@ -33,7 +34,7 @@
   }
 
   async function load(){
-    const response=await fetch('calculation-rules.html?source=master&v=20260912',{cache:'no-store'});
+    const response=await fetch('admin-calculation-rules.html?source=master&v=20260915',{cache:'no-store'});
     if(!response.ok)throw new Error('Unable to load Calculation Rules');
     const source=await response.text();
     const rules=extractRules(source);
