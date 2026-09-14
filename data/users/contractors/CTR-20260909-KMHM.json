@@ -32,20 +32,50 @@
         },
         "project": {
           "location": "Makmur",
-          "builtUpArea": 200,
+          "builtUpArea": 1322,
           "state": "selangor"
         },
-        "total": 44899.67,
+        "total": 88241.36,
         "plannerState": {
           "customerName": "En Azizi",
           "projectLocation": "Makmur",
-          "builtUpArea": "200",
+          "builtUpArea": "1322",
           "rooms": [
             {
               "id": "room-2",
               "type": "living",
               "name": "",
               "area": "200"
+            },
+            {
+              "id": "room-5",
+              "type": "dining",
+              "name": "Dining",
+              "area": "234"
+            },
+            {
+              "id": "room-6",
+              "type": "bedroom",
+              "name": "Bedroom",
+              "area": "321"
+            },
+            {
+              "id": "room-7",
+              "type": "masterBedroom",
+              "name": "Master Bedroom",
+              "area": "123"
+            },
+            {
+              "id": "room-8",
+              "type": "family",
+              "name": "Family",
+              "area": "123"
+            },
+            {
+              "id": "room-9",
+              "type": "kitchen",
+              "name": "Kitchen",
+              "area": "321"
             }
           ],
           "rates": {
@@ -184,7 +214,11 @@
             "rule_gate_82": 6500,
             "rule_external_drain_83": 25,
             "rule_driveway_84": 5000,
-            "rule_landscaping_85": 2000
+            "rule_landscaping_85": 2000,
+            "bathCeiling": 165,
+            "porchLighting": 120,
+            "porchFan": 150,
+            "porchPowerPoint": 6.5
           },
           "customRates": [
             [
@@ -214,12 +248,12 @@
           "quotationType": "simple",
           "projectId": "PRJ-BLD-MU1MBKY2-KLETS",
           "projectState": "selangor",
-          "rateSetId": "selangor",
-          "rateSetName": "Selangor",
-          "rateSnapshotAt": "2026-09-14T19:10:37.078Z"
+          "rateSetId": "default",
+          "rateSetName": "Default Rate",
+          "rateSnapshotAt": "2026-09-14T20:41:55.910Z"
         },
         "createdAt": "2026-09-14T19:10:37.077Z",
-        "updatedAt": "2026-09-14T19:10:38.272Z",
+        "updatedAt": "2026-09-14T20:41:57.066Z",
         "estimateNumber": "EST-BLD-012"
       },
       {
@@ -2617,7 +2651,7 @@
     ]
   },
   "createdAt": "2026-09-09T13:15:32.117Z",
-  "updatedAt": "2026-09-14T19:10:38.272Z",
+  "updatedAt": "2026-09-14T20:41:57.066Z",
   "quotationRunningNumber": {
     "build": 14,
     "renovation": 7
