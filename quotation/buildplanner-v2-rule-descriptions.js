@@ -20,7 +20,7 @@
         else if(ch===quote)quote=null;
         continue;
       }
-      if(ch==='\''||ch==='"'||ch==='`'){quote=ch;continue}
+      if(ch==='\''||ch==='"'||ch==='`'){quote=ch;continue;}
       if(ch==='[')depth++;
       else if(ch===']'){
         depth--;
@@ -50,19 +50,30 @@
     if(!container||!descriptions.size)return;
     const rows=container.querySelectorAll('tr[data-rule-item-id]');
     rows.forEach(row=>{
-      const textarea=row.querySelector('textarea');
-      if(!textarea)return;
+      const firstCell=row.cells&&row.cells[0];
+      if(!firstCell)return;
       let pathRow=row.previousElementSibling;
       while(pathRow&&!pathRow.classList.contains('quotation-subsection-row'))pathRow=pathRow.previousElementSibling;
       if(!pathRow)return;
       const path=normalizePath(pathRow.textContent);
       const full=descriptions.get(path);
       if(!full)return;
-      textarea.value=full;
-      textarea.readOnly=true;
-      textarea.setAttribute('aria-readonly','true');
-      textarea.title='Description locked to Calculation Rules — Global Master Source of Truth';
-      textarea.removeAttribute('onchange');
+
+      const textarea=firstCell.querySelector('textarea');
+      if(textarea){
+        textarea.value=full;
+        textarea.readOnly=true;
+        textarea.setAttribute('aria-readonly','true');
+        textarea.title='Description locked to Calculation Rules — Global Master Source of Truth';
+        textarea.removeAttribute('onchange');
+      }else{
+        firstCell.innerHTML='<div class="homeowner-locked py-2 rounded-lg"></div>';
+        const display=firstCell.firstElementChild;
+        if(display){
+          display.textContent=full;
+          display.title='Description locked to Calculation Rules — Global Master Source of Truth';
+        }
+      }
     });
   }
 
@@ -74,7 +85,7 @@
     const observer=new MutationObserver(()=>{
       if(scheduled)return;
       scheduled=true;
-      requestAnimationFrame(()=>{scheduled=false;apply()});
+      requestAnimationFrame(()=>{scheduled=false;apply();});
     });
     observer.observe(container,{childList:true,subtree:true});
   }
