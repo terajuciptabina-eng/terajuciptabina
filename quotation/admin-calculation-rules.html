@@ -50,8 +50,8 @@ let rules=[
     "0.0008333 m³/sqft",
     "Quantity = A × 0.0008333",
     "m³",
-    "600 sqft → 0.50 m³.",
-    "Reference coefficient; convert m² input to sqft before applying."
+    "A = Main Building Area only. Example A = 600 sqft → 0.49998 ≈ 0.50 m³.",
+    "Coefficient 0.0008333 is locked. Do not substitute Porch Area B or A+B."
   ],
   [
     "STRUCTURES",
@@ -105,8 +105,8 @@ let rules=[
     "0.00592 m³/sqft",
     "Quantity = A × 0.00592",
     "m³",
-    "600 sqft → 3.552 m³.",
-    "Baseline area relationship."
+    "600 sqft / 3.552 m³ = 0.00592 m³/sqft.",
+    "Coefficient derived from the established TERAJU project calculation basis; calculation uses Main Building Area A."
   ],
   [
     "STRUCTURES",
@@ -116,8 +116,8 @@ let rules=[
     "0.0789333 m²/sqft",
     "Quantity = A × 0.0789333",
     "m²",
-    "600 sqft → 47.36 m².",
-    "Baseline beam formwork relationship."
+    "600 sqft = 47.36 m²; 47.36 / 600 = 0.0789 m²/sqft.",
+    "Established TERAJU project calculation basis; calculation uses Main Building Area A."
   ],
   [
     "STRUCTURES",
@@ -171,8 +171,8 @@ let rules=[
     "0.00158 m³/sqft",
     "Quantity = A × 0.00158",
     "m³",
-    "Coefficient locked at 0.00158 m³/sqft.",
-    "Main Building Area A is the calculation input; coefficient is fixed from the established TERAJU calculation basis."
+    "Coefficient 0.00158 m³/sqft is the established TERAJU calculation basis.",
+    "Coefficient is locked. Do not recalculate or alter it; calculation uses Main Building Area A."
   ],
   [
     "STRUCTURES",
@@ -204,8 +204,8 @@ let rules=[
     "0.10 m",
     "Quantity = Flat Roof Area (m²) × 0.10",
     "m³",
-    "100mm thickness.",
-    "Concrete volume including waterproofing scope."
+    "Default flat roof thickness = 100mm (0.10m).",
+    "Use the locked flat-roof thickness basis."
   ],
   [
     "STRUCTURES",
@@ -215,8 +215,8 @@ let rules=[
     "1.00 m²/m²",
     "Quantity = Flat Roof Area (m²) × 1",
     "m²",
-    "Full underside area.",
-    "Underside formwork."
+    "Coefficient = 1.",
+    "Use the locked flat-roof formwork calculation basis."
   ],
   [
     "STRUCTURES",
@@ -226,8 +226,8 @@ let rules=[
     "2 layers",
     "Quantity = Flat Roof Area (m²) × 2",
     "m²",
-    "BRC A7 double layer.",
-    "Reinforcement coverage."
+    "2 layers.",
+    "Use the locked 2-layer BRC basis."
   ],
   [
     "STRUCTURES",
@@ -237,8 +237,8 @@ let rules=[
     "0.159883 m²/sqft",
     "Quantity = A × 0.159883",
     "m²",
-    "25° pitch with 3ft overhang reference.",
-    "Roof surface allowance."
+    "Mono-pitch roof, 25° pitch. A = AA × AB = total Main Building Area. Apron overhang = 3ft from main building area.",
+    "Roof geometry follows the locked TERAJU calculation basis; do not replace with a different roof assumption."
   ],
   [
     "STRUCTURES",
@@ -248,8 +248,8 @@ let rules=[
     "0.05 m",
     "Quantity = Apron Area (m²) × 0.05",
     "m³",
-    "50mm thickness.",
-    "Apron area derived from building footprint and overhang."
+    "Apron Area = outer footprint area derived using the 3ft overhang around the Main Building footprint, minus Main Building Area; the balance is Apron Area. Thickness = 50mm.",
+    "Apron Area definition is locked and must be used consistently."
   ],
   [
     "STRUCTURES",
@@ -259,8 +259,8 @@ let rules=[
     "0.05 m",
     "Quantity = Outer Apron Perimeter (m) × 0.05",
     "m²",
-    "50mm edge formwork.",
-    "Outer apron perimeter."
+    "Outer Apron Perimeter × 50mm thickness.",
+    "Apron perimeter follows the locked Apron Area definition."
   ],
   [
     "STRUCTURES",
@@ -270,8 +270,8 @@ let rules=[
     "1 layer",
     "Quantity = Apron Area (m²) × 1",
     "m²",
-    "BRC A7 single layer.",
-    "Reinforcement coverage."
+    "1 layer.",
+    "Apron Area follows the locked Apron Area definition."
   ],
   [
     "STRUCTURES",
@@ -281,8 +281,8 @@ let rules=[
     "1 m/m",
     "Quantity = Outer Apron Perimeter × 1",
     "m",
-    "Outer apron perimeter.",
-    "Drainage follows apron edge."
+    "Outer Apron Perimeter × 1m.",
+    "Drainage follows the outer perimeter of the locked Apron Area."
   ],
   [
     "STRUCTURES",
@@ -292,8 +292,8 @@ let rules=[
     "0.0008333 m³/sqft",
     "Quantity = Porch Area × 0.0008333",
     "m³",
-    "Same footing coefficient.",
-    "Porch area input."
+    "B = Porch Area. Same calculation method as the corresponding Main Building rule.",
+    "Porch uses B only for this rule; do not substitute Main Building Area A unless the formula explicitly says A+B."
   ],
   [
     "STRUCTURES",
@@ -303,8 +303,8 @@ let rules=[
     "0.02 m²/sqft",
     "Quantity = Porch Area × 0.02",
     "m²",
-    "Same footing formwork coefficient.",
-    "Porch area input."
+    "B = Porch Area. Same calculation method as the corresponding Main Building rule.",
+    "Porch uses B only for this rule; do not substitute Main Building Area A unless the formula explicitly says A+B."
   ],
   [
     "STRUCTURES",
@@ -314,8 +314,8 @@ let rules=[
     "100 kg/m³",
     "Quantity = Porch Footing Concrete × 100",
     "kg",
-    "100 kg/m³.",
-    "Rebar weightage."
+    "B = Porch Area. Same calculation method as the corresponding Main Building rule.",
+    "Porch uses B only for this rule; do not substitute Main Building Area A unless the formula explicitly says A+B."
   ],
   [
     "STRUCTURES",
@@ -325,8 +325,8 @@ let rules=[
     "0.15 m",
     "Quantity = Porch Ground Slab Area × 0.15",
     "m³",
-    "150mm thickness.",
-    "Porch slab area."
+    "B = Porch Area. Same calculation method as the corresponding Main Building rule.",
+    "Porch uses B only for this rule; do not substitute Main Building Area A unless the formula explicitly says A+B."
   ],
   [
     "STRUCTURES",
@@ -336,8 +336,8 @@ let rules=[
     "2 layers",
     "Quantity = Porch Ground Slab Area × 2",
     "m²",
-    "BRC A7 double layer.",
-    "Porch slab area."
+    "B = Porch Area. Same calculation method as the corresponding Main Building rule.",
+    "Porch uses B only for this rule; do not substitute Main Building Area A unless the formula explicitly says A+B."
   ],
   [
     "STRUCTURES",
@@ -347,8 +347,8 @@ let rules=[
     "0.00592 m³/sqft",
     "Quantity = Porch Area × 0.00592",
     "m³",
-    "Same ground beam coefficient.",
-    "Porch area input."
+    "B = Porch Area. Same calculation method as the corresponding Main Building rule.",
+    "Porch uses B only for this rule; do not substitute Main Building Area A unless the formula explicitly says A+B."
   ],
   [
     "STRUCTURES",
@@ -358,8 +358,8 @@ let rules=[
     "0.0789333 m²/sqft",
     "Quantity = Porch Area × 0.0789333",
     "m²",
-    "Same beam formwork coefficient.",
-    "Porch area input."
+    "B = Porch Area. Same calculation method as the corresponding Main Building rule.",
+    "Porch uses B only for this rule; do not substitute Main Building Area A unless the formula explicitly says A+B."
   ],
   [
     "STRUCTURES",
@@ -369,8 +369,8 @@ let rules=[
     "200 kg/m³",
     "Quantity = Porch Ground Beam Concrete × 200",
     "kg",
-    "200 kg/m³.",
-    "Rebar weightage."
+    "B = Porch Area. Same calculation method as the corresponding Main Building rule.",
+    "Porch uses B only for this rule; do not substitute Main Building Area A unless the formula explicitly says A+B."
   ],
   [
     "STRUCTURES",
@@ -380,8 +380,8 @@ let rules=[
     "0.00592 m³/sqft",
     "Quantity = Porch Area × 0.00592",
     "m³",
-    "Same roof beam coefficient.",
-    "Porch area input."
+    "B = Porch Area. Same calculation method as the corresponding Main Building rule.",
+    "Porch uses B only for this rule; do not substitute Main Building Area A unless the formula explicitly says A+B."
   ],
   [
     "STRUCTURES",
@@ -391,8 +391,8 @@ let rules=[
     "0.0789333 m²/sqft",
     "Quantity = Porch Area × 0.0789333",
     "m²",
-    "Same beam formwork coefficient.",
-    "Porch area input."
+    "B = Porch Area. Same calculation method as the corresponding Main Building rule.",
+    "Porch uses B only for this rule; do not substitute Main Building Area A unless the formula explicitly says A+B."
   ],
   [
     "STRUCTURES",
@@ -402,8 +402,8 @@ let rules=[
     "200 kg/m³",
     "Quantity = Porch Roof Beam Concrete × 200",
     "kg",
-    "200 kg/m³.",
-    "Rebar weightage."
+    "B = Porch Area. Same calculation method as the corresponding Main Building rule.",
+    "Porch uses B only for this rule; do not substitute Main Building Area A unless the formula explicitly says A+B."
   ],
   [
     "STRUCTURES",
@@ -413,8 +413,8 @@ let rules=[
     "0.001575 m³/sqft",
     "Quantity = Porch Area × 0.001575",
     "m³",
-    "Same column coefficient.",
-    "Porch area input."
+    "B = Porch Area. Same calculation method as the corresponding Main Building rule.",
+    "Porch uses B only for this rule; do not substitute Main Building Area A unless the formula explicitly says A+B."
   ],
   [
     "STRUCTURES",
@@ -424,8 +424,8 @@ let rules=[
     "0.042 m²/sqft",
     "Quantity = Porch Area × 0.042",
     "m²",
-    "Same column formwork coefficient.",
-    "Porch area input."
+    "B = Porch Area. Same calculation method as the corresponding Main Building rule.",
+    "Porch uses B only for this rule; do not substitute Main Building Area A unless the formula explicitly says A+B."
   ],
   [
     "STRUCTURES",
@@ -435,8 +435,8 @@ let rules=[
     "200 kg/m³",
     "Quantity = Porch Column Concrete × 200",
     "kg",
-    "200 kg/m³.",
-    "Rebar weightage."
+    "B = Porch Area. Same calculation method as the corresponding Main Building rule.",
+    "Porch uses B only for this rule; do not substitute Main Building Area A unless the formula explicitly says A+B."
   ],
   [
     "STRUCTURES",
@@ -446,8 +446,8 @@ let rules=[
     "0.10 m",
     "Quantity = Porch Flat Roof Area × 0.10",
     "m³",
-    "100mm thickness.",
-    "Applies to Flat Roof / Both."
+    "B = Porch Area. Same calculation method as the corresponding Main Building rule.",
+    "Porch uses B only for this rule; do not substitute Main Building Area A unless the formula explicitly says A+B."
   ],
   [
     "STRUCTURES",
@@ -457,8 +457,8 @@ let rules=[
     "1.00 m²/m²",
     "Quantity = Porch Flat Roof Area × 1",
     "m²",
-    "Full underside area.",
-    "Applies to Flat Roof / Both."
+    "B = Porch Area. Same calculation method as the corresponding Main Building rule.",
+    "Porch uses B only for this rule; do not substitute Main Building Area A unless the formula explicitly says A+B."
   ],
   [
     "STRUCTURES",
@@ -468,8 +468,8 @@ let rules=[
     "2 layers",
     "Quantity = Porch Flat Roof Area × 2",
     "m²",
-    "BRC A7 double layer.",
-    "Applies to Flat Roof / Both."
+    "B = Porch Area. Same calculation method as the corresponding Main Building rule.",
+    "Porch uses B only for this rule; do not substitute Main Building Area A unless the formula explicitly says A+B."
   ],
   [
     "STRUCTURES",
@@ -479,8 +479,8 @@ let rules=[
     "0.159883 m²/sqft",
     "Quantity = A × 0.159883",
     "m²",
-    "25° pitch with 3ft overhang reference.",
-    "Applies when Metal Roofing Sheet is selected."
+    "Mono-pitch roof, 25° pitch; Porch Area input is B. Apron overhang = 3ft from the relevant footprint.",
+    "Same roof calculation method as Main Building, with Porch Area B as the area input."
   ],
   [
     "ARCHITECTURES",
@@ -513,7 +513,7 @@ let rules=[
     "Quantity = A",
     "m²",
     "A = Total Main Building Area.",
-    "Main Building Area is the consolidated Main Building room/area input."
+    "Main Building Area A is the consolidated Main Building room/area input."
   ],
   [
     "ARCHITECTURES",
@@ -523,8 +523,8 @@ let rules=[
     "1.00 m²/m²",
     "Quantity = Apron Area",
     "m²",
-    "External tiled area follows apron area.",
-    "External tiled area."
+    "Area = Apron Area.",
+    "Use the locked Apron Area definition."
   ],
   [
     "ARCHITECTURES",
@@ -557,7 +557,7 @@ let rules=[
     "Quantity = A",
     "m²",
     "A = Total Main Building Area.",
-    "Main Building Area is the consolidated Main Building room/area input."
+    "Main Building Area A is the consolidated Main Building room/area input."
   ],
   [
     "ARCHITECTURES",
@@ -567,8 +567,8 @@ let rules=[
     "1.00 m²/m²",
     "Quantity = Apron Area",
     "m²",
-    "External ceiling area follows apron area.",
-    "External ceiling area."
+    "Area = Apron Area.",
+    "Use the locked Apron Area definition."
   ],
   [
     "ARCHITECTURES",
@@ -578,8 +578,8 @@ let rules=[
     "10 ft = 3.048 m",
     "Quantity = Bathroom Perimeter (ft) × 0.3048 × 10 × 0.3048",
     "m²",
-    "10ft wall height.",
-    "Each bathroom is handled separately."
+    "User enters Bathroom Area only. Assume AA × AA = Bathroom Area; AA = √Bathroom Area; Perimeter = AA × 4; wall height = 10ft.",
+    "Example 50 sqft: AA = 7.071ft; perimeter = 28.284ft; wall tile area = 282.84 sqft ≈ 26.28 m²."
   ],
   [
     "ARCHITECTURES",
@@ -611,8 +611,8 @@ let rules=[
     "1 LS / bathroom",
     "Quantity = 1 LS per bathroom",
     "LS",
-    "One LS per bathroom.",
-    "Default rate is common; contractor may edit rate individually per bathroom."
+    "1 LS per bathroom.",
+    "Default rate is common for all bathrooms; contractor may edit the rate individually per bathroom."
   ],
   [
     "ARCHITECTURES",
@@ -721,8 +721,8 @@ let rules=[
     "1 No. / eligible area",
     "Number of eligible Main Building rooms/areas × 1",
     "No.",
-    "One fan per eligible Main Building area.",
-    "Eligible Main Building areas exclude Kitchen, Master Bathroom and Bathroom; output consolidated."
+    "Eligible Main Building areas = all Main Building rooms/areas except Kitchen, Master Bathroom and Bathroom.",
+    "Quantity = number of eligible Main Building rooms/areas × 1."
   ],
   [
     "ELECTRICAL",
@@ -732,8 +732,8 @@ let rules=[
     "1 No. / designated area",
     "Number of designated air-conditioned areas × 1",
     "No.",
-    "Eligible areas: Master Bedroom, Bedroom, Living and Dining.",
-    "One air-conditioning point per eligible area; output consolidated."
+    "Eligible areas = Master Bedroom, Bedroom, Living and Dining.",
+    "Quantity = number of eligible areas × 1."
   ],
   [
     "ELECTRICAL",
@@ -743,8 +743,8 @@ let rules=[
     "1 No. / 100 sqft, rounded up",
     "CEILING(Porch Area ÷ 100)",
     "No.",
-    "One fitting per 100 sqft band, rounded up.",
-    "Porch calculated separately."
+    "B = Porch Area. Same calculation method as the corresponding Main Building rule.",
+    "Porch uses B only for this rule; do not substitute Main Building Area A unless the formula explicitly says A+B."
   ],
   [
     "ELECTRICAL",
@@ -754,8 +754,8 @@ let rules=[
     "1 No. / porch",
     "Number of Porches × 1",
     "No.",
-    "One fan per porch.",
-    "Porch area does not change allowance."
+    "B = Porch Area. Same calculation method as the corresponding Main Building rule.",
+    "Porch uses B only for this rule; do not substitute Main Building Area A unless the formula explicitly says A+B."
   ],
   [
     "ELECTRICAL",
@@ -765,8 +765,8 @@ let rules=[
     "1 No. / porch",
     "Number of Porches × 1",
     "No.",
-    "One power point per porch.",
-    "Output consolidated."
+    "B = Porch Area. Same calculation method as the corresponding Main Building rule.",
+    "Porch uses B only for this rule; do not substitute Main Building Area A unless the formula explicitly says A+B."
   ],
   [
     "ELECTRICAL",
@@ -798,8 +798,8 @@ let rules=[
     "0.6667 m/sqft",
     "Quantity = (Main Building Area + Porch Area) × 0.6667",
     "m",
-    "TERAJU wiring allowance coefficient.",
-    "Main Building and Porch combined; one consolidated item."
+    "A = Main Building Area; B = Porch Area.",
+    "Calculation uses (A + B) × coefficient; A and B remain separate scope inputs."
   ],
   [
     "DOORS & WINDOWS",
@@ -809,8 +809,8 @@ let rules=[
     "1 No. / applicable location",
     "Number of applicable Type 1 locations × 1",
     "No.",
-    "One Type 1 door per applicable location.",
-    "Door type is specification; room/location is calculation and auto-text reference."
+    "Applicable locations = Living, Dining, Kitchen, Master Bedroom and Bedroom.",
+    "Auto-count applicable rooms/areas; Bathroom is excluded because Type 3 is the bathroom door."
   ],
   [
     "DOORS & WINDOWS",
@@ -820,8 +820,8 @@ let rules=[
     "1 No. / applicable location",
     "Number of applicable Type 2 locations × 1",
     "No.",
-    "One Type 2 door per applicable location.",
-    "Location is auto-text grouping; output consolidated."
+    "Applicable location = Living.",
+    "Auto-count Living location."
   ],
   [
     "DOORS & WINDOWS",
@@ -831,8 +831,8 @@ let rules=[
     "1 No. / bathroom",
     "Number of Bathrooms × 1",
     "No.",
-    "One Type 3 door per bathroom.",
-    "Bathroom names are calculation/auto-text references only."
+    "Applicable location = Bathroom.",
+    "Auto-count number of Bathrooms; one Type 3 door per bathroom."
   ],
   [
     "DOORS & WINDOWS",
