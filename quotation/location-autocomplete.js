@@ -10,6 +10,19 @@
   document.getElementById('projectLocationSuggestions')?.remove();
 })();
 
+// Global Calculation Rules UI standard.
+// All planner consumers use the same shared UI widths/hierarchy renderer.
+(function(){
+  const css=document.createElement('link');
+  css.rel='stylesheet';
+  css.href='shared/calculation-rules-ui.css?v='+Date.now();
+  document.head.appendChild(css);
+  const script=document.createElement('script');
+  script.src='shared/calculation-rules-ui.js?v='+Date.now();
+  script.async=false;
+  document.head.appendChild(script);
+})();
+
 // State-first quotation flow. This is shared by Build and Renovation Planner.
 (function(){
   const script=document.createElement('script');
@@ -98,7 +111,7 @@
     const hasArea=hasRoomArea();
     document.querySelectorAll('#estimateContent tr.no-print').forEach(row=>{
       const button=row.querySelector('button');
-      if(!button||!/^[+]\s*Add Item$/i.test(button.textContent.trim()))return;
+      if(!button||!/^\+\s*Add Item$/i.test(button.textContent.trim()))return;
       row.hidden=!hasArea;
     });
   }
