@@ -23,6 +23,7 @@ export default async function handler(req, res) {
   const headers = { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' };
 
   const norm = v => String(v || '').toLowerCase().replace(/×/g, '*').replace(/÷/g, '/').replace(/[^a-z0-9]+/g, ' ').trim();
+  const slug = v => String(v || '').toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '');
   const extractRules = source => {
     const marker = /(?:const|let)\s+rules\s*=\s*\[/;
     const match = source.match(marker);
@@ -51,29 +52,45 @@ export default async function handler(req, res) {
     if (!response.ok) return [];
     const data = await response.json();
     const source = Buffer.from(data.content || '', 'base64').toString('utf8');
-    return extractRules(source).filter(x => Array.isArray(x) && x[1] && x[2] && x[6]);
+    return extractRules(source)
+      .map((rule, index) => ({ rule, index }))
+      .filter(x => Array.isArray(x.rule) && x.rule[1] && x.rule[2] && x.rule[6]);
   };
   const normalizeLegacyRates = async current => {
-    const rules = await canonicalRules();
-    if (!rules.length || !current?.rates || !current?.rateItems) return current;
+    const entries = await canonicalRules();
+    if (!entries.length || !current?.rates || !current?.rateItems) return current;
+
+    const byKeyBase = new Map();
     const byDescription = new Map();
+    for (const [key, value] of Object.entries(current.rates)) {
+      const base = String(key).replace(/_\d+$/, '');
+      if (!byKeyBase.has(base) && Number.isFinite(Number(value))) byKeyBase.set(base, { key, value });
+    }
     for (const [key, item] of Object.entries(current.rateItems)) {
       const description = norm(item?.description);
       const unit = norm(item?.unit);
-      if (description) byDescription.set(`${description}|${unit}`, { key, value: current.rates[key] });
+      if (description && current.rates[key] !== undefined) byDescription.set(`${description}|${unit}`, { key, value: current.rates[key] });
     }
+
     const rates = { ...current.rates };
     const rateItems = { ...current.rateItems };
-    for (const rule of rules) {
-      const canonicalKey = `rule_${String(rule[1]).toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '')}_${rules.indexOf(rule)}`;
-      const match = byDescription.get(`${norm(rule[2])}|${norm(rule[6])}`);
-      if (!Object.prototype.hasOwnProperty.call(rates, canonicalKey) && match && Number.isFinite(Number(match.value))) {
-        rates[canonicalKey] = Math.round(Number(match.value) * 100) / 100;
-        rateItems[canonicalKey] = {
-          description: rule[2], unit: rule[6], category: 'calculation-rule',
-          groupKey: rule[0] || null, groupTitle: rule[0] || 'Calculation Rules'
-        };
-      }
+    for (const { rule, index } of entries) {
+      const canonicalKey = `rule_${slug(rule[1])}_${index}`;
+      if (Object.prototype.hasOwnProperty.call(rates, canonicalKey)) continue;
+
+      const keyBase = `rule_${slug(rule[1])}`;
+      let match = byKeyBase.get(keyBase);
+      if (!match) match = byDescription.get(`${norm(rule[2])}|${norm(rule[6])}`);
+      if (!match || !Number.isFinite(Number(match.value))) continue;
+
+      rates[canonicalKey] = Math.round(Number(match.value) * 100) / 100;
+      rateItems[canonicalKey] = {
+        description: rule[2],
+        unit: rule[6],
+        category: 'calculation-rule',
+        groupKey: rule[0] || null,
+        groupTitle: rule[0] || 'Calculation Rules'
+      };
     }
     return { ...current, rates, rateItems };
   };
