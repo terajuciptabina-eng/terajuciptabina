@@ -7,7 +7,7 @@
   const DEFAULTS={item:'15%',description:'22%',method:'10%',coefficient:'11%',formula:'12%',unit:'6%',basis:'10%',note:'7%',actions:'7%'};
   const UI={
     esc(value){
-      return String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+      return String(value??'').replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[c]));
     },
     pathParts(rule){
       return String(rule?.path||'').split('/').map(x=>x.trim()).filter(Boolean);
@@ -69,6 +69,55 @@
     }
   };
   global.TerajuCalculationRulesUI=UI;
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>UI.loadWidths(),{once:true});
-  else UI.loadWidths();
+
+  /* Admin Calculation Rules action guard.
+     The admin page currently renders action arguments inside an inline onclick
+     attribute. Paths contain quotes, so HTML parsing can corrupt that handler.
+     Handle the actions at the shared event layer, scoped strictly to this page. */
+  function setupAdminActionDelegation(){
+    if(!/admin-calculation-rules\.html$/i.test(location.pathname))return;
+    document.addEventListener('click',function(e){
+      const button=e.target.closest('#tbody .actions button, #tbody .add button');
+      if(!button)return;
+      e.preventDefault();
+      e.stopImmediatePropagation();
+
+      if(button.closest('.add')){
+        const groupRow=button.closest('tr')?.previousElementSibling;
+        const text=groupRow?.textContent||button.textContent||'';
+        const group=text.split(' · ')[0].trim();
+        if(group&&typeof global.addRule==='function')global.addRule(group);
+        return;
+      }
+
+      const row=button.closest('tr');
+      if(!row)return;
+      const item=row.querySelector('.cr-leaf-item')?.textContent.trim()||'';
+      if(!item)return;
+
+      let parent=row.previousElementSibling;
+      let level2='',level1='';
+      while(parent){
+        if(parent.classList.contains('subhier')&&!level2)level2=parent.querySelector('td')?.textContent.trim()||'';
+        if(parent.classList.contains('hier')&&!level1)level1=parent.querySelector('td')?.textContent.trim()||'';
+        if(parent.classList.contains('group'))break;
+        parent=parent.previousElementSibling;
+      }
+      const parts=[level1,level2,item].filter(Boolean);
+      const path=parts.join(' / ');
+      if(button.classList.contains('delete')){
+        if(typeof global.deleteRule==='function')global.deleteRule(path);
+      }else if(typeof global.editRule==='function'){
+        global.editRule(path);
+      }
+    },true);
+  }
+
+  global.TerajuCalculationRulesUI=UI;
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',()=>{UI.loadWidths();setupAdminActionDelegation()},{once:true});
+  }else{
+    UI.loadWidths();
+    setupAdminActionDelegation();
+  }
 })(window);
