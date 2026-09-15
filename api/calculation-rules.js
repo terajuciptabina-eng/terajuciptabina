@@ -206,7 +206,9 @@ export default async function handler(req,res){
       if(next.some((x,j)=>j!==i&&x.path===rule.path))return res.status(409).json({message:'A Calculation Rule with this path already exists.'});
       next[i]=rule;
     }
-    const action=req.method==='POST'?'add':'edit',nextSource=source.slice(0,start)+`let rules=${JSON.stringify(asSource(next),null,2)};`+source.slice(start+length);
+    const action=req.method==='POST'?'add':'edit';
+    const replacement=`let rules=${JSON.stringify(asSource(next),null,2)}`;
+    const nextSource=source.slice(0,start)+replacement+source.slice(start+length);
     const saved=await githubFile(rulesPath,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:`${action==='add'?'Add':'Edit'} calculation rule: ${rule.path}`,content:Buffer.from(nextSource,'utf8').toString('base64'),sha:loaded.cur.d?.sha})});
     if(!saved.r.ok)return res.status(saved.r.status).json({message:saved.d?.message||`Unable to ${action} Calculation Rule.`});
     return res.status(200).json({ok:true,rule,remaining:next.length,message:`Calculation Rule ${action==='add'?'added':'updated'} in the global master source.`});
