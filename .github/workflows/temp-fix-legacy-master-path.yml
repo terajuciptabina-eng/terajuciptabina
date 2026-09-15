@@ -1,0 +1,37 @@
+name: TERAJU Legacy Master Path Source Fix
+on:
+  push:
+    branches:
+      - fix/buildplanner-v2-legacy-master-path
+permissions:
+  contents: write
+jobs:
+  fix:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Apply exact source fix
+        shell: python
+        run: |
+          from pathlib import Path
+          p = Path('quotation/quotation-quantity-fix.js')
+          s = p.read_text(encoding='utf-8')
+          old = "function path(i){return i?.masterPath||i?._masterPath||''}"
+          new = """function masterPathFromLegacyItem(i){const explicit=i?.masterPath||i?._masterPath;if(explicit)return explicit;const description=norm(i?.description);const unit=norm(i?.unit);if(!description)return'';for(const [p,r] of rulesByPath){const rd=norm(r?.[2]);const ru=norm(r?.[6]);if(rd&&rd===description&&(!unit||!ru||ru===unit))return p}return''}\nfunction path(i){return masterPathFromLegacyItem(i)}"""
+          if s.count(old) != 1:
+              raise SystemExit(f'Expected exactly one path source, found {s.count(old)}')
+          p.write_text(s.replace(old, new), encoding='utf-8')
+      - name: Verify and commit
+        shell: bash
+        run: |
+          git diff --check
+          test "$(git diff --name-only)" = "quotation/quotation-quantity-fix.js"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add quotation/quotation-quantity-fix.js
+          git rm .github/workflows/temp-fix-legacy-master-path.yml
+          git commit -m 'Fix V2 legacy master path resolution'
+          git push
