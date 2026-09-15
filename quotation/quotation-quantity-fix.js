@@ -1,3 +1,4 @@
+/* TERAJU ENGINE 20260918 */
 (function(){
 'use strict';
 if(!/buildplanner-v2\.html$/i.test(location.pathname))return;
