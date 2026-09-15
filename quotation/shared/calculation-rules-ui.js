@@ -52,13 +52,10 @@
   async function repairLegacyAdminSource(){
     if(!/admin-calculation-rules\.html$/i.test(location.pathname))return;
     if(typeof global.editRule==='function')return;
-    const key='teraju.admin.calculation-rules.repair-attempt';
-    if(sessionStorage.getItem(key)==='1')return;
-    sessionStorage.setItem(key,'1');
     try{
       const r=await fetch(RULES_API+'?repair='+Date.now(),{cache:'no-store',headers:{'Cache-Control':'no-cache'}});
       if(r.ok){await r.json().catch(()=>null);location.reload();}
-    }catch(_){sessionStorage.removeItem(key)}
+    }catch(_){/* retry on the next page load */}
   }
 
   if(document.readyState==='loading'){
