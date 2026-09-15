@@ -477,7 +477,7 @@ let rules=[
     "Supply and install metal roofing sheet to porch selected roof, 25° pitch with 3ft overhang.",
     "ROOF GEOMETRY",
     "0.159883 m²/sqft",
-    "Quantity = A × 0.159883",
+    "Quantity = B × 0.159883",
     "m²",
     "Mono-pitch roof, 25° pitch; Porch Area input is B. Apron overhang = 3ft from the relevant footprint.",
     "Same roof calculation method as Main Building, with Porch Area B as the area input."
@@ -933,7 +933,7 @@ let rules=[
     "Fixed project allowance.",
     "No area coefficient is invented."
   ]
-],editingPath='',uiWidths={},resizeState=null,uiDirty=false,uiSaving=false;
+];,editingPath='',uiWidths={},resizeState=null,uiDirty=false,uiSaving=false;
 function adminSession(){const username=sessionStorage.getItem(USER)||'',password=sessionStorage.getItem(KEY)||'';if(!username||!password){location.href='admin.html';throw new Error('Admin session not found. Returning to Admin Control.')}return{username,password}}
 function adminHeaders(){const s=adminSession();return{'X-Admin-Username':s.username,'X-Admin-Password':s.password}}
 function norm(r){return Array.isArray(r)?{group:r[0]||'',path:r[1]||'',description:r[2]||'',method:r[3]||'',coefficient:r[4]||'',formula:r[5]||'',output:r[6]||'',basis:r[7]||'',note:r[8]||''}:r||{}}
