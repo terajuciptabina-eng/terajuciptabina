@@ -13,7 +13,28 @@ const normalizeQty=v=>Math.max(0,Math.ceil(n(v)));
 const integerUnit=u=>/^(ls|no|set|unit)$/i.test(String(u||''));
 const norm=s=>String(s||'').toLowerCase().replace(/×/g,'*').replace(/÷/g,'/').replace(/[^a-z0-9+*/().]+/g,' ').trim();
 function loadRules(src){const m=src.match(/(?:const|let)\s+rules\s*=\s*\[/);if(!m)throw Error('Global Calculation Rules array not found');const st=src.indexOf('[',m.index);let d=0,q='',e=false;for(let i=st;i<src.length;i++){const c=src[i];if(q){if(e)e=false;else if(c==='\\')e=true;else if(c===q)q='';continue}if(c==='"'||c==="'"||c==='`'){q=c;continue}if(c==='[')d++;else if(c===']'&&--d===0)return Function('"use strict";return '+src.slice(st,i+1))()}throw Error('Global Calculation Rules array incomplete')}
-function scope(){const rs=typeof getRoomGroups==='function'?(getRoomGroups()||[]):[],main=rs.filter(x=>x.roomType!=='porch'),porch=rs.filter(x=>x.roomType==='porch');return{rs,main,porch,A:main.reduce((s,x)=>s+n(x.area),0),B:porch.reduce((s,x)=>s+n(x.area),0)}}
+function plannerRoomGroups(){
+  if(typeof getRoomGroups==='function'){
+    const rs=getRoomGroups()||[];
+    if(Array.isArray(rs)&&rs.length)return rs;
+  }
+  const root=document.getElementById('roomsContainer');
+  if(!root)return[];
+  return Array.from(root.querySelectorAll('.room-card')).map((card,index)=>{
+    const typeEl=card.querySelector('select[data-room-type],select[name*="type" i],select[id*="type" i],select');
+    const areaEl=card.querySelector('input[data-field="area"],input[name*="area" i],input[id*="area" i],input[type="number"]');
+    const roomType=String(typeEl?.value||card.dataset.roomType||'').trim();
+    const area=n(areaEl?.value);
+    return{roomId:card.dataset.roomId||card.id||`room-${index+1}`,roomType,area};
+  }).filter(x=>x.roomType||x.area>0);
+}
+function scope(){
+  const rs=plannerRoomGroups(),main=rs.filter(x=>x.roomType!=='porch'),porch=rs.filter(x=>x.roomType==='porch');
+  const builtUp=n(document.getElementById('builtUpArea')?.value);
+  const A=main.reduce((s,x)=>s+n(x.area),0)||builtUp;
+  const B=porch.reduce((s,x)=>s+n(x.area),0);
+  return{rs,main,porch,A,B}
+}
 let rulesByPath=new Map(),ratesMaster={};
 async function load(){const[a,b]=await Promise.all([fetch('admin-calculation-rules.html?source=master&v=20260915',{cache:'no-store'}),fetch('../data/rates/default.json?source=master&v=20260915',{cache:'no-store'})]);if(!a.ok||!b.ok)throw Error('Global Master source unavailable');rulesByPath=new Map(loadRules(await a.text()).filter(x=>Array.isArray(x)&&x[1]).map(x=>[String(x[1]).trim(),x]));ratesMaster=(await b.json()).rates||{}}
 function rule(p){return rulesByPath.get(String(p||'').trim())||null}
@@ -36,6 +57,16 @@ if(s.A>0){const main=[['str-footing-conc','MAIN BUILDING / Footing / Concrete','
 ['BOUNDARY FENCING','GATE','EXTERNAL DRAIN','DRIVEWAY','LANDSCAPING'].forEach(x=>add('external-'+x.toLowerCase().replace(/\s+/g,'-'),'EXTERNAL WORK / '+x,'External Work','external-work'));
 if(s.B>0){const ps=[['footing-conc','PORCH / Footing / Concrete','footing','Footing'],['footing-fw','PORCH / Footing / Formwork','footing','Footing'],['footing-rebar','PORCH / Footing / Rebar','footing','Footing'],['slab-conc','PORCH / Ground Slab / Concrete','ground-slab','Ground Slab'],['slab-brc','PORCH / Ground Slab / BRC','ground-slab','Ground Slab'],['gb-conc','PORCH / Ground Beam / Concrete','ground-beam','Ground Beam'],['gb-fw','PORCH / Ground Beam / Formwork','ground-beam','Ground Beam'],['gb-rebar','PORCH / Ground Beam / Rebar','ground-beam','Ground Beam'],['rb-conc','PORCH / Roof Beam / Concrete','roof-beam','Roof Beam'],['rb-fw','PORCH / Roof Beam / Formwork','roof-beam','Roof Beam'],['rb-rebar','PORCH / Roof Beam / Rebar','roof-beam','Roof Beam'],['col-conc','PORCH / Column / Concrete','column','Column'],['col-fw','PORCH / Column / Formwork','column','Column'],['col-rebar','PORCH / Column / Rebar','column','Column'],['fr-conc','PORCH / Flat Roof / Concrete','roof','Flat Roof & Roofing'],['fr-fw','PORCH / Flat Roof / Formwork','roof','Flat Roof & Roofing'],['fr-brc','PORCH / Flat Roof / BRC','roof','Flat Roof & Roofing'],['roof-m','PORCH / Roof / Metal Roofing Sheet','roof','Roof']];ps.forEach(([suf,p,g,t])=>add('porch-'+suf,p,t,g))}return items}
 function clean(items){return items.filter(i=>!/^str-roof-d(c|f|r)$/.test(i.id)&&!/^rate-/.test(i.id))}
-async function main(){await load();const original=window.getAllItems;if(typeof original!=='function')return;if(original.__terajuMasterV7)return;const wrapped=function(){const s=scope();let items=clean(original.apply(this,arguments)||[]);items=present(items);items=addMissing(items,s);items=present(items);items=update(items,s);items=present(items);for(const i of items){i.qty=normalizeQty(i.qty);i.rate=r2(i.rate);i.amount=r2(i.qty*i.rate)}return items};wrapped.__terajuMasterV7=true;window.getAllItems=wrapped;if(typeof window.updateEstimate==='function')window.updateEstimate()}
+async function main(){
+  if(document.readyState==='loading')await new Promise(resolve=>document.addEventListener('DOMContentLoaded',resolve,{once:true}));
+  await load();
+  const original=window.getAllItems;
+  if(typeof original!=='function')return;
+  if(original.__terajuMasterV7)return;
+  const wrapped=function(){const s=scope();let items=clean(original.apply(this,arguments)||[]);items=present(items);items=addMissing(items,s);items=present(items);items=update(items,s);items=present(items);for(const i of items){i.qty=normalizeQty(i.qty);i.rate=r2(i.rate);i.amount=r2(i.qty*i.rate)}return items};
+  wrapped.__terajuMasterV7=true;
+  window.getAllItems=wrapped;
+  if(typeof window.updateEstimate==='function')window.updateEstimate()
+}
 main().catch(e=>console.error('[TERAJU V2 MASTER ENGINE V7]',e));
 })();
