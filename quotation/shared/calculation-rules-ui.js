@@ -3,77 +3,21 @@
    Every consumer that loads this file receives the latest global UI widths. */
 (function(global){
   const UI_API='https://terajuciptabina.vercel.app/api/calculation-rules?ui=1';
+  const RULES_API='https://terajuciptabina.vercel.app/api/calculation-rules';
   const UI_KEYS=['item','description','method','coefficient','formula','unit','basis','note','actions'];
   const DEFAULTS={item:'15%',description:'22%',method:'10%',coefficient:'11%',formula:'12%',unit:'6%',basis:'10%',note:'7%',actions:'7%'};
   const UI={
-    esc(value){
-      return String(value??'').replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[c]));
-    },
-    pathParts(rule){
-      return String(rule?.path||'').split('/').map(x=>x.trim()).filter(Boolean);
-    },
-    leaf(rule){
-      const parts=this.pathParts(rule);
-      return parts.length?parts[parts.length-1]:String(rule?.path||'');
-    },
-    hierarchyRows(rule,seen,colSpan){
-      const parts=this.pathParts(rule),span=Number(colSpan)||1;
-      let html='';
-      for(let i=0;i<parts.length-1;i++){
-        const key=String(rule?.group||'')+'|'+parts.slice(0,i+1).join(' / ');
-        if(seen.has(key))continue;
-        seen.add(key);
-        html+='<tr class="cr-hierarchy-row cr-level-'+(i+1)+'"><td colspan="'+span+'">'+this.esc(parts[i])+'</td></tr>';
-      }
-      return html;
-    },
-    groupRow(group,count,colSpan){
-      return '<tr class="cr-group-row"><td colspan="'+(Number(colSpan)||1)+'">'+this.esc(group)+' · '+Number(count||0)+' rules</td></tr>';
-    },
-    applyWidths(widths){
-      const values={...DEFAULTS,...(widths||{})};
-      for(const key of UI_KEYS){
-        const value=/^\d+(?:\.\d+)?%$/.test(String(values[key]))?values[key]:DEFAULTS[key];
-        document.documentElement.style.setProperty('--cr-col-'+key,value);
-      }
-      return values;
-    },
-    readCssWidths(source){
-      const out={};
-      for(const key of UI_KEYS){
-        const m=String(source||'').match(new RegExp('--cr-col-'+key+'\\s*:\\s*([^;]+);'));
-        const value=m?String(m[1]).trim():'';
-        out[key]=/^\d+(?:\.\d+)?%$/.test(value)?value:DEFAULTS[key];
-      }
-      return out;
-    },
-    async loadWidths(){
-      try{
-        const url=UI_API+'&v='+Date.now();
-        const r=await fetch(url,{cache:'no-store',headers:{'Cache-Control':'no-cache'}});
-        const d=await r.json().catch(()=>({}));
-        if(!r.ok||!d.columnWidths)throw new Error('Global Calculation Rules UI standard unavailable.');
-        this.applyWidths(d.columnWidths);
-        return d.columnWidths;
-      }catch(_){
-        try{
-          const cssUrl='shared/calculation-rules-ui.css?v='+Date.now();
-          const css=await fetch(cssUrl,{cache:'no-store'}).then(r=>r.ok?r.text():Promise.reject(new Error('CSS unavailable')));
-          const widths=this.readCssWidths(css);
-          this.applyWidths(widths);
-          return widths;
-        }catch(__){
-          return this.applyWidths();
-        }
-      }
-    }
+    esc(value){return String(value??'').replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[c]));},
+    pathParts(rule){return String(rule?.path||'').split('/').map(x=>x.trim()).filter(Boolean);},
+    leaf(rule){const parts=this.pathParts(rule);return parts.length?parts[parts.length-1]:String(rule?.path||'');},
+    hierarchyRows(rule,seen,colSpan){const parts=this.pathParts(rule),span=Number(colSpan)||1;let html='';for(let i=0;i<parts.length-1;i++){const key=String(rule?.group||'')+'|'+parts.slice(0,i+1).join(' / ');if(seen.has(key))continue;seen.add(key);html+='<tr class="cr-hierarchy-row cr-level-'+(i+1)+'"><td colspan="'+span+'">'+this.esc(parts[i])+'</td></tr>';}return html;},
+    groupRow(group,count,colSpan){return '<tr class="cr-group-row"><td colspan="'+(Number(colSpan)||1)+'">'+this.esc(group)+' · '+Number(count||0)+' rules</td></tr>';},
+    applyWidths(widths){const values={...DEFAULTS,...(widths||{})};for(const key of UI_KEYS){const value=/^\d+(?:\.\d+)?%$/.test(String(values[key]))?values[key]:DEFAULTS[key];document.documentElement.style.setProperty('--cr-col-'+key,value);}return values;},
+    readCssWidths(source){const out={};for(const key of UI_KEYS){const m=String(source||'').match(new RegExp('--cr-col-'+key+'\\s*:\\s*([^;]+);'));const value=m?String(m[1]).trim():'';out[key]=/^\d+(?:\.\d+)?%$/.test(value)?value:DEFAULTS[key];}return out;},
+    async loadWidths(){try{const url=UI_API+'&v='+Date.now();const r=await fetch(url,{cache:'no-store',headers:{'Cache-Control':'no-cache'}});const d=await r.json().catch(()=>({}));if(!r.ok||!d.columnWidths)throw new Error('Global Calculation Rules UI standard unavailable.');this.applyWidths(d.columnWidths);return d.columnWidths;}catch(_){try{const cssUrl='shared/calculation-rules-ui.css?v='+Date.now();const css=await fetch(cssUrl,{cache:'no-store'}).then(r=>r.ok?r.text():Promise.reject(new Error('CSS unavailable')));const widths=this.readCssWidths(css);this.applyWidths(widths);return widths;}catch(__){return this.applyWidths();}}}
   };
   global.TerajuCalculationRulesUI=UI;
 
-  /* Admin Calculation Rules action guard.
-     The admin page currently renders action arguments inside an inline onclick
-     attribute. Paths contain quotes, so HTML parsing can corrupt that handler.
-     Handle the actions at the shared event layer, scoped strictly to this page. */
   function setupAdminActionDelegation(){
     if(!/admin-calculation-rules\.html$/i.test(location.pathname))return;
     document.addEventListener('click',function(e){
@@ -81,7 +25,6 @@
       if(!button)return;
       e.preventDefault();
       e.stopImmediatePropagation();
-
       if(button.closest('.add')){
         let groupRow=button.closest('tr')?.previousElementSibling;
         while(groupRow&&!groupRow.classList.contains('group'))groupRow=groupRow.previousElementSibling;
@@ -90,35 +33,39 @@
         if(group&&typeof global.addRule==='function')global.addRule(group);
         return;
       }
-
       const row=button.closest('tr');
       if(!row)return;
       const item=row.querySelector('.cr-leaf-item')?.textContent.trim()||'';
       if(!item)return;
-
-      let parent=row.previousElementSibling;
-      let level2='',level1='';
+      let parent=row.previousElementSibling,level2='',level1='';
       while(parent){
         if(parent.classList.contains('subhier')&&!level2)level2=parent.querySelector('td')?.textContent.trim()||'';
         if(parent.classList.contains('hier')&&!level1)level1=parent.querySelector('td')?.textContent.trim()||'';
         if(parent.classList.contains('group'))break;
         parent=parent.previousElementSibling;
       }
-      const parts=[level1,level2,item].filter(Boolean);
-      const path=parts.join(' / ');
-      if(button.classList.contains('delete')){
-        if(typeof global.deleteRule==='function')global.deleteRule(path);
-      }else if(typeof global.editRule==='function'){
-        global.editRule(path);
-      }
+      const path=[level1,level2,item].filter(Boolean).join(' / ');
+      if(button.classList.contains('delete')){if(typeof global.deleteRule==='function')global.deleteRule(path);}else if(typeof global.editRule==='function'){global.editRule(path);}
     },true);
   }
 
-  global.TerajuCalculationRulesUI=UI;
+  async function repairLegacyAdminSource(){
+    if(!/admin-calculation-rules\.html$/i.test(location.pathname))return;
+    if(typeof global.editRule==='function')return;
+    const key='teraju.admin.calculation-rules.repair-attempt';
+    if(sessionStorage.getItem(key)==='1')return;
+    sessionStorage.setItem(key,'1');
+    try{
+      const r=await fetch(RULES_API+'?repair='+Date.now(),{cache:'no-store',headers:{'Cache-Control':'no-cache'}});
+      if(r.ok){await r.json().catch(()=>null);location.reload();}
+    }catch(_){sessionStorage.removeItem(key)}
+  }
+
   if(document.readyState==='loading'){
-    document.addEventListener('DOMContentLoaded',()=>{UI.loadWidths();setupAdminActionDelegation()},{once:true});
+    document.addEventListener('DOMContentLoaded',()=>{UI.loadWidths();setupAdminActionDelegation();repairLegacyAdminSource()},{once:true});
   }else{
     UI.loadWidths();
     setupAdminActionDelegation();
+    repairLegacyAdminSource();
   }
 })(window);
