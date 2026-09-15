@@ -129,12 +129,22 @@ export default async function handler(req,res){
     async function readPublic(){
       const current=await rawAt('main',rulesPath);
       if(!current.r.ok)return{ok:false,status:current.r.status,message:'Unable to read Calculation Rules master source.'};
-      try{return{ok:true,source:current.source,parsed:parse(current.source)}}catch(e){
+      let source=current.source;
+      const legacy=/\];,editingPath=/.test(source);
+      if(legacy&&token){
+        const repaired=source.replace(/\];,editingPath=/,'];editingPath=');
+        const currentFile=await githubFile(rulesPath);
+        if(currentFile.r.ok){
+          const saved=await githubFile(rulesPath,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:'TERAJU Admin: repair calculation-rules source syntax',content:Buffer.from(repaired,'utf8').toString('base64'),sha:currentFile.d?.sha})});
+          if(saved.r.ok)source=repaired;
+        }
+      }
+      try{return{ok:true,source,parsed:parse(source)}}catch(e){
         if(!shouldSeed(e))throw e;
         const seed=await rawAt(seedRef,rulesPath);
         if(!seed.r.ok)throw new Error('Calculation Rules master source is missing and legacy seed could not be loaded.');
         const seedParsed=parse(seed.source);
-        return{ok:true,source:current.source,parsed:{...seedParsed,seeded:true,seedSource:seed.source}};
+        return{ok:true,source,parsed:{...seedParsed,seeded:true,seedSource:seed.source}};
       }
     }
     async function readForWrite(){
@@ -189,7 +199,7 @@ export default async function handler(req,res){
       if(i<0)return res.status(404).json({message:'Calculation Rule not found.'});
       if(next.length===1)return res.status(400).json({message:'At least one global Calculation Rule must remain.'});
       const deleted=next[i];next.splice(i,1);
-      const nextSource=source.slice(0,start)+`let rules=${JSON.stringify(asSource(next),null,2)};`+source.slice(start+length);
+      const nextSource=source.slice(0,start)+`let rules=${JSON.stringify(asSource(next),null,2)}`+source.slice(start+length);
       const saved=await githubFile(rulesPath,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:`Permanently delete calculation rule: ${target}`,content:Buffer.from(nextSource,'utf8').toString('base64'),sha:loaded.cur.d?.sha})});
       if(!saved.r.ok)return res.status(saved.r.status).json({message:saved.d?.message||'Unable to permanently delete Calculation Rule.'});
       return res.status(200).json({ok:true,deleted,message:'Calculation Rule permanently deleted from the global master source.',remaining:next.length});
