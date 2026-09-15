@@ -646,10 +646,10 @@ updateEstimate();
     window.generateStructureItems=function(){
       const items=typeof oldGenerate==='function'?oldGenerate.apply(this,arguments):[];
       const scale=typeof getScaleFactor==='function'?getScaleFactor():0;if(scale<=0)return items;
-      masterItems.forEach(r=>{if(items.some(i=>i.id===r.id))return;const rate=typeof RATES!=='undefined'?Number(RATES[r.rateKey]||0):0;items.push({id:r.id,roomId:'project',room:'Project',category:'structures',description:r.description,qty:0,unit:r.unit,rate,amount:0,groupKey:r.groupTitle.toLowerCase().replace(/\s+/g,'-'),groupTitle:r.groupTitle})});
+      masterItems.forEach(r=>{if(items.some(i=>i.id===r.id))return;const rate=typeof RATES!=='undefined'?Number(RATES[r.rateKey]||0):0;items.push({id:r.id,roomId:'project',room:'Project',category:'structures',description:r.description,qty:0,unit:r.unit,rate,amount:0,masterPath:r.path,groupKey:r.groupTitle.toLowerCase().replace(/\s+/g,'-'),groupTitle:r.groupTitle})});
       return items;
     };
-    const tag=document.createElement('script');tag.src='quotation-quantity-fix.js?v=20260907';tag.onload=()=>{window.__TERAJU_MASTER_RULE_GATE_READY=true;if(typeof updateEstimate==='function')updateEstimate()};tag.onerror=()=>console.error('[TERAJU V2] Unable to load master calculation engine');document.body.appendChild(tag);
+    const tag=document.createElement('script');tag.src='quotation-quantity-fix.js?v=20260915';tag.onload=()=>{window.__TERAJU_MASTER_RULE_GATE_READY=true;if(typeof updateEstimate==='function')updateEstimate()};tag.onerror=()=>console.error('[TERAJU V2] Unable to load master calculation engine');document.body.appendChild(tag);
   }).catch(e=>console.error('[TERAJU V2 MASTER BOOTSTRAP]',e));
 })();
 </script></body></html>
