@@ -22,6 +22,62 @@ export default async function handler(req, res) {
   const path = requestedState ? `data/rates/states/${requestedState}.json` : 'data/rates/default.json';
   const headers = { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' };
 
+  const norm = v => String(v || '').toLowerCase().replace(/×/g, '*').replace(/÷/g, '/').replace(/[^a-z0-9]+/g, ' ').trim();
+  const extractRules = source => {
+    const marker = /(?:const|let)\s+rules\s*=\s*\[/;
+    const match = source.match(marker);
+    if (!match) return [];
+    const start = source.indexOf('[', match.index);
+    let depth = 0, quote = '', escaped = false;
+    for (let i = start; i < source.length; i++) {
+      const c = source[i];
+      if (quote) {
+        if (escaped) escaped = false;
+        else if (c === '\\') escaped = true;
+        else if (c === quote) quote = '';
+        continue;
+      }
+      if (c === '"' || c === "'" || c === '`') { quote = c; continue; }
+      if (c === '[') depth++;
+      else if (c === ']' && --depth === 0) {
+        try { return Function('"use strict";return ' + source.slice(start, i + 1))(); } catch { return []; }
+      }
+    }
+    return [];
+  };
+  const canonicalRules = async () => {
+    const url = `https://api.github.com/repos/${repo}/contents/quotation/admin-calculation-rules.html?ref=main`;
+    const response = await fetch(url, { headers });
+    if (!response.ok) return [];
+    const data = await response.json();
+    const source = Buffer.from(data.content || '', 'base64').toString('utf8');
+    return extractRules(source).filter(x => Array.isArray(x) && x[1] && x[2] && x[6]);
+  };
+  const normalizeLegacyRates = async current => {
+    const rules = await canonicalRules();
+    if (!rules.length || !current?.rates || !current?.rateItems) return current;
+    const byDescription = new Map();
+    for (const [key, item] of Object.entries(current.rateItems)) {
+      const description = norm(item?.description);
+      const unit = norm(item?.unit);
+      if (description) byDescription.set(`${description}|${unit}`, { key, value: current.rates[key] });
+    }
+    const rates = { ...current.rates };
+    const rateItems = { ...current.rateItems };
+    for (const rule of rules) {
+      const canonicalKey = `rule_${String(rule[1]).toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '')}_${rules.indexOf(rule)}`;
+      const match = byDescription.get(`${norm(rule[2])}|${norm(rule[6])}`);
+      if (!Object.prototype.hasOwnProperty.call(rates, canonicalKey) && match && Number.isFinite(Number(match.value))) {
+        rates[canonicalKey] = Math.round(Number(match.value) * 100) / 100;
+        rateItems[canonicalKey] = {
+          description: rule[2], unit: rule[6], category: 'calculation-rule',
+          groupKey: rule[0] || null, groupTitle: rule[0] || 'Calculation Rules'
+        };
+      }
+    }
+    return { ...current, rates, rateItems };
+  };
+
   try {
     const response = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, { headers });
     const text = await response.text();
@@ -29,7 +85,8 @@ export default async function handler(req, res) {
     try { data = text ? JSON.parse(text) : null; } catch { data = null; }
     if (!response.ok) return res.status(response.status).json({ message: data?.message || `Unable to read ${requestedState ? STATES[requestedState] : 'Default'} Rate.` });
 
-    const current = JSON.parse(Buffer.from(data.content || '', 'base64').toString('utf8'));
+    let current = JSON.parse(Buffer.from(data.content || '', 'base64').toString('utf8'));
+    current = await normalizeLegacyRates(current);
     if (req.method === 'GET') return res.status(200).json({ rateSet: current, sha: data.sha, state: requestedState || 'default', repo });
     if (req.method !== 'PUT') return res.status(405).json({ message: 'Method not allowed.' });
 
