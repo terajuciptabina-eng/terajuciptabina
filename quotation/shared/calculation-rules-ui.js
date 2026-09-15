@@ -83,7 +83,8 @@
       e.stopImmediatePropagation();
 
       if(button.closest('.add')){
-        const groupRow=button.closest('tr')?.previousElementSibling;
+        let groupRow=button.closest('tr')?.previousElementSibling;
+        while(groupRow&&!groupRow.classList.contains('group'))groupRow=groupRow.previousElementSibling;
         const text=groupRow?.textContent||button.textContent||'';
         const group=text.split(' · ')[0].trim();
         if(group&&typeof global.addRule==='function')global.addRule(group);
