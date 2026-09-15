@@ -1,0 +1,35 @@
+name: temporary-buildplanner-cache-bust
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    if: github.event.head_commit.message != 'Build Planner: cache-bust master engine URL'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Bump engine query and remove workflow
+        shell: bash
+        run: |
+          set -euo pipefail
+          file='quotation/buildplanner-v2.html'
+          grep -F 'quotation-quantity-fix.js?v=20260915' "$file"
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('quotation/buildplanner-v2.html')
+          s=p.read_text()
+          old='quotation-quantity-fix.js?v=20260915'
+          new='quotation-quantity-fix.js?v=20260916'
+          if s.count(old) != 1:
+              raise SystemExit(f'expected exactly one occurrence, found {s.count(old)}')
+          p.write_text(s.replace(old,new))
+          PY
+          rm .github/workflows/temporary-buildplanner-cache-bust.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add quotation/buildplanner-v2.html .github/workflows/temporary-buildplanner-cache-bust.yml
+          git diff --cached --check
+          git commit -m 'Build Planner: cache-bust master engine URL'
+          git push
