@@ -1,0 +1,38 @@
+name: TERAJU Quantity Format Source Fix
+on:
+  push:
+    paths:
+      - '.github/workflows/teraju-quantity-format-fix.yml'
+permissions:
+  contents: write
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Apply exact source fix
+        shell: python
+        run: |
+          from pathlib import Path
+          p = Path('quotation/buildplanner-v2.html')
+          s = p.read_text(encoding='utf-8')
+          old = "function budgetRow(i,no){return `<tr class=\"border-b align-top\"><td class=\"py-2 px-2 text-gray-500\">${no}</td><td class=\"py-2 px-2 cr-description\">${escapeHtml(i.description)}</td><td class=\"py-2 px-2 cr-unit\">${escapeHtml(i.unit)}</td><td class=\"py-2 px-2 text-right\">${isIntegerUnit(i.unit)?String(Math.round(i.qty)):money(i.qty,2)}</td><td class=\"py-2 px-2 text-right\">${money(i.rate,2)}</td><td class=\"py-2 px-2 text-right font-semibold\">${money(i.amount,2)}</td></tr>`}"
+          new = "function budgetRow(i,no){return `<tr class=\"border-b align-top\"><td class=\"py-2 px-2 text-gray-500\">${no}</td><td class=\"py-2 px-2 cr-description\">${escapeHtml(i.description)}</td><td class=\"py-2 px-2 cr-unit\">${escapeHtml(i.unit)}</td><td class=\"py-2 px-2 text-right\">${String(Math.ceil(Number(i.qty)||0))}</td><td class=\"py-2 px-2 text-right\">${money(i.rate,2)}</td><td class=\"py-2 px-2 text-right font-semibold\">${money(i.amount,2)}</td></tr>`}"
+          if s.count(old) != 1:
+              raise SystemExit(f'Expected exactly one budgetRow source, found {s.count(old)}')
+          p.write_text(s.replace(old, new), encoding='utf-8')
+      - name: Verify and commit
+        shell: bash
+        run: |
+          git diff --check
+          test "$(git diff --name-only)" = "quotation/buildplanner-v2.html"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add quotation/buildplanner-v2.html
+          git commit -m 'Fix Build Planner quantity display format'
+          rm .github/workflows/teraju-quantity-format-fix.yml
+          git add .github/workflows/teraju-quantity-format-fix.yml
+          git commit -m 'Remove temporary quantity format workflow'
+          git push
