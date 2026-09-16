@@ -1,0 +1,34 @@
+name: One-time Build Planner porch flat roof token order
+on:
+  push:
+    branches: [main]
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fix porch flat roof formula token resolution order
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('quotation/quotation-quantity-fix.js')
+          s=p.read_text()
+          old="for(const x of ['Porch Ground Slab Area','Ground Slab Area','Flat Roof Area','Outer Apron Perimeter','Porch Area','Apron Area','A','B'])"
+          new="for(const x of ['Porch Ground Slab Area','Ground Slab Area','Porch Flat Roof Area','Flat Roof Area','Outer Apron Perimeter','Porch Area','Apron Area','A','B'])"
+          if old not in s:
+              raise SystemExit('Target formula token list not found')
+          s=s.replace(old,new,1)
+          p.write_text(s)
+          PY
+          node --check quotation/quotation-quantity-fix.js
+      - name: Commit source and remove workflow
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add quotation/quotation-quantity-fix.js
+          git commit -m 'TERAJU Build Planner: resolve porch flat roof token before generic flat roof'
+          git rm .github/workflows/one-time-buildplanner-porch-flat-roof-token-order.yml
+          git commit -m 'Remove one-time porch flat roof token workflow'
+          git push
