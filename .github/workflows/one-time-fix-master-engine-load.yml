@@ -21,7 +21,7 @@ jobs:
               raise SystemExit('load target not found')
           s=s.replace(old,new,1)
           bad="amount:R2(N(x.qty)*N(x.rate))})}return items}"
-          good="amount:R2(N(x.qty)*N(x.rate))})})return items}"
+          good="amount:R2(N(x.qty)*N(x.rate))})});return items}"
           if bad not in s:
               raise SystemExit('addManual syntax target not found')
           s=s.replace(bad,good,1)
