@@ -1,0 +1,39 @@
+name: One-time Door Type 3 quantity fix
+on:
+  push:
+    paths:
+      - '.door-type3-fix-trigger'
+permissions:
+  contents: write
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fix Door Type 3 quantity and cache
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('quotation/quotation-quantity-fix.js')
+          s=p.read_text()
+          old="if(/DOORS \/ Type 3/i.test(p))return s.main.filter(r=>r.roomType==='bathroom').length;"
+          new="if(/DOORS \/ Type 3/i.test(p)||/TYPE 3\s*BATHROOM/i.test(p))return s.main.filter(r=>String(r.roomType||'').trim().toLowerCase()==='bathroom').length;"
+          if old not in s: raise SystemExit('door type 3 count target not found')
+          s=s.replace(old,new,1)
+          old2="const lockedPorchLighting=/(?:^|\/)\s*PORCH\s*\/\s*LIGHTING(?:\s*\/|$)/i.test(i.masterPath)&&s.B>0;if(typeof customQuantities!=='undefined'&&customQuantities.has(i.id)&&!lockedPorchLighting)i.qty=Math.ceil(N(customQuantities.get(i.id)));"
+          new2="const lockedPorchLighting=/(?:^|\/)\s*PORCH\s*\/\s*LIGHTING(?:\s*\/|$)/i.test(i.masterPath)&&s.B>0;const lockedDoorType3=/DOORS \/ Type 3/i.test(i.masterPath)||/TYPE 3\s*BATHROOM/i.test(i.masterPath);if(typeof customQuantities!=='undefined'&&customQuantities.has(i.id)&&!lockedPorchLighting&&!lockedDoorType3)i.qty=Math.ceil(N(customQuantities.get(i.id)));"
+          if old2 not in s: raise SystemExit('custom quantity target not found')
+          s=s.replace(old2,new2,1)
+          p.write_text(s)
+          bp=Path('quotation/buildplanner-v2.html'); b=bp.read_text()
+          for oldv in ['20260926','20260925','20260924']:
+              if f'quotation-quantity-fix.js?v={oldv}' in b:
+                  b=b.replace(f'quotation-quantity-fix.js?v={oldv}','quotation-quantity-fix.js?v=20260927',1); break
+          else: raise SystemExit('engine cache key not found')
+          bp.write_text(b)
+          PY
+          git config user.name 'Teraju Ciptabina Bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add quotation/quotation-quantity-fix.js quotation/buildplanner-v2.html
+          git commit -m 'Fix Door Type 3 bathroom quantity [door-type3-fix]'
+          git push
