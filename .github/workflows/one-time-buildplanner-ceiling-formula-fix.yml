@@ -17,13 +17,14 @@ jobs:
           s=p.read_text(encoding='utf-8')
           old1="e=e.replace(/m²|m³|kg|sqft|per\\s+project/gi,'').replace(/×/g,'*').replace(/÷/g,'/');"
           new1="e=e.replace(/m²|m³|kg|sqft|per\\s+project/gi,'').replace(/×/g,'*').replace(/÷/g,'/').replace(/\\bCEILING\\s*\\(/gi,'ceil(');"
-          old2="if(!/^[0-9+\\-*/().\\s]+$/.test(e))return null;try{return N(Function('\\\"use strict\\\";return('+e+')')())}catch{return null}"
-          new2="if(!/^[0-9+\\-*/().\\s]+$/.test(e.replace(/\\bceil\\s*\\(/gi,'').replace(/\\)/g,'')))return null;try{return N(Function('ceil','\\\"use strict\\\";return('+e+')')(Math.ceil))}catch{return null}"
-          if old1 not in s:
-              raise SystemExit('Evaluator normalization target not found')
-          if old2 not in s:
-              raise SystemExit('Evaluator validation target not found')
-          s=s.replace(old1,new1,1).replace(old2,new2,1)
+          old2="if(!/^[0-9+\\-*/().\\s]+$/.test(e))return null;"
+          new2="if(!/^[0-9+\\-*/().\\s]+$/.test(e.replace(/\\bceil\\s*\\(/gi,'').replace(/\\)/g,'')))return null;"
+          old3="try{return N(Function('\"use strict\";return('+e+')')())}catch{return null}"
+          new3="try{return N(Function('ceil','\"use strict\";return('+e+')')(Math.ceil))}catch{return null}"
+          for old,new,name in ((old1,new1,'normalization'),(old2,new2,'validation'),(old3,new3,'evaluation')):
+              if old not in s:
+                  raise SystemExit(f'{name} target not found')
+              s=s.replace(old,new,1)
           p.write_text(s,encoding='utf-8')
           PY
           node --check quotation/quotation-quantity-fix.js
