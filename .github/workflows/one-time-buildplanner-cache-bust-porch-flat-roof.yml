@@ -1,0 +1,34 @@
+name: One-time Build Planner cache refresh
+on:
+  push:
+    branches: [main]
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Refresh master engine cache version
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('quotation/buildplanner-v2.html')
+          s=p.read_text()
+          old="tag.src='quotation-quantity-fix.js?v=20260922'"
+          new="tag.src='quotation-quantity-fix.js?v=20260923'"
+          if old not in s:
+              raise SystemExit('Build Planner master engine script version target not found')
+          s=s.replace(old,new,1)
+          p.write_text(s)
+          PY
+          node --check quotation/quotation-quantity-fix.js
+      - name: Remove failed one-time workflow and commit source
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add quotation/buildplanner-v2.html
+          git commit -m 'TERAJU Build Planner: refresh master engine cache'
+          git rm .github/workflows/one-time-buildplanner-cache-bust-porch-flat-roof.yml .github/workflows/one-time-buildplanner-porch-flat-roof-area.yml
+          git commit -m 'Remove one-time Build Planner workflows'
+          git push
