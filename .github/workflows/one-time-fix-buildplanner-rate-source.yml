@@ -1,0 +1,32 @@
+name: One-time Build Planner rate source fix
+on:
+  push:
+    paths:
+      - '.github/workflows/one-time-fix-buildplanner-rate-source.yml'
+permissions:
+  contents: write
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fix rate key normalization at source
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('quotation/quotation-quantity-fix.js')
+          s = p.read_text(encoding='utf-8')
+          old = "function rate(p){let v=0,base=String(p||'').toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,''),k=Object.keys(RATES).find(x=>NOR(x).startsWith('rule_'+base));if(k)v=N(RATES[k]);"
+          new = "function rate(p){let v=0,base=String(p||'').toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,''),prefix=NOR('rule_'+base),k=Object.keys(RATES).find(x=>NOR(x).startsWith(prefix));if(k)v=N(RATES[k]);"
+          if old not in s:
+              raise SystemExit('Expected rate source expression not found')
+          p.write_text(s.replace(old, new, 1), encoding='utf-8')
+          print('Build Planner rate lookup fixed at source')
+          PY
+      - name: Commit source fix
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add quotation/quotation-quantity-fix.js
+          git commit -m 'TERAJU Build Planner: fix global rate lookup'
+          git push
