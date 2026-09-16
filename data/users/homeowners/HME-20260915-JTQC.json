@@ -32,32 +32,26 @@
         },
         "project": {
           "location": "Not specified",
-          "builtUpArea": 548,
+          "builtUpArea": 1300,
           "state": "selangor"
         },
-        "total": 56360.48,
+        "total": 1008304.16,
         "plannerState": {
           "customerName": "Reeza",
           "projectLocation": "",
-          "builtUpArea": "548",
+          "builtUpArea": "1300",
           "rooms": [
             {
               "id": "room-1",
               "type": "living",
               "name": "Living / Family",
-              "area": "200"
+              "area": "1200"
             },
             {
               "id": "room-2",
-              "type": "dining",
-              "name": "Dining",
-              "area": "300"
-            },
-            {
-              "id": "room-3",
-              "type": "bathroom",
-              "name": "Bathroom",
-              "area": "48"
+              "type": "porch",
+              "name": "Porch",
+              "area": "100"
             }
           ],
           "rates": {
@@ -210,10 +204,10 @@
           "projectState": "selangor",
           "rateSetId": "default",
           "rateSetName": "Default Rate",
-          "rateSnapshotAt": "2026-09-15T10:14:16.277Z"
+          "rateSnapshotAt": "2026-09-16T05:20:19.017Z"
         },
         "createdAt": "2026-09-15T07:32:26.517Z",
-        "updatedAt": "2026-09-15T10:14:16.914Z",
+        "updatedAt": "2026-09-16T05:20:19.911Z",
         "estimateNumber": "EST-BLD-003"
       },
       {
@@ -608,7 +602,7 @@
     "renovation": []
   },
   "createdAt": "2026-09-15T07:26:44.555Z",
-  "updatedAt": "2026-09-15T10:14:16.914Z",
+  "updatedAt": "2026-09-16T05:20:19.911Z",
   "quotationRunningNumber": {
     "build": 3
   },
