@@ -1,0 +1,44 @@
+name: One-time Global m2 conversion fix
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fix Global Master area-unit formulas
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('quotation/admin-calculation-rules.html')
+          s=p.read_text(encoding='utf-8')
+          targets=[
+            ('MAIN BUILDING / Floor Tiles / Internal','1.00 m²/m²','Quantity = A','0.09290304 m²/sqft','Quantity = A × 0.09290304'),
+            ('MAIN BUILDING / Ceiling / Internal','1.00 m²/m²','Quantity = A','0.09290304 m²/sqft','Quantity = A × 0.09290304'),
+          ]
+          for path,oldcoef,oldformula,newcoef,newformula in targets:
+              marker='"'+path+'"'
+              pos=s.find(marker)
+              if pos<0: raise SystemExit(f'Rule not found: {path}')
+              end=s.find('],',pos)
+              if end<0: raise SystemExit(f'Rule end not found: {path}')
+              block=s[pos:end]
+              if oldcoef not in block or oldformula not in block:
+                  raise SystemExit(f'Expected formula/coef not found in: {path}')
+              block=block.replace(oldcoef,newcoef,1).replace(oldformula,newformula,1)
+              s=s[:pos]+block+s[end:]
+          p.write_text(s,encoding='utf-8')
+          PY
+          grep -n 'MAIN BUILDING / Floor Tiles / Internal\|MAIN BUILDING / Ceiling / Internal' quotation/admin-calculation-rules.html
+      - name: Commit source and remove workflow
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add quotation/admin-calculation-rules.html
+          git commit -m 'TERAJU Global Rules: convert main building floor and ceiling area to m2'
+          git rm .github/workflows/one-time-global-m2-conversion.yml
+          git commit -m 'Remove one-time global m2 workflow'
+          git push
