@@ -1,0 +1,38 @@
+name: One-time wiring main area alias fix
+on:
+  push:
+    paths:
+      - '.wiring-main-area-fix-trigger'
+permissions:
+  contents: write
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fix Main Building Area alias and bump engine cache
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('quotation/quotation-quantity-fix.js')
+          s=p.read_text()
+          old="function base(name,s,a){const k=NOR(name);if(k==='a')return s.A;"
+          new="function base(name,s,a){const k=NOR(name);if(k==='a')return s.A;if(k.includes('main building area'))return s.A;"
+          if old not in s:
+              raise SystemExit('base alias target not found')
+          p.write_text(s.replace(old,new,1))
+          bp=Path('quotation/buildplanner-v2.html')
+          b=bp.read_text()
+          if 'quotation-quantity-fix.js?v=20260925' in b:
+              b=b.replace('quotation-quantity-fix.js?v=20260925','quotation-quantity-fix.js?v=20260926',1)
+          elif 'quotation-quantity-fix.js?v=20260924' in b:
+              b=b.replace('quotation-quantity-fix.js?v=20260924','quotation-quantity-fix.js?v=20260926',1)
+          else:
+              raise SystemExit('engine cache key target not found')
+          bp.write_text(b)
+          PY
+          git config user.name 'Teraju Ciptabina Bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add quotation/quotation-quantity-fix.js quotation/buildplanner-v2.html
+          git commit -m 'Fix Main Building Area alias for wiring [wiring-quantity-fix]'
+          git push
