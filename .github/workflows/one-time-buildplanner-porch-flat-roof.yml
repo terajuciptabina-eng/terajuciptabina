@@ -1,0 +1,34 @@
+name: One-time Build Planner porch flat roof fix
+on:
+  push:
+    branches: [main]
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fix porch flat roof area source resolution
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('quotation/quotation-quantity-fix.js')
+          s=p.read_text()
+          old="if(k.includes('ground slab area')||k.includes('flat roof area')||k.includes('porch ground slab area'))return M2(k.includes('porch')?s.B:s.A);"
+          new="if(k.includes('porch flat roof area'))return M2(s.B);if(k.includes('ground slab area')||k.includes('flat roof area')||k.includes('porch ground slab area'))return M2(k.includes('porch')?s.B:s.A);"
+          if old not in s:
+              raise SystemExit('Target base area resolver not found')
+          s=s.replace(old,new,1)
+          p.write_text(s)
+          PY
+          node --check quotation/quotation-quantity-fix.js
+      - name: Commit source and remove workflow
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add quotation/quotation-quantity-fix.js
+          git commit -m 'TERAJU Build Planner: resolve porch flat roof area from porch scope'
+          git rm .github/workflows/one-time-buildplanner-porch-flat-roof.yml
+          git commit -m 'Remove one-time porch flat roof workflow'
+          git push
