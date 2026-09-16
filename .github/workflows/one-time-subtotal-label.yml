@@ -1,0 +1,36 @@
+name: One-time subtotal label
+on:
+  push:
+    paths:
+      - '.github/workflows/one-time-subtotal-label.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Change total label to subtotal
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('quotation/quotation-quantity-fix.js')
+          s=p.read_text(encoding='utf-8')
+          old='TOTAL ${esc(label)}'
+          new='SUBTOTAL ${esc(label)}'
+          if s.count(old)!=1:
+              raise SystemExit(f'Expected exactly one label, found {s.count(old)}')
+          p.write_text(s.replace(old,new),encoding='utf-8')
+          PY
+      - name: Validate
+        run: node --check quotation/quotation-quantity-fix.js
+      - name: Commit source and remove workflow
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add quotation/quotation-quantity-fix.js
+          git commit -m 'TERAJU Build Planner: label sub-sub totals as subtotals'
+          git rm .github/workflows/one-time-subtotal-label.yml
+          git commit -m 'Remove one-time subtotal label workflow'
+          git push
