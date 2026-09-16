@@ -7,7 +7,7 @@ function parseRules(src){const m=src.match(/(?:const|let)\s+rules\s*=\s*\[/);if(
 let RULES=new Map,RATES={};
 async function load(){const[a,b]=await Promise.all([fetch('admin-calculation-rules.html?source=master&v=20260915',{cache:'no-store'}),fetch('../data/rates/default.json?source=master&v=20260915',{cache:'no-store'})]);if(!a.ok||!b.ok)throw Error('Global Master source unavailable');RULES=new Map(parseRules(await a.text()).filter(x=>Array.isArray(x)&&x[1]).map(x=>[String(x[1]).trim(),x]));RATES=(await b.json()).rates||{}}
 const rule=p=>RULES.get(String(p||'').trim())||null;
-function rate(p){let v=0,base=String(p||'').toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,''),k=Object.keys(RATES).find(x=>NOR(x).startsWith('rule_'+base));if(k)v=N(RATES[k]);try{const o=JSON.parse(localStorage.getItem(OV)||'{}'),h=Object.keys(o).find(x=>NOR(x)===NOR(p));if(h)v=N(o[h])}catch{}return R2(v)}
+function rate(p){let v=0,base=String(p||'').toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,''),prefix=NOR('rule_'+base),k=Object.keys(RATES).find(x=>NOR(x).startsWith(prefix));if(k)v=N(RATES[k]);try{const o=JSON.parse(localStorage.getItem(OV)||'{}'),h=Object.keys(o).find(x=>NOR(x)===NOR(p));if(h)v=N(o[h])}catch{}return R2(v)}
 function rooms(){return typeof getRoomGroups==='function'?(getRoomGroups()||[]):[]}
 function scope(){const rs=rooms(),main=rs.filter(r=>r.roomType!=='porch'),porch=rs.filter(r=>r.roomType==='porch'),A=main.reduce((s,r)=>s+N(r.area),0)||N(document.getElementById('builtUpArea')?.value),B=porch.reduce((s,r)=>s+N(r.area),0);return{rs,main,porch,A,B}}
 function apron(s){if(s.A<=0)return{area:0,perim:0};const side=Math.sqrt(s.A),outer=side+6;return{area:Math.max(0,(outer*outer-s.A)*.09290304),perim:outer*4*.3048}}
