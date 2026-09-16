@@ -1,0 +1,41 @@
+name: One-time porch lighting quantity fix
+on:
+  push:
+    branches: [main]
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch porch lighting quantity handling
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('quotation/quotation-quantity-fix.js')
+          s=p.read_text()
+          old="const rs=rooms(),main=rs.filter(r=>r.roomType!=='porch'),porch=rs.filter(r=>r.roomType==='porch'),A=main.reduce((s,r)=>s+N(r.area),0)||N(document.getElementById('builtUpArea')?.value),B=porch.reduce((s,r)=>s+N(r.area),0);"
+          new="const rs=rooms(),porch=rs.filter(r=>String(r.roomType||'').trim().toLowerCase()==='porch'),main=rs.filter(r=>String(r.roomType||'').trim().toLowerCase()!=='porch'),A=main.reduce((s,r)=>s+N(r.area),0)||N(document.getElementById('builtUpArea')?.value),B=porch.reduce((s,r)=>s+N(r.area),0);"
+          if old not in s: raise SystemExit('scope target not found')
+          s=s.replace(old,new,1)
+          old="if(/^ELECTRICAL \/ PORCH \/ LIGHTING$/i.test(p)&&s.B>0)return Math.max(1,Math.ceil(s.B/100));"
+          new="if(/(?:^|\\/)\\s*PORCH\\s*\\/\\s*LIGHTING(?:\\s*\\/|$)/i.test(p)&&s.B>0)return Math.max(1,Math.ceil(s.B/100));"
+          if old not in s: raise SystemExit('lighting qty target not found')
+          s=s.replace(old,new,1)
+          old="const lockedPorchLighting=/^ELECTRICAL \/ PORCH \/ LIGHTING$/i.test(i.masterPath)&&s.B>0;"
+          new="const lockedPorchLighting=/(?:^|\\/)\\s*PORCH\\s*\\/\\s*LIGHTING(?:\\s*\\/|$)/i.test(i.masterPath)&&s.B>0;"
+          if old not in s: raise SystemExit('lighting lock target not found')
+          s=s.replace(old,new,1)
+          p.write_text(s)
+          PY
+          node --check quotation/quotation-quantity-fix.js
+      - name: Commit patch and remove workflow
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add quotation/quotation-quantity-fix.js
+          git commit -m 'Fix porch lighting quantity from porch area'
+          git rm .github/workflows/one-time-fix-porch-lighting.yml
+          git commit -m 'Remove one-time porch lighting fix workflow'
+          git push
