@@ -22,9 +22,11 @@ jobs:
           s=p.read_text(encoding='utf-8')
           old="function scope(){const rs=rooms(),porch=rs.filter(r=>String(r.roomType||'').trim().toLowerCase()==='porch'),main=rs.filter(r=>String(r.roomType||'').trim().toLowerCase()!=='porch'),A=main.reduce((s,r)=>s+N(r.area),0)||N(document.getElementById('builtUpArea')?.value),B=porch.reduce((s,r)=>s+N(r.area),0);return{rs,main,porch,A,B}}"
           new="function scope(){const rs=rooms(),domRooms=[...document.querySelectorAll('#roomsContainer .room-card')].map(r=>({roomId:r.id,roomType:r.querySelector('.room-type')?.value||'',area:parseFloat(r.querySelector('.room-area')?.value)||0,label:r.querySelector('.room-type')?.selectedOptions?.[0]?.textContent||''})),all=rs.length?rs:domRooms,porch=all.filter(r=>String(r.roomType||'').trim().toLowerCase()==='porch'),main=all.filter(r=>String(r.roomType||'').trim().toLowerCase()!=='porch'),A=main.reduce((s,r)=>s+N(r.area),0)||N(document.getElementById('builtUpArea')?.value),B=porch.reduce((s,r)=>s+N(r.area),0);return{rs:all,main,porch,A,B}}"
-          if old not in s: raise SystemExit('Expected scope function not found')
-          s=s.replace(old,new,1)
-          p.write_text(s,encoding='utf-8')
+          if old not in s: raise SystemExit('Expected original scope function not found')
+          if new in s: print('DOM fallback already applied.')
+          else:
+              s=s.replace(old,new,1)
+              p.write_text(s,encoding='utf-8')
           PY
       - name: Refresh cache key
         shell: bash
@@ -33,10 +35,12 @@ jobs:
           from pathlib import Path
           p=Path('quotation/buildplanner-v2.html')
           s=p.read_text(encoding='utf-8')
-          old='quotation-quantity-fix.js?v=20260923'
-          new='quotation-quantity-fix.js?v=20260925'
-          if old not in s: raise SystemExit('Expected Build Planner engine cache key not found')
-          s=s.replace(old,new,1)
+          for old,new in [('quotation-quantity-fix.js?v=20260923','quotation-quantity-fix.js?v=20260925'),('quotation-quantity-fix.js?v=20260924','quotation-quantity-fix.js?v=20260925')]:
+              if old in s:
+                  s=s.replace(old,new,1)
+                  break
+          else:
+              raise SystemExit('Expected Build Planner engine cache key not found')
           p.write_text(s,encoding='utf-8')
           PY
       - name: Commit patch and remove workflow
