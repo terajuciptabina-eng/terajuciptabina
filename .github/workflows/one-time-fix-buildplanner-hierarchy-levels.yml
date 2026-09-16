@@ -1,0 +1,30 @@
+name: One-time Build Planner hierarchy levels
+on:
+  push:
+    paths:
+      - '.github/workflows/one-time-fix-buildplanner-hierarchy-levels.yml'
+permissions:
+  contents: write
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Correct hierarchy levels at source
+        shell: python
+        run: |
+          from pathlib import Path
+          p = Path('quotation/quotation-quantity-fix.js')
+          s = p.read_text()
+          old = "return{header:headerName(g),sub:p[0]||null,subsub:p.length>2?p.slice(1).join(' / '):p.length===2?p[1]:null}"
+          new = "return{header:headerName(g),sub:p[0]||null,subsub:p.length>2?p[1]:null}"
+          if old not in s:
+              raise SystemExit('Expected hierarchy source expression not found')
+          p.write_text(s.replace(old,new,1))
+      - name: Commit source correction
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add quotation/quotation-quantity-fix.js
+          git commit -m 'TERAJU Build Planner: separate sub and sub-sub hierarchy levels'
+          git push
