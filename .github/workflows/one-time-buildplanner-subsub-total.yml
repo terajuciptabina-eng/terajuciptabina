@@ -93,3 +93,5 @@ jobs:
           git rm .github/workflows/one-time-buildplanner-subsub-total.yml
           git commit -m "Remove one-time Build Planner total workflow"
           git push
+
+# retrigger after workflow creation
