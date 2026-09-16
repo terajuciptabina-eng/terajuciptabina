@@ -1,0 +1,30 @@
+name: One-time wiring quantity fix
+on:
+  push:
+    paths:
+      - '.wiring-quantity-fix-trigger'
+permissions:
+  contents: write
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch master engine formula aliases
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('quotation/quotation-quantity-fix.js')
+          s=p.read_text()
+          old="for(const x of ['Porch Ground Slab Area','Ground Slab Area','Porch Flat Roof Area','Flat Roof Area','Outer Apron Perimeter','Porch Area','Apron Area','A','B']){"
+          new="for(const x of ['Main Building Area','Porch Area','Porch Ground Slab Area','Ground Slab Area','Porch Flat Roof Area','Flat Roof Area','Outer Apron Perimeter','Apron Area','A','B']){"
+          if old not in s:
+              raise SystemExit('target loop not found')
+          s=s.replace(old,new,1)
+          p.write_text(s)
+          PY
+          git config user.name 'Teraju Ciptabina Bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add quotation/quotation-quantity-fix.js
+          git commit -m 'Fix wiring quantity area aliases [wiring-quantity-fix]'
+          git push
