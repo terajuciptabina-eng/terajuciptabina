@@ -42,9 +42,9 @@ jobs:
       - name: Commit patch and remove workflow
         shell: bash
         run: |
-          rm -f .github/workflows/patch-porch-lighting-dom-fallback.yml
+          rm -f .github/workflows/patch-porch-lighting-dom-fallback.yml quotation/porch-lighting-patch-trigger.txt
           git config user.name 'Teraju Ciptabina Bot'
           git config user.email 'actions@users.noreply.github.com'
-          git add quotation/quotation-quantity-fix.js quotation/buildplanner-v2.html .github/workflows/patch-porch-lighting-dom-fallback.yml
+          git add quotation/quotation-quantity-fix.js quotation/buildplanner-v2.html .github/workflows/patch-porch-lighting-dom-fallback.yml quotation/porch-lighting-patch-trigger.txt
           git commit -m 'Fix Porch Lighting quantity fallback [porch-lighting-fallback]'
           git push
