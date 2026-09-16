@@ -1,0 +1,33 @@
+name: One-time Build Planner master engine load fix
+on:
+  push:
+    branches: [main]
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch resilient master rate loading
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('quotation/quotation-quantity-fix.js')
+          s=p.read_text()
+          old="""async function load(){const state=String(window.TERAJU_SELECTED_STATE||localStorage.getItem('teraju.planner.state.v1')||'').trim().toLowerCase();const rateUrl=state?`../data/rates/states/${encodeURIComponent(state)}.json?source=master&v=20260921`:'../data/rates/default.json?source=master&v=20260921';const[a,b]=await Promise.all([fetch('admin-calculation-rules.html?source=master&v=20260915',{cache:'no-store'}),fetch(rateUrl,{cache:'no-store'})]);if(!a.ok||!b.ok)throw Error('Global Master source unavailable');RULES=new Map(parseRules(await a.text()).filter(x=>Array.isArray(x)&&x[1]).map(x=>[String(x[1]).trim(),x]));RATES=(await b.json()).rates||{}}"""
+          new="""async function load(){const rawState=String(window.TERAJU_SELECTED_STATE||localStorage.getItem('teraju.planner.state.v1')||'').trim().toLowerCase();const state=rawState.replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');const ruleUrl='admin-calculation-rules.html?source=master&v=20260915',defaultRateUrl='../data/rates/default.json?source=master&v=20260921',stateRateUrl=state?`../data/rates/states/${encodeURIComponent(state)}.json?source=master&v=20260921`:'';const a=await fetch(ruleUrl,{cache:'no-store'});if(!a.ok)throw Error('Global Calculation Rules Master unavailable');RULES=new Map(parseRules(await a.text()).filter(x=>Array.isArray(x)&&x[1]).map(x=>[String(x[1]).trim(),x]));let rateResponse=null;if(stateRateUrl){try{const r=await fetch(stateRateUrl,{cache:'no-store'});if(r.ok)rateResponse=r}catch{}}if(!rateResponse){const r=await fetch(defaultRateUrl,{cache:'no-store'});if(!r.ok)throw Error('Global Master rates unavailable');rateResponse=r}RATES=(await rateResponse.json()).rates||{}}"""
+          if old not in s:
+              raise SystemExit('Master engine load target not found')
+          p.write_text(s.replace(old,new,1))
+          PY
+          node --check quotation/quotation-quantity-fix.js
+      - name: Commit patch and remove one-time workflow
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add quotation/quotation-quantity-fix.js
+          git commit -m 'Fix Build Planner master engine rate loading'
+          git rm .github/workflows/one-time-fix-master-engine-load.yml
+          git commit -m 'Remove one-time master engine fix workflow'
+          git push
