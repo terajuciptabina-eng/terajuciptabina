@@ -49,7 +49,8 @@ jobs:
           from pathlib import Path
           s=Path('quotation/quotation-quantity-fix.js').read_text()
           block=s[s.index('async function main()'):s.index('main().catch')]
-          assert 'window.renderConstructionBudget=renderBudget' not in block
+          assert 'if(!/buildplanner-v2\\.html$/i.test(location.pathname))window.renderConstructionBudget=renderBudget;' in block
+          assert 'if(/buildplanner-v2\\.html$/i.test(location.pathname)&&typeof window.renderConstructionBudget===\'function\')window.renderConstructionBudget();' in block
           assert 'TERAJU_V2_EDIT_ITEM' in s and 'TERAJU_V2_SAVE_ITEM' in s and 'deleteBudgetItem' in s
           assert 'data-budget-view' in s and 'data-budget-edit' in s
           assert 'Build Planner V2 item-action race guard' not in Path('quotation/location-autocomplete.js').read_text()
