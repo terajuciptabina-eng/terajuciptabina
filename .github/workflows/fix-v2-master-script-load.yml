@@ -20,6 +20,8 @@ jobs:
               s=s.replace('</body>',tag+'</body>',1)
               p.write_text(s,encoding='utf-8')
           PY
+      - name: Validate HTML contains Master Engine
+        run: grep -q 'quotation-quantity-fix.js' quotation/buildplanner-v2.html
       - name: Commit and remove workflow
         run: |
           rm -f .github/workflows/fix-v2-master-script-load.yml
