@@ -4,7 +4,7 @@ on:
     paths:
       - '.v2-edit-controls-inspect-trigger'
 permissions:
-  contents: read
+  contents: write
 jobs:
   inspect:
     runs-on: ubuntu-latest
@@ -15,12 +15,21 @@ jobs:
         run: |
           from pathlib import Path
           import re
-          p=Path('quotation/buildplanner-v2.html')
-          s=p.read_text()
-          print('FILE_LEN',len(s))
-          for term in ['function budgetRow','Edit','Delete','New Item','manualItems','data-manual-anchor','contractor-editable','renderConstructionBudget','cr-budget-table']:
-              print('\n===',term,'===')
+          s=Path('quotation/buildplanner-v2.html').read_text()
+          terms=['function budgetRow','Edit','Delete','New Item','manualItems','data-manual-anchor','contractor-editable','renderConstructionBudget','cr-budget-table','onclick']
+          out=[]
+          out.append('FILE_LEN='+str(len(s)))
+          for term in terms:
               hits=[m.start() for m in re.finditer(re.escape(term),s,re.I)]
-              print('COUNT',len(hits))
-              for pos in hits[:20]:
-                  print(s[max(0,pos-700):min(len(s),pos+1200)].replace('\n','\\n'))
+              out.append(f'=== {term} COUNT={len(hits)} ===')
+              for pos in hits[:30]:
+                  out.append(s[max(0,pos-1000):min(len(s),pos+1800)])
+                  out.append('---')
+          Path('v2-edit-controls-inspect.txt').write_text('\n'.join(out))
+      - name: Commit report
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add v2-edit-controls-inspect.txt
+          git commit -m 'Inspect V2 edit controls renderer [one-time]' || exit 0
+          git push
