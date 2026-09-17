@@ -171,3 +171,51 @@
   if(document.readyState!=='loading')enforce();
   else document.addEventListener('DOMContentLoaded',enforce,{once:true});
 })();
+
+// Build Planner V2 item-action race guard.
+// The V2 master engine loads asynchronously and can overwrite the editable budget renderer
+// after the item-action layer has installed it. Keep the editable renderer as the final source
+// for V2 only; do not alter the calculation engine or rate-management rules.
+(function(){
+  'use strict';
+  if(!/buildplanner-v2\.html$/i.test(location.pathname))return;
+
+  let editableRenderer=null;
+  let lastUpdate=null;
+
+  const capture=()=>{
+    if(typeof window.renderConstructionBudget!=='function')return;
+    const current=window.renderConstructionBudget;
+    // The editable renderer contains the V2 New Item anchor; the master renderer does not.
+    if(/data-budget-new-anchor/.test(Function.prototype.toString.call(current))){
+      editableRenderer=current;
+    }
+  };
+
+  const enforce=()=>{
+    capture();
+    if(!editableRenderer)return;
+
+    if(window.renderConstructionBudget!==editableRenderer){
+      window.renderConstructionBudget=editableRenderer;
+      try{editableRenderer()}catch(_){}
+    }
+
+    if(typeof window.updateEstimate==='function' && window.updateEstimate!==lastUpdate && !window.updateEstimate.__terajuV2ItemActionGuard){
+      const masterUpdate=window.updateEstimate;
+      const wrapped=function(){
+        const result=masterUpdate.apply(this,arguments);
+        try{if(editableRenderer)editableRenderer()}catch(_){}
+        return result;
+      };
+      wrapped.__terajuV2ItemActionGuard=true;
+      lastUpdate=wrapped;
+      window.updateEstimate=wrapped;
+    }
+  };
+
+  const timer=setInterval(enforce,50);
+  setTimeout(()=>clearInterval(timer),30000);
+  if(document.readyState!=='loading')enforce();
+  else document.addEventListener('DOMContentLoaded',enforce,{once:true});
+})();
