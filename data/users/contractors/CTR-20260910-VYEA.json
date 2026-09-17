@@ -19,6 +19,295 @@
       {
         "schemaVersion": 1,
         "recordType": "quotation",
+        "quotationId": "QT-BLD-MU626GLT-HMM23",
+        "projectId": "PRJ-BLD-MU626HGA-6PGQD",
+        "quotationNumber": "Q006D",
+        "plannerType": "build",
+        "role": "contractor",
+        "contractorId": "CTR-20260910-VYEA",
+        "state": "final",
+        "quotationType": "detail",
+        "client": {
+          "name": "Puan Shahida"
+        },
+        "project": {
+          "location": "Dengkil, Selangor",
+          "builtUpArea": 1528,
+          "state": "selangor"
+        },
+        "total": 302399.25,
+        "plannerState": {
+          "customerName": "Puan Shahida",
+          "projectLocation": "Dengkil, Selangor",
+          "builtUpArea": "1528",
+          "rooms": [
+            {
+              "id": "room-1",
+              "type": "living",
+              "name": "Living",
+              "area": "260"
+            },
+            {
+              "id": "room-2",
+              "type": "kitchen",
+              "name": "Kitchen",
+              "area": "140"
+            },
+            {
+              "id": "room-3",
+              "type": "dining",
+              "name": "Dining",
+              "area": "100"
+            },
+            {
+              "id": "room-4",
+              "type": "living",
+              "name": "Living",
+              "area": "260"
+            },
+            {
+              "id": "room-5",
+              "type": "bedroom",
+              "name": "Bedroom",
+              "area": "168"
+            },
+            {
+              "id": "room-6",
+              "type": "bedroom",
+              "name": "Bedroom",
+              "area": "168"
+            },
+            {
+              "id": "room-7",
+              "type": "bedroom",
+              "name": "Bedroom",
+              "area": "168"
+            },
+            {
+              "id": "room-8",
+              "type": "bathroom",
+              "name": "Bathroom",
+              "area": "48"
+            },
+            {
+              "id": "room-9",
+              "type": "bathroom",
+              "name": "Bathroom",
+              "area": "48"
+            },
+            {
+              "id": "room-10",
+              "type": "bathroom",
+              "name": "Guest Bath",
+              "area": "48"
+            },
+            {
+              "id": "room-11",
+              "type": "other",
+              "name": "Washroom",
+              "area": "120"
+            }
+          ],
+          "rates": {
+            "footingConc": 550,
+            "footingFw": 4.18,
+            "footingRebar": 15,
+            "slabConc": 550,
+            "slabBrc": 6.5,
+            "beamConc": 350,
+            "beamFw": 4.18,
+            "beamRebar": 15,
+            "colConc": 550,
+            "colFw": 4.18,
+            "colRebar": 15,
+            "flatRoofConc": 550,
+            "flatRoofFw": 4.18,
+            "flatRoofBrc": 6.5,
+            "cChannel": 4,
+            "metalSheet": 3.25,
+            "roofDesignConc": 550,
+            "roofDesignFw": 4.18,
+            "roofDesignRebar": 70,
+            "apronConc": 350,
+            "apronFw": 13.72,
+            "apronBrc": 15,
+            "drainage": 25,
+            "ceilingInt": 15,
+            "ceilingExt": 20,
+            "floorTileInt": 4.18,
+            "floorTileExt": 5.57,
+            "paintInt": 1.39,
+            "paintExt": 2.32,
+            "door": 600,
+            "window": 600,
+            "waterTank": 500,
+            "septicTank": 1500,
+            "bathWallTile": 4.18,
+            "bathFloorTile": 4.18,
+            "bathPiping": 1000,
+            "bathShower": 120,
+            "bathTap": 30,
+            "bathWc": 500,
+            "bathBasin": 400,
+            "dbBox": 1000,
+            "wiring": 20,
+            "powerPoint": 50,
+            "switch": 50,
+            "lighting": 250,
+            "fan": 600,
+            "aircond": 300,
+            "earthing": 1500,
+            "permit": 8500,
+            "prelim": 12000,
+            "rule_preliminaries_building_plan_submission_0": 8500,
+            "rule_preliminaries_site_mobilisation_project_management_1": 12000,
+            "rule_main_building_footing_concrete_2": 550,
+            "rule_main_building_footing_formwork_3": 55,
+            "rule_main_building_footing_rebar_4": 8,
+            "rule_main_building_ground_slab_concrete_5": 550,
+            "rule_main_building_ground_slab_brc_6": 6.5,
+            "rule_main_building_ground_beam_concrete_7": 350,
+            "rule_main_building_ground_beam_formwork_8": 55,
+            "rule_main_building_ground_beam_rebar_9": 8,
+            "rule_main_building_roof_beam_concrete_10": 350,
+            "rule_main_building_roof_beam_formwork_11": 55,
+            "rule_main_building_roof_beam_rebar_12": 8,
+            "rule_main_building_column_concrete_13": 550,
+            "rule_main_building_column_formwork_14": 55,
+            "rule_main_building_column_rebar_15": 8,
+            "rule_main_building_flat_roof_concrete_16": 550,
+            "rule_main_building_flat_roof_formwork_17": 55,
+            "rule_main_building_flat_roof_brc_18": 6.5,
+            "rule_main_building_roof_metal_roofing_sheet_19": 3.25,
+            "rule_main_building_apron_concrete_20": 350,
+            "rule_main_building_apron_formwork_21": 55,
+            "rule_main_building_apron_brc_22": 15,
+            "rule_main_building_drainage_23": 25,
+            "rule_porch_footing_concrete_24": 550,
+            "rule_porch_footing_formwork_25": 55,
+            "rule_porch_footing_rebar_26": 8,
+            "rule_porch_ground_slab_concrete_27": 550,
+            "rule_porch_ground_slab_brc_28": 6.5,
+            "rule_porch_ground_beam_concrete_29": 350,
+            "rule_porch_ground_beam_formwork_30": 55,
+            "rule_porch_ground_beam_rebar_31": 8,
+            "rule_porch_roof_beam_concrete_32": 350,
+            "rule_porch_roof_beam_formwork_33": 55,
+            "rule_porch_roof_beam_rebar_34": 8,
+            "rule_porch_column_concrete_35": 550,
+            "rule_porch_column_formwork_36": 55,
+            "rule_porch_column_rebar_37": 8,
+            "rule_porch_flat_roof_concrete_38": 550,
+            "rule_porch_flat_roof_formwork_39": 55,
+            "rule_porch_flat_roof_brc_40": 6.5,
+            "rule_porch_roof_metal_roofing_sheet_41": 3.25,
+            "rule_main_building_brickwall_internal_wall_42": 50,
+            "rule_main_building_brickwall_external_wall_43": 50,
+            "rule_main_building_floor_tiles_internal_44": 45,
+            "rule_main_building_floor_tiles_external_45": 75,
+            "rule_main_building_painting_internal_46": 30,
+            "rule_main_building_painting_external_47": 48,
+            "rule_main_building_ceiling_internal_48": 165,
+            "rule_main_building_ceiling_external_49": 165,
+            "rule_bathroom_wall_tiles_50": 75,
+            "rule_bathroom_floor_tiles_51": 75,
+            "rule_bathroom_ceiling_52": 165,
+            "rule_bathroom_piping_53": 1100,
+            "rule_bathroom_wc_54": 300,
+            "rule_bathroom_basin_55": 200,
+            "rule_bathroom_shower_56": 250,
+            "rule_bathroom_tap_57": 70,
+            "rule_main_building_water_tank_58": 600,
+            "rule_main_building_septic_tank_59": 2500,
+            "rule_main_building_power_point_60": 6.5,
+            "rule_main_building_switch_61": 6.5,
+            "rule_main_building_lighting_62": 120,
+            "rule_main_building_fan_63": 150,
+            "rule_main_building_aircond_point_64": 300,
+            "rule_porch_lighting_65": 120,
+            "rule_porch_fan_66": 150,
+            "rule_porch_power_point_67": 6.5,
+            "rule_earthing_68": 1500,
+            "rule_db_box_69": 2500,
+            "rule_wiring_70": 20,
+            "rule_doors_type_1_single_leaf_71": 1200,
+            "rule_doors_type_2_sliding_72": 2500,
+            "rule_doors_type_3_bathroom_73": 850,
+            "rule_doors_type_4_double_leaf_main_door_74": 2400,
+            "rule_windows_type_1_1200_1200_75": 1200,
+            "rule_windows_type_2_1800_1200_76": 1400,
+            "rule_windows_type_3_900_600_77": 950,
+            "rule_boundary_fencing_78": 43000,
+            "rule_gate_79": 6500,
+            "rule_driveway_80": 5000,
+            "rule_landscaping_81": 2000
+          },
+          "customRates": [],
+          "customQuantities": [],
+          "customDescriptions": [],
+          "customRoomLabels": [
+            [
+              "room-1",
+              "Living"
+            ],
+            [
+              "room-10",
+              "Guest Bath"
+            ],
+            [
+              "room-11",
+              "Washroom"
+            ],
+            [
+              "room-2",
+              "Kitchen"
+            ],
+            [
+              "room-3",
+              "Dining"
+            ],
+            [
+              "room-4",
+              "Living"
+            ],
+            [
+              "room-5",
+              "Bedroom"
+            ],
+            [
+              "room-6",
+              "Bedroom"
+            ],
+            [
+              "room-7",
+              "Bedroom"
+            ],
+            [
+              "room-8",
+              "Bathroom"
+            ],
+            [
+              "room-9",
+              "Bathroom"
+            ]
+          ],
+          "excludedItems": [],
+          "manualItems": [],
+          "standardRateItems": [],
+          "quotationType": "detail",
+          "projectId": "PRJ-BLD-MU626HGA-6PGQD",
+          "projectState": "selangor",
+          "rateSetId": "default",
+          "rateSetName": "Default Rate",
+          "rateSnapshotAt": "2026-09-17T21:45:38.343Z"
+        },
+        "createdAt": "2026-09-17T21:45:37.937Z",
+        "updatedAt": "2026-09-17T21:45:39.034Z",
+        "estimateNumber": "EST-BLD-006"
+      },
+      {
+        "schemaVersion": 1,
+        "recordType": "quotation",
         "quotationId": "QT-BLD-MU623OTS-6QT33",
         "projectId": "PRJ-BLD-MU623PL7-1WRMT",
         "quotationNumber": "Q005S",
@@ -1716,13 +2005,13 @@
     ]
   },
   "createdAt": "2026-09-10T20:27:55.981Z",
-  "updatedAt": "2026-09-17T21:43:29.611Z",
+  "updatedAt": "2026-09-17T21:45:39.034Z",
   "quotationRunningNumber": {
     "renovation": 2,
-    "build": 5
+    "build": 6
   },
   "estimateRunningNumber": {
     "renovation": 2,
-    "build": 5
+    "build": 6
   }
 }
