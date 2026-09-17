@@ -2,6 +2,8 @@ name: One-time V2 source fix
 on:
   push:
     branches: [main]
+permissions:
+  contents: write
 
 jobs:
   fix:
