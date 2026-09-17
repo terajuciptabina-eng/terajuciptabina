@@ -2,6 +2,9 @@
   const STATE_KEY = 'terajuBuildPlannerStateBeforeDetailedUnlock';
   const params = new URLSearchParams(location.search);
   const hasQuotationId = Boolean((params.get('quotationId') || '').trim());
+  const quotationId = (params.get('quotationId') || '').trim() || 'draft';
+  const contractorId = (params.get('contractorId') || localStorage.getItem('teraju.contractor.local.v1.activeContractorId') || 'local').trim() || 'local';
+  const ITEM_STATE_KEY = `terajuBuildPlannerItemState.v2.${contractorId}.${quotationId}`;
   const role = (params.get('audience') || document.body.dataset.role || 'homeowner').toLowerCase() === 'contractor' ? 'contractor' : 'homeowner';
   const PROJECT_KEY = `teraju.${role}.build.projectId.v1`;
 
@@ -11,6 +14,7 @@
       sessionStorage.removeItem(STATE_KEY);
       localStorage.removeItem(STATE_KEY);
       localStorage.removeItem(PROJECT_KEY);
+      localStorage.removeItem(ITEM_STATE_KEY);
     } catch (e) {
       console.warn('Unable to clear Build Planner state for new quotation', e);
     }
@@ -35,9 +39,78 @@
     });
   }
 
+  function mapEntries(map) {
+    return map instanceof Map ? Array.from(map.entries()) : [];
+  }
+
+  function captureItemState() {
+    try {
+      return {
+        manualItems: typeof manualItems !== 'undefined' && manualItems instanceof Map ? mapEntries(manualItems) : null,
+        customDescriptions: typeof customDescriptions !== 'undefined' && customDescriptions instanceof Map ? mapEntries(customDescriptions) : null,
+        customQuantities: typeof customQuantities !== 'undefined' && customQuantities instanceof Map ? mapEntries(customQuantities) : null,
+        customRates: typeof customRates !== 'undefined' && customRates instanceof Map ? mapEntries(customRates) : null,
+        excludedItems: typeof excludedItems !== 'undefined' && excludedItems instanceof Set ? Array.from(excludedItems) : null,
+        savedAt: Date.now()
+      };
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function applyItemState(state) {
+    if (!state) return;
+    try {
+      if (Array.isArray(state.manualItems) && typeof manualItems !== 'undefined' && manualItems instanceof Map) {
+        manualItems.clear();
+        state.manualItems.forEach(([key, value]) => manualItems.set(key, Array.isArray(value) ? value : []));
+      }
+      if (Array.isArray(state.customDescriptions) && typeof customDescriptions !== 'undefined' && customDescriptions instanceof Map) {
+        customDescriptions.clear();
+        state.customDescriptions.forEach(([key, value]) => customDescriptions.set(key, value));
+      }
+      if (Array.isArray(state.customQuantities) && typeof customQuantities !== 'undefined' && customQuantities instanceof Map) {
+        customQuantities.clear();
+        state.customQuantities.forEach(([key, value]) => customQuantities.set(key, value));
+      }
+      if (Array.isArray(state.customRates) && typeof customRates !== 'undefined' && customRates instanceof Map) {
+        customRates.clear();
+        state.customRates.forEach(([key, value]) => customRates.set(key, value));
+      }
+      if (Array.isArray(state.excludedItems) && typeof excludedItems !== 'undefined' && excludedItems instanceof Set) {
+        excludedItems.clear();
+        state.excludedItems.forEach((value) => excludedItems.add(value));
+      }
+      window.__tcBuildPlannerItemStateRestored = true;
+    } catch (e) {
+      console.warn('Unable to restore Build Planner item state', e);
+    }
+  }
+
+  function saveItemState(state) {
+    try {
+      const payload = state || captureItemState();
+      if (!payload) return;
+      sessionStorage.setItem(ITEM_STATE_KEY, JSON.stringify(payload));
+      localStorage.setItem(ITEM_STATE_KEY, JSON.stringify(payload));
+    } catch (e) {
+      console.warn('Unable to save Build Planner item state', e);
+    }
+  }
+
+  function loadItemState() {
+    try {
+      const raw = sessionStorage.getItem(ITEM_STATE_KEY) || localStorage.getItem(ITEM_STATE_KEY);
+      return raw ? JSON.parse(raw) : null;
+    } catch (e) {
+      return null;
+    }
+  }
+
   function savePlannerState() {
     try {
       const rooms = document.getElementById('roomsContainer');
+      const itemState = captureItemState();
       const state = {
         builtUpArea: document.getElementById('builtUpArea')?.value ?? '',
         numStoreys: document.getElementById('numStoreys')?.value ?? '1',
@@ -45,10 +118,12 @@
         projectLocation: document.getElementById('projectLocation')?.value ?? '',
         roomsHtml: rooms?.innerHTML ?? '',
         roomControls: captureControls(rooms),
+        itemState,
         savedAt: Date.now()
       };
       sessionStorage.setItem(STATE_KEY, JSON.stringify(state));
       localStorage.setItem(STATE_KEY, JSON.stringify(state));
+      saveItemState(itemState);
     } catch (e) {
       console.warn('Unable to save Build Planner state', e);
     }
@@ -66,6 +141,8 @@
 
   function restorePlannerState() {
     const state = loadPlannerState();
+    const itemState = state?.itemState || loadItemState();
+    applyItemState(itemState);
     if (!state) return;
 
     const setValue = (id, value) => {
@@ -88,6 +165,10 @@
       window.updateEstimate();
     }
 
+    applyItemState(itemState);
+    if (typeof window.renderConstructionBudget === 'function') {
+      window.renderConstructionBudget();
+    }
     window.__tcBuildPlannerStateRestored = true;
   }
 
@@ -130,12 +211,33 @@
     button.addEventListener('click', savePlannerState, true);
   }
 
+  function hookUpdateEstimatePersistence() {
+    if (window.__tcBuildPlannerUpdateEstimateHooked || typeof window.updateEstimate !== 'function') return;
+    const original = window.updateEstimate;
+    window.updateEstimate = function (...args) {
+      const itemState = captureItemState() || loadItemState();
+      saveItemState(itemState);
+      const result = original.apply(this, args);
+      applyItemState(itemState);
+      if (typeof window.renderConstructionBudget === 'function') {
+        window.renderConstructionBudget();
+      }
+      saveItemState(captureItemState());
+      return result;
+    };
+    window.__tcBuildPlannerUpdateEstimateHooked = true;
+  }
+
   function init() {
     clearNewPlannerState();
     restorePlannerState();
     hookLivePersistence();
     hookPaymentButton();
-    const observer = new MutationObserver(() => hookPaymentButton());
+    hookUpdateEstimatePersistence();
+    const observer = new MutationObserver(() => {
+      hookPaymentButton();
+      hookUpdateEstimatePersistence();
+    });
     observer.observe(document.documentElement, { childList: true, subtree: true });
     setTimeout(() => observer.disconnect(), 30000);
   }
