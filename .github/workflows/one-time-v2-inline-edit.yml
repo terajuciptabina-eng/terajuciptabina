@@ -1,0 +1,34 @@
+name: one-time-v2-inline-edit
+on:
+  push:
+    branches:
+      - main
+permissions:
+  contents: write
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Update V2 item editing UI
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import base64
+          p=Path('quotation/quotation-quantity-fix.js')
+          s=p.read_text()
+          a=s.index('function row(item,no){')
+          marker='window.TERAJU_V2_CANCEL_ITEM=cancelExisting;'
+          b=s.index(marker,a)+len(marker)
+          new=base64.b64decode('ZnVuY3Rpb24gcm93KGl0ZW0sbm8pe2NvbnN0IGlpZD10YXJnZXRJZChpdGVtLmlkKSxjb250cmFjdG9yPWRvY3VtZW50LmJvZHkuY2xhc3NMaXN0LmNvbnRhaW5zKCdjb250cmFjdG9yLW1vZGUnKSxsb2NrZWQ9Lyg/Ol58XC8pXHMqUE9SQ0hccypcL1xzKig/OkxJR0hUSU5HfEZBTnxQT0dFUiBQT0lOVCkoPzpccypcL3wkKS9pLnRlc3QoU3RyaW5nKGl0ZW0ubWFzdGVyUGF0aHx8JycpKXx8L0RPT1JTIFwvIFR5cGUgMy9pLnRlc3QoU3RyaW5nKGl0ZW0ubWFzdGVyUGF0aHx8JycpKXx8L1RZUEUgM1xzKkJBVEhST09NL2kudGVzdChTdHJpbmcoaXRlbS5tYXN0ZXJQYXRofHwnJykpfHwvV0lORE9XUyBcLyBUeXBlIFsxMjNdL2kudGVzdChTdHJpbmcoaXRlbS5tYXN0ZXJQYXRofHwnJykpO2NvbnN0IGRlc2M9Y29udHJhY3Rvcj9gPHRleHRhcmVhIGlkPSJidWRnZXQtZGVzYy0ke2lpZH0iIHJvd3M9IjIiIGNsYXNzPSJ3LWZ1bGwgYm9yZGVyIHJvdW5kZWQtbWQgcHgtMiBweS0xIHRleHQtc20gbGVhZGluZy1zbnVnIiBzdHlsZT0ib3ZlcmZsb3c6aGlkZGVuO3Jlc2l6ZTpub25lO21pbi1oZWlnaHQ6NDJweCIgb25jaGFuZ2U9IlRFUkFKVV9WMl9TQVZFX0lURU0oJHtKU09OLnN0cmluZ2lmeShpdGVtLmlkKX0pIj4ke2VzYyhpdGVtLmRlc2NyaXB0aW9uKX08L3RleHRhcmVhPmA6YDxkaXY+JHtlc2MoaXRlbS5kZXNjcmlwdGlvbil9PC9kaXY+YDtjb25zdCBxdHk9Y29udHJhY3RvciYmIWxvY2tlZD9gPGlucHV0IGlkPSJidWRnZXQtcXR5LSR7aWlkfSIgdHlwZT0ibnVtYmVyIiBtaW49IjAiIHN0ZXA9IjEiIHZhbHVlPSIke25vcm1RdHkoaXRlbS5xdHkpfSIgY2xhc3M9InctZnVsbCBib3JkZXIgcm91bmRlZC1tZCBweC0yIHB5LTEgdGV4dC1zbSB0ZXh0LXJpZ2h0IiBvbmNoYW5nZT0iVEVSQUpVX1YyX1NBVkVfSVRFTSgke0pTT04uc3RyaW5naWZ5KGl0ZW0uaWQpfSkiPmA6YDxkaXYgY2xhc3M9InRleHQtcmlnaHQiPiR7bm9ybVF0eShpdGVtLnF0eSl9PC9kaXY+YDtjb25zdCByYXRlPWA8aW5wdXQgaWQ9ImJ1ZGdldC1yYXRlLSR7aWlkfSIgdHlwZT0ibnVtYmVyIiBtaW49IjAiIHN0ZXA9IjAuMDEiIHZhbHVlPSIke25vcm1SYXRlKGl0ZW0ucmF0ZSkudG9GaXhlZCgyKX0iIGNsYXNzPSJ3LWZ1bGwgYm9yZGVyIHJvdW5kZWQtbWQgcHgtMiB0ZXh0LXNtIHRleHQtcmlnaHQiIG9uY2hhbmdlPSJURVJBSFVfVjJfU0FWRV9JVEVNKCR7SlNPTi5zdHJpbmdpZnkoaXRlbS5pZCl9KSI+YGA7Y29uc3QgZGVsPWA8YnV0dG9uIHR5cGU9ImJ1dHRvbiIgY2xhc3M9ImJvcmRlciBib3JkZXItcmVkLTIwMCB0ZXh0LXJlZC03MDAgcm91bmRlZC1tZCBweC0yIHB5LTEgdGV4dC14cyBmb250LXNlbWlib2xkIG10LTEiIG9uY2xpY2s9ImRlbGV0ZUJ1ZGdldEl0ZW0oJHtKU09OLnN0cmluZ2lmeShpdGVtLmlkKX0pIj5EZWxldGU8L2J1dHRvbj5gO3JldHVybiBgPHRyIGRhdGEtYnVkZ2V0LWl0ZW0taWQ9IiR7aWlkfSIgY2xhc3M9ImJvcmRlci1iIGFsaWduLXRvcCI+PHRkIGNsYXNzPSJweS0yIHB4LTIgdGV4dC1ncmF5LTUwMCI+JHtub308L3RkPjx0ZCBjbGFzcz0icHktMiBweC0yIGNyLWRlc2NyaXB0aW9uIj4ke2Rlc2N9JHtsb2NrZWQmJmNvbnRyYWN0b3I/JzxkaXYgY2xhc3M9InRleHQtWzExcHhdIHRleHQtZ3JheS01MDAgbXQtMSI+UXVhbnRpdHkgY29udHJvbGxlZCBieSBHbG9iYWwgQ2FsY3VsYXRpb24gUnVsZXMuPC9kaXY+JzonJ30ke2RlbH08L3RkPjx0ZCBjbGFzcz0icHktMiBweC0yIGNyLXVuaXQiPiR7ZXNjKGl0ZW0udW5pdCl9PC90ZD48dGQgY2xhc3M9InB5LTIgcHgtMiI+JHtxdHl9PC90ZD48dGQgY2xhc3M9InB5LTIgcHgtMiB0ZXh0LXJpZ2h0Ij4ke3JhdGV9PC90ZD48dGQgY2xhc3M9InB5LTIgcHgtMiB0ZXh0LXJpZ2h0IGZvbnQtc2VtaWJvbGQiPiR7bW9uZXkyKGl0ZW0uYW1vdW50KX08L3RkPjwvdHI+YH0Kd2luZG93LlRFUkFKVV9WMl9FRElUX0lURU09ZnVuY3Rpb24oaWQpe2lmKCFkb2N1bWVudC5ib2R5LmNsYXNzTGlzdC5jb250YWlucygnY29udHJhY3Rvci1tb2RlJykpcmV0dXJuO2VkaXRFeGlzdGluZyhpZCl9O3dpbmRvdy5URVJBSlVfVjJfU0FWRV9JVEVNPWZ1bmN0aW9uKGlkKXtjb25zdCBpdGVtPSh0eXBlb2YgZ2V0QWxsSXRlbXM9PT0nZnVuY3Rpb24nP2dldEFsbEl0ZW1zKCk6W10pLmZpbmQoeD0+eC5pZD09PWlkKTtpZihpdGVtKXNhdmVFeGlzdGluZyhpdGVtKX07d2luZG93LlRFUkFKVV9WMl9DQU5DRUxfSVRFTT1jYW5jZWxFeGlzdGluZzs=').decode()
+          p.write_text(s[:a]+new+s[b:])
+          PY
+          node --check quotation/quotation-quantity-fix.js
+      - name: Remove workflow and commit
+        run: |
+          rm -f .github/workflows/one-time-v2-inline-edit.yml
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add quotation/quotation-quantity-fix.js .github/workflows/one-time-v2-inline-edit.yml
+          git diff --cached --quiet || git commit -m "Make V2 budget items inline editable"
+          git push
