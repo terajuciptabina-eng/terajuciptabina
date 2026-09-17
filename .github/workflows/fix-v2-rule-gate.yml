@@ -1,0 +1,32 @@
+name: fix-v2-rule-gate
+on: push
+permissions:
+  contents: write
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set V2 global rule gate after successful master load
+        run: |
+          python3 <<'PY'
+          from pathlib import Path
+          p=Path('quotation/quotation-quantity-fix.js')
+          s=p.read_text(encoding='utf-8')
+          old='window.getAllItems=getMasterItems;if(!/buildplanner-v2\\.html$/i.test(location.pathname))window.renderConstructionBudget=renderBudget;'
+          new='window.getAllItems=getMasterItems;window.__TERAJU_MASTER_RULE_GATE_READY=true;if(!/buildplanner-v2\\.html$/i.test(location.pathname))window.renderConstructionBudget=renderBudget;'
+          if old not in s:
+              raise SystemExit('master load completion target not found')
+          s=s.replace(old,new,1)
+          p.write_text(s,encoding='utf-8')
+          PY
+      - name: Validate
+        run: node --check quotation/quotation-quantity-fix.js
+      - name: Commit and remove workflow
+        run: |
+          rm -f .github/workflows/fix-v2-rule-gate.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add quotation/quotation-quantity-fix.js .github/workflows/fix-v2-rule-gate.yml
+          git commit -m 'Fix V2 global calculation rules gate'
+          git push
