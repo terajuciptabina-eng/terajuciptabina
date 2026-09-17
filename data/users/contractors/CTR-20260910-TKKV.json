@@ -19,6 +19,323 @@
       {
         "schemaVersion": 1,
         "recordType": "quotation",
+        "quotationId": "QT-BLD-MU53K9FU-UDGMN",
+        "projectId": "PRJ-BLD-MU53KADH-BJNOL",
+        "quotationNumber": "Q004D",
+        "plannerType": "build",
+        "role": "contractor",
+        "contractorId": "CTR-20260910-TKKV",
+        "state": "final",
+        "quotationType": "detail",
+        "client": {
+          "name": "Pn Shahida"
+        },
+        "project": {
+          "location": "Bukit Damar, Dengkil, Sepang, Selangor.",
+          "builtUpArea": 1268,
+          "state": "selangor"
+        },
+        "total": 375173.91,
+        "plannerState": {
+          "customerName": "Pn Shahida",
+          "projectLocation": "Bukit Damar, Dengkil, Sepang, Selangor.",
+          "builtUpArea": "1268",
+          "rooms": [
+            {
+              "id": "room-1",
+              "type": "living",
+              "name": "Living",
+              "area": "260"
+            },
+            {
+              "id": "room-2",
+              "type": "bedroom",
+              "name": "Bedroom 1",
+              "area": "168"
+            },
+            {
+              "id": "room-3",
+              "type": "bedroom",
+              "name": "Bedroom 2",
+              "area": "168"
+            },
+            {
+              "id": "room-4",
+              "type": "bedroom",
+              "name": "Bedroom 3",
+              "area": "168"
+            },
+            {
+              "id": "room-6",
+              "type": "kitchen",
+              "name": "Kitchen & Dining",
+              "area": "240"
+            },
+            {
+              "id": "room-7",
+              "type": "bathroom",
+              "name": "Bathroom 1",
+              "area": "48"
+            },
+            {
+              "id": "room-8",
+              "type": "bathroom",
+              "name": "Bathroom 2",
+              "area": "48"
+            },
+            {
+              "id": "room-9",
+              "type": "bathroom",
+              "name": "Bathroom Guest",
+              "area": "48"
+            },
+            {
+              "id": "room-10",
+              "type": "bathroom",
+              "name": "Washroom",
+              "area": "120"
+            }
+          ],
+          "rates": {
+            "footingConc": 550,
+            "footingFw": 4.18,
+            "footingRebar": 15,
+            "slabConc": 550,
+            "slabBrc": 6.5,
+            "beamConc": 350,
+            "beamFw": 4.18,
+            "beamRebar": 15,
+            "colConc": 550,
+            "colFw": 4.18,
+            "colRebar": 15,
+            "flatRoofConc": 550,
+            "flatRoofFw": 4.18,
+            "flatRoofBrc": 6.5,
+            "cChannel": 4,
+            "metalSheet": 3.25,
+            "roofDesignConc": 550,
+            "roofDesignFw": 4.18,
+            "roofDesignRebar": 70,
+            "apronConc": 350,
+            "apronFw": 13.72,
+            "apronBrc": 15,
+            "drainage": 25,
+            "ceilingInt": 15,
+            "ceilingExt": 20,
+            "floorTileInt": 4.18,
+            "floorTileExt": 5.57,
+            "paintInt": 1.39,
+            "paintExt": 2.32,
+            "door": 600,
+            "window": 600,
+            "waterTank": 500,
+            "septicTank": 1500,
+            "bathWallTile": 4.18,
+            "bathFloorTile": 4.18,
+            "bathPiping": 1000,
+            "bathShower": 120,
+            "bathTap": 30,
+            "bathWc": 500,
+            "bathBasin": 400,
+            "dbBox": 1000,
+            "wiring": 20,
+            "powerPoint": 50,
+            "switch": 50,
+            "lighting": 250,
+            "fan": 600,
+            "aircond": 300,
+            "earthing": 1500,
+            "permit": 8500,
+            "prelim": 12000,
+            "rule_preliminaries_building_plan_submission_0": 8500,
+            "rule_preliminaries_site_mobilisation_project_management_1": 12000,
+            "rule_main_building_footing_concrete_2": 550,
+            "rule_main_building_footing_formwork_3": 4.18,
+            "rule_main_building_footing_rebar_4": 15,
+            "rule_main_building_ground_slab_concrete_5": 550,
+            "rule_main_building_ground_slab_brc_6": 6.5,
+            "rule_main_building_ground_beam_concrete_7": 350,
+            "rule_main_building_ground_beam_formwork_8": 4.18,
+            "rule_main_building_ground_beam_rebar_9": 15,
+            "rule_main_building_roof_beam_concrete_10": 350,
+            "rule_main_building_roof_beam_formwork_11": 4.18,
+            "rule_main_building_roof_beam_rebar_12": 15,
+            "rule_main_building_column_concrete_13": 550,
+            "rule_main_building_column_formwork_14": 4.18,
+            "rule_main_building_column_rebar_15": 15,
+            "rule_main_building_flat_roof_concrete_16": 550,
+            "rule_main_building_flat_roof_formwork_17": 4.18,
+            "rule_main_building_flat_roof_brc_18": 6.5,
+            "rule_main_building_roof_metal_roofing_sheet_19": 3.25,
+            "rule_main_building_apron_concrete_20": 350,
+            "rule_main_building_apron_formwork_21": 13.72,
+            "rule_main_building_apron_brc_22": 15,
+            "rule_main_building_drainage_23": 25,
+            "rule_porch_footing_concrete_24": 550,
+            "rule_porch_footing_formwork_25": 4.18,
+            "rule_porch_footing_rebar_26": 15,
+            "rule_porch_ground_slab_concrete_27": 550,
+            "rule_porch_ground_slab_brc_28": 6.5,
+            "rule_porch_ground_beam_concrete_29": 350,
+            "rule_porch_ground_beam_formwork_30": 4.18,
+            "rule_porch_ground_beam_rebar_31": 15,
+            "rule_porch_roof_beam_concrete_32": 350,
+            "rule_porch_roof_beam_formwork_33": 4.18,
+            "rule_porch_roof_beam_rebar_34": 15,
+            "rule_porch_column_concrete_35": 550,
+            "rule_porch_column_formwork_36": 4.18,
+            "rule_porch_column_rebar_37": 15,
+            "rule_porch_flat_roof_concrete_38": 550,
+            "rule_porch_flat_roof_formwork_39": 4.18,
+            "rule_porch_flat_roof_brc_40": 6.5,
+            "rule_porch_roof_metal_roofing_sheet_41": 3.25,
+            "rule_roof_design_concrete_42": 550,
+            "rule_roof_design_formwork_43": 4.18,
+            "rule_roof_design_rebar_44": 70,
+            "rule_main_building_brickwall_internal_wall_45": 50,
+            "rule_main_building_brickwall_external_wall_46": 50,
+            "rule_main_building_floor_tiles_internal_47": 494,
+            "rule_main_building_floor_tiles_external_48": 49,
+            "rule_main_building_painting_internal_49": 17,
+            "rule_main_building_painting_external_50": 17,
+            "rule_main_building_ceiling_internal_51": 165,
+            "rule_main_building_ceiling_external_52": 165,
+            "rule_bathroom_wall_tiles_53": 49,
+            "rule_bathroom_floor_tiles_54": 49,
+            "rule_bathroom_ceiling_55": 165,
+            "rule_bathroom_piping_56": 1100,
+            "rule_bathroom_wc_57": 300,
+            "rule_bathroom_basin_58": 200,
+            "rule_bathroom_shower_59": 250,
+            "rule_bathroom_tap_60": 70,
+            "rule_main_building_water_tank_61": 600,
+            "rule_main_building_septic_tank_62": 2500,
+            "rule_main_building_power_point_63": 6.5,
+            "rule_main_building_switch_64": 6.5,
+            "rule_main_building_lighting_65": 120,
+            "rule_main_building_fan_66": 150,
+            "rule_main_building_aircond_point_67": 300,
+            "rule_porch_lighting_68": 120,
+            "rule_porch_fan_69": 150,
+            "rule_porch_power_point_70": 6.5,
+            "rule_earthing_71": 1500,
+            "rule_db_box_72": 2500,
+            "rule_wiring_73": 20,
+            "rule_doors_type_1_single_leaf_74": 1200,
+            "rule_doors_type_2_sliding_75": 2500,
+            "rule_doors_type_3_bathroom_76": 850,
+            "rule_doors_type_4_double_leaf_main_door_77": 2400,
+            "rule_windows_type_1_1200_1200_78": 1200,
+            "rule_windows_type_2_1800_1200_79": 1400,
+            "rule_windows_type_3_900_600_80": 950,
+            "rule_boundary_fencing_81": 45000,
+            "rule_gate_82": 6500,
+            "rule_external_drain_83": 25,
+            "rule_driveway_84": 5000,
+            "rule_landscaping_85": 2000
+          },
+          "customRates": [],
+          "customQuantities": [
+            [
+              "manual-1789039100599-lttmgu",
+              416
+            ],
+            [
+              "room-10-basin",
+              2
+            ]
+          ],
+          "customDescriptions": [],
+          "customRoomLabels": [
+            [
+              "room-2",
+              "Bedroom 1"
+            ],
+            [
+              "room-3",
+              "Bedroom 2"
+            ],
+            [
+              "room-4",
+              "Bedroom 3"
+            ],
+            [
+              "room-6",
+              "Kitchen & Dining"
+            ],
+            [
+              "room-1",
+              "Living"
+            ],
+            [
+              "room-7",
+              "Bathroom 1"
+            ],
+            [
+              "room-8",
+              "Bathroom 2"
+            ],
+            [
+              "room-9",
+              "Bathroom Guest"
+            ],
+            [
+              "room-10",
+              "Washroom"
+            ]
+          ],
+          "excludedItems": [
+            "str-roof-dr",
+            "str-roof-df",
+            "str-roof-dc",
+            "room-10-wc",
+            "room-10-shower",
+            "room-10-door"
+          ],
+          "manualItems": [
+            [
+              "structures:special",
+              [
+                {
+                  "id": "manual-1789039100599-lttmgu",
+                  "description": "5 foot height brickwall for boundary fencing including plaster & paint.",
+                  "unit": "ls",
+                  "qty": 1,
+                  "rate": 120,
+                  "category": "structures",
+                  "groupKey": "special",
+                  "groupTitle": "Special Item",
+                  "roomId": "project"
+                }
+              ]
+            ]
+          ],
+          "standardRateItems": [
+            {
+              "id": "custom-1789039100599-e746ou",
+              "description": "5 foot height brickwall for boundary fencing including plaster & paint.",
+              "unit": "ls",
+              "rate": 120,
+              "category": "structures",
+              "groupKey": "special",
+              "groupTitle": "Special Item",
+              "custom": true
+            }
+          ],
+          "quotationType": "detail",
+          "projectId": "PRJ-BLD-MU53KADH-BJNOL",
+          "projectState": "selangor",
+          "rateSetId": "selangor",
+          "rateSetName": "Selangor",
+          "rateSnapshotAt": "2026-09-17T05:36:35.892Z"
+        },
+        "createdAt": "2026-09-17T05:36:35.274Z",
+        "updatedAt": "2026-09-17T05:36:36.485Z",
+        "estimateNumber": "EST-BLD-004"
+      },
+      {
+        "schemaVersion": 1,
+        "recordType": "quotation",
         "quotationId": "QT-BLD-MU53JXNQ-JRY72",
         "projectId": "PRJ-BLD-MU53JZ1V-AWFST",
         "quotationNumber": "Q003S",
@@ -799,11 +1116,11 @@
     "renovation": []
   },
   "createdAt": "2026-09-10T10:58:30.455Z",
-  "updatedAt": "2026-09-17T05:36:21.810Z",
+  "updatedAt": "2026-09-17T05:36:36.485Z",
   "quotationRunningNumber": {
-    "build": 3
+    "build": 4
   },
   "estimateRunningNumber": {
-    "build": 3
+    "build": 4
   }
 }
