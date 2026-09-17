@@ -1,0 +1,60 @@
+name: One-time Build Planner V2 R2 source fix
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    if: github.event.head_commit.message == 'Fix Build Planner V2 R2 scope'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Fix renderer helper scope
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('quotation/quotation-quantity-fix.js')
+          s=p.read_text(encoding='utf-8')
+          if 'window.TERAJU_R2=R2;' not in s:
+              marker="const N=v=>Number.isFinite(Number(v))?Number(v):0,R2=v=>Math.round(N(v)*100)/100;"
+              if marker not in s:
+                  raise SystemExit('R2 helper marker not found')
+              s=s.replace(marker,marker+'window.TERAJU_R2=R2;',1)
+          start=s.find('window.renderConstructionBudget')
+          if start<0:
+              raise SystemExit('V2 renderer marker not found')
+          prefix,suffix=s[:start],s[start:]
+          if 'R2(' in suffix:
+              suffix=suffix.replace('R2(','window.TERAJU_R2(')
+          s=prefix+suffix
+          if 'window.TERAJU_R2=R2;' not in s or 'window.TERAJU_R2(' not in s[start:]:
+              raise SystemExit('R2 source fix verification failed')
+          p.write_text(s,encoding='utf-8')
+          print('R2 helper exported and V2 renderer references redirected to window.TERAJU_R2')
+          PY
+      - name: Verify source
+        run: |
+          grep -o 'window.TERAJU_R2=R2;' quotation/quotation-quantity-fix.js
+          python - <<'PY'
+          from pathlib import Path
+          s=Path('quotation/quotation-quantity-fix.js').read_text(encoding='utf-8')
+          start=s.find('window.renderConstructionBudget')
+          assert start>=0
+          tail=s[start:]
+          assert 'R2(' not in tail.replace('window.TERAJU_R2(','')
+          assert 'window.TERAJU_R2(' in tail
+          print('Verified: no bare R2() remains in V2 renderer section')
+          PY
+      - name: Commit source fix and remove workflow
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add quotation/quotation-quantity-fix.js
+          git commit -m 'Fix Build Planner V2 renderer helper scope'
+          git rm -f .github/workflows/one-time-v2-r2-source-fix.yml
+          git commit -m 'Remove one-time V2 R2 source fix workflow'
+          git push
