@@ -1,8 +1,5 @@
 name: Inspect V2 editable renderer
-on:
-  push:
-    paths:
-      - '.v2-wrap-inspect-trigger'
+on: push
 jobs:
   inspect:
     runs-on: ubuntu-latest
@@ -14,8 +11,7 @@ jobs:
         run: |
           python - <<'PY' > .v2-inspect-output.txt
           from pathlib import Path
-          root=Path('quotation')
-          for p in root.rglob('*'):
+          for p in Path('quotation').rglob('*'):
               if p.is_file() and p.suffix in {'.html','.js','.css'}:
                   try:s=p.read_text()
                   except:continue
