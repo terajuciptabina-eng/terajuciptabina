@@ -6,7 +6,7 @@ permissions:
   contents: write
 jobs:
   cleanup:
-    if: ${{ !contains(github.event.head_commit.message, 'V2 rules cleanup') }}
+    if: ${{ github.event.head_commit.message != 'V2 rules cleanup' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
