@@ -1,0 +1,37 @@
+name: One-time V2 textarea autogrow
+on: push
+jobs:
+  fix:
+    if: github.event.head_commit.message != 'Fix V2 textarea autogrow'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply source fix
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('quotation/quotation-quantity-fix.js')
+          s=p.read_text()
+          old="class=\"w-full min-w-0 border rounded-lg px-2 py-2 bg-white text-sm resize-y leading-snug\" onchange=\"TERAJU_V2_EDIT_ITEM('${esc(item.id)}')\""
+          new="class=\"w-full min-w-0 border rounded-lg px-2 py-2 bg-white text-sm leading-snug\" style=\"overflow:hidden;resize:none;min-height:52px;height:auto;\" oninput=\"this.style.height='auto';this.style.height=this.scrollHeight+'px'\" onchange=\"TERAJU_V2_EDIT_ITEM('${esc(item.id)}')\""
+          if old not in s: raise SystemExit('textarea template not found')
+          s=s.replace(old,new,1)
+          old2="c.innerHTML=h};"
+          new2="c.innerHTML=h;c.querySelectorAll('textarea').forEach(t=>{t.style.overflow='hidden';t.style.resize='none';t.style.height='auto';t.style.height=t.scrollHeight+'px'});};"
+          if old2 not in s: raise SystemExit('render tail not found')
+          s=s.replace(old2,new2,1)
+          p.write_text(s)
+          p=Path('quotation/buildplanner-v2.html')
+          s=p.read_text()
+          s=s.replace('.cr-budget-table .cr-description textarea{width:100%!important;min-width:0!important;min-height:52px!important;resize:vertical!important;white-space:pre-wrap!important;overflow-wrap:anywhere!important;word-break:normal!important;line-height:1.4!important;vertical-align:top!important}', '.cr-budget-table .cr-description textarea{width:100%!important;min-width:0!important;min-height:52px!important;height:auto!important;resize:none!important;overflow:hidden!important;white-space:pre-wrap!important;overflow-wrap:anywhere!important;word-break:normal!important;line-height:1.4!important;vertical-align:top!important}')
+          p.write_text(s)
+          PY
+      - name: Commit
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add quotation/quotation-quantity-fix.js quotation/buildplanner-v2.html
+          git commit -m 'Fix V2 textarea autogrow'
+          git push
