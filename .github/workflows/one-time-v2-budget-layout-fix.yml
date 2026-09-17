@@ -12,11 +12,8 @@ jobs:
         run: |
           python - <<'PY'
           from pathlib import Path
-          import re
           p=Path('quotation/quotation-quantity-fix.js')
           s=p.read_text()
-          if 'height:auto!important;' not in s: raise SystemExit('V2 textarea height lock not found')
-          s=s.replace('height:auto!important;','',1)
           old="t.style.height='auto';t.style.height=t.scrollHeight+'px'"
           if old not in s: raise SystemExit('V2 textarea autogrow code not found')
           s=s.replace(old,"t.style.height='0px';t.style.height=t.scrollHeight+'px'",1)
