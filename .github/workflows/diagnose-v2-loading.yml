@@ -54,17 +54,26 @@ jobs:
             const url='https://terajuciptabina-eng.github.io/terajuciptabina/quotation/buildplanner-v2.html?audience=contractor&contractorId=DIAG-20260918';
             await page.goto(url,{waitUntil:'domcontentloaded',timeout:30000});
             await page.waitForTimeout(7000);
+            await page.evaluate(()=>{
+              const rooms=typeof window.getRoomGroups==='function'?window.getRoomGroups():[];
+              if(!rooms.length && typeof window.addRoom==='function')window.addRoom('living',200);
+              if(typeof window.updateEstimate==='function')window.updateEstimate();
+            });
+            await page.waitForTimeout(3000);
             const state=await page.evaluate(()=>({
               href:location.href,
               masterActive:window.__TERAJU_MASTER_ENGINE_ACTIVE,
               gate:window.__TERAJU_MASTER_RULE_GATE_READY,
               getAllItems:typeof window.getAllItems,
+              rooms:typeof window.getRoomGroups==='function'?window.getRoomGroups():[],
+              items:typeof window.getAllItems==='function'?window.getAllItems().length:null,
               budgetText:document.getElementById('constructionBudgetContent')?.innerText||'',
               scriptTags:[...document.scripts].map(s=>s.src).filter(Boolean)
             }));
             console.log('RUNTIME_STATE',JSON.stringify(state,null,2));
             for(const e of events)console.log(e);
             if(state.budgetText.includes('Loading Global Calculation Rules'))process.exitCode=2;
+            if(!state.items)process.exitCode=4;
             await browser.close();
           })().catch(e=>{console.error(e);process.exit(3)});
           EOF
