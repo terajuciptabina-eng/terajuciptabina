@@ -338,7 +338,7 @@ applyAudienceUI();if(isHomeowner()){document.getElementById('roomsContainer').in
             if(sub.label)body+=`<tr class="quotation-subsection-row"><td colspan="4" class="py-2 px-2">${esc(sub.label)}</td></tr>`;
             sub.levels.forEach(level=>{
               if(level.label)body+=`<tr class="quotation-subsubsection-row"><td colspan="4" class="py-2 px-2">${esc(level.label)}</td></tr>`;
-              level.items.forEach(i=>{body+=`<tr class="border-b align-top"><td class="py-2 px-2 text-gray-500">${n++}</td><td class="py-2 px-2">${esc(i.room&&i.room!=='Project'?i.room:(sub.label||section.header))}</td><td class="py-2 px-2">${esc(i.description)}</td><td class="py-2 px-2 text-right font-semibold">${money(i.amount)}</td></tr>`});
+              level.items.forEach(i=>{const roomLabel=i.room&&i.room!=='Project'?i.room:'';body+=`<tr class="border-b align-top"><td class="py-2 px-2 text-gray-500">${n++}</td><td class="py-2 px-2">${esc(roomLabel)}</td><td class="py-2 px-2">${esc(i.description)}</td><td class="py-2 px-2 text-right font-semibold">${money(i.amount)}</td></tr>`});
             });
           });
         });
@@ -407,4 +407,11 @@ applyAudienceUI();if(isHomeowner()){document.getElementById('roomsContainer').in
   guard();
 })();
 </script>
+
+<style id="tc-simple-description-match">
+#quotationDocument .simple-quotation-table .quotation-section-row td{font-weight:700;text-transform:uppercase;letter-spacing:.03em}
+#quotationDocument .simple-quotation-table .quotation-subsection-row td{font-weight:700;color:#374151}
+#quotationDocument .simple-quotation-table .quotation-subsubsection-row td{font-weight:700;color:#111827;background:#fff}
+#quotationDocument .simple-quotation-table td{vertical-align:top;overflow-wrap:anywhere}
+</style>
 </body></html>
