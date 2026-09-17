@@ -22,17 +22,11 @@ jobs:
           location_tag='<script src="location-autocomplete.js"></script>'
           quantity_tag='<script src="quotation-quantity-fix.js?v=20260907"></script>'
           for name in location_files:
-              p=Path(name)
-              s=p.read_text(encoding='utf-8')
-              if location_tag not in s:
-                  s=s.replace('</body>', location_tag+'\n</body>',1)
-                  p.write_text(s,encoding='utf-8')
+              p=Path(name); s=p.read_text(encoding='utf-8')
+              if location_tag not in s: s=s.replace('</body>', location_tag+'\n</body>',1); p.write_text(s,encoding='utf-8')
           for name in quantity_files:
-              p=Path(name)
-              s=p.read_text(encoding='utf-8')
-              if quantity_tag not in s:
-                  s=s.replace('</body>', quantity_tag+'\n</body>',1)
-                  p.write_text(s,encoding='utf-8')
+              p=Path(name); s=p.read_text(encoding='utf-8')
+              if quantity_tag not in s: s=s.replace('</body>', quantity_tag+'\n</body>',1); p.write_text(s,encoding='utf-8')
           PY
       - name: Remove duplicate Build contractor database path
         shell: bash
@@ -40,8 +34,7 @@ jobs:
           python - <<'PY'
           from pathlib import Path
           import re
-          p=Path('quotation/quotation-quantity-fix.js')
-          text=p.read_text(encoding='utf-8')
+          p=Path('quotation/quotation-quantity-fix.js'); text=p.read_text(encoding='utf-8')
           pattern=r'  function installBuild\(\) \{.*?\n  function installRenovation'
           replacement='''  function installBuild() {
     if (!contractor || typeof window.getAllItems !== 'function' || typeof RATE_SCHEDULE === 'undefined') return false;
@@ -71,8 +64,7 @@ function installRenovation'''
         run: |
           python - <<'PY'
           from pathlib import Path
-          p=Path('quotation/buildplanner.html')
-          text=p.read_text(encoding='utf-8')
+          p=Path('quotation/buildplanner.html'); text=p.read_text(encoding='utf-8')
           replacements={
             "desc:'Concrete G15'":"desc:'To supply and place concrete Grade 15 for pad footings, including mixing, placing, compacting, levelling and curing, complete.'",
             "desc:'Formwork'":"desc:'To supply, erect and dismantle formwork to the respective reinforced concrete element, including supports, bracing, alignment, release treatment and all necessary accessories, complete.'",
@@ -118,37 +110,59 @@ function installRenovation'''
               if old not in text: raise SystemExit(f'Missing expected Build Rate Schedule source: {old}')
               text=text.replace(old,new)
           p.write_text(text,encoding='utf-8')
-          print('Build Rate Schedule master descriptions updated.')
           PY
       - name: Add Build Planner V2 room types
         shell: bash
         run: |
           python - <<'PY'
           from pathlib import Path
-          p=Path('quotation/buildplanner.html')
-          text=p.read_text(encoding='utf-8')
+          p=Path('quotation/buildplanner.html'); text=p.read_text(encoding='utf-8')
           old="const ROOM_TYPES={living:'Living / Family',dining:'Dining',bedroom:'Bedroom',kitchen:'Kitchen',store:'Store / Utility',bathroom:'Bathroom',porch:'Car Porch / Entrance',other:'Other'};"
           new="const ROOM_TYPES={living:'Living',dining:'Dining',bedroom:'Bedroom',masterBedroom:'Master Bedroom',family:'Family',kitchen:'Kitchen',store:'Store',utility:'Utility',bathroom:'Bathroom',porch:'Porch',other:'Other'};"
-          if old not in text:
-              raise SystemExit('Expected existing ROOM_TYPES mapping not found.')
+          if old not in text: raise SystemExit('Expected existing ROOM_TYPES mapping not found.')
           text=text.replace(old,new,1)
           old_defaults="const ROOM_DEFAULTS={living:{doors:1,windows:2},dining:{doors:0,windows:1},bedroom:{doors:1,windows:1},kitchen:{doors:1,windows:1},store:{doors:1,windows:0},bathroom:{doors:1,windows:0},porch:{doors:0,windows:0},other:{doors:0,windows:1}};"
           new_defaults="const ROOM_DEFAULTS={living:{doors:1,windows:2},dining:{doors:0,windows:1},bedroom:{doors:1,windows:1},masterBedroom:{doors:1,windows:1},family:{doors:1,windows:2},kitchen:{doors:1,windows:1},store:{doors:1,windows:0},utility:{doors:1,windows:0},bathroom:{doors:1,windows:0},porch:{doors:0,windows:0},other:{doors:0,windows:1}};"
-          if old_defaults not in text:
-              raise SystemExit('Expected existing ROOM_DEFAULTS mapping not found.')
+          if old_defaults not in text: raise SystemExit('Expected existing ROOM_DEFAULTS mapping not found.')
           text=text.replace(old_defaults,new_defaults,1)
           p.write_text(text,encoding='utf-8')
-          print('Build Planner V2 room types updated: Living, Dining, Bedroom, Master Bedroom, Family, Kitchen, Store, Utility, Bathroom, Porch, Other.')
           PY
-      - name: Commit planner updates
+      - name: Fix V2 budget renderer and clean temporary files
+        if: "contains(github.event.head_commit.message, '[v2-layout-fix]')"
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('quotation/quotation-quantity-fix.js'); s=p.read_text(encoding='utf-8')
+          if 'height:auto!important;' not in s: raise SystemExit('V2 textarea height lock not found')
+          s=s.replace('height:auto!important;','',1)
+          old="c.innerHTML=h;c.querySelectorAll('textarea').forEach(t=>{t.style.overflow='hidden';t.style.resize='none';t.style.height='auto';t.style.height=t.scrollHeight+'px'});"
+          new="c.innerHTML=h;c.querySelectorAll('textarea').forEach(t=>{t.style.overflow='hidden';t.style.resize='none';t.style.height='0px';t.style.height=t.scrollHeight+'px'});"
+          if old not in s: raise SystemExit('V2 textarea post-render block not found')
+          s=s.replace(old,new,1)
+          old_loop="g.levels.forEach((level,idx)=>{h+=`<tr class=\"cr-hierarchy-row cr-level-${idx+2}\"><td colspan=\"7\">${esc(level)}</td></tr>`});g.items.forEach(i=>{h+=row(i,no++)});"
+          new_loop="g.levels.forEach((level,idx)=>{const leaf=idx===g.levels.length-1;const subtotal=R2(g.items.reduce((sum,i)=>sum+N(i.amount),0));h+=leaf?`<tr class=\"cr-hierarchy-row cr-level-${idx+2}\"><td colspan=\"5\">${esc(level)}</td><td class=\"text-right\">SUBTOTAL RM ${money2(subtotal)}</td><td></td></tr>`:`<tr class=\"cr-hierarchy-row cr-level-${idx+2}\"><td colspan=\"7\">${esc(level)}</td></tr>`});g.items.forEach(i=>{h+=row(i,no++)});"
+          if old_loop not in s: raise SystemExit('V2 hierarchy loop not found')
+          s=s.replace(old_loop,new_loop,1)
+          p.write_text(s,encoding='utf-8')
+          p=Path('quotation/buildplanner-v2.html'); s=p.read_text(encoding='utf-8')
+          old_css='.cr-budget-table .cr-description textarea{width:100%!important;min-width:0!important;min-height:52px!important;height:auto!important;resize:none!important;overflow:hidden!important;white-space:pre-wrap!important;overflow-wrap:anywhere!important;word-break:normal!important;line-height:1.4!important;vertical-align:top!important}'
+          new_css='.cr-budget-table .cr-description textarea{width:100%!important;min-width:0!important;min-height:52px!important;resize:none!important;overflow:hidden!important;white-space:pre-wrap!important;overflow-wrap:anywhere!important;word-break:normal!important;line-height:1.4!important;vertical-align:top!important}'
+          if old_css not in s: raise SystemExit('V2 textarea CSS not found')
+          s=s.replace(old_css,new_css,1)
+          css='.cr-budget-table .cr-hierarchy-row td.text-right{font-weight:800;text-transform:none;letter-spacing:0;color:#374151;white-space:nowrap}.cr-budget-table .cr-hierarchy-row td:first-child{padding-left:25px}'
+          if css not in s: s=s.replace('/* V2 description wrap */','/* V2 description wrap */\n'+css,1)
+          p.write_text(s,encoding='utf-8')
+          for f in ['.github/workflows/one-time-v2-budget-layout-fix.yml','.v2-budget-layout-fix-trigger','.v2-budget-layout-fix-trigger-2','.github/workflows/one-time-v2-textarea-autogrow.yml','.v2-textarea-autogrow-trigger','.github/workflows/one-time-v2-source-fix.yml','.v2-source-fix-trigger','.github/workflows/one-time-description-wrap.yml','.v2-description-wrap-trigger','.vercel-description-wrap-trigger']:
+              Path(f).unlink(missing_ok=True)
+          PY
+      - name: Commit V2 source fix and restore workflow
+        if: "contains(github.event.head_commit.message, '[v2-layout-fix]')"
+        shell: bash
         run: |
           git checkout -- .github/workflows/add-location-autocomplete.yml
-          git config user.name 'Teraju Ciptabina Bot'
-          git config user.email 'actions@users.noreply.github.com'
-          git add quotation/renovationplanner.html quotation/buildplanner.html quotation/quotation-quantity-fix.js .github/workflows/add-location-autocomplete.yml
-          if git diff --cached --quiet; then
-            echo 'No planner changes needed.'
-            exit 0
-          fi
-          git commit -m 'Update Build Planner V2 room types [location-autocomplete]'
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add quotation/quotation-quantity-fix.js quotation/buildplanner-v2.html .github/workflows/add-location-autocomplete.yml .github/workflows/one-time-v2-budget-layout-fix.yml .v2-budget-layout-fix-trigger .v2-budget-layout-fix-trigger-2 .github/workflows/one-time-v2-textarea-autogrow.yml .v2-textarea-autogrow-trigger .github/workflows/one-time-v2-source-fix.yml .v2-source-fix-trigger .github/workflows/one-time-description-wrap.yml .v2-description-wrap-trigger .vercel-description-wrap-trigger
+          git commit -m 'Fix V2 budget layout and subtotals [location-autocomplete] [v2-layout-fix]'
           git push
