@@ -1,4 +1,4 @@
-name: One-time V2 edit controls inspect
+name: One-time V2 source ownership cleanup
 on:
   push:
     paths:
@@ -6,30 +6,58 @@ on:
 permissions:
   contents: write
 jobs:
-  inspect:
+  cleanup:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Inspect Build Planner V2 renderer
+      - name: Move V2 contractor actions into the real V2 renderer
         shell: python
         run: |
           from pathlib import Path
           import re
-          s=Path('quotation/buildplanner-v2.html').read_text()
-          terms=['function budgetRow','Edit','Delete','New Item','manualItems','data-manual-anchor','contractor-editable','renderConstructionBudget','cr-budget-table','onclick']
-          out=[]
-          out.append('FILE_LEN='+str(len(s)))
-          for term in terms:
-              hits=[m.start() for m in re.finditer(re.escape(term),s,re.I)]
-              out.append(f'=== {term} COUNT={len(hits)} ===')
-              for pos in hits[:30]:
-                  out.append(s[max(0,pos-1000):min(len(s),pos+1800)])
-                  out.append('---')
-          Path('v2-edit-controls-inspect.txt').write_text('\n'.join(out))
-      - name: Commit report
+          p=Path('quotation/quotation-quantity-fix.js')
+          s=p.read_text()
+          old_main="""async function main(){if(document.readyState==='loading')await new Promise(r=>document.addEventListener('DOMContentLoaded',r,{once:true}));await load();window.getAllItems=getMasterItems;window.renderConstructionBudget=renderBudget;window.getCurrentQuotationData=qData;window.generateQuotation=quotation;window.updateEstimate=function(){if(typeof syncBuiltUpAreaFromRooms==='function')syncBuiltUpAreaFromRooms();renderBudget();if(typeof saveContractorState==='function')saveContractorState()};window.updateEstimate()}"""
+          new_main="""async function main(){if(document.readyState==='loading')await new Promise(r=>document.addEventListener('DOMContentLoaded',r,{once:true}));await load();window.getAllItems=getMasterItems;if(!/buildplanner-v2\\.html$/i.test(location.pathname))window.renderConstructionBudget=renderBudget;window.getCurrentQuotationData=qData;window.generateQuotation=quotation;window.updateEstimate=function(){if(typeof syncBuiltUpAreaFromRooms==='function')syncBuiltUpAreaFromRooms();if(/buildplanner-v2\\.html$/i.test(location.pathname)&&typeof window.renderConstructionBudget==='function')window.renderConstructionBudget();else renderBudget();if(typeof saveContractorState==='function')saveContractorState()};window.updateEstimate()}"""
+          if old_main not in s: raise SystemExit('Expected master main block not found')
+          s=s.replace(old_main,new_main,1)
+          old_edit="""function editExisting(item){const desc=document.getElementById(`budget-desc-${targetId(item.id)}`),qty=document.getElementById(`budget-qty-${targetId(item.id)}`),rate=document.getElementById(`budget-rate-${targetId(item.id)}`);if(desc&&typeof customDescriptions!=='undefined')customDescriptions.set(item.id,desc.value);if(qty&&typeof customQuantities!=='undefined')customQuantities.set(item.id,normQty(qty.value));if(rate&&typeof customRates!=='undefined')customRates.set(item.id,normRate(rate.value));refresh();saveState()}"""
+          new_edit="""function editExisting(id){const row=document.querySelector(`[data-budget-item-id=\\\"${CSS.escape(String(id))}\\\"]`);if(!row)return;row.querySelector('[data-budget-view]')?.classList.add('hidden');row.querySelector('[data-budget-edit]')?.classList.remove('hidden')}\nfunction saveExisting(item){const iid=targetId(item.id),desc=document.getElementById(`budget-desc-${iid}`),qty=document.getElementById(`budget-qty-${iid}`),rate=document.getElementById(`budget-rate-${iid}`);const text=String(desc?.value||'').trim();if(!text){alert('Description cannot be empty.');return}if(typeof customDescriptions!=='undefined')customDescriptions.set(item.id,text);if(qty&&typeof customQuantities!=='undefined')customQuantities.set(item.id,normQty(qty.value));if(rate&&typeof customRates!=='undefined')customRates.set(item.id,normRate(rate.value));refresh();saveState()}\nfunction cancelExisting(){refresh()}"""
+          if old_edit not in s: raise SystemExit('Expected editExisting block not found')
+          s=s.replace(old_edit,new_edit,1)
+          old_row_start=s.index('function row(item,no){')
+          old_row_end=s.index('\nwindow.TERAJU_V2_EDIT_ITEM=',old_row_start)
+          new_row="""function row(item,no){const iid=targetId(item.id),contractor=document.body.classList.contains('contractor-mode'),locked=/(?:^|\\/)\\s*PORCH\\s*\\/\\s*(?:LIGHTING|FAN|POWER POINT)(?:\\s*\\/|$)/i.test(String(item.masterPath||''))||/DOORS \/ Type 3/i.test(String(item.masterPath||''))||/TYPE 3\\s*BATHROOM/i.test(String(item.masterPath||''))||/WINDOWS \/ Type [123]/i.test(String(item.masterPath||''));const actions=contractor?`<div data-budget-view class=\\\"no-print flex flex-wrap gap-2 mt-2\\\"><button type=\\\"button\\\" class=\\\"border border-gray-300 text-gray-800 rounded-md px-2 py-1 text-xs font-semibold\\\" onclick=\\\"TERAJU_V2_EDIT_ITEM(${JSON.stringify(item.id)})\\\">Edit</button><button type=\\\"button\\\" class=\\\"border border-red-200 text-red-700 rounded-md px-2 py-1 text-xs font-semibold\\\" onclick=\\\"deleteBudgetItem(${JSON.stringify(item.id)})\\\">Delete</button></div>`:'';const editor=contractor?`<div data-budget-edit class=\\\"hidden no-print mt-2 rounded-lg border bg-gray-50 p-3\\\"><div class=\\\"grid gap-2 md:grid-cols-[minmax(0,2fr)_120px_140px_auto_auto]\\\"><textarea id=\\\"budget-desc-${iid}\\\" rows=\\\"2\\\" class=\\\"w-full min-w-0 border rounded-md px-2 py-2 text-sm leading-snug\\\" style=\\\"overflow:hidden;resize:none;min-height:52px;height:0px;\\\">${esc(item.description)}</textarea><input id=\\\"budget-qty-${iid}\\\" type=\\\"number\\\" min=\\\"0\\\" step=\\\"1\\\" value=\\\"${normQty(item.qty)}\\\" ${locked?'disabled':''} class=\\\"border rounded-md px-2 py-2 text-sm\\\"><input id=\\\"budget-rate-${iid}\\\" type=\\\"number\\\" min=\\\"0\\\" step=\\\"0.01\\\" value=\\\"${normRate(item.rate).toFixed(2)}\\\" class=\\\"border rounded-md px-2 py-2 text-sm\\\"><button type=\\\"button\\\" class=\\\"bg-black text-white rounded-md px-3 py-2 text-xs font-semibold\\\" onclick=\\\"TERAJU_V2_SAVE_ITEM(${JSON.stringify(item.id)})\\\">Save</button><button type=\\\"button\\\" class=\\\"border rounded-md px-3 py-2 text-xs font-semibold\\\" onclick=\\\"TERAJU_V2_CANCEL_ITEM()\\\">Cancel</button></div>${locked?'<p class=\\\"text-[11px] text-gray-500 mt-2\\\">Quantity remains controlled by the Global Calculation Rules.</p>':''}</div>`:'';return `<tr data-budget-item-id=\\\"${iid}\\\" class=\\\"border-b align-top\\\"><td class=\\\"py-2 px-2 text-gray-500\\\">${no}</td><td class=\\\"py-2 px-2 cr-description\\\"><div data-budget-view><div>${esc(item.description)}</div>${actions}</div>${editor}</td><td class=\\\"py-2 px-2 cr-unit\\\">${esc(item.unit)}</td><td class=\\\"py-2 px-2 text-right\\\">${normQty(item.qty)}</td><td class=\\\"py-2 px-2 text-right\\\">${money2(item.rate)}</td><td class=\\\"py-2 px-2 text-right font-semibold\\\">${money2(item.amount)}</td></tr>`}"""
+          s=s[:old_row_start]+new_row+s[old_row_end:]
+          old_exports="""window.TERAJU_V2_EDIT_ITEM=function(id){const item=(typeof getAllItems==='function'?getAllItems():[]).find(x=>x.id===id);if(item)editExisting(item)};"""
+          new_exports="""window.TERAJU_V2_EDIT_ITEM=function(id){if(!document.body.classList.contains('contractor-mode'))return;editExisting(id)};window.TERAJU_V2_SAVE_ITEM=function(id){const item=(typeof getAllItems==='function'?getAllItems():[]).find(x=>x.id===id);if(item)saveExisting(item)};window.TERAJU_V2_CANCEL_ITEM=cancelExisting;"""
+          if old_exports not in s: raise SystemExit('Expected V2 edit export not found')
+          s=s.replace(old_exports,new_exports,1)
+          p.write_text(s)
+          lp=Path('quotation/location-autocomplete.js')
+          ls=lp.read_text()
+          pattern=r'\n// Build Planner V2 item-action race guard\.[\s\S]*?\n\}\)\(\);\s*$'
+          m=re.search(pattern,ls)
+          if not m: raise SystemExit('V2 lifetime race guard block not found')
+          lp.write_text(ls[:m.start()]+'\n')
+          for f in ['.github/workflows/one-time-v2-edit-controls-inspect.yml','.v2-edit-controls-inspect-trigger','v2-edit-controls-inspect.txt']:
+              q=Path(f)
+              if q.exists(): q.unlink()
+      - name: Validate source ownership
+        shell: python
+        run: |
+          from pathlib import Path
+          s=Path('quotation/quotation-quantity-fix.js').read_text()
+          block=s[s.index('async function main()'):s.index('main().catch')]
+          assert 'window.renderConstructionBudget=renderBudget' not in block
+          assert 'TERAJU_V2_EDIT_ITEM' in s and 'TERAJU_V2_SAVE_ITEM' in s and 'deleteBudgetItem' in s
+          assert 'data-budget-view' in s and 'data-budget-edit' in s
+          assert 'Build Planner V2 item-action race guard' not in Path('quotation/location-autocomplete.js').read_text()
+          print('SOURCE OWNERSHIP VALIDATION: PASS')
+      - name: Commit clean source
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add v2-edit-controls-inspect.txt
-          git commit -m 'Inspect V2 edit controls renderer [one-time]' || exit 0
+          git add quotation/quotation-quantity-fix.js quotation/location-autocomplete.js .github/workflows/one-time-v2-edit-controls-inspect.yml .v2-edit-controls-inspect-trigger v2-edit-controls-inspect.txt
+          git commit -m 'Make V2 contractor budget actions source-owned' || exit 0
           git push
