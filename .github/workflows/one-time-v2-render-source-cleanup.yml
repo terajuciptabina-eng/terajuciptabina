@@ -23,11 +23,8 @@ jobs:
           const e="const item=(typeof getAllItems==='function'?getAllItems():[]).find(x=>x.id===id);";
           const f="const item=(typeof window.getAllItems==='function'?window.getAllItems():[]).find(x=>x.id===id);";
           if(!s.includes(a)) throw new Error('V2 readiness source pattern not found');
-          s=s.replace(a,b);
-          s=s.replace(c,d);
-          s=s.replace(e,f);
+          s=s.replace(a,b).replace(c,d).replace(e,f);
           fs.writeFileSync(p,s);
-          console.log('updated readiness and V2 item access');
           NODE
           git diff --check
           grep -q "const ready=window.__TERAJU_MASTER_ENGINE_ACTIVE===true&&typeof window.getAllItems==='function';" quotation/quotation-quantity-fix.js
