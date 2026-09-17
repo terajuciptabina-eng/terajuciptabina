@@ -50,8 +50,8 @@
     "rule_main_building_brickwall_external_wall_43": 50,
     "rule_main_building_floor_tiles_internal_44": 45,
     "rule_main_building_floor_tiles_external_45": 75,
-    "rule_main_building_painting_internal_46": 17,
-    "rule_main_building_painting_external_47": 17,
+    "rule_main_building_painting_internal_46": 30,
+    "rule_main_building_painting_external_47": 48,
     "rule_main_building_ceiling_internal_48": 165,
     "rule_main_building_ceiling_external_49": 165,
     "rule_bathroom_wall_tiles_50": 75,
@@ -87,7 +87,7 @@
     "rule_driveway_80": 5000,
     "rule_landscaping_81": 2000
   },
-  "updatedAt": "2026-09-17T09:57:39.537Z",
+  "updatedAt": "2026-09-17T10:03:22.082Z",
   "effectiveDate": null,
   "rateItems": {
     "rule_preliminaries_building_plan_submission_0": {
