@@ -1,0 +1,59 @@
+name: One-time V2 budget layout fix
+on: push
+jobs:
+  fix:
+    if: github.event.head_commit.message != 'Fix V2 budget layout and subtotals'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply V2 source fix
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          p=Path('quotation/quotation-quantity-fix.js')
+          s=p.read_text()
+
+          # Remove the CSS !important height lock so the renderer's pixel height can win.
+          h='height:auto!important;'
+          if h not in s:
+              raise SystemExit('Expected textarea height lock not found in JS')
+          s=s.replace(h,'',1)
+
+          # Make the post-render measurement use a zero-height reset before reading scrollHeight.
+          old="c.innerHTML=h;c.querySelectorAll('textarea').forEach(t=>{t.style.overflow='hidden';t.style.resize='none';t.style.height='auto';t.style.height=t.scrollHeight+'px'});"
+          new="c.innerHTML=h;c.querySelectorAll('textarea').forEach(t=>{t.style.overflow='hidden';t.style.resize='none';t.style.height='0px';t.style.height=t.scrollHeight+'px'});"
+          if old not in s:
+              raise SystemExit('Expected textarea post-render block not found')
+          s=s.replace(old,new,1)
+
+          # Put subtotal amount on the deepest hierarchy/sub-header row.
+          old_loop="g.levels.forEach((level,idx)=>{h+=`<tr class=\"cr-hierarchy-row cr-level-${idx+2}\"><td colspan=\"7\">${esc(level)}</td></tr>`});g.items.forEach(i=>{h+=row(i,no++)});"
+          new_loop="g.levels.forEach((level,idx)=>{const leaf=idx===g.levels.length-1;const subtotal=R2(g.items.reduce((sum,i)=>sum+N(i.amount),0));h+=leaf?`<tr class=\"cr-hierarchy-row cr-level-${idx+2}\"><td colspan=\"5\">${esc(level)}</td><td class=\"text-right\">SUBTOTAL RM ${money2(subtotal)}</td><td></td></tr>`:`<tr class=\"cr-hierarchy-row cr-level-${idx+2}\"><td colspan=\"7\">${esc(level)}</td></tr>`});g.items.forEach(i=>{h+=row(i,no++)});"
+          if old_loop not in s:
+              raise SystemExit('Expected hierarchy loop not found')
+          s=s.replace(old_loop,new_loop,1)
+          p.write_text(s)
+
+          p=Path('quotation/buildplanner-v2.html')
+          s=p.read_text()
+          old_css='.cr-budget-table .cr-description textarea{width:100%!important;min-width:0!important;min-height:52px!important;height:auto!important;resize:none!important;overflow:hidden!important;white-space:pre-wrap!important;overflow-wrap:anywhere!important;word-break:normal!important;line-height:1.4!important;vertical-align:top!important}'
+          new_css='.cr-budget-table .cr-description textarea{width:100%!important;min-width:0!important;min-height:52px!important;resize:none!important;overflow:hidden!important;white-space:pre-wrap!important;overflow-wrap:anywhere!important;word-break:normal!important;line-height:1.4!important;vertical-align:top!important}'
+          if old_css not in s:
+              raise SystemExit('Expected V2 textarea CSS not found')
+          s=s.replace(old_css,new_css,1)
+          css='.cr-budget-table .cr-hierarchy-row td.text-right{font-weight:800;text-transform:none;letter-spacing:0;color:#374151;white-space:nowrap}.cr-budget-table .cr-hierarchy-row td:first-child{padding-left:25px}'
+          if css not in s:
+              s=s.replace('/* V2 description wrap */','/* V2 description wrap */\n'+css,1)
+          p.write_text(s)
+          PY
+      - name: Commit
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add quotation/quotation-quantity-fix.js quotation/buildplanner-v2.html
+          git commit -m 'Fix V2 budget layout and subtotals'
+          git push
