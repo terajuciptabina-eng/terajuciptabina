@@ -11,15 +11,15 @@ jobs:
         run: |
           python3 <<'PY'
           from pathlib import Path
+          import re
           p=Path('quotation/quotation-quantity-fix.js')
           s=p.read_text(encoding='utf-8')
-          old="""if(c==='[')d++;else if(c===']'&&--d===0)return Function('\\\"use strict\\\";return '+src.slice(st,i+1))()}throw Error('Global Calculation Rules array incomplete')"""
-          new="""if(c==='[')d++;else if(c===']'&&--d===0)return JSON.parse(src.slice(st,i+1))}throw Error('Global Calculation Rules array incomplete')"""
-          if old not in s:
-              raise SystemExit('parseRules target not found')
-          s=s.replace(old,new,1)
-          old2="""main().catch(e=>console.error('[TERAJU MASTER 20260922]',e));"""
-          new2="""main().catch(e=>{console.error('[TERAJU MASTER 20260922]',e);window.__TERAJU_MASTER_ENGINE_ACTIVE=false;const c=document.getElementById('constructionBudgetContent');if(c)c.innerHTML='<div class=\\\"border rounded-xl bg-red-50 p-5 text-center text-sm text-red-700\\\">Global Calculation Rules could not be loaded. Please try again.</div>'});"""
+          pattern=r"return Function\('.*?return '\+src\.slice\(st,i\+1\)\)\(\)"
+          s,n=re.subn(pattern,"return JSON.parse(src.slice(st,i+1))",s,count=1)
+          if n!=1:
+              raise SystemExit('parseRules Function target not found')
+          old2="main().catch(e=>console.error('[TERAJU MASTER 20260922]',e));"
+          new2="main().catch(e=>{console.error('[TERAJU MASTER 20260922]',e);window.__TERAJU_MASTER_ENGINE_ACTIVE=false;const c=document.getElementById('constructionBudgetContent');if(c)c.innerHTML='<div class=\"border rounded-xl bg-red-50 p-5 text-center text-sm text-red-700\">Global Calculation Rules could not be loaded. Please try again.</div>'});"
           if old2 not in s:
               raise SystemExit('main catch target not found')
           s=s.replace(old2,new2,1)
