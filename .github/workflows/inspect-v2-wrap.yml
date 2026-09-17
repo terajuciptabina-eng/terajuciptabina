@@ -10,21 +10,20 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
-      - name: Inspect editable renderer
+      - name: Inspect V2 editable renderer
         run: |
           python - <<'PY' > .v2-inspect-output.txt
           from pathlib import Path
-          p=Path('quotation/quotation-quantity-fix.js')
-          s=p.read_text()
-          for needle in ['data-budget-new-anchor','cr-description','function renderBudget','function budgetRow','renderConstructionBudget']:
+          s=Path('quotation/buildplanner-v2.html').read_text()
+          for needle in ['data-budget-new-anchor','data-manual-anchor','>Delete<','function renderConstructionBudget']:
               i=s.find(needle)
               print('\n===',needle,'index',i,'===')
-              if i>=0: print(s[max(0,i-3000):i+7000])
+              if i>=0: print(s[max(0,i-5000):i+10000])
           PY
       - name: Commit inspection output
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add .v2-inspect-output.txt
-          git commit -m 'Temporary V2 editable renderer inspection output'
+          git commit -m 'Temporary V2 renderer inspection output'
           git push
