@@ -1,0 +1,26 @@
+name: One-time V2 edit controls inspect
+on:
+  push:
+    paths:
+      - '.v2-edit-controls-inspect-trigger'
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Inspect Build Planner V2 renderer
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+          p=Path('quotation/buildplanner-v2.html')
+          s=p.read_text()
+          print('FILE_LEN',len(s))
+          for term in ['function budgetRow','Edit','Delete','New Item','manualItems','data-manual-anchor','contractor-editable','renderConstructionBudget','cr-budget-table']:
+              print('\n===',term,'===')
+              hits=[m.start() for m in re.finditer(re.escape(term),s,re.I)]
+              print('COUNT',len(hits))
+              for pos in hits[:20]:
+                  print(s[max(0,pos-700):min(len(s),pos+1200)].replace('\n','\\n'))
