@@ -219,30 +219,3 @@
   if(document.readyState!=='loading')enforce();
   else document.addEventListener('DOMContentLoaded',enforce,{once:true});
 })();
-
-// Build Planner V2 desktop presentation.
-// Full-width only on desktop; mobile/tablet layout remains unchanged.
-(function(){
-  'use strict';
-  if(!/buildplanner-v2\.html$/i.test(location.pathname))return;
-  const apply=()=>{
-    if(document.getElementById('teraju-v2-desktop-fullwidth'))return;
-    const style=document.createElement('style');
-    style.id='teraju-v2-desktop-fullwidth';
-    style.textContent=`
-      @media screen and (min-width: 768px){
-        html,body{width:100%;max-width:none;overflow-x:hidden}
-        main{width:100%!important;max-width:none!important;margin:0!important;padding-left:32px!important;padding-right:32px!important}
-        main>section{width:100%!important;max-width:none!important}
-        main>section:first-child{padding-left:48px!important;padding-right:48px!important}
-      }
-      @media screen and (min-width: 1440px){
-        main{padding-left:48px!important;padding-right:48px!important}
-        main>section:first-child{padding-left:64px!important;padding-right:64px!important}
-      }
-    `;
-    document.head.appendChild(style);
-  };
-  if(document.readyState!=='loading')apply();
-  else document.addEventListener('DOMContentLoaded',apply,{once:true});
-})();
