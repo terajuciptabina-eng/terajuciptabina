@@ -1,0 +1,42 @@
+name: one-time-v2-final-verify
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Final live verification
+        run: |
+          mkdir -p /tmp/v2verify && cd /tmp/v2verify
+          npm init -y >/dev/null 2>&1
+          npm install playwright --silent
+          npx playwright install chromium --with-deps >/dev/null 2>&1
+          node <<'NODE'
+          const {chromium}=require('playwright');
+          (async()=>{
+            const u='https://terajuciptabina-eng.github.io/terajuciptabina/quotation/buildplanner-v2.html?audience=contractor&contractorId=CTR-20260909-KMHM&quotationId=QT-BLD-MTVQWWEZ-GXIU';
+            const state={customerName:'',projectLocation:'',builtUpArea:'200',rooms:[{id:'room-1',name:'Living',type:'living',area:'200'}],rates:{},customRates:[],customQuantities:[],customDescriptions:[],customRoomLabels:[],excludedItems:[],manualItems:[],standardRateItems:[],quotationType:'simple'};
+            const b=await chromium.launch({headless:true});const p=await b.newPage();const errors=[];
+            p.on('console',m=>{if(m.type()==='error'){errors.push(m.text());console.log('ERROR',m.text())}});p.on('pageerror',e=>{errors.push(e.message);console.log('PAGEERROR',e.message)});
+            await p.addInitScript(({state})=>{localStorage.setItem('teraju.contractor.local.v1.activeContractorId','CTR-20260909-KMHM');localStorage.setItem('teraju.contractor.local.v1.CTR-20260909-KMHM.build',JSON.stringify(state))},{state});
+            await p.goto(u,{waitUntil:'domcontentloaded',timeout:30000});await p.waitForTimeout(5000);
+            const out=await p.evaluate(()=>({script:[...document.scripts].map(s=>s.src).find(x=>x.includes('quotation-quantity-fix.js'))||'',active:window.__TERAJU_MASTER_ENGINE_ACTIVE,gate:window.__TERAJU_MASTER_RULE_GATE_READY,getAll:typeof window.getAllItems,render:typeof window.renderConstructionBudget,rooms:[...document.querySelectorAll('#roomsContainer .room-card')].map(r=>({type:r.querySelector('.room-type')?.value,name:r.querySelector('.room-name')?.value,area:r.querySelector('.room-area')?.value})),text:document.getElementById('constructionBudgetContent')?.innerText||'',html:(document.getElementById('constructionBudgetContent')?.innerHTML||'').slice(0,1200)}));
+            console.log('FINAL',JSON.stringify(out));
+            const fatalN=errors.some(x=>/N is not defined/.test(x));const ok=/v=20260918-r1/.test(out.script)&&out.active===true&&out.getAll==='function'&&out.render==='function'&&out.rooms.length===1&&out.rooms[0].area==='200'&&!out.text.includes('Loading Global Calculation Rules')&&!fatalN;
+            if(!ok){console.error('FINAL_VERIFY_FAILED',JSON.stringify({out,errors}));process.exit(1)}
+            console.log('FINAL_VERIFY_OK');await b.close();
+          })().catch(e=>{console.error(e);process.exit(1)});
+          NODE
+      - name: Remove workflow
+        if: always()
+        run: |
+          rm -f .github/workflows/one-time-v2-final-verify.yml
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add .github/workflows/one-time-v2-final-verify.yml
+          git diff --cached --quiet || git commit -m "Remove one-time V2 final verification"
+          git push
