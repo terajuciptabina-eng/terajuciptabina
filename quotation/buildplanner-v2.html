@@ -227,4 +227,71 @@ applyAudienceUI();if(isHomeowner()){document.getElementById('roomsContainer').in
   const parseRules=src=>{const m=src.match(/(?:const|let)\s+rules\s*=\s*\[/);if(!m)throw Error('Global Calculation Rules array not found');const st=src.indexOf('[',m.index);let d=0,q=null,e=false;for(let i=st;i<src.length;i++){const c=src[i];if(q){if(e)e=false;else if(c==='\\')e=true;else if(c===q)q=null;continue}if(c==='"'||c==="'"||c==='`'){q=c;continue}if(c==='[')d++;else if(c===']'&&--d===0)return Function('"use strict";return '+src.slice(st,i+1))()}throw Error('Global Calculation Rules array incomplete')};
   fetch(RULE_URL,{cache:'no-store'}).then(r=>r.ok?r.text():Promise.reject(new Error('Unable to load Global Calculation Rules Master'))).then(src=>{const rules=parseRules(src),byPath=new Map(rules.map(x=>[String(x[1]||'').trim(),x])),masterItems=[];Object.entries(BINDINGS).forEach(([path,b])=>{const r=byPath.get(path);if(!r)return;masterItems.push({path,id:b[0],rateKey:b[1],groupTitle:b[2],description:String(r[2]||''),unit:String(r[6]||'')})});window.__TERAJU_MASTER_STRUCT_RULES=masterItems;window.__TERAJU_MASTER_RULE_PATHS=new Set(rules.map(x=>String(x[1]||'').trim()).filter(Boolean));const oldGenerate=window.generateStructureItems;window.generateStructureItems=function(){const items=typeof oldGenerate==='function'?oldGenerate.apply(this,arguments):[];const scale=typeof getScaleFactor==='function'?getScaleFactor():0;if(scale<=0)return items;masterItems.forEach(r=>{if(items.some(i=>i.id===r.id))return;const rate=typeof RATES!=='undefined'?Number(RATES[r.rateKey]||0):0;items.push({id:r.id,roomId:'project',room:'Project',category:'structures',description:r.description,qty:0,unit:r.unit,rate,amount:0,masterPath:r.path,groupKey:r.groupTitle.toLowerCase().replace(/\s+/g,'-'),groupTitle:r.groupTitle})});return items};const tag=document.createElement('script');tag.src='quotation-quantity-fix.js?v=20260929';tag.onload=()=>{window.__TERAJU_MASTER_RULE_GATE_READY=true;if(typeof updateEstimate==='function')updateEstimate()};tag.onerror=()=>console.error('[TERAJU V2] Unable to load master calculation engine');document.body.appendChild(tag)}).catch(e=>console.error('[TERAJU V2 MASTER BOOTSTRAP]',e));
 })();
-</script></body></html>
+</script><script id="tc-quotation-budget-sync">
+(function(){
+  if(!/buildplanner-v2\.html$/i.test(location.pathname))return;
+  const esc=v=>typeof window.escapeHtml==='function'?window.escapeHtml(v):String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+  const num=v=>Number.isFinite(Number(v))?Number(v):0;
+  const money=v=>typeof window.money==='function'?window.money(v,2):num(v).toFixed(2);
+  const qty=v=>Math.ceil(num(v));
+  const parts=p=>String(p||'').split('/').map(x=>String(x).trim()).filter(Boolean);
+  const header=g=>({PRELIMINARIES:'PRELIMINARIES',STRUCTURES:'STRUCTURAL WORKS',ARCHITECTURES:'ARCHITECTURAL WORKS',ELECTRICAL:'ELECTRICAL WORKS','DOORS & WINDOWS':'DOORS & WINDOWS','EXTERNAL WORK':'EXTERNAL WORKS'}[String(g||'').toUpperCase()]||String(g||''));
+  function tree(items){
+    const cats=['PRELIMINARIES','STRUCTURES','ARCHITECTURES','ELECTRICAL','DOORS & WINDOWS','EXTERNAL WORK'];
+    const out=[];
+    cats.forEach(cat=>{
+      const list=items.filter(i=>String(i.group||'').toUpperCase()===cat);
+      if(!list.length)return;
+      const bySub=new Map();
+      list.forEach(i=>{
+        const g=String(i.group||'').toUpperCase(), p=parts(i.masterPath);
+        let h=header(g), sub=p[0]||'', subsub=p.length>1?p[1]:'';
+        if(g==='ARCHITECTURES'&&i.roomId&&i.roomId!=='project'&&/^BATHROOM$/i.test(p[0]||'')){h='ARCHITECTURAL WORKS';sub='BATHROOM';subsub=i.room||''}
+        if(g==='EXTERNAL WORK'){h='EXTERNAL WORKS';sub='EXTERNAL WORK';subsub=p[0]||''}
+        const key=sub||'__none__';
+        if(!bySub.has(key))bySub.set(key,{header:h,sub:sub,levels:new Map(),plain:[]});
+        const node=bySub.get(key);
+        if(subsub){if(!node.levels.has(subsub))node.levels.set(subsub,[]);node.levels.get(subsub).push(i)}else node.plain.push(i);
+      });
+      out.push(...bySub.values());
+    });
+    return out;
+  }
+  function install(){
+    if(typeof window.getCurrentQuotationData!=='function'||typeof window.getAllItems!=='function')return false;
+    const original=window.generateQuotation;
+    if(typeof original!=='function'||original.__budgetSync)return false;
+    const render=function(typeOverride){
+      const type=typeOverride||window.getSelectedQuotationType?.()||'simple';
+      const rooms=window.getRoomGroups?.()||[];
+      if(!rooms.some(r=>num(r.area)>0)){alert('Please add at least one area with a valid area before generating the quotation.');return}
+      const d=window.getCurrentQuotationData();
+      const all=d.allItems||window.getAllItems().filter(i=>!window.excludedItems?.has(i.id));
+      const active=all.filter(i=>!window.excludedItems?.has(i.id));
+      const total=active.reduce((s,i)=>s+num(i.amount),0);
+      const qn=window.generateQuotationNumber();
+      const customer=document.getElementById('customerName')?.value||'Not specified';
+      const location=document.getElementById('projectLocation')?.value||'Not specified';
+      const area=qty(rooms.reduce((s,r)=>s+num(r.area),0));
+      const today=new Intl.DateTimeFormat('en-MY',{day:'2-digit',month:'long',year:'numeric'}).format(new Date());
+      const groups=tree(active);
+      const itemRow=i=>`<tr class="border-b align-top"><td class="py-2 px-2">${esc(i.description)}</td><td class="py-2 px-2">${esc(i.unit)}</td><td class="py-2 px-2 text-right">${qty(i.qty)}</td><td class="py-2 px-2 text-right">${money(i.rate)}</td><td class="py-2 px-2 text-right font-medium">${money(i.amount)}</td></tr>`;
+      const simpleRows=()=>{let n=1,h='';groups.forEach(g=>{if(g.header!==groups[0]?.header||!h)h+=`<tr class="quotation-section-row"><td colspan="4" class="py-3 px-2">${esc(g.header)}</td></tr>`;if(g.sub)h+=`<tr class="quotation-subsection-row"><td colspan="4" class="py-2 px-2">${esc(g.sub)}</td></tr>`;g.levels.forEach((list,label)=>{h+=`<tr class="quotation-subsection-row"><td class="py-2 px-2 text-gray-500">${n++}</td><td colspan="3" class="py-2 px-2">${esc(label)}<br><span class="font-normal">${list.map(i=>esc(i.description)).join('<br>')}</span></td></tr>`});g.plain.forEach(i=>{h+=`<tr class="border-b"><td class="py-2 px-2 text-gray-500">${n++}</td><td class="py-2 px-2">${esc(g.sub||g.header)}</td><td class="py-2 px-2">${esc(i.description)}</td><td class="py-2 px-2 text-right font-semibold">${money(i.amount)}</td></tr>`})});return h};
+      let body=`<div class="flex justify-between items-start gap-6 border-b pb-5 mb-6"><div><div class="flex items-center gap-4 mb-4"><img src="../images/logo.png" class="h-14 w-auto"><div><h1 class="text-xl font-bold">TERAJU CIPTABINA RESOURCES</h1><p class="text-xs text-gray-500">No 10A, Jalan PP 2/1, Taman Putra Prima, 47100 Puchong, Selangor</p></div></div><h2 class="text-2xl font-bold uppercase">Quotation</h2></div><div class="text-right text-sm"><p>Quotation No.<br><strong>${esc(qn)}</strong></p><p class="mt-2">Date<br><strong>${today}</strong></p></div></div><div class="grid md:grid-cols-3 gap-6 mb-7 text-sm"><div><p class="text-xs text-gray-500">Customer</p><p class="font-semibold">${esc(customer)}</p></div><div><p class="text-xs text-gray-500">Project Location</p><p class="font-semibold">${esc(location)}</p></div><div><p class="text-xs text-gray-500">Built-up Area</p><p class="font-semibold">${area} sqft</p></div></div>`;
+      if(type==='detail'){
+        body+=`<div class="mb-5 rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm"><span class="font-semibold">Detailed Quotation:</span> <span class="line-through text-gray-400">RM 49</span> <span class="font-bold text-green-700 ml-1">FREE</span> <span class="text-gray-600 ml-1">— Limited-time promotion until 31 October 2026.</span></div>`;
+        body+=`<div class="overflow-x-auto"><table class="w-full border-collapse text-sm detailed-quotation-table"><colgroup><col style="width:48%"><col style="width:10%"><col style="width:10%"><col style="width:16%"><col style="width:16%"></colgroup><thead><tr class="border-b-2 text-left"><th class="py-3 px-2">Description</th><th class="py-3 px-2">Unit</th><th class="py-3 px-2 text-right">Quantity</th><th class="py-3 px-2 text-right">Rate (RM)</th><th class="py-3 px-2 text-right">Amount (RM)</th></tr></thead><tbody>`;
+        groups.forEach(g=>{if(g.header!==groups[groups.indexOf(g)-1]?.header)body+=`<tr class="quotation-section-row"><td colspan="5" class="py-3 px-2">${esc(g.header)}</td></tr>`;if(g.sub)body+=`<tr class="quotation-subsection-row"><td colspan="5" class="py-2 px-2">${esc(g.sub)}</td></tr>`;g.levels.forEach((list,label)=>{body+=`<tr class="quotation-subsection-row"><td colspan="5" class="py-2 px-2">${esc(label)}</td></tr>`;body+=list.map(itemRow).join('')});g.plain.forEach(i=>body+=itemRow(i))});
+        body+=`</tbody><tfoot><tr class="border-t-2"><td colspan="4" class="py-4 px-2 text-right font-bold">TOTAL</td><td class="py-4 px-2 text-right font-bold text-lg">${money(total)}</td></tr></tfoot></table></div>`;
+      }else{
+        body+=`<div class="overflow-x-auto"><table class="w-full border-collapse text-sm simple-quotation-table"><colgroup><col style="width:6%"><col style="width:22%"><col style="width:52%"><col style="width:20%"></colgroup><thead><tr class="border-b-2 text-left"><th class="py-3 px-2">No.</th><th class="py-3 px-2">Work Section</th><th class="py-3 px-2">Description of Works</th><th class="py-3 px-2 text-right">Amount (RM)</th></tr></thead><tbody>${simpleRows()}</tbody><tfoot><tr class="border-t-2"><td colspan="3" class="py-4 px-2 text-right font-bold">TOTAL</td><td class="py-4 px-2 text-right font-bold text-lg">${money(total)}</td></tr></tfoot></table></div>`;
+      }
+      body+=`<div class="mt-8 pt-5 border-t text-sm"><p class="font-semibold mb-2">Terms / Notes</p><ul class="list-disc pl-5 text-gray-600"><li>This quotation is based on the stated built-up area, area schedule and rates applied herein.</li><li>Final scope, specifications, site conditions and pricing remain subject to site inspection and written confirmation.</li><li>Any additional works or authority requirements not listed above shall be quoted separately.</li></ul></div><div class="mt-12 text-sm"><p>Yours sincerely,</p><p class="font-bold mt-8">TERAJU CIPTABINA RESOURCES</p></div>`;
+      const c=document.getElementById('quotationContent');c.innerHTML=body;document.getElementById('quotationDocument')?.classList.remove('hidden');document.getElementById('quotationPrintActions')?.classList.remove('hidden');window.setDetailedQuotationLocked?.(type==='detail');window.renderQuotationPreview?.();document.getElementById('quotationDocument')?.scrollIntoView({behavior:'smooth',block:'start'});if(type==='detail')window.openDetailedQuotationPromo?.();return true;
+    };
+    render.__budgetSync=true;window.generateQuotation=render;return true;
+  }
+  let tries=0;const timer=setInterval(()=>{if(install()||++tries>200)clearInterval(timer)},100);
+})();
+</script>
+</body></html>
