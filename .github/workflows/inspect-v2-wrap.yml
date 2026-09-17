@@ -14,11 +14,16 @@ jobs:
         run: |
           python - <<'PY' > .v2-inspect-output.txt
           from pathlib import Path
-          s=Path('quotation/buildplanner-v2.html').read_text()
-          for needle in ['data-budget-new-anchor','data-manual-anchor','>Delete<','function renderConstructionBudget']:
-              i=s.find(needle)
-              print('\n===',needle,'index',i,'===')
-              if i>=0: print(s[max(0,i-5000):i+10000])
+          root=Path('quotation')
+          for p in root.rglob('*'):
+              if p.is_file() and p.suffix in {'.html','.js','.css'}:
+                  try:s=p.read_text()
+                  except:continue
+                  for needle in ['data-budget-new-anchor','data-manual-anchor']:
+                      i=s.find(needle)
+                      if i>=0:
+                          print(f'\n=== {needle} in {p} index {i} ===')
+                          print(s[max(0,i-6000):i+12000])
           PY
       - name: Commit inspection output
         run: |
