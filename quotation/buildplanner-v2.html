@@ -223,6 +223,7 @@ applyAudienceUI();if(isHomeowner()){document.getElementById('roomsContainer').in
 </script>
 <script>updateRoomsEmptyState();updateEstimate();</script>
 <script src="location-autocomplete.js"></script>
+<script src="quotation-document-engine.js"></script>
 <script id="tc-homeowner-customer-default">(()=>{const params=new URLSearchParams(location.search),role=(params.get('audience')||document.body.dataset.role||'homeowner').toLowerCase();if(role!=='homeowner'||params.get('quotationId'))return;const storageKey='teraju.homeowner.github.v1';function applyHomeownerName(){const input=document.getElementById('customerName');if(!input||input.value.trim())return;try{const account=JSON.parse(localStorage.getItem(storageKey)||'null'),name=String(account?.profile?.name||'').trim();if(!name)return;input.value=name;input.dispatchEvent(new Event('input',{bubbles:true}));input.dispatchEvent(new Event('change',{bubbles:true}))}catch{}}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',applyHomeownerName,{once:true});else applyHomeownerName()})();</script>
 <script id="tc-teraju-ga4">(()=>{const MEASUREMENT_ID='G-50XR3XER7B',path=location.pathname.toLowerCase(),params=new URLSearchParams(location.search),role=(params.get('audience')||document.body.dataset.role||'').toLowerCase(),plannerType=path.includes('renovationplanner')?'renovation':path.includes('buildplanner')?'build':'';window.dataLayer=window.dataLayer||[];window.gtag=window.gtag||function(){window.dataLayer.push(arguments)};window.gtag('js',new Date());window.gtag('config',MEASUREMENT_ID,{send_page_view:true});const send=(name,extra={})=>{try{window.gtag('event',name,Object.fromEntries(Object.entries(extra).filter(([,v])=>v!==undefined&&v!=='')))}catch{}};window.TERAJU_GA_EVENT=send;const base={role:role||undefined,planner_type:plannerType||undefined,page_path:location.pathname},script=document.createElement('script');script.async=true;script.src='https://www.googletagmanager.com/gtag/js?id='+encodeURIComponent(MEASUREMENT_ID);document.head.appendChild(script);if(path.endsWith('/homeowner.html')||path.endsWith('/contractor.html'))send('app_open',base);if(plannerType)send('planner_start',base);if(path.endsWith('/quotations.html'))document.addEventListener('click',event=>{const link=event.target.closest?.('a[data-ga-quotation-opened]');if(!link)return;send('quotation_opened',{role:link.dataset.gaRole||role||undefined,planner_type:link.dataset.gaPlannerType||undefined,quotation_id:link.dataset.gaQuotationId||undefined,quotation_number:link.dataset.gaQuotationNumber||undefined,quotation_type:link.dataset.gaQuotationType||undefined,page_path:location.pathname})},true)})();</script>
 <script id="tc-v2-master-bootstrap">
@@ -392,56 +393,6 @@ applyAudienceUI();if(isHomeowner()){document.getElementById('roomsContainer').in
   },100);
 })();
 </script>
-<style id="tc-quotation-onepage">
-#quotationDocument .quotation-preview-stage{overflow:visible!important;}
-#quotationDocument .quotation-preview-stage > .quotation-preview-paper{transform-origin:top center;width:794px;min-height:1123px;max-height:none!important;overflow:visible!important;box-sizing:border-box}
-@media print{
-  #quotationDocument .quotation-preview-stage > .quotation-preview-paper{transform:none!important;width:100%!important;min-height:0!important;overflow:visible!important}
-}
-</style>
-<script id="tc-quotation-onepage-fit">
-(function(){
-  function fit(){
-    const stage=document.getElementById('quotationPreview'),paper=stage?.querySelector('.quotation-preview-paper');
-    if(!stage||!paper)return;
-    paper.style.transform='none';
-    paper.style.transformOrigin='top center';
-    paper.style.width='794px';
-    const naturalW=Math.max(paper.scrollWidth,paper.offsetWidth,1);
-    const naturalH=Math.max(paper.scrollHeight,paper.offsetHeight,1);
-    const stageW=Math.max(stage.clientWidth-4,280);
-    const targetW=Math.min(794,stageW);
-    const targetH=1090;
-    const scale=Math.min(1,targetW/naturalW,targetH/naturalH);
-    paper.style.transform=`scale(${scale})`;
-    stage.style.minHeight=Math.ceil(naturalH*scale+16)+'px';
-    stage.style.height=Math.ceil(naturalH*scale+16)+'px';
-    stage.style.overflow='hidden';
-  }
-  const old=window.renderQuotationPreview;
-  window.renderQuotationPreview=function(){
-    if(typeof old==='function')old();
-    requestAnimationFrame(()=>setTimeout(fit,50));
-  };
-  window.addEventListener('resize',()=>setTimeout(fit,50));
-  window.addEventListener('load',()=>setTimeout(fit,100));
-})();
-</script>
-
-<script id="tc-quotation-render-guard">
-(function(){
-  function guard(){
-    const b=document.querySelector('.quotation-generate-btn[onclick*="generateQuotation"]');
-    if(b)b.setAttribute('onclick','(window.TERAJU_BUDGET_QUOTATION_RENDER || window.generateQuotation)()');
-    if(typeof window.TERAJU_BUDGET_QUOTATION_RENDER==='function'){
-      window.requestDetailedQuotation=function(){return window.TERAJU_BUDGET_QUOTATION_RENDER('detail')};
-    }
-  }
-  const timer=setInterval(()=>{guard();if(typeof window.TERAJU_BUDGET_QUOTATION_RENDER==='function')clearInterval(timer)},100);
-  guard();
-})();
-</script>
-
 <style id="tc-simple-description-match">
 #quotationDocument .simple-quotation-table .quotation-section-row td{font-weight:700;text-transform:uppercase;letter-spacing:.03em}
 #quotationDocument .simple-quotation-table .quotation-subsection-row td{font-weight:700;color:#374151}
