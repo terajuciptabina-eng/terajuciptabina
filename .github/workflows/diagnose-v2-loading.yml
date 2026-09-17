@@ -36,3 +36,36 @@ jobs:
           set -eux
           curl -fsSL 'https://terajuciptabina-eng.github.io/terajuciptabina/data/rates/default.json?source=master&v=20260921' -o /tmp/rates.json
           node -e "const d=require('/tmp/rates.json'); if(!d.rates||!Object.keys(d.rates).length) process.exit(1); console.log('rates=',Object.keys(d.rates).length)"
+      - name: Browser runtime diagnostics
+        run: |
+          set -eux
+          npm init -y >/dev/null 2>&1
+          npm install playwright@1.55.0 >/dev/null 2>&1
+          npx playwright install --with-deps chromium >/dev/null 2>&1
+          cat > /tmp/v2-runtime.js <<'EOF'
+          const { chromium } = require('playwright');
+          (async()=>{
+            const browser=await chromium.launch({headless:true});
+            const page=await browser.newPage();
+            const events=[];
+            page.on('console',m=>events.push(`CONSOLE ${m.type()}: ${m.text()}`));
+            page.on('pageerror',e=>events.push(`PAGEERROR: ${e.stack||e.message}`));
+            page.on('requestfailed',r=>events.push(`REQUESTFAILED: ${r.url()} :: ${r.failure()?.errorText||'unknown'}`));
+            const url='https://terajuciptabina-eng.github.io/terajuciptabina/quotation/buildplanner-v2.html?audience=contractor&contractorId=DIAG-20260918';
+            await page.goto(url,{waitUntil:'networkidle',timeout:60000});
+            await page.waitForTimeout(5000);
+            const state=await page.evaluate(()=>({
+              href:location.href,
+              masterActive:window.__TERAJU_MASTER_ENGINE_ACTIVE,
+              gate:window.__TERAJU_MASTER_RULE_GATE_READY,
+              getAllItems:typeof window.getAllItems,
+              budgetText:document.getElementById('constructionBudgetContent')?.innerText||'',
+              scriptTags:[...document.scripts].map(s=>s.src).filter(Boolean)
+            }));
+            console.log('RUNTIME_STATE',JSON.stringify(state,null,2));
+            for(const e of events)console.log(e);
+            if(state.budgetText.includes('Loading Global Calculation Rules'))process.exitCode=2;
+            await browser.close();
+          })().catch(e=>{console.error(e);process.exit(3)});
+          EOF
+          node /tmp/v2-runtime.js
