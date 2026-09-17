@@ -1,0 +1,36 @@
+name: one-time-v2-inline-edit
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Update V2 item editing UI
+        shell: bash
+        run: |
+          python3 <<'PY'
+          from pathlib import Path
+          import re
+          p=Path('quotation/quotation-quantity-fix.js')
+          s=p.read_text()
+          old=r'''function row\(item,no\)\{.*?window\.TERAJU_V2_CANCEL_ITEM=cancelExisting;'''
+          new=r'''function row(item,no){const iid=targetId(item.id),contractor=document.body.classList.contains('contractor-mode'),locked=/(?:^|\\/)\\s*PORCH\\s*\\/\\s*(?:LIGHTING|FAN|POWER POINT)(?:\\s*\\/|$)/i.test(String(item.masterPath||''))||/DOORS \\/ Type 3/i.test(String(item.masterPath||''))||/TYPE 3\\s*BATHROOM/i.test(String(item.masterPath||''))||/WINDOWS \\/ Type [123]/i.test(String(item.masterPath||''));const desc=contractor?`<textarea id="budget-desc-${iid}" rows="2" class="w-full border rounded-md px-2 py-1 text-sm leading-snug" style="overflow:hidden;resize:none;min-height:42px" onchange="TERAJU_V2_SAVE_ITEM(${JSON.stringify(item.id)})">${esc(item.description)}</textarea>`:`<div>${esc(item.description)}</div>`;const qty=contractor&&!locked?`<input id="budget-qty-${iid}" type="number" min="0" step="1" value="${normQty(item.qty)}" class="w-full border rounded-md px-2 py-1 text-sm text-right" onchange="TERAJU_V2_SAVE_ITEM(${JSON.stringify(item.id)})">`:`<div class="text-right">${normQty(item.qty)}</div>`;const rate=`<input id="budget-rate-${iid}" type="number" min="0" step="0.01" value="${normRate(item.rate).toFixed(2)}" class="w-full border rounded-md px-2 py-1 text-sm text-right" onchange="TERAJU_V2_SAVE_ITEM(${JSON.stringify(item.id)})">`;const del=`<button type="button" class="border border-red-200 text-red-700 rounded-md px-2 py-1 text-xs font-semibold mt-1" onclick="deleteBudgetItem(${JSON.stringify(item.id)})">Delete</button>`;return `<tr data-budget-item-id="${iid}" class="border-b align-top"><td class="py-2 px-2 text-gray-500">${no}</td><td class="py-2 px-2 cr-description">${desc}${locked&&contractor?'<div class="text-[11px] text-gray-500 mt-1">Quantity controlled by Global Calculation Rules.</div>':''}${del}</td><td class="py-2 px-2 cr-unit">${esc(item.unit)}</td><td class="py-2 px-2">${qty}</td><td class="py-2 px-2 text-right">${rate}</td><td class="py-2 px-2 text-right font-semibold">${money2(item.amount)}</td></tr>`}
+window.TERAJU_V2_EDIT_ITEM=function(id){if(!document.body.classList.contains('contractor-mode'))return;editExisting(id)};window.TERAJU_V2_SAVE_ITEM=function(id){const item=(typeof getAllItems==='function'?getAllItems():[]).find(x=>x.id===id);if(item)saveExisting(item)};window.TERAJU_V2_CANCEL_ITEM=cancelExisting;'''
+          ns,n=re.subn(old,new,s,count=1,flags=re.S)
+          if n!=1: raise SystemExit('Expected V2 row/action block not found; refusing edit')
+          p.write_text(ns)
+          PY
+          node --check quotation/quotation-quantity-fix.js
+      - name: Remove one-time workflow and commit
+        shell: bash
+        run: |
+          rm -f .github/workflows/one-time-v2-inline-edit.yml
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add quotation/quotation-quantity-fix.js .github/workflows/one-time-v2-inline-edit.yml
+          git diff --cached --quiet || git commit -m "Make V2 budget items inline editable"
+          git push
