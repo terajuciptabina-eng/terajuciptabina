@@ -6,7 +6,6 @@ on:
       - '.github/workflows/fix-v2-r2-scope.yml'
 jobs:
   fix:
-    if: github.event.head_commit.message != 'Fix Build Planner V2 renderer R2 scope'
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -27,7 +26,7 @@ jobs:
           PY
           node --check quotation/quotation-quantity-fix.js
           grep -n 'const groupTotal=' quotation/quotation-quantity-fix.js
-      - name: Commit source fix and remove workflow
+      - name: Commit source fix and remove workflows
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
