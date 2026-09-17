@@ -1,0 +1,43 @@
+name: One-time V2 load audit
+on:
+  push:
+    branches: [main]
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Audit Global Calculation Rules source
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          const src=fs.readFileSync('quotation/admin-calculation-rules.html','utf8');
+          const m=src.match(/(?:const|let)\s+rules\s*=\s*\[/);
+          if(!m) throw new Error('Global Calculation Rules array not found');
+          const st=src.indexOf('[',m.index);
+          let d=0,q='',e=false,end=-1;
+          for(let i=st;i<src.length;i++){
+            const c=src[i];
+            if(q){if(e)e=false;else if(c==='\\')e=true;else if(c===q)q='';continue}
+            if(c==='"'||c==="'"||c==='`'){q=c;continue}
+            if(c==='[')d++;
+            else if(c===']'&&--d===0){end=i+1;break}
+          }
+          if(end<0) throw new Error('Global Calculation Rules array incomplete');
+          const rules=Function('"use strict";return '+src.slice(st,end))();
+          if(!Array.isArray(rules)||!rules.length) throw new Error('Global Calculation Rules parsed empty');
+          console.log(`RULE_AUDIT_OK count=${rules.length}`);
+          console.log(`FIRST=${rules[0][1]}`);
+          console.log(`LAST=${rules[rules.length-1][1]}`);
+          NODE
+      - name: Audit rate sources
+        run: |
+          node -e "const d=require('./data/rates/default.json'); if(!d.rates||!Object.keys(d.rates).length) process.exit(1); console.log('RATE_AUDIT_OK count='+Object.keys(d.rates).length)"
+      - name: Remove one-time audit workflow
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm .github/workflows/one-time-v2-load-audit.yml
+          git commit -m 'Remove one-time V2 load audit'
+          git push
