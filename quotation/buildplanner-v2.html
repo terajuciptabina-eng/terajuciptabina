@@ -238,35 +238,58 @@ applyAudienceUI();if(isHomeowner()){document.getElementById('roomsContainer').in
   const headerName=g=>({PRELIMINARIES:'PRELIMINARIES',STRUCTURES:'STRUCTURAL WORKS',ARCHITECTURES:'ARCHITECTURAL WORKS',ELECTRICAL:'ELECTRICAL', 'DOORS & WINDOWS':'DOORS & WINDOWS','EXTERNAL WORK':'EXTERNAL WORKS'}[String(g||'').toUpperCase()]||String(g||''));
 
   // Exact same three-level hierarchy used by Construction Budget.
+  // Build the quotation hierarchy from the SAME item path used by the Budget.
+  // Do not invent a second grouping model: category -> path segments -> room.
   function budgetHierarchy(i){
-    const g=String(i.group||'').toUpperCase(), p=parts(i.masterPath);
-    if(g==='ARCHITECTURES'&&i.roomId&&i.roomId!=='project'&&/^BATHROOM$/i.test(p[0]||''))
+    const g=String(i.group||'').toUpperCase();
+    const category=String(i.category||'').toLowerCase();
+    const p=parts(i.masterPath);
+    const effectiveGroup=g || (category==='structures'?'STRUCTURES':category==='architecture'?'ARCHITECTURES':category==='electrical'?'ELECTRICAL':category==='preliminaries'?'PRELIMINARIES':category==='external-work'?'EXTERNAL WORK':'');
+    if(effectiveGroup==='ARCHITECTURES'&&i.roomId&&i.roomId!=='project'&&/^BATHROOM$/i.test(p[0]||''))
       return {header:'ARCHITECTURAL WORKS',sub:'BATHROOM',subsub:i.room||null};
-    if(g==='EXTERNAL WORK')
+    if(effectiveGroup==='EXTERNAL WORK')
       return {header:'EXTERNAL WORKS',sub:'EXTERNAL WORK',subsub:p[0]||null};
-    return {header:headerName(g),sub:p[0]||null,subsub:p.length>1?p[1]:null};
+    return {header:headerName(effectiveGroup),sub:p[0]||null,subsub:p.length>1?p[1]:null};
   }
 
   function buildTree(items){
-    const order=['PRELIMINARIES','STRUCTURES','ARCHITECTURES','ELECTRICAL','DOORS & WINDOWS','EXTERNAL WORK'];
+    const order=[
+      ['PRELIMINARIES','preliminaries'],
+      ['STRUCTURES','structures'],
+      ['ARCHITECTURES','architecture'],
+      ['ELECTRICAL','electrical'],
+      ['DOORS & WINDOWS','architecture'],
+      ['EXTERNAL WORK','external-work']
+    ];
     const result=[];
-    order.forEach(g=>{
-      const list=items.filter(i=>String(i.group||'').toUpperCase()===g);
+    order.forEach(([g,cat])=>{
+      const list=items.filter(i=>{
+        const ig=String(i.group||'').toUpperCase();
+        if(ig===g)return true;
+        if(!ig&&String(i.category||'').toLowerCase()===cat)return true;
+        // Doors & Windows are represented by the architecture category in the master engine.
+        if(g==='DOORS & WINDOWS'&&cat==='architecture'){
+          const p=String(i.masterPath||'').toUpperCase();
+          return /^(DOORS|WINDOWS)(?:\s*\/|$)/.test(p);
+        }
+        return false;
+      });
       if(!list.length)return;
-      let section=null;
-      const subs=new Map();
+      const section={header:headerName(g),subs:[]};
+      const subMap=new Map();
       list.forEach(i=>{
         const h=budgetHierarchy(i);
-        if(!section)section={header:h.header,subs:[]};
+        // Prevent an item from the wrong master group leaking into this section.
+        if(h.header!==section.header)return;
         const sk=h.sub||'__NONE__';
-        let sub=subs.get(sk);
-        if(!sub){sub={label:h.sub,levels:[]};subs.set(sk,sub);section.subs.push(sub)}
+        let sub=subMap.get(sk);
+        if(!sub){sub={label:h.sub,levels:[]};subMap.set(sk,sub);section.subs.push(sub)}
         const lk=h.subsub||'__ITEMS__';
         let level=sub.levels.find(x=>x.label===lk);
         if(!level){level={label:h.subsub,items:[]};sub.levels.push(level)}
         level.items.push(i);
       });
-      result.push(section);
+      if(section.subs.some(s=>s.levels.some(l=>l.items.length)))result.push(section);
     });
     return result;
   }
@@ -330,7 +353,7 @@ applyAudienceUI();if(isHomeowner()){document.getElementById('roomsContainer').in
 })();
 </script>
 <style id="tc-quotation-onepage">
-#quotationDocument .quotation-preview-stage{overflow:hidden!important;}
+#quotationDocument .quotation-preview-stage{overflow:visible!important;}
 #quotationDocument .quotation-preview-stage > .quotation-preview-paper{transform-origin:top center;width:794px;min-height:1123px;max-height:none!important;overflow:visible!important;box-sizing:border-box}
 @media print{
   #quotationDocument .quotation-preview-stage > .quotation-preview-paper{transform:none!important;width:100%!important;min-height:0!important;overflow:visible!important}
