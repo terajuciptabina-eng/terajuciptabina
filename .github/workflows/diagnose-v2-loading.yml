@@ -1,0 +1,38 @@
+name: Diagnose Build Planner V2 loading
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'quotation/quotation-quantity-fix.js'
+      - 'quotation/buildplanner-v2.html'
+      - '.github/workflows/diagnose-v2-loading.yml'
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Syntax check master engine
+        run: node --check quotation/quotation-quantity-fix.js
+      - name: Check source references
+        run: |
+          grep -n 'quotation-quantity-fix.js' quotation/buildplanner-v2.html
+          grep -n '__TERAJU_MASTER_RULE_GATE_READY' quotation/quotation-quantity-fix.js
+      - name: Check live Build Planner and asset
+        run: |
+          set -eux
+          curl -fsSL 'https://terajuciptabina-eng.github.io/terajuciptabina/quotation/buildplanner-v2.html' -o /tmp/live.html
+          grep -F 'quotation-quantity-fix.js?v=20260918-r2' /tmp/live.html
+          curl -fsSL 'https://terajuciptabina-eng.github.io/terajuciptabina/quotation/quotation-quantity-fix.js?v=20260918-r2' -o /tmp/live-engine.js
+          test -s /tmp/live-engine.js
+          node --check /tmp/live-engine.js
+          wc -c /tmp/live-engine.js
+      - name: Check live rules API
+        run: |
+          set -eux
+          curl -fsSL 'https://terajuciptabina.vercel.app/api/calculation-rules' -o /tmp/rules.json
+          node -e "const d=require('/tmp/rules.json'); if(!d.ok||!Array.isArray(d.rules)||!d.rules.length) process.exit(1); console.log('rules=',d.rules.length)"
+      - name: Check live default rates
+        run: |
+          set -eux
+          curl -fsSL 'https://terajuciptabina-eng.github.io/terajuciptabina/data/rates/default.json?source=master&v=20260921' -o /tmp/rates.json
+          node -e "const d=require('/tmp/rates.json'); if(!d.rates||!Object.keys(d.rates).length) process.exit(1); console.log('rates=',Object.keys(d.rates).length)"
