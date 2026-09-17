@@ -12,15 +12,15 @@ jobs:
         run: |
           python3 - <<'PY'
           from pathlib import Path
+          import re
           p=Path('quotation/quotation-quantity-fix.js')
           s=p.read_text()
-          old="async function main(){if(document.readyState==='loading')await new Promise(r=>document.addEventListener('DOMContentLoaded',r,{once:true}));await load();window.getAllItems=getMasterItems;if(!/buildplanner-v2\\.html$/i.test(location.pathname))window.renderConstructionBudget=renderBudget;window.getCurrentQuotationData=qData;window.generateQuotation=quotation;window.updateEstimate=function(){if(typeof syncBuiltUpAreaFromRooms==='function')syncBuiltUpAreaFromRooms();if(/buildplanner-v2\\.html$/i.test(location.pathname)&&typeof window.renderConstructionBudget==='function')window.renderConstructionBudget();else renderBudget();if(typeof saveContractorState==='function')saveContractorState()};window.updateEstimate()}"
-          new="async function main(){if(document.readyState==='loading')await new Promise(r=>document.addEventListener('DOMContentLoaded',r,{once:true}));let attempts=0;while(attempts<3){try{await load();break}catch(e){attempts++;console.error('[TERAJU MASTER LOAD]',e);if(attempts>=3)throw e;await new Promise(r=>setTimeout(r,700))}}window.getAllItems=getMasterItems;if(!/buildplanner-v2\\.html$/i.test(location.pathname))window.renderConstructionBudget=renderBudget;window.getCurrentQuotationData=qData;window.generateQuotation=quotation;window.updateEstimate=function(){try{if(typeof syncBuiltUpAreaFromRooms==='function')syncBuiltUpAreaFromRooms()}catch(e){console.error('[TERAJU SYNC BUILT-UP]',e)}try{if(/buildplanner-v2\\.html$/i.test(location.pathname)&&typeof window.renderConstructionBudget==='function')window.renderConstructionBudget();else renderBudget()}catch(e){console.error('[TERAJU RENDER]',e)}try{if(typeof saveContractorState==='function')saveContractorState()}catch(e){console.error('[TERAJU SAVE STATE]',e)}};window.updateEstimate()}"
-          if old not in s:
-            raise SystemExit('Target main() source not found; no change made')
-          p.write_text(s.replace(old,new,1))
+          replacement="async function main(){if(document.readyState==='loading')await new Promise(r=>document.addEventListener('DOMContentLoaded',r,{once:true}));let attempts=0;while(attempts<3){try{await load();break}catch(e){attempts++;console.error('[TERAJU MASTER LOAD]',e);if(attempts>=3)throw e;await new Promise(r=>setTimeout(r,700))}}window.getAllItems=getMasterItems;if(!/buildplanner-v2\\.html$/i.test(location.pathname))window.renderConstructionBudget=renderBudget;window.getCurrentQuotationData=qData;window.generateQuotation=quotation;window.updateEstimate=function(){try{if(typeof syncBuiltUpAreaFromRooms==='function')syncBuiltUpAreaFromRooms()}catch(e){console.error('[TERAJU SYNC BUILT-UP]',e)}try{if(/buildplanner-v2\\.html$/i.test(location.pathname)&&typeof window.renderConstructionBudget==='function')window.renderConstructionBudget();else renderBudget()}catch(e){console.error('[TERAJU RENDER]',e)}try{if(typeof saveContractorState==='function')saveContractorState()}catch(e){console.error('[TERAJU SAVE STATE]',e)}};window.updateEstimate()}"
+          ns,n=re.subn(r"async function main\(\)\{.*?\}\nmain\(\)\.catch",replacement+"\nmain().catch",s,count=1)
+          if n!=1: raise SystemExit(f'main replacement count={n}')
+          p.write_text(ns)
+          print('SOURCE_FIX_OK')
           PY
-          grep -F "let attempts=0" quotation/quotation-quantity-fix.js
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git rm .github/workflows/one-time-v2-source-fix.yml
