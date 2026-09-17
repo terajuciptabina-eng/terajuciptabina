@@ -1,0 +1,26 @@
+name: one-time-v2-inline-edit
+on:
+  push:
+    branches:
+      - main
+permissions:
+  contents: write
+jobs:
+  fix:
+    if: github.event.head_commit.message != 'Make V2 budget items inline editable'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const owner='terajuciptabina-eng',repo='terajuciptabina',path='quotation/quotation-quantity-fix.js',branch='main';
+            const file=await github.rest.repos.getContent({owner,repo,path,ref:branch});
+            const s=Buffer.from(file.data.content,'base64').toString('utf8');
+            if(s.includes('onchange="TERAJU_V2_SAVE_ITEM')){core.info('V2 inline editor already present');return;}
+            const a=s.indexOf('function row(item,no){');
+            const marker='window.TERAJU_V2_EDIT_ITEM=';
+            const b=s.indexOf(marker,a);
+            if(a<0||b<0)throw new Error('Expected V2 row block not found; refusing edit');
+            const replacement=Buffer.from('ZnVuY3Rpb24gcm93KGl0ZW0sbm8pe2NvbnN0IGlpZD10YXJnZXRJZChpdGVtLmlkKSxjb250cmFjdG9yPWRvY3VtZW50LmJvZHkuY2xhc3NMaXN0LmNvbnRhaW5zKCdjb250cmFjdG9yLW1vZGUnKSxsb2NrZWQ9Lyg/Ol58XC8pXHMqUE9SQ0hccypcL1xzKig/OkxJR0hUSU5HfEZBTnxQT0dFUiBQT0lOVCkoPzpccypcL3wkKS9pLnRlc3QoU3RyaW5nKGl0ZW0ubWFzdGVyUGF0aHx8JycpKXx8L0RPT1JTIFwvIFR5cGUgMy9pLnRlc3QoU3RyaW5nKGl0ZW0ubWFzdGVyUGF0aHx8JycpKXx8L1RZUEUgM1xzKkJBVEhST09NL2kudGVzdChTdHJpbmcoaXRlbS5tYXN0ZXJQYXRofHwnJykpfHwvV0lORE9XUyBcLyBUeXBlIFsxMjNdL2kudGVzdChTdHJpbmcoaXRlbS5tYXN0ZXJQYXRofHwnJykpO2NvbnN0IGRlc2M9Y29udHJhY3Rvcj9gPHRleHRhcmVhIGlkPSJidWRnZXQtZGVzYy0ke2lpZH0iIHJvd3M9IjIiIGNsYXNzPSJ3LWZ1bGwgYm9yZGVyIHJvdW5kZWQtbWQgcHgtMiB0ZXh0LXNtIGxlYWRpbmctc251ZyIgc3R5bGU9Im92ZXJmbG93OmhpZGRlbjtyZXNpemU6bm9uZTttaW4taGVpZ2h0OjQycHgiIG9uY2hhbmdlPSJURVJBSFVfVjJfU0FWRV9JVEVNKCR7SlNPTi5zdHJpbmdpZnkoaXRlbS5pZCl9KSI+JHtlc2MoaXRlbS5kZXNjcmlwdGlvbil9PC90ZXh0YXJlYT5gOmA8ZGl2PiR7ZXNjKGl0ZW0uZGVzY3JpcHRpb24pfTwvZGl2PmA7Y29uc3QgcXR5PWNvbnRyYWN0b3ImJiFsb2NrZWQ/YDxpbW5wdXQgaWQ9ImJ1ZGdldC1xdHktJHtpZWR9IiB0eXBlPSJudW1iZXIiIG1pbj0iMCIgc3RlcD0iMSIgdmFsdWU9IiR7bm9ybVF0eShpdGVtLnF0eSl9IiBjbGFzcz0idy1mdWxsIGJvcmRlciByb3VuZGVkLW1kIHB4LTIgcHktMSB0ZXh0LXNtIHRleHQtcmlnaHQiIG9uY2hhbmdlPSJURVJBSFVfVjJfU0FWRV9JVEVNKCR7SlNPTi5zdHJpbmdpZnkoaXRlbS5pZCl9KSI+YGA6YDxkaXYgY2xhc3M9InRleHQtcmlnaHQiPiR7bm9ybVF0eShpdGVtLnF0eSl9PC9kaXY+YDtjb25zdCByYXRlPWA8aW5wdXQgaWQ9ImJ1ZGdldC1yYXRlLSR7aWlkfSIgdHlwZT0ibnVtYmVyIiBtaW49IjAiIHN0ZXA9IjAuMDEiIHZhbHVlPSIke25vcm1SYXRlKGl0ZW0ucmF0ZSkudG9GaXhlZCgyKX0iIGNsYXNzPSJ3LWZ1bGwgYm9yZGVyIHJvdW5kZWQtbWQgcHgtMiB0ZXh0LXNtIHRleHQt cmlnaHQiIG9uY2hhbmdlPSJURVJBSFVfVjJfU0FWRV9JVEVNKCR7SlNPTi5zdHJpbmdpZnkoaXRlbS5pZCl9KSI+YGA7Y29uc3QgZGVsPWA8YnV0dG9uIHR5cGU9ImJ1dHRvbiIgY2xhc3M9ImJvcmRlciBib3JkZXItcmVkLTIwMCB0ZXh0LXJlZC03MDAgcm91bmRlZC1tZCBweC0yIHB5LTEgdGV4dC14cyBmb250LXNlbWlib2xkIG10LTEiIG9uY2xpY2s9ImRlbGV0ZUJ1ZGdldEl0ZW0oJHtKU09OLnN0cmluZ2lmeShpdGVtLmlkKX0pIj5EZWxldGU8L2J1dHRvbj5gO3JldHVybiBgPHRyIGRhdGEtYnVkZ2V0LWl0ZW0taWQ9IiR7aWlkfSIgY2xhc3M9ImJvcmRlci1iIGFsaWduLXRvcCI+PHRkIGNsYXNzPSJweS0yIHB4LTIgdGV4dC1ncmF5LTUwMCI+JHtub308L3RkPjx0ZCBjbGFzcz0icHktMiBweC0yIGNyLWRlc2NyaXB0aW9uIj4ke2Rlc2N9JHtsb2NrZWQmJmNvbnRyYWN0b3I/JzxkaXYgY2xhc3M9InRleHQtWzExcHhdIHRleHQtZ3JheS01MDAgbXQtMSI+UXVhbnRpdHkgY29udHJvbGxlZCBieSBHbG9iYWwgQ2FsY3VsYXRpb24gUnVsZXMuPC9kaXY+JzonJ30ke2RlbH08L3RkPjx0ZCBjbGFzcz0icHktMiBweC0yIGNyLXVuaXQiPiR7ZXNjKGl0ZW0udW5pdCl9PC90ZD48dGQgY2xhc3M9InB5LTIgcHgtMiI+JHtxdHl9PC90ZD48dGQgY2xhc3M9InB5LTIgcHgtMiB0ZXh0LXJpZ2h0Ij4ke3JhdGV9PC90ZD48dGQgY2xhc3M9InB5LTIgcHgtMiB0ZXh0LXJpZ2h0IGZvbnQtc2VtaWJvbGQiPiR7bW9uZXkyKGl0ZW0uYW1vdW50KX08L3RkPjwvdHI+YH0='.replace('VEVSQUpV','VEVSQUpV')).toString('utf8');
+            const content=Buffer.from(s.slice(0,a)+replacement+s.slice(b)).toString('base64');
+            await github.rest.repos.createOrUpdateFileContents({owner,repo,path,message:'Make V2 budget items inline editable',content,sha:file.data.sha,branch});
