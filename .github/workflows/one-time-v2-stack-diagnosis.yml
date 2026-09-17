@@ -23,19 +23,10 @@ jobs:
             p.on('console',m=>console.log('CONSOLE',m.type(),m.text()));
             p.on('pageerror',e=>console.log('PAGEERROR',JSON.stringify({message:e.message,stack:e.stack})));
             p.on('requestfailed',r=>console.log('REQUESTFAILED',r.url(),r.failure()?.errorText||''));
-            p.on('response',r=>{if(/quotation-quantity-fix|admin-calculation-rules|default\\.json|states\\//.test(r.url()))console.log('RESPONSE',r.status(),r.url())});
+            p.on('response',r=>{if(/quotation-quantity-fix|admin-calculation-rules|default\.json|states\//.test(r.url()))console.log('RESPONSE',r.status(),r.url())});
             await p.goto(u,{waitUntil:'domcontentloaded',timeout:30000});
             await p.waitForTimeout(10000);
             console.log('STATE',await p.evaluate(()=>({active:window.__TERAJU_MASTER_ENGINE_ACTIVE,gate:window.__TERAJU_MASTER_RULE_GATE_READY,getAll:typeof window.getAllItems,render:typeof window.renderConstructionBudget,update:typeof window.updateEstimate,text:document.getElementById('constructionBudgetContent')?.innerText||''})));
             await b.close();
           })().catch(e=>{console.error(e);process.exit(1)});
           NODE
-      - name: Remove workflow
-        if: always()
-        run: |
-          rm -f .github/workflows/one-time-v2-stack-diagnosis.yml
-          git config user.name github-actions[bot]
-          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          git add .github/workflows/one-time-v2-stack-diagnosis.yml
-          git diff --cached --quiet || git commit -m "Remove one-time V2 stack diagnosis"
-          git push
