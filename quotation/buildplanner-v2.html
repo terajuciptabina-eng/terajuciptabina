@@ -328,9 +328,17 @@ applyAudienceUI();if(isHomeowner()){document.getElementById('roomsContainer').in
       const area=Math.ceil(rooms.reduce((s,r)=>s+num(r.area),0));
       const today=new Intl.DateTimeFormat('en-MY',{day:'2-digit',month:'long',year:'numeric'}).format(new Date());
       const sections=buildTree(active);
-      const summaryTotals={preliminaries:0,structures:0,architecture:0,electrical:0};
-      active.forEach(i=>{const cat=String(i.category||'').toLowerCase();if(Object.prototype.hasOwnProperty.call(summaryTotals,cat))summaryTotals[cat]+=num(i.amount)});
-      const quotationSummary=(colspan)=>[['PRELIMINARIES',summaryTotals.preliminaries],['STRUCTURAL WORKS',summaryTotals.structures],['ARCHITECTURAL WORKS',summaryTotals.architecture],['ELECTRICAL WORKS',summaryTotals.electrical]].map(([label,amount])=>`<tr class="quotation-summary-row"><td colspan="${colspan}" class="py-2 px-2 text-left font-semibold">${label}</td><td class="py-2 px-2 text-right font-semibold">${money(amount)}</td></tr>`).join('');
+      const summaryTotals={preliminaries:0,structures:0,architecture:0,electrical:0,doorsWindows:0,externalWork:0};
+      active.forEach(i=>{
+        const cat=String(i.category||'').toLowerCase();
+        const group=String(i.group||'').toUpperCase();
+        const path=String(i.masterPath||'').trim().toUpperCase();
+        const isDoorsWindows=group==='DOORS & WINDOWS'||(cat==='architecture'&&/^(DOORS|WINDOWS)(?:\\s*\\/|$)/.test(path));
+        if(isDoorsWindows){summaryTotals.doorsWindows+=num(i.amount);return}
+        if(cat==='external-work'){summaryTotals.externalWork+=num(i.amount);return}
+        if(Object.prototype.hasOwnProperty.call(summaryTotals,cat))summaryTotals[cat]+=num(i.amount);
+      });
+      const quotationSummary=(colspan)=>[['PRELIMINARIES',summaryTotals.preliminaries],['STRUCTURAL WORKS',summaryTotals.structures],['ARCHITECTURAL WORKS',summaryTotals.architecture],['ELECTRICAL WORKS',summaryTotals.electrical],['DOORS & WINDOWS',summaryTotals.doorsWindows],['EXTERNAL WORKS',summaryTotals.externalWork]].map(([label,amount])=>`<tr class="quotation-summary-row"><td colspan="${colspan}" class="py-2 px-2 text-left font-semibold">${label}</td><td class="py-2 px-2 text-right font-semibold">${money(amount)}</td></tr>`).join('');
       const itemRow=i=>`<tr class="border-b align-top"><td class="py-2 px-2">${esc(i.description)}</td><td class="py-2 px-2">${esc(i.unit)}</td><td class="py-2 px-2 text-right">${esc(qfmt(i.qty,i.unit))}</td><td class="py-2 px-2 text-right">${money(i.rate)}</td><td class="py-2 px-2 text-right font-medium">${money(i.amount)}</td></tr>`;
       let body=`<div class="flex justify-between items-start gap-6 border-b pb-5 mb-6"><div><div class="flex items-center gap-4 mb-4"><img src="../images/logo.png" class="h-14 w-auto"><div><h1 class="text-xl font-bold">TERAJU CIPTABINA RESOURCES</h1><p class="text-xs text-gray-500">No 10A, Jalan PP 2/1, Taman Putra Prima, 47100 Puchong, Selangor</p></div></div><h2 class="text-2xl font-bold uppercase">Quotation</h2></div><div class="text-right text-sm"><p>Quotation No.<br><strong>${esc(qn)}</strong></p><p class="mt-2">Date<br><strong>${today}</strong></p></div></div><div class="grid md:grid-cols-3 gap-6 mb-7 text-sm"><div><p class="text-xs text-gray-500">Customer</p><p class="font-semibold">${esc(customer)}</p></div><div><p class="text-xs text-gray-500">Project Location</p><p class="font-semibold">${esc(location)}</p></div><div><p class="text-xs text-gray-500">Built-up Area</p><p class="font-semibold">${area} sqft</p></div></div>`;
 
