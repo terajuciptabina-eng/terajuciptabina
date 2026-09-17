@@ -1,0 +1,54 @@
+name: One-time Build Planner V2 R2 source fix
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    if: github.event.head_commit.message == 'Fix Build Planner V2 R2 scope'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Fix renderer helper scope
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          p=Path('quotation/quotation-quantity-fix.js')
+          s=p.read_text(encoding='utf-8')
+          if 'window.TERAJU_R2=R2;' not in s:
+              m=re.search(r'const N=v=>Number\\.isFinite.*?NOR=s=>.*?;',s,re.S)
+              if not m:
+                  raise SystemExit('R2 helper declaration not found')
+              s=s[:m.end()]+'window.TERAJU_R2=R2;'+s[m.end():]
+          start=s.find('window.renderConstructionBudget')
+          if start<0:
+              raise SystemExit('V2 renderer marker not found')
+          prefix,suffix=s[:start],s[start:]
+          suffix=re.sub(r'(?<!TERAJU_)R2\\(', 'window.TERAJU_R2(', suffix)
+          s=prefix+suffix
+          tail=s[start:]
+          if 'window.TERAJU_R2=R2;' not in s or not re.search(r'window\\.TERAJU_R2\\(',tail):
+              raise SystemExit('R2 source fix verification failed')
+          if re.search(r'(?<!TERAJU_)R2\\(',tail):
+              raise SystemExit('Bare R2() remains in V2 renderer section')
+          p.write_text(s,encoding='utf-8')
+          print('R2 helper exported and V2 renderer references redirected to window.TERAJU_R2')
+          PY
+      - name: Verify source
+        run: |
+          grep -o 'window.TERAJU_R2=R2;' quotation/quotation-quantity-fix.js
+          grep -o 'window.TERAJU_R2(' quotation/quotation-quantity-fix.js | head
+      - name: Commit source fix and remove workflow
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add quotation/quotation-quantity-fix.js
+          git commit -m 'Fix Build Planner V2 renderer helper scope'
+          git rm -f .github/workflows/one-time-v2-r2-source-fix.yml
+          git commit -m 'Remove one-time V2 R2 source fix workflow'
+          git push
