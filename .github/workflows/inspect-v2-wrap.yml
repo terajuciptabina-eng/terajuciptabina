@@ -1,0 +1,21 @@
+name: Inspect V2 wrap source
+on:
+  push:
+    paths:
+      - '.v2-wrap-inspect-trigger'
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Inspect description renderer
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('quotation/buildplanner-v2.html')
+          s=p.read_text()
+          for needle in ['cr-description','function budgetRow','budgetRow=','budgetRow(']:
+              i=s.find(needle)
+              print('\n===',needle,'index',i,'===')
+              if i>=0: print(s[max(0,i-1200):i+3000])
+          PY
