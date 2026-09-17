@@ -16,38 +16,18 @@ jobs:
           from pathlib import Path
           p=Path('quotation/quotation-quantity-fix.js')
           s=p.read_text(encoding='utf-8')
-          old_ready="const ready=typeof getAllItems==='function';"
-          new_ready="const ready=window.__TERAJU_MASTER_ENGINE_ACTIVE===true&&typeof window.getAllItems==='function';"
-          if old_ready not in s:
-              raise SystemExit('V2 readiness marker not found')
-          s=s.replace(old_ready,new_ready,1)
-          old_all="const all=(typeof getAllItems==='function'?getAllItems():[]),active=all.filter(i=>!(typeof excludedItems!=='undefined'&&excludedItems.has(i.id)));"
-          new_all="const all=window.getAllItems(),active=all.filter(i=>!(typeof excludedItems!=='undefined'&&excludedItems.has(i.id)));"
-          if old_all not in s:
-              raise SystemExit('V2 master item access marker not found')
-          s=s.replace(old_all,new_all,1)
-          old_save="const item=(typeof getAllItems==='function'?getAllItems():[]).find(x=>x.id===id);"
-          new_save="const item=(typeof window.getAllItems==='function'?window.getAllItems():[]).find(x=>x.id===id);"
-          if old_save not in s:
-              raise SystemExit('V2 save item marker not found')
-          s=s.replace(old_save,new_save,1)
+          s=s.replace("const ready=typeof getAllItems==='function';","const ready=window.__TERAJU_MASTER_ENGINE_ACTIVE===true&&typeof window.getAllItems==='function';",1)
+          s=s.replace("const all=(typeof getAllItems==='function'?getAllItems():[]),active=all.filter(i=>!(typeof excludedItems!=='undefined'&&excludedItems.has(i.id)));","const all=window.getAllItems(),active=all.filter(i=>!(typeof excludedItems!=='undefined'&&excludedItems.has(i.id)));",1)
+          s=s.replace("const item=(typeof getAllItems==='function'?getAllItems():[]).find(x=>x.id===id);","const item=(typeof window.getAllItems==='function'?window.getAllItems():[]).find(x=>x.id===id);",1)
           start=s.find('function renderConstructionBudget(){')
           end=s.find('function budgetRow(',start)
-          if start<0 or end<0:
-              raise SystemExit('Legacy renderer boundaries not found')
-          delegate="function renderConstructionBudget(){if(typeof window.renderConstructionBudget==='function'&&window.renderConstructionBudget!==renderConstructionBudget)return window.renderConstructionBudget();}"
-          s=s[:start]+delegate+s[end:]
+          if start>=0 and end>start and 'window.renderConstructionBudget!==renderConstructionBudget' not in s[start:end]:
+              s=s[:start]+"function renderConstructionBudget(){if(typeof window.renderConstructionBudget==='function'&&window.renderConstructionBudget!==renderConstructionBudget)return window.renderConstructionBudget();}"+s[end:]
           p.write_text(s,encoding='utf-8')
-          print('cleaned',p)
-      - name: Validate source
-        shell: python
-        run: |
-          from pathlib import Path
-          s=Path('quotation/quotation-quantity-fix.js').read_text(encoding='utf-8')
           assert "const ready=window.__TERAJU_MASTER_ENGINE_ACTIVE===true&&typeof window.getAllItems==='function';" in s
           assert "const all=window.getAllItems(),active=" in s
           assert "function renderConstructionBudget(){if(typeof window.renderConstructionBudget==='function'" in s
-          print('source validation passed')
+          print('source cleanup validation passed')
       - name: Commit source cleanup
         run: |
           git config user.name github-actions[bot]
