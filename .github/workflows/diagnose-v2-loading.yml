@@ -52,8 +52,8 @@ jobs:
             page.on('pageerror',e=>events.push(`PAGEERROR: ${e.stack||e.message}`));
             page.on('requestfailed',r=>events.push(`REQUESTFAILED: ${r.url()} :: ${r.failure()?.errorText||'unknown'}`));
             const url='https://terajuciptabina-eng.github.io/terajuciptabina/quotation/buildplanner-v2.html?audience=contractor&contractorId=DIAG-20260918';
-            await page.goto(url,{waitUntil:'networkidle',timeout:60000});
-            await page.waitForTimeout(5000);
+            await page.goto(url,{waitUntil:'domcontentloaded',timeout:30000});
+            await page.waitForTimeout(7000);
             const state=await page.evaluate(()=>({
               href:location.href,
               masterActive:window.__TERAJU_MASTER_ENGINE_ACTIVE,
