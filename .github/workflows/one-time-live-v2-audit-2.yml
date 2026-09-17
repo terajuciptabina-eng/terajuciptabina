@@ -1,0 +1,68 @@
+name: One-time live Build Planner V2 audit 2
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  audit:
+    if: github.event.head_commit.message == 'Run one-time live V2 audit 2'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+      - name: Install Playwright
+        run: |
+          npm init -y
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+      - name: Audit deployed page
+        run: |
+          node > v2-audit.txt 2>&1 <<'NODE'
+          const { chromium } = require('playwright');
+          (async()=>{
+            const url='https://terajuciptabina-eng.github.io/terajuciptabina/quotation/buildplanner-v2.html?audience=contractor&contractorId=CTR-20260908-4TME';
+            const browser=await chromium.launch({headless:true});
+            const page=await browser.newPage();
+            page.on('console',m=>console.log('[CONSOLE]',m.type(),m.text()));
+            page.on('pageerror',e=>console.log('[PAGEERROR]',e.message));
+            page.on('requestfailed',r=>console.log('[REQUESTFAILED]',r.url(),r.failure()?.errorText||''));
+            page.on('response',r=>{if(r.status()>=400)console.log('[HTTP]',r.status(),r.url())});
+            const response=await page.goto(url,{waitUntil:'networkidle',timeout:30000});
+            console.log('[PAGE]',response?.status(),page.url());
+            await page.waitForTimeout(8000);
+            const state=await page.evaluate(()=>({
+              readyState:document.readyState,
+              masterActive:window.__TERAJU_MASTER_ENGINE_ACTIVE===true,
+              getAllItems:typeof window.getAllItems,
+              gateReady:window.__TERAJU_MASTER_RULE_GATE_READY===true,
+              renderer:typeof window.renderConstructionBudget,
+              engineScript:[...document.scripts].map(s=>s.src).filter(Boolean).filter(s=>s.includes('quotation-quantity-fix')),
+              budgetText:(document.querySelector('#constructionBudget')||document.querySelector('[data-construction-budget]')||document.body).innerText.slice(-5000)
+            }));
+            console.log('[STATE]',JSON.stringify(state,null,2));
+            await browser.close();
+          })().catch(e=>{console.error('[AUDIT_FATAL]',e);process.exitCode=1});
+          NODE
+          cat v2-audit.txt
+      - name: Upload audit report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: v2-live-audit
+          path: v2-audit.txt
+          retention-days: 1
+      - name: Remove audit workflow
+        if: always()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm -f .github/workflows/one-time-live-v2-audit-2.yml
+          git commit -m 'Remove one-time live V2 audit 2 workflow'
+          git push
