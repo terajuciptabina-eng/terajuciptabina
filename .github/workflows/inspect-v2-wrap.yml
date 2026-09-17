@@ -1,4 +1,4 @@
-name: Inspect V2 wrap source
+name: Inspect V2 editable renderer
 on:
   push:
     paths:
@@ -10,21 +10,21 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
-      - name: Inspect description renderer
+      - name: Inspect editable renderer
         run: |
           python - <<'PY' > .v2-inspect-output.txt
           from pathlib import Path
-          p=Path('quotation/buildplanner-v2.html')
+          p=Path('quotation/quotation-quantity-fix.js')
           s=p.read_text()
-          for needle in ['cr-description','function budgetRow','budgetRow=','budgetRow(']:
+          for needle in ['data-budget-new-anchor','cr-description','function renderBudget','function budgetRow','renderConstructionBudget']:
               i=s.find(needle)
               print('\n===',needle,'index',i,'===')
-              if i>=0: print(s[max(0,i-1600):i+4200])
+              if i>=0: print(s[max(0,i-3000):i+7000])
           PY
       - name: Commit inspection output
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add .v2-inspect-output.txt
-          git commit -m 'Temporary V2 wrap inspection output'
+          git commit -m 'Temporary V2 editable renderer inspection output'
           git push
