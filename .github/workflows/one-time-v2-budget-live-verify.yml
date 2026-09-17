@@ -1,0 +1,57 @@
+name: one-time-v2-budget-live-verify
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify live Build Planner V2
+        run: |
+          mkdir -p /tmp/v2verify && cd /tmp/v2verify
+          npm init -y >/dev/null 2>&1
+          npm install playwright --silent
+          npx playwright install chromium --with-deps >/dev/null 2>&1
+          node <<'NODE'
+          const {chromium}=require('playwright');
+          const crypto=require('crypto');
+          (async()=>{
+            const u='https://terajuciptabina-eng.github.io/terajuciptabina/quotation/buildplanner-v2.html?audience=contractor&contractorId=CTR-20260909-KMHM&quotationId=QT-BLD-MTVQWWEZ-GXIU';
+            const state={customerName:'',projectLocation:'',builtUpArea:'200',rooms:[{id:'room-1',name:'Living',type:'living',area:'200'}],rates:{},customRates:[],customQuantities:[],customDescriptions:[],customRoomLabels:[],excludedItems:[],manualItems:[],standardRateItems:[],quotationType:'simple'};
+            const b=await chromium.launch({headless:true});
+            const p=await b.newPage();
+            const errors=[];
+            p.on('console',m=>{if(m.type()==='error'){errors.push(m.text());console.log('CONSOLE_ERROR',m.text())}});
+            p.on('pageerror',e=>{errors.push(e.message);console.log('PAGEERROR',e.message)});
+            await p.addInitScript(({state})=>{localStorage.setItem('teraju.contractor.local.v1.activeContractorId','CTR-20260909-KMHM');localStorage.setItem('teraju.contractor.local.v1.CTR-20260909-KMHM.build',JSON.stringify(state))},{state});
+            let scriptInfo=null;
+            for(let attempt=0;attempt<12;attempt++){
+              try{
+                const r=await p.goto(u,{waitUntil:'domcontentloaded',timeout:30000});
+                const script=await p.evaluate(()=>[...document.scripts].find(s=>s.src.includes('quotation-quantity-fix.js'))?.src||'');
+                if(script){const rr=await p.request.get(script);const t=await rr.text();scriptInfo={status:rr.status(),bytes:t.length,sha256:crypto.createHash('sha256').update(t).digest('hex'),hasLocalN:t.includes('/* TERAJU V2 ITEM ACTIONS 20260917 */')&&t.includes('const N=v=>Number.isFinite(Number(v))?Number(v):0;'),hasNestedBad:t.includes("const N=v=>Number.isFinite(Number(v))?Number(v):0;\\n(function(){\\n'use strict';")};console.log('SCRIPT',JSON.stringify(scriptInfo));if(scriptInfo.hasLocalN&&!scriptInfo.hasNestedBad)break;}
+              }catch(e){console.log('NAV_RETRY',e.message)}
+              await p.waitForTimeout(10000);
+            }
+            await p.waitForTimeout(4000);
+            const final=await p.evaluate(()=>({active:window.__TERAJU_MASTER_ENGINE_ACTIVE,gate:window.__TERAJU_MASTER_RULE_GATE_READY,getAll:typeof window.getAllItems,render:typeof window.renderConstructionBudget,rooms:[...document.querySelectorAll('#roomsContainer .room-card')].map(r=>({type:r.querySelector('.room-type')?.value,name:r.querySelector('.room-name')?.value,area:r.querySelector('.room-area')?.value})),text:document.getElementById('constructionBudgetContent')?.innerText||'',html:(document.getElementById('constructionBudgetContent')?.innerHTML||'').slice(0,900)}));
+            console.log('FINAL',JSON.stringify(final));
+            const fatalN=errors.some(x=>/ReferenceError:\s*N is not defined/.test(x)||/N is not defined/.test(x));
+            const ok=scriptInfo?.hasLocalN===true&&scriptInfo?.hasNestedBad!==true&&final.active===true&&final.getAll==='function'&&final.render==='function'&&final.rooms.length===1&&final.rooms[0].area==='200'&&!final.text.includes('Loading Global Calculation Rules')&&!fatalN;
+            if(!ok){console.error('VERIFY_FAILED',JSON.stringify({scriptInfo,final,fatalN,errors}));process.exit(1)}
+            console.log('VERIFY_OK');
+            await b.close();
+          })().catch(e=>{console.error(e);process.exit(1)});
+          NODE
+      - name: Remove workflow
+        if: always()
+        run: |
+          rm -f .github/workflows/one-time-v2-budget-live-verify.yml
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add .github/workflows/one-time-v2-budget-live-verify.yml
+          git diff --cached --quiet || git commit -m "Remove one-time V2 live verification"
+          git push
