@@ -214,8 +214,9 @@
     }
   };
 
-  const timer=setInterval(enforce,50);
-  setTimeout(()=>clearInterval(timer),30000);
+  // Keep enforcing for the lifetime of the V2 page. The master engine may finish loading
+  // after the initial 30-second window and must never replace the editable V2 renderer.
+  setInterval(enforce,50);
   if(document.readyState!=='loading')enforce();
   else document.addEventListener('DOMContentLoaded',enforce,{once:true});
 })();
