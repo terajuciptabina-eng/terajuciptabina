@@ -292,11 +292,14 @@ function generateQuotation(typeOverride){
  }else{
   body+=`<div class="overflow-x-auto"><table class="w-full border-collapse text-sm simple-quotation-table"><colgroup><col style="width:6%"><col style="width:18%"><col style="width:56%"><col style="width:20%"></colgroup><thead><tr class="border-b-2 text-left"><th class="py-3 px-2">No.</th><th class="py-3 px-2">Work Section</th><th class="py-3 px-2">Description of Works</th><th class="py-3 px-2 text-right">Amount (RM)</th></tr></thead><tbody>`;
   let no=1;
-  const renderSimpleNode=(node,prefix)=>{
-   body+=`<tr class="quotation-subsection-row"><td></td><td colspan="3" class="py-2 px-2">${escQ(prefix?prefix+' / '+node.label:node.label)}</td></tr>`;
-   node.nodes.forEach(n=>renderSimpleNode(n,prefix?prefix+' / '+node.label:node.label));
+  const renderSimpleNode=(node,depth)=>{
+   const cls=depth===0?'quotation-subsection-row':'quotation-subsubsection-row';
+   body+=`<tr class="${cls}"><td></td><td colspan="3" class="py-2 px-2">${escQ(node.label)}</td></tr>`;
+   node.nodes.forEach(n=>renderSimpleNode(n,depth+1));
    if(node.items.length){
-    body+=`<tr><td></td><td class="py-2 px-2 font-semibold">${escQ(node.label)}</td><td class="py-2 px-2">${node.items.map(i=>escQ(i.description)).join('<br>')}</td><td class="py-2 px-2 text-right font-semibold">${moneyQ(node.items.reduce((s,i)=>s+Number(i.amount||0),0))}</td></tr>`;
+    node.items.forEach(i=>{
+     body+=`<tr><td></td><td class="py-2 px-2 font-semibold">${escQ(node.label)}</td><td class="py-2 px-2">${escQ(i.description)}</td><td class="py-2 px-2 text-right font-semibold">${moneyQ(i.amount)}</td></tr>`;
+    });
    }
   };
   tree.forEach(g=>{
