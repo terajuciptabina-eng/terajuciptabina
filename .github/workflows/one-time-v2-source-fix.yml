@@ -21,12 +21,9 @@ jobs:
           p.write_text(s.replace(old,new,1))
           PY
           grep -F "let attempts=0" quotation/quotation-quantity-fix.js
-      - name: Remove one-time workflow
-        run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm .github/workflows/one-time-v2-source-fix.yml
           git add quotation/quotation-quantity-fix.js
           git commit -m 'Fix Build Planner V2 master load and render sequencing'
-          git rm .github/workflows/one-time-v2-source-fix.yml
-          git commit -m 'Remove one-time V2 source fix workflow'
           git push
