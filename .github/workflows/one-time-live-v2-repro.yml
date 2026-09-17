@@ -1,0 +1,93 @@
+name: One-time live Build Planner V2 repro
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  audit:
+    if: github.event.head_commit.message == 'Run one-time live V2 repro'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+      - name: Install Playwright
+        run: |
+          npm init -y
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+      - name: Reproduce contractor rooms
+        run: |
+          node > v2-repro.txt 2>&1 <<'NODE'
+          const { chromium } = require('playwright');
+          (async()=>{
+            const url='https://terajuciptabina-eng.github.io/terajuciptabina/quotation/buildplanner-v2.html?audience=contractor&contractorId=CTR-20260908-4TME';
+            const browser=await chromium.launch({headless:true});
+            const page=await browser.newPage();
+            page.on('console',m=>console.log('[CONSOLE]',m.type(),m.text()));
+            page.on('pageerror',e=>console.log('[PAGEERROR]',e.message));
+            page.on('requestfailed',r=>console.log('[REQUESTFAILED]',r.url(),r.failure()?.errorText||''));
+            page.on('response',r=>{if(r.status()>=400)console.log('[HTTP]',r.status(),r.url())});
+            await page.goto(url,{waitUntil:'networkidle',timeout:30000});
+            await page.waitForTimeout(3000);
+            console.log('[SELECTS]',await page.locator('select').evaluateAll(xs=>xs.map((x,i)=>({i,id:x.id,name:x.name,value:x.value,options:[...x.options].map(o=>o.text)}))));
+            console.log('[BUTTONS]',await page.locator('button').evaluateAll(xs=>xs.map((x,i)=>({i,text:x.innerText.trim(),id:x.id})).filter(x=>x.text.includes('Add Room')||x.text.includes('Remove'))));
+            const stateSel=page.locator('select').filter({hasText:'Selangor'}).first();
+            if(await stateSel.count()){
+              await stateSel.selectOption({label:'Selangor'});
+              await page.waitForTimeout(1000);
+            }
+            const add=page.getByRole('button',{name:/Add Room \/ Area/i});
+            await add.click();
+            await page.waitForTimeout(500);
+            console.log('[ROOMS1]',await page.locator('.room-card').count());
+            const roomSelects=page.locator('.room-card select');
+            const roomInputs=page.locator('.room-card input');
+            console.log('[ROOM_SELECTS]',await roomSelects.evaluateAll(xs=>xs.map(x=>({id:x.id,name:x.name,value:x.value,options:[...x.options].map(o=>o.text)}))));
+            console.log('[ROOM_INPUTS]',await roomInputs.evaluateAll(xs=>xs.map(x=>({id:x.id,name:x.name,value:x.value,type:x.type}))));
+            if(await roomSelects.count())await roomSelects.nth(0).selectOption({label:'Living'});
+            if(await roomInputs.count())await roomInputs.nth(0).fill('Living');
+            if(await roomInputs.count()>1)await roomInputs.nth(1).fill('1200');
+            await page.waitForTimeout(500);
+            await add.click();
+            await page.waitForTimeout(500);
+            const rs=page.locator('.room-card select'), ri=page.locator('.room-card input');
+            if(await rs.count()>1)await rs.nth(1).selectOption({label:'Bathroom'});
+            if(await ri.count()>2)await ri.nth(2).fill('Bathroom');
+            if(await ri.count()>3)await ri.nth(3).fill('48');
+            await page.waitForTimeout(6000);
+            const state=await page.evaluate(()=>({
+              masterActive:window.__TERAJU_MASTER_ENGINE_ACTIVE===true,
+              getAllItems:typeof window.getAllItems,
+              gateReady:window.__TERAJU_MASTER_RULE_GATE_READY===true,
+              renderer:typeof window.renderConstructionBudget,
+              rooms:[...document.querySelectorAll('.room-card')].map(x=>x.innerText.trim()),
+              budget:(document.querySelector('#constructionBudget')||document.querySelector('[data-construction-budget]'))?.innerText||'',
+              bodyTail:document.body.innerText.slice(-4000)
+            }));
+            console.log('[FINAL]',JSON.stringify(state,null,2));
+            await browser.close();
+          })().catch(e=>{console.error('[AUDIT_FATAL]',e);process.exitCode=1});
+          NODE
+          cat v2-repro.txt
+      - name: Upload repro report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: v2-live-repro
+          path: v2-repro.txt
+          retention-days: 1
+      - name: Remove repro workflow
+        if: always()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm -f .github/workflows/one-time-live-v2-repro.yml
+          git commit -m 'Remove one-time live V2 repro workflow'
+          git push
