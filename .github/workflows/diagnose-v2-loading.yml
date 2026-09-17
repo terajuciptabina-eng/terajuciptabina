@@ -42,7 +42,7 @@ jobs:
           npm init -y >/dev/null 2>&1
           npm install playwright@1.55.0 >/dev/null 2>&1
           npx playwright install --with-deps chromium >/dev/null 2>&1
-          cat > /tmp/v2-runtime.js <<'EOF'
+          cat > v2-runtime.js <<'EOF'
           const { chromium } = require('playwright');
           (async()=>{
             const browser=await chromium.launch({headless:true});
@@ -68,4 +68,4 @@ jobs:
             await browser.close();
           })().catch(e=>{console.error(e);process.exit(3)});
           EOF
-          node /tmp/v2-runtime.js
+          node v2-runtime.js
