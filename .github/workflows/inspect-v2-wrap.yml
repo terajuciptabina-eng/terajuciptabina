@@ -6,16 +6,25 @@ on:
 jobs:
   inspect:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
       - name: Inspect description renderer
         run: |
-          python - <<'PY'
+          python - <<'PY' > .v2-inspect-output.txt
           from pathlib import Path
           p=Path('quotation/buildplanner-v2.html')
           s=p.read_text()
           for needle in ['cr-description','function budgetRow','budgetRow=','budgetRow(']:
               i=s.find(needle)
               print('\n===',needle,'index',i,'===')
-              if i>=0: print(s[max(0,i-1200):i+3000])
+              if i>=0: print(s[max(0,i-1600):i+4200])
           PY
+      - name: Commit inspection output
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .v2-inspect-output.txt
+          git commit -m 'Temporary V2 wrap inspection output'
+          git push
