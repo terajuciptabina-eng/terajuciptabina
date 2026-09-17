@@ -220,21 +220,4 @@
   else document.addEventListener('DOMContentLoaded',enforce,{once:true});
 })();
 
-// Build Planner V2 hierarchy normalization. Uses masterPath only for display hierarchy.
-(function(){
-  if(!/buildplanner-v2\.html$/i.test(location.pathname))return;
-  const script=document.createElement('script');
-  script.src='buildplanner-v2-hierarchy.js?v='+Date.now();
-  script.async=false;
-  document.head.appendChild(script);
-})();
 
-// Build Planner V2 category normalization. DOORS / WINDOWS must remain DOORS & WINDOWS,
-// not ARCHITECTURAL WORKS, while ARCHITECTURES remain ARCHITECTURAL WORKS.
-(function(){
-  if(!/buildplanner-v2\.html$/i.test(location.pathname))return;
-  const script=document.createElement('script');
-  script.src='buildplanner-v2-category-fix.js?v='+Date.now();
-  script.async=false;
-  document.head.appendChild(script);
-})();
