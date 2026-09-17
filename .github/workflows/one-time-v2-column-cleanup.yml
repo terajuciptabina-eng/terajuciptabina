@@ -1,0 +1,39 @@
+name: One-time V2 column cleanup
+on:
+  push:
+    paths:
+      - '.v2-column-cleanup-trigger'
+permissions:
+  contents: write
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Normalize V2 budget table back to six columns
+        shell: python
+        run: |
+          from pathlib import Path
+          p=Path('quotation/quotation-quantity-fix.js')
+          s=p.read_text()
+          start=s.index('window.renderConstructionBudget=function(){')
+          end=s.index('\n};\n})();',start)+3
+          block=s[start:end]
+          block=block.replace('<th class="py-3 px-2"></th></tr>','</tr>')
+          block=block.replace('<td colspan="7">','<td colspan="6">')
+          block=block.replace('<td colspan="7" class="py-1 px-2">','<td colspan="6" class="py-1 px-2">')
+          block=block.replace('<td></td></tr>`}</tbody><tfoot><tr class="border-t-2"><td colspan="5"','</tr>`}</tbody><tfoot><tr class="border-t-2"><td colspan="5"')
+          block=block.replace('<td></td></tfoot>','</tfoot>')
+          block=block.replace('<td></td></tr></tfoot>','</tr></tfoot>')
+          block=block.replace('<td></td></tr>`;c.innerHTML=h','</tr>`;c.innerHTML=h')
+          s=s[:start]+block+s[end:]
+          p.write_text(s)
+          Path('.github/workflows/one-time-v2-column-cleanup.yml').unlink()
+          Path('.v2-column-cleanup-trigger').unlink()
+      - name: Commit clean six-column V2 renderer
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add quotation/quotation-quantity-fix.js .github/workflows/one-time-v2-column-cleanup.yml .v2-column-cleanup-trigger
+          git commit -m 'Keep V2 contractor budget six-column layout'
+          git push
