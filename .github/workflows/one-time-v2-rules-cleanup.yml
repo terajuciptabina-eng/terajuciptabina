@@ -1,0 +1,53 @@
+name: One-time V2 rules cleanup
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+jobs:
+  cleanup:
+    if: ${{ !contains(github.event.head_commit.message, 'V2 rules cleanup') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fix master category from Global Calculation Rules
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          p=Path('quotation/quotation-quantity-fix.js')
+          s=p.read_text()
+          old=re.search(r'function category\(p\)\{.*?\n?function item\(',s,re.S)
+          if not old: raise SystemExit('category function not found')
+          new="""function category(p){const g=String(rule(p)?.[0]||'').trim().toUpperCase();if(g==='PRELIMINARIES')return'preliminaries';if(g==='STRUCTURES')return'structures';if(g==='ARCHITECTURES')return'architecture';if(g==='ELECTRICAL')return'electrical';if(g==='DOORS & WINDOWS')return'doors-windows';if(g==='EXTERNAL WORK')return'external-work';return'structures'}\nfunction item("""
+          s=s[:old.start()]+new+s[old.end():]
+          p.write_text(s)
+
+          p=Path('quotation/buildplanner-v2.html')
+          s=p.read_text()
+          s=s.replace("pushItem(items,`${roomId}-door`,roomId,label,'architecture'", "pushItem(items,`${roomId}-door`,roomId,label,'doors-windows'")
+          s=s.replace("pushItem(items,`${roomId}-window`,roomId,label,'architecture'", "pushItem(items,`${roomId}-window`,roomId,label,'doors-windows'")
+          s=s.replace("const groups=[['preliminaries','PRELIMINARIES'],['structures','STRUCTURAL WORKS'],['architecture','ARCHITECTURAL WORKS'],['electrical','ELECTRICAL WORKS']];", "const groups=[['preliminaries','PRELIMINARIES'],['structures','STRUCTURAL WORKS'],['architecture','ARCHITECTURAL WORKS'],['electrical','ELECTRICAL WORKS'],['doors-windows','DOORS & WINDOWS'],['external-work','EXTERNAL WORKS']];")
+          old=r"if\(cat==='structures'\|\|cat==='architecture'\)\{const gs=\[\];items\.forEach\(i=>\{const key=cat==='structures'\?\(i\.groupKey\|\|'other'\):\(i\.roomId\|\|'project'\),label=cat==='structures'\?\(i\.groupTitle\|\|'Other Structural Works'\):\(i\.room\|\|'Project'\);let g=gs\.find\(x=>x\.key===key\);if\(!g\)\{g=\{key,label,items:\[\]\};gs\.push\(g\)\}g\.items\.push\(i\)\}\);gs\.forEach\(g=>\{h\+=`<tr class=\"cr-hierarchy-row cr-level-2\"><td colspan=\"6\">\$\{escapeHtml\(g\.label\)\}</td></tr>`;g\.items\.forEach\(i=>\{h\+=budgetRow\(i,no\+\+\)\}\)\}\)\}else items\.forEach\(i=>\{h\+=budgetRow\(i,no\+\+\)\}\)"
+          replacement="""const gs=[];items.forEach(i=>{const path=String(i.masterPath||'').split('/').map(x=>x.trim()).filter(Boolean);const levels=path.length>1?path.slice(0,-1):(cat==='structures'?[i.groupTitle||'Structural Works']:cat==='architecture'?[i.room||'Architectural Works']:[]);const key=levels.join(' / ')||cat;let g=gs.find(x=>x.key===key);if(!g){g={key,levels,items:[]};gs.push(g)}g.items.push(i)});gs.forEach(g=>{g.levels.forEach((level,idx)=>{h+=`<tr class=\"cr-hierarchy-row cr-level-${idx+2}\"><td colspan=\"6\">${escapeHtml(level)}</td></tr>`});g.items.forEach(i=>{h+=budgetRow(i,no++)})})"""
+          ns=re.sub(old,replacement,s)
+          if ns==s: raise SystemExit('renderer grouping block not found')
+          p.write_text(ns)
+
+          p=Path('quotation/location-autocomplete.js')
+          s=p.read_text()
+          s=re.sub(r"\n// Build Planner V2 hierarchy normalization\..*?document\.head\.appendChild\(script\);\n\}\)\(\);\n", "\n", s, flags=re.S)
+          s=re.sub(r"\n// Build Planner V2 category normalization\..*?document\.head\.appendChild\(script\);\n\}\)\(\);\n", "\n", s, flags=re.S)
+          p.write_text(s)
+          PY
+      - name: Remove obsolete hierarchy/category files
+        run: |
+          rm -f quotation/buildplanner-v2-category-fix.js quotation/buildplanner-v2-hierarchy.js
+      - name: Commit
+        run: |
+          git config user.name 'teraju-ciptabina'
+          git config user.email 'terajuciptabina-eng@users.noreply.github.com'
+          git add quotation/quotation-quantity-fix.js quotation/buildplanner-v2.html quotation/location-autocomplete.js
+          git rm -f quotation/buildplanner-v2-category-fix.js quotation/buildplanner-v2-hierarchy.js 2>/dev/null || true
+          git commit -m 'V2 rules cleanup' || exit 0
+          git push
