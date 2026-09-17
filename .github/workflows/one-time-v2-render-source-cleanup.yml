@@ -22,27 +22,19 @@ jobs:
           const d="const all=window.getAllItems(),active=";
           const e="const item=(typeof getAllItems==='function'?getAllItems():[]).find(x=>x.id===id);";
           const f="const item=(typeof window.getAllItems==='function'?window.getAllItems():[]).find(x=>x.id===id);";
-          console.log('ready index',s.indexOf(a));
-          console.log('all index',s.indexOf(c));
-          console.log('renderer index',s.indexOf('function renderConstructionBudget(){'));
+          if(!s.includes(a)) throw new Error('V2 readiness source pattern not found');
           s=s.replace(a,b);
           s=s.replace(c,d);
           s=s.replace(e,f);
-          const start=s.indexOf('function renderConstructionBudget(){');
-          const end=s.indexOf('function budgetRow(',start);
-          if(start<0||end<0) throw new Error('legacy renderer boundary not found');
-          const delegate="function renderConstructionBudget(){if(typeof window.renderConstructionBudget==='function'&&window.renderConstructionBudget!==renderConstructionBudget)return window.renderConstructionBudget();}";
-          s=s.slice(0,start)+delegate+s.slice(end);
           fs.writeFileSync(p,s);
-          console.log('written',s.length);
+          console.log('updated readiness and V2 item access');
           NODE
           git diff --check
           grep -q "const ready=window.__TERAJU_MASTER_ENGINE_ACTIVE===true&&typeof window.getAllItems==='function';" quotation/quotation-quantity-fix.js
-          grep -q "const all=window.getAllItems(),active=" quotation/quotation-quantity-fix.js
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
           git add quotation/quotation-quantity-fix.js
-          git commit -m "Use master renderer ownership in Build Planner V2"
+          git commit -m "Use master engine readiness in Build Planner V2"
           git push
       - name: Remove workflow
         run: |
