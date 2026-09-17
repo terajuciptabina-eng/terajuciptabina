@@ -33,8 +33,6 @@ main().catch(e=>console.error('[TERAJU MASTER 20260922]',e));
 (function(){
 'use strict';
 const N=v=>Number.isFinite(Number(v))?Number(v):0;
-(function(){
-'use strict';
 if(!/buildplanner-v2\.html$/i.test(location.pathname))return;
 if(window.__TERAJU_V2_ITEM_ACTIONS)return;
 window.__TERAJU_V2_ITEM_ACTIONS=true;
