@@ -338,7 +338,13 @@ applyAudienceUI();if(isHomeowner()){document.getElementById('roomsContainer').in
             if(sub.label)body+=`<tr class="quotation-subsection-row"><td colspan="4" class="py-2 px-2">${esc(sub.label)}</td></tr>`;
             sub.levels.forEach(level=>{
               if(level.label)body+=`<tr class="quotation-subsubsection-row"><td colspan="4" class="py-2 px-2">${esc(level.label)}</td></tr>`;
-              level.items.forEach(i=>{const roomLabel=i.room&&i.room!=='Project'?i.room:'';body+=`<tr class="border-b align-top"><td class="py-2 px-2 text-gray-500">${n++}</td><td class="py-2 px-2">${esc(roomLabel)}</td><td class="py-2 px-2">${esc(i.description)}</td><td class="py-2 px-2 text-right font-semibold">${money(i.amount)}</td></tr>`});
+              const grouped=level.items||[];
+              if(!grouped.length)return;
+              const roomNames=[...new Set(grouped.map(i=>i.room&&i.room!=='Project'?i.room:'').filter(Boolean))];
+              const roomLabel=roomNames.join(', ');
+              const description=grouped.map(i=>i.description).filter(Boolean).join('<br>');
+              const amount=grouped.reduce((sum,i)=>sum+num(i.amount),0);
+              body+=`<tr class="border-b align-top"><td class="py-2 px-2 text-gray-500">${n++}</td><td class="py-2 px-2">${esc(roomLabel)}</td><td class="py-2 px-2">${description}</td><td class="py-2 px-2 text-right font-semibold">${money(amount)}</td></tr>`;
             });
           });
         });
