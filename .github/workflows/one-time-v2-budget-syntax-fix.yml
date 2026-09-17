@@ -1,0 +1,42 @@
+name: one-time-v2-budget-syntax-fix
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Repair V2 IIFE insertion
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('quotation/quotation-quantity-fix.js')
+          s=p.read_text()
+          bad="/* TERAJU V2 ITEM ACTIONS 20260917 */\n(function(){\n'use strict';\nconst N=v=>Number.isFinite(Number(v))?Number(v):0;(function(){\n'use strict';"
+          good="/* TERAJU V2 ITEM ACTIONS 20260917 */\n(function(){\n'use strict';\nconst N=v=>Number.isFinite(Number(v))?Number(v):0;"
+          if bad not in s:
+            raise SystemExit('Expected erroneous nested IIFE insertion not found; refusing edit')
+          s=s.replace(bad,good,1)
+          p.write_text(s)
+          print('Repaired V2 IIFE: N helper is now inside the existing V2 action IIFE')
+          PY
+          git diff --check
+      - name: Commit repair
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add quotation/quotation-quantity-fix.js
+          git commit -m "Repair V2 budget helper scope"
+          git push
+      - name: Remove workflow
+        if: always()
+        run: |
+          rm -f .github/workflows/one-time-v2-budget-syntax-fix.yml
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add .github/workflows/one-time-v2-budget-syntax-fix.yml
+          git diff --cached --quiet || git commit -m "Remove one-time V2 syntax fix workflow"
+          git push
