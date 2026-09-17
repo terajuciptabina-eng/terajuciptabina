@@ -1,0 +1,48 @@
+name: one-time-v2-render-source-cleanup
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+jobs:
+  cleanup:
+    if: github.event.head_commit.message == 'Arm one-time V2 renderer source cleanup'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Transform source
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+          p=Path('quotation/quotation-quantity-fix.js')
+          s=p.read_text(encoding='utf-8')
+          print('length',len(s))
+          markers=["const ready=typeof getAllItems==='function';","const all=(typeof getAllItems==='function'?getAllItems():[]),active=","function renderConstructionBudget(){","function budgetRow("]
+          for m in markers: print(m, s.find(m))
+          s2=s.replace("const ready=typeof getAllItems==='function';","const ready=window.__TERAJU_MASTER_ENGINE_ACTIVE===true&&typeof window.getAllItems==='function';",1)
+          s2=s2.replace("const all=(typeof getAllItems==='function'?getAllItems():[]),active=","const all=window.getAllItems(),active=",1)
+          s2=s2.replace("const item=(typeof getAllItems==='function'?getAllItems():[]).find(x=>x.id===id);","const item=(typeof window.getAllItems==='function'?window.getAllItems():[]).find(x=>x.id===id);",1)
+          start=s2.find('function renderConstructionBudget(){')
+          end=s2.find('function budgetRow(',start)
+          if start>=0 and end>start:
+              s2=s2[:start]+"function renderConstructionBudget(){if(typeof window.renderConstructionBudget==='function'&&window.renderConstructionBudget!==renderConstructionBudget)return window.renderConstructionBudget();}"+s2[end:]
+          else:
+              raise SystemExit('legacy renderer boundary not found')
+          p.write_text(s2,encoding='utf-8')
+          print('changed',s!=s2)
+      - name: Validate and commit
+        run: |
+          grep -q "const ready=window.__TERAJU_MASTER_ENGINE_ACTIVE===true&&typeof window.getAllItems='" quotation/quotation-quantity-fix.js
+          git diff --check
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add quotation/quotation-quantity-fix.js
+          git commit -m "Use master renderer ownership in Build Planner V2"
+          git push
+      - name: Remove workflow
+        run: |
+          rm -f .github/workflows/one-time-v2-render-source-cleanup.yml
+          git add .github/workflows/one-time-v2-render-source-cleanup.yml
+          git commit -m "Remove one-time V2 renderer cleanup workflow"
+          git push
