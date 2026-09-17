@@ -1,0 +1,34 @@
+name: Fix V2 summary alignment
+on:
+  push:
+    branches: [main]
+jobs:
+  update:
+    if: github.actor == 'terajuciptabina-eng'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fix summary group name alignment
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('quotation/quotation-quantity-fix.js')
+          s=p.read_text()
+          old='class="border-b cr-group-summary-row"><td colspan="5" class="py-2 px-2 text-right">${esc(title)}</td><td class="py-2 px-2 text-right font-semibold">'
+          new='class="border-b cr-group-summary-row"><td colspan="5" class="py-2 px-2 text-left">${esc(title)}</td><td class="py-2 px-2 text-right font-semibold">'
+          if old not in s:
+              raise SystemExit('Expected summary alignment source pattern not found')
+          p.write_text(s.replace(old,new,1))
+          PY
+          node --check quotation/quotation-quantity-fix.js
+      - name: Commit source change and remove workflow
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add quotation/quotation-quantity-fix.js .github/workflows/fix-v2-summary-alignment.yml
+          git commit -m 'Align V2 group summary names left' || exit 0
+          git rm .github/workflows/fix-v2-summary-alignment.yml
+          git commit -m 'Remove one-time V2 summary alignment workflow'
+          git push
