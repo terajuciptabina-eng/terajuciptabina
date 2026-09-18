@@ -57,23 +57,23 @@
       .optional-scope .optional-rate { width: 90px !important; min-width: 90px !important; flex: 0 0 90px; }
       #customerSummary { grid-template-columns: minmax(0, 1fr) !important; gap: 12px !important; }
       #estimateContent input[type="number"], #estimateContent input[type="text"] { min-height: 42px; }
-      input[name="cost estimateType"] { min-height: 20px; width: 20px; flex-shrink: 0; }
-      .cost estimate-option { width: 100%; }
-      #cost estimateDocument { width: 100%; max-width: 100%; padding: 16px !important; }
-      #cost estimateContent { width: 100%; max-width: 100%; min-width: 0; }
-      #cost estimateContent > div:first-child { flex-direction: column !important; gap: 16px !important; }
-      #cost estimateContent > div:first-child > div:first-child,
-      #cost estimateContent > div:first-child > div:last-child { width: 100%; }
-      #cost estimateContent > div:first-child > div:last-child { text-align: left !important; }
-      #cost estimateContent > div:first-child img { height: 48px !important; max-width: 150px; }
-      #cost estimateContent > div:first-child h1 { font-size: 16px !important; }
-      #cost estimateContent > div:first-child h2 { font-size: 22px !important; }
-      #cost estimateContent > div:nth-child(2) { grid-template-columns: minmax(0, 1fr) !important; }
-      #cost estimateContent .overflow-x-auto { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-      #cost estimateContent table { min-width: 680px; }
-      #cost estimateContent table th, #cost estimateContent table td { padding: 9px 7px !important; }
-      #cost estimatePrintActions { width: 100%; justify-content: stretch !important; }
-      #cost estimatePrintActions button { width: 100%; min-height: 48px; }
+      input[name="quotationType"] { min-height: 20px; width: 20px; flex-shrink: 0; }
+      .quotation-option { width: 100%; }
+      #quotationDocument { width: 100%; max-width: 100%; padding: 16px !important; }
+      #quotationContent { width: 100%; max-width: 100%; min-width: 0; }
+      #quotationContent > div:first-child { flex-direction: column !important; gap: 16px !important; }
+      #quotationContent > div:first-child > div:first-child,
+      #quotationContent > div:first-child > div:last-child { width: 100%; }
+      #quotationContent > div:first-child > div:last-child { text-align: left !important; }
+      #quotationContent > div:first-child img { height: 48px !important; max-width: 150px; }
+      #quotationContent > div:first-child h1 { font-size: 16px !important; }
+      #quotationContent > div:first-child h2 { font-size: 22px !important; }
+      #quotationContent > div:nth-child(2) { grid-template-columns: minmax(0, 1fr) !important; }
+      #quotationContent .overflow-x-auto { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+      #quotationContent table { min-width: 680px; }
+      #quotationContent table th, #quotationContent table td { padding: 9px 7px !important; }
+      #quotationPrintActions { width: 100%; justify-content: stretch !important; }
+      #quotationPrintActions button { width: 100%; min-height: 48px; }
       main > section:last-child { padding: 14px !important; }
       main > section:last-child h3 { font-size: 20px !important; }
       main > section:last-child a { width: 100%; text-align: center; min-height: 42px; display: flex; align-items: center; justify-content: center; }
@@ -89,8 +89,8 @@
       header h1 { font-size: 14px !important; }
     }
 
-    .detailed-cost estimate-table { width: 100%; table-layout: fixed; }
-    .simple-cost estimate-table { width: 100%; table-layout: fixed; }
+    .detailed-quotation-table { width: 100%; table-layout: fixed; }
+    .simple-quotation-table { width: 100%; table-layout: fixed; }
 
     /* Keep estimate totals on the exact same columns as the estimate table. */
     .estimate-total-summary {
@@ -169,50 +169,50 @@
     -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important;
   }
 
-  /* Print only the generated cost estimate. Keep its normal web styling. */
-  body.print-cost estimate > header,
-  body.print-cost estimate > main > section:not(#cost estimateDocument),
-  body.print-cost estimate .no-print,
-  body.print-cost estimate #cost estimatePrintActions { display: none !important; }
+  /* Print only the generated quotation. Keep its normal web styling. */
+  body.print-quotation > header,
+  body.print-quotation > main > section:not(#quotationDocument),
+  body.print-quotation .no-print,
+  body.print-quotation #quotationPrintActions { display: none !important; }
 
-  body.print-cost estimate > main {
+  body.print-quotation > main {
     display: block !important; width: 100% !important; max-width: none !important;
     margin: 0 !important; padding: 0 !important;
   }
 
-  body.print-cost estimate #cost estimateDocument {
+  body.print-quotation #quotationDocument {
     display: block !important; width: 100% !important; max-width: none !important;
     margin: 0 !important; padding: 24px !important;
     background: #fff !important; box-shadow: none !important;
     border: none !important; border-radius: 0 !important;
   }
 
-  body.print-cost estimate #cost estimateContent {
+  body.print-quotation #quotationContent {
     width: 100% !important; max-width: none !important;
     font-size: inherit !important; line-height: inherit !important;
   }
 
-  body.print-cost estimate #cost estimateContent .overflow-x-auto {
+  body.print-quotation #quotationContent .overflow-x-auto {
     overflow: visible !important; width: 100% !important;
   }
 
-  body.print-cost estimate #cost estimateContent table {
+  body.print-quotation #quotationContent table {
     width: 100% !important; table-layout: fixed !important; border-collapse: collapse !important;
   }
 
-  body.print-cost estimate #cost estimateContent table thead { display: table-header-group !important; }
-  body.print-cost estimate #cost estimateContent table tr {
+  body.print-quotation #quotationContent table thead { display: table-header-group !important; }
+  body.print-quotation #quotationContent table tr {
     break-inside: avoid !important; page-break-inside: avoid !important;
   }
-  body.print-cost estimate #cost estimateContent table th,
-  body.print-cost estimate #cost estimateContent table td { vertical-align: top !important; }
+  body.print-quotation #quotationContent table th,
+  body.print-quotation #quotationContent table td { vertical-align: top !important; }
 
-  body.print-cost estimate .cost estimate-section-row td,
-  body.print-cost estimate .cost estimate-subsection-row td {
+  body.print-quotation .quotation-section-row td,
+  body.print-quotation .quotation-subsection-row td {
     -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important;
   }
 
-  body.print-cost estimate #cost estimateContent tfoot {
+  body.print-quotation #quotationContent tfoot {
     break-inside: avoid !important; page-break-inside: avoid !important;
   }
 }
@@ -221,43 +221,43 @@
     .payment-modal-backdrop.open { display: flex; }
     .payment-modal { width: min(560px, 100%); max-height: calc(100vh - 40px); overflow-y: auto; background: #fff; border-radius: 18px; box-shadow: 0 20px 60px rgba(0,0,0,.25); }
 
-/* Detailed cost estimate access gate */
-#cost estimateDocument{position:relative}
-#cost estimateContent.cost estimate-locked{filter:blur(7px);user-select:none;pointer-events:none}
-#cost estimateDocument.detailed-locked #cost estimatePrintActions{opacity:.45;pointer-events:none}
-.cost estimate-lock-overlay{position:absolute;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(255,255,255,.30);backdrop-filter:blur(1px);-webkit-backdrop-filter:blur(1px)}
-.cost estimate-lock-card{width:min(420px,100%);background:rgba(255,255,255,.97);border:1px solid rgba(0,0,0,.12);border-radius:20px;padding:28px;text-align:center;box-shadow:0 18px 50px rgba(0,0,0,.18)}
-.cost estimate-lock-icon{width:54px;height:54px;margin:0 auto 14px;border-radius:999px;display:flex;align-items:center;justify-content:center;background:#111;color:#fff;font-size:25px}
-@media print{.cost estimate-lock-overlay{display:none!important}#cost estimateContent.cost estimate-locked{filter:none!important}}
+/* Detail cost estimate access gate */
+#quotationDocument{position:relative}
+#quotationContent.quotation-locked{filter:blur(7px);user-select:none;pointer-events:none}
+#quotationDocument.detailed-locked #quotationPrintActions{opacity:.45;pointer-events:none}
+.quotation-lock-overlay{position:absolute;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(255,255,255,.30);backdrop-filter:blur(1px);-webkit-backdrop-filter:blur(1px)}
+.quotation-lock-card{width:min(420px,100%);background:rgba(255,255,255,.97);border:1px solid rgba(0,0,0,.12);border-radius:20px;padding:28px;text-align:center;box-shadow:0 18px 50px rgba(0,0,0,.18)}
+.quotation-lock-icon{width:54px;height:54px;margin:0 auto 14px;border-radius:999px;display:flex;align-items:center;justify-content:center;background:#111;color:#fff;font-size:25px}
+@media print{.quotation-lock-overlay{display:none!important}#quotationContent.quotation-locked{filter:none!important}}
 
-.contractor-cost estimate-panel{display:block!important}.contractor-cost estimate-choice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.contractor-cost estimate-choice{position:relative;display:flex;align-items:flex-start;gap:13px;padding:20px;border:1px solid #d9dee7;border-radius:16px;background:#fff;cursor:pointer;transition:.18s ease;min-height:116px}.contractor-cost estimate-choice:hover{border-color:#9ca3af;background:#fafafa}.contractor-cost estimate-choice input{position:absolute;opacity:0;pointer-events:none}.contractor-cost estimate-choice.is-selected{border-color:#111827;box-shadow:0 0 0 2px rgba(17,24,39,.06)}.choice-radio{width:19px;height:19px;border:2px solid #9ca3af;border-radius:999px;flex:0 0 19px;margin-top:2px;position:relative}.contractor-cost estimate-choice.is-selected .choice-radio{border-color:#111827}.contractor-cost estimate-choice.is-selected .choice-radio:after{content:'';position:absolute;width:9px;height:9px;border-radius:999px;background:#111827;left:3px;top:3px}.choice-copy{display:flex;flex-direction:column;gap:5px}.choice-copy strong{font-size:16px;color:#111827}.choice-copy small{font-size:13px;line-height:1.45;color:#6b7280}.choice-copy em{font-size:12px;font-style:normal;color:#15803d;font-weight:700;margin-top:2px}.contractor-cost estimate-tip{display:flex;flex-direction:column;gap:3px;margin-top:14px;padding:13px 15px;border-radius:12px;background:#f8fafc;border:1px solid #e5e7eb;font-size:13px;color:#6b7280}.contractor-cost estimate-tip strong{color:#1f2937}.contractor-generate-btn{margin-top:16px;width:100%;background:#111827;color:#fff;border:0;border-radius:12px;padding:13px 18px;font-weight:700;cursor:pointer}.contractor-generate-btn:hover{background:#000}@media(max-width:767px){.contractor-cost estimate-choice-grid{grid-template-columns:1fr}.contractor-cost estimate-choice{min-height:0}.contractor-generate-btn{min-height:48px}}
+.contractor-quotation-panel{display:block!important}.contractor-quotation-choice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.contractor-quotation-choice{position:relative;display:flex;align-items:flex-start;gap:13px;padding:20px;border:1px solid #d9dee7;border-radius:16px;background:#fff;cursor:pointer;transition:.18s ease;min-height:116px}.contractor-quotation-choice:hover{border-color:#9ca3af;background:#fafafa}.contractor-quotation-choice input{position:absolute;opacity:0;pointer-events:none}.contractor-quotation-choice.is-selected{border-color:#111827;box-shadow:0 0 0 2px rgba(17,24,39,.06)}.choice-radio{width:19px;height:19px;border:2px solid #9ca3af;border-radius:999px;flex:0 0 19px;margin-top:2px;position:relative}.contractor-quotation-choice.is-selected .choice-radio{border-color:#111827}.contractor-quotation-choice.is-selected .choice-radio:after{content:'';position:absolute;width:9px;height:9px;border-radius:999px;background:#111827;left:3px;top:3px}.choice-copy{display:flex;flex-direction:column;gap:5px}.choice-copy strong{font-size:16px;color:#111827}.choice-copy small{font-size:13px;line-height:1.45;color:#6b7280}.choice-copy em{font-size:12px;font-style:normal;color:#15803d;font-weight:700;margin-top:2px}.contractor-quotation-tip{display:flex;flex-direction:column;gap:3px;margin-top:14px;padding:13px 15px;border-radius:12px;background:#f8fafc;border:1px solid #e5e7eb;font-size:13px;color:#6b7280}.contractor-quotation-tip strong{color:#1f2937}.contractor-generate-btn{margin-top:16px;width:100%;background:#111827;color:#fff;border:0;border-radius:12px;padding:13px 18px;font-weight:700;cursor:pointer}.contractor-generate-btn:hover{background:#000}@media(max-width:767px){.contractor-quotation-choice-grid{grid-template-columns:1fr}.contractor-quotation-choice{min-height:0}.contractor-generate-btn{min-height:48px}}
 
 
 
-/* Unified cost estimate flow + visual document preview */
-.cost estimate-type-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
-.cost estimate-type-card{position:relative;display:flex;align-items:flex-start;gap:10px;padding:12px;border:1px solid #d9dee7;border-radius:14px;background:#fff;cursor:pointer;transition:.18s ease;min-height:84px}
-.cost estimate-type-card:hover{border-color:#9ca3af;background:#fafafa}
-.cost estimate-type-card input{position:absolute;opacity:0;pointer-events:none}
-.cost estimate-type-card.is-selected{border-color:#111827;box-shadow:0 0 0 2px rgba(17,24,39,.06)}
-.cost estimate-type-radio{width:19px;height:19px;border:2px solid #9ca3af;border-radius:999px;flex:0 0 19px;margin-top:2px;position:relative}
-.cost estimate-type-card.is-selected .cost estimate-type-radio{border-color:#111827}
-.cost estimate-type-card.is-selected .cost estimate-type-radio:after{content:'';position:absolute;width:9px;height:9px;border-radius:999px;background:#111827;left:3px;top:3px}
-.cost estimate-type-copy{display:flex;flex-direction:column;gap:3px}
-.cost estimate-type-copy strong{font-size:15px;color:#111827}
-.cost estimate-type-copy small{font-size:12px;line-height:1.35;color:#6b7280}
-.cost estimate-type-copy em{font-size:11px;font-style:normal;color:#15803d;font-weight:700;margin-top:1px}
-.cost estimate-generator-tip{display:flex;flex-direction:column;gap:2px;margin-top:10px;padding:9px 11px;border-radius:12px;background:#f8fafc;border:1px solid #e5e7eb;font-size:13px;color:#6b7280}
-.cost estimate-generator-tip strong{color:#1f2937}
-.cost estimate-generate-btn{margin-top:10px;width:100%;background:#111827;color:#fff;border:0;border-radius:11px;padding:11px 16px;font-weight:700;cursor:pointer;min-height:44px}
-.cost estimate-generate-btn:hover{background:#000}
-.cost estimate-preview-heading{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px}
-.cost estimate-render-source{position:fixed;left:-100000px;top:0;width:794px;background:#fff;visibility:visible;pointer-events:none;z-index:-1}
-@media(max-width:767px){.cost estimate-type-grid{grid-template-columns:1fr}
-  .cost estimate-type-card{min-height:0;padding:12px}
+/* Unified quotation flow + visual document preview */
+.quotation-type-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.quotation-type-card{position:relative;display:flex;align-items:flex-start;gap:10px;padding:12px;border:1px solid #d9dee7;border-radius:14px;background:#fff;cursor:pointer;transition:.18s ease;min-height:84px}
+.quotation-type-card:hover{border-color:#9ca3af;background:#fafafa}
+.quotation-type-card input{position:absolute;opacity:0;pointer-events:none}
+.quotation-type-card.is-selected{border-color:#111827;box-shadow:0 0 0 2px rgba(17,24,39,.06)}
+.quotation-type-radio{width:19px;height:19px;border:2px solid #9ca3af;border-radius:999px;flex:0 0 19px;margin-top:2px;position:relative}
+.quotation-type-card.is-selected .quotation-type-radio{border-color:#111827}
+.quotation-type-card.is-selected .quotation-type-radio:after{content:'';position:absolute;width:9px;height:9px;border-radius:999px;background:#111827;left:3px;top:3px}
+.quotation-type-copy{display:flex;flex-direction:column;gap:3px}
+.quotation-type-copy strong{font-size:15px;color:#111827}
+.quotation-type-copy small{font-size:12px;line-height:1.35;color:#6b7280}
+.quotation-type-copy em{font-size:11px;font-style:normal;color:#15803d;font-weight:700;margin-top:1px}
+.quotation-generator-tip{display:flex;flex-direction:column;gap:2px;margin-top:10px;padding:9px 11px;border-radius:12px;background:#f8fafc;border:1px solid #e5e7eb;font-size:13px;color:#6b7280}
+.quotation-generator-tip strong{color:#1f2937}
+.quotation-generate-btn{margin-top:10px;width:100%;background:#111827;color:#fff;border:0;border-radius:11px;padding:11px 16px;font-weight:700;cursor:pointer;min-height:44px}
+.quotation-generate-btn:hover{background:#000}
+.quotation-preview-heading{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px}
+.quotation-render-source{position:fixed;left:-100000px;top:0;width:794px;background:#fff;visibility:visible;pointer-events:none;z-index:-1}
+@media(max-width:767px){.quotation-type-grid{grid-template-columns:1fr}
+  .quotation-type-card{min-height:0;padding:12px}
 }
 
-/* Mobile cost estimate — same table structure as desktop, responsive shrink */
+/* Mobile quotation — same table structure as desktop, responsive shrink */
 @media (max-width: 767px) {
   #estimateContent,
   #estimateContent > .overflow-x-auto {
@@ -367,8 +367,8 @@
     overflow-wrap:anywhere !important;
     word-break:break-word !important;
   }
-  #estimateContent table .cost estimate-section-row td,
-  #estimateContent table .cost estimate-subsection-row td {
+  #estimateContent table .quotation-section-row td,
+  #estimateContent table .quotation-subsection-row td {
     text-align:left !important;
     padding:7px 5px !important;
     font-size:10px !important;
@@ -402,11 +402,11 @@
   main>section:first-child p{color:rgba(255,255,255,.84)!important;max-width:700px}
   .room-card{border:1px solid var(--tp-line)!important;border-radius:20px!important;background:linear-gradient(145deg,#fff,#f8fafc)!important;box-shadow:0 10px 30px rgba(15,23,42,.07)!important;transition:transform .2s ease,box-shadow .2s ease!important}
   .room-card:hover{transform:translateY(-2px);box-shadow:0 16px 38px rgba(15,23,42,.11)!important}
-  .optional-scope,.contractor-cost estimate-choice,.cost estimate-type-card{border-radius:16px!important;transition:transform .2s ease,box-shadow .2s ease!important}
-  .optional-scope:hover,.contractor-cost estimate-choice:hover,.cost estimate-type-card:hover{transform:translateY(-1px);box-shadow:0 10px 26px rgba(15,23,42,.08)!important}
-  .cost estimate-generate-btn,.contractor-generate-btn{border-radius:14px!important;box-shadow:0 10px 24px rgba(15,23,42,.16);transition:transform .18s ease,box-shadow .18s ease!important}
-  .cost estimate-generate-btn:hover,.contractor-generate-btn:hover{transform:translateY(-1px);box-shadow:0 14px 30px rgba(15,23,42,.21)}
-  #cost estimateDocument{border-radius:24px!important;box-shadow:0 20px 60px rgba(15,23,42,.12)!important}
+  .optional-scope,.contractor-quotation-choice,.quotation-type-card{border-radius:16px!important;transition:transform .2s ease,box-shadow .2s ease!important}
+  .optional-scope:hover,.contractor-quotation-choice:hover,.quotation-type-card:hover{transform:translateY(-1px);box-shadow:0 10px 26px rgba(15,23,42,.08)!important}
+  .quotation-generate-btn,.contractor-generate-btn{border-radius:14px!important;box-shadow:0 10px 24px rgba(15,23,42,.16);transition:transform .18s ease,box-shadow .18s ease!important}
+  .quotation-generate-btn:hover,.contractor-generate-btn:hover{transform:translateY(-1px);box-shadow:0 14px 30px rgba(15,23,42,.21)}
+  #quotationDocument{border-radius:24px!important;box-shadow:0 20px 60px rgba(15,23,42,.12)!important}
   @media(max-width:767px){main{padding:18px 14px 42px!important}main>section{border-radius:20px!important}main>section:first-child{min-height:270px;padding:28px 20px!important;border-radius:20px!important}.room-card{border-radius:18px!important}}
   @media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
 }
@@ -424,8 +424,8 @@ main>section:not(:first-child):hover{box-shadow:0 18px 48px rgba(15,23,42,.08)!i
 .planner-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:0 0 18px!important;padding:0!important;background:transparent!important;border:0!important;box-shadow:none!important}.planner-steps a{display:flex;align-items:center;gap:10px;padding:13px 14px;border:1px solid var(--tw-line);border-radius:16px;background:#fff;color:var(--tw-ink);text-decoration:none;font-size:12px;font-weight:800;box-shadow:0 8px 24px rgba(15,23,42,.04);transition:.2s ease}.planner-steps a:hover{transform:translateY(-2px);border-color:#9ca3af;box-shadow:0 12px 28px rgba(15,23,42,.08)}.planner-steps b{display:grid;place-items:center;width:27px;height:27px;border-radius:9px;background:#111827;color:#fff;font-size:11px;flex:0 0 27px}
 main>section:not(:first-child){scroll-margin-top:92px} main>section>div:first-child h3{letter-spacing:-.025em} main>section input,main>section select,main>section textarea{border-color:#dfe3e8!important;border-radius:14px!important;background:#fff!important;box-shadow:inset 0 1px 1px rgba(15,23,42,.02)!important;transition:border-color .18s ease,box-shadow .18s ease} main>section input:focus,main>section select:focus,main>section textarea:focus{border-color:#111827!important;box-shadow:0 0 0 4px rgba(17,24,39,.07)!important;outline:none!important}
 .room-card{border:1px solid #e5e7eb!important;border-radius:20px!important;background:linear-gradient(180deg,#fff,#fafbfc)!important;box-shadow:0 8px 25px rgba(15,23,42,.045)!important;padding:18px!important;transition:.22s ease!important}.room-card:hover{transform:translateY(-2px);border-color:#cbd5e1!important;box-shadow:0 15px 35px rgba(15,23,42,.08)!important}.room-card:before{content:"AREA";display:inline-flex;margin-bottom:12px;padding:5px 8px;border-radius:7px;background:#f1f5f9;color:#64748b;font-size:9px;font-weight:900;letter-spacing:.13em}#roomsContainer{counter-reset:area}#roomsContainer .room-card{counter-increment:area}#roomsContainer .room-card:before{content:"AREA " counter(area,decimal-leading-zero)}
-#customerSummary>div,.homeowner-summary-card{border:1px solid #e8ebef!important;border-radius:16px!important;background:#f8fafc!important;padding:15px!important}#cost estimateGenerator{background:linear-gradient(145deg,#fff,#f7f8fa)!important}.cost estimate-type-card,.contractor-cost estimate-choice{border-radius:14px!important;min-height:76px!important;box-shadow:0 7px 22px rgba(15,23,42,.04)!important}.cost estimate-type-card.is-selected,.contractor-cost estimate-choice.is-selected{border-color:#111827!important;box-shadow:0 0 0 2px rgba(17,24,39,.1),0 12px 28px rgba(15,23,42,.08)!important}.cost estimate-generate-btn,.contractor-generate-btn{border-radius:12px!important;min-height:46px!important;box-shadow:0 12px 25px rgba(17,24,39,.16)!important}#cost estimateDocument{border-radius:24px!important;box-shadow:0 22px 65px rgba(15,23,42,.12)!important}
-@media(max-width:767px){body{background-attachment:scroll!important}main{padding:14px!important;padding-bottom:105px!important}main>section{border-radius:20px!important;margin-bottom:14px!important}.planner-hero{min-height:300px!important;padding:23px!important;border-radius:22px!important;margin-bottom:12px!important;display:grid!important;grid-template-columns:1fr!important;grid-template-rows:auto auto auto auto!important;gap:0!important;align-items:start!important;column-gap:0!important}.planner-eyebrow{grid-column:1!important;grid-row:1!important;justify-self:start!important}.planner-hero h2{grid-column:1!important;grid-row:2!important;align-self:start!important}.planner-hero p{grid-column:1!important;grid-row:3!important;align-self:start!important}.planner-meta{grid-column:1!important;grid-row:4!important;align-self:start!important}.planner-hero h2{font-size:38px!important;margin-top:15px!important}.planner-hero p{font-size:14px!important}.planner-meta{gap:7px!important}.planner-meta span{font-size:10px!important;padding:7px 9px!important}.planner-steps{gap:6px;margin-bottom:14px!important}.planner-steps a{justify-content:center;padding:9px 5px;border-radius:13px;font-size:9px;gap:5px;flex-direction:column;text-align:center}.planner-steps b{width:23px;height:23px;border-radius:7px;font-size:9px;flex-basis:23px}.room-card{border-radius:17px!important;padding:15px!important}#cost estimateGenerator{padding:14px!important}}
+#customerSummary>div,.homeowner-summary-card{border:1px solid #e8ebef!important;border-radius:16px!important;background:#f8fafc!important;padding:15px!important}#quotationGenerator{background:linear-gradient(145deg,#fff,#f7f8fa)!important}.quotation-type-card,.contractor-quotation-choice{border-radius:14px!important;min-height:76px!important;box-shadow:0 7px 22px rgba(15,23,42,.04)!important}.quotation-type-card.is-selected,.contractor-quotation-choice.is-selected{border-color:#111827!important;box-shadow:0 0 0 2px rgba(17,24,39,.1),0 12px 28px rgba(15,23,42,.08)!important}.quotation-generate-btn,.contractor-generate-btn{border-radius:12px!important;min-height:46px!important;box-shadow:0 12px 25px rgba(17,24,39,.16)!important}#quotationDocument{border-radius:24px!important;box-shadow:0 22px 65px rgba(15,23,42,.12)!important}
+@media(max-width:767px){body{background-attachment:scroll!important}main{padding:14px!important;padding-bottom:105px!important}main>section{border-radius:20px!important;margin-bottom:14px!important}.planner-hero{min-height:300px!important;padding:23px!important;border-radius:22px!important;margin-bottom:12px!important;display:grid!important;grid-template-columns:1fr!important;grid-template-rows:auto auto auto auto!important;gap:0!important;align-items:start!important;column-gap:0!important}.planner-eyebrow{grid-column:1!important;grid-row:1!important;justify-self:start!important}.planner-hero h2{grid-column:1!important;grid-row:2!important;align-self:start!important}.planner-hero p{grid-column:1!important;grid-row:3!important;align-self:start!important}.planner-meta{grid-column:1!important;grid-row:4!important;align-self:start!important}.planner-hero h2{font-size:38px!important;margin-top:15px!important}.planner-hero p{font-size:14px!important}.planner-meta{gap:7px!important}.planner-meta span{font-size:10px!important;padding:7px 9px!important}.planner-steps{gap:6px;margin-bottom:14px!important}.planner-steps a{justify-content:center;padding:9px 5px;border-radius:13px;font-size:9px;gap:5px;flex-direction:column;text-align:center}.planner-steps b{width:23px;height:23px;border-radius:7px;font-size:9px;flex-basis:23px}.room-card{border-radius:17px!important;padding:15px!important}#quotationGenerator{padding:14px!important}}
 @media(max-width:380px){
      .planner-header>div{padding-left:10px!important;padding-right:10px!important}
      .planner-nav-link{min-height:32px;padding:6px 7px;font-size:9px}
@@ -463,7 +463,7 @@ main>section:not(:first-child){scroll-margin-top:92px} main>section>div:first-ch
 .planner-nav-link:hover{background:#fff;border-color:rgba(15,23,42,.18);transform:translateY(-1px);box-shadow:0 5px 14px rgba(15,23,42,.08)}
 .workspace-id-block{min-width:130px}
 #rateScheduleSection{background:rgba(255,255,255,.94)}
-.official-cost estimate-card{
+.official-quotation-card{
   background:rgba(17,24,39,.78)!important;
   border:1px solid rgba(255,255,255,.12);
   backdrop-filter:blur(4px);
@@ -507,21 +507,21 @@ main>section:not(:first-child){scroll-margin-top:92px} main>section>div:first-ch
   <div class="p-6 border-b flex items-start justify-between gap-4">
     <div>
       <p data-detailed-modal-title class="text-xs uppercase tracking-wider text-gray-500">Limited-Time Promotion</p>
-      <h3 id="promoModalTitle" class="text-2xl font-bold mt-1">Detailed Cost Estimate</h3>
-      <p class="text-sm text-gray-500 mt-2">The detailed cost estimate is generated first, then locked until you unlock it.</p>
+      <h3 id="promoModalTitle" class="text-2xl font-bold mt-1">Detail Cost Estimate</h3>
+      <p class="text-sm text-gray-500 mt-2">The detail cost estimate is generated first, then locked until you unlock it.</p>
     </div>
     <button type="button" onclick="closePaymentModal()" class="text-gray-400 text-2xl" aria-label="Close">&times;</button>
   </div>
   <div class="p-6">
     <div class="rounded-2xl bg-gray-50 border p-5 mb-5 flex items-center justify-between gap-4">
-      <div><p class="text-sm text-gray-500">Detailed Cost Estimate</p><p class="text-xs text-gray-500 mt-1">Full scope, quantity, unit, rate & amount</p></div>
+      <div><p class="text-sm text-gray-500">Detail Cost Estimate</p><p class="text-xs text-gray-500 mt-1">Full scope, quantity, unit, rate & amount</p></div>
       <div data-detailed-price class="text-2xl font-bold whitespace-nowrap"><span class="line-through text-gray-400 text-base mr-2">RM 49</span><span class="text-green-700">FREE</span></div>
     </div>
-    <div data-detailed-promo-note class="rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800"><strong>Promo:</strong> Detailed Cost Estimate is FREE until 31 October 2026.</div>
-    <p class="mt-5 text-sm text-gray-600">Your cost estimate will still show the <strong>actual project rates and amounts</strong>. Only the Detailed Cost Estimate service fee is FREE during this promotion.</p>
+    <div data-detailed-promo-note class="rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800"><strong>Promo:</strong> Detail Cost Estimate is FREE until 31 October 2026.</div>
+    <p class="mt-5 text-sm text-gray-600">Your cost estimate will still show the <strong>actual project rates and amounts</strong>. Only the Detail Cost Estimate service fee is FREE during this promotion.</p>
     <div class="mt-6 flex gap-3">
       <button type="button" onclick="closePaymentModal()" class="flex-1 border px-4 py-3 rounded-xl font-semibold">Cancel</button>
-      <button type="button" onclick="confirmDetailedCost EstimatePromo()" class="flex-1 bg-black text-white px-4 py-3 rounded-xl font-semibold">Unlock Detailed Cost Estimate — FREE</button>
+      <button type="button" onclick="confirmDetailedQuotationPromo()" class="flex-1 bg-black text-white px-4 py-3 rounded-xl font-semibold">Unlock Detail Cost Estimate — FREE</button>
     </div>
   </div>
 </div></div></div>
@@ -536,7 +536,7 @@ main>section:not(:first-child){scroll-margin-top:92px} main>section>div:first-ch
       </div>
     </div>
     <nav class="flex items-center gap-2 flex-wrap justify-end no-print" aria-label="Planner navigation">
-      <a id="myCost EstimatesLink" href="cost estimates.html" class="planner-nav-link">My Cost Estimates</a>
+      <a id="myQuotationsLink" href="quotations.html" class="planner-nav-link">My Quotations</a>
       <a href="#" onclick="history.back(); return false;" class="planner-nav-link">Back to Previous</a>
       <a href="index.html" class="planner-nav-link">Home</a>
     </nav>
@@ -545,14 +545,14 @@ main>section:not(:first-child){scroll-margin-top:92px} main>section>div:first-ch
 
 <main class="max-w-6xl mx-auto px-6 py-8">
 
-  <section class="planner-hero" data-planner-product-ui="planner-product-ui-v2"><span class="planner-eyebrow">TERAJU WORKS · RENOVATION</span><h2>Plan your renovation.</h2><p>Map the spaces you want to improve, price the works, and turn your renovation scope into a clear cost estimate.</p><div class="planner-meta"><span>01 · PLAN</span><span>02 · PRICE</span><span>03 · REVIEW</span><span>04 · QUOTE</span></div></section>
+  <section class="planner-hero" data-planner-product-ui="planner-product-ui-v2"><span class="planner-eyebrow">TERAJU WORKS · RENOVATION</span><h2>Plan your renovation.</h2><p>Map the spaces you want to improve, price the works, and turn your renovation scope into a clear quotation.</p><div class="planner-meta"><span>01 · PLAN</span><span>02 · PRICE</span><span>03 · REVIEW</span><span>04 · QUOTE</span></div></section>
 
   <!-- Project Information -->
   <section class="bg-white rounded-2xl shadow-sm p-4 mb-4">
     <div class="flex justify-between items-center cursor-pointer gap-3" onclick="toggleProjectInfo()">
       <div class="min-w-0 flex-1">
         <h3 class="font-bold text-lg">Project Information</h3>
-        <p class="text-sm text-gray-500">Enter the project details used for the estimate and cost estimate.</p>
+        <p class="text-sm text-gray-500">Enter the project details used for the estimate and quotation.</p>
       </div>
       <div class="workspace-id-block flex items-center flex-shrink-0">
         <div class="text-right leading-tight">
@@ -684,61 +684,61 @@ main>section:not(:first-child){scroll-margin-top:92px} main>section>div:first-ch
     </div>
   </section>
 
-  <!-- Cost Estimate Generator -->
-  <section id="cost estimateGenerator" class="no-print bg-white rounded-2xl shadow-sm p-4 mt-4">
+  <!-- Quotation Generator -->
+  <section id="quotationGenerator" class="no-print bg-white rounded-2xl shadow-sm p-4 mt-4">
   <div class="mb-3">
-    <p class="text-xs uppercase tracking-wider text-gray-500">Cost Estimate</p>
+    <p class="text-xs uppercase tracking-wider text-gray-500">Quotation</p>
     <h3 class="font-bold text-xl mt-0">Choose Cost Estimate Type</h3>
     <p class="text-sm text-gray-500 mt-1">Select the cost estimate format, then generate one cost estimate using the final estimate values above.</p>
   </div>
-  <div class="cost estimate-type-grid">
-    <label class="cost estimate-type-card is-selected">
-      <input type="radio" name="cost estimateType" value="simple" checked>
-      <span class="cost estimate-type-radio" aria-hidden="true"></span>
-      <span class="cost estimate-type-copy">
+  <div class="quotation-type-grid">
+    <label class="quotation-type-card is-selected">
+      <input type="radio" name="quotationType" value="simple" checked>
+      <span class="quotation-type-radio" aria-hidden="true"></span>
+      <span class="quotation-type-copy">
         <strong>Simple Cost Estimate</strong>
         <small>Work descriptions with section / room totals only.</small>
       </span>
     </label>
-    <label class="cost estimate-type-card">
-      <input type="radio" name="cost estimateType" value="detail">
-      <span class="cost estimate-type-radio" aria-hidden="true"></span>
-      <span class="cost estimate-type-copy">
-        <strong>Detailed Cost Estimate</strong>
+    <label class="quotation-type-card">
+      <input type="radio" name="quotationType" value="detail">
+      <span class="quotation-type-radio" aria-hidden="true"></span>
+      <span class="quotation-type-copy">
+        <strong>Detail Cost Estimate</strong>
         <small>Full quantity, unit, rate, amount and subtotal breakdown.</small>
       </span>
     </label>
   </div>
-  <div class="cost estimate-generator-tip">
+  <div class="quotation-generator-tip">
     <strong>Review before generating</strong>
     <span>The cost estimate uses the final customer, project, room, quantity and rate values shown in the estimate.</span>
   </div>
-  <button type="button" onclick="generateCost Estimate()" class="cost estimate-generate-btn">Generate Cost Estimate</button>
+  <button type="button" onclick="generateQuotation()" class="quotation-generate-btn">Generate Quotation</button>
 </section>
 
-<section id="cost estimateDocument" class="hidden bg-white rounded-2xl shadow-sm p-8 mt-6">
-  <div class="cost estimate-preview-heading no-print">
+<section id="quotationDocument" class="hidden bg-white rounded-2xl shadow-sm p-8 mt-6">
+  <div class="quotation-preview-heading no-print">
     <div>
       <p class="text-xs uppercase tracking-wider text-gray-500">Generated Cost Estimate</p>
       <h3 class="text-2xl font-bold mt-1">Cost Estimate Preview</h3>
       <p class="text-sm text-gray-500 mt-1">Visual document preview — scaled automatically for desktop and mobile.</p>
     </div>
   </div>
-  <div id="cost estimatePreview" class="cost estimate-preview-stage no-print" aria-live="polite">
-    <div class="cost estimate-preview-loading">Your cost estimate preview will appear here.</div>
+  <div id="quotationPreview" class="quotation-preview-stage no-print" aria-live="polite">
+    <div class="quotation-preview-loading">Your cost estimate preview will appear here.</div>
   </div>
-  <div id="cost estimateContent" class="cost estimate-render-source" aria-hidden="true"></div>
-  <div id="cost estimateLockOverlay" class="cost estimate-lock-overlay no-print hidden" aria-hidden="true"><div class="cost estimate-lock-card"><div class="cost estimate-lock-icon" aria-hidden="true">🔒</div><h3 class="text-xl font-bold">Detailed Cost Estimate Locked</h3><p class="text-sm text-gray-600 mt-2">The detailed cost estimate has been generated. Unlock it to view the full item-by-item rates and amounts.</p><button type="button" onclick="unlockDetailedCost Estimate()" class="mt-5 w-full bg-black text-white px-5 py-3 rounded-xl font-semibold">Unlock Detailed Cost Estimate</button></div></div>
-  <div id="cost estimatePrintActions" class="no-print mt-6 pt-5 border-t flex justify-end">
-    <button type="button" onclick="printCost Estimate()" class="bg-black text-white px-5 py-3 rounded-lg font-semibold">Download PDF</button>
+  <div id="quotationContent" class="quotation-render-source" aria-hidden="true"></div>
+  <div id="quotationLockOverlay" class="quotation-lock-overlay no-print hidden" aria-hidden="true"><div class="quotation-lock-card"><div class="quotation-lock-icon" aria-hidden="true">🔒</div><h3 class="text-xl font-bold">Detail Cost Estimate Locked</h3><p class="text-sm text-gray-600 mt-2">The detail cost estimate has been generated. Unlock it to view the full item-by-item rates and amounts.</p><button type="button" onclick="unlockDetailedQuotation()" class="mt-5 w-full bg-black text-white px-5 py-3 rounded-xl font-semibold">Unlock Detail Cost Estimate</button></div></div>
+  <div id="quotationPrintActions" class="no-print mt-6 pt-5 border-t flex justify-end">
+    <button type="button" onclick="printQuotation()" class="bg-black text-white px-5 py-3 rounded-lg font-semibold">Download PDF</button>
   </div>
 </section>
 
   <!-- CTA -->
-  <section class="no-print official-cost estimate-card text-white rounded-2xl p-5 mt-5 text-center">
+  <section class="no-print official-quotation-card text-white rounded-2xl p-5 mt-5 text-center">
     <h3 class="text-2xl font-bold mb-2">Need an Official Cost Estimate?</h3>
     <p class="text-gray-300 max-w-2xl mx-auto mb-4">
-      Let Teraju Ciptabina inspect your property and prepare a detailed cost estimate based on the actual site condition and requirements.
+      Let Teraju Ciptabina inspect your property and prepare a detail cost estimate based on the actual site condition and requirements.
     </p>
     <a href="../index.html#contact" class="inline-block bg-white text-black px-5 py-2.5 rounded-lg font-semibold hover:bg-gray-200">
       Request Site Visit
@@ -1464,7 +1464,7 @@ function serializeContractorState() {
     manualItems: [...manualItems.entries()],
     standardRateItems,
     rates: {...RATES},
-    cost estimateType: getSelectedCost EstimateType()
+    quotationType: getSelectedQuotationType()
   };
 }
 
@@ -1640,43 +1640,43 @@ function initContractorMode() {
     window.addEventListener("pagehide", saveContractorState);
     window.addEventListener("beforeunload", saveContractorState);
 
-    const cost estimateTypeInputs = document.querySelectorAll('input[name="cost estimateType"]');
-    cost estimateTypeInputs.forEach(input => input.addEventListener("change", () => {
-      cost estimateTypeInputs.forEach(r => {
-        const card = r.closest(".cost estimate-type-card");
+    const quotationTypeInputs = document.querySelectorAll('input[name="quotationType"]');
+    quotationTypeInputs.forEach(input => input.addEventListener("change", () => {
+      quotationTypeInputs.forEach(r => {
+        const card = r.closest(".quotation-type-card");
         if (card) card.classList.toggle("is-selected", r.checked);
       });
       saveContractorState();
     }));
-    document.querySelectorAll(".cost estimate-type-card").forEach(card => {
+    document.querySelectorAll(".quotation-type-card").forEach(card => {
       card.addEventListener("click", () => {
-        const input = card.querySelector('input[name="cost estimateType"]');
+        const input = card.querySelector('input[name="quotationType"]');
         if (!input) return;
         input.checked = true;
         input.dispatchEvent(new Event("change", { bubbles: true }));
       });
     });
 
-    if (saved?.cost estimateType) {
-      const input = document.querySelector(`input[name="cost estimateType"][value="${saved.cost estimateType}"]`);
+    if (saved?.quotationType) {
+      const input = document.querySelector(`input[name="quotationType"][value="${saved.quotationType}"]`);
       if (input) input.checked = true;
     }
     updateEstimate();
   }
 }
 
-let cost estimateNumber = null;
-function generateCost EstimateNumber() {
-  let number = localStorage.getItem("terajuCost EstimateNumber");
+let quotationNumber = null;
+function generateQuotationNumber() {
+  let number = localStorage.getItem("terajuQuotationNumber");
   number = number ? parseInt(number, 10) + 1 : 1;
-  localStorage.setItem("terajuCost EstimateNumber", number);
+  localStorage.setItem("terajuQuotationNumber", number);
   return "QO" + String(number).padStart(3, "0");
 }
-function getSelectedCost EstimateType() {
-  return document.querySelector('input[name="cost estimateType"]:checked')?.value || "simple";
+function getSelectedQuotationType() {
+  return document.querySelector('input[name="quotationType"]:checked')?.value || "simple";
 }
 
-function getCurrentCost EstimateData() {
+function getCurrentQuotationData() {
   const allItems = getAllItems().filter(item => !excludedItems.has(item.id));
   const roomGroups = getRoomGroups();
   const hasAnyArea = roomGroups.some(room => room.area > 0);
@@ -1696,34 +1696,34 @@ function getCurrentCost EstimateData() {
   return { allItems, roomGroups, itemsByRoom, roomSubtotals, prelimQty, prelimRate, projectPreliminaries, total: projectPreliminaries + roomTotal };
 }
 
-function cost estimateDescriptionList(items) {
+function quotationDescriptionList(items) {
   if (!items.length) return "No selected works";
   return items.map(item => escapeHtml(item.description)).join("<br>");
 }
 
-const DETAILED_COST ESTIMATE_PROMO=true;const DETAILED_COST ESTIMATE_PRICE=49;const DETAILED_COST ESTIMATE_PROMO_END='31 October 2026';
-function setDetailedCost EstimateLocked(locked){const doc=document.getElementById('cost estimateDocument'),content=document.getElementById('cost estimateContent'),overlay=document.getElementById('cost estimateLockOverlay');if(!doc||!content||!overlay)return;doc.classList.toggle('detailed-locked',!!locked);content.classList.toggle('cost estimate-locked',!!locked);overlay.classList.toggle('hidden',!locked);overlay.setAttribute('aria-hidden',locked?'false':'true');}
-function openDetailedCost EstimatePromo(){const modal=document.getElementById('paymentModal');if(!modal){if(DETAILED_COST ESTIMATE_PROMO)unlockDetailedCost Estimate();else startDetailedCost EstimatePayment();return;}const price=modal.querySelector('[data-detailed-price]'),note=modal.querySelector('[data-detailed-promo-note]'),button=document.getElementById('paymentProceedButton'),title=modal.querySelector('[data-detailed-modal-title]');if(DETAILED_COST ESTIMATE_PROMO){if(price)price.innerHTML='<span class="line-through text-gray-400 text-base mr-2">RM 49</span><span class="text-green-700">FREE</span>';if(note)note.innerHTML='<strong>Promo:</strong> Detailed Cost Estimate is FREE until 31 October 2026.';if(button){button.textContent='Unlock Detailed Cost Estimate — FREE';button.onclick=confirmDetailedCost EstimatePromo;}if(title)title.textContent='Limited-Time Promotion';}else{if(price)price.innerHTML='<span class="text-gray-900">RM 49</span>';if(note)note.innerHTML='<strong>Price:</strong> Detailed Cost Estimate service fee is RM 49.';if(button){button.textContent='Pay RM 49 & Unlock';button.onclick=startDetailedCost EstimatePayment;}if(title)title.textContent='Detailed Cost Estimate';}modal.classList.add('open');modal.setAttribute('aria-hidden','false');}
+const DETAILED_QUOTATION_PROMO=true;const DETAILED_QUOTATION_PRICE=49;const DETAILED_QUOTATION_PROMO_END='31 October 2026';
+function setDetailedQuotationLocked(locked){const doc=document.getElementById('quotationDocument'),content=document.getElementById('quotationContent'),overlay=document.getElementById('quotationLockOverlay');if(!doc||!content||!overlay)return;doc.classList.toggle('detailed-locked',!!locked);content.classList.toggle('quotation-locked',!!locked);overlay.classList.toggle('hidden',!locked);overlay.setAttribute('aria-hidden',locked?'false':'true');}
+function openDetailedQuotationPromo(){const modal=document.getElementById('paymentModal');if(!modal){if(DETAILED_QUOTATION_PROMO)unlockDetailedQuotation();else startDetailedQuotationPayment();return;}const price=modal.querySelector('[data-detailed-price]'),note=modal.querySelector('[data-detailed-promo-note]'),button=document.getElementById('paymentProceedButton'),title=modal.querySelector('[data-detailed-modal-title]');if(DETAILED_QUOTATION_PROMO){if(price)price.innerHTML='<span class="line-through text-gray-400 text-base mr-2">RM 49</span><span class="text-green-700">FREE</span>';if(note)note.innerHTML='<strong>Promo:</strong> Detail Cost Estimate is FREE until 31 October 2026.';if(button){button.textContent='Unlock Detail Cost Estimate — FREE';button.onclick=confirmDetailedQuotationPromo;}if(title)title.textContent='Limited-Time Promotion';}else{if(price)price.innerHTML='<span class="text-gray-900">RM 49</span>';if(note)note.innerHTML='<strong>Price:</strong> Detail Cost Estimate service fee is RM 49.';if(button){button.textContent='Pay RM 49 & Unlock';button.onclick=startDetailedQuotationPayment;}if(title)title.textContent='Detail Cost Estimate';}modal.classList.add('open');modal.setAttribute('aria-hidden','false');}
 function closePaymentModal(){const modal=document.getElementById('paymentModal');if(!modal)return;modal.classList.remove('open');modal.classList.remove('show');modal.setAttribute('aria-hidden','true');}
-function unlockDetailedCost Estimate(){setDetailedCost EstimateLocked(false);closePaymentModal();}
-function confirmDetailedCost EstimatePromo(){if(!DETAILED_COST ESTIMATE_PROMO)return startDetailedCost EstimatePayment();unlockDetailedCost Estimate();}
-function startDetailedCost EstimatePayment(){if(DETAILED_COST ESTIMATE_PROMO){unlockDetailedCost Estimate();return;}if(typeof window.TERAJU_START_DETAILED_PAYMENT==='function'){window.TERAJU_START_DETAILED_PAYMENT({amount:DETAILED_COST ESTIMATE_PRICE,onVerified:completeDetailedCost EstimatePayment});return;}alert('Payment gateway is not active yet.');}
-function completeDetailedCost EstimatePayment(verified){if(verified)unlockDetailedCost Estimate();}
+function unlockDetailedQuotation(){setDetailedQuotationLocked(false);closePaymentModal();}
+function confirmDetailedQuotationPromo(){if(!DETAILED_QUOTATION_PROMO)return startDetailedQuotationPayment();unlockDetailedQuotation();}
+function startDetailedQuotationPayment(){if(DETAILED_QUOTATION_PROMO){unlockDetailedQuotation();return;}if(typeof window.TERAJU_START_DETAILED_PAYMENT==='function'){window.TERAJU_START_DETAILED_PAYMENT({amount:DETAILED_QUOTATION_PRICE,onVerified:completeDetailedQuotationPayment});return;}alert('Payment gateway is not active yet.');}
+function completeDetailedQuotationPayment(verified){if(verified)unlockDetailedQuotation();}
 
-function generateCost Estimate(){const type=getSelectedCost EstimateType();if(type==='detail'){const generated=generateCost EstimateConfirmed(type);if(generated!==false){setDetailedCost EstimateLocked(true);renderCost EstimatePreview();openDetailedCost EstimatePromo();}return;}setDetailedCost EstimateLocked(false);const generated=generateCost EstimateConfirmed(type);if(generated!==false)renderCost EstimatePreview();}
-function generateCost EstimateConfirmed(type) {
-  const data = getCurrentCost EstimateData();
+function generateQuotation(){const type=getSelectedQuotationType();if(type==='detail'){const generated=generateQuotationConfirmed(type);if(generated!==false){setDetailedQuotationLocked(true);renderQuotationPreview();openDetailedQuotationPromo();}return;}setDetailedQuotationLocked(false);const generated=generateQuotationConfirmed(type);if(generated!==false)renderQuotationPreview();}
+function generateQuotationConfirmed(type) {
+  const data = getCurrentQuotationData();
   if (!data.roomGroups.some(room => room.area > 0)) {
     alert("Please add at least one area with a valid sqft before generating the cost estimate.");
     return;
   }
 
-  cost estimateNumber = generateCost EstimateNumber();
+  quotationNumber = generateQuotationNumber();
   const customer = document.getElementById("customerName")?.value || "Not specified";
   const location = document.getElementById("projectLocation")?.value || "Not specified";
   const totalBuiltArea = data.roomGroups.reduce((sum, room) => sum + (Number(room.area) || 0), 0);
   const today = new Intl.DateTimeFormat("en-MY", { day: "2-digit", month: "long", year: "numeric" }).format(new Date());
-  const content = document.getElementById("cost estimateContent");
+  const content = document.getElementById("quotationContent");
 
   let body = `
     <div class="flex justify-between items-start gap-6 border-b pb-5 mb-6">
@@ -1735,10 +1735,10 @@ function generateCost EstimateConfirmed(type) {
             <p class="text-xs text-gray-500">No 10A, Jalan PP 2/1, Taman Putra Prima, 47100 Puchong, Selangor</p>
           </div>
         </div>
-        <h2 class="text-2xl font-bold uppercase">Cost Estimate</h2>
+        <h2 class="text-2xl font-bold uppercase">Quotation</h2>
       </div>
       <div class="text-right text-sm flex-shrink-0">
-        <p><span class="text-gray-500">Cost Estimate No.</span><br><strong>${escapeHtml(cost estimateNumber)}</strong></p>
+        <p><span class="text-gray-500">Estimate No.</span><br><strong>${escapeHtml(quotationNumber)}</strong></p>
         <p class="mt-2"><span class="text-gray-500">Date</span><br><strong>${escapeHtml(today)}</strong></p>
       </div>
     </div>
@@ -1766,7 +1766,7 @@ function generateCost EstimateConfirmed(type) {
   if (type === "simple") {
     body += `
       <div class="overflow-x-auto">
-        <table class="w-full border-collapse text-sm simple-cost estimate-table">
+        <table class="w-full border-collapse text-sm simple-quotation-table">
           <colgroup>
             <col style="width:6%">
             <col style="width:18%">
@@ -1801,7 +1801,7 @@ function generateCost EstimateConfirmed(type) {
         <tr class="border-b align-top">
           <td class="py-3 px-2">${no++}</td>
           <td class="py-3 px-2 font-semibold">${escapeHtml(room.label)}<br><span class="font-normal text-gray-500">${formatQty(room.area)} sqft</span></td>
-          <td class="py-3 px-2 leading-6">${cost estimateDescriptionList(data.itemsByRoom[room.roomId] || [])}</td>
+          <td class="py-3 px-2 leading-6">${quotationDescriptionList(data.itemsByRoom[room.roomId] || [])}</td>
           <td class="py-3 px-2 text-right font-semibold">${money(data.roomSubtotals[room.roomId] || 0, 2)}</td>
         </tr>`;
     });
@@ -1817,9 +1817,9 @@ function generateCost EstimateConfirmed(type) {
       </div>`;
   } else {
     body += `
-      <div class="mb-5 rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm"><span class="font-semibold">Detailed Cost Estimate:</span> <span class="line-through text-gray-400">RM 49</span> <span class="font-bold text-green-700 ml-1">FREE</span> <span class="text-gray-600 ml-1">— Limited-time promotion until 31 October 2026.</span></div>
+      <div class="mb-5 rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm"><span class="font-semibold">Detail Cost Estimate:</span> <span class="line-through text-gray-400">RM 49</span> <span class="font-bold text-green-700 ml-1">FREE</span> <span class="text-gray-600 ml-1">— Limited-time promotion until 31 October 2026.</span></div>
       <div class="overflow-x-auto">
-        <table class="w-full border-collapse text-sm detailed-cost estimate-table">
+        <table class="w-full border-collapse text-sm detailed-quotation-table">
           <colgroup>
             <col style="width:50%"><col style="width:10%"><col style="width:10%"><col style="width:15%"><col style="width:15%">
           </colgroup>
@@ -1898,15 +1898,15 @@ function generateCost EstimateConfirmed(type) {
 
   content.innerHTML = body;
 
-  document.getElementById("cost estimateDocument").classList.remove("hidden");
-  document.getElementById("cost estimatePrintActions").classList.remove("hidden");
-  document.getElementById("cost estimateDocument").scrollIntoView({ behavior: "smooth", block: "start" });
+  document.getElementById("quotationDocument").classList.remove("hidden");
+  document.getElementById("quotationPrintActions").classList.remove("hidden");
+  document.getElementById("quotationDocument").scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 initContractorMode();
 </script>
 
-<script src="detailed-cost estimate-promo-ui.js"></script>
+<script src="detailed-quotation-promo-ui.js"></script>
 <script>
 
 updateRoomsEmptyState();
@@ -1914,14 +1914,14 @@ updateEstimate();
 
 </script>
 <script src="location-autocomplete.js"></script>
-<script src="cost estimate-quantity-fix.js?v=20260907">
+<script src="quotation-quantity-fix.js?v=20260907">
 </script>
-<script src="cost estimate-quantity-fix.js?v=20260907"></script>
+<script src="quotation-quantity-fix.js?v=20260907"></script>
 <script id="tc-homeowner-customer-default">
 (() => {
   const params = new URLSearchParams(location.search);
   const role = (params.get('audience') || document.body.dataset.role || 'homeowner').toLowerCase();
-  if (role !== 'homeowner' || params.get('cost estimateId')) return;
+  if (role !== 'homeowner' || params.get('quotationId')) return;
   const storageKey = 'teraju.homeowner.github.v1';
   function applyHomeownerName() {
     const input = document.getElementById('customerName');
@@ -1962,16 +1962,16 @@ updateEstimate();
   if (path.endsWith('/homeowner.html') || path.endsWith('/contractor.html')) send('app_open', base);
   if (plannerType) send('planner_start', base);
 
-  if (path.endsWith('/cost estimates.html')) {
+  if (path.endsWith('/quotations.html')) {
     document.addEventListener('click', event => {
-      const link = event.target.closest?.('a[data-ga-cost estimate-opened]');
+      const link = event.target.closest?.('a[data-ga-quotation-opened]');
       if (!link) return;
-      send('cost estimate_opened', {
+      send('quotation_opened', {
         role: link.dataset.gaRole || role || undefined,
         planner_type: link.dataset.gaPlannerType || undefined,
-        cost estimate_id: link.dataset.gaCost EstimateId || undefined,
-        cost estimate_number: link.dataset.gaCost EstimateNumber || undefined,
-        cost estimate_type: link.dataset.gaCost EstimateType || undefined,
+        quotation_id: link.dataset.gaQuotationId || undefined,
+        quotation_number: link.dataset.gaQuotationNumber || undefined,
+        quotation_type: link.dataset.gaQuotationType || undefined,
         page_path: location.pathname
       });
     }, true);
