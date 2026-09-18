@@ -299,7 +299,7 @@ function generateQuotation(typeOverride){
    if(g.nodes.length)g.nodes.forEach(n=>renderNode(n,0));else g.items.forEach(i=>body+=itemRow(i));
    if(!g.nodes.length&&g.items.length>1)body+=`<tr class="border-b"><td colspan="3"></td><td class="py-2 px-2 text-right font-semibold">Subtotal - ${escQ(g.title)}</td><td class="py-2 px-2 text-right font-semibold">${moneyQ(totals[g.cat])}</td></tr>`;
   });
-  body+=`</tbody><tfoot><tr class="quotation-summary-title"><td colspan="${labelColspan+totalColspan}" class="py-3 px-2 text-left font-bold uppercase tracking-wide">SUMMARY — SUBTOTAL BY GROUP</td></tr>${summaryRows(4,1)}<tr class="border-t-2"><td colspan="4" class="py-4 px-2 text-right font-bold">TOTAL</td><td class="py-4 px-2 text-right font-bold text-lg">${moneyQ(data.total)}</td></tr></tfoot></table></div>`;
+  body+=`</tbody><tfoot><tr class="quotation-summary-title"><td colspan="5" class="py-3 px-2 text-left font-bold uppercase tracking-wide">SUMMARY — SUBTOTAL BY GROUP</td></tr>${summaryRows(4,1)}<tr class="border-t-2"><td colspan="4" class="py-4 px-2 text-right font-bold">TOTAL</td><td class="py-4 px-2 text-right font-bold text-lg">${moneyQ(data.total)}</td></tr></tfoot></table></div>`;
  }else{
   body+=`<div class="overflow-x-auto"><table class="w-full border-collapse text-sm simple-quotation-table"><colgroup><col style="width:6%"><col style="width:18%"><col style="width:56%"><col style="width:20%"></colgroup><thead><tr class="border-b-2 text-left"><th class="py-3 px-2">No.</th><th class="py-3 px-2">Work Section</th><th class="py-3 px-2">Description of Works</th><th class="py-3 px-2 text-right">Amount (RM)</th></tr></thead><tbody>`;
   let no=1;
@@ -318,7 +318,7 @@ function generateQuotation(typeOverride){
     body+=`<tr><td></td><td></td><td class="py-2 px-2">${escQ(i.description)}</td><td class="py-2 px-2 text-right font-semibold">${moneyQ(i.amount)}</td></tr>`;
    });
   });
-  body+=`</tbody><tfoot><tr class="quotation-summary-title"><td colspan="${labelColspan+totalColspan}" class="py-3 px-2 text-left font-bold uppercase tracking-wide">SUMMARY — SUBTOTAL BY GROUP</td></tr>${summaryRows(3,1)}<tr class="border-t-2"><td colspan="3" class="py-4 px-2 text-right font-bold">TOTAL</td><td class="py-4 px-2 text-right font-bold text-lg">${moneyQ(data.total)}</td></tr></tfoot></table></div>`;
+  body+=`</tbody><tfoot><tr class="quotation-summary-title"><td colspan="4" class="py-3 px-2 text-left font-bold uppercase tracking-wide">SUMMARY — SUBTOTAL BY GROUP</td></tr>${summaryRows(3,1)}<tr class="border-t-2"><td colspan="3" class="py-4 px-2 text-right font-bold">TOTAL</td><td class="py-4 px-2 text-right font-bold text-lg">${moneyQ(data.total)}</td></tr></tfoot></table></div>`;
  }
  body+=`<div class="mt-8 pt-5 border-t text-sm"><p class="font-semibold mb-2">Terms / Notes</p><ul class="list-disc pl-5 text-gray-600"><li>This quotation is based on the stated built-up area, area schedule and rates applied herein.</li><li>Final scope, specifications, site conditions and pricing remain subject to site inspection and written confirmation.</li><li>Any additional works or authority requirements not listed above shall be quoted separately.</li></ul></div><div class="mt-12 text-sm"><p>Yours sincerely,</p><p class="font-bold mt-8">TERAJU CIPTABINA RESOURCES</p></div>`;
  content.innerHTML=body;
