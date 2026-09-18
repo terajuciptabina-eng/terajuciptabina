@@ -30,66 +30,7 @@ function injectStyles(){
    - hierarchy/subtotal/summary labels terminate at the left edge of the Amount column
    - Amount values always occupy the canonical sixth column
 */
-.simple-quotation-table,.detailed-quotation-table{
-  width:100%!important;
-  table-layout:fixed!important;
-  border-collapse:collapse!important;
-  min-width:0!important;
-}
-.simple-quotation-table th,.simple-quotation-table td,
-.detailed-quotation-table th,.detailed-quotation-table td{
-  vertical-align:top!important;
-  box-sizing:border-box!important;
-}
-.simple-quotation-table th:nth-child(1),.simple-quotation-table td:nth-child(1),
-.detailed-quotation-table th:nth-child(1),.detailed-quotation-table td:nth-child(1){text-align:left!important}
-.simple-quotation-table th:nth-child(2),.simple-quotation-table td:nth-child(2),
-.detailed-quotation-table th:nth-child(2),.detailed-quotation-table td:nth-child(2){text-align:left!important}
-.simple-quotation-table th:nth-child(3),.simple-quotation-table td:nth-child(3),
-.detailed-quotation-table th:nth-child(3),.detailed-quotation-table td:nth-child(3){text-align:left!important}
-.simple-quotation-table th:nth-child(4),.simple-quotation-table td:nth-child(4),
-.simple-quotation-table th:nth-child(5),.simple-quotation-table td:nth-child(5),
-.simple-quotation-table th:nth-child(6),.simple-quotation-table td:nth-child(6),
-.detailed-quotation-table th:nth-child(4),.detailed-quotation-table td:nth-child(4),
-.detailed-quotation-table th:nth-child(5),.detailed-quotation-table td:nth-child(5),
-.detailed-quotation-table th:nth-child(6),.detailed-quotation-table td:nth-child(6){text-align:right!important}
-.simple-quotation-table td:nth-child(2),.detailed-quotation-table td:nth-child(2){
-  white-space:normal!important;
-  overflow-wrap:break-word!important;
-  word-break:normal!important;
-}
-.simple-quotation-table td:nth-child(n+3),.detailed-quotation-table td:nth-child(n+3){white-space:nowrap!important}
-.simple-quotation-table .quotation-section-row td,
-.simple-quotation-table .quotation-subsection-row td,
-.simple-quotation-table .quotation-subsubsection-row td,
-.simple-quotation-table .quotation-summary-title td,
-.simple-quotation-table .quotation-summary-row td:first-child,
-.simple-quotation-table tfoot tr.border-t-2 td:first-child,
-.detailed-quotation-table .quotation-section-row td,
-.detailed-quotation-table .quotation-subsection-row td,
-.detailed-quotation-table .quotation-subsubsection-row td,
-.detailed-quotation-table .quotation-summary-title td,
-.detailed-quotation-table .quotation-summary-row td:first-child,
-.detailed-quotation-table tfoot tr.border-t-2 td:first-child{
-  text-align:right!important;
-  white-space:nowrap!important;
-}
-.simple-quotation-table .border-b td:first-child,
-.simple-quotation-table .border-b td:nth-child(2),
-.detailed-quotation-table .border-b td:first-child,
-.detailed-quotation-table .border-b td:nth-child(5){
-  text-align:right!important;
-  white-space:nowrap!important;
-}
-.simple-quotation-table .quotation-section-row td,
-.simple-quotation-table .quotation-subsection-row td,
-.simple-quotation-table .quotation-subsubsection-row td,
-.detailed-quotation-table .quotation-section-row td,
-.detailed-quotation-table .quotation-subsection-row td,
-.detailed-quotation-table .quotation-subsubsection-row td{
-  overflow:visible!important;
-}
-#estimateContent table th:nth-child(1),#estimateContent table td:nth-child(1){text-align:left!important}
+.simple-quotation-table{width:100%!important;table-layout:fixed!important;border-collapse:collapse!important;min-width:0!important}.detailed-quotation-table{width:100%!important;table-layout:fixed!important;border-collapse:collapse!important;min-width:0!important}.simple-quotation-table th,.simple-quotation-table td,.detailed-quotation-table th,.detailed-quotation-table td{vertical-align:top!important;box-sizing:border-box!important}.simple-quotation-table th:nth-child(1),.simple-quotation-table td:nth-child(1),.detailed-quotation-table th:nth-child(1),.detailed-quotation-table td:nth-child(1){text-align:left!important}.simple-quotation-table th:nth-child(2),.simple-quotation-table td:nth-child(2),.detailed-quotation-table th:nth-child(2),.detailed-quotation-table td:nth-child(2){text-align:left!important}.simple-quotation-table th:nth-child(3),.simple-quotation-table td:nth-child(3){text-align:right!important}.detailed-quotation-table th:nth-child(3),.detailed-quotation-table td:nth-child(3){text-align:left!important}.detailed-quotation-table th:nth-child(4),.detailed-quotation-table td:nth-child(4),.detailed-quotation-table th:nth-child(5),.detailed-quotation-table td:nth-child(5),.detailed-quotation-table th:nth-child(6),.detailed-quotation-table td:nth-child(6){text-align:right!important}.simple-quotation-table td:nth-child(2){white-space:normal!important;overflow-wrap:break-word!important;word-break:normal!important}.simple-quotation-table td:nth-child(3),.detailed-quotation-table td:nth-child(n+3){white-space:nowrap!important}.simple-quotation-table .quotation-section-row td,.simple-quotation-table .quotation-subsection-row td,.simple-quotation-table .quotation-subsubsection-row td,.simple-quotation-table .quotation-summary-title td,.simple-quotation-table .quotation-summary-row td:first-child,.simple-quotation-table tfoot tr.border-t-2 td:first-child,.detailed-quotation-table .quotation-section-row td,.detailed-quotation-table .quotation-subsection-row td,.detailed-quotation-table .quotation-subsubsection-row td,.detailed-quotation-table .quotation-summary-title td,.detailed-quotation-table .quotation-summary-row td:first-child,.detailed-quotation-table tfoot tr.border-t-2 td:first-child{text-align:right!important;white-space:nowrap!important}.detailed-quotation-table .border-b td:first-child,.detailed-quotation-table .border-b td:nth-child(5){text-align:right!important;white-space:nowrap!important}.simple-quotation-table .quotation-section-row td,.simple-quotation-table .quotation-subsection-row td,.simple-quotation-table .quotation-subsubsection-row td,.detailed-quotation-table .quotation-section-row td,.detailed-quotation-table .quotation-subsection-row td,.detailed-quotation-table .quotation-subsubsection-row td{overflow:visible!important}#estimateContent table th:nth-child(1),#estimateContent table td:nth-child(1){text-align:left!important}
 #estimateContent table th:nth-child(2),#estimateContent table td:nth-child(2){text-align:center!important}
 #estimateContent table th:nth-child(3),#estimateContent table td:nth-child(3){text-align:center!important}
 #estimateContent table th:nth-child(4),#estimateContent table td:nth-child(4){text-align:right!important}
@@ -159,7 +100,7 @@ function syncQuotationGridToConstructionBudget(source){
  const budgetWidth=budgetTable.getBoundingClientRect().width;
  if(!budgetWidth)return;
  const widths=budgetCells.map(cell=>Math.max(0,cell.getBoundingClientRect().width/budgetWidth*100));
- source.querySelectorAll('table.simple-quotation-table,table.detailed-quotation-table').forEach(table=>{
+ source.querySelectorAll('table.detailed-quotation-table').forEach(table=>{
   let colgroup=table.querySelector('colgroup');
   if(!colgroup){colgroup=document.createElement('colgroup');table.insertBefore(colgroup,table.firstChild)}
   colgroup.innerHTML='';
