@@ -685,36 +685,7 @@ main>section:not(:first-child){scroll-margin-top:92px} main>section>div:first-ch
   </section>
 
   <!-- Quotation Generator -->
-  <section id="quotationGenerator" class="no-print bg-white rounded-2xl shadow-sm p-4 mt-4">
-  <div class="mb-3">
-    <p class="text-xs uppercase tracking-wider text-gray-500">Cost Estimate</p>
-    <h3 class="font-bold text-xl mt-0">Choose Cost Estimate Type</h3>
-    <p class="text-sm text-gray-500 mt-1">Select the cost estimate format, then generate one cost estimate using the final estimate values above.</p>
-  </div>
-  <div class="quotation-type-grid">
-    <label class="quotation-type-card is-selected">
-      <input type="radio" name="quotationType" value="simple" checked>
-      <span class="quotation-type-radio" aria-hidden="true"></span>
-      <span class="quotation-type-copy">
-        <strong>Simple Cost Estimate</strong>
-        <small>Work descriptions with section / room totals only.</small>
-      </span>
-    </label>
-    <label class="quotation-type-card">
-      <input type="radio" name="quotationType" value="detail">
-      <span class="quotation-type-radio" aria-hidden="true"></span>
-      <span class="quotation-type-copy">
-        <strong>Detail Cost Estimate</strong>
-        <small>Full quantity, unit, rate, amount and subtotal breakdown.</small>
-      </span>
-    </label>
-  </div>
-  <div class="quotation-generator-tip">
-    <strong>Review before generating</strong>
-    <span>The cost estimate uses the final customer, project, room, quantity and rate values shown in the estimate.</span>
-  </div>
-  <button type="button" onclick="generateQuotation()" class="quotation-generate-btn">Generate Cost Estimate</button>
-</section>
+  <section id="quotationGenerator" class="no-print bg-white rounded-2xl shadow-sm p-6 mt-6"><div class="mb-5"><p class="text-xs uppercase tracking-wider text-gray-500">Cost Estimate</p><h3 class="font-bold text-xl mt-1">Choose Estimate Type</h3><p class="text-sm text-gray-500 mt-2">Select the cost estimate format, then generate one cost estimate using the final estimate values above.</p></div><div class="quotation-type-grid"><label class="quotation-type-card is-selected"><input type="radio" name="quotationType" value="simple" checked><span class="quotation-type-radio" aria-hidden="true"></span><span class="quotation-type-copy"><strong>Simple Cost Estimate</strong><small>Work descriptions with section / room totals only.</small></span></label><label class="quotation-type-card"><input type="radio" name="quotationType" value="detail"><span class="quotation-type-radio" aria-hidden="true"></span><span class="quotation-type-copy"><strong>Detail Cost Estimate</strong><small>Full quantity, unit, rate, amount and subtotal breakdown.</small></span></label></div><div class="quotation-generator-tip"><strong>Review before generating</strong><span>The cost estimate uses the final customer, project, room, quantity and rate values shown in the estimate.</span></div><button type="button" onclick="generateQuotation()" class="quotation-generate-btn">Generate Cost Estimate</button></section>
 
 <section id="quotationDocument" class="hidden bg-white rounded-2xl shadow-sm p-8 mt-6">
   <div class="quotation-preview-heading no-print">
