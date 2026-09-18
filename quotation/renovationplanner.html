@@ -687,7 +687,7 @@ main>section:not(:first-child){scroll-margin-top:92px} main>section>div:first-ch
   <!-- Quotation Generator -->
   <section id="quotationGenerator" class="no-print bg-white rounded-2xl shadow-sm p-4 mt-4">
   <div class="mb-3">
-    <p class="text-xs uppercase tracking-wider text-gray-500">Quotation</p>
+    <p class="text-xs uppercase tracking-wider text-gray-500">Cost Estimate</p>
     <h3 class="font-bold text-xl mt-0">Choose Cost Estimate Type</h3>
     <p class="text-sm text-gray-500 mt-1">Select the cost estimate format, then generate one cost estimate using the final estimate values above.</p>
   </div>
@@ -713,7 +713,7 @@ main>section:not(:first-child){scroll-margin-top:92px} main>section>div:first-ch
     <strong>Review before generating</strong>
     <span>The cost estimate uses the final customer, project, room, quantity and rate values shown in the estimate.</span>
   </div>
-  <button type="button" onclick="generateQuotation()" class="quotation-generate-btn">Generate Quotation</button>
+  <button type="button" onclick="generateQuotation()" class="quotation-generate-btn">Generate Cost Estimate</button>
 </section>
 
 <section id="quotationDocument" class="hidden bg-white rounded-2xl shadow-sm p-8 mt-6">
@@ -1735,7 +1735,7 @@ function generateQuotationConfirmed(type) {
             <p class="text-xs text-gray-500">No 10A, Jalan PP 2/1, Taman Putra Prima, 47100 Puchong, Selangor</p>
           </div>
         </div>
-        <h2 class="text-2xl font-bold uppercase">Quotation</h2>
+        <h2 class="text-2xl font-bold uppercase">Cost Estimate</h2>
       </div>
       <div class="text-right text-sm flex-shrink-0">
         <p><span class="text-gray-500">Estimate No.</span><br><strong>${escapeHtml(quotationNumber)}</strong></p>
