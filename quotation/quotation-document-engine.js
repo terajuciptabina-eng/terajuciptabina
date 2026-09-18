@@ -231,7 +231,13 @@ async function buildPaginatedPages(source){
    }
   }
   const footerPage=makePageShell(headerNodes,template,false);
-  footerNodes.forEach(node=>footerPage.root.appendChild(node.cloneNode(true)));
+  footerPage.root.style.minHeight=`${USABLE_HEIGHT_PX}px`;
+  footerPage.root.style.display="flex";
+  footerPage.root.style.flexDirection="column";
+  const footerBlock=document.createElement("div");
+  footerBlock.style.marginTop="auto";
+  footerNodes.forEach(node=>footerBlock.appendChild(node.cloneNode(true)));
+  footerPage.root.appendChild(footerBlock);
   pages.push(footerPage.root);
  }else if(page){
   pages.push(page.root);
