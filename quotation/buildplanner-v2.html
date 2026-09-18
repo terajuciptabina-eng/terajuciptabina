@@ -234,13 +234,22 @@ function generateQuotation(typeOverride){
  const hierarchyFor=i=>{
   const path=String(i.masterPath||'').split('/').map(x=>x.trim()).filter(Boolean);
   const category=String(i.category||'').toLowerCase();
+  let levels;
   if(category==='architecture'&&/^BATHROOM$/i.test(path[0]||'')&&i.roomId&&i.roomId!=='project')
-   return [i.room||'Bathroom',...path.slice(1,-1)];
-  if(category==='external-work')return ['EXTERNAL WORK',...path.slice(0,-1)];
-  if(category==='doors-windows'){
-   return [path[0]||'DOORS & WINDOWS',...path.slice(1,-1)];
-  }
-  return path.slice(0,-1);
+   levels=[i.room||'Bathroom',...path.slice(1,-1)];
+  else if(category==='external-work')
+   levels=['EXTERNAL WORK',...path.slice(0,-1)];
+  else if(category==='doors-windows')
+   levels=[path[0]||'DOORS & WINDOWS',...path.slice(1,-1)];
+  else
+   levels=path.slice(0,-1);
+  const clean=[];
+  levels.forEach(level=>{
+   const label=String(level||'').trim();
+   if(!label)return;
+   if(!clean.length||clean[clean.length-1].toLowerCase()!==label.toLowerCase())clean.push(label);
+  });
+  return clean;
  };
  const tree=groups.map(([cat,title])=>{
   const items=all.filter(i=>String(i.category||'').toLowerCase()===cat);
@@ -277,7 +286,7 @@ function generateQuotation(typeOverride){
   tree.forEach(g=>{
    body+=`<tr class="quotation-section-row"><td colspan="5" class="py-3 px-2">${escQ(g.title)}</td></tr>`;
    const renderNode=(node,depth)=>{
-    const cls=depth===0?'quotation-subsection-row':'quotation-subsection-row';
+    const cls=depth===0?'quotation-subsection-row':'quotation-subsubsection-row';
     body+=`<tr class="${cls}"><td colspan="5" class="py-2 px-2">${escQ(node.label)}</td></tr>`;
     node.nodes.forEach(n=>renderNode(n,depth+1));
     node.items.forEach(i=>body+=itemRow(i));
