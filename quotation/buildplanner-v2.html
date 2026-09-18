@@ -234,28 +234,28 @@ function generateQuotation(typeOverride){
    g.levels.forEach((list,label)=>{
     body+='<tr class="quotation-subsubsection-row"><td colspan="6" class="py-2 px-2">'+escQ(label)+'</td></tr>';
     list.forEach(i=>body+=itemRow(i));
-    if(list.length>1)body+='<tr class="border-b"><td colspan="4"></td><td class="py-2 px-2 text-right font-semibold">Subtotal - '+escQ(label)+'</td><td class="py-2 px-2 text-right font-semibold">'+moneyQ(totalOf(list))+'</td></tr>';
+    if(list.length>1)body+='<tr class="border-b"><td colspan="5" class="py-2 px-2 text-right font-semibold" style="white-space:nowrap">Subtotal - '+escQ(label)+'</td><td class="py-2 px-2 text-right font-semibold">'+moneyQ(totalOf(list))+'</td></tr>';
    });
    g.noLevel3.forEach(i=>body+=itemRow(i));
-   if(g.noLevel3.length>1)body+='<tr class="border-b"><td colspan="4"></td><td class="py-2 px-2 text-right font-semibold">Subtotal - '+escQ(g.sub||g.header)+'</td><td class="py-2 px-2 text-right font-semibold">'+moneyQ(totalOf(g.noLevel3))+'</td></tr>';
+   if(g.noLevel3.length>1)body+='<tr class="border-b"><td colspan="5" class="py-2 px-2 text-right font-semibold" style="white-space:nowrap">Subtotal - '+escQ(g.sub||g.header)+'</td><td class="py-2 px-2 text-right font-semibold">'+moneyQ(totalOf(g.noLevel3))+'</td></tr>';
   });
-  body+='</tbody><tfoot><tr class="quotation-summary-title"><td colspan="6" class="py-3 px-2 text-left font-bold uppercase tracking-wide">SUMMARY — SUBTOTAL BY GROUP</td></tr>'+tree.map(g=>'<tr class="quotation-summary-row border-t"><td colspan="5" class="py-2 px-2 text-left font-semibold">'+escQ(g.header)+'</td><td class="py-2 px-2 text-right font-semibold">'+moneyQ(groupItems(g).reduce((s,i)=>s+Number(i.amount||0),0))+'</td></tr>').join('')+'<tr class="border-t-2"><td colspan="5" class="py-4 px-2 text-right font-bold">TOTAL AMOUNT</td><td class="py-4 px-2 text-right font-bold text-lg">'+moneyQ(data.total)+'</td></tr></tfoot></table></div>';
+  body+='</tbody><tfoot><tr class="quotation-summary-title"><td colspan="6" class="py-3 px-2 text-left font-bold uppercase tracking-wide">SUMMARY — SUBTOTAL BY GROUP</td></tr>'+tree.map(g=>'<tr class="quotation-summary-row border-t"><td colspan="5" class="py-2 px-2 text-left font-semibold">'+escQ(g.header)+'</td><td class="py-2 px-2 text-right font-semibold">'+moneyQ(groupItems(g).reduce((s,i)=>s+Number(i.amount||0),0))+'</td></tr>').join('')+'<tr class="border-t-2"><td colspan="5" class="py-4 px-2 text-left font-bold">TOTAL AMOUNT</td><td class="py-4 px-2 text-right font-bold text-lg">'+moneyQ(data.total)+'</td></tr></tfoot></table></div>';
  }else{
   body+='<div class="overflow-x-auto"><table class="w-full border-collapse text-sm simple-quotation-table"><colgroup><col style="width:8%"><col style="width:72%"><col style="width:20%"></colgroup><thead><tr class="border-b-2 text-left"><th class="py-3 px-2">No.</th><th class="py-3 px-2">Description</th><th class="py-3 px-2 text-right">Amount (RM)</th></tr></thead><tbody>';
   let no=1;
   tree.forEach(g=>{
    const gt=groupItems(g).reduce((s,i)=>s+Number(i.amount||0),0);
-   body+='<tr class="quotation-section-row"><td class="py-3 px-2">'+no+++'</td><td class="py-3 px-2" colspan="2">'+escQ(g.header)+'</td></tr>';
-   if(g.sub)body+='<tr class="quotation-subsection-row"><td></td><td colspan="2" class="py-2 px-2">'+escQ(g.sub)+'</td></tr>';
+   body+='<tr class="quotation-section-row"><td colspan="3" class="py-3 px-2 text-left">'+no+++' &nbsp; '+escQ(g.header)+'</td></tr>';
+   if(g.sub)body+='<tr class="quotation-subsection-row"><td colspan="3" class="py-2 px-2 text-left">'+escQ(g.sub)+'</td></tr>';
    g.levels.forEach((list,label)=>{
-    body+='<tr class="quotation-subsubsection-row"><td></td><td colspan="2" class="py-2 px-2">'+escQ(label)+'</td></tr>';
+    body+='<tr class="quotation-subsubsection-row"><td colspan="3" class="py-2 px-2 text-left">'+escQ(label)+'</td></tr>';
     list.forEach(i=>{body+='<tr><td></td><td class="py-2 px-2">'+escQ(i.description)+'</td><td></td></tr>'});
-    body+='<tr class="border-b"><td></td><td class="py-2 px-2 text-right font-semibold">Subtotal - '+escQ(label)+'</td><td class="py-2 px-2 text-right font-semibold">'+moneyQ(totalOf(list))+'</td></tr>';
+    body+='<tr class="border-b"><td colspan="2" class="py-2 px-2 text-left font-semibold">Subtotal - '+escQ(label)+'</td><td class="py-2 px-2 text-right font-semibold">'+moneyQ(totalOf(list))+'</td></tr>';
    });
    g.noLevel3.forEach(i=>{body+='<tr><td></td><td class="py-2 px-2">'+escQ(i.description)+'</td><td></td></tr>'});
-   if(g.noLevel3.length)body+='<tr class="border-b"><td></td><td class="py-2 px-2 text-right font-semibold">Subtotal - '+escQ(g.sub||g.header)+'</td><td class="py-2 px-2 text-right font-semibold">'+moneyQ(totalOf(g.noLevel3))+'</td></tr>';
+   if(g.noLevel3.length)body+='<tr class="border-b"><td colspan="2" class="py-2 px-2 text-left font-semibold">Subtotal - '+escQ(g.sub||g.header)+'</td><td class="py-2 px-2 text-right font-semibold">'+moneyQ(totalOf(g.noLevel3))+'</td></tr>';
   });
-  body+='</tbody><tfoot><tr class="quotation-summary-title"><td colspan="3" class="py-3 px-2 text-left font-bold uppercase tracking-wide">SUMMARY — SUBTOTAL BY GROUP</td></tr>'+tree.map(g=>'<tr class="quotation-summary-row border-t"><td colspan="2" class="py-2 px-2 text-left font-semibold">'+escQ(g.header)+'</td><td class="py-2 px-2 text-right font-semibold">'+moneyQ(groupItems(g).reduce((s,i)=>s+Number(i.amount||0),0))+'</td></tr>').join('')+'<tr class="border-t-2"><td colspan="2" class="py-4 px-2 text-right font-bold">TOTAL AMOUNT</td><td class="py-4 px-2 text-right font-bold text-lg">'+moneyQ(data.total)+'</td></tr></tfoot></table></div>';
+  body+='</tbody><tfoot><tr class="quotation-summary-title"><td colspan="3" class="py-3 px-2 text-left font-bold uppercase tracking-wide">SUMMARY — SUBTOTAL BY GROUP</td></tr>'+tree.map(g=>'<tr class="quotation-summary-row border-t"><td colspan="2" class="py-2 px-2 text-left font-semibold">'+escQ(g.header)+'</td><td class="py-2 px-2 text-right font-semibold">'+moneyQ(groupItems(g).reduce((s,i)=>s+Number(i.amount||0),0))+'</td></tr>').join('')+'<tr class="border-t-2"><td colspan="2" class="py-4 px-2 text-left font-bold">TOTAL AMOUNT</td><td class="py-4 px-2 text-right font-bold text-lg">'+moneyQ(data.total)+'</td></tr></tfoot></table></div>';
  }
  body+='<div class="mt-8 pt-5 border-t text-sm"><p class="font-semibold mb-2">Terms / Notes</p><ul class="list-disc pl-5 text-gray-600"><li>This quotation is based on the stated built-up area, area schedule and rates applied herein.</li><li>Final scope, specifications, site conditions and pricing remain subject to site inspection and written confirmation.</li><li>Any additional works or authority requirements not listed above shall be quoted separately.</li></ul></div><div class="mt-12 text-sm"><p>Yours sincerely,</p><p class="font-bold mt-8">TERAJU CIPTABINA RESOURCES</p></div>';
  content.innerHTML=body;
