@@ -135,7 +135,7 @@ function makePageShell(headerNodes,tableTemplate,includeTableHeader){
  if(includeTableHeader){
   wrap=document.createElement('div');wrap.className=tableTemplate.wrapper.className;wrap.style.overflow='visible';wrap.style.width='100%';
   table=tableTemplate.table.cloneNode(false);const colgroup=tableTemplate.colgroup?tableTemplate.colgroup.cloneNode(true):null;const thead=tableTemplate.thead?tableTemplate.thead.cloneNode(true):null;tbody=document.createElement('tbody');
-  if(colgroup){const widths=tableTemplate.table.classList.contains('simple-quotation-table')?['6%','18%','56%','20%']:tableTemplate.table.classList.contains('detailed-quotation-table')?['48%','10%','10%','16%','16%']:null;if(widths)Array.from(colgroup.children).forEach((col,i)=>{if(widths[i])col.style.width=widths[i]});table.appendChild(colgroup)}
+  if(colgroup)table.appendChild(colgroup)
   if(thead)table.appendChild(thead);table.appendChild(tbody);wrap.appendChild(table);root.appendChild(wrap);
  }
  return {root,wrap,table,tbody};
@@ -186,47 +186,55 @@ async function buildPaginatedPages(source){
  let page=makePageShell(headerNodes,template,true);
  let used=baseHeight;
 
- const pushPage=()=>{if(page.tbody.children.length)pages.push(page.root)};
- const newPage=()=>{page=makePageShell(headerNodes,template,true);used=baseHeight};
+ const pushBodyPage=()=>{if(page.tbody.children.length)pages.push(page.root)};
+ const newBodyPage=()=>{page=makePageShell(headerNodes,template,true);used=baseHeight};
 
  for(let i=0;i<units.length;i++){
   const h=heights[i]||0;
-  if(page.tbody.children.length&&used+h>USABLE_HEIGHT_PX){pushPage();newPage();}
+  if(page.tbody.children.length&&used+h>USABLE_HEIGHT_PX){pushBodyPage();newBodyPage();}
   appendUnits(page,[units[i]]);used+=h;
  }
 
- if(page.tbody.children.length&&tfoot){
-  const total=tfoot.cloneNode(true);
-  page.table.appendChild(total);
+ // Summary is a first-class document section. Keep it on the last body page
+ // when it fits; otherwise give it a complete page with the same document grid.
+ if(tfoot){
+  const summary=tfoot.cloneNode(true);
+  page.table.appendChild(summary);
   if(pageHeight(page)>USABLE_HEIGHT_PX){
-   total.remove();pushPage();newPage();page.table.appendChild(tfoot.cloneNode(true));
+   summary.remove();
+   pushBodyPage();
+   page=makePageShell(headerNodes,template,true);
+   page.table.appendChild(tfoot.cloneNode(true));
+   pages.push(page.root);
+   page=null;
   }
  }
 
- if(page.tbody.children.length&&footerNodes.length){
-  const footerClones=footerNodes.map(node=>node.cloneNode(true));
-  footerClones.forEach(node=>page.root.appendChild(node));
-  if(pageHeight(page)<=USABLE_HEIGHT_PX){
-   pages.push(page.root);
-  }else{
-   footerClones.forEach(node=>node.remove());
-   pushPage();
-   const footerPage=makePageShell(headerNodes,template,false);
-   footerNodes.forEach(node=>footerPage.root.appendChild(node.cloneNode(true)));
-   pages.push(footerPage.root);
+ // Terms/signature follow the summary. If they do not fit, put them on their own page.
+ if(footerNodes.length){
+  if(page){
+   const footerClones=footerNodes.map(node=>node.cloneNode(true));
+   footerClones.forEach(node=>page.root.appendChild(node));
+   if(pageHeight(page)<=USABLE_HEIGHT_PX){
+    pages.push(page.root);
+    page=null;
+   }else{
+    footerClones.forEach(node=>node.remove());
+    pushBodyPage();
+    page=null;
+   }
   }
- }else if(page.tbody.children.length){
-  pages.push(page.root);
- }else if(footerNodes.length&&!pages.length){
   const footerPage=makePageShell(headerNodes,template,false);
   footerNodes.forEach(node=>footerPage.root.appendChild(node.cloneNode(true)));
   pages.push(footerPage.root);
+ }else if(page){
+  pages.push(page.root);
  }
  return pages;
 }
 async function renderQuotationPreview(){injectStyles();const source=document.getElementById('quotationContent'),stage=document.getElementById('quotationPreview');if(!source||!stage)return;stage.innerHTML='<div class="quotation-preview-loading">Preparing visual quotation preview…</div>';try{await loadQuotationCanvas();const pageRoots=await buildPaginatedPages(source),pages=await rasterizePages(pageRoots);window.__quotationPreviewPages=pages.map(p=>p.src);window.__quotationPreviewPageMeta=pages;stage.innerHTML=pages.map((p,i)=>`<div class="quotation-preview-page"><img src="${p.src}" alt="Quotation page ${i+1}"><div class="quotation-preview-page-number">Page ${i+1} of ${pages.length}</div></div>`).join('')}catch(error){console.error(error);stage.innerHTML='<div class="quotation-preview-loading">Unable to prepare the visual quotation preview. You can still try Download PDF.</div>'}}
 async function printQuotation(){const quotation=document.getElementById('quotationDocument');if(!quotation||quotation.classList.contains('hidden')){alert('Please generate the quotation first.');return}const button=document.querySelector('#quotationPrintActions button'),originalLabel=button?button.textContent:'';if(button){button.disabled=true;button.textContent='Preparing PDF…'}try{await renderQuotationPreview();const pages=window.__quotationPreviewPages||[],meta=window.__quotationPreviewPageMeta||[];if(!pages.length)throw new Error('Quotation preview is unavailable.');await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js',()=>!!(window.jspdf&&window.jspdf.jsPDF));const{jsPDF}=window.jspdf,pdf=new jsPDF({orientation:'p',unit:'mm',format:'a4',compress:true});pages.forEach((src,index)=>{if(index)pdf.addPage();const drawHeight=Math.min(CONTENT_MM.height,Math.max(.1,meta[index]?.heightMm||CONTENT_MM.height));pdf.addImage(src,'JPEG',PAGE_MM.margin,PAGE_MM.margin,CONTENT_MM.width,drawHeight,undefined,'FAST');pdf.setFontSize(8);pdf.setTextColor(107,114,128);pdf.text(`Page ${index+1} of ${pages.length}`,PAGE_MM.width/2,PAGE_MM.height-4,{align:'center'})});const safeNumber=(typeof quotationNumber!=='undefined'&&quotationNumber?quotationNumber:'quotation').replace(/[^a-z0-9_-]+/gi,'-');pdf.save(`Quotation-${safeNumber}.pdf`)}catch(error){console.error(error);alert('Unable to create the PDF. Please check your internet connection and try again.')}finally{if(button){button.disabled=false;button.textContent=originalLabel||'Download PDF'}}}
 function bindQuotationTypeCards(){const inputs=document.querySelectorAll('input[name="quotationType"]');if(!inputs.length)return;const sync=()=>{document.querySelectorAll('.quotation-type-card').forEach(card=>{const input=card.querySelector('input[name="quotationType"]');if(input)card.classList.toggle('is-selected',!!input.checked)});if(typeof window.saveContractorState==='function')window.saveContractorState()};inputs.forEach(input=>input.addEventListener('change',sync));document.querySelectorAll('.quotation-type-card').forEach(card=>card.addEventListener('click',()=>{const input=card.querySelector('input[name="quotationType"]');if(!input)return;input.checked=true;input.dispatchEvent(new Event('change',{bubbles:true}))}));sync()}
-function install(){injectStyles();bindQuotationTypeCards();window.renderQuotationPreview=renderQuotationPreview;window.printQuotation=printQuotation;window.TERAJU_QUOTATION_DOCUMENT_ENGINE_VERSION='2026-09-18-clean-renderer-v10'}
+function install(){injectStyles();bindQuotationTypeCards();window.renderQuotationPreview=renderQuotationPreview;window.printQuotation=printQuotation;window.TERAJU_QUOTATION_DOCUMENT_ENGINE_VERSION='2026-09-18-source-of-truth-v11'}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install,{once:true});else install();
 })();
