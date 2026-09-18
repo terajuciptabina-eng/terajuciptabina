@@ -26,7 +26,7 @@
         "role": "contractor",
         "contractorId": "CTR-20260910-VYEA",
         "state": "final",
-        "quotationType": "detail",
+        "quotationType": "simple",
         "client": {
           "name": "Puan Shahida"
         },
@@ -234,15 +234,15 @@
           "excludedItems": [],
           "manualItems": [],
           "standardRateItems": [],
-          "quotationType": "detail",
+          "quotationType": "simple",
           "projectId": "PRJ-BLD-MU771QLU-PS57Z",
           "projectState": "selangor",
           "rateSetId": "default",
           "rateSetName": "Default Rate",
-          "rateSnapshotAt": "2026-09-18T17:17:19.136Z"
+          "rateSnapshotAt": "2026-09-18T17:39:08.617Z"
         },
         "createdAt": "2026-09-18T16:58:01.865Z",
-        "updatedAt": "2026-09-18T17:17:20.018Z",
+        "updatedAt": "2026-09-18T17:39:09.438Z",
         "estimateNumber": "EST-BLD-008"
       },
       {
@@ -1199,7 +1199,7 @@
     ]
   },
   "createdAt": "2026-09-10T20:27:55.981Z",
-  "updatedAt": "2026-09-18T17:38:18.718Z",
+  "updatedAt": "2026-09-18T17:39:09.438Z",
   "quotationRunningNumber": {
     "renovation": 2,
     "build": 8
