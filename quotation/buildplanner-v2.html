@@ -305,15 +305,16 @@ function generateQuotation(typeOverride){
    const cls=depth===0?'quotation-subsection-row':'quotation-subsubsection-row';
    body+=`<tr class="${cls}"><td></td><td colspan="3" class="py-2 px-2">${escQ(node.label)}</td></tr>`;
    node.nodes.forEach(n=>renderSimpleNode(n,depth+1));
-   if(node.items.length){
-    node.items.forEach(i=>{
-     body+=`<tr><td></td><td class="py-2 px-2 font-semibold">${escQ(node.label)}</td><td class="py-2 px-2">${escQ(i.description)}</td><td class="py-2 px-2 text-right font-semibold">${moneyQ(i.amount)}</td></tr>`;
-    });
-   }
+   node.items.forEach(i=>{
+    body+=`<tr><td></td><td></td><td class="py-2 px-2">${escQ(i.description)}</td><td class="py-2 px-2 text-right font-semibold">${moneyQ(i.amount)}</td></tr>`;
+   });
   };
   tree.forEach(g=>{
    body+=`<tr class="quotation-section-row"><td class="py-3 px-2">${no++}</td><td colspan="3" class="py-3 px-2">${escQ(g.title)}</td></tr>`;
-   if(g.nodes.length)g.nodes.forEach(n=>renderSimpleNode(n,''));else body+=`<tr><td></td><td class="py-2 px-2 font-semibold">${escQ(g.title)}</td><td class="py-2 px-2">${g.items.map(i=>escQ(i.description)).join('<br>')}</td><td class="py-2 px-2 text-right font-semibold">${moneyQ(totals[g.cat])}</td></tr>`;
+   if(g.nodes.length)g.nodes.forEach(n=>renderSimpleNode(n,0));
+   else g.items.forEach(i=>{
+    body+=`<tr><td></td><td></td><td class="py-2 px-2">${escQ(i.description)}</td><td class="py-2 px-2 text-right font-semibold">${moneyQ(i.amount)}</td></tr>`;
+   });
   });
   body+=`</tbody><tfoot>${summaryRows(3,1)}<tr class="border-t-2"><td colspan="3" class="py-4 px-2 text-right font-bold">TOTAL</td><td class="py-4 px-2 text-right font-bold text-lg">${moneyQ(data.total)}</td></tr></tfoot></table></div>`;
  }
