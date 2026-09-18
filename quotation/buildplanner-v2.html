@@ -212,106 +212,52 @@ function generateQuotation(typeOverride){
  const selectedType=typeOverride||getSelectedQuotationType();
  const rooms=getRoomGroups();
  if(!rooms.some(r=>r.area>0)){alert('Please add at least one area with a valid area before generating the quotation.');return}
- const data=getCurrentQuotationData();
- quotationNumber=generateQuotationNumber();
+ const data=getCurrentQuotationData(),quotationNumber=generateQuotationNumber();
  const type=selectedType,customer=document.getElementById('customerName')?.value||'Not specified',location=document.getElementById('projectLocation')?.value||'Not specified',declared=rooms.reduce((s,r)=>s+(r.area||0),0),today=new Intl.DateTimeFormat('en-MY',{day:'2-digit',month:'long',year:'numeric'}).format(new Date()),content=document.getElementById('quotationContent');
- const all=data.allItems||[], groups=[
-  ['preliminaries','PRELIMINARIES'],['structures','STRUCTURAL WORKS'],['architecture','ARCHITECTURAL WORKS'],
-  ['electrical','ELECTRICAL WORKS'],['doors-windows','DOORS & WINDOWS'],['external-work','EXTERNAL WORKS']
- ];
+ const all=data.allItems||[],active=all.filter(i=>typeof excludedItems==='undefined'||!excludedItems.has(i.id));
+ const tree=typeof window.__TERAJU_BUILD_BUDGET_HIERARCHY==='function'?window.__TERAJU_BUILD_BUDGET_HIERARCHY(active):[];
  const escQ=v=>typeof window.escapeHtml==='function'?window.escapeHtml(v):escapeHtml(v);
  const moneyQ=v=>money(v,2);
- const itemRow=i=>`<tr class="border-b align-top"><td class="py-3 px-2">${escQ(i.description)}</td><td class="py-3 px-2">${escQ(i.unit)}</td><td class="py-3 px-2 text-right">${formatQty(i.qty,i.unit)}</td><td class="py-3 px-2 text-right">${moneyQ(i.rate)}</td><td class="py-3 px-2 text-right font-medium">${moneyQ(i.amount)}</td></tr>`;
- const hierarchyFor=i=>{
-  const path=String(i.masterPath||'').split('/').map(x=>x.trim()).filter(Boolean);
-  const category=String(i.category||'').toLowerCase();
-  let levels;
-  if(category==='architecture'&&/^BATHROOM$/i.test(path[0]||'')&&i.roomId&&i.roomId!=='project')
-   levels=[i.room||'Bathroom',...path.slice(1,-1)];
-  else if(category==='external-work')
-   levels=['EXTERNAL WORK',...path.slice(0,-1)];
-  else if(category==='doors-windows')
-   levels=[path[0]||'DOORS & WINDOWS',...path.slice(1,-1)];
-  else
-   levels=path.slice(0,-1);
-  const clean=[];
-  levels.forEach(level=>{
-   const label=String(level||'').trim();
-   if(!label)return;
-   if(!clean.length||clean[clean.length-1].toLowerCase()!==label.toLowerCase())clean.push(label);
-  });
-  return clean;
- };
- const tree=groups.map(([cat,title])=>{
-  const items=all.filter(i=>String(i.category||'').toLowerCase()===cat);
-  const root={cat,title,nodes:[],items};
-  const map=new Map();
-  items.forEach(i=>{
-   const levels=hierarchyFor(i);
-   let cursor=root,pathKey=cat;
-   levels.forEach(label=>{
-    const key=String(label||'').trim()||'Other';
-    const nodeKey=pathKey+'|'+key.toLowerCase();
-    let node=map.get(nodeKey);
-    if(!node){
-     node={label:key,nodes:[],items:[]};
-     cursor.nodes.push(node);
-     map.set(nodeKey,node);
-    }
-    cursor=node;
-    pathKey=nodeKey;
-   });
-   cursor.items.push(i);
-  });
-  return root;
- }).filter(g=>g.items.length);
- const leafItems=g=>{
-  const out=[...g.items];
-  g.nodes.forEach(n=>out.push(...leafItems(n)));
-  return out;
- };
- const totals=Object.fromEntries(groups.map(([cat])=>[cat,all.filter(i=>String(i.category||'').toLowerCase()===cat).reduce((s,i)=>s+Number(i.amount||0),0)]));
- const summaryRows=(labelColspan,totalColspan)=>groups.map(([cat,title])=>all.some(i=>String(i.category||'').toLowerCase()===cat)?`<tr class="quotation-summary-row border-t"><td colspan="${labelColspan}" class="py-2 px-2 text-left font-semibold">${escQ(title)}</td><td colspan="${totalColspan}" class="py-2 px-2 text-right font-semibold">${moneyQ(totals[cat])}</td></tr>`:'').join('');
- let body=`<div class="flex justify-between items-start gap-6 border-b pb-5 mb-6"><div><div class="flex items-center gap-4 mb-4"><img src="../images/logo.png" class="h-14 w-auto"><div><h1 class="text-xl font-bold">TERAJU CIPTABINA RESOURCES</h1><p class="text-xs text-gray-500">No 10A, Jalan PP 2/1, Taman Putra Prima, 47100 Puchong, Selangor</p></div></div><h2 class="text-2xl font-bold uppercase">Quotation</h2></div><div class="text-right text-sm"><p>Quotation No.<br><strong>${escQ(quotationNumber)}</strong></p><p class="mt-2">Date<br><strong>${today}</strong></p></div></div><div class="grid md:grid-cols-3 gap-6 mb-7 text-sm"><div><p class="text-xs text-gray-500">Customer</p><p class="font-semibold">${escQ(customer)}</p></div><div><p class="text-xs text-gray-500">Project Location</p><p class="font-semibold">${escQ(location)}</p></div><div><p class="text-xs text-gray-500">Built-up Area</p><p class="font-semibold">${formatQty(declared)} sqft</p></div></div>`;
+ const totalOf=list=>(list||[]).reduce((s,i)=>s+Number(i.amount||0),0);
+ const nodeItems=node=>[...(node?.noLevel3||[]),...[...(node?.levels?.values?.()||[])].flatMap(list=>list)];
+ const groupItems=g=>[...(g?.items||[]),...nodeItems(g)];
+ const summaryRows=groups=>groups.map(g=>{const total=groupItems(g).reduce((s,i)=>s+Number(i.amount||0),0);return total?'<tr class="quotation-summary-row border-t"><td class="py-2 px-2 text-left font-semibold">'+escQ(g.header)+'</td><td class="py-2 px-2 text-right font-semibold">'+moneyQ(total)+'</td></tr>':''}).join('');
+ let body='<div class="flex justify-between items-start gap-6 border-b pb-5 mb-6"><div><div class="flex items-center gap-4 mb-4"><img src="../images/logo.png" class="h-14 w-auto"><div><h1 class="text-xl font-bold">TERAJU CIPTABINA RESOURCES</h1><p class="text-xs text-gray-500">No 10A, Jalan PP 2/1, Taman Putra Prima, 47100 Puchong, Selangor</p></div></div><h2 class="text-2xl font-bold uppercase">Quotation</h2></div><div class="text-right text-sm"><p>Quotation No.<br><strong>'+escQ(quotationNumber)+'</strong></p><p class="mt-2">Date<br><strong>'+today+'</strong></p></div></div><div class="grid md:grid-cols-3 gap-6 mb-7 text-sm"><div><p class="text-xs text-gray-500">Customer</p><p class="font-semibold">'+escQ(customer)+'</p></div><div><p class="text-xs text-gray-500">Project Location</p><p class="font-semibold">'+escQ(location)+'</p></div><div><p class="text-xs text-gray-500">Built-up Area</p><p class="font-semibold">'+formatQty(declared)+' sqft</p></div></div>';
  if(type==='detail'){
-  body+=`<div class="mb-5 rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm"><span class="font-semibold">Detailed Quotation:</span> <span class="line-through text-gray-400">RM 49</span> <span class="font-bold text-green-700 ml-1">FREE</span> <span class="text-gray-600 ml-1">— Limited-time promotion until 31 October 2026.</span></div>`;
-  body+=`<div class="overflow-x-auto"><table class="w-full border-collapse text-sm detailed-quotation-table"><colgroup><col style="width:48%"><col style="width:10%"><col style="width:10%"><col style="width:16%"><col style="width:16%"></colgroup><thead><tr class="border-b-2 text-left"><th class="py-3 px-2">Description</th><th class="py-3 px-2">Unit</th><th class="py-3 px-2 text-right">Quantity</th><th class="py-3 px-2 text-right">Rate (RM)</th><th class="py-3 px-2 text-right">Amount (RM)</th></tr></thead><tbody>`;
-  tree.forEach(g=>{
-   body+=`<tr class="quotation-section-row"><td colspan="5" class="py-3 px-2">${escQ(g.title)}</td></tr>`;
-   const renderNode=(node,depth)=>{
-    const cls=depth===0?'quotation-subsection-row':'quotation-subsubsection-row';
-    body+=`<tr class="${cls}"><td colspan="5" class="py-2 px-2">${escQ(node.label)}</td></tr>`;
-    node.nodes.forEach(n=>renderNode(n,depth+1));
-    node.items.forEach(i=>body+=itemRow(i));
-    if(node.items.length>1){
-     body+=`<tr class="border-b"><td colspan="3"></td><td class="py-2 px-2 text-right font-semibold">Subtotal - ${escQ(node.label)}</td><td class="py-2 px-2 text-right font-semibold">${moneyQ(node.items.reduce((s,i)=>s+Number(i.amount||0),0))}</td></tr>`;
-    }
-   };
-   if(g.nodes.length)g.nodes.forEach(n=>renderNode(n,0));else g.items.forEach(i=>body+=itemRow(i));
-   if(!g.nodes.length&&g.items.length>1)body+=`<tr class="border-b"><td colspan="3"></td><td class="py-2 px-2 text-right font-semibold">Subtotal - ${escQ(g.title)}</td><td class="py-2 px-2 text-right font-semibold">${moneyQ(totals[g.cat])}</td></tr>`;
-  });
-  body+=`</tbody><tfoot><tr class="quotation-summary-title"><td colspan="5" class="py-3 px-2 text-left font-bold uppercase tracking-wide">SUMMARY — SUBTOTAL BY GROUP</td></tr>${summaryRows(4,1)}<tr class="border-t-2"><td colspan="4" class="py-4 px-2 text-right font-bold">TOTAL</td><td class="py-4 px-2 text-right font-bold text-lg">${moneyQ(data.total)}</td></tr></tfoot></table></div>`;
- }else{
-  body+=`<div class="overflow-x-auto"><table class="w-full border-collapse text-sm simple-quotation-table"><colgroup><col style="width:6%"><col style="width:18%"><col style="width:56%"><col style="width:20%"></colgroup><thead><tr class="border-b-2 text-left"><th class="py-3 px-2">No.</th><th class="py-3 px-2">Work Section</th><th class="py-3 px-2">Description of Works</th><th class="py-3 px-2 text-right">Amount (RM)</th></tr></thead><tbody>`;
+  body+='<div class="mb-5 rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm"><span class="font-semibold">Detailed Quotation:</span> <span class="line-through text-gray-400">RM 49</span> <span class="font-bold text-green-700 ml-1">FREE</span> <span class="text-gray-600 ml-1">— Limited-time promotion until 31 October 2026.</span></div>';
+  body+='<div class="overflow-x-auto"><table class="w-full border-collapse text-sm detailed-quotation-table"><colgroup><col style="width:6%"><col style="width:42%"><col style="width:9%"><col style="width:11%"><col style="width:16%"><col style="width:16%"></colgroup><thead><tr class="border-b-2 text-left"><th class="py-3 px-2">No.</th><th class="py-3 px-2">Description</th><th class="py-3 px-2">Unit</th><th class="py-3 px-2 text-right">Quantity</th><th class="py-3 px-2 text-right">Rate (RM)</th><th class="py-3 px-2 text-right">Amount (RM)</th></tr></thead><tbody>';
   let no=1;
-  const renderSimpleNode=(node,depth)=>{
-   const cls=depth===0?'quotation-subsection-row':'quotation-subsubsection-row';
-   body+=`<tr class="${cls}"><td></td><td colspan="3" class="py-2 px-2">${escQ(node.label)}</td></tr>`;
-   node.nodes.forEach(n=>renderSimpleNode(n,depth+1));
-   node.items.forEach(i=>{
-    body+=`<tr><td></td><td></td><td class="py-2 px-2">${escQ(i.description)}</td><td class="py-2 px-2 text-right font-semibold">${moneyQ(i.amount)}</td></tr>`;
-   });
-  };
+  const itemRow=i=>'<tr class="border-b align-top"><td class="py-3 px-2">'+no+++'</td><td class="py-3 px-2">'+escQ(i.description)+'</td><td class="py-3 px-2">'+escQ(i.unit)+'</td><td class="py-3 px-2 text-right">'+formatQty(i.qty,i.unit)+'</td><td class="py-3 px-2 text-right">'+moneyQ(i.rate)+'</td><td class="py-3 px-2 text-right font-medium">'+moneyQ(i.amount)+'</td></tr>';
   tree.forEach(g=>{
-   body+=`<tr class="quotation-section-row"><td class="py-3 px-2">${no++}</td><td colspan="3" class="py-3 px-2">${escQ(g.title)}</td></tr>`;
-   if(g.nodes.length)g.nodes.forEach(n=>renderSimpleNode(n,0));
-   else g.items.forEach(i=>{
-    body+=`<tr><td></td><td></td><td class="py-2 px-2">${escQ(i.description)}</td><td class="py-2 px-2 text-right font-semibold">${moneyQ(i.amount)}</td></tr>`;
+   body+='<tr class="quotation-section-row"><td colspan="6" class="py-3 px-2">'+no+++' &nbsp; '+escQ(g.header)+'</td></tr>';
+   if(g.sub)body+='<tr class="quotation-subsection-row"><td colspan="6" class="py-2 px-2">'+escQ(g.sub)+'</td></tr>';
+   g.levels.forEach((list,label)=>{
+    body+='<tr class="quotation-subsubsection-row"><td colspan="6" class="py-2 px-2">'+escQ(label)+'</td></tr>';
+    list.forEach(i=>body+=itemRow(i));
+    if(list.length>1)body+='<tr class="border-b"><td colspan="4"></td><td class="py-2 px-2 text-right font-semibold">Subtotal - '+escQ(label)+'</td><td class="py-2 px-2 text-right font-semibold">'+moneyQ(totalOf(list))+'</td></tr>';
    });
+   g.noLevel3.forEach(i=>body+=itemRow(i));
+   if(g.noLevel3.length>1)body+='<tr class="border-b"><td colspan="4"></td><td class="py-2 px-2 text-right font-semibold">Subtotal - '+escQ(g.sub||g.header)+'</td><td class="py-2 px-2 text-right font-semibold">'+moneyQ(totalOf(g.noLevel3))+'</td></tr>';
   });
-  body+=`</tbody><tfoot><tr class="quotation-summary-title"><td colspan="4" class="py-3 px-2 text-left font-bold uppercase tracking-wide">SUMMARY — SUBTOTAL BY GROUP</td></tr>${summaryRows(3,1)}<tr class="border-t-2"><td colspan="3" class="py-4 px-2 text-right font-bold">TOTAL</td><td class="py-4 px-2 text-right font-bold text-lg">${moneyQ(data.total)}</td></tr></tfoot></table></div>`;
+  body+='</tbody><tfoot><tr class="quotation-summary-title"><td colspan="6" class="py-3 px-2 text-left font-bold uppercase tracking-wide">SUMMARY — SUBTOTAL BY GROUP</td></tr>'+tree.map(g=>'<tr class="quotation-summary-row border-t"><td colspan="5" class="py-2 px-2 text-left font-semibold">'+escQ(g.header)+'</td><td class="py-2 px-2 text-right font-semibold">'+moneyQ(groupItems(g).reduce((s,i)=>s+Number(i.amount||0),0))+'</td></tr>').join('')+'<tr class="border-t-2"><td colspan="5" class="py-4 px-2 text-right font-bold">TOTAL AMOUNT</td><td class="py-4 px-2 text-right font-bold text-lg">'+moneyQ(data.total)+'</td></tr></tfoot></table></div>';
+ }else{
+  body+='<div class="overflow-x-auto"><table class="w-full border-collapse text-sm simple-quotation-table"><colgroup><col style="width:8%"><col style="width:72%"><col style="width:20%"></colgroup><thead><tr class="border-b-2 text-left"><th class="py-3 px-2">No.</th><th class="py-3 px-2">Description</th><th class="py-3 px-2 text-right">Amount (RM)</th></tr></thead><tbody>';
+  let no=1;
+  tree.forEach(g=>{
+   const gt=groupItems(g).reduce((s,i)=>s+Number(i.amount||0),0);
+   body+='<tr class="quotation-section-row"><td class="py-3 px-2">'+no+++'</td><td class="py-3 px-2" colspan="2">'+escQ(g.header)+'</td></tr>';
+   if(g.sub)body+='<tr class="quotation-subsection-row"><td></td><td colspan="2" class="py-2 px-2">'+escQ(g.sub)+'</td></tr>';
+   g.levels.forEach((list,label)=>{
+    body+='<tr class="quotation-subsubsection-row"><td></td><td colspan="2" class="py-2 px-2">'+escQ(label)+'</td></tr>';
+    list.forEach(i=>{body+='<tr><td></td><td class="py-2 px-2">'+escQ(i.description)+'</td><td></td></tr>'});
+    body+='<tr class="border-b"><td></td><td class="py-2 px-2 text-right font-semibold">Subtotal - '+escQ(label)+'</td><td class="py-2 px-2 text-right font-semibold">'+moneyQ(totalOf(list))+'</td></tr>';
+   });
+   g.noLevel3.forEach(i=>{body+='<tr><td></td><td class="py-2 px-2">'+escQ(i.description)+'</td><td></td></tr>'});
+   if(g.noLevel3.length)body+='<tr class="border-b"><td></td><td class="py-2 px-2 text-right font-semibold">Subtotal - '+escQ(g.sub||g.header)+'</td><td class="py-2 px-2 text-right font-semibold">'+moneyQ(totalOf(g.noLevel3))+'</td></tr>';
+  });
+  body+='</tbody><tfoot><tr class="quotation-summary-title"><td colspan="3" class="py-3 px-2 text-left font-bold uppercase tracking-wide">SUMMARY — SUBTOTAL BY GROUP</td></tr>'+tree.map(g=>'<tr class="quotation-summary-row border-t"><td colspan="2" class="py-2 px-2 text-left font-semibold">'+escQ(g.header)+'</td><td class="py-2 px-2 text-right font-semibold">'+moneyQ(groupItems(g).reduce((s,i)=>s+Number(i.amount||0),0))+'</td></tr>').join('')+'<tr class="border-t-2"><td colspan="2" class="py-4 px-2 text-right font-bold">TOTAL AMOUNT</td><td class="py-4 px-2 text-right font-bold text-lg">'+moneyQ(data.total)+'</td></tr></tfoot></table></div>';
  }
- body+=`<div class="mt-8 pt-5 border-t text-sm"><p class="font-semibold mb-2">Terms / Notes</p><ul class="list-disc pl-5 text-gray-600"><li>This quotation is based on the stated built-up area, area schedule and rates applied herein.</li><li>Final scope, specifications, site conditions and pricing remain subject to site inspection and written confirmation.</li><li>Any additional works or authority requirements not listed above shall be quoted separately.</li></ul></div><div class="mt-12 text-sm"><p>Yours sincerely,</p><p class="font-bold mt-8">TERAJU CIPTABINA RESOURCES</p></div>`;
+ body+='<div class="mt-8 pt-5 border-t text-sm"><p class="font-semibold mb-2">Terms / Notes</p><ul class="list-disc pl-5 text-gray-600"><li>This quotation is based on the stated built-up area, area schedule and rates applied herein.</li><li>Final scope, specifications, site conditions and pricing remain subject to site inspection and written confirmation.</li><li>Any additional works or authority requirements not listed above shall be quoted separately.</li></ul></div><div class="mt-12 text-sm"><p>Yours sincerely,</p><p class="font-bold mt-8">TERAJU CIPTABINA RESOURCES</p></div>';
  content.innerHTML=body;
  document.getElementById('quotationDocument').classList.remove('hidden');
  document.getElementById('quotationPrintActions').classList.remove('hidden');
