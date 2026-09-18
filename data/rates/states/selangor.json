@@ -27,7 +27,7 @@
     "rule_main_building_apron_concrete_20": 350,
     "rule_main_building_apron_formwork_21": 55,
     "rule_main_building_apron_brc_22": 20.5,
-    "rule_main_building_drainage_23": 25,
+    "rule_main_building_drainage_23": 35,
     "rule_porch_footing_concrete_24": 550,
     "rule_porch_footing_formwork_25": 55,
     "rule_porch_footing_rebar_26": 8,
@@ -87,7 +87,7 @@
     "rule_driveway_80": 5000,
     "rule_landscaping_81": 2000
   },
-  "updatedAt": "2026-09-18T13:11:51.328Z",
+  "updatedAt": "2026-09-18T13:20:18.495Z",
   "effectiveDate": null,
   "rateItems": {
     "rule_preliminaries_building_plan_submission_0": {
