@@ -23,7 +23,10 @@ function injectStyles(){
 #quotationPreview .quotation-preview-loading{width:100%;padding:32px 20px;text-align:center;border:1px dashed #d1d5db;border-radius:16px;background:#fafafa;color:#6b7280}
 @media(max-width:767px){#quotationPreview.quotation-preview-stage{gap:20px!important;padding:16px 8px!important}#quotationPreview .quotation-preview-page{width:100%!important;box-shadow:0 8px 24px rgba(15,23,42,.08)!important}}
 
-.simple-quotation-table,.detailed-quotation-table{width:100%!important;table-layout:fixed!important;border-collapse:collapse!important}.simple-quotation-table th,.simple-quotation-table td,.detailed-quotation-table th,.detailed-quotation-table td{vertical-align:top!important}.simple-quotation-table th:first-child,.simple-quotation-table td:first-child,.detailed-quotation-table th:first-child,.detailed-quotation-table td:first-child{text-align:left!important}.simple-quotation-table th:last-child,.simple-quotation-table td:last-child,.detailed-quotation-table th:nth-child(4),.detailed-quotation-table td:nth-child(4),.detailed-quotation-table th:nth-child(5),.detailed-quotation-table td:nth-child(5),.detailed-quotation-table th:nth-child(6),.detailed-quotation-table td:nth-child(6){text-align:right!important}.simple-quotation-table th:nth-child(2),.simple-quotation-table td:nth-child(2),.detailed-quotation-table th:nth-child(2),.detailed-quotation-table td:nth-child(2),.detailed-quotation-table th:nth-child(3),.detailed-quotation-table td:nth-child(3){text-align:left!important}.simple-quotation-table td:nth-child(2),.detailed-quotation-table td:nth-child(2){overflow-wrap:anywhere;word-break:normal;white-space:normal}.simple-quotation-table td:last-child,.detailed-quotation-table td:nth-child(n+4){white-space:nowrap}
+.simple-quotation-table,.detailed-quotation-table{width:100%!important;table-layout:fixed!important;border-collapse:collapse!important}.simple-quotation-table th,.simple-quotation-table td,.detailed-quotation-table th,.detailed-quotation-table td{vertical-align:top!important}.simple-quotation-table th:first-child,.simple-quotation-table td:first-child,.detailed-quotation-table th:first-child,.detailed-quotation-table td:first-child,.detailed-quotation-table th:nth-child(2),.detailed-quotation-table td:nth-child(2),.detailed-quotation-table th:nth-child(3),.detailed-quotation-table td:nth-child(3){text-align:left!important}.simple-quotation-table th:last-child,.simple-quotation-table td:last-child,.detailed-quotation-table th:nth-child(4),.detailed-quotation-table td:nth-child(4),.detailed-quotation-table th:nth-child(5),.detailed-quotation-table td:nth-child(5),.detailed-quotation-table th:nth-child(6),.detailed-quotation-table td:nth-child(6){text-align:right!important}.simple-quotation-table td:nth-child(2),.detailed-quotation-table td:nth-child(2){overflow-wrap:break-word;word-break:normal;white-space:normal}.simple-quotation-table td:last-child,.detailed-quotation-table td:nth-child(n+4){white-space:nowrap}
+/* Quotation uses the Construction Budget grid: Item/Description/Unit left; Quantity/Rate/Amount right; every cell top-aligned. */ 
+.detailed-quotation-table col:nth-child(1),.detailed-quotation-table th:nth-child(1),.detailed-quotation-table td:nth-child(1){width:6%!important}.detailed-quotation-table col:nth-child(2),.detailed-quotation-table th:nth-child(2),.detailed-quotation-table td:nth-child(2){width:42%!important}.detailed-quotation-table col:nth-child(3),.detailed-quotation-table th:nth-child(3),.detailed-quotation-table td:nth-child(3){width:9%!important}.detailed-quotation-table col:nth-child(4),.detailed-quotation-table th:nth-child(4),.detailed-quotation-table td:nth-child(4){width:11%!important}.detailed-quotation-table col:nth-child(5),.detailed-quotation-table th:nth-child(5),.detailed-quotation-table td:nth-child(5){width:16%!important}.detailed-quotation-table col:nth-child(6),.detailed-quotation-table th:nth-child(6),.detailed-quotation-table td:nth-child(6){width:16%!important}
+.simple-quotation-table col:nth-child(1),.simple-quotation-table th:nth-child(1),.simple-quotation-table td:nth-child(1){width:8%!important}.simple-quotation-table col:nth-child(2),.simple-quotation-table th:nth-child(2),.simple-quotation-table td:nth-child(2){width:72%!important}.simple-quotation-table col:nth-child(3),.simple-quotation-table th:nth-child(3),.simple-quotation-table td:nth-child(3){width:20%!important}
 /* Standard planner estimate alignment — alignment/column sizing only; typography unchanged. */
 #estimateContent table th:nth-child(1),#estimateContent table td:nth-child(1){text-align:left!important}
 #estimateContent table th:nth-child(2),#estimateContent table td:nth-child(2){text-align:center!important}
@@ -122,26 +125,92 @@ function appendUnits(page,units){units.forEach(unit=>unit.forEach(row=>page.tbod
 function pageHeight(page){const holder=document.createElement('div');holder.style.cssText=`position:fixed;left:-100000px;top:0;width:${RENDER_WIDTH_PX}px;background:#fff;padding:0;margin:0;overflow:visible;visibility:hidden;z-index:-1`;holder.appendChild(page.root);document.body.appendChild(holder);void page.root.offsetHeight;const height=Math.ceil(Math.max(page.root.scrollHeight,page.root.getBoundingClientRect().height));holder.remove();return height}
 function canvasFromPage(root){const holder=document.createElement('div');holder.style.cssText=`position:fixed;left:-100000px;top:0;width:${RENDER_WIDTH_PX}px;background:#fff;padding:0;margin:0;overflow:visible;z-index:-1;visibility:visible`;holder.appendChild(root);document.body.appendChild(holder);return holder}
 async function rasterizePages(pageRoots){const pages=[];for(const root of pageRoots){const holder=canvasFromPage(root);await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));if(document.fonts?.ready)await document.fonts.ready;await waitForImages(holder);const measured=Math.ceil(Math.max(root.scrollHeight,root.getBoundingClientRect().height,1));const captureHeight=Math.min(USABLE_HEIGHT_PX,measured);const canvas=await window.html2canvas(holder,{backgroundColor:'#fff',scale:Math.min(2,Math.max(1.5,window.devicePixelRatio||1)),useCORS:true,allowTaint:false,logging:false,imageTimeout:15000,scrollX:0,scrollY:0,width:RENDER_WIDTH_PX,height:captureHeight,windowWidth:RENDER_WIDTH_PX,windowHeight:captureHeight});holder.remove();const heightMm=(canvas.height/Math.max(canvas.width,1))*CONTENT_MM.width;pages.push({src:canvas.toDataURL('image/jpeg',JPEG_QUALITY),heightMm})}return pages}
+async function measureUnitHeights(headerNodes,tableTemplate,units){
+ const measure=makePageShell(headerNodes,tableTemplate,true);
+ const rows=[];
+ units.forEach((unit,index)=>unit.forEach(sourceRow=>{
+  const row=sourceRow.cloneNode(true);
+  rows.push({index,row});
+  measure.tbody.appendChild(row);
+ }));
+ const holder=document.createElement('div');
+ holder.style.cssText=`position:fixed;left:-100000px;top:0;width:${RENDER_WIDTH_PX}px;background:#fff;padding:0;margin:0;overflow:visible;visibility:hidden;z-index:-1`;
+ holder.appendChild(measure.root);
+ document.body.appendChild(holder);
+ void measure.root.offsetHeight;
+ const heights=units.map(()=>0);
+ rows.forEach(({index,row})=>{heights[index]+=Math.ceil(row.getBoundingClientRect().height)});
+ holder.remove();
+ const emptyPage=makePageShell(headerNodes,tableTemplate,true);
+ const baseHeight=pageHeight(emptyPage);
+ return {baseHeight,heights};
+}
 async function buildPaginatedPages(source){
- const working=source.cloneNode(true);working.classList.remove('quotation-render-source','quotation-locked');working.querySelectorAll('.no-print,#quotationPrintActions,#quotationLockOverlay').forEach(el=>el.remove());const children=Array.from(working.children);const tableWrap=children.find(el=>el.querySelector?.('table'));if(!tableWrap)return[working];const table=tableWrap.querySelector('table'),colgroup=table?.querySelector('colgroup'),thead=table?.querySelector('thead'),tbody=table?.querySelector('tbody'),tfoot=table?.querySelector('tfoot');if(!table||!tbody)return[working];const tableIndex=children.indexOf(tableWrap),headerNodes=children.slice(0,tableIndex),footerNodes=children.slice(tableIndex+1),template={wrapper:tableWrap,table,colgroup,thead,tfoot},units=collectPageUnits(tbody),roots=[];let page=makePageShell(headerNodes,template,true);const fits=p=>pageHeight(p)<=USABLE_HEIGHT_PX,hasBody=p=>!!p.tbody?.children.length,pushCurrent=()=>{if(hasBody(page))roots.push(page.root)},startNewPage=()=>{page=makePageShell(headerNodes,template,true)};
- for(const unit of units){const testRows=unit.map(r=>r.cloneNode(true));testRows.forEach(r=>page.tbody.appendChild(r));if(!fits(page)&&page.tbody.children.length>testRows.length){testRows.forEach(r=>r.remove());pushCurrent();startNewPage();appendUnits(page,[unit]);if(!fits(page))console.warn('Quotation row group exceeds one A4 page; keeping the row together may require smaller source text.')}}
- if(hasBody(page)&&tfoot){const total=tfoot.cloneNode(true);page.table.appendChild(total);if(!fits(page)){total.remove();pushCurrent();startNewPage();page.table.appendChild(tfoot.cloneNode(true))}}
- if(!hasBody(page)&&!roots.length)roots.push(page.root);
+ const working=source.cloneNode(true);
+ working.classList.remove('quotation-render-source','quotation-locked');
+ working.querySelectorAll('.no-print,#quotationPrintActions,#quotationLockOverlay').forEach(el=>el.remove());
+ if(document.fonts?.ready)await document.fonts.ready;
+ await waitForImages(working);
+ const children=Array.from(working.children);
+ const tableWrap=children.find(el=>el.querySelector?.('table'));
+ if(!tableWrap)return[working];
+ const table=tableWrap.querySelector('table'),colgroup=table?.querySelector('colgroup'),thead=table?.querySelector('thead'),tbody=table?.querySelector('tbody'),tfoot=table?.querySelector('tfoot');
+ if(!table||!tbody)return[working];
+ const tableIndex=children.indexOf(tableWrap),headerNodes=children.slice(0,tableIndex),footerNodes=children.slice(tableIndex+1);
+ const template={wrapper:tableWrap,table,colgroup,thead,tfoot};
+ const units=collectPageUnits(tbody);
+ if(!units.length)return[working];
+ const {baseHeight,heights}=await measureUnitHeights(headerNodes,template,units);
+ const capacity=Math.max(1,USABLE_HEIGHT_PX);
+ const roots=[];
+ let page=makePageShell(headerNodes,template,true);
+ let used=baseHeight;
+ const pushCurrent=()=>{if(page.tbody?.children.length)roots.push(page.root)};
+ const startNewPage=()=>{page=makePageShell(headerNodes,template,true);used=baseHeight};
+ for(let i=0;i<units.length;i++){
+  const unit=units[i],unitHeight=heights[i]||0;
+  if(page.tbody.children.length&&used+unitHeight>capacity){pushCurrent();startNewPage();}
+  appendUnits(page,[unit]);
+  used+=unitHeight;
+ }
+ if(page.tbody.children.length&&tfoot){
+  const total=tfoot.cloneNode(true);
+  page.table.appendChild(total);
+  if(pageHeight(page)>capacity){
+   total.remove();
+   pushCurrent();
+   startNewPage();
+   page.table.appendChild(tfoot.cloneNode(true));
+  }
+ }
  let footerAttached=false;
- if(hasBody(page)&&footerNodes.length){
+ if(page.tbody.children.length&&footerNodes.length){
   const clones=footerNodes.map(node=>node.cloneNode(true));
   clones.forEach(node=>page.root.appendChild(node));
-  if(fits(page)){footerAttached=true;roots.push(page.root)}
-  else{clones.forEach(node=>node.remove());pushCurrent();const footerPage=makePageShell(headerNodes,template,false);footerNodes.forEach(node=>footerPage.root.appendChild(node.cloneNode(true)));roots.push(footerPage.root);footerAttached=true}
- }else if(hasBody(page))pushCurrent();
+  if(pageHeight(page)<=capacity){
+   footerAttached=true;
+   roots.push(page.root);
+  }else{
+   clones.forEach(node=>node.remove());
+   pushCurrent();
+   const footerPage=makePageShell(headerNodes,template,false);
+   footerNodes.forEach(node=>footerPage.root.appendChild(node.cloneNode(true)));
+   roots.push(footerPage.root);
+   footerAttached=true;
+  }
+ }else if(page.tbody.children.length){
+  roots.push(page.root);
+ }
  if(!footerAttached&&footerNodes.length&&!roots.length){
-  const footerPage=makePageShell(headerNodes,template,false);footerNodes.forEach(node=>footerPage.root.appendChild(node.cloneNode(true)));roots.push(footerPage.root);
+  const footerPage=makePageShell(headerNodes,template,false);
+  footerNodes.forEach(node=>footerPage.root.appendChild(node.cloneNode(true)));
+  roots.push(footerPage.root);
  }
  return roots;
 }
 async function renderQuotationPreview(){injectStyles();const source=document.getElementById('quotationContent'),stage=document.getElementById('quotationPreview');if(!source||!stage)return;stage.innerHTML='<div class="quotation-preview-loading">Preparing visual quotation preview…</div>';try{await loadQuotationCanvas();const pageRoots=await buildPaginatedPages(source),pages=await rasterizePages(pageRoots);window.__quotationPreviewPages=pages.map(p=>p.src);window.__quotationPreviewPageMeta=pages;stage.innerHTML=pages.map((p,i)=>`<div class="quotation-preview-page"><img src="${p.src}" alt="Quotation page ${i+1}"><div class="quotation-preview-page-number">Page ${i+1} of ${pages.length}</div></div>`).join('')}catch(error){console.error(error);stage.innerHTML='<div class="quotation-preview-loading">Unable to prepare the visual quotation preview. You can still try Download PDF.</div>'}}
 async function printQuotation(){const quotation=document.getElementById('quotationDocument');if(!quotation||quotation.classList.contains('hidden')){alert('Please generate the quotation first.');return}const button=document.querySelector('#quotationPrintActions button'),originalLabel=button?button.textContent:'';if(button){button.disabled=true;button.textContent='Preparing PDF…'}try{await renderQuotationPreview();const pages=window.__quotationPreviewPages||[],meta=window.__quotationPreviewPageMeta||[];if(!pages.length)throw new Error('Quotation preview is unavailable.');await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js',()=>!!(window.jspdf&&window.jspdf.jsPDF));const{jsPDF}=window.jspdf,pdf=new jsPDF({orientation:'p',unit:'mm',format:'a4',compress:true});pages.forEach((src,index)=>{if(index)pdf.addPage();const drawHeight=Math.min(CONTENT_MM.height,Math.max(.1,meta[index]?.heightMm||CONTENT_MM.height));pdf.addImage(src,'JPEG',PAGE_MM.margin,PAGE_MM.margin,CONTENT_MM.width,drawHeight,undefined,'FAST');pdf.setFontSize(8);pdf.setTextColor(107,114,128);pdf.text(`Page ${index+1} of ${pages.length}`,PAGE_MM.width/2,PAGE_MM.height-4,{align:'center'})});const safeNumber=(typeof quotationNumber!=='undefined'&&quotationNumber?quotationNumber:'quotation').replace(/[^a-z0-9_-]+/gi,'-');pdf.save(`Quotation-${safeNumber}.pdf`)}catch(error){console.error(error);alert('Unable to create the PDF. Please check your internet connection and try again.')}finally{if(button){button.disabled=false;button.textContent=originalLabel||'Download PDF'}}}
 function bindQuotationTypeCards(){const inputs=document.querySelectorAll('input[name="quotationType"]');if(!inputs.length)return;const sync=()=>{document.querySelectorAll('.quotation-type-card').forEach(card=>{const input=card.querySelector('input[name="quotationType"]');if(input)card.classList.toggle('is-selected',!!input.checked)});if(typeof window.saveContractorState==='function')window.saveContractorState()};inputs.forEach(input=>input.addEventListener('change',sync));document.querySelectorAll('.quotation-type-card').forEach(card=>card.addEventListener('click',()=>{const input=card.querySelector('input[name="quotationType"]');if(!input)return;input.checked=true;input.dispatchEvent(new Event('change',{bubbles:true}))}));sync()}
-function install(){injectStyles();bindQuotationTypeCards();window.renderQuotationPreview=renderQuotationPreview;window.printQuotation=printQuotation;window.TERAJU_QUOTATION_DOCUMENT_ENGINE_VERSION='2026-09-09-alignment-v8'}
+function install(){injectStyles();bindQuotationTypeCards();window.renderQuotationPreview=renderQuotationPreview;window.printQuotation=printQuotation;window.TERAJU_QUOTATION_DOCUMENT_ENGINE_VERSION='2026-09-18-alignment-v9-performance'}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install,{once:true});else install();
 })();
