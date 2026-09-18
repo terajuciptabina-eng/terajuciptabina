@@ -24,35 +24,71 @@ function injectStyles(){
 @media(max-width:767px){#quotationPreview.quotation-preview-stage{gap:20px!important;padding:16px 8px!important}#quotationPreview .quotation-preview-page{width:100%!important;box-shadow:0 8px 24px rgba(15,23,42,.08)!important}}
 
 /* QUOTATION LAYOUT CONTRACT
-   The quotation document follows the Construction Budget column roles and vertical alignment.
-   Simple: No / Description / Amount.
-   Detailed: No / Description / Unit / Quantity / Rate / Amount.
-   Labels have explicit alignment rules; amounts remain numeric/right aligned.
+   Construction Budget is the source of truth:
+   - same six-column grid: Item / Description / Unit / Quantity / Rate / Amount
+   - same cell padding convention (py-2 px-2 for body rows)
+   - hierarchy/subtotal/summary labels terminate at the left edge of the Amount column
+   - Amount values always occupy the canonical sixth column
 */
-.simple-quotation-table,.detailed-quotation-table{width:100%!important;table-layout:fixed!important;border-collapse:collapse!important}
-.simple-quotation-table th,.simple-quotation-table td,.detailed-quotation-table th,.detailed-quotation-table td{vertical-align:top!important}
-.simple-quotation-table th:nth-child(1),.simple-quotation-table td:nth-child(1),.simple-quotation-table th:nth-child(2),.simple-quotation-table td:nth-child(2),.simple-quotation-table .quotation-section-row td,.simple-quotation-table .quotation-subsection-row td,.simple-quotation-table .quotation-subsubsection-row td,.simple-quotation-table .quotation-summary-title td,.simple-quotation-table .quotation-summary-row td:first-child,.simple-quotation-table .border-b td:first-child,.simple-quotation-table .border-b td:nth-child(2),.simple-quotation-table tfoot tr.border-t-2 td:first-child{ text-align:left!important }
-
-/* AMOUNT COLUMN RIGHT EDGE LOCK: every Amount value and label/value row terminates on the exact same right edge. */
-.simple-quotation-table th:last-child,.simple-quotation-table td:last-child,.detailed-quotation-table th:last-child,.detailed-quotation-table td:last-child{ text-align:right!important; padding-right:0!important; box-sizing:border-box!important; }
-
-/* Simple hierarchy rows are labels, not Amount cells. Keep them at the far-left edge. */
-.simple-quotation-table .quotation-section-row td,.simple-quotation-table .quotation-subsection-row td,.simple-quotation-table .quotation-subsubsection-row td,.simple-quotation-table .quotation-summary-title td{ text-align:left!important; }
-.simple-quotation-table th:nth-child(3),.simple-quotation-table td:nth-child(3),.detailed-quotation-table th:nth-child(4),.detailed-quotation-table td:nth-child(4),.detailed-quotation-table th:nth-child(5),.detailed-quotation-table td:nth-child(5),.detailed-quotation-table th:nth-child(6),.detailed-quotation-table td:nth-child(6){text-align:right!important}
-.detailed-quotation-table th:nth-child(1),.detailed-quotation-table td:nth-child(1),.detailed-quotation-table th:nth-child(2),.detailed-quotation-table td:nth-child(2),.detailed-quotation-table th:nth-child(3),.detailed-quotation-table td:nth-child(3){text-align:left!important}
-.simple-quotation-table td:nth-child(2),.detailed-quotation-table td:nth-child(2){overflow-wrap:break-word;word-break:normal;white-space:normal}
-.simple-quotation-table td:nth-child(3),.detailed-quotation-table td:nth-child(n+4){white-space:nowrap}
-.detailed-quotation-table col:nth-child(1),.detailed-quotation-table th:nth-child(1),.detailed-quotation-table td:nth-child(1){width:6%!important}
-.detailed-quotation-table col:nth-child(2),.detailed-quotation-table th:nth-child(2),.detailed-quotation-table td:nth-child(2){width:42%!important}
-.detailed-quotation-table col:nth-child(3),.detailed-quotation-table th:nth-child(3),.detailed-quotation-table td:nth-child(3){width:9%!important}
-.detailed-quotation-table col:nth-child(4),.detailed-quotation-table th:nth-child(4),.detailed-quotation-table td:nth-child(4){width:11%!important}
-.detailed-quotation-table col:nth-child(5),.detailed-quotation-table th:nth-child(5),.detailed-quotation-table td:nth-child(5){width:16%!important}
-.detailed-quotation-table col:nth-child(6),.detailed-quotation-table th:nth-child(6),.detailed-quotation-table td:nth-child(6){width:16%!important}
-.simple-quotation-table col:nth-child(1),.simple-quotation-table th:nth-child(1),.simple-quotation-table td:nth-child(1){width:8%!important}
-.simple-quotation-table col:nth-child(2),.simple-quotation-table th:nth-child(2),.simple-quotation-table td:nth-child(2){width:72%!important}
-.simple-quotation-table col:nth-child(3),.simple-quotation-table th:nth-child(3),.simple-quotation-table td:nth-child(3){width:20%!important}
-.simple-quotation-table .border-b td:nth-child(2),.detailed-quotation-table .border-b td:nth-child(5){white-space:nowrap!important}
-/* Standard planner estimate alignment — alignment/column sizing only; typography unchanged. */
+.simple-quotation-table,.detailed-quotation-table{
+  width:100%!important;
+  table-layout:fixed!important;
+  border-collapse:collapse!important;
+  min-width:0!important;
+}
+.simple-quotation-table th,.simple-quotation-table td,
+.detailed-quotation-table th,.detailed-quotation-table td{
+  vertical-align:top!important;
+  box-sizing:border-box!important;
+}
+.simple-quotation-table th:nth-child(1),.simple-quotation-table td:nth-child(1),
+.detailed-quotation-table th:nth-child(1),.detailed-quotation-table td:nth-child(1){text-align:left!important}
+.simple-quotation-table th:nth-child(2),.simple-quotation-table td:nth-child(2),
+.detailed-quotation-table th:nth-child(2),.detailed-quotation-table td:nth-child(2){text-align:left!important}
+.simple-quotation-table th:nth-child(3),.simple-quotation-table td:nth-child(3),
+.detailed-quotation-table th:nth-child(3),.detailed-quotation-table td:nth-child(3){text-align:left!important}
+.simple-quotation-table th:nth-child(4),.simple-quotation-table td:nth-child(4),
+.simple-quotation-table th:nth-child(5),.simple-quotation-table td:nth-child(5),
+.simple-quotation-table th:nth-child(6),.simple-quotation-table td:nth-child(6),
+.detailed-quotation-table th:nth-child(4),.detailed-quotation-table td:nth-child(4),
+.detailed-quotation-table th:nth-child(5),.detailed-quotation-table td:nth-child(5),
+.detailed-quotation-table th:nth-child(6),.detailed-quotation-table td:nth-child(6){text-align:right!important}
+.simple-quotation-table td:nth-child(2),.detailed-quotation-table td:nth-child(2){
+  white-space:normal!important;
+  overflow-wrap:break-word!important;
+  word-break:normal!important;
+}
+.simple-quotation-table td:nth-child(n+3),.detailed-quotation-table td:nth-child(n+3){white-space:nowrap!important}
+.simple-quotation-table .quotation-section-row td,
+.simple-quotation-table .quotation-subsection-row td,
+.simple-quotation-table .quotation-subsubsection-row td,
+.simple-quotation-table .quotation-summary-title td,
+.simple-quotation-table .quotation-summary-row td:first-child,
+.simple-quotation-table tfoot tr.border-t-2 td:first-child,
+.detailed-quotation-table .quotation-section-row td,
+.detailed-quotation-table .quotation-subsection-row td,
+.detailed-quotation-table .quotation-subsubsection-row td,
+.detailed-quotation-table .quotation-summary-title td,
+.detailed-quotation-table .quotation-summary-row td:first-child,
+.detailed-quotation-table tfoot tr.border-t-2 td:first-child{
+  text-align:right!important;
+  white-space:nowrap!important;
+}
+.simple-quotation-table .border-b td:first-child,
+.simple-quotation-table .border-b td:nth-child(2),
+.detailed-quotation-table .border-b td:first-child,
+.detailed-quotation-table .border-b td:nth-child(5){
+  text-align:right!important;
+  white-space:nowrap!important;
+}
+.simple-quotation-table .quotation-section-row td,
+.simple-quotation-table .quotation-subsection-row td,
+.simple-quotation-table .quotation-subsubsection-row td,
+.detailed-quotation-table .quotation-section-row td,
+.detailed-quotation-table .quotation-subsection-row td,
+.detailed-quotation-table .quotation-subsubsection-row td{
+  overflow:visible!important;
+}
 #estimateContent table th:nth-child(1),#estimateContent table td:nth-child(1){text-align:left!important}
 #estimateContent table th:nth-child(2),#estimateContent table td:nth-child(2){text-align:center!important}
 #estimateContent table th:nth-child(3),#estimateContent table td:nth-child(3){text-align:center!important}
@@ -114,6 +150,26 @@ function loadScript(src,test){
 async function loadQuotationCanvas(){await loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js',()=>typeof window.html2canvas==='function');}
 function waitForImages(root){return Promise.all(Array.from(root.querySelectorAll('img')).map(img=>img.complete&&img.naturalWidth>0?Promise.resolve():new Promise(r=>{img.addEventListener('load',r,{once:true});img.addEventListener('error',r,{once:true})})));}
 
+function syncQuotationGridToConstructionBudget(source){
+ const budgetTable=document.querySelector('#constructionBudgetContent table.cr-budget-table');
+ if(!budgetTable||!source)return;
+ const budgetHeader=budgetTable.querySelector('thead tr');
+ const budgetCells=budgetHeader?Array.from(budgetHeader.children):[];
+ if(budgetCells.length!==6)return;
+ const budgetWidth=budgetTable.getBoundingClientRect().width;
+ if(!budgetWidth)return;
+ const widths=budgetCells.map(cell=>Math.max(0,cell.getBoundingClientRect().width/budgetWidth*100));
+ source.querySelectorAll('table.simple-quotation-table,table.detailed-quotation-table').forEach(table=>{
+  let colgroup=table.querySelector('colgroup');
+  if(!colgroup){colgroup=document.createElement('colgroup');table.insertBefore(colgroup,table.firstChild)}
+  colgroup.innerHTML='';
+  widths.forEach(width=>{const col=document.createElement('col');col.style.width=width.toFixed(4)+'%';colgroup.appendChild(col)});
+  table.style.width='100%';
+  table.style.tableLayout='fixed';
+  table.style.minWidth='0';
+ });
+}
+
 function createRenderRoot(){
  const root=document.createElement('div');
  root.style.cssText=`width:${RENDER_WIDTH_PX}px;box-sizing:border-box;background:#fff;padding:0 0 ${PAGE_BOTTOM_SAFETY_PX}px;margin:0;overflow:visible;font-family:Arial,Helvetica,sans-serif;`;
@@ -163,6 +219,7 @@ async function measureQuotationUnits(headerNodes,tableTemplate,units){
  return {baseHeight:pageHeight(makePageShell(headerNodes,tableTemplate,true)),heights};
 }
 async function buildPaginatedPages(source){
+ syncQuotationGridToConstructionBudget(source);
  const working=source.cloneNode(true);
  working.classList.remove('quotation-render-source','quotation-locked');
  working.querySelectorAll('.no-print,#quotationPrintActions,#quotationLockOverlay').forEach(el=>el.remove());
@@ -241,6 +298,6 @@ async function buildPaginatedPages(source){
 async function renderQuotationPreview(){injectStyles();const source=document.getElementById('quotationContent'),stage=document.getElementById('quotationPreview');if(!source||!stage)return;stage.innerHTML='<div class="quotation-preview-loading">Preparing visual quotation preview…</div>';try{await loadQuotationCanvas();const pageRoots=await buildPaginatedPages(source),pages=await rasterizePages(pageRoots);window.__quotationPreviewPages=pages.map(p=>p.src);window.__quotationPreviewPageMeta=pages;stage.innerHTML=pages.map((p,i)=>`<div class="quotation-preview-page"><img src="${p.src}" alt="Quotation page ${i+1}"><div class="quotation-preview-page-number">Page ${i+1} of ${pages.length}</div></div>`).join('')}catch(error){console.error(error);stage.innerHTML='<div class="quotation-preview-loading">Unable to prepare the visual quotation preview. You can still try Download PDF.</div>'}}
 async function printQuotation(){const quotation=document.getElementById('quotationDocument');if(!quotation||quotation.classList.contains('hidden')){alert('Please generate the quotation first.');return}const button=document.querySelector('#quotationPrintActions button'),originalLabel=button?button.textContent:'';if(button){button.disabled=true;button.textContent='Preparing PDF…'}try{await renderQuotationPreview();const pages=window.__quotationPreviewPages||[],meta=window.__quotationPreviewPageMeta||[];if(!pages.length)throw new Error('Quotation preview is unavailable.');await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js',()=>!!(window.jspdf&&window.jspdf.jsPDF));const{jsPDF}=window.jspdf,pdf=new jsPDF({orientation:'p',unit:'mm',format:'a4',compress:true});pages.forEach((src,index)=>{if(index)pdf.addPage();const drawHeight=Math.min(CONTENT_MM.height,Math.max(.1,meta[index]?.heightMm||CONTENT_MM.height));pdf.addImage(src,'JPEG',PAGE_MM.margin,PAGE_MM.margin,CONTENT_MM.width,drawHeight,undefined,'FAST');pdf.setFontSize(8);pdf.setTextColor(107,114,128);pdf.text(`Page ${index+1} of ${pages.length}`,PAGE_MM.width/2,PAGE_MM.height-4,{align:'center'})});const safeNumber=(typeof quotationNumber!=='undefined'&&quotationNumber?quotationNumber:'quotation').replace(/[^a-z0-9_-]+/gi,'-');pdf.save(`Quotation-${safeNumber}.pdf`)}catch(error){console.error(error);alert('Unable to create the PDF. Please check your internet connection and try again.')}finally{if(button){button.disabled=false;button.textContent=originalLabel||'Download PDF'}}}
 function bindQuotationTypeCards(){const inputs=document.querySelectorAll('input[name="quotationType"]');if(!inputs.length)return;const sync=()=>{document.querySelectorAll('.quotation-type-card').forEach(card=>{const input=card.querySelector('input[name="quotationType"]');if(input)card.classList.toggle('is-selected',!!input.checked)});if(typeof window.saveContractorState==='function')window.saveContractorState()};inputs.forEach(input=>input.addEventListener('change',sync));document.querySelectorAll('.quotation-type-card').forEach(card=>card.addEventListener('click',()=>{const input=card.querySelector('input[name="quotationType"]');if(!input)return;input.checked=true;input.dispatchEvent(new Event('change',{bubbles:true}))}));sync()}
-function install(){injectStyles();bindQuotationTypeCards();window.renderQuotationPreview=renderQuotationPreview;window.printQuotation=printQuotation;window.TERAJU_QUOTATION_DOCUMENT_ENGINE_VERSION='2026-09-18-source-of-truth-v11'}
+function install(){injectStyles();bindQuotationTypeCards();window.renderQuotationPreview=renderQuotationPreview;window.printQuotation=printQuotation;window.TERAJU_QUOTATION_DOCUMENT_ENGINE_VERSION='2026-09-19-construction-budget-grid-v1'}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install,{once:true});else install();
 })();
