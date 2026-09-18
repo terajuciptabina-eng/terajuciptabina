@@ -234,12 +234,12 @@ function generateQuotation(typeOverride){
    g.levels.forEach((list,label)=>{
     body+='<tr class="quotation-subsubsection-row"><td colspan="6" class="py-2 px-2">'+escQ(label)+'</td></tr>';
     list.forEach(i=>body+=itemRow(i));
-    if(list.length>1)body+='<tr class="border-b"><td colspan="6" class="quotation-amount-row-cell"><div class="quotation-detailed-amount-grid"><div class="quotation-subtotal-label">Subtotal - '+escQ(label)+'</div><div class="quotation-subtotal-amount">'+moneyQ(totalOf(list))+'</div></div></td></tr>';
+    if(list.length>1)body+='<tr class="border-b"><td colspan="5" class="py-2 px-2 text-right font-semibold" style="white-space:nowrap">Subtotal - '+escQ(label)+'</td><td class="py-2 px-2 text-right font-semibold">'+moneyQ(totalOf(list))+'</td></tr>';
    });
    g.noLevel3.forEach(i=>body+=itemRow(i));
-   if(g.noLevel3.length>1)body+='<tr class="border-b"><td colspan="6" class="quotation-amount-row-cell"><div class="quotation-detailed-amount-grid"><div class="quotation-subtotal-label">Subtotal - '+escQ(g.sub||g.header)+'</div><div class="quotation-subtotal-amount">'+moneyQ(totalOf(g.noLevel3))+'</div></div></td></tr>';
+   if(g.noLevel3.length>1)body+='<tr class="border-b"><td colspan="5" class="py-2 px-2 text-right font-semibold" style="white-space:nowrap">Subtotal - '+escQ(g.sub||g.header)+'</td><td class="py-2 px-2 text-right font-semibold">'+moneyQ(totalOf(g.noLevel3))+'</td></tr>';
   });
-  body+='</tbody><tfoot><tr class="quotation-summary-title"><td colspan="6" class="py-3 px-2 text-left font-bold uppercase tracking-wide">SUMMARY — SUBTOTAL BY GROUP</td></tr>'+summaryGroups.map(g=>'<tr class="quotation-summary-row border-t"><td colspan="6" class="quotation-amount-row-cell"><div class="quotation-detailed-amount-grid"><div class="quotation-summary-label">'+escQ(g.title)+'</div><div class="quotation-summary-amount">'+moneyQ(totalOf(g.items))+'</div></div></td></tr>').join('')+'<tr class="border-t-2"><td colspan="6" class="quotation-amount-row-cell quotation-total-row-cell"><div class="quotation-detailed-amount-grid quotation-total-grid"><div class="quotation-total-label">TOTAL AMOUNT</div><div class="quotation-total-amount">'+moneyQ(data.total)+'</div></div></td></tr></tfoot></table></div>';
+  body+='</tbody><tfoot><tr class="quotation-summary-title"><td colspan="6" class="py-3 px-2 text-left font-bold uppercase tracking-wide">SUMMARY — SUBTOTAL BY GROUP</td></tr>'+summaryGroups.map(g=>'<tr class="quotation-summary-row border-t"><td colspan="5" class="py-2 px-2 text-left font-semibold">'+escQ(g.title)+'</td><td class="py-2 px-2 text-right font-semibold">'+moneyQ(totalOf(g.items))+'</td></tr>').join('')+'<tr class="border-t-2"><td colspan="5" class="py-4 px-2 text-left font-bold">TOTAL AMOUNT</td><td class="py-4 px-2 text-right font-bold text-lg">'+moneyQ(data.total)+'</td></tr></tfoot></table></div>';
  }else{
   body+='<div class="overflow-x-auto"><table class="w-full border-collapse text-sm simple-quotation-table"><colgroup><col style="width:8%"><col style="width:72%"><col style="width:20%"></colgroup><thead><tr class="border-b-2 text-left"><th class="py-3 px-2">No.</th><th class="py-3 px-2">Description</th><th class="py-3 px-2 text-right">Amount (RM)</th></tr></thead><tbody>';
   let no=1;
@@ -255,7 +255,7 @@ function generateQuotation(typeOverride){
    g.noLevel3.forEach(i=>{body+='<tr><td></td><td class="py-2 px-2">'+escQ(i.description)+'</td><td></td></tr>'});
    if(g.noLevel3.length)body+='<tr class="border-b"><td colspan="2" class="py-2 px-2 text-left font-semibold">Subtotal - '+escQ(g.sub||g.header)+'</td><td class="py-2 px-2 text-right font-semibold">'+moneyQ(totalOf(g.noLevel3))+'</td></tr>';
   });
-  body+='</tbody><tfoot><tr class="quotation-summary-title"><td colspan="3" class="py-3 px-2 text-left font-bold uppercase tracking-wide">SUMMARY — SUBTOTAL BY GROUP</td></tr>'+summaryGroups.map(g=>'<tr class="quotation-summary-row border-t"><td colspan="3" class="quotation-amount-row-cell"><div class="quotation-simple-amount-grid"><div class="quotation-summary-label">'+escQ(g.title)+'</div><div class="quotation-summary-amount">'+moneyQ(totalOf(g.items))+'</div></div></td></tr>').join('')+'<tr class="border-t-2"><td colspan="3" class="quotation-amount-row-cell quotation-total-row-cell"><div class="quotation-simple-amount-grid quotation-total-grid"><div class="quotation-total-label">TOTAL AMOUNT</div><div class="quotation-total-amount">'+moneyQ(data.total)+'</div></div></td></tr></tfoot></table></div>';
+  body+='</tbody><tfoot><tr class="quotation-summary-title"><td colspan="3" class="py-3 px-2 text-left font-bold uppercase tracking-wide">SUMMARY — SUBTOTAL BY GROUP</td></tr>'+summaryGroups.map(g=>'<tr class="quotation-summary-row border-t"><td colspan="2" class="py-2 px-2 text-left font-semibold">'+escQ(g.title)+'</td><td class="py-2 px-2 text-right font-semibold">'+moneyQ(totalOf(g.items))+'</td></tr>').join('')+'<tr class="border-t-2"><td colspan="2" class="py-4 px-2 text-left font-bold">TOTAL AMOUNT</td><td class="py-4 px-2 text-right font-bold text-lg">'+moneyQ(data.total)+'</td></tr></tfoot></table></div>';
  }
  body+='<div class="mt-8 pt-5 border-t text-sm"><p class="font-semibold mb-2">Terms / Notes</p><ul class="list-disc pl-5 text-gray-600"><li>This quotation is based on the stated built-up area, area schedule and rates applied herein.</li><li>Final scope, specifications, site conditions and pricing remain subject to site inspection and written confirmation.</li><li>Any additional works or authority requirements not listed above shall be quoted separately.</li></ul></div><div class="mt-12 text-sm"><p>Yours sincerely,</p><p class="font-bold mt-8">TERAJU CIPTABINA RESOURCES</p></div>';
  content.innerHTML=body;
@@ -298,15 +298,6 @@ applyAudienceUI();if(isHomeowner()){document.getElementById('roomsContainer').in
 #quotationDocument .simple-quotation-table .quotation-section-row td{font-weight:700;text-transform:uppercase;letter-spacing:.03em}
 #quotationDocument .simple-quotation-table .quotation-subsection-row td{font-weight:700;color:#374151}
 #quotationDocument .simple-quotation-table .quotation-subsubsection-row td{font-weight:700;color:#111827;background:#fff}
- #quotationDocument .quotation-amount-row-cell{padding:0!important}
- #quotationDocument .quotation-detailed-amount-grid{display:grid!important;grid-template-columns:84% 16%!important;width:100%!important;box-sizing:border-box!important}
- #quotationDocument .quotation-simple-amount-grid{display:grid!important;grid-template-columns:80% 20%!important;width:100%!important;box-sizing:border-box!important}
- #quotationDocument .quotation-subtotal-label,#quotationDocument .quotation-summary-label,#quotationDocument .quotation-total-label{padding:8px 8px!important;box-sizing:border-box!important;min-width:0!important;white-space:nowrap!important}
- #quotationDocument .quotation-subtotal-label{text-align:right!important}
- #quotationDocument .quotation-summary-label,#quotationDocument .quotation-total-label{text-align:left!important}
- #quotationDocument .quotation-subtotal-amount,#quotationDocument .quotation-summary-amount,#quotationDocument .quotation-total-amount{padding:8px 8px!important;box-sizing:border-box!important;text-align:right!important;white-space:nowrap!important;min-width:0!important}
- #quotationDocument .quotation-total-label,#quotationDocument .quotation-total-amount{padding-top:16px!important;padding-bottom:16px!important}
-
 
 </style>
 </body></html>
