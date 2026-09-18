@@ -257,16 +257,18 @@ function generateQuotation(typeOverride){
   const map=new Map();
   items.forEach(i=>{
    const levels=hierarchyFor(i);
-   let cursor=root,nodes=cursor.nodes;
+   let cursor=root,pathKey=cat;
    levels.forEach(label=>{
     const key=String(label||'').trim()||'Other';
-    if(!map.has(cursor.__key+'|'+key)){
-     const node={label:key,nodes:[],items:[]};
-     nodes.push(node);map.set(cursor.__key+'|'+key,node);
+    const nodeKey=pathKey+'|'+key.toLowerCase();
+    let node=map.get(nodeKey);
+    if(!node){
+     node={label:key,nodes:[],items:[]};
+     cursor.nodes.push(node);
+     map.set(nodeKey,node);
     }
-    const node=map.get(cursor.__key+'|'+key);
-    cursor.__key=(cursor.__key||cat)+'/'+key;
-    cursor=node;nodes=cursor.nodes;
+    cursor=node;
+    pathKey=nodeKey;
    });
    cursor.items.push(i);
   });
