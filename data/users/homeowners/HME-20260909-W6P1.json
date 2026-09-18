@@ -337,7 +337,7 @@
           "builtUpArea": 400,
           "state": "selangor"
         },
-        "total": 93013.4,
+        "total": 175441.5,
         "plannerState": {
           "customerName": "Reeza",
           "projectLocation": "",
@@ -510,12 +510,12 @@
           "quotationType": "detail",
           "projectId": "PRJ-BLD-MTVIU1F0-ITYT0",
           "projectState": "selangor",
-          "rateSetId": "selangor",
-          "rateSetName": "Selangor",
-          "rateSnapshotAt": "2026-09-13T12:05:04.923Z"
+          "rateSetId": "default",
+          "rateSetName": "Default Rate",
+          "rateSnapshotAt": "2026-09-18T19:13:29.436Z"
         },
         "createdAt": "2026-09-10T12:46:23.228Z",
-        "updatedAt": "2026-09-13T12:05:05.906Z",
+        "updatedAt": "2026-09-18T19:13:30.036Z",
         "estimateNumber": "EST-BLD-008"
       },
       {
@@ -1698,7 +1698,7 @@
     ]
   },
   "createdAt": "2026-09-09T22:23:53.088Z",
-  "updatedAt": "2026-09-18T19:09:44.287Z",
+  "updatedAt": "2026-09-18T19:13:30.036Z",
   "quotationRunningNumber": {
     "renovation": 1,
     "build": 9
