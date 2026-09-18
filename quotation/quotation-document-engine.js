@@ -35,6 +35,9 @@ function injectStyles(){
 
 /* AMOUNT COLUMN RIGHT EDGE LOCK: every Amount value and label/value row terminates on the exact same right edge. */
 .simple-quotation-table th:last-child,.simple-quotation-table td:last-child,.detailed-quotation-table th:last-child,.detailed-quotation-table td:last-child{ text-align:right!important; padding-right:0!important; box-sizing:border-box!important; }
+
+/* Simple hierarchy rows are labels, not Amount cells. Keep them at the far-left edge. */
+.simple-quotation-table .quotation-section-row td,.simple-quotation-table .quotation-subsection-row td,.simple-quotation-table .quotation-subsubsection-row td,.simple-quotation-table .quotation-summary-title td{ text-align:left!important; }
 .simple-quotation-table th:nth-child(3),.simple-quotation-table td:nth-child(3),.detailed-quotation-table th:nth-child(4),.detailed-quotation-table td:nth-child(4),.detailed-quotation-table th:nth-child(5),.detailed-quotation-table td:nth-child(5),.detailed-quotation-table th:nth-child(6),.detailed-quotation-table td:nth-child(6){text-align:right!important}
 .detailed-quotation-table th:nth-child(1),.detailed-quotation-table td:nth-child(1),.detailed-quotation-table th:nth-child(2),.detailed-quotation-table td:nth-child(2),.detailed-quotation-table th:nth-child(3),.detailed-quotation-table td:nth-child(3){text-align:left!important}
 .simple-quotation-table td:nth-child(2),.detailed-quotation-table td:nth-child(2){overflow-wrap:break-word;word-break:normal;white-space:normal}
