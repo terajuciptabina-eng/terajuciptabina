@@ -98,7 +98,7 @@
             "aircond": 300,
             "earthing": 1500,
             "permit": 8500,
-            "prelim": 12000,
+            "prelim": 10000,
             "rule_preliminaries_building_plan_submission_0": 8500,
             "rule_preliminaries_site_mobilisation_project_management_1": 12000,
             "rule_main_building_footing_concrete_2": 550,
@@ -202,10 +202,10 @@
           "projectState": "selangor",
           "rateSetId": "selangor",
           "rateSetName": "Selangor",
-          "rateSnapshotAt": "2026-09-19T19:48:46.559Z"
+          "rateSnapshotAt": "2026-09-19T20:09:10.574Z"
         },
         "createdAt": "2026-09-19T19:48:46.403Z",
-        "updatedAt": "2026-09-19T19:48:47.514Z",
+        "updatedAt": "2026-09-19T20:09:11.967Z",
         "estimateNumber": "EST-BLD-002"
       },
       {
@@ -1112,7 +1112,7 @@
     ]
   },
   "createdAt": "2026-09-19T16:45:05.112Z",
-  "updatedAt": "2026-09-19T19:48:47.514Z",
+  "updatedAt": "2026-09-19T20:09:11.967Z",
   "quotationRunningNumber": {
     "build": 2,
     "renovation": 2
