@@ -129,6 +129,19 @@
     } catch (_) {}
   }
 
+  async function captureRateOverride(rateKey, contractorRate, globalRate, active=true) {
+    if (!contractor || !contractorId || plannerType !== 'build') return;
+    const key = String(rateKey || '').trim(), state = currentState();
+    const rate = Number(contractorRate), base = Number(globalRate);
+    if (!key || !state || !Number.isFinite(rate) || !Number.isFinite(base)) return;
+    const row = (typeof RATE_SCHEDULE !== 'undefined' ? (RATE_SCHEDULE || []).flatMap(g => g.rows || []).find(r => String(r.key) === key) : null) || {};
+    const payload = { contractorId, plannerType:'build', state, rateSetId:window.TERAJU_RATE_CONTEXT?.rateSetId || state, customItemId:'RATE-'+key, sourceGlobalId:'rate-'+key, description:String(row.label || BUILD_MASTER_BY_RATE_KEY[key] || key).trim(), unit:String(row.unit || 'unit').trim(), rate, globalRate:base, rateDelta:Math.round((rate-base)*100)/100, rateDeltaPercent:base?Math.round(((rate-base)/base)*10000)/100:null, overrideActive:!!active, category:'rate-schedule', groupKey:row.group || null, groupTitle:'Rate Schedule' };
+    const sig=JSON.stringify(payload), sigKey='rate-override:'+state+':'+key;
+    if(captureSignatures.get(sigKey)===sig)return;
+    try{const r=await fetch(MARKET_API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});if(r.ok)captureSignatures.set(sigKey,sig)}catch(_){}
+  }
+  window.__tcCaptureRateOverride = captureRateOverride;
+
   async function captureCurrentCustomItems() {
     if (!contractor) return;
     try {
