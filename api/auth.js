@@ -67,6 +67,62 @@ export default async function handler(req, res) {
     return { sent: true, emailId: data?.id || null };
   }
 
+
+  async function sendWelcomeWhatsApp({ role, id, name, phone }) {
+    const token = String(process.env.WHATSAPP_ACCESS_TOKEN || '').trim();
+    const phoneNumberId = String(process.env.WHATSAPP_PHONE_NUMBER_ID || '').trim();
+    const templateName = String(process.env.WHATSAPP_SIGNUP_TEMPLATE_NAME || '').trim();
+    const templateLanguage = String(process.env.WHATSAPP_SIGNUP_TEMPLATE_LANGUAGE || 'en_US').trim();
+    if (!token || !phoneNumberId || !templateName) {
+      return { sent: false, reason: 'WhatsApp service is not configured.' };
+    }
+
+    const recipient = normalizePhone(phone).replace(/^\+/, '');
+    if (!/^601\d{8,9}$/.test(recipient)) {
+      return { sent: false, reason: 'Invalid WhatsApp recipient number.' };
+    }
+
+    const roleLabel = role === 'homeowner' ? 'Homeowner' : 'Contractor';
+    const response = await fetch(`https://graph.facebook.com/v23.0/${phoneNumberId}/messages`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        messaging_product: 'whatsapp',
+        to: recipient,
+        type: 'template',
+        template: {
+          name: templateName,
+          language: { code: templateLanguage },
+          components: [{
+            type: 'body',
+            parameters: [
+              { type: 'text', text: String(name) },
+              { type: 'text', text: roleLabel },
+              { type: 'text', text: String(id) }
+            ]
+          }]
+        }
+      })
+    });
+
+    const text = await response.text();
+    let data = null;
+    try { data = text ? JSON.parse(text) : null; } catch { data = text; }
+
+    if (!response.ok) {
+      console.error('Welcome WhatsApp failed:', data);
+      return { sent: false, reason: 'Welcome WhatsApp message could not be sent.' };
+    }
+
+    return {
+      sent: true,
+      messageId: data?.messages?.[0]?.id || null
+    };
+  }
+
   try {
     if (req.method === 'GET') {
       const role = String(req.query?.role || '').toLowerCase();
@@ -128,7 +184,22 @@ export default async function handler(req, res) {
       return { sent: false, reason: 'Welcome email could not be sent.' };
     });
 
-    return res.status(201).json({ success: true, role, id, record, emailSent: emailResult.sent, emailReason: emailResult.sent ? '' : emailResult.reason });
+    const whatsappResult = await sendWelcomeWhatsApp({ role, id, name, phone }).catch(error => {
+      console.error('Welcome WhatsApp error:', error);
+      return { sent: false, reason: 'Welcome WhatsApp message could not be sent.' };
+    });
+
+    return res.status(201).json({
+      success: true,
+      role,
+      id,
+      record,
+      emailSent: emailResult.sent,
+      emailReason: emailResult.sent ? '' : emailResult.reason,
+      whatsappSent: whatsappResult.sent,
+      whatsappReason: whatsappResult.sent ? '' : whatsappResult.reason,
+      whatsappMessageId: whatsappResult.messageId || null
+    });
   } catch (error) {
     console.error('auth error:', error);
     return res.status(500).json({ message: 'Unable to process account request.' });
