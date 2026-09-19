@@ -1,6 +1,51 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "databaseType": "contractor-quotation-database",
   "storage": "github",
-  "contractors": []
+  "contractors": [
+    {
+      "contractorId": "CTR-20260919-TGX1",
+      "customItems": [
+        {
+          "customItemId": "RATE-prelim",
+          "sourceType": "override",
+          "sourceGlobalId": "rate-prelim",
+          "plannerType": "build",
+          "description": "Preliminaries, site mobilisation, temporary facilities, site protection, insurance, project coordination, supervision and general project management, complete.",
+          "unit": "ls",
+          "rate": 10000,
+          "globalRate": 12000,
+          "rateDelta": -2000,
+          "rateDeltaPercent": -16.67,
+          "overrideActive": true,
+          "category": "rate-schedule",
+          "groupKey": null,
+          "groupTitle": "Rate Schedule",
+          "updatedAt": "2026-09-19T20:01:38.517Z"
+        }
+      ],
+      "marketHistory": [
+        {
+          "customItemId": "RATE-prelim",
+          "sourceType": "override",
+          "sourceGlobalId": "rate-prelim",
+          "plannerType": "build",
+          "description": "Preliminaries, site mobilisation, temporary facilities, site protection, insurance, project coordination, supervision and general project management, complete.",
+          "unit": "ls",
+          "rate": 10000,
+          "globalRate": 12000,
+          "rateDelta": -2000,
+          "rateDeltaPercent": -16.67,
+          "overrideActive": true,
+          "category": "rate-schedule",
+          "groupKey": null,
+          "groupTitle": "Rate Schedule",
+          "updatedAt": "2026-09-19T20:01:38.517Z",
+          "eventType": "override-update",
+          "capturedAt": "2026-09-19T20:01:38.517Z"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-09-19T20:01:38.517Z"
 }
