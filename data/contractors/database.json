@@ -30,15 +30,15 @@
           "plannerType": "build",
           "description": "Submission of building plan / permit application and Engineer’s drawings to the Local Authority, including preparation of required documents, submission, coordination and necessary authority liaison, complete.",
           "unit": "LS",
-          "rate": 6000,
+          "rate": 850000,
           "globalRate": 8500,
-          "rateDelta": -2500,
-          "rateDeltaPercent": -29.41,
+          "rateDelta": 841500,
+          "rateDeltaPercent": 9900,
           "overrideActive": true,
           "category": "direct-rate-override",
           "groupKey": "preliminaries",
           "groupTitle": "Preliminaries",
-          "updatedAt": "2026-09-19T20:51:44.662Z"
+          "updatedAt": "2026-09-19T20:54:38.714Z"
         }
       ],
       "marketHistory": [
@@ -136,9 +136,28 @@
           "updatedAt": "2026-09-19T20:51:44.662Z",
           "eventType": "override-update",
           "capturedAt": "2026-09-19T20:51:44.662Z"
+        },
+        {
+          "customItemId": "ITEM-master-preliminaries-/-building-plan-/-submission",
+          "sourceType": "override",
+          "sourceGlobalId": "master-PRELIMINARIES / Building Plan / Submission",
+          "plannerType": "build",
+          "description": "Submission of building plan / permit application and Engineer’s drawings to the Local Authority, including preparation of required documents, submission, coordination and necessary authority liaison, complete.",
+          "unit": "LS",
+          "rate": 850000,
+          "globalRate": 8500,
+          "rateDelta": 841500,
+          "rateDeltaPercent": 9900,
+          "overrideActive": true,
+          "category": "direct-rate-override",
+          "groupKey": "preliminaries",
+          "groupTitle": "Preliminaries",
+          "updatedAt": "2026-09-19T20:54:38.714Z",
+          "eventType": "override-update",
+          "capturedAt": "2026-09-19T20:54:38.714Z"
         }
       ]
     }
   ],
-  "updatedAt": "2026-09-19T20:51:44.662Z"
+  "updatedAt": "2026-09-19T20:54:38.714Z"
 }
