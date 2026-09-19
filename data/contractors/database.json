@@ -47,15 +47,15 @@
           "plannerType": "build",
           "description": "Supply and install reinforcement bars to concrete footing.",
           "unit": "kg",
-          "rate": 1,
+          "rate": 0,
           "globalRate": 8,
-          "rateDelta": -7,
-          "rateDeltaPercent": -87.5,
+          "rateDelta": -8,
+          "rateDeltaPercent": -100,
           "overrideActive": true,
           "category": "direct-rate-override",
           "groupKey": "structure",
           "groupTitle": "Footing",
-          "updatedAt": "2026-09-19T21:08:59.750Z"
+          "updatedAt": "2026-09-19T21:09:06.732Z"
         }
       ],
       "marketHistory": [
@@ -248,9 +248,28 @@
           "updatedAt": "2026-09-19T21:08:59.750Z",
           "eventType": "override-update",
           "capturedAt": "2026-09-19T21:08:59.750Z"
+        },
+        {
+          "customItemId": "ITEM-master-main-building-/-footing-/-rebar",
+          "sourceType": "override",
+          "sourceGlobalId": "master-MAIN BUILDING / Footing / Rebar",
+          "plannerType": "build",
+          "description": "Supply and install reinforcement bars to concrete footing.",
+          "unit": "kg",
+          "rate": 0,
+          "globalRate": 8,
+          "rateDelta": -8,
+          "rateDeltaPercent": -100,
+          "overrideActive": true,
+          "category": "direct-rate-override",
+          "groupKey": "structure",
+          "groupTitle": "Footing",
+          "updatedAt": "2026-09-19T21:09:06.732Z",
+          "eventType": "override-update",
+          "capturedAt": "2026-09-19T21:09:06.732Z"
         }
       ]
     }
   ],
-  "updatedAt": "2026-09-19T21:08:59.750Z"
+  "updatedAt": "2026-09-19T21:09:06.732Z"
 }
