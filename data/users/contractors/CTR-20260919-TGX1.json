@@ -35,7 +35,7 @@
           "builtUpArea": 200,
           "state": "selangor"
         },
-        "total": 136773,
+        "total": 134273,
         "plannerState": {
           "customerName": "",
           "projectLocation": "",
@@ -182,7 +182,12 @@
             "rule_driveway_80": 5000,
             "rule_landscaping_81": 2000
           },
-          "customRates": [],
+          "customRates": [
+            [
+              "master-preliminaries-/-building-plan-/-submission",
+              6000
+            ]
+          ],
           "customQuantities": [],
           "customDescriptions": [],
           "customRoomLabels": [
@@ -199,10 +204,10 @@
           "projectState": "selangor",
           "rateSetId": "selangor",
           "rateSetName": "Selangor",
-          "rateSnapshotAt": "2026-09-19T20:24:29.396Z"
+          "rateSnapshotAt": "2026-09-19T20:54:57.525Z"
         },
         "createdAt": "2026-09-19T19:48:46.403Z",
-        "updatedAt": "2026-09-19T20:24:30.522Z",
+        "updatedAt": "2026-09-19T20:54:58.131Z",
         "estimateNumber": "EST-BLD-002"
       },
       {
@@ -1109,7 +1114,7 @@
     ]
   },
   "createdAt": "2026-09-19T16:45:05.112Z",
-  "updatedAt": "2026-09-19T20:24:30.522Z",
+  "updatedAt": "2026-09-19T20:54:58.131Z",
   "quotationRunningNumber": {
     "build": 2,
     "renovation": 2
