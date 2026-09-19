@@ -54,24 +54,24 @@ export default async function handler(req, res) {
     contractor.marketHistory = Array.isArray(contractor.marketHistory) ? contractor.marketHistory : [];
 
     const now = new Date().toISOString();
+    const customItemId = clean(body.customItemId, 120) || `CI-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).slice(2,7).toUpperCase()}`;
+    const isOverride = !!body.sourceGlobalId;
+    const overrideActive = body.overrideActive !== false;
+    const globalRate = Number(body.globalRate);
     const item = {
-      customItemId: clean(body.customItemId, 120) || `CI-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).slice(2,7).toUpperCase()}`,
-      sourceType: body.sourceGlobalId ? 'override' : 'custom',
-      sourceGlobalId: body.sourceGlobalId ? clean(body.sourceGlobalId, 160) : null,
-      plannerType,
-      description,
-      unit,
-      rate: Math.round(rate * 100) / 100,
-      category: clean(body.category, 80) || 'custom',
-      groupKey: clean(body.groupKey, 120) || null,
-      groupTitle: clean(body.groupTitle, 120) || 'Custom Items',
-      updatedAt: now
+      customItemId, sourceType: isOverride ? 'override' : 'custom', sourceGlobalId: isOverride ? clean(body.sourceGlobalId, 160) : null,
+      plannerType, description, unit, rate: Math.round(rate * 100) / 100,
+      globalRate: Number.isFinite(globalRate) ? Math.round(globalRate * 100) / 100 : null,
+      rateDelta: Number.isFinite(globalRate) ? Math.round((rate-globalRate)*100)/100 : null,
+      rateDeltaPercent: Number.isFinite(globalRate) && globalRate ? Math.round(((rate-globalRate)/globalRate)*10000)/100 : null,
+      overrideActive: isOverride ? overrideActive : true, category: clean(body.category,80)||'custom',
+      groupKey: clean(body.groupKey,120)||null, groupTitle: clean(body.groupTitle,120)||'Custom Items', updatedAt: now
     };
     const index = contractor.customItems.findIndex(x => x.customItemId === item.customItemId);
-    if (index >= 0) contractor.customItems[index] = { ...contractor.customItems[index], ...item };
-    else contractor.customItems.push(item);
-    contractor.marketHistory.push({ ...item, capturedAt: now });
-    database.updatedAt = now;
+    if(index>=0){if(isOverride&&!overrideActive)contractor.customItems.splice(index,1);else contractor.customItems[index]={...contractor.customItems[index],...item}}
+    else if(!(isOverride&&!overrideActive))contractor.customItems.push(item);
+    contractor.marketHistory.push({...item,eventType:isOverride&&!overrideActive?'override-reset':(isOverride?'override-update':'custom-update'),capturedAt:now});
+    database.updatedAt=now;
 
     const content = JSON.stringify(database, null, 2) + '\n';
     const updated = await github({ method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: `Capture contractor custom item ${contractorId}`, content: Buffer.from(content, 'utf8').toString('base64'), sha: current.data?.sha }) });
