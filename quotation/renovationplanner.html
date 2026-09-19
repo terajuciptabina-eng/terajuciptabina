@@ -740,7 +740,7 @@ main>section:not(:first-child){scroll-margin-top:92px} main>section>div:first-ch
   <div id="quotationLockOverlay" class="quotation-lock-overlay no-print hidden" aria-hidden="true"><div class="quotation-lock-card"><div class="quotation-lock-icon" aria-hidden="true">🔒</div><h3 class="text-xl font-bold">Detail Cost Estimate Locked</h3><p class="text-sm text-gray-600 mt-2">The detail cost estimate has been generated. Unlock it to view the full item-by-item rates and amounts.</p><button type="button" onclick="unlockDetailedQuotation()" class="mt-5 w-full bg-black text-white px-5 py-3 rounded-xl font-semibold">Unlock Detail Cost Estimate</button></div></div>
   <div id="quotationPrintActions" class="no-print mt-6 pt-5 border-t">
     <div class="teraju-cost-actions">
-      <button type="button" class="teraju-cost-action teraju-cost-action--primary" onclick="if(typeof saveQuotation==='function')saveQuotation(true); else if(typeof saveContractorState==='function')saveContractorState(); this.blur();" aria-label="Save Cost Estimate">
+      <button type="button" class="teraju-cost-action teraju-cost-action--primary" onclick="terajuSaveCostEstimate(); this.blur();" aria-label="Save Cost Estimate">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 4h11l3 3v13H5z"/><path d="M8 4v6h8V4M8 20v-6h8v6"/></svg>
         <span>Save Cost Estimate</span>
       </button>
@@ -2002,6 +2002,7 @@ updateEstimate();
 })();
 </script>
 
+<script id="tc-cost-estimate-action-save">(()=>{window.terajuSaveCostEstimate=async()=>{try{if(typeof saveQuotation==='function'){await saveQuotation(true);const src=document.getElementById('tcQuotationStatus'),dst=document.getElementById('terajuSavedStatus');if(src&&dst)dst.textContent=src.textContent||'';}else if(typeof saveContractorState==='function'){saveContractorState();const dst=document.getElementById('terajuSavedStatus');if(dst)dst.textContent='Saved locally';}}catch(error){console.error('[TERAJU] Save Cost Estimate failed:',error)}}})();</script>
 <script id="tc-cost-estimate-action-link">(()=>{const src=document.getElementById('myQuotationsLink'),dst=document.getElementById('terajuMyCostEstimatesAction');if(src&&dst)dst.href=src.href;})();</script>
 </body>
 </html>
