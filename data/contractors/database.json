@@ -73,6 +73,23 @@
           "groupKey": "electrical",
           "groupTitle": "Electrical Works",
           "updatedAt": "2026-09-19T21:09:39.847Z"
+        },
+        {
+          "customItemId": "ITEM-master-main-building-/-switch",
+          "sourceType": "override",
+          "sourceGlobalId": "master-MAIN BUILDING / SWITCH",
+          "plannerType": "build",
+          "description": "10A 1-gang 1-way flush switches, complete with switch plates, flush boxes, wiring connections and all necessary accessories, installed complete. (Main Building rooms)",
+          "unit": "No.",
+          "rate": 6,
+          "globalRate": 6.5,
+          "rateDelta": -0.5,
+          "rateDeltaPercent": -7.69,
+          "overrideActive": true,
+          "category": "direct-rate-override",
+          "groupKey": "electrical",
+          "groupTitle": "Electrical Works",
+          "updatedAt": "2026-09-19T21:09:48.477Z"
         }
       ],
       "marketHistory": [
@@ -322,9 +339,28 @@
           "updatedAt": "2026-09-19T21:09:39.847Z",
           "eventType": "override-update",
           "capturedAt": "2026-09-19T21:09:39.847Z"
+        },
+        {
+          "customItemId": "ITEM-master-main-building-/-switch",
+          "sourceType": "override",
+          "sourceGlobalId": "master-MAIN BUILDING / SWITCH",
+          "plannerType": "build",
+          "description": "10A 1-gang 1-way flush switches, complete with switch plates, flush boxes, wiring connections and all necessary accessories, installed complete. (Main Building rooms)",
+          "unit": "No.",
+          "rate": 6,
+          "globalRate": 6.5,
+          "rateDelta": -0.5,
+          "rateDeltaPercent": -7.69,
+          "overrideActive": true,
+          "category": "direct-rate-override",
+          "groupKey": "electrical",
+          "groupTitle": "Electrical Works",
+          "updatedAt": "2026-09-19T21:09:48.477Z",
+          "eventType": "override-update",
+          "capturedAt": "2026-09-19T21:09:48.477Z"
         }
       ]
     }
   ],
-  "updatedAt": "2026-09-19T21:09:39.847Z"
+  "updatedAt": "2026-09-19T21:09:48.477Z"
 }
