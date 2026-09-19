@@ -35,7 +35,7 @@
           "builtUpArea": 200,
           "state": "selangor"
         },
-        "total": 116273,
+        "total": 136773,
         "plannerState": {
           "customerName": "",
           "projectLocation": "",
@@ -98,7 +98,7 @@
             "aircond": 300,
             "earthing": 1500,
             "permit": 8500,
-            "prelim": 10000,
+            "prelim": 11000,
             "rule_preliminaries_building_plan_submission_0": 8500,
             "rule_preliminaries_site_mobilisation_project_management_1": 12000,
             "rule_main_building_footing_concrete_2": 550,
@@ -191,10 +191,7 @@
               "Living"
             ]
           ],
-          "excludedItems": [
-            "master-preliminaries-/-building-plan-/-submission",
-            "master-preliminaries-/-site-mobilisation-/-project-management"
-          ],
+          "excludedItems": [],
           "manualItems": [],
           "standardRateItems": [],
           "quotationType": "simple",
@@ -202,10 +199,10 @@
           "projectState": "selangor",
           "rateSetId": "selangor",
           "rateSetName": "Selangor",
-          "rateSnapshotAt": "2026-09-19T20:09:10.574Z"
+          "rateSnapshotAt": "2026-09-19T20:24:29.396Z"
         },
         "createdAt": "2026-09-19T19:48:46.403Z",
-        "updatedAt": "2026-09-19T20:09:11.967Z",
+        "updatedAt": "2026-09-19T20:24:30.522Z",
         "estimateNumber": "EST-BLD-002"
       },
       {
@@ -1112,7 +1109,7 @@
     ]
   },
   "createdAt": "2026-09-19T16:45:05.112Z",
-  "updatedAt": "2026-09-19T20:09:11.967Z",
+  "updatedAt": "2026-09-19T20:24:30.522Z",
   "quotationRunningNumber": {
     "build": 2,
     "renovation": 2
