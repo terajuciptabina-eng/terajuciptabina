@@ -193,9 +193,28 @@
           "updatedAt": "2026-09-19T20:54:41.798Z",
           "eventType": "override-update",
           "capturedAt": "2026-09-19T20:54:41.798Z"
+        },
+        {
+          "customItemId": "ITEM-master-main-building-/-footing-/-rebar",
+          "sourceType": "override",
+          "sourceGlobalId": "master-MAIN BUILDING / Footing / Rebar",
+          "plannerType": "build",
+          "description": "Supply and install reinforcement bars to concrete footing.",
+          "unit": "kg",
+          "rate": 8,
+          "globalRate": 8,
+          "rateDelta": 0,
+          "rateDeltaPercent": 0,
+          "overrideActive": false,
+          "category": "direct-rate-override",
+          "groupKey": "structure",
+          "groupTitle": "Footing",
+          "updatedAt": "2026-09-19T21:08:58.018Z",
+          "eventType": "override-reset",
+          "capturedAt": "2026-09-19T21:08:58.018Z"
         }
       ]
     }
   ],
-  "updatedAt": "2026-09-19T20:54:41.798Z"
+  "updatedAt": "2026-09-19T21:08:58.018Z"
 }
