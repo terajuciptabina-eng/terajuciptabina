@@ -13,15 +13,15 @@
           "plannerType": "build",
           "description": "Preliminaries, site mobilisation, temporary facilities, site protection, insurance, project coordination, supervision and general project management, complete.",
           "unit": "ls",
-          "rate": 10000,
+          "rate": 11000,
           "globalRate": 12000,
-          "rateDelta": -2000,
-          "rateDeltaPercent": -16.67,
+          "rateDelta": -1000,
+          "rateDeltaPercent": -8.33,
           "overrideActive": true,
           "category": "rate-schedule",
           "groupKey": null,
           "groupTitle": "Rate Schedule",
-          "updatedAt": "2026-09-19T20:01:38.517Z"
+          "updatedAt": "2026-09-19T20:11:03.972Z"
         }
       ],
       "marketHistory": [
@@ -43,9 +43,28 @@
           "updatedAt": "2026-09-19T20:01:38.517Z",
           "eventType": "override-update",
           "capturedAt": "2026-09-19T20:01:38.517Z"
+        },
+        {
+          "customItemId": "RATE-prelim",
+          "sourceType": "override",
+          "sourceGlobalId": "rate-prelim",
+          "plannerType": "build",
+          "description": "Preliminaries, site mobilisation, temporary facilities, site protection, insurance, project coordination, supervision and general project management, complete.",
+          "unit": "ls",
+          "rate": 11000,
+          "globalRate": 12000,
+          "rateDelta": -1000,
+          "rateDeltaPercent": -8.33,
+          "overrideActive": true,
+          "category": "rate-schedule",
+          "groupKey": null,
+          "groupTitle": "Rate Schedule",
+          "updatedAt": "2026-09-19T20:11:03.972Z",
+          "eventType": "override-update",
+          "capturedAt": "2026-09-19T20:11:03.972Z"
         }
       ]
     }
   ],
-  "updatedAt": "2026-09-19T20:01:38.517Z"
+  "updatedAt": "2026-09-19T20:11:03.972Z"
 }
