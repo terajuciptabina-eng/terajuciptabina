@@ -61,7 +61,7 @@
     if(restoring||!document.getElementById('quotationDocument')||document.getElementById('quotationDocument').classList.contains('hidden'))return;
     const isNewQuotation = !currentQuotationId;
     ensureProjectId(); const record=buildQuotationRecord(); currentQuotationId=record.quotationId; currentQuotationNumber=record.quotationNumber; currentQuotationType=record.quotationType;
-    const button=document.getElementById('tcSaveQuotation'),status=document.getElementById('tcQuotationStatus');if(button){button.disabled=true;button.textContent='Saving…'}if(status)status.textContent='Saving cost estimate…';
+    const button=document.getElementById('tcSaveQuotation'),status=document.getElementById('tcQuotationStatus');if(button){button.disabled=true;const label=button.querySelector('span:last-child');if(label)label.textContent='Saving…';else button.textContent='Saving…'}if(status)status.textContent='Saving cost estimate…';
     try {
       const result=await request('PUT',{role,id:activeId,plannerType,quotation:record});
       const saved=result?.quotation||record;
@@ -74,7 +74,7 @@
       if (isNewQuotation) trackEvent('quotation_created', {quotation_id:currentQuotationId, quotation_number:currentQuotationNumber, quotation_type:currentQuotationType === 'detail' ? 'detailed' : 'simple', total:Number(saved.total ?? record.total)});
       if(showMessage)toast(`${currentQuotationType==='detail'?'Detail':'Simple'} cost estimate ${currentQuotationNumber||''} saved successfully.`);
       if(status)status.textContent=`Saved ${currentQuotationNumber||''} · ${new Date().toLocaleTimeString('en-MY',{hour:'2-digit',minute:'2-digit'})}`;
-    } catch(error) { if(showMessage)toast(error.message||'Unable to save cost estimate.',true);if(status)status.textContent='Save failed';console.error(error) } finally { if(button){button.disabled=false;button.textContent='Save Cost Estimate'} }
+    } catch(error) { if(showMessage)toast(error.message||'Unable to save cost estimate.',true);if(status)status.textContent='Save failed';console.error(error) } finally { if(button){button.disabled=false;const label=button.querySelector('span:last-child');if(label)label.textContent='Save Cost Estimate';else button.textContent='Save Cost Estimate'} }
   }
   function wrapGenerate(){ if(typeof window.generateQuotation!=='function'||window.generateQuotation.__tcWrapped)return false; const original=window.generateQuotation;const wrapped=function(){const result=original.apply(this,arguments);if(result!==false){currentQuotationType=selectedQuotationType();currentQuotationNumber=typeof quotationNumber!=='undefined'?quotationNumber:currentQuotationNumber;setTimeout(()=>saveQuotation(false),250)}return result};wrapped.__tcWrapped=true;wrapped.__tcOriginal=original;window.generateQuotation=wrapped;return true; }
   function setRoomField(room,selector,value){const el=room?.querySelector(selector);if(el&&value!==undefined)el.value=value;}
