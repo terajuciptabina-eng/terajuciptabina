@@ -287,7 +287,7 @@ function generateQuotation(typeOverride){
  return true;
 }
 document.querySelectorAll('input[name="quotationType"]').forEach(r=>r.addEventListener('change',()=>{document.querySelectorAll('.quotation-type-card').forEach(c=>c.classList.toggle('is-selected',c.querySelector('input')?.checked));if(typeof saveContractorState==='function')saveContractorState()}));
-applyAudienceUI();if(isHomeowner()){document.getElementById('roomsContainer').innerHTML='';roomCounter=0;document.getElementById('builtUpArea').value='0';updateEstimate()}else{if(!loadContractorState()){document.getElementById('roomsContainer').innerHTML='';roomCounter=0;document.getElementById('builtUpArea').value='0';saveContractorState()}const contractorIdDisplay=document.getElementById('contractorIdDisplay');if(contractorIdDisplay)contractorIdDisplay.textContent=CONTRACTOR_ID||'Not signed in';updateEstimate()}
+applyAudienceUI();if(isHomeowner()){document.getElementById('roomsContainer').innerHTML='';roomCounter=0;document.getElementById('builtUpArea').value='0';updateEstimate()}else{const params=new URLSearchParams(location.search),isExistingBuild=!!params.get('quotationId');if(!loadContractorState()){document.getElementById('roomsContainer').innerHTML='';roomCounter=0;document.getElementById('builtUpArea').value='0';saveContractorState()}else if(!isExistingBuild){excludedItems.clear();saveContractorState()}const contractorIdDisplay=document.getElementById('contractorIdDisplay');if(contractorIdDisplay)contractorIdDisplay.textContent=CONTRACTOR_ID||'Not signed in';updateEstimate()}
 </script>
 <script>updateRoomsEmptyState();updateEstimate();</script>
 <script src="location-autocomplete.js"></script>
