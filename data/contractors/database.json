@@ -56,6 +56,23 @@
           "groupKey": "structure",
           "groupTitle": "Footing",
           "updatedAt": "2026-09-19T21:09:06.732Z"
+        },
+        {
+          "customItemId": "ITEM-master-main-building-/-power-point",
+          "sourceType": "override",
+          "sourceGlobalId": "master-MAIN BUILDING / POWER POINT",
+          "plannerType": "build",
+          "description": "13A switched socket outlets, single-gang flush type, BS 1363 / MS-compliant, complete with socket plates, flush boxes, wiring connections and all necessary accessories, installed complete. (Bedroom / Kitchen / applicable Main Building rooms)",
+          "unit": "No.",
+          "rate": 0,
+          "globalRate": 6.5,
+          "rateDelta": -6.5,
+          "rateDeltaPercent": -100,
+          "overrideActive": true,
+          "category": "direct-rate-override",
+          "groupKey": "electrical",
+          "groupTitle": "Electrical Works",
+          "updatedAt": "2026-09-19T21:09:38.865Z"
         }
       ],
       "marketHistory": [
@@ -267,9 +284,28 @@
           "updatedAt": "2026-09-19T21:09:06.732Z",
           "eventType": "override-update",
           "capturedAt": "2026-09-19T21:09:06.732Z"
+        },
+        {
+          "customItemId": "ITEM-master-main-building-/-power-point",
+          "sourceType": "override",
+          "sourceGlobalId": "master-MAIN BUILDING / POWER POINT",
+          "plannerType": "build",
+          "description": "13A switched socket outlets, single-gang flush type, BS 1363 / MS-compliant, complete with socket plates, flush boxes, wiring connections and all necessary accessories, installed complete. (Bedroom / Kitchen / applicable Main Building rooms)",
+          "unit": "No.",
+          "rate": 0,
+          "globalRate": 6.5,
+          "rateDelta": -6.5,
+          "rateDeltaPercent": -100,
+          "overrideActive": true,
+          "category": "direct-rate-override",
+          "groupKey": "electrical",
+          "groupTitle": "Electrical Works",
+          "updatedAt": "2026-09-19T21:09:38.865Z",
+          "eventType": "override-update",
+          "capturedAt": "2026-09-19T21:09:38.865Z"
         }
       ]
     }
   ],
-  "updatedAt": "2026-09-19T21:09:06.732Z"
+  "updatedAt": "2026-09-19T21:09:38.865Z"
 }
