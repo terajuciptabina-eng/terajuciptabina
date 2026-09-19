@@ -303,7 +303,14 @@ applyAudienceUI();if(isHomeowner()){document.getElementById('roomsContainer').in
     const waitForMaster=()=>{
       if(typeof window.getAllItems==='function' && window.__TERAJU_MASTER_ENGINE_ACTIVE===true){
         window.__TERAJU_MASTER_RULE_GATE_READY=true;
-        try{if(typeof window.updateEstimate==='function')window.updateEstimate()}catch(e){console.error('[TERAJU V2 MASTER BOOTSTRAP]',e)}
+        try{
+          const p=new URLSearchParams(location.search);
+          if(!p.get('quotationId') && typeof excludedItems!=='undefined'){
+            excludedItems.clear();
+            if(typeof saveContractorState==='function')saveContractorState();
+          }
+          if(typeof window.updateEstimate==='function')window.updateEstimate();
+        }catch(e){console.error('[TERAJU V2 MASTER BOOTSTRAP]',e)}
         return;
       }
       setTimeout(waitForMaster,50);
