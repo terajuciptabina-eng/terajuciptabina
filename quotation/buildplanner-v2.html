@@ -292,7 +292,7 @@ applyAudienceUI();if(isHomeowner()){document.getElementById('roomsContainer').in
 (function(){
   if(!/buildplanner-v2\.html$/i.test(location.pathname))return;
   const tag=document.createElement('script');
-  tag.src='quotation-quantity-fix.js?v=20260922-r12';
+  tag.src='quotation-quantity-fix.js?v=20260922-r13';
   tag.onload=()=>{
     const waitForMaster=()=>{
       if(typeof window.getAllItems==='function' && window.__TERAJU_MASTER_ENGINE_ACTIVE===true){
