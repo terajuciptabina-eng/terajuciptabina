@@ -81,15 +81,15 @@
           "plannerType": "build",
           "description": "10A 1-gang 1-way flush switches, complete with switch plates, flush boxes, wiring connections and all necessary accessories, installed complete. (Main Building rooms)",
           "unit": "No.",
-          "rate": 0,
+          "rate": 15,
           "globalRate": 6.5,
-          "rateDelta": -6.5,
-          "rateDeltaPercent": -100,
+          "rateDelta": 8.5,
+          "rateDeltaPercent": 130.77,
           "overrideActive": true,
           "category": "direct-rate-override",
           "groupKey": "electrical",
           "groupTitle": "Electrical Works",
-          "updatedAt": "2026-09-19T21:09:49.224Z"
+          "updatedAt": "2026-09-19T21:09:50.434Z"
         }
       ],
       "marketHistory": [
@@ -377,9 +377,28 @@
           "updatedAt": "2026-09-19T21:09:49.224Z",
           "eventType": "override-update",
           "capturedAt": "2026-09-19T21:09:49.224Z"
+        },
+        {
+          "customItemId": "ITEM-master-main-building-/-switch",
+          "sourceType": "override",
+          "sourceGlobalId": "master-MAIN BUILDING / SWITCH",
+          "plannerType": "build",
+          "description": "10A 1-gang 1-way flush switches, complete with switch plates, flush boxes, wiring connections and all necessary accessories, installed complete. (Main Building rooms)",
+          "unit": "No.",
+          "rate": 15,
+          "globalRate": 6.5,
+          "rateDelta": 8.5,
+          "rateDeltaPercent": 130.77,
+          "overrideActive": true,
+          "category": "direct-rate-override",
+          "groupKey": "electrical",
+          "groupTitle": "Electrical Works",
+          "updatedAt": "2026-09-19T21:09:50.434Z",
+          "eventType": "override-update",
+          "capturedAt": "2026-09-19T21:09:50.434Z"
         }
       ]
     }
   ],
-  "updatedAt": "2026-09-19T21:09:49.224Z"
+  "updatedAt": "2026-09-19T21:09:50.434Z"
 }
