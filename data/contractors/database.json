@@ -398,7 +398,50 @@
           "capturedAt": "2026-09-19T21:09:50.434Z"
         }
       ]
+    },
+    {
+      "contractorId": "CTR-20260920-CP0O",
+      "customItems": [
+        {
+          "customItemId": "ITEM-master-preliminaries-/-building-plan-/-submission",
+          "sourceType": "override",
+          "sourceGlobalId": "master-PRELIMINARIES / Building Plan / Submission",
+          "plannerType": "build",
+          "description": "Submission of building plan / permit application and Engineer’s drawings to the Local Authority, including preparation of required documents, submission, coordination and necessary authority liaison, complete.",
+          "unit": "LS",
+          "rate": 1,
+          "globalRate": 8500,
+          "rateDelta": -8499,
+          "rateDeltaPercent": -99.99,
+          "overrideActive": true,
+          "category": "direct-rate-override",
+          "groupKey": "preliminaries",
+          "groupTitle": "Preliminaries",
+          "updatedAt": "2026-09-20T16:05:17.395Z"
+        }
+      ],
+      "marketHistory": [
+        {
+          "customItemId": "ITEM-master-preliminaries-/-building-plan-/-submission",
+          "sourceType": "override",
+          "sourceGlobalId": "master-PRELIMINARIES / Building Plan / Submission",
+          "plannerType": "build",
+          "description": "Submission of building plan / permit application and Engineer’s drawings to the Local Authority, including preparation of required documents, submission, coordination and necessary authority liaison, complete.",
+          "unit": "LS",
+          "rate": 1,
+          "globalRate": 8500,
+          "rateDelta": -8499,
+          "rateDeltaPercent": -99.99,
+          "overrideActive": true,
+          "category": "direct-rate-override",
+          "groupKey": "preliminaries",
+          "groupTitle": "Preliminaries",
+          "updatedAt": "2026-09-20T16:05:17.395Z",
+          "eventType": "override-update",
+          "capturedAt": "2026-09-20T16:05:17.395Z"
+        }
+      ]
     }
   ],
-  "updatedAt": "2026-09-19T21:09:50.434Z"
+  "updatedAt": "2026-09-20T16:05:17.395Z"
 }
