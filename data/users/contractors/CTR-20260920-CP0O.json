@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "contractor",
+  "contractorId": "CTR-20260920-CP0O",
+  "profile": {
+    "name": "Aca",
+    "email": "a@gmail.com",
+    "phone": "01456886465"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-09-20T15:54:37.645Z",
+  "updatedAt": "2026-09-20T15:54:37.645Z"
+}
