@@ -189,19 +189,25 @@ body{font-family:Inter,ui-sans-serif,system-ui,sans-serif}
 
 <section class="mt-8 rounded-3xl bg-white p-7 border">
 <div class="k text-xs font-black text-emerald-700">09 · REVENUE SCENARIOS</div>
-<h2 class="mt-3 text-2xl font-black">Illustrative commercial cases</h2>
-<p class="mt-4 text-sm leading-6 text-slate-600">Scenario assumptions using the working price points above. These are not forecasts. The 0.1% market-penetration case is the base market-sizing reference; the scenarios below are operating cases used to test acquisition requirements and cash deployment.</p>
+<h2 class="mt-3 text-2xl font-black">0.1% penetration attainment framework</h2>
+<p class="mt-4 text-sm leading-6 text-slate-600">The base market-sizing reference is 0.1% penetration. The operating cases below show what different levels of attainment against that target would mean commercially. They are planning scenarios, not forecasts.</p>
 <div class="mt-6 overflow-x-auto">
-<table class="w-full min-w-[1000px] text-sm">
-<thead><tr class="border-b text-left text-xs font-black text-slate-400"><th class="py-3">Case</th><th class="py-3">Paid contractors by M12</th><th class="py-3">Homeowner paid projects / year</th><th class="py-3">Contractor M12 monthly revenue</th><th class="py-3">Homeowner revenue</th><th class="py-3">Illustrative annualised revenue</th></tr></thead>
+<table class="w-full min-w-[1100px] text-sm">
+<thead><tr class="border-b text-left text-xs font-black text-slate-400"><th class="py-3">Attainment of 0.1% target</th><th class="py-3">Homeowners</th><th class="py-3">Contractors</th><th class="py-3">Homeowner revenue @ RM49/project</th><th class="py-3">Contractor ARR @ RM99/month</th><th class="py-3">Combined annualised</th></tr></thead>
 <tbody class="divide-y">
-<tr><td class="py-3 font-semibold">Conservative</td><td class="py-3">25</td><td class="py-3">50</td><td class="py-3">RM2,475</td><td class="py-3">RM2,450</td><td class="py-3">RM32,150</td></tr>
-<tr><td class="py-3 font-semibold">Base</td><td class="py-3">75</td><td class="py-3">150</td><td class="py-3">RM7,425</td><td class="py-3">RM7,350</td><td class="py-3">RM96,450</td></tr>
-<tr><td class="py-3 font-semibold">Accelerated</td><td class="py-3">150</td><td class="py-3">300</td><td class="py-3">RM14,850</td><td class="py-3">RM14,700</td><td class="py-3">RM192,900</td></tr>
+<tr><td class="py-3 font-semibold">10%</td><td>728</td><td>14</td><td>RM35,672</td><td>RM16,632</td><td class="py-3 font-black">RM52,304</td></tr>
+<tr><td class="py-3 font-semibold">25%</td><td>1,820</td><td>34</td><td>RM89,180</td><td>RM40,392</td><td class="py-3 font-black">RM129,572</td></tr>
+<tr><td class="py-3 font-semibold">50%</td><td>3,640</td><td>69</td><td>RM178,360</td><td>RM81,972</td><td class="py-3 font-black">RM260,332</td></tr>
+<tr><td class="py-3 font-semibold">100%</td><td>7,280</td><td>137</td><td>RM356,720</td><td>RM162,756</td><td class="py-3 font-black">RM519,476</td></tr>
 </tbody>
 </table>
 </div>
-<div class="mt-5 rounded-2xl border border-amber-200 bg-amber-50 p-5 text-sm leading-6 text-amber-900"><strong>Important:</strong> The annualised figure assumes the M12 contractor run-rate persists for 12 months and adds one year's homeowner project revenue. It is deliberately not a first-year GAAP/revenue forecast. Replace these assumptions with cohort timing, churn, discounts, taxes and actual paid conversion data once available.</div>
+<div class="mt-6 grid gap-4 md:grid-cols-3">
+<div class="rounded-2xl bg-slate-50 p-5"><div class="text-xs font-bold text-slate-400">BASE MARKET REFERENCE</div><div class="mt-2 text-2xl font-black">0.1%</div><p class="mt-2 text-sm text-slate-600">~7,280 homeowner owners and ~137 contractor records using the current market proxies.</p></div>
+<div class="rounded-2xl bg-slate-50 p-5"><div class="text-xs font-bold text-slate-400">LONGER-TERM UPSIDE</div><div class="mt-2 text-2xl font-black">1%</div><p class="mt-2 text-sm text-slate-600">~72,800 homeowners and ~1,369 contractors under the same market proxies.</p></div>
+<div class="rounded-2xl bg-slate-50 p-5"><div class="text-xs font-bold text-slate-400">12-MONTH PURPOSE</div><div class="mt-2 text-2xl font-black">VALIDATE</div><p class="mt-2 text-sm text-slate-600">Use actual acquisition, activation, paid conversion and retention data to determine attainable penetration.</p></div>
+</div>
+<div class="mt-6 rounded-2xl border border-amber-200 bg-amber-50 p-5 text-sm leading-6 text-amber-900"><strong>Important:</strong> This model does not assume that the 0.1% target will be reached in 12 months. Homeowner revenue assumes one RM49 paid project per target homeowner for illustration; contractor ARR assumes 12 months at RM99/month. Realised revenue will depend on timing, conversion, churn, discounts, taxes and payment behaviour.</div>
 </section>
 
 <section class="mt-8 rounded-3xl bg-white p-7 border">
@@ -249,42 +255,20 @@ body{font-family:Inter,ui-sans-serif,system-ui,sans-serif}
 
 <section class="mt-8 rounded-3xl bg-white p-7 border">
 <div class="k text-xs font-black text-emerald-700">12 · 12-MONTH CUSTOMER ACQUISITION MODEL</div>
-<h2 class="mt-3 text-2xl font-black">Illustrative customer ramp</h2>
-<p class="mt-4 text-sm leading-6 text-slate-600">This section converts the commercial cases into a monthly planning ramp. It is an illustrative operating assumption, not a forecast. Actual monthly targets should be replaced by measured leads, activation, paid conversion, churn and realised revenue.</p>
+<h2 class="mt-3 text-2xl font-black">Ramp toward the 0.1% base target</h2>
+<p class="mt-4 text-sm leading-6 text-slate-600">The previous customer counts are replaced with a target-attainment framework. The Base operating case reaches 10% of the 0.1% market target by Month 12; Conservative reaches 5%; Accelerated reaches 25%. These are management planning cases, not forecasts.</p>
 <div class="mt-6 overflow-x-auto">
-<table class="w-full min-w-[900px] text-sm">
-<thead><tr class="border-b text-left text-xs font-black text-slate-400"><th class="py-3">Month</th><th class="py-3">Conservative new contractors</th><th class="py-3">Conservative cumulative</th><th class="py-3">Base new contractors</th><th class="py-3">Base cumulative</th><th class="py-3">Accelerated new contractors</th><th class="py-3">Accelerated cumulative</th></tr></thead>
+<table class="w-full min-w-[980px] text-sm">
+<thead><tr class="border-b text-left text-xs font-black text-slate-400"><th class="py-3">Case</th><th class="py-3">M12 attainment of 0.1% target</th><th class="py-3">M12 homeowners</th><th class="py-3">M12 contractors</th><th class="py-3">Homeowner revenue run-rate</th><th class="py-3">Contractor ARR</th><th class="py-3">Combined annualised</th></tr></thead>
 <tbody class="divide-y">
-<tr><td class="py-3 font-semibold">M1</td><td>2</td><td>2</td><td>6</td><td>6</td><td>12</td><td>12</td></tr>
-<tr><td class="py-3 font-semibold">M2</td><td>2</td><td>4</td><td>6</td><td>12</td><td>12</td><td>24</td></tr>
-<tr><td class="py-3 font-semibold">M3</td><td>2</td><td>6</td><td>6</td><td>18</td><td>12</td><td>36</td></tr>
-<tr><td class="py-3 font-semibold">M4</td><td>2</td><td>8</td><td>6</td><td>24</td><td>12</td><td>48</td></tr>
-<tr><td class="py-3 font-semibold">M5</td><td>2</td><td>10</td><td>6</td><td>30</td><td>12</td><td>60</td></tr>
-<tr><td class="py-3 font-semibold">M6</td><td>2</td><td>12</td><td>6</td><td>36</td><td>12</td><td>72</td></tr>
-<tr><td class="py-3 font-semibold">M7</td><td>2</td><td>14</td><td>6</td><td>42</td><td>12</td><td>84</td></tr>
-<tr><td class="py-3 font-semibold">M8</td><td>2</td><td>16</td><td>6</td><td>48</td><td>12</td><td>96</td></tr>
-<tr><td class="py-3 font-semibold">M9</td><td>2</td><td>18</td><td>6</td><td>54</td><td>12</td><td>108</td></tr>
-<tr><td class="py-3 font-semibold">M10</td><td>2</td><td>20</td><td>6</td><td>60</td><td>12</td><td>120</td></tr>
-<tr><td class="py-3 font-semibold">M11</td><td>2</td><td>22</td><td>6</td><td>66</td><td>12</td><td>132</td></tr>
-<tr class="font-black"><td class="py-3">M12</td><td>3</td><td>25</td><td>9</td><td>75</td><td>18</td><td>150</td></tr>
+<tr><td class="py-3 font-semibold">Conservative</td><td>5%</td><td>364</td><td>7</td><td>RM17,836</td><td>RM8,316</td><td class="py-3 font-black">RM26,152</td></tr>
+<tr><td class="py-3 font-semibold">Base</td><td>10%</td><td>728</td><td>14</td><td>RM35,672</td><td>RM16,632</td><td class="py-3 font-black">RM52,304</td></tr>
+<tr><td class="py-3 font-semibold">Accelerated</td><td>25%</td><td>1,820</td><td>34</td><td>RM89,180</td><td>RM40,392</td><td class="py-3 font-black">RM129,572</td></tr>
 </tbody>
 </table>
 </div>
-<div class="mt-6 overflow-x-auto">
-<table class="w-full min-w-[760px] text-sm">
-<thead><tr class="border-b text-left text-xs font-black text-slate-400"><th class="py-3">Month</th><th class="py-3">Conservative homeowner projects</th><th class="py-3">Base homeowner projects</th><th class="py-3">Accelerated homeowner projects</th></tr></thead>
-<tbody class="divide-y">
-<tr><td class="py-3 font-semibold">M1–M11</td><td>4 / month</td><td>12 / month</td><td>25 / month</td></tr>
-<tr class="font-black"><td class="py-3">M12</td><td>6</td><td>18</td><td>25</td></tr>
-<tr><td class="py-3 font-semibold">12-month total</td><td>50</td><td>150</td><td>300</td></tr>
-</tbody>
-</table>
-</div>
-<div class="mt-6 grid gap-4 md:grid-cols-3">
-<div class="rounded-2xl bg-slate-50 p-5"><div class="text-xs font-bold text-slate-400">BASE M12 CONTRACTOR MRR</div><div class="mt-2 text-2xl font-black">RM7,425</div><p class="mt-2 text-sm text-slate-600">75 cumulative contractors × RM99 working price.</p></div>
-<div class="rounded-2xl bg-slate-50 p-5"><div class="text-xs font-bold text-slate-400">BASE M12 HOMEOWNER REVENUE</div><div class="mt-2 text-2xl font-black">RM882</div><p class="mt-2 text-sm text-slate-600">18 paid projects × RM49 working price.</p></div>
-<div class="rounded-2xl bg-slate-50 p-5"><div class="text-xs font-bold text-slate-400">BASE M12 MONTHLY REVENUE</div><div class="mt-2 text-2xl font-black">RM8,307</div><p class="mt-2 text-sm text-slate-600">Illustrative contractor MRR + homeowner project revenue.</p></div>
-</div>
+<div class="mt-6 rounded-2xl bg-slate-50 p-5 text-sm leading-6 text-slate-700"><strong>Interpretation:</strong> At the Base case, M12 reaches only 0.01% of the homeowner market proxy and 0.01% of the contractor directory proxy (10% of the 0.1% base target). This keeps the first-year commercial objective materially below the full 0.1% market target.</div>
+<div class="mt-6 rounded-2xl border border-sky-200 bg-sky-50 p-5 text-sm leading-6 text-sky-950"><strong>Next measurement step:</strong> convert the ramp into monthly targets using actual qualified leads, activation rates, paid conversion and retention once campaign data exists. The model should then replace target percentages with observed cohort performance.</div>
 </section>
 
 <section class="mt-8 rounded-3xl bg-white p-7 border">
@@ -294,24 +278,12 @@ body{font-family:Inter,ui-sans-serif,system-ui,sans-serif}
 <div class="mt-6 overflow-x-auto"><table class="w-full min-w-[1180px] text-sm">
 <thead><tr class="border-b text-left text-xs font-black text-slate-400"><th class="py-3">Month</th><th class="py-3">Founder</th><th class="py-3">New hires</th><th class="py-3">Product</th><th class="py-3">Sales &amp; Mktg</th><th class="py-3">Infra &amp; Ops</th><th class="py-3">Total deployment</th><th class="py-3">Base revenue</th><th class="py-3">Net cash movement</th><th class="py-3">Ending cash</th></tr></thead>
 <tbody class="divide-y">
-<tr><td class="py-3 font-semibold">M1</td><td>RM10,000</td><td>RM15,000</td><td>RM17,000</td><td>RM10,000</td><td>RM12,500</td><td>RM64,500</td><td>RM1,182</td><td>-RM63,318</td><td>RM936,692</td></tr>
-<tr><td class="py-3 font-semibold">M2</td><td>RM10,000</td><td>RM20,000</td><td>RM17,000</td><td>RM12,000</td><td>RM12,500</td><td>RM71,500</td><td>RM1,776</td><td>-RM69,724</td><td>RM866,968</td></tr>
-<tr><td class="py-3 font-semibold">M3</td><td>RM10,000</td><td>RM25,000</td><td>RM17,000</td><td>RM15,000</td><td>RM12,500</td><td>RM79,500</td><td>RM2,370</td><td>-RM77,130</td><td>RM789,838</td></tr>
-<tr><td class="py-3 font-semibold">M4</td><td>RM10,000</td><td>RM25,000</td><td>RM17,000</td><td>RM18,000</td><td>RM12,500</td><td>RM82,500</td><td>RM2,964</td><td>-RM79,536</td><td>RM710,302</td></tr>
-<tr><td class="py-3 font-semibold">M5</td><td>RM10,000</td><td>RM25,000</td><td>RM17,000</td><td>RM20,000</td><td>RM12,500</td><td>RM84,500</td><td>RM3,558</td><td>-RM80,942</td><td>RM629,360</td></tr>
-<tr><td class="py-3 font-semibold">M6</td><td>RM10,000</td><td>RM25,000</td><td>RM17,000</td><td>RM22,000</td><td>RM12,500</td><td>RM86,500</td><td>RM4,152</td><td>-RM82,348</td><td>RM547,012</td></tr>
-<tr><td class="py-3 font-semibold">M7</td><td>RM10,000</td><td>RM25,000</td><td>RM17,000</td><td>RM24,000</td><td>RM12,500</td><td>RM88,500</td><td>RM4,746</td><td>-RM83,754</td><td>RM463,258</td></tr>
-<tr><td class="py-3 font-semibold">M8</td><td>RM10,000</td><td>RM25,000</td><td>RM17,000</td><td>RM24,000</td><td>RM12,500</td><td>RM88,500</td><td>RM5,340</td><td>-RM83,160</td><td>RM380,098</td></tr>
-<tr><td class="py-3 font-semibold">M9</td><td>RM10,000</td><td>RM25,000</td><td>RM17,000</td><td>RM24,000</td><td>RM12,500</td><td>RM88,500</td><td>RM5,934</td><td>-RM82,566</td><td>RM297,532</td></tr>
-<tr><td class="py-3 font-semibold">M10</td><td>RM10,000</td><td>RM25,000</td><td>RM17,000</td><td>RM24,000</td><td>RM12,500</td><td>RM88,500</td><td>RM6,528</td><td>-RM81,972</td><td>RM215,560</td></tr>
-<tr><td class="py-3 font-semibold">M11</td><td>RM10,000</td><td>RM25,000</td><td>RM17,000</td><td>RM24,000</td><td>RM12,500</td><td>RM88,500</td><td>RM7,122</td><td>-RM81,378</td><td>RM134,182</td></tr>
-<tr class="font-black"><td class="py-3">M12</td><td>RM10,000</td><td>RM25,000</td><td>RM13,000</td><td>RM13,000</td><td>RM12,500</td><td>RM73,500</td><td>RM8,307</td><td>-RM65,193</td><td>RM69,643</td></tr>
-</tbody></table></div>
+<tr><td class="py-3 font-semibold">M1</td><td>RM10,000</td><td>RM15,000</td><td>RM17,000</td><td>RM10,000</td><td>RM12,500</td><td>RM64,500</td><td>RM3,088</td><td>-RM61,412</td><td>RM938,598</td></tr><tr><td class="py-3 font-semibold">M2</td><td>RM10,000</td><td>RM20,000</td><td>RM17,000</td><td>RM12,000</td><td>RM12,500</td><td>RM71,500</td><td>RM3,187</td><td>-RM68,313</td><td>RM870,285</td></tr><tr><td class="py-3 font-semibold">M3</td><td>RM10,000</td><td>RM25,000</td><td>RM17,000</td><td>RM15,000</td><td>RM12,500</td><td>RM79,500</td><td>RM3,286</td><td>-RM76,214</td><td>RM794,071</td></tr><tr><td class="py-3 font-semibold">M4</td><td>RM10,000</td><td>RM25,000</td><td>RM17,000</td><td>RM18,000</td><td>RM12,500</td><td>RM82,500</td><td>RM3,385</td><td>-RM79,115</td><td>RM714,956</td></tr><tr><td class="py-3 font-semibold">M5</td><td>RM10,000</td><td>RM25,000</td><td>RM17,000</td><td>RM20,000</td><td>RM12,500</td><td>RM84,500</td><td>RM3,484</td><td>-RM81,016</td><td>RM633,940</td></tr><tr><td class="py-3 font-semibold">M6</td><td>RM10,000</td><td>RM25,000</td><td>RM17,000</td><td>RM22,000</td><td>RM12,500</td><td>RM86,500</td><td>RM3,583</td><td>-RM82,917</td><td>RM551,023</td></tr><tr><td class="py-3 font-semibold">M7</td><td>RM10,000</td><td>RM25,000</td><td>RM17,000</td><td>RM24,000</td><td>RM12,500</td><td>RM88,500</td><td>RM3,682</td><td>-RM84,818</td><td>RM466,205</td></tr><tr><td class="py-3 font-semibold">M8</td><td>RM10,000</td><td>RM25,000</td><td>RM17,000</td><td>RM24,000</td><td>RM12,500</td><td>RM88,500</td><td>RM3,781</td><td>-RM84,719</td><td>RM381,486</td></tr><tr><td class="py-3 font-semibold">M9</td><td>RM10,000</td><td>RM25,000</td><td>RM17,000</td><td>RM24,000</td><td>RM12,500</td><td>RM88,500</td><td>RM3,880</td><td>-RM84,620</td><td>RM296,866</td></tr><tr><td class="py-3 font-semibold">M10</td><td>RM10,000</td><td>RM25,000</td><td>RM17,000</td><td>RM24,000</td><td>RM12,500</td><td>RM88,500</td><td>RM3,979</td><td>-RM84,521</td><td>RM212,345</td></tr><tr><td class="py-3 font-semibold">M11</td><td>RM10,000</td><td>RM25,000</td><td>RM17,000</td><td>RM24,000</td><td>RM12,500</td><td>RM88,500</td><td>RM4,177</td><td>-RM84,323</td><td>RM128,022</td></tr><tr class="font-black"><td class="py-3 font-semibold">M12</td><td>RM10,000</td><td>RM25,000</td><td>RM13,000</td><td>RM24,000</td><td>RM12,500</td><td>RM73,500</td><td>RM4,375</td><td>-RM69,125</td><td>RM58,897</td></tr></tbody></table></div>
 <div class="mt-6 grid gap-4 md:grid-cols-4">
 <div class="rounded-2xl bg-slate-50 p-5"><div class="text-xs font-bold text-slate-400">OPENING CASH</div><div class="mt-2 text-2xl font-black">RM10</div></div>
 <div class="rounded-2xl bg-slate-50 p-5"><div class="text-xs font-bold text-slate-400">FINANCING ASSUMPTION</div><div class="mt-2 text-2xl font-black">RM1,000,000</div><p class="mt-2 text-sm text-slate-600">Illustrative financing received at M1.</p></div>
-<div class="rounded-2xl bg-slate-50 p-5"><div class="text-xs font-bold text-slate-400">BASE RAMP REVENUE</div><div class="mt-2 text-2xl font-black">RM59,979</div><p class="mt-2 text-sm text-slate-600">Illustrative M1–M12 revenue.</p></div>
-<div class="rounded-2xl bg-slate-50 p-5"><div class="text-xs font-bold text-slate-400">ENDING CASH</div><div class="mt-2 text-2xl font-black">RM69,643</div><p class="mt-2 text-sm text-slate-600">Before tax, financing costs and unmodelled cash items.</p></div>
+<div class="rounded-2xl bg-slate-50 p-5"><div class="text-xs font-bold text-slate-400">BASE RAMP REVENUE</div><div class="mt-2 text-2xl font-black">RM[RECALCULATE]</div><p class="mt-2 text-sm text-slate-600">Illustrative M1–M12 revenue.</p></div>
+<div class="rounded-2xl bg-slate-50 p-5"><div class="text-xs font-bold text-slate-400">ENDING CASH</div><div class="mt-2 text-2xl font-black">RM[RECALCULATE]</div><p class="mt-2 text-sm text-slate-600">Before tax, financing costs and unmodelled cash items.</p></div>
 </div>
 <div class="mt-6 rounded-2xl border border-sky-200 bg-sky-50 p-5 text-sm leading-6 text-sky-950"><strong>Runway implication:</strong> Under this illustrative Base ramp and current RM1m deployment schedule, the model retains approximately RM69,643 after Month 12. This is a planning result, not a guarantee.</div>
 <div class="mt-6 rounded-2xl border border-amber-200 bg-amber-50 p-5 text-sm leading-6 text-amber-900"><strong>Model discipline:</strong> Financing proceeds are not revenue. The model excludes taxes, refunds, payment fees, working-capital timing and future financing unless verified.</div>
