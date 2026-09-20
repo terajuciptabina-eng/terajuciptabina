@@ -278,7 +278,7 @@
           "builtUpArea": 1268,
           "state": "selangor"
         },
-        "total": 343766,
+        "total": 353576,
         "plannerState": {
           "customerName": "Puan Shahida",
           "projectLocation": "Lot PM3580, Bukit Damar, Dengkil, Selangor.",
@@ -496,10 +496,10 @@
           "projectState": "selangor",
           "rateSetId": "default",
           "rateSetName": "Default Rate",
-          "rateSnapshotAt": "2026-09-20T11:53:27.143Z"
+          "rateSnapshotAt": "2026-09-20T14:59:04.711Z"
         },
         "createdAt": "2026-09-18T18:13:23.211Z",
-        "updatedAt": "2026-09-20T11:53:28.647Z",
+        "updatedAt": "2026-09-20T14:59:05.498Z",
         "estimateNumber": "EST-BLD-008"
       },
       {
@@ -2182,7 +2182,7 @@
     ]
   },
   "createdAt": "2026-09-10T20:27:55.981Z",
-  "updatedAt": "2026-09-20T11:53:28.647Z",
+  "updatedAt": "2026-09-20T14:59:05.498Z",
   "quotationRunningNumber": {
     "renovation": 5,
     "build": 9
