@@ -517,72 +517,72 @@
           "name": "Puan Shahida"
         },
         "project": {
-          "location": "Dengkil, Selangor",
+          "location": "Lot PM3580, Bukit Damar, Dengkil, Selangor.",
           "builtUpArea": 1268,
           "state": "selangor"
         },
-        "total": 341966,
+        "total": 353576,
         "plannerState": {
           "customerName": "Puan Shahida",
-          "projectLocation": "Dengkil, Selangor",
+          "projectLocation": "Lot PM3580, Bukit Damar, Dengkil, Selangor.",
           "builtUpArea": "1268",
           "rooms": [
             {
-              "id": "room-1",
+              "id": "room-5",
               "type": "living",
               "name": "Living",
               "area": "260"
             },
             {
-              "id": "room-2",
+              "id": "room-6",
               "type": "bedroom",
               "name": "Bedroom",
               "area": "168"
             },
             {
-              "id": "room-3",
+              "id": "room-7",
               "type": "bedroom",
               "name": "Bedroom 2",
               "area": "168"
             },
             {
-              "id": "room-4",
+              "id": "room-8",
               "type": "bedroom",
               "name": "Bedroom 3",
               "area": "168"
             },
             {
-              "id": "room-5",
+              "id": "room-9",
               "type": "kitchen",
-              "name": "Kitchen",
+              "name": "Kitchen ",
               "area": "140"
             },
             {
-              "id": "room-6",
+              "id": "room-10",
               "type": "dining",
               "name": "Dining",
               "area": "100"
             },
             {
-              "id": "room-7",
+              "id": "room-11",
               "type": "bathroom",
               "name": "Bathroom",
               "area": "48"
             },
             {
-              "id": "room-8",
+              "id": "room-12",
               "type": "bathroom",
               "name": "Bathroom 2",
               "area": "48"
             },
             {
-              "id": "room-10",
+              "id": "room-13",
               "type": "bathroom",
-              "name": "Guest Bath",
+              "name": "Bathroom Guest",
               "area": "48"
             },
             {
-              "id": "room-12",
+              "id": "room-14",
               "type": "other",
               "name": "Washroom",
               "area": "120"
@@ -727,18 +727,6 @@
           "customDescriptions": [],
           "customRoomLabels": [
             [
-              "room-1",
-              "Living"
-            ],
-            [
-              "room-3",
-              "Dining"
-            ],
-            [
-              "room-4",
-              "Living"
-            ],
-            [
               "room-8",
               "Bathroom"
             ]
@@ -751,10 +739,10 @@
           "projectState": "selangor",
           "rateSetId": "default",
           "rateSetName": "Default Rate",
-          "rateSnapshotAt": "2026-09-18T19:33:04.092Z"
+          "rateSnapshotAt": "2026-09-20T15:35:25.185Z"
         },
         "createdAt": "2026-09-18T16:58:01.865Z",
-        "updatedAt": "2026-09-18T19:33:04.813Z",
+        "updatedAt": "2026-09-20T15:35:26.077Z",
         "estimateNumber": "EST-BLD-008"
       },
       {
@@ -2182,7 +2170,7 @@
     ]
   },
   "createdAt": "2026-09-10T20:27:55.981Z",
-  "updatedAt": "2026-09-20T14:59:05.498Z",
+  "updatedAt": "2026-09-20T15:35:26.077Z",
   "quotationRunningNumber": {
     "renovation": 5,
     "build": 9
