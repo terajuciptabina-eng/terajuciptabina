@@ -32,20 +32,80 @@
         },
         "project": {
           "location": "Not specified",
-          "builtUpArea": 200,
+          "builtUpArea": 1650,
           "state": "selangor"
         },
-        "total": 124707,
+        "total": 380750.5,
         "plannerState": {
           "customerName": "Jack",
           "projectLocation": "",
-          "builtUpArea": "200",
+          "builtUpArea": "1650",
           "rooms": [
             {
               "id": "room-1",
+              "type": "porch",
+              "name": "Porch",
+              "area": "200"
+            },
+            {
+              "id": "room-3",
+              "type": "living",
+              "name": "Living",
+              "area": "300"
+            },
+            {
+              "id": "room-4",
+              "type": "dining",
+              "name": "Dining",
+              "area": "200"
+            },
+            {
+              "id": "room-5",
               "type": "kitchen",
               "name": "Kitchen",
               "area": "200"
+            },
+            {
+              "id": "room-6",
+              "type": "masterBedroom",
+              "name": "Master Bedroom",
+              "area": "150"
+            },
+            {
+              "id": "room-7",
+              "type": "bathroom",
+              "name": "Bathroom",
+              "area": "50"
+            },
+            {
+              "id": "room-8",
+              "type": "bedroom",
+              "name": "Bedroom",
+              "area": "150"
+            },
+            {
+              "id": "room-9",
+              "type": "bedroom",
+              "name": "Bedroom 2",
+              "area": "150"
+            },
+            {
+              "id": "room-10",
+              "type": "bathroom",
+              "name": "Bathroom 2",
+              "area": "50"
+            },
+            {
+              "id": "room-11",
+              "type": "bathroom",
+              "name": "Bathroom 3",
+              "area": "150"
+            },
+            {
+              "id": "room-12",
+              "type": "bathroom",
+              "name": "Bathroom 4",
+              "area": "50"
             }
           ],
           "rates": {
@@ -182,22 +242,29 @@
             "rule_driveway_80": 5000,
             "rule_landscaping_81": 2000
           },
-          "customRates": [],
+          "customRates": [
+            [
+              "master-preliminaries-/-building-plan-/-submission",
+              18000
+            ]
+          ],
           "customQuantities": [],
           "customDescriptions": [],
           "customRoomLabels": [],
-          "excludedItems": [],
+          "excludedItems": [
+            "master-boundary-fencing"
+          ],
           "manualItems": [],
           "standardRateItems": [],
           "quotationType": "simple",
-          "projectId": "PRJ-BLD-MUA04IHZ-4O5GT",
+          "projectId": "PRJ-BLD-MU8SVWNV-T2D14",
           "projectState": "selangor",
           "rateSetId": "selangor",
           "rateSetName": "Selangor",
-          "rateSnapshotAt": "2026-09-20T15:59:11.959Z"
+          "rateSnapshotAt": "2026-09-20T16:08:16.538Z"
         },
         "createdAt": "2026-09-20T15:59:11.776Z",
-        "updatedAt": "2026-09-20T15:59:12.551Z",
+        "updatedAt": "2026-09-20T16:08:17.312Z",
         "estimateNumber": "EST-BLD-001"
       }
     ],
@@ -545,7 +612,7 @@
     ]
   },
   "createdAt": "2026-09-20T15:54:37.645Z",
-  "updatedAt": "2026-09-20T15:59:12.551Z",
+  "updatedAt": "2026-09-20T16:08:17.312Z",
   "quotationRunningNumber": {
     "renovation": 2,
     "build": 1
