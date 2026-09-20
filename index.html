@@ -228,11 +228,6 @@
   <!-- TERAJU WORKS PROMOTIONAL CAROUSEL -->
   <section id="terajuWorksPromo" class="tw-promo border-y border-slate-200" aria-label="TERAJU WORKS promotions">
     <div class="tw-promo-track">
-      <div class="absolute right-4 sm:right-6 lg:right-8 top-5 z-20 flex rounded-full border border-white/30 bg-slate-950/35 p-1 backdrop-blur-md">
-        <button type="button" class="tw-lang-btn active rounded-full px-3 py-1.5 text-[10px] font-bold tracking-wide text-white" data-tw-lang="bm">BM</button>
-        <button type="button" class="tw-lang-btn rounded-full px-3 py-1.5 text-[10px] font-bold tracking-wide text-white/70" data-tw-lang="en">EN</button>
-      </div>
-
       <article class="tw-promo-slide active" data-slide="0">
         <img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=2400&q=90" alt="Modern home for new build planning" loading="lazy">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 tw-promo-content">
@@ -1037,21 +1032,15 @@
       let current = 0;
       let timer = null;
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      const langButtons = Array.from(root.querySelectorAll('[data-tw-lang]'));
       const langNodes = Array.from(root.querySelectorAll('.tw-lang'));
       let language = 'bm';
+
       function setLanguage(next) {
         language = next === 'en' ? 'en' : 'bm';
-        langNodes.forEach(node => node.classList.toggle('hidden', !node.classList.contains('lang-' + language)));
-        langButtons.forEach(btn => {
-          const active = btn.dataset.twLang === language;
-          btn.classList.toggle('active', active);
-          btn.classList.toggle('bg-white/15', active);
-          btn.classList.toggle('text-white', active);
-          btn.classList.toggle('text-white/70', !active);
+        langNodes.forEach(node => {
+          node.classList.toggle('hidden', !node.classList.contains('lang-' + language));
         });
       }
-      langButtons.forEach(btn => btn.addEventListener('click', () => setLanguage(btn.dataset.twLang)));
 
       function show(index) {
         current = (index + slides.length) % slides.length;
@@ -1061,9 +1050,18 @@
         });
         dots.forEach((dot, i) => dot.classList.toggle('active', i === current));
       }
+
       function start() {
         if (reduceMotion || timer) return;
-        timer = setInterval(() => show(current + 1), 5500);
+        timer = setInterval(() => {
+          // Automatically run each promotion in BM first, then English.
+          if (language === 'bm') {
+            setLanguage('en');
+          } else {
+            setLanguage('bm');
+            show(current + 1);
+          }
+        }, 5500);
       }
       function stop() {
         if (timer) { clearInterval(timer); timer = null; }
@@ -1075,6 +1073,7 @@
       root.addEventListener('mouseleave', start);
       root.addEventListener('focusin', stop);
       root.addEventListener('focusout', () => { if (!root.contains(document.activeElement)) start(); });
+      setLanguage('bm');
       show(0);
       start();
     })();
