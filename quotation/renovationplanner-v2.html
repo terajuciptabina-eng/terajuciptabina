@@ -2207,14 +2207,13 @@ initContractorMode();
 <script>
 window.__TERAJU_RENOVATION_V2_GET_ALL_ITEMS = getAllItems;
 window.__TERAJU_RENOVATION_V2_UPDATE_ESTIMATE = updateEstimate;
-window.__TERAJU_RENOVATION_V1_GET_ALL_ITEMS = getAllItems;
-window.__TERAJU_RENOVATION_V1_UPDATE_ESTIMATE = typeof updateEstimate === "function" ? updateEstimate : null;
-window.__TERAJU_RENOVATION_V1_GET_CURRENT_QUOTATION_DATA = typeof getCurrentQuotationData === "function" ? getCurrentQuotationData : null;
+
 </script>
 <script src="quotation-document-engine.js?v=20260921"></script>
 <script src="detailed-quotation-promo-ui.js"></script>
 <script src="location-autocomplete.js"></script>
-<script src="renovation-planner-v2-engine.js?v=20260931"></script>
+<script src="renovation-calculation-rules.js?v=20260922"></script>
+<script src="renovation-planner-v2-engine.js?v=20260922"></script>
 <script src="quotation-quantity-fix.js?v=20260930"></script>
 <script>
 /* V2 routing must be active before the first Renovation Budget render. */
