@@ -778,16 +778,14 @@ const RATES = {
   kitchenFrame: 1200, kitchenMakingGood: 1000, kitchenGlassDoor: 1200,
   bathroomSanitary: 3000, bathroomDoor: 1200,
   gateMotor: 6400, brickwallDivider: 2800, frontFence: 5500,
-  preliminaries: 8500, extensionKitchen: 250, extensionToilet: 584
+  preliminaries: 8500
 };
 
 const RULES = { downlightPerSqft: 50, minimumDownlights: 4 };
 
 const ROOM_TYPES = {
   living: "Living / Dining", bedroom: "Bedroom", dryKitchen: "Dry Kitchen",
-  wetKitchen: "Wet Kitchen", bathroom: "Bathroom", porch: "Porch",
-  balcony: "Balcony", extensionKitchen: "New Extension – Kitchen",
-  extensionToilet: "New Extension – Toilet", other: "Other"
+  wetKitchen: "Wet Kitchen", bathroom: "Bathroom", porch: "Porch", balcony: "Balcony", other: "Other"
 };
 
 const OPTIONAL_SCOPES = [
@@ -1167,15 +1165,6 @@ function generateStandardRoomItems(roomType, area, roomId, roomLabel) {
     pushItem(items, roomId, roomLabel, "facade", "Facade wall", area * 1.33, "sqft", RATES.facadeWall);
     pushItem(items, roomId, roomLabel, "walllight", `To supply and install ${Math.max(2, Math.ceil(area / 70))} unit wall light c/w wiring`, Math.max(2, Math.ceil(area / 70)), "unit", RATES.wallLight);
   }
-  if (roomType === "extensionKitchen") {
-    pushItem(items, roomId, roomLabel, "extension", `To build concrete foundation for new kitchen, including excavation, reinforcement and concreting works, complete with tiles finishing, safety door, casement window, accessories and concrete roof slab based on designer’s proposal. Total area ${formatQty(area)}sqft`, area, "sqft", RATES.extensionKitchen);
-    pushItem(items, roomId, roomLabel, "downlight", `To supply and install ${calculateDownlights(area)} unit downlight c/w wiring`, calculateDownlights(area), "unit", RATES.downlight);
-  }
-  if (roomType === "extensionToilet") {
-    pushItem(items, roomId, roomLabel, "extension", `To build concrete foundation for new toilet, including excavation, reinforcement and concreting works, complete with tiles finishing, safety door, casement window, toilet accessories and concrete roof slab based on designer’s proposal. Total area ${formatQty(area)}sqft`, area, "sqft", RATES.extensionToilet);
-    pushItem(items, roomId, roomLabel, "downlight", `To supply and install ${calculateDownlights(area)} unit downlight c/w wiring`, calculateDownlights(area), "unit", RATES.downlight);
-    pushItem(items, roomId, roomLabel, "exhaust", `To supply and install ${Math.max(1, Math.ceil(area / 50))} unit exhaust fan c/w wiring`, Math.max(1, Math.ceil(area / 50)), "unit", RATES.exhaustFan);
-  }
   return items.map(item => ({ ...item, roomType }));
 }
 
@@ -1206,9 +1195,7 @@ function getStandardRateItems(roomId=null) {
     wetKitchen:["floorTile","wallTile","ceiling","downlight","ceilingFan","barLamp"],
     bathroom:["floorTile","wallTile","ceiling","bathroomSanitary","bathroomDoor","downlight","exhaustFan"],
     porch:["floorTile","ceiling","downlight","gateMotor","brickwallDivider","frontFence"],
-    balcony:["floorTile","facadeWall","wallLight"],
-    extensionKitchen:["extensionKitchen","downlight"],
-    extensionToilet:["extensionToilet","downlight","exhaustFan"]
+    balcony:["floorTile","facadeWall","wallLight"]
   };
   const allowed=roomStandardKeys[roomType]||[];
   const items=[
