@@ -842,9 +842,9 @@ function optionalScopeHtml() {
   }).join("");
 }
 
-function addRoomBase(defaultType = "other", defaultArea = "") {
+function addRoomBase(defaultType = "other", defaultArea = "", forcedId = "", forcedName = "", forcedCondition = "existing") {
   roomCounter++;
-  const id = "room-" + roomCounter;
+  const id = forcedId || ("room-" + roomCounter);
   const container = document.getElementById("roomsContainer");
   const div = document.createElement("div");
   div.id = id;
@@ -856,7 +856,7 @@ function addRoomBase(defaultType = "other", defaultArea = "") {
         <label class="block text-sm font-medium mb-2">Room Type</label>
         <select class="room-type w-full border rounded-lg px-3 py-2 bg-white">${roomOptions()}</select>
       </div>
-<div>
+      <div>
         <label class="block text-sm font-medium mb-2">Condition</label>
         <select class="room-condition w-full border rounded-lg px-3 py-2 bg-white">
           <option value="existing">Existing</option>
@@ -865,13 +865,13 @@ function addRoomBase(defaultType = "other", defaultArea = "") {
       </div>
       <div>
         <label class="block text-sm font-medium mb-2">Room / Area Name</label>
-        <input type="text" value="${escapeHtml(customRoomLabels.get(id) || (defaultType === "other" ? "" : (ROOM_TYPES[defaultType] || "Area")))}"
-          placeholder="e.g. Living Area" class="room-name w-full border rounded-lg px-3 py-2 bg-white">
+        <input type="text" value="${escapeHtml(forcedName || (defaultType === "other" ? "" : (ROOM_TYPES[defaultType] || "Area")))}"
+          class="room-name w-full border rounded-lg px-3 py-2 bg-white">
       </div>
       <div>
         <label class="block text-sm font-medium mb-2">Area (sqft)</label>
         <input type="number" min="1" step="1" value="${escapeHtml(defaultArea)}"
-          placeholder="e.g. 200" class="room-area w-full border rounded-lg px-3 py-2 bg-white">
+          class="room-area w-full border rounded-lg px-3 py-2 bg-white">
       </div>
       <div class="no-print flex gap-2">
         <button type="button" onclick="moveRoom('${id}', -1)" title="Move up" class="border rounded-lg px-2 py-2 hover:bg-gray-100">▲</button>
@@ -895,21 +895,67 @@ function addRoomBase(defaultType = "other", defaultArea = "") {
 
   container.appendChild(div);
   updateRoomsEmptyState();
-  div.querySelector(".room-type").value = defaultType;
 
-  div.querySelector(".room-name").addEventListener("change", e => editRoomLabel(id, e.target.value));
+  div.querySelector(".room-type").value = defaultType;
+  div.querySelector(".room-condition").value = forcedCondition === "new" ? "new" : "existing";
+
+  const nameInput = div.querySelector(".room-name");
+  if (forcedName) {
+    nameInput.dataset.generated = "false";
+  } else {
+    nameInput.dataset.generated = "true";
+  }
+
+  nameInput.addEventListener("change", e => {
+    const label = String(e.target.value || "").trim();
+    const generated = e.target.dataset.generated === "true";
+    if (generated) {
+      e.target.dataset.generated = "false";
+      customRoomLabels.delete(id);
+    }
+    if (label && !generated) customRoomLabels.set(id, label);
+    updateEstimate();
+  });
+
   div.querySelector(".room-type").addEventListener("change", () => {
-    if (!customRoomLabels.has(id)) {
-      div.querySelector(".room-name").value = ROOM_TYPES[div.querySelector(".room-type").value] || "Area";
+    const input = div.querySelector(".room-name");
+    const type = div.querySelector(".room-type").value || "other";
+    if (input && input.dataset.generated !== "false") {
+      const count = [...document.querySelectorAll("#roomsContainer .room-card")]
+        .filter(r => (r.querySelector(".room-type")?.value || "other") === type).length;
+      const base = ROOM_TYPES[type] || "Area";
+      input.value = count > 1 ? base + " " + count : base;
+      input.dataset.generated = "true";
+      customRoomLabels.delete(id);
     }
     updateEstimate();
   });
-  div.querySelector(".room-area").addEventListener("input", updateEstimate);
-  div.querySelectorAll(".optional-check").forEach(el => el.addEventListener("change", () => { updateEstimate(); saveContractorState(); }));
-  div.querySelectorAll(".optional-rate").forEach(el => el.addEventListener("input", () => { updateEstimate(); saveContractorState(); }));
-  updateEstimate();
-}
 
+  div.querySelector(".room-condition").addEventListener("change", updateEstimate);
+  div.querySelector(".room-area").addEventListener("input", () => {
+    updateEstimate();
+    saveContractorState();
+  });
+  div.querySelector(".room-name").addEventListener("input", () => {
+    if (IS_CONTRACTOR) saveContractorState();
+  });
+  div.querySelectorAll(".optional-check").forEach(el => el.addEventListener("change", () => {
+    updateEstimate();
+    saveContractorState();
+  }));
+  div.querySelectorAll(".optional-rate").forEach(el => el.addEventListener("input", () => {
+    updateEstimate();
+    saveContractorState();
+  }));
+
+  if (IS_CONTRACTOR && !customRoomLabels.has(id)) {
+    const initial = String(forcedName || "").trim();
+    if (initial) customRoomLabels.set(id, initial);
+  }
+
+  updateEstimate();
+  if (!restoringContractorState) saveContractorState();
+}
 function updateRoomsEmptyState() {
   const container = document.getElementById("roomsContainer");
   const empty = document.getElementById("roomsEmptyState");
@@ -1138,33 +1184,55 @@ function getAllItems() { const rooms = [...document.querySelectorAll("#roomsCont
 
 
 function addRoom(...args){
-  const blankAreaCall=args.length===0;
-  addRoomBase(...args);
-  if(blankAreaCall){
-    const card=document.querySelector('#roomsContainer .room-card:last-child');
-    const nameInput=card?.querySelector('.room-name');
-    const areaInput=card?.querySelector('.room-area');
-    if(nameInput)nameInput.value='';
-    if(areaInput){areaInput.value='';areaInput.placeholder='e.g. 200';}
+  const blankAreaCall = args.length === 0;
+  if (blankAreaCall) {
+    const existing = [...document.querySelectorAll("#roomsContainer .room-card")];
+    const last = existing[existing.length - 1];
+    const lastType = last?.querySelector(".room-type")?.value || "other";
+    const lastCondition = last?.querySelector(".room-condition")?.value || "existing";
+
+    addRoomBase(lastType, "", "", "", lastCondition);
+
+    const card = document.querySelector("#roomsContainer .room-card:last-child");
+    const nameInput = card?.querySelector(".room-name");
+    const areaInput = card?.querySelector(".room-area");
+
+    if (nameInput) {
+      const count = [...document.querySelectorAll("#roomsContainer .room-card")]
+        .filter(r => (r.querySelector(".room-type")?.value || "other") === lastType).length;
+      const base = ROOM_TYPES[lastType] || "Area";
+      nameInput.value = count > 1 ? base + " " + count : base;
+      nameInput.removeAttribute("value");
+      nameInput.dataset.generated = "true";
+      customRoomLabels.delete(card.id);
+    }
+    if (areaInput) {
+      areaInput.value = "";
+      areaInput.placeholder = "e.g. 200";
+    }
+
     updateEstimate();
-    if(typeof saveContractorState==='function')saveContractorState();
+    if (typeof saveContractorState === "function") saveContractorState();
+  } else {
+    addRoomBase(...args);
   }
 }
-function getRoomGroups() {
+function getRoomGroupsBase() {
   const rooms = [...document.querySelectorAll("#roomsContainer .room-card")];
   const typeIndexes = {};
-  const groups = [];
-  rooms.forEach(room => {
+  return rooms.map(room => {
     const roomId = room.id;
-    const roomType = room.querySelector(".room-type")?.value || "living";
+    const roomType = room.querySelector(".room-type")?.value || "other";
     const area = parseFloat(room.querySelector(".room-area")?.value) || 0;
     typeIndexes[roomType] = (typeIndexes[roomType] || 0) + 1;
     const base = ROOM_TYPES[roomType] || "Area";
     const autoLabel = typeIndexes[roomType] > 1 ? `${base} ${typeIndexes[roomType]}` : base;
     const label = customRoomLabels.has(roomId) ? customRoomLabels.get(roomId) : autoLabel;
-    groups.push({ roomId, roomType, label, area });
+    return { roomId, roomType, label, area };
   });
-  return groups;
+}
+function getRoomGroups() {
+  return getRoomGroupsBase().filter(room => Number(room.area) > 0);
 }
 
 function updateEstimate() {
@@ -1504,6 +1572,7 @@ function serializeContractorState() {
     name: room.querySelector(".room-name")?.value || "",
     type: room.querySelector(".room-type")?.value || "living",
     area: room.querySelector(".room-area")?.value || "",
+    condition: room.querySelector(".room-condition")?.value || "existing",
     optional: [...room.querySelectorAll(".optional-scope")].map(scope => ({
       key: scope.dataset.scope,
       checked: !!scope.querySelector(".optional-check")?.checked,
@@ -1588,11 +1657,16 @@ function loadContractorState() {
       roomCounter = 0;
 
       rooms.forEach(room => {
-        addRoom(room.type || "living", room.area || "");
-        const created = document.getElementById("room-" + roomCounter);
+        addRoom(room.type || "other", room.area || "", room.id || "", room.name || "", room.condition || "existing");
+        const created = document.getElementById(room.id || ("room-" + roomCounter));
         if (!created) return;
         const name = created.querySelector(".room-name");
-        if (name) name.value = room.name || ROOM_TYPES[room.type] || "Area";
+        if (name) {
+          name.value = room.name || ROOM_TYPES[room.type] || "Area";
+          name.dataset.generated = room.name ? "false" : "true";
+        }
+        const condition = created.querySelector(".room-condition");
+        if (condition) condition.value = room.condition === "new" ? "new" : "existing";
         if (Array.isArray(room.optional)) {
           room.optional.forEach(savedScope => {
             const scope = created.querySelector(`.optional-scope[data-scope="${savedScope.key}"]`);
