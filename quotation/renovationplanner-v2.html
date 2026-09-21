@@ -2124,18 +2124,4 @@ updateEstimate();
 </body>
 </html>
 
-<script id="tc-renovation-v2-add-room-boot">
-(() => {
-  const bind = () => {
-    const button = document.getElementById("addRoomAreaBtn");
-    if (!button || typeof window.addRoom !== "function" || button.dataset.bound === "1") return;
-    button.dataset.bound = "1";
-    button.addEventListener("click", (event) => {
-      event.preventDefault();
-      window.addRoom();
-    });
-  };
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", bind, { once: true });
-  else bind();
-})();
-</script>
+
