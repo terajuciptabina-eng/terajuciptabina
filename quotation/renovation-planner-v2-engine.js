@@ -34,7 +34,17 @@
   function renovationItems(){
     const original=window.__TERAJU_RENOVATION_V1_GET_ALL_ITEMS;
     if(typeof original!=='function') return [];
-    return original().filter(item => conditionOf(item.roomId)!=='new');
+
+    const existingRoomIds=new Set(
+      roomGroups()
+        .filter(room => conditionOf(room.roomId)!=='new')
+        .map(room => room.roomId)
+    );
+
+    return original().filter(item => {
+      const roomId=String(item.roomId||'');
+      return roomId==='project' || roomId==='__prelim__' || existingRoomIds.has(item.roomId);
+    });
   }
 
   function buildItems(){
