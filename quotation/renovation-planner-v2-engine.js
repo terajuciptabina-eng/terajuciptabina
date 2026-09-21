@@ -20,6 +20,7 @@
   };
 
   window.__TERAJU_BUILD_ROOM_FILTER = room => roomIsNew(room);
+  window.__TERAJU_BUILD_ROOM_MAP = room => ({...room, roomType:normalizeBuildRoomType(room.roomType)});
 
   function buildRoomsFromDom(){
     return [...document.querySelectorAll('#roomsContainer .room-card')].map(card => {
