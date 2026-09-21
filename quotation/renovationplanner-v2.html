@@ -1262,23 +1262,32 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
   const prelimManual = manualItems.get("__prelim__") || [];
   prelimManual.forEach(item => { html += `<tr class="border-b"><td class="py-1 px-2 align-top">${IS_CONTRACTOR ? `<textarea rows="2" onchange="editItemDescription(\'${item.id}\', this.value)" class="w-full border rounded-lg px-2 py-1 bg-white leading-4 resize-none">${escapeHtml(item.description)}</textarea>` : `<div class="homeowner-locked p-1 rounded leading-4">${escapeHtml(item.description)}</div>`}</td><td class="py-1 px-2">${escapeHtml(item.unit)}</td><td class="py-1 px-2 text-right"><input type="number" min="0" step="1" value="${formatQty(item.qty)}" onchange="editItemQuantity('${item.id}', this.value)" class="contractor-only no-print w-24 border rounded-none px-1 py-1 text-right bg-white"><span class="homeowner-locked no-print inline-block px-1 py-1 rounded-none text-sm">${formatQty(item.qty)}</span></td><td class="py-1 px-2 text-right"><input type="number" min="0" step="0.01" value="${normalizeRate(item.rate).toFixed(2)}" onchange="editItemRate('${item.id}', this.value)" class="contractor-only no-print w-28 border rounded-none px-1 py-1 text-right bg-white"><span class="homeowner-locked no-print inline-block px-1 py-1 rounded-none text-sm">${money(item.rate, 2)}</span></td><td class="py-1 px-2 text-right font-medium">${money(item.amount, 2)}</td><td class="no-print py-1 px-2 text-center"><button type="button" onclick="removeManualItem('__prelim__','${item.id}')" class="text-red-600 text-xs border border-red-200 rounded px-3 py-1.5">Delete</button></td></tr>`; });
 
-  const projectBuildItems = (itemsByRoom.project || []).filter(item => !excludedItems.has(item.id));
+  const projectBuildItems = (itemsByRoom.project || []).filter(item =>
+    !excludedItems.has(item.id) &&
+    String(item.category || "").toLowerCase() !== "external-work" &&
+    String(item.category || "").toLowerCase() !== "preliminaries"
+  );
   if (projectBuildItems.length) {
     html += `
       <tr class="bg-gray-100 border-b">
         <td colspan="6" class="py-1 px-2 font-bold">New Construction / Build Planner</td>
       </tr>`;
+
     const buildHeaderNames = {
-      PRELIMINARIES: "PRELIMINARIES",
       STRUCTURES: "STRUCTURAL WORKS",
       ARCHITECTURES: "ARCHITECTURAL WORKS",
       ELECTRICAL: "ELECTRICAL WORKS",
-      "DOORS & WINDOWS": "DOORS & WINDOWS",
-      "EXTERNAL WORK": "EXTERNAL WORKS"
+      "DOORS & WINDOWS": "DOORS & WINDOWS"
     };
     let lastBuildGroup = "";
+
+    const hierarchyClass = level =>
+      level === 0 ? "font-bold" : level === 1 ? "font-semibold pl-4" : "font-medium pl-8";
+
+    const renderedHierarchy = new Set();
     projectBuildItems.forEach(item => {
       const group = String(item.group || "").toUpperCase();
+
       if (group && group !== lastBuildGroup) {
         html += `
           <tr class="bg-gray-100 border-b">
@@ -1286,12 +1295,34 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
           </tr>`;
         lastBuildGroup = group;
       }
+
+      const path = String(item.masterPath || "")
+        .split("/")
+        .map(value => value.trim())
+        .filter(Boolean);
+
+      const levels = path.length > 1 ? path.slice(0, -1) : [];
+      const levelKey = levels.join(" / ");
+
+      if (levelKey && !renderedHierarchy.has(levelKey)) {
+        levels.forEach((level, index) => {
+          const prefix = levels.slice(0, index + 1).join(" / ");
+          if (!renderedHierarchy.has(prefix)) {
+            html += `
+              <tr class="border-b">
+                <td colspan="6" class="py-1 px-2 ${hierarchyClass(index)}">${escapeHtml(level)}</td>
+              </tr>`;
+            renderedHierarchy.add(prefix);
+          }
+        });
+      }
+
       html += `
         <tr class="border-b hover:bg-gray-50">
           <td class="py-1 px-2 align-top">
             <textarea rows="2" onchange="editItemDescription('${item.id}', this.value)"
               class="contractor-only no-print w-full min-w-[280px] border rounded-none px-2 py-1 bg-white leading-4 resize-none">${escapeHtml(item.description)}</textarea>
-            <div class="homeowner-locked no-print p-1 rounded-none leading-4">${escapeHtml(item.description)}</div>
+            <div class="homeowner-locked no-print p-1 rounded-none">${escapeHtml(item.description)}</div>
             <div class="hidden print:block leading-6">${escapeHtml(item.description)}</div>
           </td>
           <td class="py-1 px-2">${escapeHtml(item.unit)}</td>
@@ -1304,6 +1335,7 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
           </td>
         </tr>`;
     });
+
     html += `
       <tr class="border-b">
         <td colspan="4" class="py-1 px-2 text-right font-semibold">New Construction Subtotal</td>
