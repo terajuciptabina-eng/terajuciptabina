@@ -621,7 +621,7 @@ main>section:not(:first-child){scroll-margin-top:92px} main>section>div:first-ch
       <p class="text-xs text-gray-500 mt-1">Click the button above to add rooms/areas and start planning your renovation.</p>
     </div>
     <div id="roomsAddButtonAnchor" class="no-print mt-2">
-      <button id="addRoomAreaBtn" type="button"
+      <button id="addRoomAreaBtn" type="button" onclick="return window.addRoom ? window.addRoom() : false;"
         class="bg-black text-white px-3 py-2 rounded-lg text-sm font-medium hover:bg-gray-800">
         + Add Room / Area
       </button>
@@ -1150,14 +1150,6 @@ function addRoom(...args){
     if(typeof saveContractorState==='function')saveContractorState();
   }
 }
-// Bind the primary Add Room action directly. Do not rely on inline onclick resolution.
-window.addRoom = addRoom;
-const addRoomAreaButton = document.getElementById("addRoomAreaBtn");
-if (addRoomAreaButton && !addRoomAreaButton.dataset.bound) {
-  addRoomAreaButton.dataset.bound = "1";
-  addRoomAreaButton.addEventListener("click", () => addRoom());
-}
-
 function getRoomGroups() {
   const rooms = [...document.querySelectorAll("#roomsContainer .room-card")];
   const typeIndexes = {};
@@ -2022,3 +2014,19 @@ updateEstimate();
 </script>
 </body>
 </html>
+
+<script id="tc-renovation-v2-add-room-boot">
+(() => {
+  const bind = () => {
+    const button = document.getElementById("addRoomAreaBtn");
+    if (!button || typeof window.addRoom !== "function" || button.dataset.bound === "1") return;
+    button.dataset.bound = "1";
+    button.addEventListener("click", (event) => {
+      event.preventDefault();
+      window.addRoom();
+    });
+  };
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", bind, { once: true });
+  else bind();
+})();
+</script>
