@@ -71,7 +71,10 @@ export default async function handler(req, res) {
   async function sendWelcomeWhatsApp({ role, id, name, phone }) {
     const token = String(process.env.WHATSAPP_ACCESS_TOKEN || '').trim();
     const phoneNumberId = String(process.env.WHATSAPP_PHONE_NUMBER_ID || '').trim();
-    const templateName = String(process.env.WHATSAPP_SIGNUP_TEMPLATE_NAME || '').trim();
+    const configuredTemplateName = String(process.env.WHATSAPP_SIGNUP_TEMPLATE_NAME || '').trim();
+    const templateName = configuredTemplateName === 'teraju_works_signup'
+      ? 'account_creation_confirmation_3'
+      : configuredTemplateName;
     const templateLanguage = String(process.env.WHATSAPP_SIGNUP_TEMPLATE_LANGUAGE || 'en_US').trim();
     if (!token || !phoneNumberId || !templateName) {
       return { sent: false, reason: 'WhatsApp service is not configured.' };
@@ -100,7 +103,6 @@ export default async function handler(req, res) {
             type: 'body',
             parameters: [
               { type: 'text', text: String(name) },
-              { type: 'text', text: roleLabel },
               { type: 'text', text: String(id) }
             ]
           }]
