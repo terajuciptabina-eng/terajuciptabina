@@ -42,7 +42,7 @@
     if(!ids.size || typeof window.__TERAJU_GET_BUILD_ITEMS!=='function') return [];
     return window.__TERAJU_GET_BUILD_ITEMS().filter(item => {
       const path = String(item.masterPath || "");
-      const isExistingMainDoor = /DOORS\\s*\\/\\s*Type 4\\s+Double Leaf Main Door/i.test(path);
+      const isExistingMainDoor = /DOORS\s*\/\s*Type 4\s+Double Leaf Main Door/i.test(path);
       return (ids.has(item.roomId) || String(item.roomId||'project')==='project') &&
         String(item.category||'').toLowerCase() !== 'external-work' &&
         String(item.category||'').toLowerCase() !== 'preliminaries' &&
