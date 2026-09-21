@@ -87,6 +87,7 @@
   }
 
   function update(){
+    if(typeof window.syncRenovationBuildingSpecification==='function') window.syncRenovationBuildingSpecification();
     const rooms=roomGroups();
     const items=allItems();
     const active=items.filter(item=>!(typeof excludedItems!=='undefined'&&excludedItems.has(item.id)));
