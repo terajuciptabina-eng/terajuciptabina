@@ -72,6 +72,7 @@
 
   const originalWindowUpdate=window.updateEstimate;
   window.__TERAJU_RENOVATION_V2_RENDER=()=>{};
+  window.updateEstimate=window.__TERAJU_RENOVATION_V2_UPDATE_ESTIMATE;
   
   document.addEventListener('change',event=>{
     if(event.target?.matches('.room-condition')) {
