@@ -1337,6 +1337,39 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
   const prelimManual = manualItems.get("__prelim__") || [];
   prelimManual.forEach(item => { html += `<tr class="border-b"><td class="py-1 px-2 align-top">${IS_CONTRACTOR ? `<textarea rows="2" onchange="editItemDescription(\'${item.id}\', this.value)" class="w-full border rounded-lg px-2 py-1 bg-white leading-4 resize-none">${escapeHtml(item.description)}</textarea>` : `<div class="homeowner-locked p-1 rounded leading-4">${escapeHtml(item.description)}</div>`}</td><td class="py-1 px-2">${escapeHtml(item.unit)}</td><td class="py-1 px-2 text-right"><input type="number" min="0" step="1" value="${formatQty(item.qty)}" onchange="editItemQuantity('${item.id}', this.value)" class="contractor-only no-print w-24 border rounded-none px-1 py-1 text-right bg-white"><span class="homeowner-locked no-print inline-block px-1 py-1 rounded-none text-sm">${formatQty(item.qty)}</span></td><td class="py-1 px-2 text-right"><input type="number" min="0" step="0.01" value="${normalizeRate(item.rate).toFixed(2)}" onchange="editItemRate('${item.id}', this.value)" class="contractor-only no-print w-28 border rounded-none px-1 py-1 text-right bg-white"><span class="homeowner-locked no-print inline-block px-1 py-1 rounded-none text-sm">${money(item.rate, 2)}</span></td><td class="py-1 px-2 text-right font-medium">${money(item.amount, 2)}</td><td class="no-print py-1 px-2 text-center"><button type="button" onclick="removeManualItem('__prelim__','${item.id}')" class="text-red-600 text-xs border border-red-200 rounded px-3 py-1.5">Delete</button></td></tr>`; });
 
+  const projectBuildItems = (itemsByRoom.project || []).filter(item => !excludedItems.has(item.id));
+  if (projectBuildItems.length) {
+    html += `
+      <tr class="bg-gray-100 border-b">
+        <td colspan="6" class="py-1 px-2 font-bold">New Construction / Build Planner</td>
+      </tr>`;
+    projectBuildItems.forEach(item => {
+      html += `
+        <tr class="border-b hover:bg-gray-50">
+          <td class="py-1 px-2 align-top">
+            <textarea rows="2" onchange="editItemDescription('${item.id}', this.value)"
+              class="contractor-only no-print w-full min-w-[280px] border rounded-none px-2 py-1 bg-white leading-4 resize-none">${escapeHtml(item.description)}</textarea>
+            <div class="homeowner-locked no-print p-1 rounded-none leading-4">${escapeHtml(item.description)}</div>
+            <div class="hidden print:block leading-6">${escapeHtml(item.description)}</div>
+          </td>
+          <td class="py-1 px-2">${escapeHtml(item.unit)}</td>
+          <td class="py-1 px-2 text-right">${formatQty(item.qty)}</td>
+          <td class="py-1 px-2 text-right">${money(item.rate, 2)}</td>
+          <td class="py-1 px-2 text-right font-medium">${money(item.amount, 2)}</td>
+          <td class="no-print py-1 px-2 text-center">
+            <button type="button" onclick="excludeItem('${item.id}')"
+              class="text-red-600 text-xs border border-red-200 rounded px-2 py-1 hover:bg-red-50">Delete</button>
+          </td>
+        </tr>`;
+    });
+    html += `
+      <tr class="border-b">
+        <td colspan="4" class="py-1 px-2 text-right font-semibold">New Construction Subtotal</td>
+        <td class="py-1 px-2 text-right font-bold">${money(projectBuildItems.reduce((sum, item) => sum + item.amount, 0), 2)}</td>
+        <td class="no-print"></td>
+      </tr>`;
+  }
+
   roomGroups.forEach(room => {
     const roomItems = itemsByRoom[room.roomId] || [];
     if (room.area <= 0) return;
