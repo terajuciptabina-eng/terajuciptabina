@@ -1459,12 +1459,15 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
         </tr>`;
     });
     html += `<tr class="no-print"><td colspan="6" class="py-1 px-2"><div class="contractor-only" data-manual-anchor="${room.roomId}"><button type="button" onclick="addManualItemPrompt('${room.roomId}')" class="border rounded-lg px-2 py-1 text-xs font-semibold hover:bg-gray-50">＋ Add Item</button></div></td></tr>`;
-    html += `
-      <tr class="border-b">
-        <td colspan="4" class="py-1 px-2 text-right font-semibold">${escapeHtml(room.label)} Subtotal</td>
-        <td class="py-1 px-2 text-right font-bold">${money(roomSubtotals[room.roomId] || 0, 2)}</td>
-        <td class="no-print"></td>
-      </tr>`;
+    const isNewRoom = document.getElementById(room.roomId)?.querySelector(".room-condition")?.value === "new";
+    if (!isNewRoom) {
+      html += `
+        <tr class="border-b">
+          <td colspan="4" class="py-1 px-2 text-right font-semibold">${escapeHtml(room.label)} Subtotal</td>
+          <td class="py-1 px-2 text-right font-bold">${money(roomSubtotals[room.roomId] || 0, 2)}</td>
+          <td class="no-print"></td>
+        </tr>`;
+    }
   });
 
   const roomTotal = Object.values(roomSubtotals).reduce((s, v) => s + v, 0);
