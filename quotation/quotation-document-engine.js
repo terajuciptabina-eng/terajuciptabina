@@ -29,88 +29,88 @@ function injectStyles(){
    Simple: No / Area-Room / Description / Amount.
    Detailed: Description / Unit / Quantity / Rate / Amount.
 */
-.simple-quotation-table,
-.detailed-quotation-table{
+body.renovation-planner-page .simple-quotation-table,
+body.renovation-planner-page .detailed-quotation-table{
   width:100%!important;
   table-layout:fixed!important;
   border-collapse:collapse!important;
 }
-.simple-quotation-table th,
-.simple-quotation-table td,
-.detailed-quotation-table th,
-.detailed-quotation-table td{
+body.renovation-planner-page .simple-quotation-table th,
+body.renovation-planner-page .simple-quotation-table td,
+body.renovation-planner-page .detailed-quotation-table th,
+body.renovation-planner-page .detailed-quotation-table td{
   vertical-align:top!important;
   box-sizing:border-box!important;
 }
-.simple-quotation-table th:nth-child(-n+3),
-.simple-quotation-table td:nth-child(-n+3),
-.detailed-quotation-table th:nth-child(-n+3),
-.detailed-quotation-table td:nth-child(-n+3){
+body.renovation-planner-page .simple-quotation-table th:nth-child(-n+3),
+body.renovation-planner-page .simple-quotation-table td:nth-child(-n+3),
+body.renovation-planner-page .detailed-quotation-table th:nth-child(-n+3),
+body.renovation-planner-page .detailed-quotation-table td:nth-child(-n+3){
   text-align:left!important;
 }
-.simple-quotation-table th:nth-child(4),
-.simple-quotation-table td:nth-child(4),
-.detailed-quotation-table th:nth-child(4),
-.detailed-quotation-table td:nth-child(4),
-.detailed-quotation-table th:nth-child(5),
-.detailed-quotation-table td:nth-child(5){
+body.renovation-planner-page .simple-quotation-table th:nth-child(4),
+body.renovation-planner-page .simple-quotation-table td:nth-child(4),
+body.renovation-planner-page .detailed-quotation-table th:nth-child(4),
+body.renovation-planner-page .detailed-quotation-table td:nth-child(4),
+body.renovation-planner-page .detailed-quotation-table th:nth-child(5),
+body.renovation-planner-page .detailed-quotation-table td:nth-child(5){
   text-align:right!important;
 }
-.simple-quotation-table th:last-child,
-.simple-quotation-table td:last-child,
-.detailed-quotation-table th:last-child,
-.detailed-quotation-table td:last-child{
+body.renovation-planner-page .simple-quotation-table th:last-child,
+body.renovation-planner-page .simple-quotation-table td:last-child,
+body.renovation-planner-page .detailed-quotation-table th:last-child,
+body.renovation-planner-page .detailed-quotation-table td:last-child{
   text-align:right!important;
   padding-right:0!important;
 }
-.simple-quotation-table td:nth-child(2),
-.simple-quotation-table td:nth-child(3),
-.detailed-quotation-table td:nth-child(1){
+body.renovation-planner-page .simple-quotation-table td:nth-child(2),
+body.renovation-planner-page .simple-quotation-table td:nth-child(3),
+body.renovation-planner-page .detailed-quotation-table td:nth-child(1){
   overflow-wrap:break-word!important;
   word-break:normal!important;
   white-space:normal!important;
 }
-.simple-quotation-table td:nth-child(1),
-.simple-quotation-table td:nth-child(4),
-.detailed-quotation-table td:nth-child(2),
-.detailed-quotation-table td:nth-child(3),
-.detailed-quotation-table td:nth-child(4),
-.detailed-quotation-table td:nth-child(5){
+body.renovation-planner-page .simple-quotation-table td:nth-child(1),
+body.renovation-planner-page .simple-quotation-table td:nth-child(4),
+body.renovation-planner-page .detailed-quotation-table td:nth-child(2),
+body.renovation-planner-page .detailed-quotation-table td:nth-child(3),
+body.renovation-planner-page .detailed-quotation-table td:nth-child(4),
+body.renovation-planner-page .detailed-quotation-table td:nth-child(5){
   white-space:nowrap!important;
 }
-.simple-quotation-table col:nth-child(1),
-.simple-quotation-table th:nth-child(1),
-.simple-quotation-table td:nth-child(1){width:6%!important}
-.simple-quotation-table col:nth-child(2),
-.simple-quotation-table th:nth-child(2),
-.simple-quotation-table td:nth-child(2){width:18%!important}
-.simple-quotation-table col:nth-child(3),
-.simple-quotation-table th:nth-child(3),
-.simple-quotation-table td:nth-child(3){width:56%!important}
-.simple-quotation-table col:nth-child(4),
-.simple-quotation-table th:nth-child(4),
-.simple-quotation-table td:nth-child(4){width:20%!important}
-.detailed-quotation-table col:nth-child(1),
-.detailed-quotation-table th:nth-child(1),
-.detailed-quotation-table td:nth-child(1){width:50%!important}
-.detailed-quotation-table col:nth-child(2),
-.detailed-quotation-table th:nth-child(2),
-.detailed-quotation-table td:nth-child(2){width:10%!important}
-.detailed-quotation-table col:nth-child(3),
-.detailed-quotation-table th:nth-child(3),
-.detailed-quotation-table td:nth-child(3){width:10%!important}
-.detailed-quotation-table col:nth-child(4),
-.detailed-quotation-table th:nth-child(4),
-.detailed-quotation-table td:nth-child(4){width:15%!important}
-.detailed-quotation-table col:nth-child(5),
-.detailed-quotation-table th:nth-child(5),
-.detailed-quotation-table td:nth-child(5){width:15%!important}
-.simple-quotation-table .border-b td:nth-child(2),
-.detailed-quotation-table .border-b td:nth-child(2){
+body.renovation-planner-page .simple-quotation-table col:nth-child(1),
+body.renovation-planner-page .simple-quotation-table th:nth-child(1),
+body.renovation-planner-page .simple-quotation-table td:nth-child(1){width:6%!important}
+body.renovation-planner-page .simple-quotation-table col:nth-child(2),
+body.renovation-planner-page .simple-quotation-table th:nth-child(2),
+body.renovation-planner-page .simple-quotation-table td:nth-child(2){width:18%!important}
+body.renovation-planner-page .simple-quotation-table col:nth-child(3),
+body.renovation-planner-page .simple-quotation-table th:nth-child(3),
+body.renovation-planner-page .simple-quotation-table td:nth-child(3){width:56%!important}
+body.renovation-planner-page .simple-quotation-table col:nth-child(4),
+body.renovation-planner-page .simple-quotation-table th:nth-child(4),
+body.renovation-planner-page .simple-quotation-table td:nth-child(4){width:20%!important}
+body.renovation-planner-page .detailed-quotation-table col:nth-child(1),
+body.renovation-planner-page .detailed-quotation-table th:nth-child(1),
+body.renovation-planner-page .detailed-quotation-table td:nth-child(1){width:50%!important}
+body.renovation-planner-page .detailed-quotation-table col:nth-child(2),
+body.renovation-planner-page .detailed-quotation-table th:nth-child(2),
+body.renovation-planner-page .detailed-quotation-table td:nth-child(2){width:10%!important}
+body.renovation-planner-page .detailed-quotation-table col:nth-child(3),
+body.renovation-planner-page .detailed-quotation-table th:nth-child(3),
+body.renovation-planner-page .detailed-quotation-table td:nth-child(3){width:10%!important}
+body.renovation-planner-page .detailed-quotation-table col:nth-child(4),
+body.renovation-planner-page .detailed-quotation-table th:nth-child(4),
+body.renovation-planner-page .detailed-quotation-table td:nth-child(4){width:15%!important}
+body.renovation-planner-page .detailed-quotation-table col:nth-child(5),
+body.renovation-planner-page .detailed-quotation-table th:nth-child(5),
+body.renovation-planner-page .detailed-quotation-table td:nth-child(5){width:15%!important}
+body.renovation-planner-page .simple-quotation-table .border-b td:nth-child(2),
+body.renovation-planner-page .detailed-quotation-table .border-b td:nth-child(2){
   white-space:normal!important;
 }
-.simple-quotation-table .border-b td:nth-child(4),
-.detailed-quotation-table .border-b td:nth-child(5){
+body.renovation-planner-page .simple-quotation-table .border-b td:nth-child(4),
+body.renovation-planner-page .detailed-quotation-table .border-b td:nth-child(5){
   white-space:nowrap!important;
 }
 
