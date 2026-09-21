@@ -648,6 +648,12 @@ main>section:not(:first-child){scroll-margin-top:92px} main>section>div:first-ch
           title="Automatically calculated from New rooms / areas excluding Porch.">
       </div>
       <div>
+        <label class="block text-sm font-medium mb-2">Existing Area (sqft)</label>
+        <input id="existingArea" type="number" min="0" step="1" value="0" readonly
+          class="w-full border rounded-lg px-4 py-3 bg-gray-100"
+          title="Automatically calculated from Existing rooms / areas.">
+      </div>
+      <div>
         <label class="block text-sm font-medium mb-2">Main Building Roofing System</label>
         <select id="mainBuildingRoofSystem" class="w-full border rounded-lg px-4 py-3 bg-white"
           onchange="updateEstimate();saveContractorState()">
@@ -918,13 +924,23 @@ function getBuildingRoofSystems() {
 
 function syncBuildingSpecification() {
   const split = getBuildingAreaSplit();
+  const allRooms = getRoomGroupsBase();
+  const existingArea = allRooms
+    .filter(room => {
+      const card = document.getElementById(room.roomId);
+      const condition = card?.querySelector(".room-condition")?.value || "existing";
+      return condition === "existing" && Number(room.area) > 0;
+    })
+    .reduce((sum, room) => sum + Number(room.area || 0), 0);
   const main = document.getElementById("mainBuildingArea");
   const porch = document.getElementById("porchArea");
+  const existing = document.getElementById("existingArea");
   const total = document.getElementById("builtUpArea");
   if (main) main.value = String(Math.max(0, Math.ceil(split.main)));
   if (porch) porch.value = String(Math.max(0, Math.ceil(split.porch)));
-  if (total) total.value = String(Math.max(0, Math.ceil(split.main + split.porch)));
-  return split;
+  if (existing) existing.value = String(Math.max(0, Math.ceil(existingArea)));
+  if (total) total.value = String(Math.max(0, Math.ceil(split.main + split.porch + existingArea)));
+  return { ...split, existing: existingArea };
 }
 
 window.getBuildingRoofSystems = getBuildingRoofSystems;
