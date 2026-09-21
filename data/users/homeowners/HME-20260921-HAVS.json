@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "homeowner",
+  "homeownerId": "HME-20260921-HAVS",
+  "profile": {
+    "name": "amna",
+    "email": "am.na20081010@gmail.com",
+    "phone": "0138414778"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-09-21T06:27:56.555Z",
+  "updatedAt": "2026-09-21T06:27:56.555Z"
+}
