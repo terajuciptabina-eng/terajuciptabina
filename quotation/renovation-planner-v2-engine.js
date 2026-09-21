@@ -47,7 +47,11 @@
 
   function allItems(){
     return [...renovationItems(),...buildItems()]
-      .filter(item => String(item.category||'').toLowerCase() !== 'external-work')
+      .filter(item =>
+        String(item.category||'').toLowerCase() !== 'external-work' &&
+        String(item.category||'').toLowerCase() !== 'preliminaries' &&
+        String(item.roomId||'') !== '__prelim__'
+      )
       .map(item=>{
       item.qty=typeof normalizeQuantity==='function'?normalizeQuantity(item.qty):Math.max(0,Math.ceil(Number(item.qty)||0));
       item.rate=typeof normalizeRate==='function'?normalizeRate(item.rate):Math.round((Number(item.rate)||0)*100)/100;
@@ -59,13 +63,9 @@
   function quotationData(){
     const rooms=roomGroups();
     const active=allItems().filter(item=>!(typeof excludedItems!=='undefined'&&excludedItems.has(item.id)));
-    const hasArea=rooms.some(room=>Number(room.area)>0);
-    const excluded=typeof excludedItems!=='undefined'&&excludedItems.has('project-preliminaries');
-    const prelimQty=hasArea&&!excluded
-      ?(typeof customQuantities!=='undefined'&&customQuantities.has('project-preliminaries')?normalizeQuantity(customQuantities.get('project-preliminaries')):1):0;
-    const prelimRate=hasArea&&!excluded
-      ?(typeof customRates!=='undefined'&&customRates.has('project-preliminaries')?normalizeRate(customRates.get('project-preliminaries')):Number(RATES.preliminaries)||0):0;
-    const projectPreliminaries=Math.round((prelimQty*prelimRate+Number.EPSILON)*100)/100;
+    const prelimQty=0;
+    const prelimRate=0;
+    const projectPreliminaries=0;
     const itemsByRoom={},roomSubtotals={};
     rooms.forEach(room=>{itemsByRoom[room.roomId]=[];roomSubtotals[room.roomId]=0});
     active.forEach(item=>{
@@ -81,13 +81,9 @@
     const rooms=roomGroups();
     const items=allItems();
     const active=items.filter(item=>!(typeof excludedItems!=='undefined'&&excludedItems.has(item.id)));
-    const hasArea=rooms.some(room=>Number(room.area)>0);
-    const excluded=typeof excludedItems!=='undefined'&&excludedItems.has('project-preliminaries');
-    const prelimQty=hasArea&&!excluded
-      ?(typeof customQuantities!=='undefined'&&customQuantities.has('project-preliminaries')?normalizeQuantity(customQuantities.get('project-preliminaries')):1):0;
-    const prelimRate=hasArea&&!excluded
-      ?(typeof customRates!=='undefined'&&customRates.has('project-preliminaries')?normalizeRate(customRates.get('project-preliminaries')):Number(RATES.preliminaries)||0):0;
-    const projectPreliminaries=Math.round((prelimQty*prelimRate+Number.EPSILON)*100)/100;
+    const prelimQty=0;
+    const prelimRate=0;
+    const projectPreliminaries=0;
     const roomSubtotals={};
     rooms.forEach(room=>roomSubtotals[room.roomId]=0);
     active.forEach(item=>roomSubtotals[item.roomId]=(roomSubtotals[item.roomId]||0)+Number(item.amount||0));
