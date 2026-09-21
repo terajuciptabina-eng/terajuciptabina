@@ -1104,8 +1104,20 @@ function updateRoomsEmptyState() {
 }
 
 function removeRoom(id) {
-  document.getElementById(id)?.remove();
+  const room = document.getElementById(id);
+  if (!room) return;
+
+  room.remove();
+
   customRoomLabels.delete(id);
+  manualItems.delete(id);
+
+  [excludedItems, customRates, customQuantities, customDescriptions].forEach(map => {
+    [...map.keys()].forEach(key => {
+      if (String(key).startsWith(id + "-")) map.delete(key);
+    });
+  });
+
   updateRoomsEmptyState();
   updateEstimate();
   saveContractorState();
@@ -1472,8 +1484,17 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
   const prelimManual = manualItems.get("__prelim__") || [];
   prelimManual.forEach(item => { html += `<tr class="border-b"><td class="py-1 px-2 align-top">${IS_CONTRACTOR ? `<textarea rows="2" onchange="editItemDescription(\'${item.id}\', this.value)" class="w-full border rounded-lg px-2 py-1 bg-white leading-4 resize-none">${escapeHtml(item.description)}</textarea>` : `<div class="homeowner-locked p-1 rounded leading-4">${escapeHtml(item.description)}</div>`}</td><td class="py-1 px-2">${escapeHtml(item.unit)}</td><td class="py-1 px-2 text-right"><input type="number" min="0" step="1" value="${formatQty(item.qty)}" onchange="editItemQuantity('${item.id}', this.value)" class="contractor-only no-print w-24 border rounded-none px-1 py-1 text-right bg-white"><span class="homeowner-locked no-print inline-block px-1 py-1 rounded-none text-sm">${formatQty(item.qty)}</span></td><td class="py-1 px-2 text-right"><input type="number" min="0" step="0.01" value="${normalizeRate(item.rate).toFixed(2)}" onchange="editItemRate('${item.id}', this.value)" class="contractor-only no-print w-28 border rounded-none px-1 py-1 text-right bg-white"><span class="homeowner-locked no-print inline-block px-1 py-1 rounded-none text-sm">${money(item.rate, 2)}</span></td><td class="py-1 px-2 text-right font-medium">${money(item.amount, 2)}</td><td class="no-print py-1 px-2 text-center"><button type="button" onclick="removeManualItem('__prelim__','${item.id}')" class="text-red-600 text-xs border border-red-200 rounded px-3 py-1.5">Delete</button></td></tr>`; });
 
-  const projectBuildItems = (itemsByRoom.project || []).filter(item =>
+  const newRoomIds = new Set(
+    roomGroups
+      .filter(room => document.getElementById(room.roomId)?.querySelector(".room-condition")?.value === "new")
+      .map(room => room.roomId)
+  );
+
+  // All Build Planner items for NEW rooms belong to the project-level
+  // New Construction section. Existing rooms remain room-level Renovation items.
+  const projectBuildItems = items.filter(item =>
     !excludedItems.has(item.id) &&
+    (item.roomId === "project" || newRoomIds.has(item.roomId)) &&
     String(item.category || "").toLowerCase() !== "external-work" &&
     String(item.category || "").toLowerCase() !== "preliminaries"
   );
@@ -1600,6 +1621,9 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
   roomGroups.forEach(room => {
     const roomItems = itemsByRoom[room.roomId] || [];
     if (room.area <= 0) return;
+
+    const isNewRoom = document.getElementById(room.roomId)?.querySelector(".room-condition")?.value === "new";
+    if (isNewRoom) return;
     html += `
       <tr class="bg-gray-100 border-b">
         <td colspan="6" class="py-1 px-2">
@@ -1644,15 +1668,12 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
         </tr>`;
     });
     html += `<tr class="no-print"><td colspan="6" class="py-1 px-2"><div class="contractor-only" data-manual-anchor="${room.roomId}"><button type="button" onclick="addManualItemPrompt('${room.roomId}')" class="border rounded-lg px-2 py-1 text-xs font-semibold hover:bg-gray-50">＋ Add Item</button></div></td></tr>`;
-    const isNewRoom = document.getElementById(room.roomId)?.querySelector(".room-condition")?.value === "new";
-    if (!isNewRoom) {
-      html += `
-        <tr class="border-b">
-          <td colspan="4" class="py-1 px-2 text-right font-semibold">${escapeHtml(room.label)} Subtotal</td>
-          <td class="py-1 px-2 text-right font-bold">${money(roomSubtotals[room.roomId] || 0, 2)}</td>
-          <td class="no-print"></td>
-        </tr>`;
-    }
+    html += `
+      <tr class="border-b">
+        <td colspan="4" class="py-1 px-2 text-right font-semibold">${escapeHtml(room.label)} Subtotal</td>
+        <td class="py-1 px-2 text-right font-bold">${money(roomSubtotals[room.roomId] || 0, 2)}</td>
+        <td class="no-print"></td>
+      </tr>`;
   });
 
   const roomTotal = Object.values(roomSubtotals).reduce((s, v) => s + v, 0);
