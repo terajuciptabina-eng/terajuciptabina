@@ -1134,28 +1134,21 @@ function saveManualItem(roomId) {
   saveContractorState();
 }
 function removeManualItem(roomId, itemId) { if (!IS_CONTRACTOR) return; const list = manualItems.get(roomId) || []; manualItems.set(roomId, list.filter(item => item.id !== itemId)); updateEstimate(); saveContractorState(); }
-function getAllItems() { const rooms = [...document.querySelectorAll("#roomsContainer .room-card")], typeIndexes = {}, allItems = []; rooms.forEach(room => { const roomId = room.id, roomType = room.querySelector(".room-type")?.value || "living", area = parseFloat(room.querySelector(".room-area")?.value) || 0; if(area<=0)return; typeIndexes[roomType] = (typeIndexes[roomType] || 0) + 1; const base = ROOM_TYPES[roomType] || "Area", autoLabel = typeIndexes[roomType] > 1 ? `${base} ${typeIndexes[roomType]}` : base, roomLabel = customRoomLabels.has(roomId) ? customRoomLabels.get(roomId) : autoLabel, standard = generateStandardRoomItems(roomType, area, roomId, roomLabel), optional = generateOptionalRoomItems(room, roomLabel), manual = (manualItems.get(roomId) || []).map(item => ({ ...item })); [...standard, ...optional, ...manual].forEach(item => { if (customRates.has(item.id)) item.rate = customRates.get(item.id); if (customQuantities.has(item.id)) item.qty = customQuantities.get(item.id); if (customDescriptions.has(item.id)) item.description = customDescriptions.get(item.id); item.qty = normalizeQuantity(item.qty); item.rate = normalizeRate(item.rate); item.amount = Math.round((item.qty * item.rate + Number.EPSILON) * 100) / 100; }); allItems.push(...standard, ...optional, ...manual); }); const prelimManual = (manualItems.get("__prelim__") || []).map(item => ({ ...item, roomId: "__prelim__", room: "Project / Preliminaries" })); prelimManual.forEach(item => { if (customRates.has(item.id)) item.rate = customRates.get(item.id); if (customQuantities.has(item.id)) item.qty = customQuantities.get(item.id); if (customDescriptions.has(item.id)) item.description = customDescriptions.get(item.id); item.qty = normalizeQuantity(item.qty); item.rate = normalizeRate(item.rate); item.amount = Math.round((item.qty * item.rate + Number.EPSILON) * 100) / 100; }); allItems.push(...prelimManual); return allItems; }
-
-
-window.__TERAJU_RENOVATION_V2_MODE=true;
-function getRenovationExistingItems() {
-  const original = window.__TERAJU_RENOVATION_V1_GET_ALL_ITEMS;
-  if (typeof original !== "function") return [];
-  return original();
-}
 function getAllItems() {
-  const existing = getRenovationExistingItems().filter(item => {
-    const card=document.getElementById(item.roomId);
-    return (card?.querySelector(".room-condition")?.value || "existing") !== "new";
-  });
+  const rooms = [...document.querySelectorAll("#roomsContainer .room-card")];
+  const existingOriginal = window.__TERAJU_RENOVATION_V1_GET_ALL_ITEMS;
+  const allExisting = typeof existingOriginal === "function" ? existingOriginal() : [];
+  const existingIds = new Set(rooms.filter(r => (r.querySelector(".room-condition")?.value || "existing") !== "new").map(r => r.id));
+  const existing = allExisting.filter(item => existingIds.has(item.roomId) || item.roomId === "__prelim__");
   const build = typeof window.__TERAJU_GET_BUILD_ITEMS === "function"
     ? window.__TERAJU_GET_BUILD_ITEMS().filter(item => {
-        const card=document.getElementById(item.roomId);
+        const card = document.getElementById(item.roomId);
         return (card?.querySelector(".room-condition")?.value || "existing") === "new";
       })
     : [];
   return [...existing, ...build];
 }
+
 
 function addRoom(...args){
   const blankAreaCall=args.length===0;
