@@ -35,7 +35,7 @@
           "builtUpArea": 96,
           "state": "selangor"
         },
-        "total": 51336.5,
+        "total": 34836,
         "plannerState": {
           "customerName": "Nur Syuhada",
           "projectLocation": "",
@@ -171,12 +171,12 @@
           "quotationType": "simple",
           "projectId": "PRJ-BLD-MUB8DP0I-5CAU0",
           "projectState": "selangor",
-          "rateSetId": "selangor",
-          "rateSetName": "Selangor",
-          "rateSnapshotAt": "2026-09-21T12:38:02.470Z"
+          "rateSetId": "default",
+          "rateSetName": "Default Rate",
+          "rateSnapshotAt": "2026-09-21T12:56:01.841Z"
         },
         "createdAt": "2026-09-21T12:38:01.792Z",
-        "updatedAt": "2026-09-21T12:38:04.001Z",
+        "updatedAt": "2026-09-21T12:56:02.635Z",
         "estimateNumber": "EST-BLD-005"
       },
       {
@@ -882,7 +882,7 @@
     "renovation": []
   },
   "createdAt": "2026-09-09T13:51:41.818Z",
-  "updatedAt": "2026-09-21T12:38:04.001Z",
+  "updatedAt": "2026-09-21T12:56:02.635Z",
   "quotationRunningNumber": {
     "build": 6
   },
