@@ -1203,7 +1203,10 @@ function getAllItems() {
   existing.push(...prelimManual);
 
   const build = typeof window.__TERAJU_GET_BUILD_ITEMS === "function"
-    ? window.__TERAJU_GET_BUILD_ITEMS().filter(item => newRoomIds.has(item.roomId) || String(item.roomId || "project") === "project")
+    ? window.__TERAJU_GET_BUILD_ITEMS().filter(item =>
+        newRoomIds.has(item.roomId) ||
+        (newRoomIds.size > 0 && String(item.roomId || "project") === "project")
+      )
     : [];
 
   return [...existing, ...build];
