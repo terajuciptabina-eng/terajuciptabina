@@ -2001,9 +2001,16 @@ function completeDetailedQuotationPayment(verified){if(verified)unlockDetailedQu
 
 function generateQuotation(){const type=getSelectedQuotationType();if(type==='detail'){const generated=generateQuotationConfirmed(type);if(generated!==false){setDetailedQuotationLocked(true);renderQuotationPreview();openDetailedQuotationPromo();}return;}setDetailedQuotationLocked(false);const generated=generateQuotationConfirmed(type);if(generated!==false)renderQuotationPreview();}
 function generateQuotationConfirmed(type) {
-  const data = typeof window.__TERAJU_RENOVATION_V2_GET_QUOTATION_DATA === "function"
-    ? window.__TERAJU_RENOVATION_V2_GET_QUOTATION_DATA()
-    : getCurrentQuotationData();
+  // Cost Estimate Preview must always snapshot the exact same V2 data source
+  // used by the Renovation Budget table immediately before rendering.
+  if (typeof window.__TERAJU_RENOVATION_V2_UPDATE_ESTIMATE === "function") {
+    window.__TERAJU_RENOVATION_V2_UPDATE_ESTIMATE();
+  }
+  if (typeof window.__TERAJU_RENOVATION_V2_GET_QUOTATION_DATA !== "function") {
+    alert("Renovation Planner V2 calculation source is not ready. Please try again.");
+    return false;
+  }
+  const data = window.__TERAJU_RENOVATION_V2_GET_QUOTATION_DATA();
   if (!data.roomGroups.some(room => room.area > 0)) {
     alert("Please add at least one area with a valid sqft before generating the cost estimate.");
     return;
@@ -2206,15 +2213,18 @@ window.__TERAJU_RENOVATION_V1_GET_CURRENT_QUOTATION_DATA = typeof getCurrentQuot
 </script>
 <script src="quotation-document-engine.js?v=20260921"></script>
 <script src="detailed-quotation-promo-ui.js"></script>
-<script>
-
-updateRoomsEmptyState();
-updateEstimate();
-
-</script>
 <script src="location-autocomplete.js"></script>
-<script src="renovation-planner-v2-engine.js?v=20260930"></script>
-<script src="quotation-quantity-fix.js?v=20260929"></script>
+<script src="renovation-planner-v2-engine.js?v=20260931"></script>
+<script src="quotation-quantity-fix.js?v=20260930"></script>
+<script>
+/* V2 routing must be active before the first Renovation Budget render. */
+updateRoomsEmptyState();
+if (typeof window.__TERAJU_RENOVATION_V2_UPDATE_ESTIMATE === "function") {
+  window.__TERAJU_RENOVATION_V2_UPDATE_ESTIMATE();
+} else {
+  updateEstimate();
+}
+</script>
 <script id="tc-homeowner-customer-default">
 (() => {
   const params = new URLSearchParams(location.search);
