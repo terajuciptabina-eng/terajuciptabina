@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "homeowner",
+  "homeownerId": "HME-20260921-NLJA",
+  "profile": {
+    "name": "KHAIDIN",
+    "email": "sifuchatbot7@gmail.com",
+    "phone": "+60173965475"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-09-21T08:07:23.503Z",
+  "updatedAt": "2026-09-21T08:07:23.503Z"
+}
