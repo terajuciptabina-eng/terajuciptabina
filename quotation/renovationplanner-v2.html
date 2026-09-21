@@ -1024,13 +1024,20 @@ function addRoomBase(defaultType = "other", defaultArea = "", forcedId = "", for
       <div class="no-print flex gap-2">
         <button type="button" onclick="moveRoom('${id}', -1)" title="Move up" class="border rounded-lg px-2 py-2 hover:bg-gray-100">▲</button>
         <button type="button" onclick="moveRoom('${id}', 1)" title="Move down" class="border rounded-lg px-2 py-2 hover:bg-gray-100">▼</button>
-        <button type="button" data-remove-room="${id}" class="room-remove-button border border-red-300 text-red-600 rounded-lg px-3 py-2 hover:bg-red-50">Remove</button>
+        <button type="button" class="room-remove-button border border-red-300 text-red-600 rounded-lg px-3 py-2 hover:bg-red-50">Remove</button>
       </div>
     </div>
   `;
 
   container.appendChild(div);
-  bindRoomRemoveButtons();
+  const removeButton = div.querySelector(".room-remove-button");
+  if (removeButton) {
+    removeButton.addEventListener("click", event => {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      removeRoom(id);
+    });
+  }
   updateRoomsEmptyState();
 
   div.querySelector(".room-type").value = defaultType;
@@ -1094,20 +1101,6 @@ function addRoomBase(defaultType = "other", defaultArea = "", forcedId = "", for
   if (!restoringContractorState) saveContractorState();
 }
 bindProjectOptionalWorks();
-function bindRoomRemoveButtons() {
-  const container = document.getElementById("roomsContainer");
-  if (!container || container.dataset.removeBound === "1") return;
-  container.dataset.removeBound = "1";
-
-  container.addEventListener("click", event => {
-    const button = event.target.closest(".room-remove-button");
-    if (!button || !container.contains(button)) return;
-    event.preventDefault();
-    event.stopPropagation();
-    removeRoom(button.dataset.removeRoom || "");
-  });
-}
-
 function updateRoomsEmptyState() {
   const container = document.getElementById("roomsContainer");
   const empty = document.getElementById("roomsEmptyState");
