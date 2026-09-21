@@ -73,9 +73,9 @@ export default async function handler(req, res) {
     const phoneNumberId = String(process.env.WHATSAPP_PHONE_NUMBER_ID || '').trim();
     const configuredTemplateName = String(process.env.WHATSAPP_SIGNUP_TEMPLATE_NAME || '').trim();
     const templateName = configuredTemplateName === 'teraju_works_signup'
-      ? 'account_creation_confirmation_3'
+      ? 'teraju_works_account_confirmation'
       : configuredTemplateName;
-    const templateLanguage = String(process.env.WHATSAPP_SIGNUP_TEMPLATE_LANGUAGE || 'en_US').trim();
+    const templateLanguage = String(process.env.WHATSAPP_SIGNUP_TEMPLATE_LANGUAGE || 'en').trim();
     if (!token || !phoneNumberId || !templateName) {
       return { sent: false, reason: 'WhatsApp service is not configured.' };
     }
@@ -85,7 +85,6 @@ export default async function handler(req, res) {
       return { sent: false, reason: 'Invalid WhatsApp recipient number.' };
     }
 
-    const roleLabel = role === 'homeowner' ? 'Homeowner' : 'Contractor';
     const response = await fetch(`https://graph.facebook.com/v23.0/${phoneNumberId}/messages`, {
       method: 'POST',
       headers: {
@@ -104,7 +103,11 @@ export default async function handler(req, res) {
             parameters: [
               {
                 type: 'text',
-                text: `Hi ${String(name)}, your ${roleLabel} ID is ${String(id)}.`
+                text: String(name)
+              },
+              {
+                type: 'text',
+                text: String(id)
               }
             ]
           }]
