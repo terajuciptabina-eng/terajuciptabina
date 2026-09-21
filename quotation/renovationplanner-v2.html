@@ -1477,12 +1477,8 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
     String(item.category || "").toLowerCase() !== "external-work" &&
     String(item.category || "").toLowerCase() !== "preliminaries"
   );
-  if (projectBuildItems.length) {
-    html += `
-      <tr class="bg-gray-100 border-b">
-        <td colspan="6" class="py-1 px-2 font-bold">New Construction / Build Planner</td>
-      </tr>`;
 
+  if (projectBuildItems.length) {
     const buildHeaderNames = {
       STRUCTURES: "STRUCTURAL WORKS",
       ARCHITECTURES: "ARCHITECTURAL WORKS",
@@ -1490,26 +1486,52 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
       "DOORS & WINDOWS": "DOORS & WINDOWS"
     };
 
+    const groupTotals = {};
+    projectBuildItems.forEach(item => {
+      const group = String(item.group || "").toUpperCase();
+      groupTotals[group] = (groupTotals[group] || 0) + (Number(item.amount) || 0);
+    });
+
     const hierarchyClass = level =>
-      level === 0 ? "font-bold" : level === 1 ? "font-semibold pl-4" : "font-medium pl-8";
+      level === 0 ? "font-bold" :
+      level === 1 ? "font-semibold pl-4" :
+      "font-medium pl-8";
 
+    html += `
+      <tr class="bg-gray-100 border-b">
+        <td colspan="6" class="py-1 px-2 font-bold">New Construction / Build Planner</td>
+      </tr>`;
+
+    let currentGroup = "";
+    let currentSubSubHeader = "";
+    let currentSubSubTotal = 0;
     const renderedHierarchy = new Set();
-    let lastBuildGroup = "";
-    let lastSubHeaderKey = "";
-    let lastSubHeaderTotal = 0;
 
-    const renderBuildSubtotal = (label, amount) => {
-      if (!label) return;
+    const flushSubSubTotal = () => {
+      if (!currentSubSubHeader) return;
       html += `
-        <tr class="border-b bg-gray-50 build-subtotal-row">
-          <td colspan="4" class="py-1 px-2 text-right font-semibold">${escapeHtml(label)} Subtotal</td>
-          <td class="py-1 px-2 text-right font-bold">${money(amount, 2)}</td>
+        <tr class="border-b bg-gray-50">
+          <td colspan="4" class="py-1 px-2 text-right font-semibold">${escapeHtml(currentSubSubHeader)} Subtotal</td>
+          <td class="py-1 px-2 text-right font-bold">${money(currentSubSubTotal, 2)}</td>
           <td class="no-print"></td>
         </tr>`;
+      currentSubSubHeader = "";
+      currentSubSubTotal = 0;
     };
 
-    projectBuildItems.forEach((item, itemIndex) => {
+    projectBuildItems.forEach(item => {
       const group = String(item.group || "").toUpperCase();
+
+      if (group !== currentGroup) {
+        flushSubSubTotal();
+        currentGroup = group;
+        renderedHierarchy.clear();
+
+        html += `
+          <tr class="bg-gray-100 border-b">
+            <td colspan="6" class="py-1 px-2 font-bold">${escapeHtml(buildHeaderNames[group] || group)}</td>
+          </tr>`;
+      }
 
       const path = String(item.masterPath || "")
         .split("/")
@@ -1517,26 +1539,11 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
         .filter(Boolean);
 
       const levels = path.length > 1 ? path.slice(0, -1) : [];
-      const levelKey = levels.join(" / ");
-      const subHeaderLabel = levels.length ? levels[levels.length - 1] : "";
-      const subHeaderKey = group + " / " + levelKey;
+      const hierarchyKey = levels.join(" / ");
 
-      // Close the previous sub-header before opening a new one.
-      if (lastSubHeaderKey && subHeaderKey !== lastSubHeaderKey) {
-        renderBuildSubtotal(lastSubHeaderKey.split(" / ").pop(), lastSubHeaderTotal);
-        lastSubHeaderTotal = 0;
-      }
+      if (hierarchyKey && !renderedHierarchy.has(hierarchyKey)) {
+        flushSubSubTotal();
 
-      if (group && group !== lastBuildGroup) {
-        html += `
-          <tr class="bg-gray-100 border-b">
-            <td colspan="6" class="py-1 px-2 font-bold">${escapeHtml(buildHeaderNames[group] || group)}</td>
-          </tr>`;
-        lastBuildGroup = group;
-        renderedHierarchy.clear();
-      }
-
-      if (levelKey && !renderedHierarchy.has(levelKey)) {
         levels.forEach((level, index) => {
           const prefix = levels.slice(0, index + 1).join(" / ");
           if (!renderedHierarchy.has(prefix)) {
@@ -1547,6 +1554,11 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
             renderedHierarchy.add(prefix);
           }
         });
+
+        // The deepest hierarchy level is the Sub-Sub Header whose items
+        // are subtotalled together.
+        currentSubSubHeader = levels[levels.length - 1] || "";
+        currentSubSubTotal = 0;
       }
 
       html += `
@@ -1558,20 +1570,8 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
             <div class="hidden print:block leading-6">${escapeHtml(item.description)}</div>
           </td>
           <td class="py-1 px-2">${escapeHtml(item.unit)}</td>
-          <td class="py-1 px-2 text-right">
-            <input type="number" min="0" step="1" value="${formatQty(item.qty)}"
-              onchange="editItemQuantity('${item.id}', this.value)"
-              class="contractor-only no-print w-24 border rounded-none px-1 py-1 text-right bg-white">
-            <span class="homeowner-locked no-print inline-block px-1 py-1 rounded-none text-sm">${formatQty(item.qty)}</span>
-            <span class="hidden print:inline">${formatQty(item.qty)}</span>
-          </td>
-          <td class="py-1 px-2 text-right">
-            <input type="number" min="0" step="0.01" value="${normalizeRate(item.rate).toFixed(2)}"
-              onchange="editItemRate('${item.id}', this.value)"
-              class="contractor-only no-print w-28 border rounded-none px-1 py-1 text-right bg-white">
-            <span class="homeowner-locked no-print inline-block px-1 py-1 rounded-none text-sm">${money(item.rate, 2)}</span>
-            <span class="hidden print:inline">${money(item.rate, 2)}</span>
-          </td>
+          <td class="py-1 px-2 text-right">${formatQty(item.qty)}</td>
+          <td class="py-1 px-2 text-right">${money(item.rate, 2)}</td>
           <td class="py-1 px-2 text-right font-medium">${money(item.amount, 2)}</td>
           <td class="no-print py-1 px-2 text-center">
             <button type="button" onclick="excludeItem('${item.id}')"
@@ -1579,48 +1579,36 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
           </td>
         </tr>`;
 
-      if (subHeaderKey !== lastSubHeaderKey) {
-        lastSubHeaderKey = subHeaderKey;
-      }
-      lastSubHeaderTotal += Number(item.amount) || 0;
-
-      if (itemIndex === projectBuildItems.length - 1) {
-        renderBuildSubtotal(subHeaderLabel, lastSubHeaderTotal);
-      }
-    })
-
-    // Group-level summary: one subtotal for each Build Planner header.
-    const buildGroupTotals = {};
-    projectBuildItems.forEach(item => {
-      const group = String(item.group || "").toUpperCase();
-      if (!group) return;
-      buildGroupTotals[group] = (buildGroupTotals[group] || 0) + (Number(item.amount) || 0);
+      currentSubSubTotal += Number(item.amount) || 0;
     });
 
-    const summaryRows = Object.entries(buildHeaderNames)
-      .filter(([key]) => Number(buildGroupTotals[key] || 0) > 0)
-      .map(([key, label]) => `
-        <tr class="border-b">
-          <td colspan="4" class="py-1 px-2 font-semibold">${escapeHtml(label)}</td>
-          <td class="py-1 px-2 text-right font-bold">${money(buildGroupTotals[key], 2)}</td>
-          <td class="no-print"></td>
-        </tr>`)
-      .join("");
-
-    const newConstructionTotal = Object.values(buildGroupTotals)
-      .reduce((sum, amount) => sum + amount, 0);
+    flushSubSubTotal();
 
     html += `
       <tr class="bg-gray-100 border-b">
         <td colspan="6" class="py-1 px-2 font-bold">New Construction Summary</td>
-      </tr>
-      ${summaryRows}
+      </tr>`;
+
+    Object.entries(buildHeaderNames).forEach(([group, label]) => {
+      const amount = Number(groupTotals[group] || 0);
+      if (!amount) return;
+      html += `
+        <tr class="border-b">
+          <td colspan="4" class="py-1 px-2 font-semibold">${escapeHtml(label)}</td>
+          <td class="py-1 px-2 text-right font-bold">${money(amount, 2)}</td>
+          <td class="no-print"></td>
+        </tr>`;
+    });
+
+    const newConstructionTotal = Object.values(groupTotals)
+      .reduce((sum, amount) => sum + amount, 0);
+
+    html += `
       <tr class="border-t-2 bg-gray-50">
         <td colspan="4" class="py-2 px-2 text-right font-bold">New Construction Total</td>
         <td class="py-2 px-2 text-right font-bold">${money(newConstructionTotal, 2)}</td>
         <td class="no-print"></td>
       </tr>`;
-;
   }
 
   roomGroups.forEach(room => {
