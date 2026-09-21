@@ -2064,13 +2064,9 @@ function generateQuotationConfirmed(type) {
     control.replaceWith(span);
   });
 
-  // Budget contains homeowner/print duplicates for some fields. Keep only the
-  // visible snapshot value so the Preview has one copy of every Budget row.
-  snapshot.querySelectorAll(".homeowner-locked").forEach(el => {
-    if (el.classList.contains("quotation-snapshot-hidden")) {
-      el.remove();
-    }
-  });
+  // Budget contains homeowner/print duplicates for some fields. Keep one
+  // static value per cell in the Preview.
+  snapshot.querySelectorAll(".homeowner-locked").forEach(el => el.remove());
   snapshot.querySelectorAll(".hidden.print\\:block,.hidden.print\\:inline").forEach(el => {
     el.classList.remove("hidden", "print:block", "print:inline");
   });
