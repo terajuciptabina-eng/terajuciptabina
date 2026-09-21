@@ -102,8 +102,10 @@ export default async function handler(req, res) {
           components: [{
             type: 'body',
             parameters: [
-              { type: 'text', text: String(name) },
-              { type: 'text', text: String(id) }
+              {
+                type: 'text',
+                text: `Hi ${String(name)}, your ${roleLabel} ID is ${String(id)}.`
+              }
             ]
           }]
         }
