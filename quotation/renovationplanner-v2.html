@@ -628,6 +628,52 @@ main>section:not(:first-child){scroll-margin-top:92px} main>section>div:first-ch
     </div>
   </section>
 
+  <!-- Building Specification — follows Build Planner V2 for New rooms/areas -->
+  <section id="renovationBuildingSpecification" class="bg-white rounded-2xl shadow-sm p-6 mb-6">
+    <div class="mb-5">
+      <h3 class="font-bold text-lg">Building Specification</h3>
+      <p class="text-sm text-gray-500">For New rooms / areas, building area and roofing system follow the Build Planner V2 calculation model.</p>
+    </div>
+    <div class="grid md:grid-cols-2 gap-5">
+      <div>
+        <label class="block text-sm font-medium mb-2">Total Built-up Area (sqft)</label>
+        <input id="builtUpArea" type="number" min="0" step="1" value="0" readonly
+          class="w-full border rounded-lg px-4 py-3 bg-gray-100"
+          title="Automatically calculated from New rooms / areas.">
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-2">Main Building Area (sqft)</label>
+        <input id="mainBuildingArea" type="number" min="0" step="1" value="0" readonly
+          class="w-full border rounded-lg px-4 py-3 bg-gray-100"
+          title="Automatically calculated from New rooms / areas excluding Porch.">
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-2">Main Building Roofing System</label>
+        <select id="mainBuildingRoofSystem" class="w-full border rounded-lg px-4 py-3 bg-white"
+          onchange="updateEstimate();saveContractorState()">
+          <option value="metal">Metal Sheet Roofing</option>
+          <option value="flat">Flat Roof</option>
+        </select>
+        <p class="text-xs text-gray-500 mt-2">Same roofing selection used by Build Planner V2 for the Main Building.</p>
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-2">Porch Area (sqft)</label>
+        <input id="porchArea" type="number" min="0" step="1" value="0" readonly
+          class="w-full border rounded-lg px-4 py-3 bg-gray-100"
+          title="Automatically calculated from New rooms / areas marked as Porch.">
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-2">Porch Roofing System</label>
+        <select id="porchRoofSystem" class="w-full border rounded-lg px-4 py-3 bg-white"
+          onchange="updateEstimate();saveContractorState()">
+          <option value="flat">Flat Roof</option>
+          <option value="metal">Metal Sheet Roofing</option>
+        </select>
+        <p class="text-xs text-gray-500 mt-2">Same independent Porch roofing selection used by Build Planner V2.</p>
+      </div>
+    </div>
+  </section>
+
   <!-- Contractor Rate Schedule -->
   <section id="rateScheduleSection" class="bg-white rounded-2xl shadow-sm p-6 mb-6">
     <div class="flex justify-between items-center gap-4">
@@ -841,6 +887,48 @@ function optionalScopeHtml() {
       </div>`;
   }).join("");
 }
+
+const BUILDING_ROOF_DEFAULTS = { main: "metal", porch: "flat" };
+
+function renovationNewRoomGroupsForBuildingSpec() {
+  return getRoomGroupsBase().filter(room => {
+    const card = document.getElementById(room.roomId);
+    const condition = card?.querySelector(".room-condition")?.value || "existing";
+    return condition === "new" && Number(room.area) > 0;
+  });
+}
+
+function getBuildingAreaSplit() {
+  const rooms = renovationNewRoomGroupsForBuildingSpec();
+  const isPorch = room =>
+    /porch/i.test(String(room.roomType || "") + " " + String(room.label || ""));
+  const main = rooms.filter(room => !isPorch(room)).reduce((sum, room) => sum + Number(room.area || 0), 0);
+  const porch = rooms.filter(isPorch).reduce((sum, room) => sum + Number(room.area || 0), 0);
+  return { main, porch };
+}
+
+function getBuildingRoofSystems() {
+  const main = document.getElementById("mainBuildingRoofSystem")?.value;
+  const porch = document.getElementById("porchRoofSystem")?.value;
+  return {
+    main: main === "flat" ? "flat" : BUILDING_ROOF_DEFAULTS.main,
+    porch: porch === "metal" ? "metal" : BUILDING_ROOF_DEFAULTS.porch
+  };
+}
+
+function syncBuildingSpecification() {
+  const split = getBuildingAreaSplit();
+  const main = document.getElementById("mainBuildingArea");
+  const porch = document.getElementById("porchArea");
+  const total = document.getElementById("builtUpArea");
+  if (main) main.value = String(Math.max(0, Math.ceil(split.main)));
+  if (porch) porch.value = String(Math.max(0, Math.ceil(split.porch)));
+  if (total) total.value = String(Math.max(0, Math.ceil(split.main + split.porch)));
+  return split;
+}
+
+window.getBuildingRoofSystems = getBuildingRoofSystems;
+window.syncRenovationBuildingSpecification = syncBuildingSpecification;
 
 function addRoomBase(defaultType = "other", defaultArea = "", forcedId = "", forcedName = "", forcedCondition = "existing") {
   roomCounter++;
@@ -1236,6 +1324,7 @@ function getRoomGroups() {
 }
 
 function updateEstimate() {
+  if (typeof syncBuildingSpecification === "function") syncBuildingSpecification();
   const allItems = getAllItems();
   const roomGroups = getRoomGroups();
   allItems.forEach(item => {
@@ -1596,6 +1685,7 @@ function serializeContractorState() {
     manualItems: [...manualItems.entries()],
     standardRateItems,
     rates: {...RATES},
+    roofingSystems: typeof getBuildingRoofSystems === "function" ? getBuildingRoofSystems() : { main: "metal", porch: "flat" },
     quotationType: getSelectedQuotationType()
   };
 }
@@ -1634,6 +1724,12 @@ function loadContractorState() {
       const el = document.getElementById("projectLocation");
       if (el) el.value = saved.projectLocation;
     }
+
+    const savedRoofing = saved.roofingSystems || {};
+    const mainRoof = document.getElementById("mainBuildingRoofSystem");
+    const porchRoof = document.getElementById("porchRoofSystem");
+    if (mainRoof) mainRoof.value = savedRoofing.main === "flat" ? "flat" : "metal";
+    if (porchRoof) porchRoof.value = savedRoofing.porch === "metal" ? "metal" : "flat";
 
     Object.keys(DEFAULT_RATES).forEach(k => {
       if (saved.rates && Number.isFinite(Number(saved.rates[k])) && Number(saved.rates[k]) >= 0) {
