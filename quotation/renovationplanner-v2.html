@@ -1310,6 +1310,7 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
         <td class="py-1 px-2 text-right font-bold">${money(projectBuildItems.reduce((sum, item) => sum + item.amount, 0), 2)}</td>
         <td class="no-print"></td>
       </tr>`;
+  }
 
   roomGroups.forEach(room => {
     const roomItems = itemsByRoom[room.roomId] || [];
