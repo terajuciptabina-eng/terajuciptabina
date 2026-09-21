@@ -1346,7 +1346,24 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
       <tr class="bg-gray-100 border-b">
         <td colspan="6" class="py-1 px-2 font-bold">New Construction / Build Planner</td>
       </tr>`;
+    const buildHeaderNames = {
+      PRELIMINARIES: "PRELIMINARIES",
+      STRUCTURES: "STRUCTURAL WORKS",
+      ARCHITECTURES: "ARCHITECTURAL WORKS",
+      ELECTRICAL: "ELECTRICAL WORKS",
+      "DOORS & WINDOWS": "DOORS & WINDOWS",
+      "EXTERNAL WORK": "EXTERNAL WORKS"
+    };
+    let lastBuildGroup = "";
     projectBuildItems.forEach(item => {
+      const group = String(item.group || "").toUpperCase();
+      if (group && group !== lastBuildGroup) {
+        html += `
+          <tr class="bg-gray-100 border-b">
+            <td colspan="6" class="py-1 px-2 font-bold">${escapeHtml(buildHeaderNames[group] || group)}</td>
+          </tr>`;
+        lastBuildGroup = group;
+      }
       html += `
         <tr class="border-b hover:bg-gray-50">
           <td class="py-1 px-2 align-top">
@@ -1371,7 +1388,6 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
         <td class="py-1 px-2 text-right font-bold">${money(projectBuildItems.reduce((sum, item) => sum + item.amount, 0), 2)}</td>
         <td class="no-print"></td>
       </tr>`;
-  }
 
   roomGroups.forEach(room => {
     const roomItems = itemsByRoom[room.roomId] || [];
