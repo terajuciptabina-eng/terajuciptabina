@@ -2009,14 +2009,9 @@ function completeDetailedQuotationPayment(verified){if(verified)unlockDetailedQu
 function generateQuotation(){const type=getSelectedQuotationType();if(type==='detail'){const generated=generateQuotationConfirmed(type);if(generated!==false){setDetailedQuotationLocked(true);renderQuotationPreview();openDetailedQuotationPromo();}return;}setDetailedQuotationLocked(false);const generated=generateQuotationConfirmed(type);if(generated!==false)renderQuotationPreview();}
 function generateQuotationConfirmed(type) {
   // PREVIEW SOURCE CONTRACT:
-  // Do not calculate or rebuild quotation rows here.
-  // Renovation Budget is the single rendered source. Preview takes a clean,
-  // static snapshot of exactly what Budget has rendered, with the existing
-  // quotation header/footer kept around it.
-  if (typeof window.__TERAJU_RENOVATION_V2_UPDATE_ESTIMATE === "function") {
-    window.__TERAJU_RENOVATION_V2_UPDATE_ESTIMATE();
-  }
-
+  // Do not calculate, refresh, or rebuild Renovation Budget here.
+  // Preview must take a static snapshot of the Budget that is already on screen,
+  // then place that snapshot between the existing quotation header and footer.
   const budget = document.getElementById("estimateContent");
   const content = document.getElementById("quotationContent");
   if (!budget || !content) {
