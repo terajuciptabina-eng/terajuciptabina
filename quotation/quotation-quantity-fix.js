@@ -14,7 +14,7 @@ window.__tcGetGlobalRate=globalRateOnly;
 function rooms(){
   const all=typeof getRoomGroups==='function'?(getRoomGroups()||[]):[];
   if(/renovationplanner-v2\.html$/i.test(location.pathname)&&typeof window.__TERAJU_BUILD_ROOM_FILTER==='function'){
-    return all.filter(window.__TERAJU_BUILD_ROOM_FILTER);
+    return all.filter(window.__TERAJU_BUILD_ROOM_FILTER).map(typeof window.__TERAJU_BUILD_ROOM_MAP==='function'?window.__TERAJU_BUILD_ROOM_MAP:(x=>x));
   }
   return all;
 }
