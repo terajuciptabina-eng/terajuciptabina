@@ -1587,7 +1587,40 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
       if (itemIndex === projectBuildItems.length - 1) {
         renderBuildSubtotal(subHeaderLabel, lastSubHeaderTotal);
       }
+    })
+
+    // Group-level summary: one subtotal for each Build Planner header.
+    const buildGroupTotals = {};
+    projectBuildItems.forEach(item => {
+      const group = String(item.group || "").toUpperCase();
+      if (!group) return;
+      buildGroupTotals[group] = (buildGroupTotals[group] || 0) + (Number(item.amount) || 0);
     });
+
+    const summaryRows = Object.entries(buildHeaderNames)
+      .filter(([key]) => Number(buildGroupTotals[key] || 0) > 0)
+      .map(([key, label]) => `
+        <tr class="border-b">
+          <td colspan="4" class="py-1 px-2 font-semibold">${escapeHtml(label)}</td>
+          <td class="py-1 px-2 text-right font-bold">${money(buildGroupTotals[key], 2)}</td>
+          <td class="no-print"></td>
+        </tr>`)
+      .join("");
+
+    const newConstructionTotal = Object.values(buildGroupTotals)
+      .reduce((sum, amount) => sum + amount, 0);
+
+    html += `
+      <tr class="bg-gray-100 border-b">
+        <td colspan="6" class="py-1 px-2 font-bold">New Construction Summary</td>
+      </tr>
+      ${summaryRows}
+      <tr class="border-t-2 bg-gray-50">
+        <td colspan="4" class="py-2 px-2 text-right font-bold">New Construction Total</td>
+        <td class="py-2 px-2 text-right font-bold">${money(newConstructionTotal, 2)}</td>
+        <td class="no-print"></td>
+      </tr>`;
+;
   }
 
   roomGroups.forEach(room => {
