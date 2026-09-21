@@ -785,7 +785,7 @@ const RULES = { downlightPerSqft: 50, minimumDownlights: 4 };
 
 const ROOM_TYPES = {
   living: "Living / Dining", bedroom: "Bedroom", dryKitchen: "Dry Kitchen",
-  wetKitchen: "Wet Kitchen", bathroom: "Bathroom", carPorch: "Car Porch",
+  wetKitchen: "Wet Kitchen", bathroom: "Bathroom", porch: "Car Porch",
   balcony: "Balcony", extensionKitchen: "New Extension – Kitchen",
   extensionToilet: "New Extension – Toilet", other: "Other"
 };
@@ -1154,7 +1154,7 @@ function generateStandardRoomItems(roomType, area, roomId, roomLabel) {
     pushItem(items, roomId, roomLabel, "downlight", `To supply and install ${calculateDownlights(area)} unit downlight c/w wiring`, calculateDownlights(area), "unit", RATES.downlight);
     pushItem(items, roomId, roomLabel, "exhaust", `To supply and install ${Math.max(1, Math.ceil(area / 50))} unit exhaust fan c/w wiring`, Math.max(1, Math.ceil(area / 50)), "unit", RATES.exhaustFan);
   }
-  if (roomType === "carPorch") {
+  if (roomType === "porch") {
     pushItem(items, roomId, roomLabel, "floor", "To supply and install floor tiles", area, "sqft", RATES.floorTile);
     pushItem(items, roomId, roomLabel, "ceiling", "To supply and install plaster ceiling flat c/w paint", area, "sqft", RATES.ceiling);
     pushItem(items, roomId, roomLabel, "downlight", `To supply and install ${calculateDownlights(area)} unit downlight c/w wiring`, calculateDownlights(area), "unit", RATES.downlight);
@@ -1205,7 +1205,7 @@ function getStandardRateItems(roomId=null) {
     dryKitchen:["ceiling","spc","downlight","barLamp","ceilingFan","kitchenFrame","kitchenMakingGood","kitchenGlassDoor"],
     wetKitchen:["floorTile","wallTile","ceiling","downlight","ceilingFan","barLamp"],
     bathroom:["floorTile","wallTile","ceiling","bathroomSanitary","bathroomDoor","downlight","exhaustFan"],
-    carPorch:["floorTile","ceiling","downlight","gateMotor","brickwallDivider","frontFence"],
+    porch:["floorTile","ceiling","downlight","gateMotor","brickwallDivider","frontFence"],
     balcony:["floorTile","facadeWall","wallLight"],
     extensionKitchen:["extensionKitchen","downlight"],
     extensionToilet:["extensionToilet","downlight","exhaustFan"]
@@ -1772,7 +1772,8 @@ function loadContractorState() {
       roomCounter = 0;
 
       rooms.forEach(room => {
-        addRoom(room.type || "other", room.area || "", room.id || "", room.name || "", room.condition || "existing");
+        const restoredType = room.type === "carPorch" ? "porch" : (room.type || "other");
+        addRoom(restoredType, room.area || "", room.id || "", room.name || "", room.condition || "existing");
         const created = document.getElementById(room.id || ("room-" + roomCounter));
         if (!created) return;
         const name = created.querySelector(".room-name");
