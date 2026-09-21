@@ -607,10 +607,6 @@ main>section:not(:first-child){scroll-margin-top:92px} main>section>div:first-ch
         <h3 class="font-bold text-lg">Rooms / Areas</h3>
         <p class="text-sm text-gray-500">Only select the area type and enter the sqft.</p>
       </div>
-      <button id="addRoomAreaBtn" type="button" onclick="addRoom()"
-        class="no-print bg-black text-white px-3 py-2 rounded-lg text-sm font-medium hover:bg-gray-800 flex-shrink-0">
-        + Add Room / Area
-      </button>
     </div>
     <div class="no-print bg-gray-50 border rounded-xl p-3 mb-3 text-sm text-gray-600">
       <strong class="text-gray-800">Simple input:</strong>
@@ -624,7 +620,12 @@ main>section:not(:first-child){scroll-margin-top:92px} main>section>div:first-ch
       <p class="font-semibold text-sm">No rooms added yet.</p>
       <p class="text-xs text-gray-500 mt-1">Click the button above to add rooms/areas and start planning your renovation.</p>
     </div>
-    <div id="roomsAddButtonAnchor" class="no-print mt-2"></div>
+    <div id="roomsAddButtonAnchor" class="no-print mt-2">
+      <button id="addRoomAreaBtn" type="button" onclick="addRoom()"
+        class="bg-black text-white px-3 py-2 rounded-lg text-sm font-medium hover:bg-gray-800">
+        + Add Room / Area
+      </button>
+    </div>
   </section>
 
   <!-- Contractor Rate Schedule -->
@@ -917,7 +918,6 @@ function updateRoomsEmptyState() {
   if (!container || !empty || !btn || !anchor) return;
   const hasRooms = !!container.querySelector(".room-card");
   empty.classList.toggle("hidden", hasRooms);
-  anchor.appendChild(btn);
 }
 
 function removeRoom(id) {
