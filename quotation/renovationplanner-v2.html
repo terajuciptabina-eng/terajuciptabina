@@ -125,8 +125,11 @@
        Only editability differs; row height/spacing must not change by audience. */
     #estimateContent table textarea {
       min-height: 40px !important;
-      height: 40px !important;
+      height: auto !important;
+      field-sizing: content;
       resize: none !important;
+      overflow: hidden !important;
+      white-space: pre-wrap !important;
     }
     #estimateContent table .homeowner-locked {
       min-height: 40px !important;
