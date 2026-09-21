@@ -51,13 +51,6 @@ window.TerajuRenovationCalculationRules = [
   ["BALCONY","BALCONY / Facade Wall","Facade wall works to Balcony area.","AREA / COEFFICIENT","1.33 sqft/sqft","Quantity = Room Area × 1.33","sqft","Room Area.","Existing Renovation Planner facade-wall coverage factor."],
   ["BALCONY","BALCONY / Wall Light","Wall light to Balcony area.","AREA ALLOWANCE","2 No. minimum; 1 No. / 70 sqft","Quantity = MAX(2, CEILING(Room Area / 70))","No.","Room Area.","Renovation Planner wall-light rule."],
 
-  ["NEW EXTENSION / KITCHEN","NEW EXTENSION / KITCHEN / Extension Construction","New kitchen extension construction allowance.","AREA","1.00 sqft/sqft","Quantity = Extension Area","sqft","Extension Kitchen Area.","Renovation Planner extension construction item."],
-  ["NEW EXTENSION / KITCHEN","NEW EXTENSION / KITCHEN / Downlight","Downlights to new kitchen extension.","AREA ALLOWANCE","1 No. / 50 sqft, minimum 4","Quantity = MAX(4, CEILING(Extension Area / 50))","No.","Extension Kitchen Area.","Renovation Planner downlight rule."],
-
-  ["NEW EXTENSION / TOILET","NEW EXTENSION / TOILET / Extension Construction","New toilet extension construction allowance.","AREA","1.00 sqft/sqft","Quantity = Extension Area","sqft","Extension Toilet Area.","Renovation Planner extension construction item."],
-  ["NEW EXTENSION / TOILET","NEW EXTENSION / TOILET / Downlight","Downlights to new toilet extension.","AREA ALLOWANCE","1 No. / 50 sqft, minimum 4","Quantity = MAX(4, CEILING(Extension Area / 50))","No.","Extension Toilet Area.","Renovation Planner downlight rule."],
-  ["NEW EXTENSION / TOILET","NEW EXTENSION / TOILET / Exhaust Fan","Exhaust fan to new toilet extension.","AREA ALLOWANCE","1 No. / 50 sqft, minimum 1","Quantity = MAX(1, CEILING(Extension Area / 50))","No.","Extension Toilet Area.","Renovation Planner exhaust-fan rule."],
-
   ["OPTIONAL WORKS","OPTIONAL WORKS / Demolition","Demolition works selected by contractor.","CUSTOM RATE / FIXED QUANTITY","1 unit / selected scope","Quantity = 1 when selected","LS","Selected optional scope.","Optional Renovation Planner item; contractor-entered rate."],
   ["OPTIONAL WORKS","OPTIONAL WORKS / Painting","Painting works selected by contractor.","CUSTOM RATE / FIXED QUANTITY","1 unit / selected scope","Quantity = 1 when selected","LS","Selected optional scope.","Optional Renovation Planner item; contractor-entered rate."],
   ["OPTIONAL WORKS","OPTIONAL WORKS / Additional Glass Door","Additional glass door.","FIXED QUANTITY","1 No. / selected item","Quantity = 1 when selected","No.","Selected optional scope.","Optional Renovation Planner item."],
