@@ -37,7 +37,7 @@
   }
 
   function combinedQuotationData(){
-    const allItems=(typeof getAllItems==='function'?getAllItems():[]);
+    const allItems=typeof window.__TERAJU_RENOVATION_V2_GET_ALL_ITEMS==='function'?window.__TERAJU_RENOVATION_V2_GET_ALL_ITEMS():[];
     const rooms=typeof getRoomGroups==='function'?(getRoomGroups()||[]):buildRoomsFromDom();
     const itemsByRoom={},roomSubtotals={};
     rooms.forEach(r=>{itemsByRoom[r.roomId]=[];roomSubtotals[r.roomId]=0});
@@ -61,8 +61,8 @@
     }catch(e){console.error('[TERAJU RENOVATION V2 BUILD]',e)}
     try{ if(typeof window.__TERAJU_RENOVATION_V2_RENDER==='function') window.__TERAJU_RENOVATION_V2_RENDER(); }catch(e){}
     try{
-      if(typeof window.__TERAJU_RENOVATION_V1_UPDATE_ESTIMATE==='function'){
-        window.__TERAJU_RENOVATION_V1_UPDATE_ESTIMATE();
+      if(typeof window.__TERAJU_RENOVATION_V2_UPDATE_ESTIMATE==='function'){
+        window.__TERAJU_RENOVATION_V2_UPDATE_ESTIMATE();
       }
     }catch(e){console.error('[TERAJU RENOVATION V2 ESTIMATE]',e)}
   }
