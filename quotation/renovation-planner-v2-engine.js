@@ -34,14 +34,15 @@
   function renovationItems(){
     const original=window.__TERAJU_RENOVATION_V1_GET_ALL_ITEMS;
     if(typeof original!=='function') return [];
-    return original().filter(item => conditionOf(item.roomId)!=='new');
+    return original().filter(item => conditionOf(item.roomId)!=='new' && String(item.category||'').toLowerCase()!=='external-work');
   }
 
   function buildItems(){
     const ids=newRoomIds();
     if(!ids.size || typeof window.__TERAJU_GET_BUILD_ITEMS!=='function') return [];
     return window.__TERAJU_GET_BUILD_ITEMS().filter(item =>
-      ids.has(item.roomId) || String(item.roomId||'project')==='project'
+      String(item.category||'').toLowerCase()!=='external-work' &&
+      (ids.has(item.roomId) || String(item.roomId||'project')==='project')
     );
   }
 
