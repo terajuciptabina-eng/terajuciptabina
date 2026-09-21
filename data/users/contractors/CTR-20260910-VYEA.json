@@ -1595,12 +1595,12 @@
           "quotationType": "simple",
           "projectId": "PRJ-REN-MU7ESQ0H-A2Y7H",
           "projectState": "selangor",
-          "rateSetId": "selangor",
-          "rateSetName": "Selangor",
-          "rateSnapshotAt": "2026-09-18T20:26:37.310Z"
+          "rateSetId": "default",
+          "rateSetName": "Default Rate",
+          "rateSnapshotAt": "2026-09-21T08:46:32.801Z"
         },
         "createdAt": "2026-09-18T20:26:37.309Z",
-        "updatedAt": "2026-09-18T20:26:38.129Z",
+        "updatedAt": "2026-09-21T08:46:33.725Z",
         "estimateNumber": "EST-REN-005"
       },
       {
@@ -2170,7 +2170,7 @@
     ]
   },
   "createdAt": "2026-09-10T20:27:55.981Z",
-  "updatedAt": "2026-09-20T15:35:26.077Z",
+  "updatedAt": "2026-09-21T08:46:33.725Z",
   "quotationRunningNumber": {
     "renovation": 5,
     "build": 9
