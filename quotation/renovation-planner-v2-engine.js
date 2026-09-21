@@ -35,15 +35,22 @@
     const original=window.__TERAJU_RENOVATION_V1_GET_ALL_ITEMS;
     if(typeof original!=='function') return [];
 
-    const existingRoomIds=new Set(
-      roomGroups()
-        .filter(room => conditionOf(room.roomId)!=='new')
-        .map(room => room.roomId)
+    // Renovation ownership is explicit: room-level renovation items are allowed
+    // only when the corresponding room card is Existing. New rooms belong
+    // exclusively to Build Planner and must never leak V1 renovation items.
+    const roomCards=[...document.querySelectorAll('#roomsContainer .room-card')];
+    const roomCondition=new Map(
+      roomCards.map(card => [
+        card.id,
+        card.querySelector('.room-condition')?.value === 'new' ? 'new' : 'existing'
+      ])
     );
 
     return original().filter(item => {
       const roomId=String(item.roomId||'');
-      return roomId==='project' || roomId==='__prelim__' || existingRoomIds.has(item.roomId);
+      if(roomId==='project' || roomId==='__prelim__') return true;
+      if(roomCondition.get(roomId)==='new') return false;
+      return roomCondition.get(roomId)==='existing';
     });
   }
 
