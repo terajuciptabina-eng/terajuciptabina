@@ -60,7 +60,11 @@
       if(typeof window.__TERAJU_GET_BUILD_ITEMS==='function') window.__TERAJU_GET_BUILD_ITEMS();
     }catch(e){console.error('[TERAJU RENOVATION V2 BUILD]',e)}
     try{ if(typeof window.__TERAJU_RENOVATION_V2_RENDER==='function') window.__TERAJU_RENOVATION_V2_RENDER(); }catch(e){}
-    try{ if(typeof window.updateEstimate==='function' && window.updateEstimate!==refresh) window.updateEstimate(); }catch(e){}
+    try{
+      if(typeof window.__TERAJU_RENOVATION_V1_UPDATE_ESTIMATE==='function'){
+        window.__TERAJU_RENOVATION_V1_UPDATE_ESTIMATE();
+      }
+    }catch(e){console.error('[TERAJU RENOVATION V2 ESTIMATE]',e)}
   }
 
   window.__TERAJU_RENOVATION_V2_QDATA=combinedQuotationData;
