@@ -199,7 +199,7 @@
           "builtUpArea": "48",
           "rooms": [
             {
-              "id": "room-1",
+              "id": "room-2",
               "type": "bathroom",
               "name": "Bathroom",
               "area": "48"
@@ -324,10 +324,10 @@
           "projectState": "selangor",
           "rateSetId": "default",
           "rateSetName": "Default Rate",
-          "rateSnapshotAt": "2026-09-21T12:56:43.611Z"
+          "rateSnapshotAt": "2026-09-21T13:12:26.830Z"
         },
         "createdAt": "2026-09-21T12:38:01.792Z",
-        "updatedAt": "2026-09-21T12:56:45.103Z",
+        "updatedAt": "2026-09-21T13:12:27.719Z",
         "estimateNumber": "EST-BLD-005"
       },
       {
@@ -1033,7 +1033,7 @@
     "renovation": []
   },
   "createdAt": "2026-09-09T13:51:41.818Z",
-  "updatedAt": "2026-09-21T12:56:55.743Z",
+  "updatedAt": "2026-09-21T13:12:27.719Z",
   "quotationRunningNumber": {
     "build": 6
   },
