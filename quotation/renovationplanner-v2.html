@@ -1740,7 +1740,9 @@ function completeDetailedQuotationPayment(verified){if(verified)unlockDetailedQu
 
 function generateQuotation(){const type=getSelectedQuotationType();if(type==='detail'){const generated=generateQuotationConfirmed(type);if(generated!==false){setDetailedQuotationLocked(true);renderQuotationPreview();openDetailedQuotationPromo();}return;}setDetailedQuotationLocked(false);const generated=generateQuotationConfirmed(type);if(generated!==false)renderQuotationPreview();}
 function generateQuotationConfirmed(type) {
-  const data = getCurrentQuotationData();
+  const data = typeof window.__TERAJU_RENOVATION_V2_GET_QUOTATION_DATA === "function"
+    ? window.__TERAJU_RENOVATION_V2_GET_QUOTATION_DATA()
+    : getCurrentQuotationData();
   if (!data.roomGroups.some(room => room.area > 0)) {
     alert("Please add at least one area with a valid sqft before generating the cost estimate.");
     return;
