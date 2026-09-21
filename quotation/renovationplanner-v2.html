@@ -691,7 +691,7 @@ main>section:not(:first-child){scroll-margin-top:92px} main>section>div:first-ch
       <span id="projectOptionalArrow" class="text-gray-500 text-sm">▼</span>
     </button>
     <div id="projectOptionalPanel" class="hidden mt-4">
-      <div class="grid md:grid-cols-2 gap-3 optional-scopes">${optionalScopeHtml()}</div>
+      <div id="projectOptionalScopes" class="grid md:grid-cols-2 gap-3 optional-scopes"></div>
     </div>
   </section>
 
@@ -824,7 +824,13 @@ let standardRateItems = [];
 
 function bindProjectOptionalWorks() {
   const container = document.getElementById("projectOptionalWorks");
-  if (!container || container.dataset.bound === "1") return;
+  if (!container) return;
+  const scopes = document.getElementById("projectOptionalScopes");
+  if (scopes && !scopes.dataset.rendered) {
+    scopes.innerHTML = optionalScopeHtml();
+    scopes.dataset.rendered = "1";
+  }
+  if (container.dataset.bound === "1") return;
   container.dataset.bound = "1";
   container.querySelectorAll(".optional-check").forEach(el => el.addEventListener("change", () => {
     updateEstimate();
