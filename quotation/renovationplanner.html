@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#ffffff">
-  <title>Renovation Planner | Teraju Ciptabina</title>
+  <title>Renovation Planner V2 | Teraju Ciptabina</title>
   <script src="https://cdn.tailwindcss.com"></script>
 
   <style>
@@ -125,8 +125,11 @@
        Only editability differs; row height/spacing must not change by audience. */
     #estimateContent table textarea {
       min-height: 40px !important;
-      height: 40px !important;
+      height: auto !important;
+      field-sizing: content;
       resize: none !important;
+      overflow: hidden !important;
+      white-space: pre-wrap !important;
     }
     #estimateContent table .homeowner-locked {
       min-height: 40px !important;
@@ -498,6 +501,13 @@ main>section:not(:first-child){scroll-margin-top:92px} main>section>div:first-ch
   .planner-header h1{font-size:12px!important}
   .planner-nav-link{font-size:9px;min-height:34px}
 }
+
+/* V2 PREVIEW SOURCE CONTRACT: Budget DOM is copied as-is into Cost Estimate. */
+.quotation-budget-snapshot-wrap{width:100%;box-sizing:border-box}
+.quotation-budget-snapshot{width:100%;box-sizing:border-box}
+.quotation-budget-snapshot table{width:100%!important;table-layout:fixed!important;border-collapse:collapse!important}
+.quotation-budget-snapshot .quotation-snapshot-value{display:inline-block;white-space:normal;overflow-wrap:anywhere;line-height:1.5}
+.quotation-budget-snapshot .hover\\:bg-gray-50:hover{background:inherit!important}
 </style>
 </head>
 
@@ -607,10 +617,6 @@ main>section:not(:first-child){scroll-margin-top:92px} main>section>div:first-ch
         <h3 class="font-bold text-lg">Rooms / Areas</h3>
         <p class="text-sm text-gray-500">Only select the area type and enter the sqft.</p>
       </div>
-      <button id="addRoomAreaBtn" type="button" onclick="addRoom()"
-        class="no-print bg-black text-white px-3 py-2 rounded-lg text-sm font-medium hover:bg-gray-800 flex-shrink-0">
-        + Add Room / Area
-      </button>
     </div>
     <div class="no-print bg-gray-50 border rounded-xl p-3 mb-3 text-sm text-gray-600">
       <strong class="text-gray-800">Simple input:</strong>
@@ -624,7 +630,79 @@ main>section:not(:first-child){scroll-margin-top:92px} main>section>div:first-ch
       <p class="font-semibold text-sm">No rooms added yet.</p>
       <p class="text-xs text-gray-500 mt-1">Click the button above to add rooms/areas and start planning your renovation.</p>
     </div>
-    <div id="roomsAddButtonAnchor" class="no-print mt-2"></div>
+    <div id="roomsAddButtonAnchor" class="no-print mt-2">
+      <button id="addRoomAreaBtn" type="button" onclick="return window.addRoom ? window.addRoom() : false;"
+        class="bg-black text-white px-3 py-2 rounded-lg text-sm font-medium hover:bg-gray-800">
+        + Add Room / Area
+      </button>
+    </div>
+  </section>
+
+  <!-- Building Specification — follows Build Planner V2 for New rooms/areas -->
+  <section id="renovationBuildingSpecification" class="bg-white rounded-2xl shadow-sm p-6 mb-6">
+    <div class="mb-5">
+      <h3 class="font-bold text-lg">Building Specification</h3>
+      <p class="text-sm text-gray-500">For New rooms / areas, building area and roofing system follow the Build Planner V2 calculation model.</p>
+    </div>
+    <div class="grid md:grid-cols-2 gap-5">
+      <div>
+        <label class="block text-sm font-medium mb-2">Total Built-up Area (sqft)</label>
+        <input id="builtUpArea" type="number" min="0" step="1" value="0" readonly
+          class="w-full border rounded-lg px-4 py-3 bg-gray-100"
+          title="Automatically calculated from New rooms / areas.">
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-2">Main Building Area (sqft)</label>
+        <input id="mainBuildingArea" type="number" min="0" step="1" value="0" readonly
+          class="w-full border rounded-lg px-4 py-3 bg-gray-100"
+          title="Automatically calculated from New rooms / areas excluding Porch.">
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-2">Existing Area (sqft)</label>
+        <input id="existingArea" type="number" min="0" step="1" value="0" readonly
+          class="w-full border rounded-lg px-4 py-3 bg-gray-100"
+          title="Automatically calculated from Existing rooms / areas.">
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-2">Main Building Roofing System</label>
+        <select id="mainBuildingRoofSystem" class="w-full border rounded-lg px-4 py-3 bg-white"
+          onchange="updateEstimate();saveContractorState()">
+          <option value="metal">Metal Sheet Roofing</option>
+          <option value="flat">Flat Roof</option>
+        </select>
+        <p class="text-xs text-gray-500 mt-2">Same roofing selection used by Build Planner V2 for the Main Building.</p>
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-2">Porch Area (sqft)</label>
+        <input id="porchArea" type="number" min="0" step="1" value="0" readonly
+          class="w-full border rounded-lg px-4 py-3 bg-gray-100"
+          title="Automatically calculated from New rooms / areas marked as Porch.">
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-2">Porch Roofing System</label>
+        <select id="porchRoofSystem" class="w-full border rounded-lg px-4 py-3 bg-white"
+          onchange="updateEstimate();saveContractorState()">
+          <option value="flat">Flat Roof</option>
+          <option value="metal">Metal Sheet Roofing</option>
+        </select>
+        <p class="text-xs text-gray-500 mt-2">Same independent Porch roofing selection used by Build Planner V2.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Project-level Optional Works -->
+  <section id="projectOptionalWorks" class="bg-white rounded-2xl shadow-sm p-6 mb-6">
+    <button type="button" id="projectOptionalToggle" class="w-full flex items-center justify-between text-left"
+      onclick="toggleProjectOptionalWorks()" aria-expanded="false">
+      <div>
+        <h3 class="font-bold text-lg">Optional Works</h3>
+        <p class="text-sm text-gray-500 mt-1">Additional works are applied at project level, not by room / area.</p>
+      </div>
+      <span id="projectOptionalArrow" class="text-gray-500 text-sm">▼</span>
+    </button>
+    <div id="projectOptionalPanel" class="hidden mt-4">
+      <div id="projectOptionalScopes" class="grid md:grid-cols-2 gap-3 optional-scopes"></div>
+    </div>
   </section>
 
   <!-- Contractor Rate Schedule -->
@@ -725,16 +803,14 @@ const RATES = {
   kitchenFrame: 1200, kitchenMakingGood: 1000, kitchenGlassDoor: 1200,
   bathroomSanitary: 3000, bathroomDoor: 1200,
   gateMotor: 6400, brickwallDivider: 2800, frontFence: 5500,
-  preliminaries: 8500, extensionKitchen: 250, extensionToilet: 584
+  preliminaries: 8500
 };
 
 const RULES = { downlightPerSqft: 50, minimumDownlights: 4 };
 
 const ROOM_TYPES = {
   living: "Living / Dining", bedroom: "Bedroom", dryKitchen: "Dry Kitchen",
-  wetKitchen: "Wet Kitchen", bathroom: "Bathroom", carPorch: "Car Porch",
-  balcony: "Balcony", extensionKitchen: "New Extension – Kitchen",
-  extensionToilet: "New Extension – Toilet", other: "Other"
+  wetKitchen: "Wet Kitchen", bathroom: "Bathroom", porch: "Porch", balcony: "Balcony", other: "Other"
 };
 
 const OPTIONAL_SCOPES = [
@@ -755,6 +831,27 @@ const customDescriptions = new Map();
 const customRoomLabels = new Map();
 const manualItems = new Map();
 let standardRateItems = [];
+
+function bindProjectOptionalWorks() {
+  const container = document.getElementById("projectOptionalWorks");
+  if (!container) return;
+  const scopes = document.getElementById("projectOptionalScopes");
+  if (scopes && !scopes.dataset.rendered) {
+    scopes.innerHTML = optionalScopeHtml();
+    scopes.dataset.rendered = "1";
+  }
+  if (container.dataset.bound === "1") return;
+  container.dataset.bound = "1";
+  container.querySelectorAll(".optional-check").forEach(el => el.addEventListener("change", () => {
+    updateEstimate();
+    saveContractorState();
+  }));
+  container.querySelectorAll(".optional-rate").forEach(el => el.addEventListener("input", () => {
+    updateEstimate();
+    saveContractorState();
+  }));
+}
+
 
 const DEFAULT_RATES = JSON.parse(JSON.stringify(RATES));
 const AUDIENCE = new URLSearchParams(window.location.search).get("audience") || "homeowner";
@@ -841,67 +938,169 @@ function optionalScopeHtml() {
   }).join("");
 }
 
-function addRoomBase(defaultType = "other", defaultArea = "") {
+const BUILDING_ROOF_DEFAULTS = { main: "metal", porch: "flat" };
+
+function renovationNewRoomGroupsForBuildingSpec() {
+  return getRoomGroupsBase().filter(room => {
+    const card = document.getElementById(room.roomId);
+    const condition = card?.querySelector(".room-condition")?.value || "existing";
+    return condition === "new" && Number(room.area) > 0;
+  });
+}
+
+function getBuildingAreaSplit() {
+  const rooms = renovationNewRoomGroupsForBuildingSpec();
+  const isPorch = room =>
+    /porch/i.test(String(room.roomType || "") + " " + String(room.label || ""));
+  const main = rooms.filter(room => !isPorch(room)).reduce((sum, room) => sum + Number(room.area || 0), 0);
+  const porch = rooms.filter(isPorch).reduce((sum, room) => sum + Number(room.area || 0), 0);
+  return { main, porch };
+}
+
+function getBuildingRoofSystems() {
+  const main = document.getElementById("mainBuildingRoofSystem")?.value;
+  const porch = document.getElementById("porchRoofSystem")?.value;
+  return {
+    main: main === "flat" ? "flat" : BUILDING_ROOF_DEFAULTS.main,
+    porch: porch === "metal" ? "metal" : BUILDING_ROOF_DEFAULTS.porch
+  };
+}
+
+function syncBuildingSpecification() {
+  const split = getBuildingAreaSplit();
+  const allRooms = getRoomGroupsBase();
+  const existingArea = allRooms
+    .filter(room => {
+      const card = document.getElementById(room.roomId);
+      const condition = card?.querySelector(".room-condition")?.value || "existing";
+      return condition === "existing" && Number(room.area) > 0;
+    })
+    .reduce((sum, room) => sum + Number(room.area || 0), 0);
+  const main = document.getElementById("mainBuildingArea");
+  const porch = document.getElementById("porchArea");
+  const existing = document.getElementById("existingArea");
+  const total = document.getElementById("builtUpArea");
+  if (main) main.value = String(Math.max(0, Math.ceil(split.main)));
+  if (porch) porch.value = String(Math.max(0, Math.ceil(split.porch)));
+  if (existing) existing.value = String(Math.max(0, Math.ceil(existingArea)));
+  if (total) total.value = String(Math.max(0, Math.ceil(split.main + split.porch + existingArea)));
+  return { ...split, existing: existingArea };
+}
+
+window.getBuildingRoofSystems = getBuildingRoofSystems;
+window.syncRenovationBuildingSpecification = syncBuildingSpecification;
+
+function addRoomBase(defaultType = "other", defaultArea = "", forcedId = "", forcedName = "", forcedCondition = "existing") {
   roomCounter++;
-  const id = "room-" + roomCounter;
+  const id = forcedId || ("room-" + roomCounter);
   const container = document.getElementById("roomsContainer");
   const div = document.createElement("div");
   div.id = id;
   div.className = "room-card border rounded-xl p-3 bg-gray-50";
 
   div.innerHTML = `
-    <div class="grid md:grid-cols-[1fr_1fr_1fr_auto] gap-2 items-end">
+    <div class="grid md:grid-cols-[1fr_1fr_1fr_1fr_auto] gap-2 items-end">
       <div>
         <label class="block text-sm font-medium mb-2">Room Type</label>
         <select class="room-type w-full border rounded-lg px-3 py-2 bg-white">${roomOptions()}</select>
       </div>
-<div>
+      <div>
+        <label class="block text-sm font-medium mb-2">Condition</label>
+        <select class="room-condition w-full border rounded-lg px-3 py-2 bg-white">
+          <option value="existing">Existing</option>
+          <option value="new">New</option>
+        </select>
+      </div>
+      <div>
         <label class="block text-sm font-medium mb-2">Room / Area Name</label>
-        <input type="text" value="${escapeHtml(customRoomLabels.get(id) || (defaultType === "other" ? "" : (ROOM_TYPES[defaultType] || "Area")))}"
-          placeholder="e.g. Living Area" class="room-name w-full border rounded-lg px-3 py-2 bg-white">
+        <input type="text" value="${escapeHtml(forcedName || (defaultType === "other" ? "" : (ROOM_TYPES[defaultType] || "Area")))}"
+          class="room-name w-full border rounded-lg px-3 py-2 bg-white">
       </div>
       <div>
         <label class="block text-sm font-medium mb-2">Area (sqft)</label>
         <input type="number" min="1" step="1" value="${escapeHtml(defaultArea)}"
-          placeholder="e.g. 200" class="room-area w-full border rounded-lg px-3 py-2 bg-white">
+          class="room-area w-full border rounded-lg px-3 py-2 bg-white">
       </div>
       <div class="no-print flex gap-2">
         <button type="button" onclick="moveRoom('${id}', -1)" title="Move up" class="border rounded-lg px-2 py-2 hover:bg-gray-100">▲</button>
         <button type="button" onclick="moveRoom('${id}', 1)" title="Move down" class="border rounded-lg px-2 py-2 hover:bg-gray-100">▼</button>
-        <button type="button" onclick="removeRoom('${id}')" class="border border-red-300 text-red-600 rounded-lg px-3 py-2 hover:bg-red-50">Remove</button>
+        <button type="button" class="room-remove-button border border-red-300 text-red-600 rounded-lg px-3 py-2 hover:bg-red-50">Remove</button>
       </div>
     </div>
-    <div class="mt-4 border-t pt-4">
-      <button type="button" class="optional-toggle w-full flex items-center justify-between text-left py-1 no-print"
-        onclick="toggleOptionalWorks('${id}')" aria-expanded="false">
-        <div class="min-w-0">
-          <h4 class="font-semibold text-sm">Optional Works</h4>
-          <p class="text-xs text-gray-500 mt-1">Expand only if additional works are required for this area.</p>
-        </div>
-        <span id="${id}-optional-arrow" class="text-gray-500 text-sm ml-4 flex-shrink-0">▼</span>
-      </button>
-      <div id="${id}-optional" class="hidden mt-3">
-        <div class="grid md:grid-cols-2 gap-3 optional-scopes">${optionalScopeHtml()}</div>
-      </div>
-    </div>`;
+  `;
 
   container.appendChild(div);
+  const removeButton = div.querySelector(".room-remove-button");
+  if (removeButton) {
+    removeButton.addEventListener("click", event => {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      removeRoom(id);
+    });
+  }
   updateRoomsEmptyState();
-  div.querySelector(".room-type").value = defaultType;
 
-  div.querySelector(".room-name").addEventListener("change", e => editRoomLabel(id, e.target.value));
+  div.querySelector(".room-type").value = defaultType;
+  div.querySelector(".room-condition").value = forcedCondition === "new" ? "new" : "existing";
+
+  const nameInput = div.querySelector(".room-name");
+  if (forcedName) {
+    nameInput.dataset.generated = "false";
+  } else {
+    nameInput.dataset.generated = "true";
+  }
+
+  nameInput.addEventListener("change", e => {
+    const label = String(e.target.value || "").trim();
+    const generated = e.target.dataset.generated === "true";
+    if (generated) {
+      e.target.dataset.generated = "false";
+      customRoomLabels.delete(id);
+    }
+    if (label && !generated) customRoomLabels.set(id, label);
+    updateEstimate();
+  });
+
   div.querySelector(".room-type").addEventListener("change", () => {
-    if (!customRoomLabels.has(id)) {
-      div.querySelector(".room-name").value = ROOM_TYPES[div.querySelector(".room-type").value] || "Area";
+    const input = div.querySelector(".room-name");
+    const type = div.querySelector(".room-type").value || "other";
+    if (input && input.dataset.generated !== "false") {
+      const count = [...document.querySelectorAll("#roomsContainer .room-card")]
+        .filter(r => (r.querySelector(".room-type")?.value || "other") === type).length;
+      const base = ROOM_TYPES[type] || "Area";
+      input.value = count > 1 ? base + " " + count : base;
+      input.dataset.generated = "true";
+      customRoomLabels.delete(id);
     }
     updateEstimate();
   });
-  div.querySelector(".room-area").addEventListener("input", updateEstimate);
-  div.querySelectorAll(".optional-check").forEach(el => el.addEventListener("change", () => { updateEstimate(); saveContractorState(); }));
-  div.querySelectorAll(".optional-rate").forEach(el => el.addEventListener("input", () => { updateEstimate(); saveContractorState(); }));
-  updateEstimate();
-}
 
+  div.querySelector(".room-condition").addEventListener("change", updateEstimate);
+  div.querySelector(".room-area").addEventListener("input", () => {
+    updateEstimate();
+    saveContractorState();
+  });
+  div.querySelector(".room-name").addEventListener("input", () => {
+    if (IS_CONTRACTOR) saveContractorState();
+  });
+  div.querySelectorAll(".optional-check").forEach(el => el.addEventListener("change", () => {
+    updateEstimate();
+    saveContractorState();
+  }));
+  div.querySelectorAll(".optional-rate").forEach(el => el.addEventListener("input", () => {
+    updateEstimate();
+    saveContractorState();
+  }));
+
+  if (IS_CONTRACTOR && !customRoomLabels.has(id)) {
+    const initial = String(forcedName || "").trim();
+    if (initial) customRoomLabels.set(id, initial);
+  }
+
+  updateEstimate();
+  if (!restoringContractorState) saveContractorState();
+}
+bindProjectOptionalWorks();
 function updateRoomsEmptyState() {
   const container = document.getElementById("roomsContainer");
   const empty = document.getElementById("roomsEmptyState");
@@ -910,12 +1109,23 @@ function updateRoomsEmptyState() {
   if (!container || !empty || !btn || !anchor) return;
   const hasRooms = !!container.querySelector(".room-card");
   empty.classList.toggle("hidden", hasRooms);
-  anchor.appendChild(btn);
 }
 
 function removeRoom(id) {
-  document.getElementById(id)?.remove();
+  const room = document.getElementById(id);
+  if (!room) return;
+
+  room.remove();
+
   customRoomLabels.delete(id);
+  manualItems.delete(id);
+
+  [excludedItems, customRates, customQuantities, customDescriptions].forEach(map => {
+    [...map.keys()].forEach(key => {
+      if (String(key).startsWith(id + "-")) map.delete(key);
+    });
+  });
+
   updateRoomsEmptyState();
   updateEstimate();
   saveContractorState();
@@ -934,6 +1144,17 @@ function moveRoom(id, direction) {
   }
   updateEstimate();
   saveContractorState();
+}
+
+function toggleProjectOptionalWorks() {
+  const panel = document.getElementById("projectOptionalPanel");
+  const arrow = document.getElementById("projectOptionalArrow");
+  const button = document.getElementById("projectOptionalToggle");
+  if (!panel || !arrow) return;
+  panel.classList.toggle("hidden");
+  const expanded = !panel.classList.contains("hidden");
+  arrow.textContent = expanded ? "▲" : "▼";
+  if (button) button.setAttribute("aria-expanded", String(expanded));
 }
 
 function toggleOptionalWorks(roomId) {
@@ -997,7 +1218,7 @@ function generateStandardRoomItems(roomType, area, roomId, roomLabel) {
     pushItem(items, roomId, roomLabel, "downlight", `To supply and install ${calculateDownlights(area)} unit downlight c/w wiring`, calculateDownlights(area), "unit", RATES.downlight);
     pushItem(items, roomId, roomLabel, "exhaust", `To supply and install ${Math.max(1, Math.ceil(area / 50))} unit exhaust fan c/w wiring`, Math.max(1, Math.ceil(area / 50)), "unit", RATES.exhaustFan);
   }
-  if (roomType === "carPorch") {
+  if (roomType === "porch") {
     pushItem(items, roomId, roomLabel, "floor", "To supply and install floor tiles", area, "sqft", RATES.floorTile);
     pushItem(items, roomId, roomLabel, "ceiling", "To supply and install plaster ceiling flat c/w paint", area, "sqft", RATES.ceiling);
     pushItem(items, roomId, roomLabel, "downlight", `To supply and install ${calculateDownlights(area)} unit downlight c/w wiring`, calculateDownlights(area), "unit", RATES.downlight);
@@ -1010,21 +1231,12 @@ function generateStandardRoomItems(roomType, area, roomId, roomLabel) {
     pushItem(items, roomId, roomLabel, "facade", "Facade wall", area * 1.33, "sqft", RATES.facadeWall);
     pushItem(items, roomId, roomLabel, "walllight", `To supply and install ${Math.max(2, Math.ceil(area / 70))} unit wall light c/w wiring`, Math.max(2, Math.ceil(area / 70)), "unit", RATES.wallLight);
   }
-  if (roomType === "extensionKitchen") {
-    pushItem(items, roomId, roomLabel, "extension", `To build concrete foundation for new kitchen, including excavation, reinforcement and concreting works, complete with tiles finishing, safety door, casement window, accessories and concrete roof slab based on designer’s proposal. Total area ${formatQty(area)}sqft`, area, "sqft", RATES.extensionKitchen);
-    pushItem(items, roomId, roomLabel, "downlight", `To supply and install ${calculateDownlights(area)} unit downlight c/w wiring`, calculateDownlights(area), "unit", RATES.downlight);
-  }
-  if (roomType === "extensionToilet") {
-    pushItem(items, roomId, roomLabel, "extension", `To build concrete foundation for new toilet, including excavation, reinforcement and concreting works, complete with tiles finishing, safety door, casement window, toilet accessories and concrete roof slab based on designer’s proposal. Total area ${formatQty(area)}sqft`, area, "sqft", RATES.extensionToilet);
-    pushItem(items, roomId, roomLabel, "downlight", `To supply and install ${calculateDownlights(area)} unit downlight c/w wiring`, calculateDownlights(area), "unit", RATES.downlight);
-    pushItem(items, roomId, roomLabel, "exhaust", `To supply and install ${Math.max(1, Math.ceil(area / 50))} unit exhaust fan c/w wiring`, Math.max(1, Math.ceil(area / 50)), "unit", RATES.exhaustFan);
-  }
   return items.map(item => ({ ...item, roomType }));
 }
 
-function generateOptionalRoomItems(room, roomLabel) {
+function generateOptionalProjectItems() {
   const items = [];
-  room.querySelectorAll(".optional-scope").forEach(scopeEl => {
+  document.querySelectorAll("#projectOptionalWorks .optional-scope").forEach(scopeEl => {
     const checkbox = scopeEl.querySelector(".optional-check");
     if (!checkbox?.checked) return;
     const key = scopeEl.dataset.scope;
@@ -1035,9 +1247,13 @@ function generateOptionalRoomItems(room, roomLabel) {
       rate = parseFloat(scopeEl.querySelector(".optional-rate")?.value) || 0;
       if (rate <= 0) return;
     }
-    pushItem(items, room.id, roomLabel, `optional-${key}`, definition.label, 1, definition.unit, rate, true);
+    pushItem(items, "project", "Project / Optional Works", "optional-" + key, definition.label, 1, definition.unit, rate, true);
   });
   return items;
+}
+
+function generateOptionalRoomItems(room, roomLabel) {
+  return [];
 }
 
 function getStandardRateItems(roomId=null) {
@@ -1048,10 +1264,8 @@ function getStandardRateItems(roomId=null) {
     dryKitchen:["ceiling","spc","downlight","barLamp","ceilingFan","kitchenFrame","kitchenMakingGood","kitchenGlassDoor"],
     wetKitchen:["floorTile","wallTile","ceiling","downlight","ceilingFan","barLamp"],
     bathroom:["floorTile","wallTile","ceiling","bathroomSanitary","bathroomDoor","downlight","exhaustFan"],
-    carPorch:["floorTile","ceiling","downlight","gateMotor","brickwallDivider","frontFence"],
-    balcony:["floorTile","facadeWall","wallLight"],
-    extensionKitchen:["extensionKitchen","downlight"],
-    extensionToilet:["extensionToilet","downlight","exhaustFan"]
+    porch:["floorTile","ceiling","downlight","gateMotor","brickwallDivider","frontFence"],
+    balcony:["floorTile","facadeWall","wallLight"]
   };
   const allowed=roomStandardKeys[roomType]||[];
   const items=[
@@ -1127,40 +1341,63 @@ function saveManualItem(roomId) {
   saveContractorState();
 }
 function removeManualItem(roomId, itemId) { if (!IS_CONTRACTOR) return; const list = manualItems.get(roomId) || []; manualItems.set(roomId, list.filter(item => item.id !== itemId)); updateEstimate(); saveContractorState(); }
-function getAllItems() { const rooms = [...document.querySelectorAll("#roomsContainer .room-card")], typeIndexes = {}, allItems = []; rooms.forEach(room => { const roomId = room.id, roomType = room.querySelector(".room-type")?.value || "living", area = parseFloat(room.querySelector(".room-area")?.value) || 0; if(area<=0)return; typeIndexes[roomType] = (typeIndexes[roomType] || 0) + 1; const base = ROOM_TYPES[roomType] || "Area", autoLabel = typeIndexes[roomType] > 1 ? `${base} ${typeIndexes[roomType]}` : base, roomLabel = customRoomLabels.has(roomId) ? customRoomLabels.get(roomId) : autoLabel, standard = generateStandardRoomItems(roomType, area, roomId, roomLabel), optional = generateOptionalRoomItems(room, roomLabel), manual = (manualItems.get(roomId) || []).map(item => ({ ...item })); [...standard, ...optional, ...manual].forEach(item => { if (customRates.has(item.id)) item.rate = customRates.get(item.id); if (customQuantities.has(item.id)) item.qty = customQuantities.get(item.id); if (customDescriptions.has(item.id)) item.description = customDescriptions.get(item.id); item.qty = normalizeQuantity(item.qty); item.rate = normalizeRate(item.rate); item.amount = Math.round((item.qty * item.rate + Number.EPSILON) * 100) / 100; }); allItems.push(...standard, ...optional, ...manual); }); const prelimManual = (manualItems.get("__prelim__") || []).map(item => ({ ...item, roomId: "__prelim__", room: "Project / Preliminaries" })); prelimManual.forEach(item => { if (customRates.has(item.id)) item.rate = customRates.get(item.id); if (customQuantities.has(item.id)) item.qty = customQuantities.get(item.id); if (customDescriptions.has(item.id)) item.description = customDescriptions.get(item.id); item.qty = normalizeQuantity(item.qty); item.rate = normalizeRate(item.rate); item.amount = Math.round((item.qty * item.rate + Number.EPSILON) * 100) / 100; }); allItems.push(...prelimManual); return allItems; }
+function getAllItems() { const rooms = [...document.querySelectorAll("#roomsContainer .room-card")], typeIndexes = {}, allItems = []; rooms.forEach(room => { const roomId = room.id, roomType = room.querySelector(".room-type")?.value || "living", area = parseFloat(room.querySelector(".room-area")?.value) || 0; if(area<=0)return; typeIndexes[roomType] = (typeIndexes[roomType] || 0) + 1; const base = ROOM_TYPES[roomType] || "Area", autoLabel = typeIndexes[roomType] > 1 ? `${base} ${typeIndexes[roomType]}` : base, roomLabel = customRoomLabels.has(roomId) ? customRoomLabels.get(roomId) : autoLabel, standard = generateStandardRoomItems(roomType, area, roomId, roomLabel), optional = generateOptionalRoomItems(room, roomLabel), manual = (manualItems.get(roomId) || []).map(item => ({ ...item })); [...standard, ...optional, ...manual].forEach(item => { if (customRates.has(item.id)) item.rate = customRates.get(item.id); if (customQuantities.has(item.id)) item.qty = customQuantities.get(item.id); if (customDescriptions.has(item.id)) item.description = customDescriptions.get(item.id); item.qty = normalizeQuantity(item.qty); item.rate = normalizeRate(item.rate); item.amount = Math.round((item.qty * item.rate + Number.EPSILON) * 100) / 100; }); allItems.push(...standard, ...optional, ...manual); }); const prelimManual = (manualItems.get("__prelim__") || []).map(item => ({ ...item, roomId: "__prelim__", room: "Project / Preliminaries" })); prelimManual.forEach(item => { if (customRates.has(item.id)) item.rate = customRates.get(item.id); if (customQuantities.has(item.id)) item.qty = customQuantities.get(item.id); if (customDescriptions.has(item.id)) item.description = customDescriptions.get(item.id); item.qty = normalizeQuantity(item.qty); item.rate = normalizeRate(item.rate); item.amount = Math.round((item.qty * item.rate + Number.EPSILON) * 100) / 100; }); allItems.push(...prelimManual); allItems.push(...generateOptionalProjectItems()); return allItems; }
 
 
 function addRoom(...args){
-  const blankAreaCall=args.length===0;
-  addRoomBase(...args);
-  if(blankAreaCall){
-    const card=document.querySelector('#roomsContainer .room-card:last-child');
-    const nameInput=card?.querySelector('.room-name');
-    const areaInput=card?.querySelector('.room-area');
-    if(nameInput)nameInput.value='';
-    if(areaInput){areaInput.value='';areaInput.placeholder='e.g. 200';}
+  const blankAreaCall = args.length === 0;
+  if (blankAreaCall) {
+    const existing = [...document.querySelectorAll("#roomsContainer .room-card")];
+    const last = existing[existing.length - 1];
+    const lastType = last?.querySelector(".room-type")?.value || "other";
+    const lastCondition = last?.querySelector(".room-condition")?.value || "existing";
+
+    addRoomBase(lastType, "", "", "", lastCondition);
+
+    const card = document.querySelector("#roomsContainer .room-card:last-child");
+    const nameInput = card?.querySelector(".room-name");
+    const areaInput = card?.querySelector(".room-area");
+
+    if (nameInput) {
+      const count = [...document.querySelectorAll("#roomsContainer .room-card")]
+        .filter(r => (r.querySelector(".room-type")?.value || "other") === lastType).length;
+      const base = ROOM_TYPES[lastType] || "Area";
+      nameInput.value = count > 1 ? base + " " + count : base;
+      nameInput.removeAttribute("value");
+      nameInput.dataset.generated = "true";
+      customRoomLabels.delete(card.id);
+    }
+    if (areaInput) {
+      areaInput.value = "";
+      areaInput.placeholder = "e.g. 200";
+    }
+
     updateEstimate();
-    if(typeof saveContractorState==='function')saveContractorState();
+    if (typeof saveContractorState === "function") saveContractorState();
+  } else {
+    addRoomBase(...args);
   }
 }
-function getRoomGroups() {
+function getRoomGroupsBase() {
   const rooms = [...document.querySelectorAll("#roomsContainer .room-card")];
   const typeIndexes = {};
-  const groups = [];
-  rooms.forEach(room => {
+  return rooms.map(room => {
     const roomId = room.id;
-    const roomType = room.querySelector(".room-type")?.value || "living";
+    const roomType = room.querySelector(".room-type")?.value || "other";
     const area = parseFloat(room.querySelector(".room-area")?.value) || 0;
     typeIndexes[roomType] = (typeIndexes[roomType] || 0) + 1;
     const base = ROOM_TYPES[roomType] || "Area";
     const autoLabel = typeIndexes[roomType] > 1 ? `${base} ${typeIndexes[roomType]}` : base;
     const label = customRoomLabels.has(roomId) ? customRoomLabels.get(roomId) : autoLabel;
-    groups.push({ roomId, roomType, label, area });
+    return { roomId, roomType, label, area };
   });
-  return groups;
+}
+function getRoomGroups() {
+  return getRoomGroupsBase().filter(room => Number(room.area) > 0);
 }
 
 function updateEstimate() {
+  if (typeof syncBuildingSpecification === "function") syncBuildingSpecification();
   const allItems = getAllItems();
   const roomGroups = getRoomGroups();
   allItems.forEach(item => {
@@ -1255,9 +1492,146 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
   const prelimManual = manualItems.get("__prelim__") || [];
   prelimManual.forEach(item => { html += `<tr class="border-b"><td class="py-1 px-2 align-top">${IS_CONTRACTOR ? `<textarea rows="2" onchange="editItemDescription(\'${item.id}\', this.value)" class="w-full border rounded-lg px-2 py-1 bg-white leading-4 resize-none">${escapeHtml(item.description)}</textarea>` : `<div class="homeowner-locked p-1 rounded leading-4">${escapeHtml(item.description)}</div>`}</td><td class="py-1 px-2">${escapeHtml(item.unit)}</td><td class="py-1 px-2 text-right"><input type="number" min="0" step="1" value="${formatQty(item.qty)}" onchange="editItemQuantity('${item.id}', this.value)" class="contractor-only no-print w-24 border rounded-none px-1 py-1 text-right bg-white"><span class="homeowner-locked no-print inline-block px-1 py-1 rounded-none text-sm">${formatQty(item.qty)}</span></td><td class="py-1 px-2 text-right"><input type="number" min="0" step="0.01" value="${normalizeRate(item.rate).toFixed(2)}" onchange="editItemRate('${item.id}', this.value)" class="contractor-only no-print w-28 border rounded-none px-1 py-1 text-right bg-white"><span class="homeowner-locked no-print inline-block px-1 py-1 rounded-none text-sm">${money(item.rate, 2)}</span></td><td class="py-1 px-2 text-right font-medium">${money(item.amount, 2)}</td><td class="no-print py-1 px-2 text-center"><button type="button" onclick="removeManualItem('__prelim__','${item.id}')" class="text-red-600 text-xs border border-red-200 rounded px-3 py-1.5">Delete</button></td></tr>`; });
 
+  const newRoomIds = new Set(
+    roomGroups
+      .filter(room => document.getElementById(room.roomId)?.querySelector(".room-condition")?.value === "new")
+      .map(room => room.roomId)
+  );
+
+  // All Build Planner items for NEW rooms belong to the project-level
+  // New Construction section. Existing rooms remain room-level Renovation items.
+  const projectBuildItems = items.filter(item =>
+    !excludedItems.has(item.id) &&
+    (item.roomId === "project" || newRoomIds.has(item.roomId)) &&
+    String(item.category || "").toLowerCase() !== "external-work" &&
+    String(item.category || "").toLowerCase() !== "preliminaries"
+  );
+
+  if (projectBuildItems.length) {
+    const groupTotals = {};
+    projectBuildItems.forEach(item => {
+      const group = String(item.group || "").trim().toUpperCase();
+      groupTotals[group] = (groupTotals[group] || 0) + (Number(item.amount) || 0);
+    });
+
+    const hierarchyClass = level =>
+      level === 0 ? "font-bold" :
+      level === 1 ? "font-semibold pl-4" :
+      "font-medium pl-8";
+
+    html += `
+      <tr class="bg-gray-100 border-b">
+        <td colspan="6" class="py-1 px-2 font-bold">New Construction / Build Planner</td>
+      </tr>`;
+
+    let currentGroup = "";
+    let currentHierarchyKey = "";
+    let currentHierarchyLabel = "";
+    let currentHierarchyTotal = 0;
+
+    const flushHierarchySubtotal = () => {
+      if (!currentHierarchyLabel) return;
+      html += `
+        <tr class="border-b bg-gray-50">
+          <td colspan="4" class="py-1 px-2 text-right font-semibold">${escapeHtml(currentHierarchyLabel)} Subtotal</td>
+          <td class="py-1 px-2 text-right font-bold">${money(currentHierarchyTotal, 2)}</td>
+          <td class="no-print"></td>
+        </tr>`;
+      currentHierarchyKey = "";
+      currentHierarchyLabel = "";
+      currentHierarchyTotal = 0;
+    };
+
+    projectBuildItems.forEach(item => {
+      const group = String(item.group || "").trim().toUpperCase();
+
+      if (group !== currentGroup) {
+        flushHierarchySubtotal();
+        currentGroup = group;
+        currentHierarchyKey = "";
+
+        html += `
+          <tr class="bg-gray-100 border-b">
+            <td colspan="6" class="py-1 px-2 font-bold">${escapeHtml(group)}</td>
+          </tr>`;
+      }
+
+      const path = String(item.masterPath || "")
+        .split("/")
+        .map(value => value.trim())
+        .filter(Boolean);
+      const levels = path.length > 1 ? path.slice(0, -1) : [];
+      const hierarchyKey = levels.join(" / ");
+
+      if (hierarchyKey !== currentHierarchyKey) {
+        flushHierarchySubtotal();
+
+        levels.forEach((level, index) => {
+          html += `
+            <tr class="border-b">
+              <td colspan="6" class="py-1 px-2 ${hierarchyClass(index)}">${escapeHtml(level)}</td>
+            </tr>`;
+        });
+
+        currentHierarchyKey = hierarchyKey;
+        currentHierarchyLabel = levels[levels.length - 1] || "";
+        currentHierarchyTotal = 0;
+      }
+
+      html += `
+        <tr class="border-b hover:bg-gray-50">
+          <td class="py-1 px-2 align-top">
+            <textarea rows="2" onchange="editItemDescription('${item.id}', this.value)"
+              class="contractor-only no-print w-full min-w-[280px] border rounded-none px-2 py-1 bg-white leading-4 resize-none">${escapeHtml(item.description)}</textarea>
+            <div class="homeowner-locked no-print p-1 rounded-none">${escapeHtml(item.description)}</div>
+            <div class="hidden print:block leading-6">${escapeHtml(item.description)}</div>
+          </td>
+          <td class="py-1 px-2">${escapeHtml(item.unit)}</td>
+          <td class="py-1 px-2 text-right">${formatQty(item.qty)}</td>
+          <td class="py-1 px-2 text-right">${money(item.rate, 2)}</td>
+          <td class="py-1 px-2 text-right font-medium">${money(item.amount, 2)}</td>
+          <td class="no-print py-1 px-2 text-center">
+            <button type="button" onclick="excludeItem('${item.id}')"
+              class="text-red-600 text-xs border border-red-200 rounded px-2 py-1 hover:bg-red-50">Delete</button>
+          </td>
+        </tr>`;
+
+      currentHierarchyTotal += Number(item.amount) || 0;
+    });
+
+    flushHierarchySubtotal();
+
+    html += `
+      <tr class="bg-gray-100 border-b">
+        <td colspan="6" class="py-1 px-2 font-bold">New Construction Summary</td>
+      </tr>`;
+
+    Object.entries(groupTotals).forEach(([group, amount]) => {
+      if (!amount) return;
+      html += `
+        <tr class="border-b">
+          <td colspan="4" class="py-1 px-2 font-semibold">${escapeHtml(group)}</td>
+          <td class="py-1 px-2 text-right font-bold">${money(amount, 2)}</td>
+          <td class="no-print"></td>
+        </tr>`;
+    });
+
+    const newConstructionTotal = Object.values(groupTotals)
+      .reduce((sum, amount) => sum + amount, 0);
+
+    html += `
+      <tr class="border-t-2 bg-gray-50">
+        <td colspan="4" class="py-2 px-2 text-right font-bold">New Construction Total</td>
+        <td class="py-2 px-2 text-right font-bold">${money(newConstructionTotal, 2)}</td>
+        <td class="no-print"></td>
+      </tr>`;
+  }
   roomGroups.forEach(room => {
     const roomItems = itemsByRoom[room.roomId] || [];
     if (room.area <= 0) return;
+
+    const isNewRoom = document.getElementById(room.roomId)?.querySelector(".room-condition")?.value === "new";
+    if (isNewRoom) return;
     html += `
       <tr class="bg-gray-100 border-b">
         <td colspan="6" class="py-1 px-2">
@@ -1415,11 +1789,7 @@ function serializeContractorState() {
     name: room.querySelector(".room-name")?.value || "",
     type: room.querySelector(".room-type")?.value || "living",
     area: room.querySelector(".room-area")?.value || "",
-    optional: [...room.querySelectorAll(".optional-scope")].map(scope => ({
-      key: scope.dataset.scope,
-      checked: !!scope.querySelector(".optional-check")?.checked,
-      rate: scope.querySelector(".optional-rate")?.value || ""
-    }))
+    condition: room.querySelector(".room-condition")?.value || "existing",
   }));
   return {
     version: 1,
@@ -1427,6 +1797,11 @@ function serializeContractorState() {
     customerName: document.getElementById("customerName")?.value || "",
     projectLocation: document.getElementById("projectLocation")?.value || "",
     rooms,
+    projectOptional: [...document.querySelectorAll("#projectOptionalWorks .optional-scope")].map(scope => ({
+      key: scope.dataset.scope,
+      checked: !!scope.querySelector(".optional-check")?.checked,
+      rate: scope.querySelector(".optional-rate")?.value || ""
+    })),
     excludedItems: [...excludedItems],
     customRates: [...customRates.entries()],
     customQuantities: [...customQuantities.entries()],
@@ -1435,6 +1810,7 @@ function serializeContractorState() {
     manualItems: [...manualItems.entries()],
     standardRateItems,
     rates: {...RATES},
+    roofingSystems: typeof getBuildingRoofSystems === "function" ? getBuildingRoofSystems() : { main: "metal", porch: "flat" },
     quotationType: getSelectedQuotationType()
   };
 }
@@ -1474,6 +1850,12 @@ function loadContractorState() {
       if (el) el.value = saved.projectLocation;
     }
 
+    const savedRoofing = saved.roofingSystems || {};
+    const mainRoof = document.getElementById("mainBuildingRoofSystem");
+    const porchRoof = document.getElementById("porchRoofSystem");
+    if (mainRoof) mainRoof.value = savedRoofing.main === "flat" ? "flat" : "metal";
+    if (porchRoof) porchRoof.value = savedRoofing.porch === "metal" ? "metal" : "flat";
+
     Object.keys(DEFAULT_RATES).forEach(k => {
       if (saved.rates && Number.isFinite(Number(saved.rates[k])) && Number(saved.rates[k]) >= 0) {
         RATES[k] = normalizeRate(saved.rates[k]);
@@ -1491,6 +1873,18 @@ function loadContractorState() {
     });
     standardRateItems = Array.isArray(saved.standardRateItems) ? saved.standardRateItems.map(item => ({ ...item, rate: normalizeRate(item.rate) })) : [];
 
+    bindProjectOptionalWorks();
+    if (Array.isArray(saved.projectOptional)) {
+      saved.projectOptional.forEach(savedScope => {
+        const scope = document.querySelector(`#projectOptionalWorks .optional-scope[data-scope="${savedScope.key}"]`);
+        if (!scope) return;
+        const checkbox = scope.querySelector(".optional-check");
+        const rate = scope.querySelector(".optional-rate");
+        if (checkbox) checkbox.checked = !!savedScope.checked;
+        if (rate && savedScope.rate !== undefined) rate.value = savedScope.rate;
+      });
+    }
+
     const rooms = Array.isArray(saved.rooms) ? saved.rooms : [];
     if (rooms.length) {
       restoringContractorState = true;
@@ -1499,11 +1893,17 @@ function loadContractorState() {
       roomCounter = 0;
 
       rooms.forEach(room => {
-        addRoom(room.type || "living", room.area || "");
-        const created = document.getElementById("room-" + roomCounter);
+        const restoredType = room.type === "carPorch" ? "porch" : (room.type || "other");
+        addRoom(restoredType, room.area || "", room.id || "", room.name || "", room.condition || "existing");
+        const created = document.getElementById(room.id || ("room-" + roomCounter));
         if (!created) return;
         const name = created.querySelector(".room-name");
-        if (name) name.value = room.name || ROOM_TYPES[room.type] || "Area";
+        if (name) {
+          name.value = room.name || ROOM_TYPES[room.type] || "Area";
+          name.dataset.generated = room.name ? "false" : "true";
+        }
+        const condition = created.querySelector(".room-condition");
+        if (condition) condition.value = room.condition === "new" ? "new" : "existing";
         if (Array.isArray(room.optional)) {
           room.optional.forEach(savedScope => {
             const scope = created.querySelector(`.optional-scope[data-scope="${savedScope.key}"]`);
@@ -1683,210 +2083,136 @@ function completeDetailedQuotationPayment(verified){if(verified)unlockDetailedQu
 
 function generateQuotation(){const type=getSelectedQuotationType();if(type==='detail'){const generated=generateQuotationConfirmed(type);if(generated!==false){setDetailedQuotationLocked(true);renderQuotationPreview();openDetailedQuotationPromo();}return;}setDetailedQuotationLocked(false);const generated=generateQuotationConfirmed(type);if(generated!==false)renderQuotationPreview();}
 function generateQuotationConfirmed(type) {
-  const data = getCurrentQuotationData();
-  if (!data.roomGroups.some(room => room.area > 0)) {
+  // PREVIEW SOURCE CONTRACT:
+  // Do not calculate, refresh, or rebuild Renovation Budget here.
+  // Preview must take a static snapshot of the Budget that is already on screen,
+  // then place that snapshot between the existing quotation header and footer.
+  const budget = document.getElementById("estimateContent");
+  const content = document.getElementById("quotationContent");
+  if (!budget || !content) {
+    alert("Renovation Budget is not ready. Please try again.");
+    return false;
+  }
+
+  const data = typeof window.__TERAJU_RENOVATION_V2_GET_QUOTATION_DATA === "function"
+    ? window.__TERAJU_RENOVATION_V2_GET_QUOTATION_DATA()
+    : null;
+
+  if (!data || !data.roomGroups.some(room => room.area > 0)) {
     alert("Please add at least one area with a valid sqft before generating the cost estimate.");
-    return;
+    return false;
   }
 
   quotationNumber = generateQuotationNumber();
+
   const customer = document.getElementById("customerName")?.value || "Not specified";
   const location = document.getElementById("projectLocation")?.value || "Not specified";
   const totalBuiltArea = data.roomGroups.reduce((sum, room) => sum + (Number(room.area) || 0), 0);
-  const today = new Intl.DateTimeFormat("en-MY", { day: "2-digit", month: "long", year: "numeric" }).format(new Date());
-  const content = document.getElementById("quotationContent");
+  const today = new Intl.DateTimeFormat("en-MY", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric"
+  }).format(new Date());
 
-  let body = `
-    <div class="flex justify-between items-start gap-6 border-b pb-5 mb-6">
-      <div class="min-w-0">
-        <div class="flex items-center gap-4 mb-4">
-          <img src="../images/logo.png" alt="Teraju Ciptabina Logo" class="h-14 w-auto flex-shrink-0">
-          <div class="min-w-0">
-            <h1 class="text-xl font-bold">TERAJU CIPTABINA RESOURCES</h1>
-            <p class="text-xs text-gray-500">No 10A, Jalan PP 2/1, Taman Putra Prima, 47100 Puchong, Selangor</p>
+  // Take the actual rendered Renovation Budget DOM, not another calculation path.
+  const snapshot = budget.cloneNode(true);
+  snapshot.classList.add("quotation-budget-snapshot");
+
+  // Strip planner-only controls and turn every editable field into its current
+  // displayed value. This keeps the rows/amounts identical to Renovation Budget.
+  snapshot.querySelectorAll(".no-print").forEach(el => el.remove());
+  snapshot.querySelectorAll("textarea,input,select").forEach(control => {
+    const span = document.createElement("span");
+    span.className = "quotation-snapshot-value";
+
+    if (control.tagName === "SELECT") {
+      span.textContent = control.options[control.selectedIndex]?.textContent?.trim() || control.value || "";
+    } else {
+      span.textContent = control.value ?? "";
+    }
+
+    control.replaceWith(span);
+  });
+
+  // Budget contains homeowner/print duplicates for some fields. Keep one
+  // static value per cell in the Preview.
+  snapshot.querySelectorAll(".homeowner-locked").forEach(el => el.remove());
+  snapshot.querySelectorAll(".hidden.print\\:block,.hidden.print\\:inline").forEach(el => {
+    el.classList.remove("hidden", "print:block", "print:inline");
+  });
+
+  content.innerHTML = `
+    <div class="quotation-preview-header">
+      <div class="flex justify-between items-start gap-6 border-b pb-5 mb-6">
+        <div class="min-w-0">
+          <div class="flex items-center gap-4 mb-4">
+            <img src="../images/logo.png" alt="Teraju Ciptabina Logo" class="h-14 w-auto flex-shrink-0">
+            <div class="min-w-0">
+              <h1 class="text-xl font-bold">TERAJU CIPTABINA RESOURCES</h1>
+              <p class="text-xs text-gray-500">No 10A, Jalan PP 2/1, Taman Putra Prima, 47100 Puchong, Selangor</p>
+            </div>
           </div>
+          <h2 class="text-2xl font-bold uppercase">Cost Estimate</h2>
         </div>
-        <h2 class="text-2xl font-bold uppercase">Cost Estimate</h2>
+        <div class="text-right text-sm flex-shrink-0">
+          <p><span class="text-gray-500">Estimate No.</span><br><strong>${escapeHtml(quotationNumber)}</strong></p>
+          <p class="mt-2"><span class="text-gray-500">Date</span><br><strong>${escapeHtml(today)}</strong></p>
+        </div>
       </div>
-      <div class="text-right text-sm flex-shrink-0">
-        <p><span class="text-gray-500">Estimate No.</span><br><strong>${escapeHtml(quotationNumber)}</strong></p>
-        <p class="mt-2"><span class="text-gray-500">Date</span><br><strong>${escapeHtml(today)}</strong></p>
+      <div class="grid md:grid-cols-3 gap-6 mb-7 text-sm">
+        <div>
+          <p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Customer</p>
+          <p class="font-semibold">${escapeHtml(customer)}</p>
+        </div>
+        <div>
+          <p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Project Location</p>
+          <p class="font-semibold">${escapeHtml(location)}</p>
+        </div>
+        <div>
+          <p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Total Built Area</p>
+          <p class="font-semibold">${formatQty(totalBuiltArea)} sqft</p>
+        </div>
       </div>
     </div>
-    <div class="grid md:grid-cols-3 gap-6 mb-7 text-sm">
-      <div>
-        <p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Customer</p>
-        <p class="font-semibold">${escapeHtml(customer)}</p>
-      </div>
-      <div>
-        <p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Project Location</p>
-        <p class="font-semibold">${escapeHtml(location)}</p>
-      </div>
-      <div>
-        <p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Total Built Area</p>
-        <p class="font-semibold">${formatQty(totalBuiltArea)} sqft</p>
-      </div>
+    <div class="quotation-budget-snapshot-wrap">
+      ${snapshot.innerHTML}
     </div>
-    <div class="mb-3">
-      <p class="text-sm text-gray-600">
-        Renovation works as described below. Final cost estimate is subject to site inspection,
-        approved drawings, actual site conditions, specifications, material selection and confirmation of final scope of works.
-      </p>
-    </div>`;
-
-  if (type === "simple") {
-    body += `
-      <div class="overflow-x-auto">
-        <table class="w-full border-collapse text-sm simple-quotation-table">
-          <colgroup>
-            <col style="width:6%">
-            <col style="width:18%">
-            <col style="width:56%">
-            <col style="width:20%">
-          </colgroup>
-          <thead>
-            <tr class="border-b-2 text-left">
-              <th class="py-3 px-2">No.</th>
-              <th class="py-3 px-2">Area / Room</th>
-              <th class="py-3 px-2">Description of Works</th>
-              <th class="py-3 px-2 text-right">Amount (RM)</th>
-            </tr>
-          </thead>
-          <tbody>`;
-    let no = 1;
-    if (data.projectPreliminaries > 0) {
-      body += `
-        <tr class="border-b align-top">
-          <td class="py-3 px-2">${no++}</td>
-          <td class="py-3 px-2 font-semibold">Project</td>
-          <td class="py-3 px-2">${escapeHtml(customDescriptions.has("project-preliminaries") ? customDescriptions.get("project-preliminaries") : "Submission of Renovation Permit Application and Engineer’s Drawings to the Local Authority")}</td>
-          <td class="py-3 px-2 text-right font-medium">${money(data.projectPreliminaries, 2)}</td>
-        </tr>`;
-      (data.itemsByRoom["__prelim__"] || []).forEach(item => {
-        body += `<tr class="border-b align-top"><td class="py-3 px-2">${no++}</td><td class="py-3 px-2 font-semibold">Project</td><td class="py-3 px-2">${escapeHtml(item.description)}</td><td class="py-3 px-2 text-right font-medium">${money(item.amount, 2)}</td></tr>`;
-      });
-    }
-    data.roomGroups.forEach(room => {
-      if (room.area <= 0) return;
-      body += `
-        <tr class="border-b align-top">
-          <td class="py-3 px-2">${no++}</td>
-          <td class="py-3 px-2 font-semibold">${escapeHtml(room.label)}<br><span class="font-normal text-gray-500">${formatQty(room.area)} sqft</span></td>
-          <td class="py-3 px-2 leading-6">${quotationDescriptionList(data.itemsByRoom[room.roomId] || [])}</td>
-          <td class="py-3 px-2 text-right font-semibold">${money(data.roomSubtotals[room.roomId] || 0, 2)}</td>
-        </tr>`;
-    });
-    body += `
-          </tbody>
-          <tfoot>
-            <tr class="border-t-2">
-              <td colspan="3" class="py-4 px-2 text-right font-bold">TOTAL</td>
-              <td class="py-4 px-2 text-right font-bold text-lg">${money(data.total, 2)}</td>
-            </tr>
-          </tfoot>
-        </table>
-      </div>`;
-  } else {
-    body += `
-      <div class="mb-5 rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm"><span class="font-semibold">Detail Cost Estimate:</span> <span class="line-through text-gray-400">RM 49</span> <span class="font-bold text-green-700 ml-1">FREE</span> <span class="text-gray-600 ml-1">— Limited-time promotion until 31 October 2026.</span></div>
-      <div class="overflow-x-auto">
-        <table class="w-full border-collapse text-sm detailed-quotation-table">
-          <colgroup>
-            <col style="width:50%"><col style="width:10%"><col style="width:10%"><col style="width:15%"><col style="width:15%">
-          </colgroup>
-          <thead>
-            <tr class="border-b-2 text-left">
-              <th class="py-3 px-2">Description</th>
-              <th class="py-3 px-2">Unit</th>
-              <th class="py-3 px-2 text-right">Quantity</th>
-              <th class="py-3 px-2 text-right">Rate (RM)</th>
-              <th class="py-3 px-2 text-right">Amount (RM)</th>
-            </tr>
-          </thead>
-          <tbody>`;
-    if (data.projectPreliminaries > 0) {
-      body += `
-        <tr class="bg-gray-100 border-b"><td colspan="5" class="py-3 px-2 font-bold">Project / Preliminaries</td></tr>
-        <tr class="border-b align-top">
-          <td class="py-3 px-2">${escapeHtml(customDescriptions.has("project-preliminaries") ? customDescriptions.get("project-preliminaries") : "Submission of Renovation Permit Application and Engineer's Drawings to the Local Authority")}</td>
-          <td class="py-3 px-2">ls</td>
-          <td class="py-3 px-2 text-right">${formatQty(data.prelimQty)}</td>
-          <td class="py-3 px-2 text-right">${money(data.prelimRate, 2)}</td>
-          <td class="py-3 px-2 text-right font-semibold">${money(data.projectPreliminaries, 2)}</td>
-        </tr>`;
-      (data.itemsByRoom["__prelim__"] || []).forEach(item => {
-        body += `<tr class="border-b align-top"><td class="py-3 px-2">${escapeHtml(item.description)}</td><td class="py-3 px-2">${escapeHtml(item.unit)}</td><td class="py-3 px-2 text-right">${formatQty(item.qty)}</td><td class="py-3 px-2 text-right">${money(item.rate, 2)}</td><td class="py-3 px-2 text-right font-medium">${money(item.amount, 2)}</td></tr>`;
-      });
-    }
-    data.roomGroups.forEach(room => {
-      if (room.area <= 0) return;
-      const roomItems = data.itemsByRoom[room.roomId] || [];
-      body += `
-        <tr class="bg-gray-100 border-b">
-          <td colspan="5" class="py-3 px-2 font-bold">${escapeHtml(room.label)} <span class="font-normal text-gray-500">(${formatQty(room.area)} sqft)</span></td>
-        </tr>`;
-      roomItems.forEach(item => {
-        body += `
-          <tr class="border-b align-top">
-            <td class="py-3 px-2">${escapeHtml(item.description)}</td>
-            <td class="py-3 px-2">${escapeHtml(item.unit)}</td>
-            <td class="py-3 px-2 text-right">${formatQty(item.qty)}</td>
-            <td class="py-3 px-2 text-right">${money(item.rate, 2)}</td>
-            <td class="py-3 px-2 text-right font-medium">${money(item.amount, 2)}</td>
-          </tr>`;
-      });
-      body += `
-        <tr class="border-b">
-          <td colspan="4" class="py-3 px-2 text-right font-bold">${escapeHtml(room.label)} Subtotal</td>
-          <td class="py-3 px-2 text-right font-bold">${money(data.roomSubtotals[room.roomId] || 0, 2)}</td>
-        </tr>`;
-    });
-    body += `
-          </tbody>
-          <tfoot>
-            <tr class="border-t-2">
-              <td colspan="4" class="py-4 px-2 text-right font-bold">TOTAL</td>
-              <td class="py-4 px-2 text-right font-bold text-lg">${money(data.total, 2)}</td>
-            </tr>
-          </tfoot>
-        </table>
-      </div>`;
-  }
-
-  body += `
-    <div class="mt-8 pt-5 border-t text-sm">
+    <div class="quotation-preview-footer mt-8 pt-5 border-t text-sm">
       <p class="font-semibold mb-2">Terms / Notes</p>
       <ul class="list-disc pl-5 space-y-1 text-gray-600">
         <li>This cost estimate is based on the selected scope and estimated area provided.</li>
         <li>Final scope, specifications and pricing are subject to site inspection and confirmation.</li>
         <li>Any additional works not stated above will be quoted separately.</li>
       </ul>
-    </div>
-    <div class="mt-12 text-sm">
-      <p>Your sincerely,</p>
-      <p class="font-bold mt-8">TERAJU CIPTABINA RESOURCES</p>
+      <div class="mt-12">
+        <p>Your sincerely,</p>
+        <p class="font-bold mt-8">TERAJU CIPTABINA RESOURCES</p>
+      </div>
     </div>`;
-
-  content.innerHTML = body;
 
   document.getElementById("quotationDocument").classList.remove("hidden");
   document.getElementById("quotationPrintActions").classList.remove("hidden");
-  document.getElementById("quotationDocument").scrollIntoView({ behavior: "smooth", block: "start" });
+  return true;
 }
 
 initContractorMode();
 </script>
 
-<script src="quotation-document-engine.js?v=20260921"></script>
+<script src="quotation-document-engine.js?v=20260921-v2-source"></script>
 <script src="detailed-quotation-promo-ui.js"></script>
-<script>
-
-updateRoomsEmptyState();
-updateEstimate();
-
-</script>
 <script src="location-autocomplete.js"></script>
-<script src="quotation-quantity-fix.js?v=20260921"></script>
+<script src="renovation-calculation-rules.js?v=20260921-v2-source"></script>
+<script src="renovation-planner-v2-engine.js?v=20260921-v2-source"></script>
+<script src="quotation-quantity-fix.js?v=20260930"></script>
+<script>
+/* V2 routing must be active before the first Renovation Budget render. */
+updateRoomsEmptyState();
+if (typeof window.__TERAJU_RENOVATION_V2_UPDATE_ESTIMATE === "function") {
+  window.__TERAJU_RENOVATION_V2_UPDATE_ESTIMATE();
+} else {
+  updateEstimate();
+}
+</script>
 <script id="tc-homeowner-customer-default">
 (() => {
   const params = new URLSearchParams(location.search);
@@ -1950,3 +2276,5 @@ updateEstimate();
 </script>
 </body>
 </html>
+
+
