@@ -34,20 +34,21 @@
   function renovationItems(){
     const original=window.__TERAJU_RENOVATION_V1_GET_ALL_ITEMS;
     if(typeof original!=='function') return [];
-    return original().filter(item => conditionOf(item.roomId)!=='new' && String(item.category||'').toLowerCase()!=='external-work');
+    return original().filter(item => conditionOf(item.roomId)!=='new');
   }
 
   function buildItems(){
     const ids=newRoomIds();
     if(!ids.size || typeof window.__TERAJU_GET_BUILD_ITEMS!=='function') return [];
     return window.__TERAJU_GET_BUILD_ITEMS().filter(item =>
-      String(item.category||'').toLowerCase()!=='external-work' &&
-      (ids.has(item.roomId) || String(item.roomId||'project')==='project')
+      ids.has(item.roomId) || String(item.roomId||'project')==='project'
     );
   }
 
   function allItems(){
-    return [...renovationItems(),...buildItems()].map(item=>{
+    return [...renovationItems(),...buildItems()]
+      .filter(item => String(item.category||'').toLowerCase() !== 'external-work')
+      .map(item=>{
       item.qty=typeof normalizeQuantity==='function'?normalizeQuantity(item.qty):Math.max(0,Math.ceil(Number(item.qty)||0));
       item.rate=typeof normalizeRate==='function'?normalizeRate(item.rate):Math.round((Number(item.rate)||0)*100)/100;
       item.amount=Math.round((item.qty*item.rate+Number.EPSILON)*100)/100;
