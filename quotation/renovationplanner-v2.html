@@ -1784,7 +1784,8 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
           <div class="flex flex-wrap items-center gap-2">
             <label class="text-xs font-semibold uppercase tracking-wide text-gray-500">Room / Area Name</label>
             <input type="text" value="${escapeHtml(room.label)}" onchange="editRoomLabel('${room.roomId}', this.value)"
-              class="no-print flex-1 min-w-[220px] border rounded-lg px-2 py-1 bg-white font-semibold">
+              class="contractor-only no-print flex-1 min-w-[220px] border rounded-lg px-2 py-1 bg-white font-semibold">
+            <span class="homeowner-locked no-print font-semibold">${escapeHtml(room.label)}</span>
             <span class="font-normal text-gray-500">${formatQty(room.area)} sqft</span>
           </div>
           <div class="hidden print:block font-bold">
@@ -1846,6 +1847,7 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
 }
 
 function editRoomLabel(roomId, value) {
+  if (!IS_CONTRACTOR) return;
   const label = String(value || "").trim();
   if (!label) { alert("Please enter a room / area name."); updateEstimate(); return; }
   customRoomLabels.set(roomId, label);
