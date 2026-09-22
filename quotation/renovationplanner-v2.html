@@ -2398,17 +2398,14 @@ function buildSimpleQuotationBody(data) {
     if (value === 0) return;
     const tr = document.createElement('tr');
     tr.className = 'border-b';
-    const blank1 = document.createElement('td');
-    const blank2 = document.createElement('td');
-    const blank3 = document.createElement('td');
-    [blank1, blank2, blank3].forEach(td => td.className = 'py-1 px-2');
     const labelCell = document.createElement('td');
-    labelCell.className = 'py-1 px-2 text-right ' + (heading ? 'font-bold' : 'font-semibold');
+    labelCell.colSpan = 4;
+    labelCell.className = 'py-1 px-2 text-left ' + (heading ? 'font-bold' : 'font-semibold');
     labelCell.textContent = label;
     const amountCell = document.createElement('td');
     amountCell.className = 'py-1 px-2 text-right font-bold';
     amountCell.textContent = money(value, 2);
-    tr.append(blank1, blank2, blank3, labelCell, amountCell);
+    tr.append(labelCell, amountCell);
     tbody.appendChild(tr);
   };
 
