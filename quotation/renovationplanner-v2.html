@@ -125,11 +125,13 @@
        Only editability differs; row height/spacing must not change by audience. */
     #estimateContent table textarea {
       min-height: 40px !important;
-      height: auto !important;
-      field-sizing: content;
+      height: 40px !important;
+      box-sizing: border-box !important;
+      field-sizing: auto !important;
       resize: none !important;
       overflow: hidden !important;
       white-space: pre-wrap !important;
+      line-height: 16px !important;
     }
     #estimateContent table .homeowner-locked {
       min-height: 40px !important;
@@ -1862,11 +1864,19 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
       </table>
     </div>`;
   container.innerHTML = html;
+  resizeEstimateDescriptionFields();
   renderBudgetSummaryAtBottom(items, roomGroups, roomSubtotals, projectPreliminaries);
   renderRemovedItems();
   document.getElementById("grandTotal").textContent = money(total, 2);
   const totalBuiltAreaEl = document.getElementById("totalBuiltArea");
   if (totalBuiltAreaEl) totalBuiltAreaEl.textContent = formatQty(totalBuiltArea) + " sqft";
+}
+
+function resizeEstimateDescriptionFields() {
+  document.querySelectorAll('#estimateContent table textarea').forEach(el => {
+    el.style.height = '40px';
+    el.style.height = Math.max(40, el.scrollHeight) + 'px';
+  });
 }
 
 function editRoomLabel(roomId, value) {
@@ -2636,7 +2646,7 @@ function generateQuotationConfirmed(type) {
 initContractorMode();
 </script>
 
-<script src="quotation-document-engine.js?v=20260922-footer-v9"></script>
+<script src="quotation-document-engine.js?v=20260922-footer-v10"></script>
 <script src="detailed-quotation-promo-ui.js"></script>
 <script src="location-autocomplete.js"></script>
 <script src="renovation-calculation-rules.js?v=20260921-v2-source"></script>
