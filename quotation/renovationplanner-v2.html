@@ -2497,24 +2497,10 @@ function generateQuotationConfirmed(type) {
   if (type === 'simple') {
     quotationBody = buildSimpleQuotationBody(data);
   } else {
-    const snapshot = budget.cloneNode(true);
-    snapshot.classList.add("quotation-budget-snapshot");
-    snapshot.querySelectorAll(".no-print").forEach(el => el.remove());
-    snapshot.querySelectorAll("textarea,input,select").forEach(control => {
-      const span = document.createElement("span");
-      span.className = "quotation-snapshot-value";
-      if (control.tagName === "SELECT") {
-        span.textContent = control.options[control.selectedIndex]?.textContent?.trim() || control.value || "";
-      } else {
-        span.textContent = control.value ?? "";
-      }
-      control.replaceWith(span);
-    });
-    snapshot.querySelectorAll(".homeowner-locked").forEach(el => el.remove());
-    snapshot.querySelectorAll(".hidden.print\\:block,.hidden.print\\:inline").forEach(el => {
-      el.classList.remove("hidden", "print:block", "print:inline");
-    });
-    quotationBody = '<div class="quotation-budget-snapshot-wrap">' + snapshot.innerHTML + '</div>';
+    // Detailed Preview uses the exact same layout and grouping as Simple Preview.
+    // The only difference is that Unit, Quantity, Rate and Amount are revealed
+    // on each item row.
+    quotationBody = buildDetailedQuotationBody(data);
   }
 
   content.innerHTML = `
