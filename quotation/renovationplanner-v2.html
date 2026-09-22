@@ -1474,16 +1474,28 @@ function renderBudgetSummaryAtBottom(items, roomGroups, roomSubtotals, projectPr
   const row = (label, amount, className = "border-b", heading = false) => {
     const tr = document.createElement("tr");
     tr.className = className;
+
+    // Summary uses the same six real table columns as detail and subtotal rows.
+    // Avoid colspan here because Safari fixed-table layout can shift the Amount cell.
+    const tdBlank1 = document.createElement("td");
+    const tdBlank2 = document.createElement("td");
+    const tdBlank3 = document.createElement("td");
+    [tdBlank1, tdBlank2, tdBlank3].forEach(td => {
+      td.className = "py-1 px-2";
+    });
+
     const tdLabel = document.createElement("td");
-    tdLabel.colSpan = 4;
-    tdLabel.className = "py-1 px-2 " + (heading ? "font-bold" : "font-semibold");
+    tdLabel.className = "py-1 px-2 text-right " + (heading ? "font-bold" : "font-semibold");
     tdLabel.textContent = label;
+
     const tdAmount = document.createElement("td");
-    tdAmount.className = "py-1 px-2 text-right font-bold";
+    tdAmount.className = "estimate-amount-cell py-1 px-2 text-right font-bold tabular-nums";
     tdAmount.textContent = money(amount, 2);
+
     const tdAction = document.createElement("td");
     tdAction.className = "no-print";
-    tr.append(tdLabel, tdAmount, tdAction);
+
+    tr.append(tdBlank1, tdBlank2, tdBlank3, tdLabel, tdAmount, tdAction);
     return tr;
   };
 
