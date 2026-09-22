@@ -2131,6 +2131,13 @@ function initContractorMode() {
   if (badgeEl) badgeEl.textContent = IS_CONTRACTOR ? "Contractor Workspace" : "Homeowner Workspace";
   if (idLabelEl) idLabelEl.textContent = IS_CONTRACTOR ? "Contractor ID" : "Homeowner ID";
   if (idEl) idEl.textContent = activeId || "Not signed in";
+  const myQuotationsLink = document.getElementById("myQuotationsLink");
+  if (myQuotationsLink) {
+    const idKey = IS_CONTRACTOR ? "contractorId" : "homeownerId";
+    myQuotationsLink.href = activeId
+      ? `quotations.html?role=${encodeURIComponent(IS_CONTRACTOR ? "contractor" : "homeowner")}&id=${encodeURIComponent(activeId)}&plannerType=renovation`
+      : `quotations.html?role=${encodeURIComponent(IS_CONTRACTOR ? "contractor" : "homeowner")}&plannerType=renovation`;
+  }
 
   let saved = null;
   if (IS_CONTRACTOR) {
