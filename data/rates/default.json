@@ -50,8 +50,8 @@
     "rule_porch_roof_metal_roofing_sheet_41": 450,
     "rule_main_building_brickwall_internal_wall_42": 50,
     "rule_main_building_brickwall_external_wall_43": 50,
-    "rule_main_building_floor_tiles_internal_44": 45,
-    "rule_main_building_floor_tiles_external_45": 75,
+    "rule_main_building_floor_tiles_internal_44": 95,
+    "rule_main_building_floor_tiles_external_45": 150,
     "rule_main_building_painting_internal_46": 30,
     "rule_main_building_painting_external_47": 48,
     "rule_main_building_ceiling_internal_48": 165,
@@ -500,15 +500,15 @@
       "description": "Supply and install one water tank for the project.",
       "unit": "No.",
       "category": "calculation-rule",
-      "groupKey": "ARCHITECTURES",
-      "groupTitle": "ARCHITECTURES"
+      "groupKey": "EXTERNAL WORK",
+      "groupTitle": "EXTERNAL WORK"
     },
     "rule_main_building_septic_tank_59": {
       "description": "Supply and install one septic tank for the project.",
       "unit": "No.",
       "category": "calculation-rule",
-      "groupKey": "ARCHITECTURES",
-      "groupTitle": "ARCHITECTURES"
+      "groupKey": "EXTERNAL WORK",
+      "groupTitle": "EXTERNAL WORK"
     },
     "rule_main_building_power_point_60": {
       "description": "13A switched socket outlets, single-gang flush type, BS 1363 / MS-compliant, complete with socket plates, flush boxes, wiring connections and all necessary accessories, installed complete. (Bedroom / Kitchen / applicable Main Building rooms)",
@@ -665,5 +665,5 @@
       "groupTitle": "EXTERNAL WORK"
     }
   },
-  "updatedAt": "2026-09-18T13:19:15.580Z"
+  "updatedAt": "2026-09-22T09:36:01.024Z"
 }
