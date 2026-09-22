@@ -270,13 +270,9 @@ function generateQuotation(typeOverride){
   });
   body+='</tbody><tfoot><tr class="quotation-summary-title"><td colspan="3" class="py-3 px-2 text-left font-bold uppercase tracking-wide">SUMMARY — SUBTOTAL BY GROUP</td></tr>'+summaryGroups.map(g=>'<tr class="quotation-summary-row border-t"><td colspan="2" class="py-2 px-2 text-left font-semibold">'+escQ(g.title)+'</td><td class="py-2 px-2 text-right font-semibold">'+moneyQ(totalOf(g.items))+'</td></tr>').join('')+'<tr class="border-t-2"><td colspan="2" class="py-4 px-2 text-left font-bold">TOTAL AMOUNT</td><td class="py-4 px-2 text-right font-bold text-lg">'+moneyQ(data.total)+'</td></tr></tfoot></table></div>';
  }
- body+='<div class="mt-8 pt-5 border-t text-sm"><p class="font-semibold mb-2">Terms / Notes</p><ul class="list-disc pl-5 text-gray-600"><li>This quotation is based on the stated built-up area, area schedule and rates applied herein.</li><li>Final scope, specifications, site conditions and pricing remain subject to site inspection and written confirmation.</li><li>Any additional works or authority requirements not listed above shall be quoted separately.</li></ul></div><div class="mt-12 text-sm"><p>Yours sincerely,</p><p class="font-bold mt-8">TERAJU CIPTABINA RESOURCES</p></div><div class="quotation-contact-footer mt-10 pt-5 border-t text-xs text-gray-500">
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-    <div><span class="font-semibold text-gray-700">Address</span><div class="mt-1">10A, Jalan PP2/1, Taman Putra Prima, 47100 Puchong, Selangor, Malaysia</div></div>
-    <div><span class="font-semibold text-gray-700">Email</span><div class="mt-1 break-words">terajuciptabina@gmail.com</div></div>
-    <div><span class="font-semibold text-gray-700">Phone</span><div class="mt-1">014-5002652</div></div>
-    <div><span class="font-semibold text-gray-700">Website</span><div class="mt-1 break-words">terajuciptabina-eng.github.io/terajuciptabina/</div></div>
-  </div>
+ body+='<div class="mt-8 pt-5 border-t text-sm"><p class="font-semibold mb-2">Terms / Notes</p><ul class="list-disc pl-5 text-gray-600"><li>This quotation is based on the stated built-up area, area schedule and rates applied herein.</li><li>Final scope, specifications, site conditions and pricing remain subject to site inspection and written confirmation.</li><li>Any additional works or authority requirements not listed above shall be quoted separately.</li></ul></div><div class="mt-12 text-sm"><p>Yours sincerely,</p><p class="font-bold mt-8">TERAJU CIPTABINA RESOURCES</p></div><div class="quotation-contact-footer">
+  <div class="quotation-contact-line">10A, Jalan PP2/1, Taman Putra Prima, 47100 Puchong, Selangor, Malaysia</div>
+  <div class="quotation-contact-line">Tel: 014-5002652 &nbsp;&nbsp;|&nbsp;&nbsp; Email: terajuciptabina@gmail.com &nbsp;&nbsp;|&nbsp;&nbsp; Web: terajuciptabina-eng.github.io/terajuciptabina/</div>
 </div>';
  content.innerHTML=body;
  document.getElementById('quotationDocument').classList.remove('hidden');
