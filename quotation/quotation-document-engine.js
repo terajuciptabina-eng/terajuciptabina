@@ -115,6 +115,21 @@ body.renovation-planner-page .simple-quotation-table td:nth-child(4){
 body.renovation-planner-page .simple-quotation-table .text-right{
   text-align:right!important;
 }
+/* Unified Amount cell contract for Simple + Detail quotation previews. */
+body.renovation-planner-page .simple-quotation-table .quotation-amount-cell{
+  text-align:right!important;
+  padding-left:8px!important;
+  padding-right:0!important;
+  white-space:nowrap!important;
+  font-variant-numeric:tabular-nums!important;
+  font-feature-settings:"tnum" 1!important;
+  box-sizing:border-box!important;
+}
+body.renovation-planner-page .simple-quotation-table .quotation-amount-cell{
+  width:15%!important;
+  min-width:15%!important;
+  max-width:15%!important;
+}
 /* Standard planner estimate alignment — alignment/column sizing only; typography unchanged. */
 
 #estimateContent table th:nth-child(1),#estimateContent table td:nth-child(1){text-align:left!important}
