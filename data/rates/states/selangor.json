@@ -67,12 +67,12 @@
     "rule_main_building_power_point_60": 150,
     "rule_main_building_switch_61": 200,
     "rule_main_building_lighting_62": 200,
-    "rule_main_building_fan_63": 150,
+    "rule_main_building_fan_63": 200,
     "rule_main_building_aircond_point_64": 300,
     "rule_porch_lighting_65": 200,
     "rule_porch_fan_66": 200,
     "rule_porch_power_point_67": 150,
-    "rule_earthing_68": 1500,
+    "rule_earthing_68": 2500,
     "rule_db_box_69": 2500,
     "rule_wiring_70": 25,
     "rule_doors_type_1_single_leaf_71": 1200,
@@ -87,7 +87,7 @@
     "rule_driveway_80": 5000,
     "rule_landscaping_81": 2000
   },
-  "updatedAt": "2026-09-22T10:16:30.394Z",
+  "updatedAt": "2026-09-22T10:22:58.023Z",
   "effectiveDate": null,
   "rateItems": {
     "rule_preliminaries_building_plan_submission_0": {
