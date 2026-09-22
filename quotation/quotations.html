@@ -29,7 +29,7 @@
  const list=document.getElementById('list'),status=document.getElementById('status'),back=document.getElementById('backLink'),newLink=document.getElementById('newQuotationLink');
  const plannerFile=type==='renovation'?'renovationplanner-v2.html':'buildplanner-v2.html';
  back.href=role==='contractor'?`contractor.html`:`homeowner.html`;
- newLink.href=`${plannerFile}?audience=${role}&${idKey}=${encodeURIComponent(id)}`;
+ newLink.href=`${plannerFile}?audience=${role}&${idKey}=${encodeURIComponent(id)}&id=${encodeURIComponent(id)}`;
  newLink.textContent=type==='renovation'?'Create New Renovation':'Create New Build';
  document.getElementById('roleLabel').textContent=`${role.toUpperCase()} · ${type==='renovation'?'RENOVATION':'BUILD'} COST ESTIMATES`;
  function money(v){return new Intl.NumberFormat('en-MY',{minimumFractionDigits:2,maximumFractionDigits:2}).format(Number(v)||0)}
