@@ -248,7 +248,7 @@ function appendContactFooter(page,contactFooter){
  clone.style.position='absolute';
  clone.style.left='0';
  clone.style.right='0';
- clone.style.bottom='0';
+ clone.style.bottom=PAGE_BOTTOM_SAFETY_PX+'px';
  clone.style.width='100%';
  clone.style.height='12mm';
  clone.style.boxSizing='border-box';
@@ -362,7 +362,7 @@ function appendRenderedPageNumber(page,index,total){
  el.style.bottom=(CONTACT_FOOTER_RESERVE_PX+Math.ceil(2*PX_PER_MM))+'px';
  el.style.textAlign='center';
  el.style.fontFamily='Arial,Helvetica,sans-serif';
- el.style.fontSize='8px';
+ el.style.fontSize='10px';
  el.style.lineHeight='1';
  el.style.color='#6b7280';
  el.style.pointerEvents='none';
