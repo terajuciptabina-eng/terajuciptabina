@@ -2440,12 +2440,6 @@ function buildSimpleQuotationBody(data) {
     existingRooms.forEach(room => appendSummaryRow(room.label, data.roomSubtotals?.[room.roomId] || 0));
   }
 
-  const summaryTotal = (Number(prelimTotal) || 0) +
-    summaryGroups.reduce((sum, group) => sum + (Number(summaryGroupTotals[group]) || 0), 0) +
-    existingRooms.reduce((sum, room) => sum + (Number(data.roomSubtotals?.[room.roomId]) || 0), 0);
-
-  if (summaryTotal !== 0) appendSummaryRow('TOTAL', summaryTotal, true);
-
   const total = rows.reduce((sum, section) => sum + section.amount, 0);
   if (total !== 0) {
     const tr = document.createElement('tr');
