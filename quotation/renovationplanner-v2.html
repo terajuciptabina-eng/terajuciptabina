@@ -1342,7 +1342,7 @@ function saveManualItem(roomId) {
   updateEstimate();
   saveContractorState();
 }
-function removeManualItem(roomId, itemId) { if (!IS_CONTRACTOR) return; const list = manualItems.get(roomId) || []; manualItems.set(roomId, list.filter(item => item.id !== itemId)); updateEstimate(); saveContractorState(); }
+function removeManualItem(roomId, itemId) { const list = manualItems.get(roomId) || []; manualItems.set(roomId, list.filter(item => item.id !== itemId)); updateEstimate(); saveContractorState(); }
 
 function addBuildGroupManualItemPrompt(group) {
   if (!IS_CONTRACTOR) return;
@@ -1641,14 +1641,14 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
         <td class="py-1 px-2 text-right font-medium">${money(prelimQty * prelimRate, 2)}</td>
         <td class="no-print py-1 px-2 text-center">
           <button type="button" onclick="excludeItem('project-preliminaries')"
-            class="contractor-only no-print text-red-600 text-xs border border-red-200 rounded px-2 py-1 hover:bg-red-50">Delete</button>
+            class="no-print text-red-600 text-xs border border-red-200 rounded px-2 py-1 hover:bg-red-50">Delete</button>
         </td>
       </tr>
       <tr class="no-print"><td colspan="6" class="py-1 px-2"><div class="contractor-only" data-manual-anchor="__prelim__"><button type="button" onclick="addManualItemPrompt('__prelim__')" class="border rounded-lg px-2 py-1 text-xs font-semibold hover:bg-gray-50">＋ Add Item</button></div></td></tr>`;
   }
 
   const prelimManual = manualItems.get("__prelim__") || [];
-  prelimManual.forEach(item => { html += `<tr class="border-b"><td class="py-1 px-2 align-top">${IS_CONTRACTOR ? `<textarea rows="2" onchange="editItemDescription(\'${item.id}\', this.value)" class="w-full border rounded-lg px-2 py-1 bg-white leading-4 resize-none">${escapeHtml(item.description)}</textarea>` : `<div class="homeowner-locked p-1 rounded leading-4">${escapeHtml(item.description)}</div>`}</td><td class="py-1 px-2">${escapeHtml(item.unit)}</td><td class="py-1 px-2 text-right"><input type="number" min="0" step="1" value="${formatQty(item.qty)}" onchange="editItemQuantity('${item.id}', this.value)" class="contractor-only no-print w-24 border rounded-none px-1 py-1 text-right bg-white"><span class="homeowner-locked no-print inline-block px-1 py-1 rounded-none text-sm">${formatQty(item.qty)}</span></td><td class="py-1 px-2 text-right"><input type="number" min="0" step="0.01" value="${normalizeRate(item.rate).toFixed(2)}" onchange="editItemRate('${item.id}', this.value)" class="contractor-only no-print w-28 border rounded-none px-1 py-1 text-right bg-white"><span class="homeowner-rate-blurred no-print inline-block px-1 py-1 rounded-none text-sm">${money(item.rate, 2)}</span></td><td class="estimate-amount-cell py-1 px-2 text-right font-medium tabular-nums">${money(item.amount, 2)}</td><td class="no-print py-1 px-2 text-center"><button type="button" onclick="removeManualItem('__prelim__','${item.id}')" class="contractor-only no-print text-red-600 text-xs border border-red-200 rounded px-3 py-1.5">Delete</button></td></tr>`; });
+  prelimManual.forEach(item => { html += `<tr class="border-b"><td class="py-1 px-2 align-top">${IS_CONTRACTOR ? `<textarea rows="2" onchange="editItemDescription(\'${item.id}\', this.value)" class="w-full border rounded-lg px-2 py-1 bg-white leading-4 resize-none">${escapeHtml(item.description)}</textarea>` : `<div class="homeowner-locked p-1 rounded leading-4">${escapeHtml(item.description)}</div>`}</td><td class="py-1 px-2">${escapeHtml(item.unit)}</td><td class="py-1 px-2 text-right"><input type="number" min="0" step="1" value="${formatQty(item.qty)}" onchange="editItemQuantity('${item.id}', this.value)" class="contractor-only no-print w-24 border rounded-none px-1 py-1 text-right bg-white"><span class="homeowner-locked no-print inline-block px-1 py-1 rounded-none text-sm">${formatQty(item.qty)}</span></td><td class="py-1 px-2 text-right"><input type="number" min="0" step="0.01" value="${normalizeRate(item.rate).toFixed(2)}" onchange="editItemRate('${item.id}', this.value)" class="contractor-only no-print w-28 border rounded-none px-1 py-1 text-right bg-white"><span class="homeowner-rate-blurred no-print inline-block px-1 py-1 rounded-none text-sm">${money(item.rate, 2)}</span></td><td class="estimate-amount-cell py-1 px-2 text-right font-medium tabular-nums">${money(item.amount, 2)}</td><td class="no-print py-1 px-2 text-center"><button type="button" onclick="removeManualItem('__prelim__','${item.id}')" class="no-print text-red-600 text-xs border border-red-200 rounded px-3 py-1.5">Delete</button></td></tr>`; });
 
   const newRoomIds = new Set(
     roomGroups
@@ -1761,7 +1761,7 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
           <td class="estimate-amount-cell py-1 px-2 text-right font-medium tabular-nums">${money(item.amount, 2)}</td>
           <td class="no-print py-1 px-2 text-center">
             <button type="button" onclick="${String(item.id).startsWith('manual-') ? 'removeManualItem(\'' + (item.manualKey || item.roomId) + '\',\'' + item.id + '\')' : 'excludeItem(\'' + item.id + '\')'}"
-              class="contractor-only no-print text-red-600 text-xs border border-red-200 rounded px-2 py-1 hover:bg-red-50">Delete</button>
+              class="no-print text-red-600 text-xs border border-red-200 rounded px-2 py-1 hover:bg-red-50">Delete</button>
           </td>
         </tr>`;
 
@@ -1818,7 +1818,7 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
           <td class="estimate-amount-cell py-1 px-2 text-right font-medium tabular-nums">${money(item.amount, 2)}</td>
           <td class="no-print py-1 px-2 text-center">
             <button type="button" onclick="${String(item.id).startsWith("manual-") ? `removeManualItem('${item.roomId}','${item.id}')` : `excludeItem('${item.id}')`}"
-              class="contractor-only no-print text-red-600 text-xs border border-red-200 rounded px-2 py-1 hover:bg-red-50">Delete</button>
+              class="no-print text-red-600 text-xs border border-red-200 rounded px-2 py-1 hover:bg-red-50">Delete</button>
           </td>
         </tr>`;
     });
