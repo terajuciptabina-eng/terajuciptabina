@@ -2365,7 +2365,8 @@ function buildQuotationBody(data, revealDetails = false) {
     unit.textContent = revealDetails ? String(item.unit || '') : '';
     const qty = document.createElement('td');
     qty.className = 'py-1 px-2 text-right';
-    qty.textContent = revealDetails && item.quantity !== undefined && item.quantity !== null ? formatQty(item.quantity) : '';
+    const itemQty = item.qty !== undefined && item.qty !== null ? item.qty : item.quantity;
+    qty.textContent = revealDetails && itemQty !== undefined && itemQty !== null ? formatQty(itemQty) : '';
     const rate = document.createElement('td');
     rate.className = 'py-1 px-2 text-right';
     rate.textContent = revealDetails && item.rate !== undefined && item.rate !== null ? money(item.rate, 2) : '';
