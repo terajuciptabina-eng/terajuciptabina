@@ -1425,19 +1425,6 @@ function renderBudgetSummaryAtBottom(items, roomGroups, roomSubtotals, projectPr
   const tbody = table?.querySelector("tbody");
   if (!table || !tbody) return;
 
-  // Remove only the legacy Build Planner summary block.
-  const rows = [...tbody.querySelectorAll(":scope > tr")];
-  const summaryStart = rows.findIndex(row => row.textContent.trim() === "New Construction Summary");
-  if (summaryStart >= 0) {
-    let summaryEnd = summaryStart;
-    while (summaryEnd < rows.length && !rows[summaryEnd].textContent.includes("New Construction Total")) {
-      summaryEnd++;
-    }
-    if (summaryEnd < rows.length) {
-      for (let i = summaryStart; i <= summaryEnd; i++) rows[i].remove();
-    }
-  }
-
   const newRoomIds = new Set(
     roomGroups
       .filter(room => document.getElementById(room.roomId)?.querySelector(".room-condition")?.value === "new")
@@ -1716,66 +1703,6 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
 
   }
 
-  // Final budget summary: keep the category order fixed and separate
-  // New Construction from Renovation Existing Area.
-  html += `
-    <tr class="bg-gray-100 border-b">
-      <td colspan="6" class="py-1 px-2 font-bold">SUMMARY</td>
-    </tr>
-    <tr class="bg-gray-50 border-b">
-      <td colspan="6" class="py-1 px-2 font-bold">A. NEW CONSTRUCTION</td>
-    </tr>
-    <tr class="border-b">
-      <td colspan="4" class="py-1 px-2 font-semibold">PRELIMINARIES</td>
-      <td class="py-1 px-2 text-right font-bold">${money(projectPreliminaries, 2)}</td>
-      <td class="no-print"></td>
-    </tr>`;
-
-  ["STRUCTURES", "ARCHITECTURES", "ELECTRICAL", "DOORS & WINDOWS"].forEach(group => {
-    html += `
-      <tr class="border-b">
-        <td colspan="4" class="py-1 px-2 font-semibold">${escapeHtml(group)}</td>
-        <td class="py-1 px-2 text-right font-bold">${money(groupTotals[group] || 0, 2)}</td>
-        <td class="no-print"></td>
-      </tr>`;
-  });
-
-  const newConstructionTotal = projectPreliminaries +
-    ["STRUCTURES", "ARCHITECTURES", "ELECTRICAL", "DOORS & WINDOWS"]
-      .reduce((sum, group) => sum + (Number(groupTotals[group]) || 0), 0);
-
-  html += `
-    <tr class="border-t-2 bg-gray-50">
-      <td colspan="4" class="py-2 px-2 text-right font-bold">NEW CONSTRUCTION TOTAL</td>
-      <td class="py-2 px-2 text-right font-bold">${money(newConstructionTotal, 2)}</td>
-      <td class="no-print"></td>
-    </tr>
-    <tr class="bg-gray-50 border-b">
-      <td colspan="6" class="py-1 px-2 font-bold">B. RENOVATION EXISTING AREA</td>
-    </tr>`;
-
-  let renovationExistingTotal = 0;
-  roomGroups.forEach(room => {
-    const isNewRoom = document.getElementById(room.roomId)?.querySelector(".room-condition")?.value === "new";
-    if (isNewRoom || room.area <= 0) return;
-    const amount = Number(roomSubtotals[room.roomId] || 0);
-    renovationExistingTotal += amount;
-    html += `
-      <tr class="border-b">
-        <td colspan="4" class="py-1 px-2 font-semibold">${escapeHtml(room.label)}</td>
-        <td class="py-1 px-2 text-right font-bold">${money(amount, 2)}</td>
-        <td class="no-print"></td>
-      </tr>`;
-  });
-
-  const summaryTotal = newConstructionTotal + renovationExistingTotal;
-  html += `
-    <tr class="border-t-2 bg-gray-50">
-      <td colspan="4" class="py-2 px-2 text-right font-bold">TOTAL (A+B)</td>
-      <td class="py-2 px-2 text-right font-bold">${money(summaryTotal, 2)}</td>
-      <td class="no-print"></td>
-    </tr>`;
-
   roomGroups.forEach(room => {
     const roomItems = itemsByRoom[room.roomId] || [];
     if (room.area <= 0) return;
@@ -1834,16 +1761,8 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
       </tr>`;
   });
 
-  const roomTotal = Object.values(roomSubtotals).reduce((s, v) => s + v, 0);
   html += `
         </tbody>
-        <tfoot>
-          <tr class="border-t-2">
-            <td colspan="4" class="py-4 px-2 text-right font-semibold">Overall Subtotal</td>
-            <td class="py-4 px-2 text-right font-bold">${money(projectPreliminaries + roomTotal, 2)}</td>
-            <td class="no-print"></td>
-          </tr>
-        </tfoot>
       </table>
     </div>`;
   container.innerHTML = html;
