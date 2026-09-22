@@ -95,25 +95,7 @@
       const restoreWhenReady=()=>{const ready=typeof addRoom==='function' && typeof syncBuiltUpAreaFromRooms==='function' && (window.__TERAJU_MASTER_RULE_GATE_READY===true || typeof window.__TERAJU_MASTER_QDATA==='function');if(ready){restoreSnapshot(savedState);return true}return false};
       let readyAttempts=0;const waitForPlanner=()=>{if(restoreWhenReady())return;if(readyAttempts++<25)setTimeout(waitForPlanner,200);else {console.warn('[TERAJU QUOTATION RESTORE] planner was not ready', {savedRooms});restoreSnapshot(savedState)}};waitForPlanner();
       try{if(currentQuotationNumber&&typeof quotationNumber!=='undefined')quotationNumber=currentQuotationNumber}catch{}const roomsMatch=()=>{const cards=[...(document.querySelectorAll('#roomsContainer .room-card')||[])];if(cards.length!==savedRooms.length)return false;return savedRooms.every((roomData,index)=>String(cards[index]?.querySelector('.room-area')?.value??'')===String(roomData.area??'')&&String(cards[index]?.querySelector('.room-type')?.value??'')===String(roomData.type||'other'))};let verifyAttempts=0;const verifyRestore=()=>{if(!savedRooms.length||roomsMatch())return;if(verifyAttempts++>=40){console.warn('[TERAJU QUOTATION RESTORE] room restore did not stick',savedRooms);return}restoreSnapshot(savedState);setTimeout(verifyRestore,250)};setTimeout(verifyRestore,500);
-      // Existing estimates are authoritative. Protect the saved room schedule through the remaining
-      // planner/bootstrap lifecycle; new estimates keep the normal room lifecycle.
-      const guardContainer=document.getElementById('roomsContainer');
-      if(guardContainer&&savedRooms.length){
-        let guardRuns=0;
-        let guardTimer=null;
-        const guardObserver=new MutationObserver(()=>{
-          if(roomsMatch())return;
-          if(guardRuns++>=12){guardObserver.disconnect();if(guardTimer)clearInterval(guardTimer);return}
-          restoreSnapshot(savedState);
-        });
-        guardObserver.observe(guardContainer,{childList:true,subtree:true});
-        guardTimer=setInterval(()=>{
-          if(roomsMatch()||guardRuns++>=12){guardObserver.disconnect();clearInterval(guardTimer);return}
-          restoreSnapshot(savedState);
-        },500);
-        setTimeout(()=>{guardObserver.disconnect();clearInterval(guardTimer)},7000);
-      }
-      trackEvent('quotation_opened', {quotation_id:quotation.quotationId, quotation_number:currentQuotationNumber, quotation_type:currentQuotationType === 'detail' ? 'detailed' : 'simple'});toast(`Cost Estimate ${currentQuotationNumber||currentQuotationId} loaded. Rooms: ${savedRooms.length}`)}catch(error){console.error(error);toast(error.message||'Unable to load cost estimate.',true)} }
+      trackEvent('quotation_opened', {quotation_id:quotation.quotationId, quotation_number:currentQuotationNumber, quotation_type:currentQuotationType === 'detail' ? 'detailed' : 'simple'});toast(`Cost Estimate ${currentQuotationNumber||currentQuotationId} loaded.`)}catch(error){console.error(error);toast(error.message||'Unable to load cost estimate.',true)} }
   function init(){ if(!document.getElementById('quotationGenerator'))return; ensureProjectId();currentQuotationType=selectedQuotationType();injectStyles();addPlannerControls();bindQuotationType();if(!wrapGenerate())setTimeout(wrapGenerate,500);if(currentQuotationId)setTimeout(loadQuotationForEdit,900);const observer=new MutationObserver(()=>{addPlannerControls();bindQuotationType();wrapGenerate()});observer.observe(document.documentElement,{childList:true,subtree:true});setTimeout(()=>observer.disconnect(),20000); }
   window.tcQuotationRecords={saveQuotation,loadQuotationForEdit};
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
