@@ -2370,7 +2370,7 @@ function buildQuotationBody(data, revealDetails = false) {
     rate.className = 'py-1 px-2 text-right';
     rate.textContent = revealDetails && item.rate !== undefined && item.rate !== null ? money(item.rate, 2) : '';
     const amount = document.createElement('td');
-    amount.className = 'py-1 px-2 text-right';
+    amount.className = 'quotation-amount-cell py-1 px-2 text-right';
     amount.textContent = revealDetails && item.amount !== undefined && item.amount !== null ? money(item.amount, 2) : '';
     tr.append(description, unit, qty, rate, amount);
     return tr;
@@ -2384,7 +2384,7 @@ function buildQuotationBody(data, revealDetails = false) {
     headerLabel.className = 'py-1 px-2 font-bold';
     headerLabel.textContent = section.label;
     const headerAmount = document.createElement('td');
-    headerAmount.className = 'py-1 px-2 text-right font-bold';
+    headerAmount.className = 'quotation-amount-cell py-1 px-2 text-right font-bold';
     headerAmount.textContent = money(section.amount, 2);
     header.append(headerLabel, headerAmount);
     tbody.appendChild(header);
@@ -2424,7 +2424,7 @@ function buildQuotationBody(data, revealDetails = false) {
     labelCell.className = 'py-1 px-2 text-left ' + (heading ? 'font-bold' : 'font-semibold');
     labelCell.textContent = label;
     const amountCell = document.createElement('td');
-    amountCell.className = 'py-1 px-2 text-right font-bold';
+    amountCell.className = 'quotation-amount-cell py-1 px-2 text-right font-bold';
     amountCell.textContent = money(value, 2);
     tr.append(labelCell, amountCell);
     tbody.appendChild(tr);
@@ -2470,7 +2470,7 @@ function buildQuotationBody(data, revealDetails = false) {
     labelCell.className = 'py-3 px-2 text-right font-bold';
     labelCell.textContent = 'TOTAL';
     const amountCell = document.createElement('td');
-    amountCell.className = 'py-3 px-2 text-right font-bold';
+    amountCell.className = 'quotation-amount-cell py-3 px-2 text-right font-bold';
     amountCell.textContent = money(total, 2);
     tr.append(labelCell, amountCell);
     tbody.appendChild(tr);
