@@ -1780,8 +1780,20 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
             <div class="hidden print:block leading-6">${escapeHtml(item.description)}</div>
           </td>
           <td class="py-1 px-2">${escapeHtml(item.unit)}</td>
-          <td class="py-1 px-2 text-right">${formatQty(item.qty)}</td>
-          <td class="py-1 px-2 text-right"><span class="homeowner-rate-blurred no-print inline-block">${money(item.rate, 2)}</span><span class="hidden print:inline">${money(item.rate, 2)}</span></td>
+          <td class="py-1 px-2 text-right">
+            ${IS_CONTRACTOR
+              ? `<input type="number" min="0" step="1" value="${formatQty(item.qty)}" onchange="editItemQuantity('${item.id}', this.value)"
+                  class="contractor-only no-print w-24 border rounded-none px-1 py-1 text-right bg-white">`
+              : `<span class="homeowner-locked no-print inline-block px-1 py-1 rounded-none text-sm">${formatQty(item.qty)}</span>`}
+            <span class="hidden print:inline">${formatQty(item.qty)}</span>
+          </td>
+          <td class="py-1 px-2 text-right">
+            ${IS_CONTRACTOR
+              ? `<input type="number" min="0" step="0.01" value="${normalizeRate(item.rate).toFixed(2)}" onchange="editItemRate('${item.id}', this.value)"
+                  class="contractor-only no-print w-28 border rounded-none px-1 py-1 text-right bg-white">`
+              : `<span class="homeowner-rate-blurred no-print inline-block px-1 py-1 rounded-none text-sm">${money(item.rate, 2)}</span>`}
+            <span class="hidden print:inline">${money(item.rate, 2)}</span>
+          </td>
           <td class="estimate-amount-cell py-1 px-2 text-right font-medium tabular-nums">${money(item.amount, 2)}</td>
           <td class="no-print py-1 px-2 text-center">
             <button type="button" onclick="${String(item.id).startsWith('manual-') ? 'removeManualItem(\'' + (item.manualKey || item.roomId) + '\',\'' + item.id + '\')' : 'excludeItem(\'' + item.id + '\')'}"
