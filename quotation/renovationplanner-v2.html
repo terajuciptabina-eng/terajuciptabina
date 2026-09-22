@@ -2256,7 +2256,7 @@ function buildQuotationBody(data, revealDetails = false) {
   prelimManual.forEach(item => prelimItems.push({
     description: String(item.description || '').trim(),
     unit: String(item.unit || '').trim(),
-    quantity: item.quantity,
+    quantity: item.qty,
     rate: item.rate,
     amount: item.amount
   }));
@@ -2294,7 +2294,7 @@ function buildQuotationBody(data, revealDetails = false) {
       entry.items.map(item => ({
         description: String(item.description || '').trim(),
         unit: String(item.unit || '').trim(),
-        quantity: item.quantity,
+        quantity: item.qty,
         rate: item.rate,
         amount: item.amount
         })),
@@ -2315,7 +2315,7 @@ function buildQuotationBody(data, revealDetails = false) {
     optionalItems.map(item => ({
       description: String(item.description || '').trim(),
       unit: String(item.unit || '').trim(),
-      quantity: item.quantity,
+      quantity: item.qty,
       rate: item.rate,
       amount: item.amount
     }))
@@ -2333,7 +2333,7 @@ function buildQuotationBody(data, revealDetails = false) {
       roomItems.map(item => ({
         description: String(item.description || '').trim(),
       unit: String(item.unit || '').trim(),
-      quantity: item.quantity,
+      quantity: item.qty,
       rate: item.rate,
       amount: item.amount
       })),
