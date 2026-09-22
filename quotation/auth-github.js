@@ -56,8 +56,16 @@
       setTimeout(() => popup.remove(), 300);
     }, 5000);
   }
+  function normalizeRecord(record) {
+    if (!record || typeof record !== 'object') return record;
+    const rawId = String(record[idKey] || record.id || record.userId || record.accountId || '').trim().toUpperCase();
+    return rawId && record[idKey] !== rawId ? { ...record, [idKey]: rawId } : record;
+  }
   function showPortal(record) {
-    setLocal(record); panel.classList.add('hidden'); portal.classList.remove('hidden'); const id = record[idKey];
+    record = normalizeRecord(record);
+    const id = String(normalizeRecord(record)?.[idKey] || '').trim().toUpperCase();
+    if (!id) return;
+    setLocal(record); panel.classList.add('hidden'); portal.classList.remove('hidden');
     welcome.innerHTML = `<span class=\"block\">Welcome, ${escapeHtml(record.profile?.name || '')}.</span>`;
     if (buildLink) buildLink.href = `quotations.html?audience=${role}&role=${role}&${idKey}=${encodeURIComponent(id)}&id=${encodeURIComponent(id)}&plannerType=build`;
     if (renoLink) renoLink.href = `quotations.html?audience=${role}&role=${role}&${idKey}=${encodeURIComponent(id)}&id=${encodeURIComponent(id)}&plannerType=renovation`;
@@ -106,5 +114,5 @@
   }, true);
   signInTab.addEventListener('click', () => setMode('signin'), true); signUpTab.addEventListener('click', () => setMode('signup'), true);
   document.getElementById('logout')?.addEventListener('click', () => { localStorage.removeItem(storageKey); location.reload(); }, true);
-  const local = getLocal(); if (local?.[idKey]) { showPortal(local); syncLocalAccount(local); } else setMode('signup');
+  const local = normalizeRecord(getLocal()); if (local?.[idKey]) { showPortal(local); syncLocalAccount(local); } else setMode('signup');
 })();
