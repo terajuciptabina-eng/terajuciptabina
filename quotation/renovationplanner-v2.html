@@ -2226,7 +2226,7 @@ function completeDetailedQuotationPayment(verified){if(verified)unlockDetailedQu
 
 function generateQuotation(){const type=getSelectedQuotationType();if(type==='detail'){const generated=generateQuotationConfirmed(type);if(generated!==false){setDetailedQuotationLocked(true);renderQuotationPreview();openDetailedQuotationPromo();}return;}setDetailedQuotationLocked(false);const generated=generateQuotationConfirmed(type);if(generated!==false)renderQuotationPreview();}
 
-function buildSimpleQuotationBody(data) {
+function buildQuotationBody(data, revealDetails = false) {
   const activeItems = Array.isArray(data?.allItems) ? data.allItems : [];
   const newRoomIds = new Set((data.roomGroups || [])
     .filter(room => document.getElementById(room.roomId)?.querySelector('.room-condition')?.value === 'new')
@@ -2345,12 +2345,16 @@ function buildSimpleQuotationBody(data) {
     description.textContent = item.description;
     const unit = document.createElement('td');
     unit.className = 'py-1 px-2';
+    unit.textContent = revealDetails ? String(item.unit || '') : '';
     const qty = document.createElement('td');
     qty.className = 'py-1 px-2 text-right';
+    qty.textContent = revealDetails && item.quantity !== undefined && item.quantity !== null ? formatQty(item.quantity) : '';
     const rate = document.createElement('td');
     rate.className = 'py-1 px-2 text-right';
+    rate.textContent = revealDetails && item.rate !== undefined && item.rate !== null ? money(item.rate, 2) : '';
     const amount = document.createElement('td');
     amount.className = 'py-1 px-2 text-right';
+    amount.textContent = revealDetails && item.amount !== undefined && item.amount !== null ? money(item.amount, 2) : '';
     tr.append(description, unit, qty, rate, amount);
     return tr;
   };
@@ -2461,6 +2465,14 @@ function buildSimpleQuotationBody(data) {
   wrap.appendChild(table);
   return wrap.outerHTML;
 }
+function buildSimpleQuotationBody(data) {
+  return buildQuotationBody(data, false);
+}
+
+function buildDetailedQuotationBody(data) {
+  return buildQuotationBody(data, true);
+}
+
 function generateQuotationConfirmed(type) {
   // PREVIEW SOURCE CONTRACT:
   // Do not calculate, refresh, or rebuild Renovation Budget here.
