@@ -2224,6 +2224,77 @@ function startDetailedQuotationPayment(){if(DETAILED_QUOTATION_PROMO){unlockDeta
 function completeDetailedQuotationPayment(verified){if(verified)unlockDetailedQuotation();}
 
 function generateQuotation(){const type=getSelectedQuotationType();if(type==='detail'){const generated=generateQuotationConfirmed(type);if(generated!==false){setDetailedQuotationLocked(true);renderQuotationPreview();openDetailedQuotationPromo();}return;}setDetailedQuotationLocked(false);const generated=generateQuotationConfirmed(type);if(generated!==false)renderQuotationPreview();}
+
+function buildSimpleQuotationBody(data) {
+  const activeItems = Array.isArray(data?.allItems) ? data.allItems : [];
+  const newRoomIds = new Set((data.roomGroups || [])
+    .filter(room => document.getElementById(room.roomId)?.querySelector('.room-condition')?.value === 'new')
+    .map(room => room.roomId));
+  const rows = [];
+  const addRow = (areaGroup, description, amount) => {
+    const value = Number(amount) || 0;
+    if (value !== 0) rows.push({ areaGroup, description, amount: value });
+  };
+  const prelimManual = (typeof manualItems !== 'undefined' ? (manualItems.get('__prelim__') || []) : [])
+    .filter(item => !excludedItems.has(item.id));
+  const prelimTotal = (Number(data.projectPreliminaries) || 0) + prelimManual.reduce((sum, item) => sum + (Number(item.amount) || 0), 0);
+  addRow('PRELIMINARIES', 'Project / Preliminaries', prelimTotal);
+  [['STRUCTURES','Structural Works'],['ARCHITECTURES','Architectural Works'],['ELECTRICAL','Electrical Works'],['DOORS & WINDOWS','Doors & Windows']].forEach(([group, description]) => {
+    const total = activeItems.filter(item =>
+      (item.roomId === 'project' || newRoomIds.has(item.roomId)) &&
+      String(item.group || '').trim().toUpperCase() === group &&
+      !['external-work','preliminaries'].includes(String(item.category || '').toLowerCase())
+    ).reduce((sum, item) => sum + (Number(item.amount) || 0), 0);
+    addRow(group, description, total);
+  });
+  const optionalTotal = activeItems.filter(item =>
+    item.roomId === 'project' && item.optional === true &&
+    String(item.category || '').toLowerCase() !== 'preliminaries'
+  ).reduce((sum, item) => sum + (Number(item.amount) || 0), 0);
+  addRow('OPTIONAL WORKS', 'Selected Optional Works', optionalTotal);
+  (data.roomGroups || []).forEach(room => {
+    if (newRoomIds.has(room.roomId) || Number(room.area) <= 0) return;
+    addRow('RENOVATION EXISTING AREA', room.label, data.roomSubtotals?.[room.roomId] || 0);
+  });
+
+  const table = document.createElement('table');
+  table.className = 'simple-quotation-table';
+  table.innerHTML = '<colgroup><col><col><col><col></colgroup><thead><tr class="border-b-2"><th class="py-2 px-2 text-left">No.</th><th class="py-2 px-2 text-left">Area / Group</th><th class="py-2 px-2 text-left">Description</th><th class="py-2 px-2 text-right">Amount (RM)</th></tr></thead>';
+  const tbody = document.createElement('tbody');
+  rows.forEach((row, index) => {
+    const tr = document.createElement('tr');
+    tr.className = 'border-b align-top';
+    [String(index + 1), row.areaGroup, row.description, money(row.amount, 2)].forEach((value, col) => {
+      const td = document.createElement('td');
+      td.className = 'py-2 px-2' + (col === 3 ? ' text-right font-semibold' : '');
+      td.textContent = value;
+      tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
+  });
+  table.appendChild(tbody);
+  const total = rows.reduce((sum, row) => sum + row.amount, 0);
+  if (total !== 0) {
+    const tfoot = document.createElement('tfoot');
+    const tr = document.createElement('tr');
+    tr.className = 'border-t-2';
+    const label = document.createElement('td');
+    label.colSpan = 3;
+    label.className = 'py-3 px-2 text-right font-bold';
+    label.textContent = 'TOTAL';
+    const value = document.createElement('td');
+    value.className = 'py-3 px-2 text-right font-bold';
+    value.textContent = money(total, 2);
+    tr.append(label, value);
+    tfoot.appendChild(tr);
+    table.appendChild(tfoot);
+  }
+  const wrap = document.createElement('div');
+  wrap.className = 'quotation-budget-snapshot-wrap';
+  wrap.appendChild(table);
+  return wrap.outerHTML;
+}
+
 function generateQuotationConfirmed(type) {
   // PREVIEW SOURCE CONTRACT:
   // Do not calculate, refresh, or rebuild Renovation Budget here.
@@ -2256,32 +2327,29 @@ function generateQuotationConfirmed(type) {
     year: "numeric"
   }).format(new Date());
 
-  // Take the actual rendered Renovation Budget DOM, not another calculation path.
-  const snapshot = budget.cloneNode(true);
-  snapshot.classList.add("quotation-budget-snapshot");
-
-  // Strip planner-only controls and turn every editable field into its current
-  // displayed value. This keeps the rows/amounts identical to Renovation Budget.
-  snapshot.querySelectorAll(".no-print").forEach(el => el.remove());
-  snapshot.querySelectorAll("textarea,input,select").forEach(control => {
-    const span = document.createElement("span");
-    span.className = "quotation-snapshot-value";
-
-    if (control.tagName === "SELECT") {
-      span.textContent = control.options[control.selectedIndex]?.textContent?.trim() || control.value || "";
-    } else {
-      span.textContent = control.value ?? "";
-    }
-
-    control.replaceWith(span);
-  });
-
-  // Budget contains homeowner/print duplicates for some fields. Keep one
-  // static value per cell in the Preview.
-  snapshot.querySelectorAll(".homeowner-locked").forEach(el => el.remove());
-  snapshot.querySelectorAll(".hidden.print\\:block,.hidden.print\\:inline").forEach(el => {
-    el.classList.remove("hidden", "print:block", "print:inline");
-  });
+  let quotationBody = '';
+  if (type === 'simple') {
+    quotationBody = buildSimpleQuotationBody(data);
+  } else {
+    const snapshot = budget.cloneNode(true);
+    snapshot.classList.add("quotation-budget-snapshot");
+    snapshot.querySelectorAll(".no-print").forEach(el => el.remove());
+    snapshot.querySelectorAll("textarea,input,select").forEach(control => {
+      const span = document.createElement("span");
+      span.className = "quotation-snapshot-value";
+      if (control.tagName === "SELECT") {
+        span.textContent = control.options[control.selectedIndex]?.textContent?.trim() || control.value || "";
+      } else {
+        span.textContent = control.value ?? "";
+      }
+      control.replaceWith(span);
+    });
+    snapshot.querySelectorAll(".homeowner-locked").forEach(el => el.remove());
+    snapshot.querySelectorAll(".hidden.print\\:block,.hidden.print\\:inline").forEach(el => {
+      el.classList.remove("hidden", "print:block", "print:inline");
+    });
+    quotationBody = '<div class="quotation-budget-snapshot-wrap">' + snapshot.innerHTML + '</div>';
+  }
 
   content.innerHTML = `
     <div class="quotation-preview-header">
@@ -2316,9 +2384,7 @@ function generateQuotationConfirmed(type) {
         </div>
       </div>
     </div>
-    <div class="quotation-budget-snapshot-wrap">
-      ${snapshot.innerHTML}
-    </div>
+    ${quotationBody}
     <div class="quotation-preview-footer mt-8 pt-5 border-t text-sm">
       <p class="font-semibold mb-2">Terms / Notes</p>
       <ul class="list-disc pl-5 space-y-1 text-gray-600">
