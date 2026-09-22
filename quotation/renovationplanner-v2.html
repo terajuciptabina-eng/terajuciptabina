@@ -1419,6 +1419,119 @@ function updateEstimate() {
   renderEstimate(activeItems, roomGroups, roomSubtotals, projectPreliminaries, projectPreliminaries + roomTotal);
 }
 
+function renderBudgetSummaryAtBottom(items, roomGroups, roomSubtotals, projectPreliminaries) {
+  const container = document.getElementById("estimateContent");
+  const table = container?.querySelector("table");
+  const tbody = table?.querySelector("tbody");
+  if (!table || !tbody) return;
+
+  // Remove only the legacy Build Planner summary block.
+  const rows = [...tbody.querySelectorAll(":scope > tr")];
+  const summaryStart = rows.findIndex(row => row.textContent.trim() === "New Construction Summary");
+  if (summaryStart >= 0) {
+    let summaryEnd = summaryStart;
+    while (summaryEnd < rows.length && !rows[summaryEnd].textContent.includes("New Construction Total")) {
+      summaryEnd++;
+    }
+    if (summaryEnd < rows.length) {
+      for (let i = summaryStart; i <= summaryEnd; i++) rows[i].remove();
+    }
+  }
+
+  const newRoomIds = new Set(
+    roomGroups
+      .filter(room => document.getElementById(room.roomId)?.querySelector(".room-condition")?.value === "new")
+      .map(room => room.roomId)
+  );
+
+  const groupTotals = {};
+  items.forEach(item => {
+    if (
+      excludedItems.has(item.id) ||
+      !((item.roomId === "project") || newRoomIds.has(item.roomId)) ||
+      String(item.category || "").toLowerCase() === "external-work" ||
+      String(item.category || "").toLowerCase() === "preliminaries"
+    ) return;
+
+    const group = String(item.group || "").trim().toUpperCase();
+    if (group) groupTotals[group] = (groupTotals[group] || 0) + (Number(item.amount) || 0);
+  });
+
+  const prelimManualItems = (manualItems.get("__prelim__") || [])
+    .filter(item => !excludedItems.has(item.id));
+  const prelimManualTotal = prelimManualItems
+    .reduce((sum, item) => sum + (Number(item.amount) || 0), 0);
+  const preliminariesTotal = Number(projectPreliminaries || 0) + prelimManualTotal;
+
+  const renovationExistingRooms = roomGroups.filter(room => {
+    const isNewRoom = document.getElementById(room.roomId)
+      ?.querySelector(".room-condition")?.value === "new";
+    return !isNewRoom && Number(room.area) > 0;
+  });
+
+  const renovationExistingTotal = renovationExistingRooms
+    .reduce((sum, room) => sum + (Number(roomSubtotals[room.roomId]) || 0), 0);
+
+  const newConstructionTotal =
+    preliminariesTotal +
+    ["STRUCTURES", "ARCHITECTURES", "ELECTRICAL", "DOORS & WINDOWS"]
+      .reduce((sum, group) => sum + (Number(groupTotals[group]) || 0), 0);
+
+  const summaryTotal = newConstructionTotal + renovationExistingTotal;
+
+  const row = (label, amount, className = "border-b", heading = false) => {
+    const tr = document.createElement("tr");
+    tr.className = className;
+    const tdLabel = document.createElement("td");
+    tdLabel.colSpan = 4;
+    tdLabel.className = "py-1 px-2 " + (heading ? "font-bold" : "font-semibold");
+    tdLabel.textContent = label;
+    const tdAmount = document.createElement("td");
+    tdAmount.className = "py-1 px-2 text-right font-bold";
+    tdAmount.textContent = money(amount, 2);
+    const tdAction = document.createElement("td");
+    tdAction.className = "no-print";
+    tr.append(tdLabel, tdAmount, tdAction);
+    return tr;
+  };
+
+  const headingRow = label => {
+    const tr = document.createElement("tr");
+    tr.className = "bg-gray-100 border-b";
+    const td = document.createElement("td");
+    td.colSpan = 6;
+    td.className = "py-1 px-2 font-bold";
+    td.textContent = label;
+    tr.appendChild(td);
+    return tr;
+  };
+
+  const fragment = document.createDocumentFragment();
+  fragment.appendChild(headingRow("SUMMARY"));
+  fragment.appendChild(headingRow("PRELIMINARIES"));
+  fragment.appendChild(row("PROJECT PRELIMINARIES", projectPreliminaries));
+
+  prelimManualItems.forEach(item => {
+    fragment.appendChild(row(item.description, item.amount));
+  });
+
+  fragment.appendChild(headingRow("NEW CONSTRUCTION"));
+  ["STRUCTURES", "ARCHITECTURES", "ELECTRICAL", "DOORS & WINDOWS"].forEach(group => {
+    fragment.appendChild(row(group, groupTotals[group] || 0));
+  });
+
+  fragment.appendChild(headingRow("RENOVATION EXISTING AREA"));
+  renovationExistingRooms.forEach(room => {
+    fragment.appendChild(row(room.label, roomSubtotals[room.roomId] || 0));
+  });
+
+  fragment.appendChild(row("TOTAL", summaryTotal, "border-t-2 bg-gray-50", true));
+
+  const tfoot = table.querySelector("tfoot");
+  if (tfoot) tbody.appendChild(fragment);
+  else tbody.appendChild(fragment);
+}
+
 function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, total) {
   const container = document.getElementById("estimateContent");
   const customer = document.getElementById("customerName")?.value || "Not specified";
@@ -1734,6 +1847,7 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
       </table>
     </div>`;
   container.innerHTML = html;
+  renderBudgetSummaryAtBottom(items, roomGroups, roomSubtotals, projectPreliminaries);
   renderRemovedItems();
   document.getElementById("grandTotal").textContent = money(total, 2);
   const totalBuiltAreaEl = document.getElementById("totalBuiltArea");
