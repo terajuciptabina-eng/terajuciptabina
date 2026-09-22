@@ -2256,7 +2256,7 @@ function buildQuotationBody(data, revealDetails = false) {
   prelimManual.forEach(item => prelimItems.push({
     description: String(item.description || '').trim(),
     unit: String(item.unit || '').trim(),
-    quantity: item.quantity,
+    quantity: item.qty,
     rate: item.rate,
     amount: item.amount
   }));
@@ -2294,7 +2294,7 @@ function buildQuotationBody(data, revealDetails = false) {
       entry.items.map(item => ({
         description: String(item.description || '').trim(),
         unit: String(item.unit || '').trim(),
-        quantity: item.quantity,
+        quantity: item.qty,
         rate: item.rate,
         amount: item.amount
         })),
@@ -2315,7 +2315,7 @@ function buildQuotationBody(data, revealDetails = false) {
     optionalItems.map(item => ({
       description: String(item.description || '').trim(),
       unit: String(item.unit || '').trim(),
-      quantity: item.quantity,
+      quantity: item.qty,
       rate: item.rate,
       amount: item.amount
     }))
@@ -2333,7 +2333,7 @@ function buildQuotationBody(data, revealDetails = false) {
       roomItems.map(item => ({
         description: String(item.description || '').trim(),
       unit: String(item.unit || '').trim(),
-      quantity: item.quantity,
+      quantity: item.qty,
       rate: item.rate,
       amount: item.amount
       })),
@@ -2603,7 +2603,7 @@ function generateQuotationConfirmed(type) {
 initContractorMode();
 </script>
 
-<script src="quotation-document-engine.js?v=20260922-simple-preview-v10"></script>
+<script src="quotation-document-engine.js?v=20260922-simple-preview-v11"></script>
 <script src="detailed-quotation-promo-ui.js"></script>
 <script src="location-autocomplete.js"></script>
 <script src="renovation-calculation-rules.js?v=20260921-v2-source"></script>
