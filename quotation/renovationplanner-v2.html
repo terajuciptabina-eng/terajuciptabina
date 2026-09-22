@@ -161,6 +161,10 @@
     .homeowner-rate-blurred { display:inline-block; filter:blur(5px); user-select:none; cursor:default; }
     .estimate-amount-cell { width: 20% !important; min-width: 20% !important; max-width: 20% !important; box-sizing: border-box !important; }\n    /* Safari table-layout:fixed + colspan subtotal rows places the subtotal text left of the item Amount column. Keep only subtotal amounts on the same visual right edge as item amounts. */\n
     body.contractor-mode .homeowner-locked { display: none !important; }
+    body.contractor-mode #estimateContent .homeowner-locked { display: none !important; }
+    body.contractor-mode #estimateContent textarea.contractor-only { display: block !important; }
+    body.homeowner-mode #estimateContent textarea.contractor-only { display: none !important; }
+
 
     /* =========================================================
        PRINT — CLEAN CONTINUOUS FLOW (NO EMPTY PAGES)
@@ -1682,6 +1686,25 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
         <td colspan="6" class="py-1 px-2 font-bold">New Construction / Build Planner</td>
       </tr>`;
 
+    if (IS_CONTRACTOR) {
+      const buildGroupOrder = ["STRUCTURES", "ARCHITECTURES", "ELECTRICAL", "DOORS & WINDOWS"];
+      const existingBuildGroups = new Set(projectBuildItems.map(item => String(item.group || "").trim().toUpperCase()));
+      buildGroupOrder.filter(group => !existingBuildGroups.has(group)).forEach(group => {
+        const buildManualKey = '__build__:' + group;
+        html += `
+          <tr class="bg-gray-100 border-b">
+            <td colspan="6" class="py-1 px-2">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <span class="font-bold">${escapeHtml(group)}</span>
+                <div class="contractor-only" data-build-manual-anchor="${escapeHtml(buildManualKey)}">
+                  <button type="button" onclick="addBuildGroupManualItemPrompt('${escapeHtml(group)}')" class="border rounded-lg px-2 py-1 text-xs font-semibold hover:bg-white">＋ Add New Item</button>
+                </div>
+              </div>
+            </td>
+          </tr>`;
+      });
+    }
+
     let currentGroup = "";
     let currentHierarchyKey = "";
     let currentHierarchyLabel = "";
@@ -2613,7 +2636,7 @@ function generateQuotationConfirmed(type) {
 initContractorMode();
 </script>
 
-<script src="quotation-document-engine.js?v=20260922-footer-v8"></script>
+<script src="quotation-document-engine.js?v=20260922-footer-v9"></script>
 <script src="detailed-quotation-promo-ui.js"></script>
 <script src="location-autocomplete.js"></script>
 <script src="renovation-calculation-rules.js?v=20260921-v2-source"></script>
