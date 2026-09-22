@@ -2380,13 +2380,18 @@ function buildQuotationBody(data, revealDetails = false) {
     const header = document.createElement('tr');
     header.className = 'bg-gray-100 border-b';
     const headerLabel = document.createElement('td');
-    headerLabel.colSpan = 4;
     headerLabel.className = 'py-1 px-2 font-bold';
     headerLabel.textContent = section.label;
+    const headerUnit = document.createElement('td');
+    headerUnit.className = 'py-1 px-2';
+    const headerQuantity = document.createElement('td');
+    headerQuantity.className = 'py-1 px-2';
+    const headerRate = document.createElement('td');
+    headerRate.className = 'py-1 px-2';
     const headerAmount = document.createElement('td');
     headerAmount.className = 'quotation-amount-cell py-1 px-2 text-right font-bold';
     headerAmount.textContent = money(section.amount, 2);
-    header.append(headerLabel, headerAmount);
+    header.append(headerLabel, headerUnit, headerQuantity, headerRate, headerAmount);
     tbody.appendChild(header);
 
     section.items.forEach(item => tbody.appendChild(itemRow(item)));
@@ -2420,13 +2425,18 @@ function buildQuotationBody(data, revealDetails = false) {
     const tr = document.createElement('tr');
     tr.className = 'border-b';
     const labelCell = document.createElement('td');
-    labelCell.colSpan = 4;
     labelCell.className = 'py-1 px-2 text-left ' + (heading ? 'font-bold' : 'font-semibold');
     labelCell.textContent = label;
+    const summaryUnit = document.createElement('td');
+    summaryUnit.className = 'py-1 px-2';
+    const summaryQuantity = document.createElement('td');
+    summaryQuantity.className = 'py-1 px-2';
+    const summaryRate = document.createElement('td');
+    summaryRate.className = 'py-1 px-2';
     const amountCell = document.createElement('td');
     amountCell.className = 'quotation-amount-cell py-1 px-2 text-right font-bold';
     amountCell.textContent = money(value, 2);
-    tr.append(labelCell, amountCell);
+    tr.append(labelCell, summaryUnit, summaryQuantity, summaryRate, amountCell);
     tbody.appendChild(tr);
   };
 
