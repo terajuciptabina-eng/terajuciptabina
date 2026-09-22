@@ -4,7 +4,7 @@
   window.__tcQuotationRecordsLoaded = true;
   const API_BASE = 'https://terajuciptabina.vercel.app';
   const params = new URLSearchParams(location.search);
-  const plannerType = /renovationplanner\.html?$/i.test(location.pathname) ? 'renovation' : ((params.get('plannerType') || 'build').toLowerCase() === 'renovation' ? 'renovation' : 'build');
+  const plannerType = /renovationplanner(?:-v2)?\.html?$/i.test(location.pathname) ? 'renovation' : ((params.get('plannerType') || 'build').toLowerCase() === 'renovation' ? 'renovation' : 'build');
   const role = (params.get('audience') || document.body.dataset.role || 'homeowner').toLowerCase() === 'contractor' ? 'contractor' : 'homeowner';
   const idKey = role === 'contractor' ? 'contractorId' : 'homeownerId';
   const storageKey = `teraju.${role}.github.v1`;
