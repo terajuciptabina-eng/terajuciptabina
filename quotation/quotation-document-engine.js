@@ -90,6 +90,31 @@ body.renovation-planner-page .detailed-quotation-table col:nth-child(5),
 body.renovation-planner-page .detailed-quotation-table th:nth-child(5),
 body.renovation-planner-page .detailed-quotation-table td:nth-child(5){width:15%!important}
 
+/* Simple quotation amount-column contract: every monetary value shares the exact same right edge. */
+body.renovation-planner-page .simple-quotation-table{
+  table-layout:fixed!important;
+  width:100%!important;
+}
+body.renovation-planner-page .simple-quotation-table th:nth-child(5),
+body.renovation-planner-page .simple-quotation-table td:nth-child(5){
+  text-align:right!important;
+  padding-left:8px!important;
+  padding-right:0!important;
+  font-variant-numeric:tabular-nums!important;
+  font-feature-settings:"tnum" 1!important;
+  white-space:nowrap!important;
+}
+body.renovation-planner-page .simple-quotation-table th:nth-child(3),
+body.renovation-planner-page .simple-quotation-table td:nth-child(3),
+body.renovation-planner-page .simple-quotation-table th:nth-child(4),
+body.renovation-planner-page .simple-quotation-table td:nth-child(4){
+  text-align:right!important;
+  font-variant-numeric:tabular-nums!important;
+  font-feature-settings:"tnum" 1!important;
+}
+body.renovation-planner-page .simple-quotation-table .text-right{
+  text-align:right!important;
+}
 /* Standard planner estimate alignment — alignment/column sizing only; typography unchanged. */
 
 #estimateContent table th:nth-child(1),#estimateContent table td:nth-child(1){text-align:left!important}
