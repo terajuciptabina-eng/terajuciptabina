@@ -2371,7 +2371,8 @@ function buildSimpleQuotationBody(data) {
     section.items.forEach(item => tbody.appendChild(itemRow(item)));
   });
 
-  // Keep SUMMARY inside the same five-column Simple Preview table.
+  // Keep SUMMARY inside the same five-column Simple Preview table,
+  // using the exact hierarchy shown by the live Renovation Budget summary.
   const summaryHeading = document.createElement('tr');
   summaryHeading.className = 'bg-gray-100 border-b';
   const summaryHeadingCell = document.createElement('td');
@@ -2381,39 +2382,72 @@ function buildSimpleQuotationBody(data) {
   summaryHeading.appendChild(summaryHeadingCell);
   tbody.appendChild(summaryHeading);
 
+  const appendSummaryHeading = label => {
+    const tr = document.createElement('tr');
+    tr.className = 'bg-gray-100 border-b';
+    const td = document.createElement('td');
+    td.colSpan = 5;
+    td.className = 'py-1 px-2 font-bold';
+    td.textContent = label;
+    tr.appendChild(td);
+    tbody.appendChild(tr);
+  };
+
+  const appendSummaryRow = (label, amount, heading = false) => {
+    const value = Number(amount) || 0;
+    if (value === 0) return;
+    const tr = document.createElement('tr');
+    tr.className = 'border-b';
+    const blank1 = document.createElement('td');
+    const blank2 = document.createElement('td');
+    const blank3 = document.createElement('td');
+    [blank1, blank2, blank3].forEach(td => td.className = 'py-1 px-2');
+    const labelCell = document.createElement('td');
+    labelCell.className = 'py-1 px-2 text-right ' + (heading ? 'font-bold' : 'font-semibold');
+    labelCell.textContent = label;
+    const amountCell = document.createElement('td');
+    amountCell.className = 'py-1 px-2 text-right font-bold';
+    amountCell.textContent = money(value, 2);
+    tr.append(blank1, blank2, blank3, labelCell, amountCell);
+    tbody.appendChild(tr);
+  };
+
   const summaryGroupTotals = {};
   buildItems.forEach(item => {
     const group = String(item.group || '').trim().toUpperCase();
     if (group) summaryGroupTotals[group] = (summaryGroupTotals[group] || 0) + (Number(item.amount) || 0);
   });
-  const summaryRows = [];
-  const pushSummary = (label, amount) => {
-    const value = Number(amount) || 0;
-    if (value !== 0) summaryRows.push([label, value]);
-  };
-  pushSummary('PROJECT PRELIMINARIES', prelimTotal);
-  ['STRUCTURES', 'ARCHITECTURES', 'ELECTRICAL', 'DOORS & WINDOWS'].forEach(group => {
-    pushSummary(group, summaryGroupTotals[group] || 0);
-  });
-  pushSummary('OPTIONAL WORKS', optionalTotal);
-  const existingSummaryTotal = (data.roomGroups || [])
-    .filter(room => !newRoomIds.has(room.roomId) && Number(room.area) > 0)
-    .reduce((sum, room) => sum + (Number(data.roomSubtotals?.[room.roomId]) || 0), 0);
-  pushSummary('RENOVATION EXISTING AREA', existingSummaryTotal);
 
-  summaryRows.forEach(([label, amount]) => {
-    const tr = document.createElement('tr');
-    tr.className = 'border-b';
-    const labelCell = document.createElement('td');
-    labelCell.colSpan = 4;
-    labelCell.className = 'py-1 px-2 text-right font-semibold';
-    labelCell.textContent = label;
-    const amountCell = document.createElement('td');
-    amountCell.className = 'py-1 px-2 text-right font-bold';
-    amountCell.textContent = money(amount, 2);
-    tr.append(labelCell, amountCell);
-    tbody.appendChild(tr);
+  if (prelimTotal !== 0) {
+    appendSummaryHeading('PRELIMINARIES');
+    appendSummaryRow('PROJECT PRELIMINARIES', prelimBase);
+    prelimManual.forEach(item => appendSummaryRow(item.description, item.amount));
+  }
+
+  const summaryGroups = ['STRUCTURES', 'ARCHITECTURES', 'ELECTRICAL', 'DOORS & WINDOWS']
+    .filter(group => (Number(summaryGroupTotals[group]) || 0) !== 0);
+
+  if (summaryGroups.length) {
+    appendSummaryHeading('NEW CONSTRUCTION');
+    summaryGroups.forEach(group => appendSummaryRow(group, summaryGroupTotals[group]));
+  }
+
+  const existingRooms = (data.roomGroups || []).filter(room => {
+    const isNew = newRoomIds.has(room.roomId);
+    const amount = Number(data.roomSubtotals?.[room.roomId]) || 0;
+    return !isNew && Number(room.area) > 0 && amount !== 0;
   });
+
+  if (existingRooms.length) {
+    appendSummaryHeading('RENOVATION EXISTING AREA');
+    existingRooms.forEach(room => appendSummaryRow(room.label, data.roomSubtotals?.[room.roomId] || 0));
+  }
+
+  const summaryTotal = (Number(prelimTotal) || 0) +
+    summaryGroups.reduce((sum, group) => sum + (Number(summaryGroupTotals[group]) || 0), 0) +
+    existingRooms.reduce((sum, room) => sum + (Number(data.roomSubtotals?.[room.roomId]) || 0), 0);
+
+  if (summaryTotal !== 0) appendSummaryRow('TOTAL', summaryTotal, true);
 
   const total = rows.reduce((sum, section) => sum + section.amount, 0);
   if (total !== 0) {
