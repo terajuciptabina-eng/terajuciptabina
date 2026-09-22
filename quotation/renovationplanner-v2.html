@@ -2231,36 +2231,88 @@ function buildSimpleQuotationBody(data) {
   const newRoomIds = new Set((data.roomGroups || [])
     .filter(room => document.getElementById(room.roomId)?.querySelector('.room-condition')?.value === 'new')
     .map(room => room.roomId));
+
   const rows = [];
   const addRow = (areaGroup, description, amount) => {
     const value = Number(amount) || 0;
     if (value !== 0) rows.push({ areaGroup, description, amount: value });
   };
+  const descriptionList = items => items
+    .map(item => String(item.description || '').trim())
+    .filter(Boolean);
+
+  // PRELIMINARIES: keep the full item descriptions visible in Preview,
+  // while showing one subtotal for the preliminaries section.
   const prelimManual = (typeof manualItems !== 'undefined' ? (manualItems.get('__prelim__') || []) : [])
     .filter(item => !excludedItems.has(item.id));
-  const prelimTotal = (Number(data.projectPreliminaries) || 0) + prelimManual.reduce((sum, item) => sum + (Number(item.amount) || 0), 0);
-  addRow('PRELIMINARIES', 'Project / Preliminaries', prelimTotal);
-  [['STRUCTURES','Structural Works'],['ARCHITECTURES','Architectural Works'],['ELECTRICAL','Electrical Works'],['DOORS & WINDOWS','Doors & Windows']].forEach(([group, description]) => {
-    const total = activeItems.filter(item =>
-      (item.roomId === 'project' || newRoomIds.has(item.roomId)) &&
-      String(item.group || '').trim().toUpperCase() === group &&
-      !['external-work','preliminaries'].includes(String(item.category || '').toLowerCase())
-    ).reduce((sum, item) => sum + (Number(item.amount) || 0), 0);
-    addRow(group, description, total);
+  const prelimDescriptions = [];
+  if ((Number(data.projectPreliminaries) || 0) !== 0) prelimDescriptions.push('Project / Preliminaries');
+  prelimDescriptions.push(...descriptionList(prelimManual));
+  const prelimTotal = (Number(data.projectPreliminaries) || 0) +
+    prelimManual.reduce((sum, item) => sum + (Number(item.amount) || 0), 0);
+  addRow('PRELIMINARIES', prelimDescriptions.join(' • ') || 'Project / Preliminaries', prelimTotal);
+
+  // NEW CONSTRUCTION: subtotal by the lowest hierarchy/sub-group from
+  // masterPath, not by the top-level group. Every item description remains
+  // visible inside that sub-group row.
+  const buildItems = activeItems.filter(item =>
+    !excludedItems.has(item.id) &&
+    (item.roomId === 'project' || newRoomIds.has(item.roomId)) &&
+    !item.optional &&
+    !['external-work', 'preliminaries'].includes(String(item.category || '').toLowerCase())
+  );
+
+  const subgroupMap = new Map();
+  buildItems.forEach(item => {
+    const group = String(item.group || '').trim().toUpperCase() || 'OTHER';
+    const path = String(item.masterPath || '')
+      .split('/')
+      .map(value => value.trim())
+      .filter(Boolean);
+    const subgroup = path.length > 1 ? path[path.length - 2] : group;
+    const key = group + '||' + subgroup;
+    if (!subgroupMap.has(key)) subgroupMap.set(key, { group, subgroup, items: [], amount: 0 });
+    const entry = subgroupMap.get(key);
+    entry.items.push(item);
+    entry.amount += Number(item.amount) || 0;
   });
-  const optionalTotal = activeItems.filter(item =>
-    item.roomId === 'project' && item.optional === true &&
+
+  subgroupMap.forEach(entry => {
+    const descriptions = descriptionList(entry.items);
+    addRow(entry.group + ' / ' + entry.subgroup, descriptions.join(' • ') || entry.subgroup, entry.amount);
+  });
+
+  // OPTIONAL WORKS: keep selected optional item descriptions visible and
+  // subtotal them separately so they are not double-counted above.
+  const optionalItems = activeItems.filter(item =>
+    !excludedItems.has(item.id) &&
+    item.roomId === 'project' &&
+    item.optional === true &&
     String(item.category || '').toLowerCase() !== 'preliminaries'
-  ).reduce((sum, item) => sum + (Number(item.amount) || 0), 0);
-  addRow('OPTIONAL WORKS', 'Selected Optional Works', optionalTotal);
+  );
+  const optionalTotal = optionalItems.reduce((sum, item) => sum + (Number(item.amount) || 0), 0);
+  addRow(
+    'OPTIONAL WORKS',
+    descriptionList(optionalItems).join(' • ') || 'Selected Optional Works',
+    optionalTotal
+  );
+
+  // EXISTING RENOVATION AREAS: subtotal by room/area, but retain every
+  // underlying item description in the Preview.
   (data.roomGroups || []).forEach(room => {
     if (newRoomIds.has(room.roomId) || Number(room.area) <= 0) return;
-    addRow('RENOVATION EXISTING AREA', room.label, data.roomSubtotals?.[room.roomId] || 0);
+    const roomItems = (data.itemsByRoom?.[room.roomId] || [])
+      .filter(item => !excludedItems.has(item.id));
+    addRow(
+      'RENOVATION EXISTING AREA',
+      descriptionList(roomItems).join(' • ') || room.label,
+      data.roomSubtotals?.[room.roomId] || 0
+    );
   });
 
   const table = document.createElement('table');
   table.className = 'simple-quotation-table';
-  table.innerHTML = '<colgroup><col><col><col><col></colgroup><thead><tr class="border-b-2"><th class="py-2 px-2 text-left">No.</th><th class="py-2 px-2 text-left">Area / Group</th><th class="py-2 px-2 text-left">Description</th><th class="py-2 px-2 text-right">Amount (RM)</th></tr></thead>';
+  table.innerHTML = '<colgroup><col><col><col><col></colgroup><thead><tr class="border-b-2"><th class="py-2 px-2 text-left">No.</th><th class="py-2 px-2 text-left">Area / Sub Group</th><th class="py-2 px-2 text-left">Description</th><th class="py-2 px-2 text-right">Amount (RM)</th></tr></thead>';
   const tbody = document.createElement('tbody');
   rows.forEach((row, index) => {
     const tr = document.createElement('tr');
@@ -2268,12 +2320,17 @@ function buildSimpleQuotationBody(data) {
     [String(index + 1), row.areaGroup, row.description, money(row.amount, 2)].forEach((value, col) => {
       const td = document.createElement('td');
       td.className = 'py-2 px-2' + (col === 3 ? ' text-right font-semibold' : '');
-      td.textContent = value;
+      if (col === 2) {
+        td.innerHTML = String(value).split(' • ').map(part => '<div class="mb-1 last:mb-0">' + escapeHtml(part) + '</div>').join('');
+      } else {
+        td.textContent = value;
+      }
       tr.appendChild(td);
     });
     tbody.appendChild(tr);
   });
   table.appendChild(tbody);
+
   const total = rows.reduce((sum, row) => sum + row.amount, 0);
   if (total !== 0) {
     const tfoot = document.createElement('tfoot');
@@ -2290,12 +2347,12 @@ function buildSimpleQuotationBody(data) {
     tfoot.appendChild(tr);
     table.appendChild(tfoot);
   }
+
   const wrap = document.createElement('div');
   wrap.className = 'quotation-budget-snapshot-wrap';
   wrap.appendChild(table);
   return wrap.outerHTML;
 }
-
 function generateQuotationConfirmed(type) {
   // PREVIEW SOURCE CONTRACT:
   // Do not calculate, refresh, or rebuild Renovation Budget here.
