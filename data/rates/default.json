@@ -48,8 +48,8 @@
     "rule_porch_flat_roof_formwork_39": 55,
     "rule_porch_flat_roof_brc_40": 20.5,
     "rule_porch_roof_metal_roofing_sheet_41": 450,
-    "rule_main_building_brickwall_internal_wall_42": 50,
-    "rule_main_building_brickwall_external_wall_43": 50,
+    "rule_main_building_brickwall_internal_wall_42": 75,
+    "rule_main_building_brickwall_external_wall_43": 120,
     "rule_main_building_floor_tiles_internal_44": 95,
     "rule_main_building_floor_tiles_external_45": 150,
     "rule_main_building_painting_internal_46": 30,
@@ -665,5 +665,5 @@
       "groupTitle": "EXTERNAL WORK"
     }
   },
-  "updatedAt": "2026-09-22T09:36:01.024Z"
+  "updatedAt": "2026-09-22T09:52:57.882Z"
 }
