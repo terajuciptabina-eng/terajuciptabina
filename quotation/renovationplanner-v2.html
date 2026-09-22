@@ -125,13 +125,11 @@
        Only editability differs; row height/spacing must not change by audience. */
     #estimateContent table textarea {
       min-height: 40px !important;
-      height: 40px !important;
-      box-sizing: border-box !important;
-      field-sizing: auto !important;
+      height: auto !important;
+      field-sizing: content;
       resize: none !important;
       overflow: hidden !important;
       white-space: pre-wrap !important;
-      line-height: 16px !important;
     }
     #estimateContent table .homeowner-locked {
       min-height: 40px !important;
@@ -1625,7 +1623,7 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
       <tr class="border-b">
         <td class="py-1 px-2 align-top">
           <textarea rows="2" onchange="editItemDescription('project-preliminaries', this.value)"
-            class="contractor-only no-print w-full min-w-0 max-w-full box-border border rounded-none px-2 py-1 bg-white leading-4 resize-none overflow-hidden">${escapeHtml(customDescriptions.has("project-preliminaries") ? customDescriptions.get("project-preliminaries") : "Submission of Renovation Permit Application and Engineer's Drawings to the Local Authority")}</textarea>
+            class="contractor-only no-print w-full min-w-[280px] border rounded-none px-2 py-1 bg-white leading-4 resize-none">${escapeHtml(customDescriptions.has("project-preliminaries") ? customDescriptions.get("project-preliminaries") : "Submission of Renovation Permit Application and Engineer's Drawings to the Local Authority")}</textarea>
           <div class="homeowner-locked no-print p-1 rounded-none leading-4">${escapeHtml(customDescriptions.has("project-preliminaries") ? customDescriptions.get("project-preliminaries") : "Submission of Renovation Permit Application and Engineer's Drawings to the Local Authority")}</div>
           <div class="hidden print:block leading-6">${escapeHtml(customDescriptions.has("project-preliminaries") ? customDescriptions.get("project-preliminaries") : "Submission of Renovation Permit Application and Engineer's Drawings to the Local Authority")}</div>
         </td>
@@ -1776,7 +1774,7 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
         <tr class="border-b hover:bg-gray-50">
           <td class="py-1 px-2 align-top">
             <textarea rows="2" onchange="editItemDescription('${item.id}', this.value)"
-              class="contractor-only no-print w-full min-w-0 max-w-full box-border border rounded-none px-2 py-1 bg-white leading-4 resize-none overflow-hidden">${escapeHtml(item.description)}</textarea>
+              class="contractor-only no-print w-full min-w-[280px] border rounded-none px-2 py-1 bg-white leading-4 resize-none">${escapeHtml(item.description)}</textarea>
             <div class="homeowner-locked no-print p-1 rounded-none">${escapeHtml(item.description)}</div>
             <div class="hidden print:block leading-6">${escapeHtml(item.description)}</div>
           </td>
@@ -1823,7 +1821,7 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
         <tr class="border-b hover:bg-gray-50">
           <td class="py-1 px-2 align-top">
             <textarea rows="2" onchange="editItemDescription('${item.id}', this.value)"
-              class="contractor-only no-print w-full min-w-0 max-w-full box-border border rounded-none px-2 py-1 bg-white leading-4 resize-none overflow-hidden">${escapeHtml(item.description)}</textarea>
+              class="contractor-only no-print w-full min-w-[280px] border rounded-none px-2 py-1 bg-white leading-4 resize-none">${escapeHtml(item.description)}</textarea>
             <div class="homeowner-locked no-print p-1 rounded-none leading-4">${escapeHtml(item.description)}</div>
             <div class="hidden print:block leading-6">${escapeHtml(item.description)}</div>
           </td>
@@ -1864,19 +1862,11 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
       </table>
     </div>`;
   container.innerHTML = html;
-  resizeEstimateDescriptionFields();
   renderBudgetSummaryAtBottom(items, roomGroups, roomSubtotals, projectPreliminaries);
   renderRemovedItems();
   document.getElementById("grandTotal").textContent = money(total, 2);
   const totalBuiltAreaEl = document.getElementById("totalBuiltArea");
   if (totalBuiltAreaEl) totalBuiltAreaEl.textContent = formatQty(totalBuiltArea) + " sqft";
-}
-
-function resizeEstimateDescriptionFields() {
-  document.querySelectorAll('#estimateContent table textarea').forEach(el => {
-    el.style.height = '40px';
-    el.style.height = Math.max(40, el.scrollHeight) + 'px';
-  });
 }
 
 function editRoomLabel(roomId, value) {
@@ -2646,7 +2636,7 @@ function generateQuotationConfirmed(type) {
 initContractorMode();
 </script>
 
-<script src="quotation-document-engine.js?v=20260922-footer-v11"></script>
+<script src="quotation-document-engine.js?v=20260922-footer-v9"></script>
 <script src="detailed-quotation-promo-ui.js"></script>
 <script src="location-autocomplete.js"></script>
 <script src="renovation-calculation-rules.js?v=20260921-v2-source"></script>
