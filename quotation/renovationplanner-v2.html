@@ -1603,45 +1603,6 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
 
   }
 
-  // Final budget summary: keep the category order fixed and separate
-  // New Construction from Renovation Existing Area.
-  html += `
-    <tr class="bg-gray-100 border-b">
-      <td colspan="6" class="py-1 px-2 font-bold">SUMMARY</td>
-    </tr>
-    <tr class="bg-gray-50 border-b">
-      <td colspan="6" class="py-1 px-2 font-bold">A. NEW CONSTRUCTION</td>
-    </tr>
-    <tr class="border-b">
-      <td colspan="4" class="py-1 px-2 font-semibold">PRELIMINARIES</td>
-      <td class="py-1 px-2 text-right font-bold">${money(projectPreliminaries, 2)}</td>
-      <td class="no-print"></td>
-    </tr>`;
-
-  ["STRUCTURES", "ARCHITECTURES", "ELECTRICAL", "DOORS & WINDOWS"].forEach(group => {
-    html += `
-      <tr class="border-b">
-        <td colspan="4" class="py-1 px-2 font-semibold">${escapeHtml(group)}</td>
-        <td class="py-1 px-2 text-right font-bold">${money(groupTotals[group] || 0, 2)}</td>
-        <td class="no-print"></td>
-      </tr>`;
-  });
-
-  const newConstructionTotal = projectPreliminaries +
-    ["STRUCTURES", "ARCHITECTURES", "ELECTRICAL", "DOORS & WINDOWS"]
-      .reduce((sum, group) => sum + (Number(groupTotals[group]) || 0), 0);
-
-  html += `
-    <tr class="border-t-2 bg-gray-50">
-      <td colspan="4" class="py-2 px-2 text-right font-bold">NEW CONSTRUCTION TOTAL</td>
-      <td class="py-2 px-2 text-right font-bold">${money(newConstructionTotal, 2)}</td>
-      <td class="no-print"></td>
-    </tr>
-    <tr class="bg-gray-50 border-b">
-      <td colspan="6" class="py-1 px-2 font-bold">B. RENOVATION EXISTING AREA</td>
-    </tr>`;
-
-  let renovationExistingTotal = 0;
   roomGroups.forEach(room => {
     const isNewRoom = document.getElementById(room.roomId)?.querySelector(".room-condition")?.value === "new";
     if (isNewRoom || room.area <= 0) return;
@@ -1720,6 +1681,100 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
         <td class="no-print"></td>
       </tr>`;
   });
+
+  // Final budget summary is rendered AFTER every detailed item.
+  // It only summarizes values already calculated by the existing estimate engine.
+  const prelimManualItems = (manualItems.get("__prelim__") || [])
+    .filter(item => !excludedItems.has(item.id));
+  const prelimManualTotal = prelimManualItems
+    .reduce((sum, item) => sum + (Number(item.amount) || 0), 0);
+  const preliminariesTotal = projectPreliminaries + prelimManualTotal;
+
+  const renovationExistingRooms = roomGroups.filter(room => {
+    const isNewRoom = document.getElementById(room.roomId)
+      ?.querySelector(".room-condition")?.value === "new";
+    return !isNewRoom && room.area > 0;
+  });
+
+  const renovationExistingTotal = renovationExistingRooms
+    .reduce((sum, room) => sum + (Number(roomSubtotals[room.roomId]) || 0), 0);
+
+  const newConstructionTotal =
+    preliminariesTotal +
+    ["STRUCTURES", "ARCHITECTURES", "ELECTRICAL", "DOORS & WINDOWS"]
+      .reduce((sum, group) => sum + (Number(groupTotals[group]) || 0), 0);
+
+  const summaryTotal = newConstructionTotal + renovationExistingTotal;
+
+  html += `
+    <tr class="bg-gray-100 border-b">
+      <td colspan="6" class="py-1 px-2 font-bold">SUMMARY</td>
+    </tr>
+
+    <tr class="bg-gray-50 border-b">
+      <td colspan="6" class="py-1 px-2 font-bold">PRELIMINARIES</td>
+    </tr>
+    <tr class="border-b">
+      <td colspan="4" class="py-1 px-2 font-semibold">PROJECT PRELIMINARIES</td>
+      <td class="py-1 px-2 text-right font-bold">${money(projectPreliminaries, 2)}</td>
+      <td class="no-print"></td>
+    </tr>`;
+
+  prelimManualItems.forEach(item => {
+    html += `
+      <tr class="border-b">
+        <td colspan="4" class="py-1 px-2 font-semibold">${escapeHtml(item.description)}</td>
+        <td class="py-1 px-2 text-right font-bold">${money(item.amount, 2)}</td>
+        <td class="no-print"></td>
+      </tr>`;
+  });
+
+  html += `
+    <tr class="border-b bg-gray-50">
+      <td colspan="4" class="py-1 px-2 text-right font-bold">PRELIMINARIES TOTAL</td>
+      <td class="py-1 px-2 text-right font-bold">${money(preliminariesTotal, 2)}</td>
+      <td class="no-print"></td>
+    </tr>
+
+    <tr class="bg-gray-50 border-b">
+      <td colspan="6" class="py-1 px-2 font-bold">NEW CONSTRUCTION</td>
+    </tr>`;
+
+  ["STRUCTURES", "ARCHITECTURES", "ELECTRICAL", "DOORS & WINDOWS"].forEach(group => {
+    html += `
+      <tr class="border-b">
+        <td colspan="4" class="py-1 px-2 font-semibold">${escapeHtml(group)}</td>
+        <td class="py-1 px-2 text-right font-bold">${money(groupTotals[group] || 0, 2)}</td>
+        <td class="no-print"></td>
+      </tr>`;
+  });
+
+  html += `
+    <tr class="border-b bg-gray-50">
+      <td colspan="4" class="py-1 px-2 text-right font-bold">NEW CONSTRUCTION TOTAL</td>
+      <td class="py-1 px-2 text-right font-bold">${money(newConstructionTotal, 2)}</td>
+      <td class="no-print"></td>
+    </tr>
+
+    <tr class="bg-gray-50 border-b">
+      <td colspan="6" class="py-1 px-2 font-bold">RENOVATION EXISTING AREA</td>
+    </tr>`;
+
+  renovationExistingRooms.forEach(room => {
+    html += `
+      <tr class="border-b">
+        <td colspan="4" class="py-1 px-2 font-semibold">${escapeHtml(room.label)}</td>
+        <td class="py-1 px-2 text-right font-bold">${money(roomSubtotals[room.roomId] || 0, 2)}</td>
+        <td class="no-print"></td>
+      </tr>`;
+  });
+
+  html += `
+    <tr class="border-t-2 bg-gray-50">
+      <td colspan="4" class="py-2 px-2 text-right font-bold">TOTAL</td>
+      <td class="py-2 px-2 text-right font-bold">${money(summaryTotal, 2)}</td>
+      <td class="no-print"></td>
+    </tr>
 
   const roomTotal = Object.values(roomSubtotals).reduce((s, v) => s + v, 0);
   html += `
