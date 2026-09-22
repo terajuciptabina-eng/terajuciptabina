@@ -2359,7 +2359,6 @@ function buildSimpleQuotationBody(data) {
     const tr = document.createElement('tr');
     tr.className = 'border-b';
     const blank1 = document.createElement('td');
-    const blank2 = document.createElement('td');
     const labelCell = document.createElement('td');
     labelCell.colSpan = 2;
     labelCell.className = 'py-1 px-2 text-right ' + (bold ? 'font-bold' : 'font-semibold');
@@ -2367,7 +2366,7 @@ function buildSimpleQuotationBody(data) {
     const amountCell = document.createElement('td');
     amountCell.className = 'py-1 px-2 text-right font-bold';
     amountCell.textContent = money(value, 2);
-    tr.append(blank1, blank2, labelCell, amountCell);
+    tr.append(blank1, labelCell, amountCell);
     summaryBody.appendChild(tr);
   };
   const summaryGroupTotals = {};
