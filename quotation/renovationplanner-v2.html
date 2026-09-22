@@ -2257,7 +2257,7 @@ function buildSimpleQuotationBody(data) {
 
   // New construction: each lowest Build Planner hierarchy is a sub-group.
   // The sub-group row carries the subtotal; every underlying item keeps its
-  // full description while Quantity/Rate/Amount stay blank; Unit is intentionally omitted from Simple Preview.
+  // full description while Unit, Quantity and Rate remain visible as blank columns; Amount is carried by the section subtotal.
   const buildItems = activeItems.filter(item =>
     !excludedItems.has(item.id) &&
     (item.roomId === 'project' || newRoomIds.has(item.roomId)) &&
@@ -2326,9 +2326,10 @@ function buildSimpleQuotationBody(data) {
 
   const table = document.createElement('table');
   table.className = 'simple-quotation-table';
-  table.innerHTML = '<colgroup><col style="width:50%"><col style="width:10%"><col style="width:15%"><col style="width:25%"></colgroup>' +
+  table.innerHTML = '<colgroup><col style="width:50%"><col style="width:10%"><col style="width:10%"><col style="width:15%"><col style="width:15%"></colgroup>' +
     '<thead><tr class="border-b-2 text-left">' +
     '<th class="py-2 px-2">Description</th>' +
+    '<th class="py-2 px-2">Unit</th>' +
     '<th class="py-2 px-2 text-right">Quantity</th>' +
     '<th class="py-2 px-2 text-right">Rate (RM)</th>' +
     '<th class="py-2 px-2 text-right">Amount (RM)</th>' +
@@ -2342,13 +2343,15 @@ function buildSimpleQuotationBody(data) {
     const description = document.createElement('td');
     description.className = 'py-1 px-2';
     description.textContent = item.description;
+    const unit = document.createElement('td');
+    unit.className = 'py-1 px-2';
     const qty = document.createElement('td');
     qty.className = 'py-1 px-2 text-right';
     const rate = document.createElement('td');
     rate.className = 'py-1 px-2 text-right';
     const amount = document.createElement('td');
     amount.className = 'py-1 px-2 text-right';
-    tr.append(description, qty, rate, amount);
+    tr.append(description, unit, qty, rate, amount);
     return tr;
   };
 
@@ -2356,7 +2359,7 @@ function buildSimpleQuotationBody(data) {
     const header = document.createElement('tr');
     header.className = 'bg-gray-100 border-b';
     const headerLabel = document.createElement('td');
-    headerLabel.colSpan = 3;
+    headerLabel.colSpan = 4;
     headerLabel.className = 'py-1 px-2 font-bold';
     headerLabel.textContent = section.label;
     const headerAmount = document.createElement('td');
@@ -2368,11 +2371,11 @@ function buildSimpleQuotationBody(data) {
     section.items.forEach(item => tbody.appendChild(itemRow(item)));
   });
 
-  // Keep SUMMARY inside the same four-column Simple Preview table.
+  // Keep SUMMARY inside the same five-column Simple Preview table.
   const summaryHeading = document.createElement('tr');
   summaryHeading.className = 'bg-gray-100 border-b';
   const summaryHeadingCell = document.createElement('td');
-  summaryHeadingCell.colSpan = 4;
+  summaryHeadingCell.colSpan = 5;
   summaryHeadingCell.className = 'py-1 px-2 font-bold';
   summaryHeadingCell.textContent = 'SUMMARY';
   summaryHeading.appendChild(summaryHeadingCell);
@@ -2402,7 +2405,7 @@ function buildSimpleQuotationBody(data) {
     const tr = document.createElement('tr');
     tr.className = 'border-b';
     const labelCell = document.createElement('td');
-    labelCell.colSpan = 3;
+    labelCell.colSpan = 4;
     labelCell.className = 'py-1 px-2 text-right font-semibold';
     labelCell.textContent = label;
     const amountCell = document.createElement('td');
