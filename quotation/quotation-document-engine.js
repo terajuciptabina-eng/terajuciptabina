@@ -256,7 +256,7 @@ function appendContactFooter(page,contactFooter){
  clone.style.padding='1.5mm 4mm 1mm';
  clone.style.borderTop='1px solid #d1d5db';
  clone.style.fontFamily='Arial,Helvetica,sans-serif';
- clone.style.fontSize='9px';
+ clone.style.fontSize='12px';
  clone.style.lineHeight='1.35';
  clone.style.color='#6b7280';
  clone.style.textAlign='center';
