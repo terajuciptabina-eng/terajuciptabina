@@ -2233,28 +2233,32 @@ function buildSimpleQuotationBody(data) {
     .map(room => room.roomId));
 
   const rows = [];
-  const addRow = (areaGroup, description, amount) => {
+  const addSection = (label, amount, items = [], meta = {}) => {
     const value = Number(amount) || 0;
-    if (value !== 0) rows.push({ areaGroup, description, amount: value });
+    if (value === 0 && !items.length) return;
+    rows.push({ type: 'section', label, amount: value, items, ...meta });
   };
-  const descriptionList = items => items
-    .map(item => String(item.description || '').trim())
-    .filter(Boolean);
 
-  // PRELIMINARIES: keep the full item descriptions visible in Preview,
-  // while showing one subtotal for the preliminaries section.
   const prelimManual = (typeof manualItems !== 'undefined' ? (manualItems.get('__prelim__') || []) : [])
     .filter(item => !excludedItems.has(item.id));
-  const prelimDescriptions = [];
-  if ((Number(data.projectPreliminaries) || 0) !== 0) prelimDescriptions.push('Project / Preliminaries');
-  prelimDescriptions.push(...descriptionList(prelimManual));
-  const prelimTotal = (Number(data.projectPreliminaries) || 0) +
-    prelimManual.reduce((sum, item) => sum + (Number(item.amount) || 0), 0);
-  addRow('PRELIMINARIES', prelimDescriptions.join(' • ') || 'Project / Preliminaries', prelimTotal);
+  const prelimBase = Number(data.projectPreliminaries) || 0;
+  const prelimTotal = prelimBase + prelimManual.reduce((sum, item) => sum + (Number(item.amount) || 0), 0);
+  const prelimItems = [];
+  if (prelimBase !== 0) {
+    prelimItems.push({
+      description: 'Submission of Renovation Permit Application and Engineer\'s Drawings to the Local Authority',
+      unit: 'ls'
+    });
+  }
+  prelimManual.forEach(item => prelimItems.push({
+    description: String(item.description || '').trim(),
+    unit: String(item.unit || '').trim()
+  }));
+  addSection('PROJECT / PRELIMINARIES', prelimTotal, prelimItems);
 
-  // NEW CONSTRUCTION: subtotal by the lowest hierarchy/sub-group from
-  // masterPath, not by the top-level group. Every item description remains
-  // visible inside that sub-group row.
+  // New construction: each lowest Build Planner hierarchy is a sub-group.
+  // The sub-group row carries the subtotal; every underlying item keeps its
+  // full description while Unit remains visible and Quantity/Rate/Amount stay blank.
   const buildItems = activeItems.filter(item =>
     !excludedItems.has(item.id) &&
     (item.roomId === 'project' || newRoomIds.has(item.roomId)) &&
@@ -2278,12 +2282,17 @@ function buildSimpleQuotationBody(data) {
   });
 
   subgroupMap.forEach(entry => {
-    const descriptions = descriptionList(entry.items);
-    addRow(entry.group + ' / ' + entry.subgroup, descriptions.join(' • ') || entry.subgroup, entry.amount);
+    addSection(
+      entry.group + ' / ' + entry.subgroup,
+      entry.amount,
+      entry.items.map(item => ({
+        description: String(item.description || '').trim(),
+        unit: String(item.unit || '').trim()
+      })),
+      { group: entry.group, subgroup: entry.subgroup }
+    );
   });
 
-  // OPTIONAL WORKS: keep selected optional item descriptions visible and
-  // subtotal them separately so they are not double-counted above.
   const optionalItems = activeItems.filter(item =>
     !excludedItems.has(item.id) &&
     item.roomId === 'project' &&
@@ -2291,107 +2300,144 @@ function buildSimpleQuotationBody(data) {
     String(item.category || '').toLowerCase() !== 'preliminaries'
   );
   const optionalTotal = optionalItems.reduce((sum, item) => sum + (Number(item.amount) || 0), 0);
-  addRow(
+  addSection(
     'OPTIONAL WORKS',
-    descriptionList(optionalItems).join(' • ') || 'Selected Optional Works',
-    optionalTotal
+    optionalTotal,
+    optionalItems.map(item => ({
+      description: String(item.description || '').trim(),
+      unit: String(item.unit || '').trim()
+    }))
   );
 
-  // EXISTING RENOVATION AREAS: subtotal by room/area, but retain every
-  // underlying item description in the Preview.
+  // Existing renovation areas: room header carries the room subtotal;
+  // every room item keeps its full description and unit.
   (data.roomGroups || []).forEach(room => {
     if (newRoomIds.has(room.roomId) || Number(room.area) <= 0) return;
     const roomItems = (data.itemsByRoom?.[room.roomId] || [])
       .filter(item => !excludedItems.has(item.id));
-    addRow(
-      'RENOVATION EXISTING AREA',
-      descriptionList(roomItems).join(' • ') || room.label,
-      data.roomSubtotals?.[room.roomId] || 0
+    addSection(
+      room.label,
+      data.roomSubtotals?.[room.roomId] || 0,
+      roomItems.map(item => ({
+        description: String(item.description || '').trim(),
+        unit: String(item.unit || '').trim()
+      })),
+      { existingRoom: true }
     );
   });
 
   const table = document.createElement('table');
   table.className = 'simple-quotation-table';
-  table.innerHTML = '<colgroup><col><col><col><col></colgroup><thead><tr class="border-b-2"><th class="py-2 px-2 text-left">No.</th><th class="py-2 px-2 text-left">Area / Sub Group</th><th class="py-2 px-2 text-left">Description</th><th class="py-2 px-2 text-right">Amount (RM)</th></tr></thead>';
+  table.innerHTML = '<colgroup><col style="width:31%"><col style="width:10%"><col style="width:15%"><col style="width:20%"><col style="width:24%"></colgroup>' +
+    '<thead><tr class="border-b-2 text-left">' +
+    '<th class="py-2 px-2">Description</th>' +
+    '<th class="py-2 px-2">Unit</th>' +
+    '<th class="py-2 px-2 text-right">Quantity</th>' +
+    '<th class="py-2 px-2 text-right">Rate (RM)</th>' +
+    '<th class="py-2 px-2 text-right">Amount (RM)</th>' +
+    '</tr></thead>';
+
   const tbody = document.createElement('tbody');
-  rows.forEach((row, index) => {
+
+  const itemRow = item => {
     const tr = document.createElement('tr');
     tr.className = 'border-b align-top';
-    [String(index + 1), row.areaGroup, row.description, money(row.amount, 2)].forEach((value, col) => {
-      const td = document.createElement('td');
-      td.className = 'py-2 px-2' + (col === 3 ? ' text-right font-semibold' : '');
-      if (col === 2) {
-        td.innerHTML = String(value).split(' • ').map(part => '<div class="mb-1 last:mb-0">' + escapeHtml(part) + '</div>').join('');
-      } else {
-        td.textContent = value;
-      }
-      tr.appendChild(td);
-    });
-    tbody.appendChild(tr);
-  });
-  table.appendChild(tbody);
-
-  const total = rows.reduce((sum, row) => sum + row.amount, 0);
-  if (total !== 0) {
-    const tfoot = document.createElement('tfoot');
-    const tr = document.createElement('tr');
-    tr.className = 'border-t-2';
-    const label = document.createElement('td');
-    label.colSpan = 3;
-    label.className = 'py-3 px-2 text-right font-bold';
-    label.textContent = 'TOTAL';
-    const value = document.createElement('td');
-    value.className = 'py-3 px-2 text-right font-bold';
-    value.textContent = money(total, 2);
-    tr.append(label, value);
-    tfoot.appendChild(tr);
-    table.appendChild(tfoot);
-  }
-
-  // Preview must also carry the same high-level SUMMARY shown in the live Renovation Budget.
-  const summaryTable = document.createElement('table');
-  summaryTable.className = 'simple-quotation-summary-table mt-4';
-  summaryTable.innerHTML = '<thead><tr class="border-b-2"><th colspan="3" class="py-2 px-2 text-left">SUMMARY</th><th class="py-2 px-2 text-right">Amount (RM)</th></tr></thead>';
-  const summaryBody = document.createElement('tbody');
-  const summaryRow = (label, amount, bold = false) => {
-    const value = Number(amount) || 0;
-    if (value === 0) return;
-    const tr = document.createElement('tr');
-    tr.className = 'border-b';
-    const blank1 = document.createElement('td');
-    const labelCell = document.createElement('td');
-    labelCell.colSpan = 2;
-    labelCell.className = 'py-1 px-2 text-right ' + (bold ? 'font-bold' : 'font-semibold');
-    labelCell.textContent = label;
-    const amountCell = document.createElement('td');
-    amountCell.className = 'py-1 px-2 text-right font-bold';
-    amountCell.textContent = money(value, 2);
-    tr.append(blank1, labelCell, amountCell);
-    summaryBody.appendChild(tr);
+    const description = document.createElement('td');
+    description.className = 'py-1 px-2';
+    description.textContent = item.description;
+    const unit = document.createElement('td');
+    unit.className = 'py-1 px-2';
+    unit.textContent = item.unit;
+    const qty = document.createElement('td');
+    qty.className = 'py-1 px-2 text-right';
+    const rate = document.createElement('td');
+    rate.className = 'py-1 px-2 text-right';
+    const amount = document.createElement('td');
+    amount.className = 'py-1 px-2 text-right';
+    tr.append(description, unit, qty, rate, amount);
+    return tr;
   };
+
+  rows.forEach(section => {
+    const header = document.createElement('tr');
+    header.className = 'bg-gray-100 border-b';
+    const headerLabel = document.createElement('td');
+    headerLabel.colSpan = 4;
+    headerLabel.className = 'py-1 px-2 font-bold';
+    headerLabel.textContent = section.label;
+    const headerAmount = document.createElement('td');
+    headerAmount.className = 'py-1 px-2 text-right font-bold';
+    headerAmount.textContent = money(section.amount, 2);
+    header.append(headerLabel, headerAmount);
+    tbody.appendChild(header);
+
+    section.items.forEach(item => tbody.appendChild(itemRow(item)));
+  });
+
+  // The Simple Preview uses the same high-level SUMMARY as the live budget,
+  // inside the same five-column table so it cannot disappear as a separate block.
+  const summaryHeading = document.createElement('tr');
+  summaryHeading.className = 'bg-gray-100 border-b';
+  const summaryHeadingCell = document.createElement('td');
+  summaryHeadingCell.colSpan = 5;
+  summaryHeadingCell.className = 'py-1 px-2 font-bold';
+  summaryHeadingCell.textContent = 'SUMMARY';
+  summaryHeading.appendChild(summaryHeadingCell);
+  tbody.appendChild(summaryHeading);
+
   const summaryGroupTotals = {};
   buildItems.forEach(item => {
     const group = String(item.group || '').trim().toUpperCase();
     if (group) summaryGroupTotals[group] = (summaryGroupTotals[group] || 0) + (Number(item.amount) || 0);
   });
-  const summaryPrelimTotal = (Number(data.projectPreliminaries) || 0) +
-    prelimManual.reduce((sum, item) => sum + (Number(item.amount) || 0), 0);
-  summaryRow('PROJECT PRELIMINARIES', summaryPrelimTotal);
+  const summaryRows = [];
+  const pushSummary = (label, amount) => {
+    const value = Number(amount) || 0;
+    if (value !== 0) summaryRows.push([label, value]);
+  };
+  pushSummary('PROJECT PRELIMINARIES', prelimTotal);
   ['STRUCTURES', 'ARCHITECTURES', 'ELECTRICAL', 'DOORS & WINDOWS'].forEach(group => {
-    summaryRow(group, summaryGroupTotals[group] || 0);
+    pushSummary(group, summaryGroupTotals[group] || 0);
   });
-  summaryRow('OPTIONAL WORKS', optionalTotal);
+  pushSummary('OPTIONAL WORKS', optionalTotal);
   const existingSummaryTotal = (data.roomGroups || [])
     .filter(room => !newRoomIds.has(room.roomId) && Number(room.area) > 0)
     .reduce((sum, room) => sum + (Number(data.roomSubtotals?.[room.roomId]) || 0), 0);
-  summaryRow('RENOVATION EXISTING AREA', existingSummaryTotal);
-  summaryRow('TOTAL', rows.reduce((sum, row) => sum + row.amount, 0), true);
+  pushSummary('RENOVATION EXISTING AREA', existingSummaryTotal);
 
-  summaryTable.appendChild(summaryBody);
+  summaryRows.forEach(([label, amount]) => {
+    const tr = document.createElement('tr');
+    tr.className = 'border-b';
+    const labelCell = document.createElement('td');
+    labelCell.colSpan = 4;
+    labelCell.className = 'py-1 px-2 text-right font-semibold';
+    labelCell.textContent = label;
+    const amountCell = document.createElement('td');
+    amountCell.className = 'py-1 px-2 text-right font-bold';
+    amountCell.textContent = money(amount, 2);
+    tr.append(labelCell, amountCell);
+    tbody.appendChild(tr);
+  });
+
+  const total = rows.reduce((sum, section) => sum + section.amount, 0);
+  if (total !== 0) {
+    const tr = document.createElement('tr');
+    tr.className = 'border-t-2 bg-gray-50';
+    const labelCell = document.createElement('td');
+    labelCell.colSpan = 4;
+    labelCell.className = 'py-3 px-2 text-right font-bold';
+    labelCell.textContent = 'TOTAL';
+    const amountCell = document.createElement('td');
+    amountCell.className = 'py-3 px-2 text-right font-bold';
+    amountCell.textContent = money(total, 2);
+    tr.append(labelCell, amountCell);
+    tbody.appendChild(tr);
+  }
+
+  table.appendChild(tbody);
   const wrap = document.createElement('div');
   wrap.className = 'quotation-budget-snapshot-wrap';
   wrap.appendChild(table);
-  wrap.appendChild(summaryTable);
   return wrap.outerHTML;
 }
 function generateQuotationConfirmed(type) {
