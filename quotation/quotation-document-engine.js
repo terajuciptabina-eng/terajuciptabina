@@ -241,7 +241,7 @@ async function measureQuotationUnits(headerNodes,tableTemplate,units){
  holder.remove();
  return {baseHeight:pageHeight(makePageShell(headerNodes,tableTemplate,true)),heights};
 }
-function appendContactFooter(page,contactFooter,options={}){
+function appendContactFooter(page,contactFooter){
  if(!page||!contactFooter)return;
  const clone=contactFooter.cloneNode(true);
  clone.classList.add('quotation-page-contact-footer');
@@ -256,7 +256,7 @@ function appendContactFooter(page,contactFooter,options={}){
  clone.style.padding='1.5mm 4mm 1mm';
  clone.style.borderTop='1px solid #d1d5db';
  clone.style.fontFamily='Arial,Helvetica,sans-serif';
- clone.style.fontSize=(options.mobilePreview?'12px':'9px');
+ clone.style.fontSize='9px';
  clone.style.lineHeight='1.35';
  clone.style.color='#6b7280';
  clone.style.textAlign='center';
@@ -270,8 +270,7 @@ function appendContactFooter(page,contactFooter,options={}){
  });
  page.root.appendChild(clone);
 }
-async function buildPaginatedPages(source,options={}){
- const mobilePreview=options.mobilePreview===true;
+async function buildPaginatedPages(source){
  const working=source.cloneNode(true);
  working.classList.remove('quotation-render-source','quotation-locked');
  const contactFooter=working.querySelector('.quotation-contact-footer');
@@ -303,7 +302,7 @@ async function buildPaginatedPages(source,options={}){
  let page=makePageShell(headerNodes,template,true);
  let used=baseHeight;
 
- const pushBodyPage=()=>{if(page.tbody.children.length){appendContactFooter(page,contactFooter,{mobilePreview});pages.push(page.root)}};
+ const pushBodyPage=()=>{if(page.tbody.children.length){appendContactFooter(page,contactFooter);pages.push(page.root)}};
  const newBodyPage=()=>{page=makePageShell(headerNodes,template,true);used=baseHeight};
 
  for(let i=0;i<units.length;i++){
@@ -322,7 +321,7 @@ async function buildPaginatedPages(source,options={}){
    pushBodyPage();
    page=makePageShell(headerNodes,template,true);
    page.table.appendChild(tfoot.cloneNode(true));
-   appendContactFooter(page,contactFooter,{mobilePreview});
+   appendContactFooter(page,contactFooter);
    pages.push(page.root);
    page=null;
   }
@@ -334,7 +333,7 @@ async function buildPaginatedPages(source,options={}){
    const footerClones=footerNodes.map(node=>node.cloneNode(true));
    footerClones.forEach(node=>page.root.appendChild(node));
    if(pageHeight(page)<=USABLE_HEIGHT_PX){
-    appendContactFooter(page,contactFooter,{mobilePreview});
+    appendContactFooter(page,contactFooter);
     pages.push(page.root);
     page=null;
    }else{
@@ -348,7 +347,7 @@ async function buildPaginatedPages(source,options={}){
   appendContactFooter(footerPage,contactFooter);
   pages.push(footerPage.root);
  }else if(page){
-  appendContactFooter(page,contactFooter,{mobilePreview});
+  appendContactFooter(page,contactFooter);
   pages.push(page.root);
  }
  return pages;
@@ -369,7 +368,7 @@ function appendRenderedPageNumber(page,index,total){
  el.style.pointerEvents='none';
  page.appendChild(el);
 }
-async function renderQuotationPreview(options={}){const forPdf=options.forPdf===true;const mobilePreview=!forPdf&&window.matchMedia?.('(max-width: 767px)').matches;injectStyles();const source=document.getElementById('quotationContent'),stage=document.getElementById('quotationPreview');if(!source||!stage)return;stage.innerHTML='<div class="quotation-preview-loading">Preparing visual quotation preview…</div>';try{await loadQuotationCanvas();const pageRoots=await buildPaginatedPages(source,{mobilePreview});pageRoots.forEach((root,index)=>appendRenderedPageNumber(root,index,pageRoots.length));const pages=await rasterizePages(pageRoots);window.__quotationPreviewPages=pages.map(p=>p.src);window.__quotationPreviewPageMeta=pages;stage.innerHTML=pages.map((p,i)=>`<div class="quotation-preview-page"><img src="${p.src}" alt="Quotation page ${i+1}"></div>`).join('')}catch(error){console.error(error);stage.innerHTML='<div class="quotation-preview-loading">Unable to prepare the visual quotation preview. You can still try Download PDF.</div>'}}
+async function renderQuotationPreview(){injectStyles();const source=document.getElementById('quotationContent'),stage=document.getElementById('quotationPreview');if(!source||!stage)return;stage.innerHTML='<div class="quotation-preview-loading">Preparing visual quotation preview…</div>';try{await loadQuotationCanvas();const pageRoots=await buildPaginatedPages(source);pageRoots.forEach((root,index)=>appendRenderedPageNumber(root,index,pageRoots.length));const pages=await rasterizePages(pageRoots);window.__quotationPreviewPages=pages.map(p=>p.src);window.__quotationPreviewPageMeta=pages;stage.innerHTML=pages.map((p,i)=>`<div class="quotation-preview-page"><img src="${p.src}" alt="Quotation page ${i+1}"></div>`).join('')}catch(error){console.error(error);stage.innerHTML='<div class="quotation-preview-loading">Unable to prepare the visual quotation preview. You can still try Download PDF.</div>'}}
 async function printQuotation(){const quotation=document.getElementById('quotationDocument');if(!quotation||quotation.classList.contains('hidden')){alert('Please generate the quotation first.');return}const button=document.querySelector('#quotationPrintActions button'),originalLabel=button?button.textContent:'';if(button){button.disabled=true;button.textContent='Preparing PDF…'}try{await renderQuotationPreview();const pages=window.__quotationPreviewPages||[],meta=window.__quotationPreviewPageMeta||[];if(!pages.length)throw new Error('Quotation preview is unavailable.');await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js',()=>!!(window.jspdf&&window.jspdf.jsPDF));const{jsPDF}=window.jspdf,pdf=new jsPDF({orientation:'p',unit:'mm',format:'a4',compress:true});pages.forEach((src,index)=>{if(index)pdf.addPage();const drawHeight=Math.min(CONTENT_MM.height,Math.max(.1,meta[index]?.heightMm||CONTENT_MM.height));pdf.addImage(src,'JPEG',PAGE_MM.margin,PAGE_MM.margin,CONTENT_MM.width,drawHeight,undefined,'FAST');});const safeNumber=(typeof quotationNumber!=='undefined'&&quotationNumber?quotationNumber:'quotation').replace(/[^a-z0-9_-]+/gi,'-');pdf.save(`Quotation-${safeNumber}.pdf`)}catch(error){console.error(error);alert('Unable to create the PDF. Please check your internet connection and try again.')}finally{if(button){button.disabled=false;button.textContent=originalLabel||'Download PDF'}}}
 function bindQuotationTypeCards(){const inputs=document.querySelectorAll('input[name="quotationType"]');if(!inputs.length)return;const sync=()=>{document.querySelectorAll('.quotation-type-card').forEach(card=>{const input=card.querySelector('input[name="quotationType"]');if(input)card.classList.toggle('is-selected',!!input.checked)});if(typeof window.saveContractorState==='function')window.saveContractorState()};inputs.forEach(input=>input.addEventListener('change',sync));document.querySelectorAll('.quotation-type-card').forEach(card=>card.addEventListener('click',()=>{const input=card.querySelector('input[name="quotationType"]');if(!input)return;input.checked=true;input.dispatchEvent(new Event('change',{bubbles:true}))}));sync()}
 function install(){injectStyles();bindQuotationTypeCards();window.renderQuotationPreview=renderQuotationPreview;window.printQuotation=printQuotation;window.TERAJU_QUOTATION_DOCUMENT_ENGINE_VERSION='2026-09-22-footer-v4'}
