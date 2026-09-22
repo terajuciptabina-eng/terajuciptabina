@@ -327,6 +327,7 @@ async function buildPaginatedPages(source){
   }
   const footerPage=makePageShell(headerNodes,template,false);
   footerNodes.forEach(node=>footerPage.root.appendChild(node.cloneNode(true)));
+  appendContactFooter(footerPage,contactFooter);
   pages.push(footerPage.root);
  }else if(page){
   appendContactFooter(page,contactFooter);
