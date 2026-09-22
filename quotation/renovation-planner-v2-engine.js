@@ -176,6 +176,29 @@
       });
     });
 
+    // Contractor-added Build Planner items live in a dedicated manualItems bucket
+    // per top-level construction group. They are part of the same V2 item stream.
+    const buildGroupMeta = {
+      'STRUCTURES': { category:'structures', room:'Project / New Construction' },
+      'ARCHITECTURES': { category:'architecture', room:'Project / New Construction' },
+      'ELECTRICAL': { category:'electrical', room:'Project / New Construction' },
+      'DOORS & WINDOWS': { category:'doors-windows', room:'Project / New Construction' }
+    };
+    Object.entries(buildGroupMeta).forEach(([group, meta]) => {
+      const key = '__build__:' + group;
+      (manualItems.get(key)||[]).forEach(source => {
+        const item = {
+          ...source,
+          manualKey:key,
+          roomId:'project',
+          room:meta.room,
+          category:meta.category,
+          group
+        };
+        result.push(applyOverrides(item));
+      });
+    });
+
     (manualItems.get('__prelim__')||[]).forEach(source => {
       const item={...source,roomId:'__prelim__',room:'Project / Preliminaries'};
       result.push(applyOverrides(item));
