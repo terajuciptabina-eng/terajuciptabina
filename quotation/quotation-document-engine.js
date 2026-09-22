@@ -213,7 +213,8 @@ function collectPageUnits(tbody){
  return units;
 }
 function makePageShell(headerNodes,tableTemplate,includeTableHeader){
- const root=createRenderRoot();headerNodes.forEach(node=>root.appendChild(node.cloneNode(true)));
+ const root=createRenderRoot();
+ headerNodes.forEach(node=>root.appendChild(node.cloneNode(true)));
  let wrap=null,table=null,tbody=null;
  if(includeTableHeader){
   wrap=document.createElement('div');wrap.className=tableTemplate.wrapper.className;wrap.style.overflow='visible';wrap.style.width='100%';
@@ -226,7 +227,9 @@ function makePageShell(headerNodes,tableTemplate,includeTableHeader){
 function appendUnits(page,units){units.forEach(unit=>unit.forEach(row=>page.tbody.appendChild(row.cloneNode(true))))}
 function pageHeight(page){const holder=document.createElement('div');holder.style.cssText=`position:fixed;left:-100000px;top:0;width:${RENDER_WIDTH_PX}px;background:#fff;padding:0;margin:0;overflow:visible;visibility:hidden;z-index:-1`;holder.appendChild(page.root);document.body.appendChild(holder);void page.root.offsetHeight;const height=Math.ceil(Math.max(page.root.scrollHeight,page.root.getBoundingClientRect().height));holder.remove();return height}
 function canvasFromPage(root){const holder=document.createElement('div');holder.style.cssText=`position:fixed;left:-100000px;top:0;width:${RENDER_WIDTH_PX}px;background:#fff;padding:0;margin:0;overflow:visible;z-index:-1;visibility:visible`;holder.appendChild(root);document.body.appendChild(holder);return holder}
-async function rasterizePages(pageRoots){const pages=[];for(const root of pageRoots){const holder=canvasFromPage(root);await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));if(document.fonts?.ready)await document.fonts.ready;await waitForImages(holder);const measured=Math.ceil(Math.max(root.scrollHeight,root.getBoundingClientRect().height,1));const captureHeight=Math.min(USABLE_HEIGHT_PX,measured);const canvas=await window.html2canvas(holder,{backgroundColor:'#fff',scale:Math.min(2,Math.max(1.5,window.devicePixelRatio||1)),useCORS:true,allowTaint:false,logging:false,imageTimeout:15000,scrollX:0,scrollY:0,width:RENDER_WIDTH_PX,height:captureHeight,windowWidth:RENDER_WIDTH_PX,windowHeight:captureHeight});holder.remove();const heightMm=(canvas.height/Math.max(canvas.width,1))*CONTENT_MM.width;pages.push({src:canvas.toDataURL('image/jpeg',JPEG_QUALITY),heightMm})}return pages}
+async function rasterizePages(pageRoots){const pages=[];for(const root of pageRoots){const holder=canvasFromPage(root);await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));if(document.fonts?.ready)await document.fonts.ready;await waitForImages(holder);const measured=Math.ceil(Math.max(root.scrollHeight,root.getBoundingClientRect().height,1));root.style.position='relative';
+root.style.minHeight=CONTENT_HEIGHT_PX+'px';
+const captureHeight=Math.min(CONTENT_HEIGHT_PX,measured);const canvas=await window.html2canvas(holder,{backgroundColor:'#fff',scale:Math.min(2,Math.max(1.5,window.devicePixelRatio||1)),useCORS:true,allowTaint:false,logging:false,imageTimeout:15000,scrollX:0,scrollY:0,width:RENDER_WIDTH_PX,height:captureHeight,windowWidth:RENDER_WIDTH_PX,windowHeight:captureHeight});holder.remove();const heightMm=(canvas.height/Math.max(canvas.width,1))*CONTENT_MM.width;pages.push({src:canvas.toDataURL('image/jpeg',JPEG_QUALITY),heightMm})}return pages}
 async function measureQuotationUnits(headerNodes,tableTemplate,units){
  const measure=makePageShell(headerNodes,tableTemplate,true);
  units.forEach(unit=>unit.forEach(row=>measure.tbody.appendChild(row.cloneNode(true))));
@@ -239,9 +242,22 @@ async function measureQuotationUnits(headerNodes,tableTemplate,units){
  holder.remove();
  return {baseHeight:pageHeight(makePageShell(headerNodes,tableTemplate,true)),heights};
 }
+function appendContactFooter(page,contactFooter){
+ if(!page||!contactFooter)return;
+ const clone=contactFooter.cloneNode(true);
+ clone.classList.add('quotation-page-contact-footer');
+ clone.style.position='absolute';
+ clone.style.left='0';
+ clone.style.right='0';
+ clone.style.bottom='0';
+ clone.style.width='100%';
+ page.root.appendChild(clone);
+}
 async function buildPaginatedPages(source){
  const working=source.cloneNode(true);
  working.classList.remove('quotation-render-source','quotation-locked');
+ const contactFooter=working.querySelector('.quotation-contact-footer');
+ if(contactFooter)contactFooter.remove();
  working.querySelectorAll('.no-print,#quotationPrintActions,#quotationLockOverlay').forEach(el=>el.remove());
  if(document.fonts?.ready)await document.fonts.ready;
  await waitForImages(working);
@@ -269,7 +285,7 @@ async function buildPaginatedPages(source){
  let page=makePageShell(headerNodes,template,true);
  let used=baseHeight;
 
- const pushBodyPage=()=>{if(page.tbody.children.length)pages.push(page.root)};
+ const pushBodyPage=()=>{if(page.tbody.children.length){appendContactFooter(page,contactFooter);pages.push(page.root)}};
  const newBodyPage=()=>{page=makePageShell(headerNodes,template,true);used=baseHeight};
 
  for(let i=0;i<units.length;i++){
@@ -288,6 +304,7 @@ async function buildPaginatedPages(source){
    pushBodyPage();
    page=makePageShell(headerNodes,template,true);
    page.table.appendChild(tfoot.cloneNode(true));
+   appendContactFooter(page,contactFooter);
    pages.push(page.root);
    page=null;
   }
@@ -299,6 +316,7 @@ async function buildPaginatedPages(source){
    const footerClones=footerNodes.map(node=>node.cloneNode(true));
    footerClones.forEach(node=>page.root.appendChild(node));
    if(pageHeight(page)<=USABLE_HEIGHT_PX){
+    appendContactFooter(page,contactFooter);
     pages.push(page.root);
     page=null;
    }else{
@@ -309,8 +327,10 @@ async function buildPaginatedPages(source){
   }
   const footerPage=makePageShell(headerNodes,template,false);
   footerNodes.forEach(node=>footerPage.root.appendChild(node.cloneNode(true)));
+  appendContactFooter(footerPage,contactFooter);
   pages.push(footerPage.root);
  }else if(page){
+  appendContactFooter(page,contactFooter);
   pages.push(page.root);
  }
  return pages;
