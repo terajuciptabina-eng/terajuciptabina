@@ -357,7 +357,7 @@
           "builtUpArea": 200,
           "state": "selangor"
         },
-        "total": 67547,
+        "total": 69147,
         "plannerState": {
           "customerName": "Nur Syuhada",
           "projectLocation": "",
@@ -365,8 +365,8 @@
           "rooms": [
             {
               "id": "room-1",
-              "type": "wetKitchen",
-              "name": "Wet Kitchen",
+              "type": "living",
+              "name": "Living / Dining",
               "area": "200"
             }
           ],
@@ -487,10 +487,10 @@
           "projectState": "selangor",
           "rateSetId": "selangor",
           "rateSetName": "Selangor",
-          "rateSnapshotAt": "2026-09-22T10:33:49.591Z"
+          "rateSnapshotAt": "2026-09-22T10:41:59.679Z"
         },
         "createdAt": "2026-09-22T08:37:48.253Z",
-        "updatedAt": "2026-09-22T10:33:50.322Z",
+        "updatedAt": "2026-09-22T10:42:00.566Z",
         "estimateNumber": "EST-BLD-011"
       },
       {
@@ -2326,7 +2326,7 @@
     "renovation": []
   },
   "createdAt": "2026-09-09T13:51:41.818Z",
-  "updatedAt": "2026-09-22T10:33:50.322Z",
+  "updatedAt": "2026-09-22T10:42:00.566Z",
   "quotationRunningNumber": {
     "build": 13
   },
