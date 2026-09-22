@@ -66,17 +66,17 @@
     "rule_bathroom_tap_57": 200,
     "rule_main_building_water_tank_58": 600,
     "rule_main_building_septic_tank_59": 2500,
-    "rule_main_building_power_point_60": 6.5,
-    "rule_main_building_switch_61": 6.5,
-    "rule_main_building_lighting_62": 120,
+    "rule_main_building_power_point_60": 150,
+    "rule_main_building_switch_61": 200,
+    "rule_main_building_lighting_62": 200,
     "rule_main_building_fan_63": 150,
     "rule_main_building_aircond_point_64": 300,
-    "rule_porch_lighting_65": 120,
-    "rule_porch_fan_66": 150,
-    "rule_porch_power_point_67": 6.5,
+    "rule_porch_lighting_65": 200,
+    "rule_porch_fan_66": 200,
+    "rule_porch_power_point_67": 150,
     "rule_earthing_68": 1500,
     "rule_db_box_69": 2500,
-    "rule_wiring_70": 20,
+    "rule_wiring_70": 25,
     "rule_doors_type_1_single_leaf_71": 1200,
     "rule_doors_type_2_sliding_72": 2500,
     "rule_doors_type_3_bathroom_73": 850,
@@ -665,5 +665,5 @@
       "groupTitle": "EXTERNAL WORK"
     }
   },
-  "updatedAt": "2026-09-22T09:59:31.407Z"
+  "updatedAt": "2026-09-22T10:16:00.052Z"
 }
