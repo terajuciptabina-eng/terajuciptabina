@@ -2476,13 +2476,18 @@ function buildQuotationBody(data, revealDetails = false) {
     const tr = document.createElement('tr');
     tr.className = 'border-t-2 bg-gray-50';
     const labelCell = document.createElement('td');
-    labelCell.colSpan = 4;
-    labelCell.className = 'py-3 px-2 text-right font-bold';
+    labelCell.className = 'py-3 px-2 text-left font-bold';
     labelCell.textContent = 'TOTAL';
+    const totalUnit = document.createElement('td');
+    totalUnit.className = 'py-3 px-2';
+    const totalQuantity = document.createElement('td');
+    totalQuantity.className = 'py-3 px-2';
+    const totalRate = document.createElement('td');
+    totalRate.className = 'py-3 px-2';
     const amountCell = document.createElement('td');
     amountCell.className = 'quotation-amount-cell py-3 px-2 text-right font-bold';
     amountCell.textContent = money(total, 2);
-    tr.append(labelCell, amountCell);
+    tr.append(labelCell, totalUnit, totalQuantity, totalRate, amountCell);
     tbody.appendChild(tr);
   }
 
