@@ -1730,12 +1730,6 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
   });
 
   html += `
-    <tr class="border-b bg-gray-50">
-      <td colspan="4" class="py-1 px-2 text-right font-bold">PRELIMINARIES TOTAL</td>
-      <td class="py-1 px-2 text-right font-bold">${money(preliminariesTotal, 2)}</td>
-      <td class="no-print"></td>
-    </tr>
-
     <tr class="bg-gray-50 border-b">
       <td colspan="6" class="py-1 px-2 font-bold">NEW CONSTRUCTION</td>
     </tr>`;
@@ -1750,12 +1744,6 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
   });
 
   html += `
-    <tr class="border-b bg-gray-50">
-      <td colspan="4" class="py-1 px-2 text-right font-bold">NEW CONSTRUCTION TOTAL</td>
-      <td class="py-1 px-2 text-right font-bold">${money(newConstructionTotal, 2)}</td>
-      <td class="no-print"></td>
-    </tr>
-
     <tr class="bg-gray-50 border-b">
       <td colspan="6" class="py-1 px-2 font-bold">RENOVATION EXISTING AREA</td>
     </tr>`;
