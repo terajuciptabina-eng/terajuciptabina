@@ -2252,13 +2252,12 @@ function buildSimpleQuotationBody(data) {
   }
   prelimManual.forEach(item => prelimItems.push({
     description: String(item.description || '').trim(),
-    unit: String(item.unit || '').trim()
   }));
   addSection('PROJECT / PRELIMINARIES', prelimTotal, prelimItems);
 
   // New construction: each lowest Build Planner hierarchy is a sub-group.
   // The sub-group row carries the subtotal; every underlying item keeps its
-  // full description while Unit remains visible and Quantity/Rate/Amount stay blank.
+  // full description while Quantity/Rate/Amount stay blank; Unit is intentionally omitted from Simple Preview.
   const buildItems = activeItems.filter(item =>
     !excludedItems.has(item.id) &&
     (item.roomId === 'project' || newRoomIds.has(item.roomId)) &&
@@ -2287,8 +2286,7 @@ function buildSimpleQuotationBody(data) {
       entry.amount,
       entry.items.map(item => ({
         description: String(item.description || '').trim(),
-        unit: String(item.unit || '').trim()
-      })),
+        })),
       { group: entry.group, subgroup: entry.subgroup }
     );
   });
@@ -2310,7 +2308,7 @@ function buildSimpleQuotationBody(data) {
   );
 
   // Existing renovation areas: room header carries the room subtotal;
-  // every room item keeps its full description and unit.
+  // every room item keeps its full description.
   (data.roomGroups || []).forEach(room => {
     if (newRoomIds.has(room.roomId) || Number(room.area) <= 0) return;
     const roomItems = (data.itemsByRoom?.[room.roomId] || [])
@@ -2328,10 +2326,9 @@ function buildSimpleQuotationBody(data) {
 
   const table = document.createElement('table');
   table.className = 'simple-quotation-table';
-  table.innerHTML = '<colgroup><col style="width:31%"><col style="width:10%"><col style="width:15%"><col style="width:20%"><col style="width:24%"></colgroup>' +
+  table.innerHTML = '<colgroup><col style="width:50%"><col style="width:10%"><col style="width:15%"><col style="width:25%"></colgroup>' +
     '<thead><tr class="border-b-2 text-left">' +
     '<th class="py-2 px-2">Description</th>' +
-    '<th class="py-2 px-2">Unit</th>' +
     '<th class="py-2 px-2 text-right">Quantity</th>' +
     '<th class="py-2 px-2 text-right">Rate (RM)</th>' +
     '<th class="py-2 px-2 text-right">Amount (RM)</th>' +
@@ -2345,16 +2342,13 @@ function buildSimpleQuotationBody(data) {
     const description = document.createElement('td');
     description.className = 'py-1 px-2';
     description.textContent = item.description;
-    const unit = document.createElement('td');
-    unit.className = 'py-1 px-2';
-    unit.textContent = item.unit;
     const qty = document.createElement('td');
     qty.className = 'py-1 px-2 text-right';
     const rate = document.createElement('td');
     rate.className = 'py-1 px-2 text-right';
     const amount = document.createElement('td');
     amount.className = 'py-1 px-2 text-right';
-    tr.append(description, unit, qty, rate, amount);
+    tr.append(description, qty, rate, amount);
     return tr;
   };
 
@@ -2362,7 +2356,7 @@ function buildSimpleQuotationBody(data) {
     const header = document.createElement('tr');
     header.className = 'bg-gray-100 border-b';
     const headerLabel = document.createElement('td');
-    headerLabel.colSpan = 4;
+    headerLabel.colSpan = 3;
     headerLabel.className = 'py-1 px-2 font-bold';
     headerLabel.textContent = section.label;
     const headerAmount = document.createElement('td');
@@ -2374,12 +2368,11 @@ function buildSimpleQuotationBody(data) {
     section.items.forEach(item => tbody.appendChild(itemRow(item)));
   });
 
-  // The Simple Preview uses the same high-level SUMMARY as the live budget,
-  // inside the same five-column table so it cannot disappear as a separate block.
+  // Keep SUMMARY inside the same four-column Simple Preview table.
   const summaryHeading = document.createElement('tr');
   summaryHeading.className = 'bg-gray-100 border-b';
   const summaryHeadingCell = document.createElement('td');
-  summaryHeadingCell.colSpan = 5;
+  summaryHeadingCell.colSpan = 4;
   summaryHeadingCell.className = 'py-1 px-2 font-bold';
   summaryHeadingCell.textContent = 'SUMMARY';
   summaryHeading.appendChild(summaryHeadingCell);
@@ -2409,7 +2402,7 @@ function buildSimpleQuotationBody(data) {
     const tr = document.createElement('tr');
     tr.className = 'border-b';
     const labelCell = document.createElement('td');
-    labelCell.colSpan = 4;
+    labelCell.colSpan = 3;
     labelCell.className = 'py-1 px-2 text-right font-semibold';
     labelCell.textContent = label;
     const amountCell = document.createElement('td');
@@ -2424,7 +2417,7 @@ function buildSimpleQuotationBody(data) {
     const tr = document.createElement('tr');
     tr.className = 'border-t-2 bg-gray-50';
     const labelCell = document.createElement('td');
-    labelCell.colSpan = 4;
+    labelCell.colSpan = 3;
     labelCell.className = 'py-3 px-2 text-right font-bold';
     labelCell.textContent = 'TOTAL';
     const amountCell = document.createElement('td');
