@@ -1445,15 +1445,20 @@ function renderBudgetSummaryAtBottom(items, roomGroups, roomSubtotals, projectPr
   });
 
   const prelimManualItems = (manualItems.get("__prelim__") || [])
-    .filter(item => !excludedItems.has(item.id));
-  const prelimManualTotal = prelimManualItems
-    .reduce((sum, item) => sum + (Number(item.amount) || 0), 0);
-  const preliminariesTotal = Number(projectPreliminaries || 0) + prelimManualTotal;
+    .filter(item => !excludedItems.has(item.id) && (Number(item.amount) || 0) !== 0);
+
+  const preliminariesAmount = Number(projectPreliminaries) || 0;
+  const preliminariesTotal = preliminariesAmount +
+    prelimManualItems.reduce((sum, item) => sum + (Number(item.amount) || 0), 0);
+
+  const newConstructionGroups = ["STRUCTURES", "ARCHITECTURES", "ELECTRICAL", "DOORS & WINDOWS"]
+    .filter(group => (Number(groupTotals[group]) || 0) !== 0);
 
   const renovationExistingRooms = roomGroups.filter(room => {
     const isNewRoom = document.getElementById(room.roomId)
       ?.querySelector(".room-condition")?.value === "new";
-    return !isNewRoom && Number(room.area) > 0;
+    const amount = Number(roomSubtotals[room.roomId]) || 0;
+    return !isNewRoom && Number(room.area) > 0 && amount !== 0;
   });
 
   const renovationExistingTotal = renovationExistingRooms
@@ -1461,8 +1466,7 @@ function renderBudgetSummaryAtBottom(items, roomGroups, roomSubtotals, projectPr
 
   const newConstructionTotal =
     preliminariesTotal +
-    ["STRUCTURES", "ARCHITECTURES", "ELECTRICAL", "DOORS & WINDOWS"]
-      .reduce((sum, group) => sum + (Number(groupTotals[group]) || 0), 0);
+    newConstructionGroups.reduce((sum, group) => sum + (Number(groupTotals[group]) || 0), 0);
 
   const summaryTotal = newConstructionTotal + renovationExistingTotal;
 
@@ -1495,28 +1499,33 @@ function renderBudgetSummaryAtBottom(items, roomGroups, roomSubtotals, projectPr
 
   const fragment = document.createDocumentFragment();
   fragment.appendChild(headingRow("SUMMARY"));
-  fragment.appendChild(headingRow("PRELIMINARIES"));
-  fragment.appendChild(row("PROJECT PRELIMINARIES", projectPreliminaries));
 
-  prelimManualItems.forEach(item => {
-    fragment.appendChild(row(item.description, item.amount));
-  });
+  if (preliminariesTotal !== 0) {
+    fragment.appendChild(headingRow("PRELIMINARIES"));
+    if (preliminariesAmount !== 0) {
+      fragment.appendChild(row("PROJECT PRELIMINARIES", preliminariesAmount));
+    }
+    prelimManualItems.forEach(item => {
+      fragment.appendChild(row(item.description, item.amount));
+    });
+  }
 
-  fragment.appendChild(headingRow("NEW CONSTRUCTION"));
-  ["STRUCTURES", "ARCHITECTURES", "ELECTRICAL", "DOORS & WINDOWS"].forEach(group => {
-    fragment.appendChild(row(group, groupTotals[group] || 0));
-  });
+  if (newConstructionGroups.length) {
+    fragment.appendChild(headingRow("NEW CONSTRUCTION"));
+    newConstructionGroups.forEach(group => {
+      fragment.appendChild(row(group, groupTotals[group]));
+    });
+  }
 
-  fragment.appendChild(headingRow("RENOVATION EXISTING AREA"));
-  renovationExistingRooms.forEach(room => {
-    fragment.appendChild(row(room.label, roomSubtotals[room.roomId] || 0));
-  });
+  if (renovationExistingRooms.length) {
+    fragment.appendChild(headingRow("RENOVATION EXISTING AREA"));
+    renovationExistingRooms.forEach(room => {
+      fragment.appendChild(row(room.label, roomSubtotals[room.roomId] || 0));
+    });
+  }
 
   fragment.appendChild(row("TOTAL", summaryTotal, "border-t-2 bg-gray-50", true));
-
-  const tfoot = table.querySelector("tfoot");
-  if (tfoot) tbody.appendChild(fragment);
-  else tbody.appendChild(fragment);
+  tbody.appendChild(fragment);
 }
 
 function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, total) {
