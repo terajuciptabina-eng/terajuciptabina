@@ -2247,11 +2247,18 @@ function buildQuotationBody(data, revealDetails = false) {
   if (prelimBase !== 0) {
     prelimItems.push({
       description: 'Submission of Renovation Permit Application and Engineer\'s Drawings to the Local Authority',
-      unit: 'ls'
+      unit: 'ls',
+      quantity: 1,
+      rate: prelimBase,
+      amount: prelimBase
     });
   }
   prelimManual.forEach(item => prelimItems.push({
     description: String(item.description || '').trim(),
+    unit: String(item.unit || '').trim(),
+    quantity: item.quantity,
+    rate: item.rate,
+    amount: item.amount
   }));
   addSection('PROJECT / PRELIMINARIES', prelimTotal, prelimItems);
 
@@ -2286,6 +2293,10 @@ function buildQuotationBody(data, revealDetails = false) {
       entry.amount,
       entry.items.map(item => ({
         description: String(item.description || '').trim(),
+        unit: String(item.unit || '').trim(),
+        quantity: item.quantity,
+        rate: item.rate,
+        amount: item.amount
         })),
       { group: entry.group, subgroup: entry.subgroup }
     );
@@ -2303,7 +2314,10 @@ function buildQuotationBody(data, revealDetails = false) {
     optionalTotal,
     optionalItems.map(item => ({
       description: String(item.description || '').trim(),
-      unit: String(item.unit || '').trim()
+      unit: String(item.unit || '').trim(),
+      quantity: item.quantity,
+      rate: item.rate,
+      amount: item.amount
     }))
   );
 
@@ -2318,7 +2332,10 @@ function buildQuotationBody(data, revealDetails = false) {
       data.roomSubtotals?.[room.roomId] || 0,
       roomItems.map(item => ({
         description: String(item.description || '').trim(),
-        unit: String(item.unit || '').trim()
+      unit: String(item.unit || '').trim(),
+      quantity: item.quantity,
+      rate: item.rate,
+      amount: item.amount
       })),
       { existingRoom: true }
     );
