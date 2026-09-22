@@ -164,18 +164,18 @@
           "quotationType": "detail",
           "projectId": "PRJ-REN-MUCKB5HG-TSMIR",
           "projectState": "selangor",
-          "rateSetId": "selangor",
-          "rateSetName": "Selangor",
-          "rateSnapshotAt": "2026-09-22T10:59:46.291Z"
+          "rateSetId": "default",
+          "rateSetName": "Default Rate",
+          "rateSnapshotAt": "2026-09-22T18:24:42.361Z"
         },
         "createdAt": "2026-09-22T10:59:46.133Z",
-        "updatedAt": "2026-09-22T10:59:46.947Z",
+        "updatedAt": "2026-09-22T18:24:43.166Z",
         "estimateNumber": "EST-REN-001"
       }
     ]
   },
   "createdAt": "2026-09-21T05:42:03.987Z",
-  "updatedAt": "2026-09-22T10:59:46.947Z",
+  "updatedAt": "2026-09-22T18:24:43.166Z",
   "quotationRunningNumber": {
     "renovation": 1
   },
