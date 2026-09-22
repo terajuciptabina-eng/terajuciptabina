@@ -354,14 +354,14 @@
         },
         "project": {
           "location": "Not specified",
-          "builtUpArea": 300,
+          "builtUpArea": 400,
           "state": "selangor"
         },
-        "total": 71797,
+        "total": 108788.5,
         "plannerState": {
           "customerName": "Nur Syuhada",
           "projectLocation": "",
-          "builtUpArea": "300",
+          "builtUpArea": "400",
           "rooms": [
             {
               "id": "room-1",
@@ -373,7 +373,7 @@
               "id": "room-2",
               "type": "bedroom",
               "name": "Bedroom",
-              "area": "100"
+              "area": "200"
             }
           ],
           "rates": {
@@ -440,35 +440,35 @@
             "rule_porch_flat_roof_formwork_39": 55,
             "rule_porch_flat_roof_brc_40": 20.5,
             "rule_porch_roof_metal_roofing_sheet_41": 450,
-            "rule_main_building_brickwall_internal_wall_42": 50,
-            "rule_main_building_brickwall_external_wall_43": 50,
-            "rule_main_building_floor_tiles_internal_44": 45,
-            "rule_main_building_floor_tiles_external_45": 75,
+            "rule_main_building_brickwall_internal_wall_42": 75,
+            "rule_main_building_brickwall_external_wall_43": 120,
+            "rule_main_building_floor_tiles_internal_44": 95,
+            "rule_main_building_floor_tiles_external_45": 150,
             "rule_main_building_painting_internal_46": 30,
             "rule_main_building_painting_external_47": 48,
             "rule_main_building_ceiling_internal_48": 165,
             "rule_main_building_ceiling_external_49": 165,
-            "rule_bathroom_wall_tiles_50": 75,
-            "rule_bathroom_floor_tiles_51": 75,
+            "rule_bathroom_wall_tiles_50": 150,
+            "rule_bathroom_floor_tiles_51": 150,
             "rule_bathroom_ceiling_52": 165,
             "rule_bathroom_piping_53": 1100,
-            "rule_bathroom_wc_54": 300,
-            "rule_bathroom_basin_55": 200,
+            "rule_bathroom_wc_54": 800,
+            "rule_bathroom_basin_55": 400,
             "rule_bathroom_shower_56": 250,
-            "rule_bathroom_tap_57": 70,
+            "rule_bathroom_tap_57": 200,
             "rule_main_building_water_tank_58": 600,
             "rule_main_building_septic_tank_59": 2500,
-            "rule_main_building_power_point_60": 6.5,
-            "rule_main_building_switch_61": 6.5,
-            "rule_main_building_lighting_62": 120,
-            "rule_main_building_fan_63": 150,
+            "rule_main_building_power_point_60": 150,
+            "rule_main_building_switch_61": 200,
+            "rule_main_building_lighting_62": 200,
+            "rule_main_building_fan_63": 200,
             "rule_main_building_aircond_point_64": 300,
-            "rule_porch_lighting_65": 120,
-            "rule_porch_fan_66": 150,
-            "rule_porch_power_point_67": 6.5,
-            "rule_earthing_68": 1500,
+            "rule_porch_lighting_65": 200,
+            "rule_porch_fan_66": 200,
+            "rule_porch_power_point_67": 150,
+            "rule_earthing_68": 2500,
             "rule_db_box_69": 2500,
-            "rule_wiring_70": 20,
+            "rule_wiring_70": 25,
             "rule_doors_type_1_single_leaf_71": 1200,
             "rule_doors_type_2_sliding_72": 2500,
             "rule_doors_type_3_bathroom_73": 850,
@@ -491,12 +491,12 @@
           "quotationType": "detail",
           "projectId": "PRJ-BLD-MUCF8LL6-UNPV8",
           "projectState": "selangor",
-          "rateSetId": "default",
-          "rateSetName": "Default Rate",
-          "rateSnapshotAt": "2026-09-22T10:28:28.857Z"
+          "rateSetId": "selangor",
+          "rateSetName": "Selangor",
+          "rateSnapshotAt": "2026-09-22T10:32:06.367Z"
         },
         "createdAt": "2026-09-22T08:37:48.253Z",
-        "updatedAt": "2026-09-22T10:28:29.932Z",
+        "updatedAt": "2026-09-22T10:32:07.225Z",
         "estimateNumber": "EST-BLD-011"
       },
       {
@@ -2332,7 +2332,7 @@
     "renovation": []
   },
   "createdAt": "2026-09-09T13:51:41.818Z",
-  "updatedAt": "2026-09-22T10:28:29.932Z",
+  "updatedAt": "2026-09-22T10:32:07.225Z",
   "quotationRunningNumber": {
     "build": 13
   },
