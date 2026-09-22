@@ -1879,7 +1879,6 @@ function editItemRate(itemId, value) {
   saveContractorState();
 }
 function excludeItem(itemId) {
-  if (!IS_CONTRACTOR) return;
   excludedItems.add(itemId);
   updateEstimate();
   saveContractorState();
