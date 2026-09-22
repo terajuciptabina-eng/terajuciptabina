@@ -1,4 +1,4 @@
-/* TERAJU ENGINE 20260922 */
+/* TERAJU ENGINE 20260923 — BUILD PERMISSIONS SOURCE LOCK */
 (function(){'use strict';
 if(!/(?:buildplanner-v2|renovationplanner-v2)\.html$/i.test(location.pathname)||window.__TERAJU_MASTER_ENGINE_ACTIVE)return;window.__TERAJU_MASTER_ENGINE_ACTIVE=true;
 const Q=new URLSearchParams(location.search),CID=Q.get('contractorId')||localStorage.getItem('teraju.contractor.local.v1.activeContractorId')||'local',OV=`teraju.buildplanner.v2.rate-overrides.v1.${CID}`;
