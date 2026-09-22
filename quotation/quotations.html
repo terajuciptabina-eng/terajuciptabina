@@ -25,7 +25,7 @@
 <script>
 (() => {
  const API='https://terajuciptabina.vercel.app/api/quotations';
- const p=new URLSearchParams(location.search);const role=(p.get('role')||'homeowner').toLowerCase()==='contractor'?'contractor':'homeowner';const idKey=role==='contractor'?'contractorId':'homeownerId';const id=(p.get('id')||'').trim().toUpperCase();const type=(p.get('plannerType')||'build').toLowerCase()==='renovation'?'renovation':'build';
+ const p=new URLSearchParams(location.search);const role=(p.get('role')||'homeowner').toLowerCase()==='contractor'?'contractor':'homeowner';const idKey=role==='contractor'?'contractorId':'homeownerId';const id=(p.get('id')||p.get(idKey)||'').trim().toUpperCase();const type=(p.get('plannerType')||'build').toLowerCase()==='renovation'?'renovation':'build';
  const list=document.getElementById('list'),status=document.getElementById('status'),back=document.getElementById('backLink'),newLink=document.getElementById('newQuotationLink');
  const plannerFile=type==='renovation'?'renovationplanner-v2.html':'buildplanner-v2.html';
  back.href=role==='contractor'?`contractor.html`:`homeowner.html`;
