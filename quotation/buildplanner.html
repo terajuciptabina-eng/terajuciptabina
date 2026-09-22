@@ -668,7 +668,14 @@ function generateQuotation(typeOverride){
   if(data.electrical.length){body+=`<tr class="quotation-section-row"><td colspan="5" class="py-3 px-2">ELECTRICAL WORKS</td></tr>`;body+=data.electrical.map(itemRow).join('');body+=`<tr class="border-b"><td colspan="3"></td><td class="py-2 px-2 text-right font-semibold">Subtotal - Electrical Works</td><td class="py-2 px-2 text-right font-semibold">${money(data.electrical.reduce((s,i)=>s+i.amount,0),2)}</td></tr>`}
   body+=`</tbody><tfoot><tr class="border-t-2"><td colspan="4" class="py-4 px-2 text-right font-bold">TOTAL</td><td class="py-4 px-2 text-right font-bold text-lg">${money(data.total,2)}</td></tr></tfoot></table></div>`;
  }
- body+=`<div class="mt-8 pt-5 border-t text-sm"><p class="font-semibold mb-2">Terms / Notes</p><ul class="list-disc pl-5 text-gray-600"><li>This quotation is based on the stated built-up area, area schedule and rates applied herein.</li><li>Final scope, specifications, site conditions and pricing remain subject to site inspection and written confirmation.</li><li>Any additional works or authority requirements not listed above shall be quoted separately.</li></ul></div><div class="mt-12 text-sm"><p>Yours sincerely,</p><p class="font-bold mt-8">TERAJU CIPTABINA RESOURCES</p></div>`;
+ body+=`<div class="mt-8 pt-5 border-t text-sm"><p class="font-semibold mb-2">Terms / Notes</p><ul class="list-disc pl-5 text-gray-600"><li>This quotation is based on the stated built-up area, area schedule and rates applied herein.</li><li>Final scope, specifications, site conditions and pricing remain subject to site inspection and written confirmation.</li><li>Any additional works or authority requirements not listed above shall be quoted separately.</li></ul></div><div class="mt-12 text-sm"><p>Yours sincerely,</p><p class="font-bold mt-8">TERAJU CIPTABINA RESOURCES</p></div><div class="quotation-contact-footer mt-10 pt-5 border-t text-xs text-gray-500">
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+    <div><span class="font-semibold text-gray-700">Address</span><div class="mt-1">10A, Jalan PP2/1, Taman Putra Prima, 47100 Puchong, Selangor, Malaysia</div></div>
+    <div><span class="font-semibold text-gray-700">Email</span><div class="mt-1 break-words">terajuciptabina@gmail.com</div></div>
+    <div><span class="font-semibold text-gray-700">Phone</span><div class="mt-1">014-5002652</div></div>
+    <div><span class="font-semibold text-gray-700">Website</span><div class="mt-1 break-words">terajuciptabina-eng.github.io/terajuciptabina/</div></div>
+  </div>
+</div>`;
  content.innerHTML=body;document.getElementById('quotationDocument').classList.remove('hidden');document.getElementById('quotationPrintActions').classList.remove('hidden');setDetailedQuotationLocked(type==='detail');renderQuotationPreview();document.getElementById('quotationDocument').scrollIntoView({behavior:'smooth',block:'start'})
 if(type==='detail')openDetailedQuotationPromo();return true;
 }
