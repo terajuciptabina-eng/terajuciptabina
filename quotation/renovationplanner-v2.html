@@ -158,6 +158,7 @@
     .contractor-editable { display: none; }
     body.contractor-mode .contractor-editable { display: inline-block; }
     .homeowner-locked { background: #f9fafb !important; color: #4b5563; }
+    .estimate-amount-cell { width: 20% !important; min-width: 20% !important; max-width: 20% !important; box-sizing: border-box !important; }
     body.contractor-mode .homeowner-locked { display: none !important; }
 
     /* =========================================================
@@ -1601,7 +1602,7 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
   }
 
   const prelimManual = manualItems.get("__prelim__") || [];
-  prelimManual.forEach(item => { html += `<tr class="border-b"><td class="py-1 px-2 align-top">${IS_CONTRACTOR ? `<textarea rows="2" onchange="editItemDescription(\'${item.id}\', this.value)" class="w-full border rounded-lg px-2 py-1 bg-white leading-4 resize-none">${escapeHtml(item.description)}</textarea>` : `<div class="homeowner-locked p-1 rounded leading-4">${escapeHtml(item.description)}</div>`}</td><td class="py-1 px-2">${escapeHtml(item.unit)}</td><td class="py-1 px-2 text-right"><input type="number" min="0" step="1" value="${formatQty(item.qty)}" onchange="editItemQuantity('${item.id}', this.value)" class="contractor-only no-print w-24 border rounded-none px-1 py-1 text-right bg-white"><span class="homeowner-locked no-print inline-block px-1 py-1 rounded-none text-sm">${formatQty(item.qty)}</span></td><td class="py-1 px-2 text-right"><input type="number" min="0" step="0.01" value="${normalizeRate(item.rate).toFixed(2)}" onchange="editItemRate('${item.id}', this.value)" class="contractor-only no-print w-28 border rounded-none px-1 py-1 text-right bg-white"><span class="homeowner-locked no-print inline-block px-1 py-1 rounded-none text-sm">${money(item.rate, 2)}</span></td><td class="py-1 px-2 text-right font-medium tabular-nums">${money(item.amount, 2)}</td><td class="no-print py-1 px-2 text-center"><button type="button" onclick="removeManualItem('__prelim__','${item.id}')" class="text-red-600 text-xs border border-red-200 rounded px-3 py-1.5">Delete</button></td></tr>`; });
+  prelimManual.forEach(item => { html += `<tr class="border-b"><td class="py-1 px-2 align-top">${IS_CONTRACTOR ? `<textarea rows="2" onchange="editItemDescription(\'${item.id}\', this.value)" class="w-full border rounded-lg px-2 py-1 bg-white leading-4 resize-none">${escapeHtml(item.description)}</textarea>` : `<div class="homeowner-locked p-1 rounded leading-4">${escapeHtml(item.description)}</div>`}</td><td class="py-1 px-2">${escapeHtml(item.unit)}</td><td class="py-1 px-2 text-right"><input type="number" min="0" step="1" value="${formatQty(item.qty)}" onchange="editItemQuantity('${item.id}', this.value)" class="contractor-only no-print w-24 border rounded-none px-1 py-1 text-right bg-white"><span class="homeowner-locked no-print inline-block px-1 py-1 rounded-none text-sm">${formatQty(item.qty)}</span></td><td class="py-1 px-2 text-right"><input type="number" min="0" step="0.01" value="${normalizeRate(item.rate).toFixed(2)}" onchange="editItemRate('${item.id}', this.value)" class="contractor-only no-print w-28 border rounded-none px-1 py-1 text-right bg-white"><span class="homeowner-locked no-print inline-block px-1 py-1 rounded-none text-sm">${money(item.rate, 2)}</span></td><td class="estimate-amount-cell py-1 px-2 text-right font-medium tabular-nums">${money(item.amount, 2)}</td><td class="no-print py-1 px-2 text-center"><button type="button" onclick="removeManualItem('__prelim__','${item.id}')" class="text-red-600 text-xs border border-red-200 rounded px-3 py-1.5">Delete</button></td></tr>`; });
 
   const newRoomIds = new Set(
     roomGroups
@@ -1645,7 +1646,7 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
       html += `
         <tr class="border-b bg-gray-50">
           <td colspan="4" class="py-1 px-2 text-right font-semibold">${escapeHtml(currentHierarchyLabel)} Subtotal</td>
-          <td class="py-1 px-2 text-right font-bold tabular-nums">${money(currentHierarchyTotal, 2)}</td>
+          <td class="estimate-amount-cell py-1 px-2 text-right font-bold tabular-nums">${money(currentHierarchyTotal, 2)}</td>
           <td class="no-print"></td>
         </tr>`;
       currentHierarchyKey = "";
@@ -1700,7 +1701,7 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
           <td class="py-1 px-2">${escapeHtml(item.unit)}</td>
           <td class="py-1 px-2 text-right">${formatQty(item.qty)}</td>
           <td class="py-1 px-2 text-right">${money(item.rate, 2)}</td>
-          <td class="py-1 px-2 text-right font-medium tabular-nums">${money(item.amount, 2)}</td>
+          <td class="estimate-amount-cell py-1 px-2 text-right font-medium tabular-nums">${money(item.amount, 2)}</td>
           <td class="no-print py-1 px-2 text-center">
             <button type="button" onclick="excludeItem('${item.id}')"
               class="text-red-600 text-xs border border-red-200 rounded px-2 py-1 hover:bg-red-50">Delete</button>
@@ -1756,7 +1757,7 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
             <span class="homeowner-locked no-print inline-block px-1 py-1 rounded-none text-sm">${money(item.rate, 2)}</span>
             <span class="hidden print:inline">${money(item.rate, 2)}</span>
           </td>
-          <td class="py-1 px-2 text-right font-medium tabular-nums">${money(item.amount, 2)}</td>
+          <td class="estimate-amount-cell py-1 px-2 text-right font-medium tabular-nums">${money(item.amount, 2)}</td>
           <td class="no-print py-1 px-2 text-center">
             <button type="button" onclick="${String(item.id).startsWith("manual-") ? `removeManualItem('${item.roomId}','${item.id}')` : `excludeItem('${item.id}')`}"
               class="text-red-600 text-xs border border-red-200 rounded px-2 py-1 hover:bg-red-50">Delete</button>
@@ -1767,7 +1768,7 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
     html += `
       <tr class="border-b">
         <td colspan="4" class="py-1 px-2 text-right font-semibold">${escapeHtml(room.label)} Subtotal</td>
-        <td class="py-1 px-2 text-right font-bold tabular-nums">${money(roomSubtotals[room.roomId] || 0, 2)}</td>
+        <td class="estimate-amount-cell py-1 px-2 text-right font-bold tabular-nums">${money(roomSubtotals[room.roomId] || 0, 2)}</td>
         <td class="no-print"></td>
       </tr>`;
   });
