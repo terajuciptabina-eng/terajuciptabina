@@ -2131,6 +2131,12 @@ function initContractorMode() {
   if (badgeEl) badgeEl.textContent = IS_CONTRACTOR ? "Contractor Workspace" : "Homeowner Workspace";
   if (idLabelEl) idLabelEl.textContent = IS_CONTRACTOR ? "Contractor ID" : "Homeowner ID";
   if (idEl) idEl.textContent = activeId || "Not signed in";
+  const myQuotationsLink = document.getElementById("myQuotationsLink");
+  if (myQuotationsLink) {
+    myQuotationsLink.href = activeId
+      ? `quotations.html?role=${encodeURIComponent(IS_CONTRACTOR ? "contractor" : "homeowner")}&id=${encodeURIComponent(activeId)}&plannerType=renovation`
+      : `quotations.html?role=${encodeURIComponent(IS_CONTRACTOR ? "contractor" : "homeowner")}&plannerType=renovation`;
+  }
 
   let saved = null;
   if (IS_CONTRACTOR) {
@@ -2610,7 +2616,7 @@ function generateQuotationConfirmed(type) {
 initContractorMode();
 </script>
 
-<script src="quotation-document-engine.js?v=20260922-footer-v1"></script>
+<script src="quotation-document-engine.js?v=20260922-footer-v2"></script>
 <script src="detailed-quotation-promo-ui.js"></script>
 <script src="location-autocomplete.js"></script>
 <script src="renovation-calculation-rules.js?v=20260921-v2-source"></script>

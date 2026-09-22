@@ -7,8 +7,9 @@ const RENDER_WIDTH_PX=794;
 const PX_PER_MM=RENDER_WIDTH_PX/CONTENT_MM.width;
 const CONTENT_HEIGHT_PX=Math.floor(CONTENT_MM.height*PX_PER_MM);
 const PAGE_NUMBER_RESERVE_PX=Math.ceil(8*PX_PER_MM);
+const CONTACT_FOOTER_RESERVE_PX=Math.ceil(18*PX_PER_MM);
 const PAGE_BOTTOM_SAFETY_PX=Math.ceil(8*PX_PER_MM);
-const USABLE_HEIGHT_PX=CONTENT_HEIGHT_PX-PAGE_NUMBER_RESERVE_PX-PAGE_BOTTOM_SAFETY_PX;
+const USABLE_HEIGHT_PX=CONTENT_HEIGHT_PX-PAGE_NUMBER_RESERVE_PX-CONTACT_FOOTER_RESERVE_PX-PAGE_BOTTOM_SAFETY_PX;
 const JPEG_QUALITY=0.94;
 
 function injectStyles(){
@@ -193,7 +194,7 @@ function waitForImages(root){return Promise.all(Array.from(root.querySelectorAll
 
 function createRenderRoot(){
  const root=document.createElement('div');
- root.style.cssText=`width:${RENDER_WIDTH_PX}px;box-sizing:border-box;background:#fff;padding:0 0 ${PAGE_BOTTOM_SAFETY_PX}px;margin:0;overflow:visible;font-family:Arial,Helvetica,sans-serif;`;
+ root.style.cssText=`position:relative;width:${RENDER_WIDTH_PX}px;min-height:${CONTENT_HEIGHT_PX}px;box-sizing:border-box;background:#fff;padding:0 0 ${PAGE_BOTTOM_SAFETY_PX}px;margin:0;overflow:visible;font-family:Arial,Helvetica,sans-serif;`;
  return root;
 }
 function isHeadingRow(row){return row.classList.contains('quotation-section-row')||row.classList.contains('quotation-subsection-row');}
@@ -227,9 +228,7 @@ function makePageShell(headerNodes,tableTemplate,includeTableHeader){
 function appendUnits(page,units){units.forEach(unit=>unit.forEach(row=>page.tbody.appendChild(row.cloneNode(true))))}
 function pageHeight(page){const holder=document.createElement('div');holder.style.cssText=`position:fixed;left:-100000px;top:0;width:${RENDER_WIDTH_PX}px;background:#fff;padding:0;margin:0;overflow:visible;visibility:hidden;z-index:-1`;holder.appendChild(page.root);document.body.appendChild(holder);void page.root.offsetHeight;const height=Math.ceil(Math.max(page.root.scrollHeight,page.root.getBoundingClientRect().height));holder.remove();return height}
 function canvasFromPage(root){const holder=document.createElement('div');holder.style.cssText=`position:fixed;left:-100000px;top:0;width:${RENDER_WIDTH_PX}px;background:#fff;padding:0;margin:0;overflow:visible;z-index:-1;visibility:visible`;holder.appendChild(root);document.body.appendChild(holder);return holder}
-async function rasterizePages(pageRoots){const pages=[];for(const root of pageRoots){const holder=canvasFromPage(root);await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));if(document.fonts?.ready)await document.fonts.ready;await waitForImages(holder);const measured=Math.ceil(Math.max(root.scrollHeight,root.getBoundingClientRect().height,1));root.style.position='relative';
-root.style.minHeight=CONTENT_HEIGHT_PX+'px';
-const captureHeight=Math.min(CONTENT_HEIGHT_PX,measured);const canvas=await window.html2canvas(holder,{backgroundColor:'#fff',scale:Math.min(2,Math.max(1.5,window.devicePixelRatio||1)),useCORS:true,allowTaint:false,logging:false,imageTimeout:15000,scrollX:0,scrollY:0,width:RENDER_WIDTH_PX,height:captureHeight,windowWidth:RENDER_WIDTH_PX,windowHeight:captureHeight});holder.remove();const heightMm=(canvas.height/Math.max(canvas.width,1))*CONTENT_MM.width;pages.push({src:canvas.toDataURL('image/jpeg',JPEG_QUALITY),heightMm})}return pages}
+async function rasterizePages(pageRoots){const pages=[];for(const root of pageRoots){const holder=canvasFromPage(root);await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));if(document.fonts?.ready)await document.fonts.ready;await waitForImages(holder);const captureHeight=CONTENT_HEIGHT_PX;const canvas=await window.html2canvas(holder,{backgroundColor:'#fff',scale:Math.min(2,Math.max(1.5,window.devicePixelRatio||1)),useCORS:true,allowTaint:false,logging:false,imageTimeout:15000,scrollX:0,scrollY:0,width:RENDER_WIDTH_PX,height:captureHeight,windowWidth:RENDER_WIDTH_PX,windowHeight:captureHeight});holder.remove();const heightMm=(canvas.height/Math.max(canvas.width,1))*CONTENT_MM.width;pages.push({src:canvas.toDataURL('image/jpeg',JPEG_QUALITY),heightMm})}return pages}
 async function measureQuotationUnits(headerNodes,tableTemplate,units){
  const measure=makePageShell(headerNodes,tableTemplate,true);
  units.forEach(unit=>unit.forEach(row=>measure.tbody.appendChild(row.cloneNode(true))));
