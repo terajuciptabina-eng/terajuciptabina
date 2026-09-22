@@ -1524,7 +1524,9 @@ function renderBudgetSummaryAtBottom(items, roomGroups, roomSubtotals, projectPr
     });
   }
 
-  fragment.appendChild(row("TOTAL", summaryTotal, "border-t-2 bg-gray-50", true));
+  if (summaryTotal !== 0) {
+    fragment.appendChild(row("TOTAL", summaryTotal, "border-t-2 bg-gray-50", true));
+  }
   tbody.appendChild(fragment);
 }
 
