@@ -56,14 +56,14 @@
     "rule_main_building_painting_external_47": 48,
     "rule_main_building_ceiling_internal_48": 165,
     "rule_main_building_ceiling_external_49": 165,
-    "rule_bathroom_wall_tiles_50": 75,
-    "rule_bathroom_floor_tiles_51": 75,
+    "rule_bathroom_wall_tiles_50": 150,
+    "rule_bathroom_floor_tiles_51": 150,
     "rule_bathroom_ceiling_52": 165,
     "rule_bathroom_piping_53": 1100,
-    "rule_bathroom_wc_54": 300,
-    "rule_bathroom_basin_55": 200,
+    "rule_bathroom_wc_54": 800,
+    "rule_bathroom_basin_55": 400,
     "rule_bathroom_shower_56": 250,
-    "rule_bathroom_tap_57": 70,
+    "rule_bathroom_tap_57": 200,
     "rule_main_building_water_tank_58": 600,
     "rule_main_building_septic_tank_59": 2500,
     "rule_main_building_power_point_60": 6.5,
@@ -665,5 +665,5 @@
       "groupTitle": "EXTERNAL WORK"
     }
   },
-  "updatedAt": "2026-09-22T09:52:57.882Z"
+  "updatedAt": "2026-09-22T09:59:31.407Z"
 }
