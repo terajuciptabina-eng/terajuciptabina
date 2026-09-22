@@ -56,17 +56,8 @@
       setTimeout(() => popup.remove(), 300);
     }, 5000);
   }
-  function findStoredId(value) {
-    const prefix = isHomeowner ? 'HME-' : 'CTR-';
-    const seen = new Set();
-    const walk = node => {
-      if (node == null) return '';
-      if (typeof node === 'string') return new RegExp('^' + prefix + '[A-Z0-9-]+
   function showPortal(record) {
-    record = normalizeRecord(record);
-    const id = String(normalizeRecord(record)?.[idKey] || '').trim().toUpperCase();
-    if (!id) return;
-    setLocal(record); panel.classList.add('hidden'); portal.classList.remove('hidden');
+    setLocal(record); panel.classList.add('hidden'); portal.classList.remove('hidden'); const id = record[idKey];
     welcome.innerHTML = `<span class=\"block\">Welcome, ${escapeHtml(record.profile?.name || '')}.</span>`;
     if (buildLink) buildLink.href = `quotations.html?audience=${role}&role=${role}&${idKey}=${encodeURIComponent(id)}&id=${encodeURIComponent(id)}&plannerType=build`;
     if (renoLink) renoLink.href = `quotations.html?audience=${role}&role=${role}&${idKey}=${encodeURIComponent(id)}&id=${encodeURIComponent(id)}&plannerType=renovation`;
@@ -115,73 +106,5 @@
   }, true);
   signInTab.addEventListener('click', () => setMode('signin'), true); signUpTab.addEventListener('click', () => setMode('signup'), true);
   document.getElementById('logout')?.addEventListener('click', () => { localStorage.removeItem(storageKey); location.reload(); }, true);
-  const local = normalizeRecord(getLocal()); if (local?.[idKey]) { showPortal(local); syncLocalAccount(local); } else setMode('signup');
-})();
-,'i').test(node.trim()) ? node.trim().toUpperCase() : '';
-      if (typeof node !== 'object' || seen.has(node)) return '';
-      seen.add(node);
-      for (const key of [idKey,'id','userId','accountId',...Object.keys(node)]) { const found = walk(node[key]); if (found) return found; }
-      return '';
-    };
-    return walk(value);
-  }
-  function normalizeRecord(record) {
-    if (!record || typeof record !== 'object') return record;
-    const rawId = findStoredId(record);
-    return rawId && record[idKey] !== rawId ? { ...record, [idKey]: rawId } : record;
-  }
-  function showPortal(record) {
-    record = normalizeRecord(record);
-    const id = String(normalizeRecord(record)?.[idKey] || '').trim().toUpperCase();
-    if (!id) return;
-    setLocal(record); panel.classList.add('hidden'); portal.classList.remove('hidden');
-    welcome.innerHTML = `<span class=\"block\">Welcome, ${escapeHtml(record.profile?.name || '')}.</span>`;
-    if (buildLink) buildLink.href = `quotations.html?audience=${role}&role=${role}&${idKey}=${encodeURIComponent(id)}&id=${encodeURIComponent(id)}&plannerType=build`;
-    if (renoLink) renoLink.href = `quotations.html?audience=${role}&role=${role}&${idKey}=${encodeURIComponent(id)}&id=${encodeURIComponent(id)}&plannerType=renovation`;
-  }
-  async function getAccount(id) {
-    const response = await fetch(`${API_BASE}/api/auth?role=${encodeURIComponent(role)}&id=${encodeURIComponent(id)}`).catch(() => null);
-    if (!response) throw new Error('Unable to reach the account service.'); const data = await response.json().catch(() => ({})); if (!response.ok) throw new Error(data.message || 'Account not found.'); return data;
-  }
-  async function syncLocalAccount(record) {
-    const id = String(record?.[idKey] || '').trim().toUpperCase();
-    if (!id) return;
-    try {
-      const latest = await getAccount(id);
-      if (latest?.[idKey]) showPortal(latest);
-    } catch {
-      // Keep the locally cached account if the sync service is temporarily unavailable.
-    }
-  }
-  async function postAccount(body) {
-    const response = await fetch(`${API_BASE}/api/auth`, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).catch(() => null);
-    if (!response) throw new Error('Unable to reach the account service.'); const data = await response.json().catch(() => ({})); if (!response.ok) throw new Error(data.message || 'Account request failed.'); return data;
-  }
-  form.addEventListener('submit', async event => {
-    event.preventDefault(); event.stopImmediatePropagation(); clearError(); button.disabled = true; button.textContent = mode === 'signup' ? 'Creating…' : 'Signing in…';
-    try {
-      if (mode === 'signup') {
-        const name = nameInput.value.trim(), email = emailInput?.value.trim() || '', phone = phoneInput?.value.trim() || '';
-        if (!name) throw new Error('Name is required.');
-        if (!validEmail(email)) throw new Error('Please enter a valid email address.');
-        if (!validPhone(phone)) throw new Error('Please enter a valid Malaysian phone number, e.g. 0123456789 or +60123456789.');
-        const data = await postAccount({role,name,email,phone});
-        trackEvent('sign_up', { signup_role: role, generated_id: data.id, method: 'github_account_store' });
-        generated.innerHTML = `<strong>Your ${isHomeowner ? 'Homeowner' : 'Contractor'} ID:</strong><br><span class=\"mt-1 inline-block text-lg font-bold tracking-wide text-slate-950\">${escapeHtml(data.id)}</span><br><span class=\"text-xs text-slate-500\">Keep this ID. You will use it to sign in later.</span>`;
-        generated.classList.remove('hidden');
-        showPortal(data.record);
-        showSignupPopup(data.record, data.emailSent === true, email);
-      } else {
-        const id = idInput.value.trim().toUpperCase();
-        if (!id) throw new Error(`Please enter your ${isHomeowner ? 'Homeowner' : 'Contractor'} ID.`);
-        const account = await getAccount(id);
-        trackEvent('login', { login_role: role, method: 'github_account_store' });
-        showPortal(account);
-      }
-    } catch (err) { setError(err.message || 'Unable to complete the request.'); }
-    finally { button.disabled = false; button.textContent = mode === 'signup' ? 'Create workspace' : 'Enter workspace'; }
-  }, true);
-  signInTab.addEventListener('click', () => setMode('signin'), true); signUpTab.addEventListener('click', () => setMode('signup'), true);
-  document.getElementById('logout')?.addEventListener('click', () => { localStorage.removeItem(storageKey); location.reload(); }, true);
-  const local = normalizeRecord(getLocal()); if (local?.[idKey]) { showPortal(local); syncLocalAccount(local); } else setMode('signup');
+  const local = getLocal(); if (local?.[idKey]) { showPortal(local); syncLocalAccount(local); } else setMode('signup');
 })();
