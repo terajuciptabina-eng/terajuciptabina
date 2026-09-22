@@ -1939,14 +1939,14 @@
         },
         "project": {
           "location": "Not specified",
-          "builtUpArea": 0,
+          "builtUpArea": 500,
           "state": "selangor"
         },
-        "total": 70400,
+        "total": 83847,
         "plannerState": {
           "customerName": "",
           "projectLocation": "",
-          "builtUpArea": "",
+          "builtUpArea": "500",
           "rooms": [
             {
               "id": "room-1",
@@ -1962,8 +1962,8 @@
             },
             {
               "id": "room-3",
-              "type": "extensionKitchen",
-              "name": "New Extension – Kitchen",
+              "type": "dryKitchen",
+              "name": "Dry Kitchen",
               "area": "200"
             }
           ],
@@ -2086,10 +2086,10 @@
           "projectState": "selangor",
           "rateSetId": "default",
           "rateSetName": "Default Rate",
-          "rateSnapshotAt": "2026-09-21T16:56:52.641Z"
+          "rateSnapshotAt": "2026-09-22T12:14:19.813Z"
         },
         "createdAt": "2026-09-18T20:26:37.309Z",
-        "updatedAt": "2026-09-21T16:56:54.179Z",
+        "updatedAt": "2026-09-22T12:14:20.781Z",
         "estimateNumber": "EST-REN-005"
       },
       {
@@ -2659,7 +2659,7 @@
     ]
   },
   "createdAt": "2026-09-10T20:27:55.981Z",
-  "updatedAt": "2026-09-21T16:56:54.179Z",
+  "updatedAt": "2026-09-22T12:14:20.781Z",
   "quotationRunningNumber": {
     "renovation": 5,
     "build": 10
