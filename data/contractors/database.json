@@ -44,9 +44,9 @@
           "overrideActive": true,
           "state": "selangor",
           "rateSetId": "selangor",
-          "approvalStatus": "pending",
-          "reviewedAt": null,
-          "reviewedBy": null,
+          "approvalStatus": "approved",
+          "reviewedAt": "2026-09-23T19:38:28.380Z",
+          "reviewedBy": "admin",
           "reviewNote": null,
           "capturedAt": "2026-09-23T19:37:02.601Z",
           "category": "direct-rate-override",
@@ -131,9 +131,35 @@
           "groupTitle": "Construction Budget",
           "updatedAt": "2026-09-23T19:37:02.601Z",
           "eventType": "override-update"
+        },
+        {
+          "customItemId": "ITEM-room-2-floor",
+          "sourceType": "override",
+          "sourceGlobalId": "master-BALCONY / Floor Tiles",
+          "plannerType": "renovation",
+          "description": "Floor tiles to Balcony area.",
+          "unit": "sqft",
+          "rate": 25,
+          "globalRate": 22,
+          "rateDelta": 3,
+          "rateDeltaPercent": 13.64,
+          "overrideActive": true,
+          "state": "selangor",
+          "rateSetId": "selangor",
+          "approvalStatus": "approved",
+          "reviewedAt": "2026-09-23T19:38:28.380Z",
+          "reviewedBy": "admin",
+          "reviewNote": null,
+          "capturedAt": "2026-09-23T19:38:28.380Z",
+          "category": "direct-rate-override",
+          "groupKey": null,
+          "groupTitle": "Construction Budget",
+          "updatedAt": "2026-09-23T19:37:02.601Z",
+          "eventType": "rate-approved",
+          "previousApprovalStatus": "pending"
         }
       ]
     }
   ],
-  "updatedAt": "2026-09-23T19:37:02.601Z"
+  "updatedAt": "2026-09-23T19:38:28.380Z"
 }
