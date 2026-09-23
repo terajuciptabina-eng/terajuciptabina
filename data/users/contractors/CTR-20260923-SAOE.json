@@ -203,6 +203,10 @@
             [
               "room-2",
               "Balcony"
+            ],
+            [
+              "room-3",
+              "Porch"
             ]
           ],
           "excludedItems": [
@@ -286,16 +290,16 @@
           "projectState": "negeri-sembilan",
           "rateSetId": "default",
           "rateSetName": "Default Rate",
-          "rateSnapshotAt": "2026-09-23T09:25:56.248Z"
+          "rateSnapshotAt": "2026-09-23T09:59:44.788Z"
         },
         "createdAt": "2026-09-23T08:51:00.535Z",
-        "updatedAt": "2026-09-23T09:25:57.377Z",
+        "updatedAt": "2026-09-23T09:59:45.765Z",
         "estimateNumber": "EST-REN-003"
       }
     ]
   },
   "createdAt": "2026-09-23T08:33:53.459Z",
-  "updatedAt": "2026-09-23T09:58:57.711Z",
+  "updatedAt": "2026-09-23T09:59:45.765Z",
   "quotationRunningNumber": {
     "renovation": 3
   },
