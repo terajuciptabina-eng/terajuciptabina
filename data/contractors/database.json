@@ -21,7 +21,11 @@
           "category": "rate-schedule",
           "groupKey": null,
           "groupTitle": "Rate Schedule",
-          "updatedAt": "2026-09-19T20:11:03.972Z"
+          "updatedAt": "2026-09-19T20:11:03.972Z",
+          "approvalStatus": "rejected",
+          "reviewedAt": "2026-09-23T17:21:48.417Z",
+          "reviewedBy": "admin",
+          "reviewNote": null
         },
         {
           "customItemId": "ITEM-master-preliminaries-/-building-plan-/-submission",
@@ -396,6 +400,29 @@
           "updatedAt": "2026-09-19T21:09:50.434Z",
           "eventType": "override-update",
           "capturedAt": "2026-09-19T21:09:50.434Z"
+        },
+        {
+          "customItemId": "RATE-prelim",
+          "sourceType": "override",
+          "sourceGlobalId": "rate-prelim",
+          "plannerType": "build",
+          "description": "Preliminaries, site mobilisation, temporary facilities, site protection, insurance, project coordination, supervision and general project management, complete.",
+          "unit": "ls",
+          "rate": 11000,
+          "globalRate": 12000,
+          "rateDelta": -1000,
+          "rateDeltaPercent": -8.33,
+          "overrideActive": true,
+          "category": "rate-schedule",
+          "groupKey": null,
+          "groupTitle": "Rate Schedule",
+          "updatedAt": "2026-09-19T20:11:03.972Z",
+          "approvalStatus": "rejected",
+          "reviewedAt": "2026-09-23T17:21:48.417Z",
+          "reviewedBy": "admin",
+          "reviewNote": null,
+          "eventType": "rate-rejected",
+          "capturedAt": "2026-09-23T17:21:48.417Z"
         }
       ]
     },
@@ -499,5 +526,5 @@
       ]
     }
   ],
-  "updatedAt": "2026-09-23T08:40:14.113Z"
+  "updatedAt": "2026-09-23T17:21:48.417Z"
 }
