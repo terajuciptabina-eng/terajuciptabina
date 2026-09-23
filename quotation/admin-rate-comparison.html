@@ -132,7 +132,7 @@ async function loadMarketSignal(){
     const data=await r.json().catch(()=>({}));
     if(!r.ok)throw new Error(data.message||'Unable to load contractor market signal.');
     const planner=$('planner').value==='all'?'all':$('planner').value;
-    const search=$('q').value.trim().toLowerCase();
+    const search='';
     const market=data.market||{};
     const filteredStates=stateData;
     const rows=ruleRows.filter(({rule,key})=>!search||rule.path.toLowerCase().includes(search)||rule.description.toLowerCase().includes(search)||key.toLowerCase().includes(search));
