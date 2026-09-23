@@ -1,4 +1,5 @@
 export default async function handler(req, res) {
+  // Vercel deployment trigger: 2026-09-24 State Rate Matrix approval flow.
   const origin = 'https://terajuciptabina-eng.github.io';
   res.setHeader('Access-Control-Allow-Origin', origin);
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
