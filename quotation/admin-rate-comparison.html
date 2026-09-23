@@ -87,7 +87,9 @@ function collectAccountRates(accounts){
       });
       const rowKey=matched?.key||('custom:'+String(item?.customItemId||sourceId||item?.description||'item'));
       if(!by.has(rowKey))by.set(rowKey,{vals:new Map(),custom:matched?null:{description:item?.description||sourceId||'Custom Rate Item',unit:item?.unit||'—'},rule:matched?.rule||null});
-      if(!by.get(rowKey).vals.has(a.id))by.get(rowKey).vals.get(a.id).add(String(rate));
+      const accountValues=by.get(rowKey).vals;
+      if(!accountValues.has(a.id))accountValues.set(a.id,new Set());
+      accountValues.get(a.id).add(String(rate));
     }
   }
   return by;
