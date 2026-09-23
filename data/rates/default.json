@@ -87,7 +87,47 @@
     "rule_boundary_fencing_78": 43000,
     "rule_gate_79": 6500,
     "rule_driveway_80": 5000,
-    "rule_landscaping_81": 2000
+    "rule_landscaping_81": 2000,
+    "renovation_rule_living_dining_plaster_ceiling_0": 12,
+    "renovation_rule_living_dining_spc_flooring_1": 14,
+    "renovation_rule_living_dining_downlight_2": 200,
+    "renovation_rule_living_dining_ceiling_fan_3": 550,
+    "renovation_rule_living_dining_curtain_box_led_4": 300,
+    "renovation_rule_bedroom_plaster_ceiling_5": 12,
+    "renovation_rule_bedroom_spc_flooring_6": 14,
+    "renovation_rule_bedroom_downlight_7": 200,
+    "renovation_rule_bedroom_ceiling_fan_8": 550,
+    "renovation_rule_bedroom_curtain_box_led_9": 300,
+    "renovation_rule_dry_kitchen_plaster_ceiling_10": 12,
+    "renovation_rule_dry_kitchen_spc_flooring_11": 14,
+    "renovation_rule_dry_kitchen_downlight_12": 200,
+    "renovation_rule_dry_kitchen_bar_lamp_13": 500,
+    "renovation_rule_dry_kitchen_ceiling_fan_14": 550,
+    "renovation_rule_dry_kitchen_kitchen_frame_15": 1200,
+    "renovation_rule_dry_kitchen_making_good_16": 1000,
+    "renovation_rule_dry_kitchen_swing_glass_door_17": 1200,
+    "renovation_rule_wet_kitchen_floor_tiles_18": 22,
+    "renovation_rule_wet_kitchen_wall_tiles_19": 22,
+    "renovation_rule_wet_kitchen_plaster_ceiling_20": 12,
+    "renovation_rule_wet_kitchen_downlight_21": 200,
+    "renovation_rule_wet_kitchen_ceiling_fan_22": 550,
+    "renovation_rule_wet_kitchen_kitchen_lighting_23": 500,
+    "renovation_rule_bathroom_floor_tiles_24": 22,
+    "renovation_rule_bathroom_wall_tiles_25": 22,
+    "renovation_rule_bathroom_plaster_ceiling_26": 12,
+    "renovation_rule_bathroom_sanitary_accessories_27": 3000,
+    "renovation_rule_bathroom_toilet_door_28": 1200,
+    "renovation_rule_bathroom_downlight_29": 200,
+    "renovation_rule_bathroom_exhaust_fan_30": 200,
+    "renovation_rule_car_porch_floor_tiles_31": 22,
+    "renovation_rule_car_porch_plaster_ceiling_32": 12,
+    "renovation_rule_car_porch_downlight_33": 200,
+    "renovation_rule_car_porch_gate_motor_34": 6400,
+    "renovation_rule_car_porch_brickwall_divider_35": 2800,
+    "renovation_rule_car_porch_front_fence_36": 5500,
+    "renovation_rule_balcony_floor_tiles_37": 22,
+    "renovation_rule_balcony_facade_wall_38": 60,
+    "renovation_rule_balcony_wall_light_39": 250
   },
   "rateItems": {
     "rule_preliminaries_building_plan_submission_0": {
@@ -663,6 +703,326 @@
       "category": "calculation-rule",
       "groupKey": "EXTERNAL WORK",
       "groupTitle": "EXTERNAL WORK"
+    },
+    "renovation_rule_living_dining_plaster_ceiling_0": {
+      "description": "Plaster ceiling to Living / Dining area.",
+      "unit": "sqft",
+      "category": "calculation-rule",
+      "groupKey": "LIVING / DINING",
+      "groupTitle": "LIVING / DINING",
+      "plannerType": "renovation"
+    },
+    "renovation_rule_living_dining_spc_flooring_1": {
+      "description": "SPC flooring to Living / Dining area.",
+      "unit": "sqft",
+      "category": "calculation-rule",
+      "groupKey": "LIVING / DINING",
+      "groupTitle": "LIVING / DINING",
+      "plannerType": "renovation"
+    },
+    "renovation_rule_living_dining_downlight_2": {
+      "description": "Downlights to Living / Dining area.",
+      "unit": "No.",
+      "category": "calculation-rule",
+      "groupKey": "LIVING / DINING",
+      "groupTitle": "LIVING / DINING",
+      "plannerType": "renovation"
+    },
+    "renovation_rule_living_dining_ceiling_fan_3": {
+      "description": "Ceiling fan to Living / Dining area.",
+      "unit": "No.",
+      "category": "calculation-rule",
+      "groupKey": "LIVING / DINING",
+      "groupTitle": "LIVING / DINING",
+      "plannerType": "renovation"
+    },
+    "renovation_rule_living_dining_curtain_box_led_4": {
+      "description": "Curtain box LED to Living / Dining area.",
+      "unit": "No.",
+      "category": "calculation-rule",
+      "groupKey": "LIVING / DINING",
+      "groupTitle": "LIVING / DINING",
+      "plannerType": "renovation"
+    },
+    "renovation_rule_bedroom_plaster_ceiling_5": {
+      "description": "Plaster ceiling to Bedroom area.",
+      "unit": "sqft",
+      "category": "calculation-rule",
+      "groupKey": "BEDROOM",
+      "groupTitle": "BEDROOM",
+      "plannerType": "renovation"
+    },
+    "renovation_rule_bedroom_spc_flooring_6": {
+      "description": "SPC flooring to Bedroom area.",
+      "unit": "sqft",
+      "category": "calculation-rule",
+      "groupKey": "BEDROOM",
+      "groupTitle": "BEDROOM",
+      "plannerType": "renovation"
+    },
+    "renovation_rule_bedroom_downlight_7": {
+      "description": "Downlights to Bedroom area.",
+      "unit": "No.",
+      "category": "calculation-rule",
+      "groupKey": "BEDROOM",
+      "groupTitle": "BEDROOM",
+      "plannerType": "renovation"
+    },
+    "renovation_rule_bedroom_ceiling_fan_8": {
+      "description": "Ceiling fan to Bedroom area.",
+      "unit": "No.",
+      "category": "calculation-rule",
+      "groupKey": "BEDROOM",
+      "groupTitle": "BEDROOM",
+      "plannerType": "renovation"
+    },
+    "renovation_rule_bedroom_curtain_box_led_9": {
+      "description": "Curtain box LED to Bedroom area.",
+      "unit": "No.",
+      "category": "calculation-rule",
+      "groupKey": "BEDROOM",
+      "groupTitle": "BEDROOM",
+      "plannerType": "renovation"
+    },
+    "renovation_rule_dry_kitchen_plaster_ceiling_10": {
+      "description": "Plaster ceiling to Dry Kitchen area.",
+      "unit": "sqft",
+      "category": "calculation-rule",
+      "groupKey": "DRY KITCHEN",
+      "groupTitle": "DRY KITCHEN",
+      "plannerType": "renovation"
+    },
+    "renovation_rule_dry_kitchen_spc_flooring_11": {
+      "description": "SPC flooring to Dry Kitchen area.",
+      "unit": "sqft",
+      "category": "calculation-rule",
+      "groupKey": "DRY KITCHEN",
+      "groupTitle": "DRY KITCHEN",
+      "plannerType": "renovation"
+    },
+    "renovation_rule_dry_kitchen_downlight_12": {
+      "description": "Downlights to Dry Kitchen area.",
+      "unit": "No.",
+      "category": "calculation-rule",
+      "groupKey": "DRY KITCHEN",
+      "groupTitle": "DRY KITCHEN",
+      "plannerType": "renovation"
+    },
+    "renovation_rule_dry_kitchen_bar_lamp_13": {
+      "description": "Bar lamp to Dry Kitchen area.",
+      "unit": "No.",
+      "category": "calculation-rule",
+      "groupKey": "DRY KITCHEN",
+      "groupTitle": "DRY KITCHEN",
+      "plannerType": "renovation"
+    },
+    "renovation_rule_dry_kitchen_ceiling_fan_14": {
+      "description": "Ceiling fan to Dry Kitchen area.",
+      "unit": "No.",
+      "category": "calculation-rule",
+      "groupKey": "DRY KITCHEN",
+      "groupTitle": "DRY KITCHEN",
+      "plannerType": "renovation"
+    },
+    "renovation_rule_dry_kitchen_kitchen_frame_15": {
+      "description": "Kitchen cabinet frame allowance.",
+      "unit": "LS",
+      "category": "calculation-rule",
+      "groupKey": "DRY KITCHEN",
+      "groupTitle": "DRY KITCHEN",
+      "plannerType": "renovation"
+    },
+    "renovation_rule_dry_kitchen_making_good_16": {
+      "description": "Kitchen making-good works.",
+      "unit": "LS",
+      "category": "calculation-rule",
+      "groupKey": "DRY KITCHEN",
+      "groupTitle": "DRY KITCHEN",
+      "plannerType": "renovation"
+    },
+    "renovation_rule_dry_kitchen_swing_glass_door_17": {
+      "description": "Swing glass door to Dry Kitchen.",
+      "unit": "No.",
+      "category": "calculation-rule",
+      "groupKey": "DRY KITCHEN",
+      "groupTitle": "DRY KITCHEN",
+      "plannerType": "renovation"
+    },
+    "renovation_rule_wet_kitchen_floor_tiles_18": {
+      "description": "Floor tiles to Wet Kitchen area.",
+      "unit": "sqft",
+      "category": "calculation-rule",
+      "groupKey": "WET KITCHEN",
+      "groupTitle": "WET KITCHEN",
+      "plannerType": "renovation"
+    },
+    "renovation_rule_wet_kitchen_wall_tiles_19": {
+      "description": "Wall tiles to Wet Kitchen area.",
+      "unit": "sqft",
+      "category": "calculation-rule",
+      "groupKey": "WET KITCHEN",
+      "groupTitle": "WET KITCHEN",
+      "plannerType": "renovation"
+    },
+    "renovation_rule_wet_kitchen_plaster_ceiling_20": {
+      "description": "Plaster ceiling to Wet Kitchen area.",
+      "unit": "sqft",
+      "category": "calculation-rule",
+      "groupKey": "WET KITCHEN",
+      "groupTitle": "WET KITCHEN",
+      "plannerType": "renovation"
+    },
+    "renovation_rule_wet_kitchen_downlight_21": {
+      "description": "Downlights to Wet Kitchen area.",
+      "unit": "No.",
+      "category": "calculation-rule",
+      "groupKey": "WET KITCHEN",
+      "groupTitle": "WET KITCHEN",
+      "plannerType": "renovation"
+    },
+    "renovation_rule_wet_kitchen_ceiling_fan_22": {
+      "description": "Ceiling fan to Wet Kitchen area.",
+      "unit": "No.",
+      "category": "calculation-rule",
+      "groupKey": "WET KITCHEN",
+      "groupTitle": "WET KITCHEN",
+      "plannerType": "renovation"
+    },
+    "renovation_rule_wet_kitchen_kitchen_lighting_23": {
+      "description": "Kitchen lighting allowance.",
+      "unit": "LS",
+      "category": "calculation-rule",
+      "groupKey": "WET KITCHEN",
+      "groupTitle": "WET KITCHEN",
+      "plannerType": "renovation"
+    },
+    "renovation_rule_bathroom_floor_tiles_24": {
+      "description": "Floor tiles to Bathroom area.",
+      "unit": "sqft",
+      "category": "calculation-rule",
+      "groupKey": "BATHROOM",
+      "groupTitle": "BATHROOM",
+      "plannerType": "renovation"
+    },
+    "renovation_rule_bathroom_wall_tiles_25": {
+      "description": "Wall tiles to Bathroom area.",
+      "unit": "sqft",
+      "category": "calculation-rule",
+      "groupKey": "BATHROOM",
+      "groupTitle": "BATHROOM",
+      "plannerType": "renovation"
+    },
+    "renovation_rule_bathroom_plaster_ceiling_26": {
+      "description": "Plaster ceiling to Bathroom area.",
+      "unit": "sqft",
+      "category": "calculation-rule",
+      "groupKey": "BATHROOM",
+      "groupTitle": "BATHROOM",
+      "plannerType": "renovation"
+    },
+    "renovation_rule_bathroom_sanitary_accessories_27": {
+      "description": "Bathroom sanitary accessories allowance.",
+      "unit": "LS",
+      "category": "calculation-rule",
+      "groupKey": "BATHROOM",
+      "groupTitle": "BATHROOM",
+      "plannerType": "renovation"
+    },
+    "renovation_rule_bathroom_toilet_door_28": {
+      "description": "Toilet door allowance.",
+      "unit": "No.",
+      "category": "calculation-rule",
+      "groupKey": "BATHROOM",
+      "groupTitle": "BATHROOM",
+      "plannerType": "renovation"
+    },
+    "renovation_rule_bathroom_downlight_29": {
+      "description": "Downlights to Bathroom area.",
+      "unit": "No.",
+      "category": "calculation-rule",
+      "groupKey": "BATHROOM",
+      "groupTitle": "BATHROOM",
+      "plannerType": "renovation"
+    },
+    "renovation_rule_bathroom_exhaust_fan_30": {
+      "description": "Exhaust fan to Bathroom area.",
+      "unit": "No.",
+      "category": "calculation-rule",
+      "groupKey": "BATHROOM",
+      "groupTitle": "BATHROOM",
+      "plannerType": "renovation"
+    },
+    "renovation_rule_car_porch_floor_tiles_31": {
+      "description": "Floor tiles to Car Porch area.",
+      "unit": "sqft",
+      "category": "calculation-rule",
+      "groupKey": "CAR PORCH",
+      "groupTitle": "CAR PORCH",
+      "plannerType": "renovation"
+    },
+    "renovation_rule_car_porch_plaster_ceiling_32": {
+      "description": "Plaster ceiling to Car Porch area.",
+      "unit": "sqft",
+      "category": "calculation-rule",
+      "groupKey": "CAR PORCH",
+      "groupTitle": "CAR PORCH",
+      "plannerType": "renovation"
+    },
+    "renovation_rule_car_porch_downlight_33": {
+      "description": "Downlights to Car Porch area.",
+      "unit": "No.",
+      "category": "calculation-rule",
+      "groupKey": "CAR PORCH",
+      "groupTitle": "CAR PORCH",
+      "plannerType": "renovation"
+    },
+    "renovation_rule_car_porch_gate_motor_34": {
+      "description": "Gate and motor allowance to Car Porch.",
+      "unit": "LS",
+      "category": "calculation-rule",
+      "groupKey": "CAR PORCH",
+      "groupTitle": "CAR PORCH",
+      "plannerType": "renovation"
+    },
+    "renovation_rule_car_porch_brickwall_divider_35": {
+      "description": "Brickwall divider allowance to Car Porch.",
+      "unit": "LS",
+      "category": "calculation-rule",
+      "groupKey": "CAR PORCH",
+      "groupTitle": "CAR PORCH",
+      "plannerType": "renovation"
+    },
+    "renovation_rule_car_porch_front_fence_36": {
+      "description": "Front fence allowance to Car Porch.",
+      "unit": "LS",
+      "category": "calculation-rule",
+      "groupKey": "CAR PORCH",
+      "groupTitle": "CAR PORCH",
+      "plannerType": "renovation"
+    },
+    "renovation_rule_balcony_floor_tiles_37": {
+      "description": "Floor tiles to Balcony area.",
+      "unit": "sqft",
+      "category": "calculation-rule",
+      "groupKey": "BALCONY",
+      "groupTitle": "BALCONY",
+      "plannerType": "renovation"
+    },
+    "renovation_rule_balcony_facade_wall_38": {
+      "description": "Facade wall works to Balcony area.",
+      "unit": "sqft",
+      "category": "calculation-rule",
+      "groupKey": "BALCONY",
+      "groupTitle": "BALCONY",
+      "plannerType": "renovation"
+    },
+    "renovation_rule_balcony_wall_light_39": {
+      "description": "Wall light to Balcony area.",
+      "unit": "No.",
+      "category": "calculation-rule",
+      "groupKey": "BALCONY",
+      "groupTitle": "BALCONY",
+      "plannerType": "renovation"
     }
   },
   "updatedAt": "2026-09-22T10:22:26.063Z"
