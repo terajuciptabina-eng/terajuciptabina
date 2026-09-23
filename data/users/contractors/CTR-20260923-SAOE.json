@@ -299,18 +299,18 @@
           "quotationType": "detail",
           "projectId": "PRJ-REN-MUDUJRVH-VQ4H3",
           "projectState": "negeri-sembilan",
-          "rateSetId": "negeri-sembilan",
-          "rateSetName": "Negeri Sembilan",
-          "rateSnapshotAt": "2026-09-23T17:48:32.226Z"
+          "rateSetId": "default",
+          "rateSetName": "Default Rate",
+          "rateSnapshotAt": "2026-09-23T18:09:17.135Z"
         },
         "createdAt": "2026-09-23T17:19:00.431Z",
-        "updatedAt": "2026-09-23T17:48:32.772Z",
+        "updatedAt": "2026-09-23T18:09:18.264Z",
         "estimateNumber": "EST-REN-006"
       }
     ]
   },
   "createdAt": "2026-09-23T08:33:53.459Z",
-  "updatedAt": "2026-09-23T17:48:32.772Z",
+  "updatedAt": "2026-09-23T18:09:18.264Z",
   "quotationRunningNumber": {
     "renovation": 6
   },
