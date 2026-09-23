@@ -94,7 +94,31 @@ export default async function handler(req, res) {
     if (req.method === 'GET') {
       const supplied = clean(req.headers['x-admin-key'], 200);
       if (!adminKey || supplied !== adminKey) return res.status(401).json({ message: 'Unauthorized.' });
-      return res.status(200).json({ database, generatedAt: new Date().toISOString() });
+      const market={};
+      for(const contractor of database.contractors){
+        for(const item of (Array.isArray(contractor.customItems)?contractor.customItems:[])){
+          const state=clean(item?.state,80).toLowerCase();
+          const planner=clean(item?.plannerType,30).toLowerCase();
+          const key=clean(item?.sourceGlobalId,160);
+          const rate=Number(item?.rate), globalRate=Number(item?.globalRate);
+          if(!state||!['build','renovation'].includes(planner)||!key||!Number.isFinite(rate)||!Number.isFinite(globalRate))continue;
+          if(item?.overrideActive===false||Math.abs(rate-globalRate)<=0.000001)continue;
+          const bucketKey=state+'|'+planner+'|'+key;
+          if(!market[bucketKey])market[bucketKey]={median:rate,observationCount:0,contractorCount:0,values:[],contractors:{}};
+          const bucket=market[bucketKey];
+          bucket.values.push(rate);
+          bucket.observationCount++;
+          bucket.contractors[String(contractor.contractorId||'').toUpperCase()]=true;
+        }
+      }
+      for(const bucket of Object.values(market)){
+        bucket.values.sort((a,b)=>a-b);
+        const n=bucket.values.length;
+        bucket.median=n%2?bucket.values[(n-1)/2]:(bucket.values[n/2-1]+bucket.values[n/2])/2;
+        bucket.contractorCount=Object.keys(bucket.contractors).length;
+        delete bucket.values; delete bucket.contractors;
+      }
+      return res.status(200).json({ database, market, generatedAt: new Date().toISOString() });
     }
 
     const body = readPayload();
