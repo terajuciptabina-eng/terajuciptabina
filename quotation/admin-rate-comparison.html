@@ -108,14 +108,35 @@ async function loadStateRates(){
   if(!indexResponse.ok)throw new Error('Unable to load state rate index.');
   const index=await indexResponse.json();
   const entries=Object.entries(index.states||{});
-  stateData=await Promise.all(entries.map(async([id,meta])=>{
+  const loadOne=async([id,meta])=>{
     const source=String(meta.source||((meta.rateSetId||id)+'.json')).trim();
-    const r=await fetch('../data/rates/states/'+encodeURIComponent(source),{cache:'no-store'});
-    if(!r.ok)throw new Error('Unable to load '+meta.name+' rate set.');
-    const payload=await r.json();
-    return{id,name:meta.name,data:payload.rateSet||payload};
-  }));
+    const urls=[
+      '../data/rates/states/'+encodeURIComponent(source),
+      'https://raw.githubusercontent.com/terajuciptabina-eng/terajuciptabina/main/data/rates/states/'+encodeURIComponent(source)
+    ];
+    let lastError=null;
+    for(const url of urls){
+      const controller=new AbortController();
+      const timer=setTimeout(()=>controller.abort(),8000);
+      try{
+        const response=await fetch(url,{cache:'no-store',signal:controller.signal});
+        if(!response.ok)throw new Error('HTTP '+response.status);
+        const payload=await response.json();
+        clearTimeout(timer);
+        return{id,name:meta.name,data:payload.rateSet||payload};
+      }catch(e){
+        clearTimeout(timer);
+        lastError=e;
+      }
+    }
+    throw new Error(meta.name+' rate set unavailable: '+(lastError?.message||'load failed'));
+  };
+  const settled=await Promise.allSettled(entries.map(loadOne));
+  stateData=settled.filter(x=>x.status==='fulfilled').map(x=>x.value);
+  const failed=settled.filter(x=>x.status==='rejected').map((x,i)=>entries[i]?.[1]?.name||'Unknown state');
+  if(!stateData.length)throw new Error('Unable to load any state rate set.');
   renderState();
+  if(failed.length)console.warn('State rate sets unavailable:',failed);
 }
 async function loadReviewQueue(){
   const summary=$('reviewSummary'),tbody=$('reviewTbody');
