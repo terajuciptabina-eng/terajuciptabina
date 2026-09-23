@@ -44,9 +44,15 @@
     if (!contractor || !contractorId || !item || !item.masterPath) return;
     const state = currentState();
     const rate = Number(contractorRate);
-    const globalRate = typeof window.__tcGetGlobalRate === 'function'
-      ? Number(window.__tcGetGlobalRate(item.masterPath))
+    const rates=typeof RATES!=='undefined'&&RATES&&typeof RATES==='object'?RATES:{};
+    const canonicalRate=item.masterRateKey&&Object.prototype.hasOwnProperty.call(rates,item.masterRateKey)
+      ? Number(rates[item.masterRateKey])
       : NaN;
+    const globalRate = Number.isFinite(canonicalRate)
+      ? canonicalRate
+      : (Number.isFinite(Number(item.globalRate))
+          ? Number(item.globalRate)
+          : (typeof window.__tcGetGlobalRate === 'function' ? Number(window.__tcGetGlobalRate(item.masterPath)) : NaN));
     if (!state || !Number.isFinite(rate) || !Number.isFinite(globalRate)) return;
     const active = Math.abs(rate - globalRate) > 0.000001;
     // Only capture an actual contractor override. Returning to the global rate is not a market observation.
