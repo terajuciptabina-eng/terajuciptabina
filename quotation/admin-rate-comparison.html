@@ -86,33 +86,54 @@ async function loadMarketSignal(){
     const search=$('q').value.trim().toLowerCase();
     const market=data.market||{};
     const filteredStates=stateData;
-    let observed=0,contributors=new Set(),latest='';
     const rows=ruleRows.filter(({rule,key})=>!search||rule.path.toLowerCase().includes(search)||rule.description.toLowerCase().includes(search)||key.toLowerCase().includes(search));
-    summary.innerHTML='<div class="stat"><b>'+Object.keys(market).length+'</b><span>Market observations</span></div><div class="stat"><b>'+rows.length+'</b><span>Matched Calculation Rules</span></div><div class="stat"><b>'+filteredStates.length+'</b><span>States / territories</span></div>';
-    thead.innerHTML='<tr><th class="path">Calculation Rules Hierarchy</th><th class="description">Description</th><th class="unit">Unit</th>'+filteredStates.map(st=>'<th class="statehead">'+esc(st.name)+'</th>').join('')+'</tr>';
-    let html='',lastGroup='',seen=new Set();
-    for(const {rule,key} of rows){
-      if(planner!=='all' && !Object.keys(market).some(k=>k.endsWith('|'+planner+'|'+key))) continue;
-      if(rule.group!==lastGroup){html+=CRUI.groupRow(rule.group,rows.filter(x=>x.rule.group===rule.group).length,3+filteredStates.length);lastGroup=rule.group;seen=new Set()}
-      html+=CRUI.hierarchyRows(rule,seen,3+filteredStates.length);
-      const cells=filteredStates.map(st=>{
+    const observedRows=[];
+    const observedStates=new Set();
+    let observed=0,contributors=new Set(),latest='';
+    for(const item of rows){
+      const cellsByState=[];
+      let rowObserved=false;
+      for(const st of filteredStates){
         const candidates=[];
         for(const p of planner==='all'?['build','renovation']:[planner]){
-          const x=market[st.id+'|'+p+'|'+key];
+          const x=market[st.id+'|'+p+'|'+item.key];
           if(x)candidates.push(x);
         }
-        if(!candidates.length)return '<td class="rate">—</td>';
-        const vals=candidates.flatMap(x=>[x.median]);
-        const medianVal=vals.filter(Number.isFinite)[0];
-        const n=candidates.reduce((s,x)=>s+x.observationCount,0);
-        const c=new Set(candidates.flatMap(x=>Array(x.contractorCount).fill(0))).size;
+        if(!candidates.length){cellsByState.push(null);continue}
+        const valid=candidates.filter(x=>Number.isFinite(Number(x.median))&&Number(x.observationCount)>0);
+        if(!valid.length){cellsByState.push(null);continue}
+        const medianVal=valid.length===1?Number(valid[0].median):valid.map(x=>Number(x.median)).filter(Number.isFinite).reduce((a,b)=>a+b,0)/valid.length;
+        const n=valid.reduce((s,x)=>s+Number(x.observationCount||0),0);
+        const contractorIds=valid.flatMap(x=>Array.isArray(x.contractors)?x.contractors:Array.isArray(x.contractorIds)?x.contractorIds:[]);
+        const contractorCount=contractorIds.length?new Set(contractorIds.map(String)).size:valid.reduce((s,x)=>s+Number(x.contractorCount||0),0);
+        if(n<=0){cellsByState.push(null);continue}
+        rowObserved=true;
         observed+=n;
-        latest=candidates.map(x=>x.latestAt||'').sort().pop()||latest;
-        return '<td class="rate"><strong>'+money(medianVal)+'</strong><br><span class="muted">n='+n+' · '+candidates.map(x=>x.contractorCount).join('+')+' contractors</span></td>';
+        if(contractorCount)contributors.add(st.id+'|'+item.key+'|'+contractorCount);
+        observedStates.add(st.id);
+        latest=valid.map(x=>x.latestAt||'').sort().pop()||latest;
+        cellsByState.push({median:medianVal,n,contractorCount});
+      }
+      if(rowObserved)observedRows.push({...item,cellsByState});
+    }
+    summary.innerHTML='<div class="stat"><b>'+observed+'</b><span>Changed-rate observations</span></div><div class="stat"><b>'+observedRows.length+'</b><span>Calculation Rules with changes</span></div><div class="stat"><b>'+observedStates.size+'</b><span>States with changes</span></div>';
+    thead.innerHTML='<tr><th class="path">Calculation Rules Hierarchy</th><th class="description">Description</th><th class="unit">Unit</th>'+filteredStates.map(st=>'<th class="statehead">'+esc(st.name)+'</th>').join('')+'</tr>';
+    let html='',lastGroup='',seen=new Set();
+    for(const item of observedRows){
+      const {rule,cellsByState}=item;
+      if(rule.group!==lastGroup){
+        const groupCount=observedRows.filter(x=>x.rule.group===rule.group).length;
+        html+=CRUI.groupRow(rule.group,groupCount,3+filteredStates.length);
+        lastGroup=rule.group;seen=new Set();
+      }
+      html+=CRUI.hierarchyRows(rule,seen,3+filteredStates.length);
+      const cells=cellsByState.map(x=>{
+        if(!x)return '<td class="rate">—</td>';
+        return '<td class="rate"><strong>'+money(x.median)+'</strong><br><span class="muted">n='+x.n+(x.contractorCount?' · '+x.contractorCount+' contractors':'')+'</span></td>';
       }).join('');
       html+='<tr><td class="cr-leaf-item path">'+CRUI.esc(CRUI.leaf(rule))+'</td><td class="cr-description description">'+CRUI.esc(rule.description)+'</td><td class="cr-unit unit">'+CRUI.esc(rule.output)+'</td>'+cells+'</tr>';
     }
-    tbody.innerHTML=html||'<tr><td colspan="20" class="muted" style="padding:28px;text-align:center">No contractor market observations for the current filters.</td></tr>';
+    tbody.innerHTML=html||'<tr><td colspan="20" class="muted" style="padding:28px;text-align:center">No changed contractor rates for the current filters.</td></tr>';
     $('marketResult').dataset.loaded='1';
   }catch(e){
     summary.innerHTML='<div class="stat"><b>—</b><span>Market signal unavailable</span></div>';
