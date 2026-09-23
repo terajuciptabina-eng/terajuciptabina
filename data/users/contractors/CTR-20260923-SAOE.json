@@ -34,7 +34,7 @@
         "project": {
           "location": "Eka Height Sendayan",
           "builtUpArea": 600,
-          "state": "selangor"
+          "state": "negeri-sembilan"
         },
         "total": 135248,
         "plannerState": {
@@ -167,7 +167,8 @@
             "rule_boundary_fencing_78": 43000,
             "rule_gate_79": 6500,
             "rule_driveway_80": 5000,
-            "rule_landscaping_81": 2000
+            "rule_landscaping_81": 2000,
+            "renovation_rule_balcony_floor_tiles_37": 22.5
           },
           "customRates": [
             [
@@ -298,19 +299,19 @@
           ],
           "quotationType": "detail",
           "projectId": "PRJ-REN-MUDUJRVH-VQ4H3",
-          "projectState": "selangor",
-          "rateSetId": "default",
-          "rateSetName": "Default Rate",
-          "rateSnapshotAt": "2026-09-23T19:37:16.394Z"
+          "projectState": "negeri-sembilan",
+          "rateSetId": "negeri-sembilan",
+          "rateSetName": "Negeri Sembilan",
+          "rateSnapshotAt": "2026-09-23T19:39:33.655Z"
         },
         "createdAt": "2026-09-23T17:19:00.431Z",
-        "updatedAt": "2026-09-23T19:37:17.058Z",
+        "updatedAt": "2026-09-23T19:39:34.370Z",
         "estimateNumber": "EST-REN-006"
       }
     ]
   },
   "createdAt": "2026-09-23T08:33:53.459Z",
-  "updatedAt": "2026-09-23T19:37:17.058Z",
+  "updatedAt": "2026-09-23T19:39:34.370Z",
   "quotationRunningNumber": {
     "renovation": 6
   },
