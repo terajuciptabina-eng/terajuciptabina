@@ -92,11 +92,15 @@
     return RULE_KEYS[name] || name.toLowerCase().replace(/[^a-z0-9]+(.)/g,(m,c)=>c.toUpperCase()).replace(/[^a-zA-Z0-9]/g,'');
   };
 
-  const ruleRate = path => {
+  const ruleRate = (rule,index) => {
+    const path=String(rule?.[1]||'').trim();
     const key=lastPathName(path);
-    const rateKey=RULE_RATES[key];
+    const legacyRateKey=RULE_RATES[key];
     const rates=typeof RATES!=='undefined' ? RATES : {};
-    return Number(rateKey ? rates[rateKey] : 0) || 0;
+    const master=window.TerajuRenovationRateMaster;
+    const canonicalKey=master?.canonicalKey?.(rule,index);
+    if(canonicalKey&&Object.prototype.hasOwnProperty.call(rates,canonicalKey)) return Number(rates[canonicalKey])||0;
+    return Number(legacyRateKey ? rates[legacyRateKey] : master?.defaultRate?.(rule)) || 0;
   };
 
   function calculateRuleQuantity(formula, area){
@@ -146,7 +150,10 @@
             const path=String(rule?.[1]||'').trim();
             const itemName=lastPathName(path);
             const key=ruleKey(path);
+            const ruleIndex=rules.indexOf(rule);
+            const masterRateKey=window.TerajuRenovationRateMaster?.canonicalKey?.(rule,ruleIndex)||'';
             const qty=calculateRuleQuantity(rule?.[5],room.area);
+            const globalRate=ruleRate(rule,ruleIndex);
             const item={
               id:room.roomId+'-'+key,
               roomId:room.roomId,
@@ -155,7 +162,11 @@
               description:String(rule?.[2]||itemName),
               qty,
               unit:String(rule?.[6]||''),
-              rate:ruleRate(path),
+              rate:globalRate,
+              globalRate,
+              masterPath:path,
+              masterRateKey,
+              plannerType:'renovation',
               optional:false
             };
             return applyOverrides(item);
