@@ -36,7 +36,7 @@
           "builtUpArea": 600,
           "state": "selangor"
         },
-        "total": 134648,
+        "total": 140248,
         "plannerState": {
           "customerName": "Tuan Iman",
           "projectLocation": "Eka Height Sendayan",
@@ -185,6 +185,10 @@
             [
               "project-preliminaries",
               8888
+            ],
+            [
+              "room-2-floor",
+              50
             ]
           ],
           "customQuantities": [
@@ -297,16 +301,16 @@
           "projectState": "selangor",
           "rateSetId": "default",
           "rateSetName": "Default Rate",
-          "rateSnapshotAt": "2026-09-23T17:35:36.281Z"
+          "rateSnapshotAt": "2026-09-23T17:36:29.039Z"
         },
         "createdAt": "2026-09-23T17:19:00.431Z",
-        "updatedAt": "2026-09-23T17:35:36.830Z",
+        "updatedAt": "2026-09-23T17:36:29.841Z",
         "estimateNumber": "EST-REN-006"
       }
     ]
   },
   "createdAt": "2026-09-23T08:33:53.459Z",
-  "updatedAt": "2026-09-23T17:35:36.830Z",
+  "updatedAt": "2026-09-23T17:36:29.841Z",
   "quotationRunningNumber": {
     "renovation": 6
   },
