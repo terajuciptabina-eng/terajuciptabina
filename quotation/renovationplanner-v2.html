@@ -1910,7 +1910,16 @@ function editItemRate(itemId, value) {
   if (!IS_CONTRACTOR) return;
   const rate = parseFloat(value);
   if (!Number.isFinite(rate) || rate < 0) { alert("Please enter a valid rate."); updateEstimate(); return; }
-  customRates.set(itemId, normalizeRate(rate));
+  const normalizedRate = normalizeRate(rate);
+  customRates.set(itemId, normalizedRate);
+  const item = (typeof getAllItems === "function" ? getAllItems() : []).find(x => String(x.id) === String(itemId));
+  if (item) {
+    item.rate = normalizedRate;
+    item.amount = Number(item.qty || 0) * normalizedRate;
+    if (item.masterPath && typeof window.__tcCaptureDirectRateOverride === "function") {
+      window.__tcCaptureDirectRateOverride(item, normalizedRate);
+    }
+  }
   updateEstimate();
   saveContractorState();
 }
