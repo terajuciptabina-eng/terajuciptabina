@@ -17,7 +17,7 @@
 <section id="result" class="panel hidden"><div class="eyebrow">Account Rate Matrix</div><div class="section-title">Calculation Rules Description × Unit × Account ID</div><div class="table-wrap"><table><thead id="thead"></thead><tbody id="tbody"></tbody></table></div><div class="muted" style="margin-top:10px">Custom account rate items, when present, are shown after the Calculation Rules items.</div></section>
 <section id="stateResult" class="panel"><div class="eyebrow">State Rate Matrix</div><div class="section-title">Calculation Rules Description × Unit × All States / Federal Territories</div><div class="section-sub">All eligible Calculation Rules items are shown in Admin Calculation Rules order. Each state keeps its own rate set.</div><div class="table-wrap"><table><thead id="stateThead"></thead><tbody id="stateTbody"><tr><td colspan="20" class="muted" style="padding:28px;text-align:center">Loading state rates…</td></tr></tbody></table></div></section>
 <section id="reviewResult" class="panel"><div class="eyebrow">Admin Review</div><div class="section-title">Captured Contractor Rates · Pending Review</div><div class="section-sub">Contractor rates are captured silently by the system. Contractors do not see this review status. Only Admin decides whether a captured rate is accepted or rejected.</div><div id="reviewSummary" class="summary" style="margin-bottom:14px"></div><div class="table-wrap"><table><thead><tr><th>State</th><th>Planner</th><th>Description</th><th>Unit</th><th>Rate</th><th>Source</th><th>Captured</th><th>Action</th></tr></thead><tbody id="reviewTbody"><tr><td colspan="8" class="muted" style="padding:28px;text-align:center">Loading pending rate captures…</td></tr></tbody></table></div><div class="muted" style="margin-top:10px">Approval changes the review status only. The official State Rate Matrix is not overwritten automatically.</div></section>
-<section id="marketResult" class="panel"><div class="eyebrow">Contractor Market Signal</div><div class="section-title">Observed Contractor Rate × State</div><div class="section-sub">Derived from saved final contractor quotation snapshots. This is a market signal only; it does not automatically overwrite the Admin State Rate Matrix.</div><div id="marketSummary" class="summary" style="margin-bottom:14px"></div><div class="table-wrap"><table><thead id="marketThead"></thead><tbody id="marketTbody"><tr><td colspan="20" class="muted" style="padding:28px;text-align:center">Loading contractor market signal…</td></tr></tbody></table></div><div class="muted" style="margin-top:10px">Each cell shows median rate, observation count and contractor contribution count. Outliers can be reviewed through the Admin Contractor Market database before any state-rate update.</div></section>
+<section id="marketResult" class="panel"><div class="eyebrow">Contractor Market Signal</div><div class="section-title">Observed Contractor Rate × State</div><div class="section-sub">Derived from saved final contractor quotation snapshots. This is a market signal only; it does not automatically overwrite the Admin State Rate Matrix.</div><div id="marketSummary" class="summary" style="margin-bottom:14px"></div><div class="table-wrap"><table><thead id="marketThead"></thead><tbody id="marketTbody"><tr><td colspan="20" class="muted" style="padding:28px;text-align:center">Loading contractor market signal…</td></tr></tbody></table></div><div class="muted" style="margin-top:10px">Each cell shows median rate, observation count and contractor contribution count. Outliers can be reviewed through the Admin Contractor Market database before any state-rate update.</div><div class="section-title" style="margin-top:20px">Changed Contractor Rates</div><div class="section-sub">Shows exactly which contractor changed a master rate, in which state, and the contractor rate versus the Global Rate.</div><div class="table-wrap"><table><thead><tr><th>Contractor</th><th>State</th><th>Planner</th><th>Description</th><th>Global Rate</th><th>Contractor Rate</th><th>Change</th></tr></thead><tbody id="marketChangedTbody"><tr><td colspan="7" class="muted" style="padding:28px;text-align:center">Loading changed contractor rates…</td></tr></tbody></table></div></section>
 </main>
 <script>
 const RULES_API='https://terajuciptabina.vercel.app/api/calculation-rules',GH_USERS='https://api.github.com/repos/terajuciptabina-eng/terajuciptabina/contents/data/users',RATE_INDEX='../data/rates/states/index.json',DEFAULT_RATE='../data/rates/default.json',MARKET_API='https://terajuciptabina.vercel.app/api/contractor-market';
@@ -76,7 +76,7 @@ async function reviewRate(item,action){
 }
 
 async function loadMarketSignal(){
-  const summary=$('marketSummary'),thead=$('marketThead'),tbody=$('marketTbody');
+  const summary=$('marketSummary'),thead=$('marketThead'),tbody=$('marketTbody'),changedTbody=$('marketChangedTbody');
   try{
     const key=sessionStorage.getItem('teraju.admin.key')||'';
     const r=await fetch(MARKET_API,{headers:{'X-Admin-Key':key},cache:'no-store'});
@@ -89,7 +89,7 @@ async function loadMarketSignal(){
     const rows=ruleRows.filter(({rule,key})=>!search||rule.path.toLowerCase().includes(search)||rule.description.toLowerCase().includes(search)||key.toLowerCase().includes(search));
     const observedRows=[];
     const observedStates=new Set();
-    let observed=0,contributors=new Set(),latest='';
+    let observed=0;
     for(const item of rows){
       const cellsByState=[];
       let rowObserved=false;
@@ -104,14 +104,9 @@ async function loadMarketSignal(){
         if(!valid.length){cellsByState.push(null);continue}
         const medianVal=valid.length===1?Number(valid[0].median):valid.map(x=>Number(x.median)).filter(Number.isFinite).reduce((a,b)=>a+b,0)/valid.length;
         const n=valid.reduce((s,x)=>s+Number(x.observationCount||0),0);
-        const contractorIds=valid.flatMap(x=>Array.isArray(x.contractors)?x.contractors:Array.isArray(x.contractorIds)?x.contractorIds:[]);
-        const contractorCount=contractorIds.length?new Set(contractorIds.map(String)).size:valid.reduce((s,x)=>s+Number(x.contractorCount||0),0);
         if(n<=0){cellsByState.push(null);continue}
-        rowObserved=true;
-        observed+=n;
-        if(contractorCount)contributors.add(st.id+'|'+item.key+'|'+contractorCount);
-        observedStates.add(st.id);
-        latest=valid.map(x=>x.latestAt||'').sort().pop()||latest;
+        rowObserved=true;observed+=n;observedStates.add(st.id);
+        const contractorCount=valid.reduce((s,x)=>s+Number(x.contractorCount||0),0);
         cellsByState.push({median:medianVal,n,contractorCount});
       }
       if(rowObserved)observedRows.push({...item,cellsByState});
@@ -123,21 +118,39 @@ async function loadMarketSignal(){
       const {rule,cellsByState}=item;
       if(rule.group!==lastGroup){
         const groupCount=observedRows.filter(x=>x.rule.group===rule.group).length;
-        html+=CRUI.groupRow(rule.group,groupCount,3+filteredStates.length);
-        lastGroup=rule.group;seen=new Set();
+        html+=CRUI.groupRow(rule.group,groupCount,3+filteredStates.length);lastGroup=rule.group;seen=new Set();
       }
       html+=CRUI.hierarchyRows(rule,seen,3+filteredStates.length);
-      const cells=cellsByState.map(x=>{
-        if(!x)return '<td class="rate">—</td>';
-        return '<td class="rate"><strong>'+money(x.median)+'</strong><br><span class="muted">n='+x.n+(x.contractorCount?' · '+x.contractorCount+' contractors':'')+'</span></td>';
-      }).join('');
+      const cells=cellsByState.map(x=>!x?'<td class="rate">—</td>':'<td class="rate"><strong>'+money(x.median)+'</strong><br><span class="muted">n='+x.n+(x.contractorCount?' · '+x.contractorCount+' contractors':'')+'</span></td>').join('');
       html+='<tr><td class="cr-leaf-item path">'+CRUI.esc(CRUI.leaf(rule))+'</td><td class="cr-description description">'+CRUI.esc(rule.description)+'</td><td class="cr-unit unit">'+CRUI.esc(rule.output)+'</td>'+cells+'</tr>';
     }
     tbody.innerHTML=html||'<tr><td colspan="20" class="muted" style="padding:28px;text-align:center">No changed contractor rates for the current filters.</td></tr>';
+
+    const contractors=Array.isArray(data.database?.contractors)?data.database.contractors:[];
+    const changed=[];
+    contractors.forEach(c=>{
+      (Array.isArray(c.customItems)?c.customItems:[]).forEach(item=>{
+        const rate=Number(item?.rate),globalRate=Number(item?.globalRate);
+        const delta=Number.isFinite(rate)&&Number.isFinite(globalRate)?rate-globalRate:NaN;
+        const active=item?.overrideActive!==false && Number.isFinite(delta) && Math.abs(delta)>0.000001;
+        if(!active)return;
+        const p=String(item?.plannerType||'').toLowerCase();
+        if(planner!=='all'&&planner!==p)return;
+        const hay=[item?.description,item?.sourceGlobalId,item?.customItemId,c?.contractorId,item?.state].join(' ').toLowerCase();
+        if(search&&!hay.includes(search))return;
+        changed.push({contractorId:c.contractorId||item?.contractorId||'—',state:item?.state||'—',planner:p||'—',description:item?.description||item?.sourceGlobalId||'—',globalRate,rate,delta,capturedAt:item?.capturedAt||item?.updatedAt||''});
+      });
+    });
+    changed.sort((a,b)=>String(a.state).localeCompare(String(b.state))||String(a.contractorId).localeCompare(String(b.contractorId))||String(a.description).localeCompare(String(b.description)));
+    changedTbody.innerHTML=changed.map(x=>{
+      const sign=x.delta>0?'+':'';
+      return '<tr><td><strong>'+esc(x.contractorId)+'</strong></td><td>'+esc(x.state)+'</td><td>'+esc(x.planner)+'</td><td class="description">'+esc(x.description)+'</td><td class="rate">'+money(x.globalRate)+'</td><td class="rate"><strong>'+money(x.rate)+'</strong></td><td class="rate">'+sign+money(x.delta).replace('RM ','RM ')+'</td></tr>';
+    }).join('')||'<tr><td colspan="7" class="muted" style="padding:28px;text-align:center">No changed contractor rates for the current filters.</td></tr>';
     $('marketResult').dataset.loaded='1';
   }catch(e){
     summary.innerHTML='<div class="stat"><b>—</b><span>Market signal unavailable</span></div>';
     thead.innerHTML='';tbody.innerHTML='<tr><td class="error" style="display:table-cell">'+esc(e.message||'Unable to load contractor market signal.')+'</td></tr>';
+    if(changedTbody)changedTbody.innerHTML='<tr><td colspan="7" class="error" style="display:table-cell">'+esc(e.message||'Unable to load changed contractor rates.')+'</td></tr>';
   }
 }
 async function loadAll(){try{$('error').classList.add('hidden');if(!rules.length)await loadRules();await loadStateRates();const accounts=await loadAccounts();renderAccounts(accounts);await loadReviewQueue();await loadMarketSignal()}catch(e){$('error').textContent=e.message||'Unable to load comparison.';$('error').classList.remove('hidden')}}
