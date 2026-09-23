@@ -84,7 +84,11 @@
           "category": "direct-rate-override",
           "groupKey": "electrical",
           "groupTitle": "Electrical Works",
-          "updatedAt": "2026-09-19T21:09:39.847Z"
+          "updatedAt": "2026-09-19T21:09:39.847Z",
+          "approvalStatus": "rejected",
+          "reviewedAt": "2026-09-23T17:22:11.238Z",
+          "reviewedBy": "admin",
+          "reviewNote": null
         },
         {
           "customItemId": "ITEM-master-main-building-/-switch",
@@ -477,6 +481,29 @@
           "reviewNote": null,
           "eventType": "rate-rejected",
           "capturedAt": "2026-09-23T17:22:05.685Z"
+        },
+        {
+          "customItemId": "ITEM-master-main-building-/-power-point",
+          "sourceType": "override",
+          "sourceGlobalId": "master-MAIN BUILDING / POWER POINT",
+          "plannerType": "build",
+          "description": "13A switched socket outlets, single-gang flush type, BS 1363 / MS-compliant, complete with socket plates, flush boxes, wiring connections and all necessary accessories, installed complete. (Bedroom / Kitchen / applicable Main Building rooms)",
+          "unit": "No.",
+          "rate": 12,
+          "globalRate": 6.5,
+          "rateDelta": 5.5,
+          "rateDeltaPercent": 84.62,
+          "overrideActive": true,
+          "category": "direct-rate-override",
+          "groupKey": "electrical",
+          "groupTitle": "Electrical Works",
+          "updatedAt": "2026-09-19T21:09:39.847Z",
+          "approvalStatus": "rejected",
+          "reviewedAt": "2026-09-23T17:22:11.238Z",
+          "reviewedBy": "admin",
+          "reviewNote": null,
+          "eventType": "rate-rejected",
+          "capturedAt": "2026-09-23T17:22:11.238Z"
         }
       ]
     },
@@ -580,5 +607,5 @@
       ]
     }
   ],
-  "updatedAt": "2026-09-23T17:22:05.685Z"
+  "updatedAt": "2026-09-23T17:22:11.238Z"
 }
