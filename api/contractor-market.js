@@ -178,7 +178,7 @@ export default async function handler(req, res) {
         stateRateSet.rateHistory = audit;
         stateRateSet.updatedAt = now;
         stateRateSet.effectiveDate = stateRateSet.effectiveDate || now.slice(0,10);
-        stateUpdate = {path:statePath,content:JSON.stringify(stateRateSet,null,2)+'\\n',previousRate,masterRateKey,newRate:Math.round(approvedRate*100)/100};
+        stateUpdate = {path:statePath,content:JSON.stringify(stateRateSet,null,2)+'\n',previousRate,masterRateKey,newRate:Math.round(approvedRate*100)/100};
       }
 
       contractor.marketHistory.push({...item,eventType:action === 'approve' ? 'rate-approved' : 'rate-rejected',capturedAt:now,previousApprovalStatus});
