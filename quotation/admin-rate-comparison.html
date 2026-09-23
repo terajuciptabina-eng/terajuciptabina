@@ -169,29 +169,35 @@ async function loadMarketSignal(){
     if(!r.ok)throw new Error(data.message||'Unable to load contractor market signal.');
     const planner=$('planner').value==='all'?'all':$('planner').value;
     const search='';
-    let market=data.market||{};
-    if(!Object.keys(market).length && Array.isArray(data.database?.contractors)){
-      market={};
-      for(const contractor of data.database.contractors){
-        for(const item of (Array.isArray(contractor.customItems)?contractor.customItems:[])){
-          const state=String(item?.state||'').trim().toLowerCase();
-          const p=String(item?.plannerType||'').trim().toLowerCase();
-          const key=String(item?.sourceGlobalId||'').trim();
-          const rate=Number(item?.rate), globalRate=Number(item?.globalRate);
-          if(!state||!['build','renovation'].includes(p)||!key||!Number.isFinite(rate)||!Number.isFinite(globalRate))continue;
-          if(item?.overrideActive===false||Math.abs(rate-globalRate)<=0.000001)continue;
-          const bucketKey=state+'|'+p+'|'+key;
-          const bucket=market[bucketKey]||(market[bucketKey]={values:[],contractors:{}});
-          bucket.values.push(rate);
-          bucket.contractors[String(contractor.contractorId||'').toUpperCase()]=true;
-        }
+    const marketApi=data.market||{};
+    const market={...marketApi};
+    const contractors=Array.isArray(data.database?.contractors)?data.database.contractors:[];
+    // Canonical fallback/overlay: derive observations directly from saved contractor items.
+    // This keeps Market Signal aligned with Changed Contractor Rates even when the API aggregate is stale.
+    for(const contractor of contractors){
+      for(const item of (Array.isArray(contractor.customItems)?contractor.customItems:[])){
+        const state=String(item?.state||'').trim().toLowerCase();
+        const p=String(item?.plannerType||'').trim().toLowerCase();
+        let key=String(item?.sourceGlobalId||'').trim();
+        if(key.startsWith('master-'))key=key.slice(7);
+        const rate=Number(item?.rate), globalRate=Number(item?.globalRate);
+        if(!state||!['build','renovation'].includes(p)||!key||!Number.isFinite(rate)||!Number.isFinite(globalRate))continue;
+        if(item?.overrideActive===false||Math.abs(rate-globalRate)<=0.000001)continue;
+        const bucketKey=state+'|'+p+'|'+key;
+        const bucket=market[bucketKey]||(market[bucketKey]={values:[],contractors:{}});
+        if(!Array.isArray(bucket.values))bucket.values=[];
+        if(!bucket.contractors)bucket.contractors={};
+        bucket.values.push(rate);
+        bucket.contractors[String(contractor.contractorId||item?.contractorId||'').toUpperCase()]=true;
       }
-      for(const bucket of Object.values(market)){
+    }
+    for(const bucket of Object.values(market)){
+      if(Array.isArray(bucket.values)&&bucket.values.length){
         bucket.values.sort((a,b)=>a-b);
         const n=bucket.values.length;
         bucket.median=n%2?bucket.values[(n-1)/2]:(bucket.values[n/2-1]+bucket.values[n/2])/2;
         bucket.observationCount=n;
-        bucket.contractorCount=Object.keys(bucket.contractors).length;
+        bucket.contractorCount=bucket.contractors?Object.keys(bucket.contractors).length:Number(bucket.contractorCount||0);
         delete bucket.values;delete bucket.contractors;
       }
     }
