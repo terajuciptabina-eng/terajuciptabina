@@ -49,6 +49,8 @@
       : NaN;
     if (!state || !Number.isFinite(rate) || !Number.isFinite(globalRate)) return;
     const active = Math.abs(rate - globalRate) > 0.000001;
+    // Only capture an actual contractor override. Returning to the global rate is not a market observation.
+    if (!active) return;
     const payload = {
       contractorId,
       plannerType:'build',
