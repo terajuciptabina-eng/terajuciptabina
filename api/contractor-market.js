@@ -183,7 +183,7 @@ export default async function handler(req, res) {
 
       contractor.marketHistory.push({...item,eventType:action === 'approve' ? 'rate-approved' : 'rate-rejected',capturedAt:now,previousApprovalStatus});
       database.updatedAt = now;
-      const databaseContent = JSON.stringify(database, null, 2) + '\\n';
+      const databaseContent = JSON.stringify(database, null, 2) + '\n';
       const files = [{path:'data/contractors/database.json',content:databaseContent}];
       if (stateUpdate) files.push({path:stateUpdate.path,content:stateUpdate.content});
       const published = await atomicWriteFiles(files, `${action === 'approve' ? 'Approve' : 'Reject'} contractor rate observation ${customItemId}`);
