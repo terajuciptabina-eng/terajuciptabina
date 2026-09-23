@@ -20,6 +20,285 @@
       {
         "schemaVersion": 1,
         "recordType": "quotation",
+        "quotationId": "QT-REN-MUE9MM6I-J9CMB",
+        "projectId": "PRJ-REN-MUE9MN9F-FUBPZ",
+        "quotationNumber": "Q004D",
+        "plannerType": "renovation",
+        "role": "contractor",
+        "contractorId": "CTR-20260923-SAOE",
+        "state": "final",
+        "quotationType": "detail",
+        "client": {
+          "name": "Tuan Iman"
+        },
+        "project": {
+          "location": "Eka Height Sendayan",
+          "builtUpArea": 600,
+          "state": "selangor"
+        },
+        "total": 134260,
+        "plannerState": {
+          "customerName": "Tuan Iman",
+          "projectLocation": "Eka Height Sendayan",
+          "builtUpArea": "600",
+          "rooms": [
+            {
+              "id": "room-1",
+              "type": "wetKitchen",
+              "name": "Wet Kitchen",
+              "area": "200"
+            },
+            {
+              "id": "room-2",
+              "type": "balcony",
+              "name": "Balcony",
+              "area": "200"
+            },
+            {
+              "id": "room-3",
+              "type": "porch",
+              "name": "Porch",
+              "area": "200"
+            }
+          ],
+          "rates": {
+            "ceiling": 12,
+            "spc": 14,
+            "floorTile": 22,
+            "wallTile": 22,
+            "facadeWall": 60,
+            "downlight": 200,
+            "wallLight": 250,
+            "ceilingFan": 550,
+            "exhaustFan": 200,
+            "curtainBoxLED": 300,
+            "barLamp": 500,
+            "diningLamp": 600,
+            "kitchenFrame": 1200,
+            "kitchenMakingGood": 1000,
+            "kitchenGlassDoor": 1200,
+            "bathroomSanitary": 3000,
+            "bathroomDoor": 1200,
+            "gateMotor": 6400,
+            "brickwallDivider": 2800,
+            "frontFence": 5500,
+            "preliminaries": 8500,
+            "rule_preliminaries_building_plan_submission_0": 8500,
+            "rule_preliminaries_site_mobilisation_project_management_1": 12000,
+            "rule_main_building_footing_concrete_2": 550,
+            "rule_main_building_footing_formwork_3": 55,
+            "rule_main_building_footing_rebar_4": 8,
+            "rule_main_building_ground_slab_concrete_5": 550,
+            "rule_main_building_ground_slab_brc_6": 20.5,
+            "rule_main_building_ground_beam_concrete_7": 350,
+            "rule_main_building_ground_beam_formwork_8": 55,
+            "rule_main_building_ground_beam_rebar_9": 8,
+            "rule_main_building_roof_beam_concrete_10": 350,
+            "rule_main_building_roof_beam_formwork_11": 55,
+            "rule_main_building_roof_beam_rebar_12": 8,
+            "rule_main_building_column_concrete_13": 550,
+            "rule_main_building_column_formwork_14": 55,
+            "rule_main_building_column_rebar_15": 8,
+            "rule_main_building_flat_roof_concrete_16": 550,
+            "rule_main_building_flat_roof_formwork_17": 55,
+            "rule_main_building_flat_roof_brc_18": 20.5,
+            "rule_main_building_roof_metal_roofing_sheet_19": 420,
+            "rule_main_building_apron_concrete_20": 350,
+            "rule_main_building_apron_formwork_21": 55,
+            "rule_main_building_apron_brc_22": 20.5,
+            "rule_main_building_drainage_23": 35,
+            "rule_porch_footing_concrete_24": 550,
+            "rule_porch_footing_formwork_25": 55,
+            "rule_porch_footing_rebar_26": 8,
+            "rule_porch_ground_slab_concrete_27": 550,
+            "rule_porch_ground_slab_brc_28": 20.5,
+            "rule_porch_ground_beam_concrete_29": 350,
+            "rule_porch_ground_beam_formwork_30": 55,
+            "rule_porch_ground_beam_rebar_31": 8,
+            "rule_porch_roof_beam_concrete_32": 350,
+            "rule_porch_roof_beam_formwork_33": 55,
+            "rule_porch_roof_beam_rebar_34": 8,
+            "rule_porch_column_concrete_35": 550,
+            "rule_porch_column_formwork_36": 55,
+            "rule_porch_column_rebar_37": 8,
+            "rule_porch_flat_roof_concrete_38": 550,
+            "rule_porch_flat_roof_formwork_39": 55,
+            "rule_porch_flat_roof_brc_40": 20.5,
+            "rule_porch_roof_metal_roofing_sheet_41": 450,
+            "rule_main_building_brickwall_internal_wall_42": 75,
+            "rule_main_building_brickwall_external_wall_43": 120,
+            "rule_main_building_floor_tiles_internal_44": 95,
+            "rule_main_building_floor_tiles_external_45": 150,
+            "rule_main_building_painting_internal_46": 30,
+            "rule_main_building_painting_external_47": 48,
+            "rule_main_building_ceiling_internal_48": 165,
+            "rule_main_building_ceiling_external_49": 165,
+            "rule_bathroom_wall_tiles_50": 150,
+            "rule_bathroom_floor_tiles_51": 150,
+            "rule_bathroom_ceiling_52": 165,
+            "rule_bathroom_piping_53": 1100,
+            "rule_bathroom_wc_54": 800,
+            "rule_bathroom_basin_55": 400,
+            "rule_bathroom_shower_56": 250,
+            "rule_bathroom_tap_57": 200,
+            "rule_main_building_water_tank_58": 600,
+            "rule_main_building_septic_tank_59": 2500,
+            "rule_main_building_power_point_60": 150,
+            "rule_main_building_switch_61": 200,
+            "rule_main_building_lighting_62": 200,
+            "rule_main_building_fan_63": 200,
+            "rule_main_building_aircond_point_64": 300,
+            "rule_porch_lighting_65": 200,
+            "rule_porch_fan_66": 200,
+            "rule_porch_power_point_67": 150,
+            "rule_earthing_68": 2500,
+            "rule_db_box_69": 2500,
+            "rule_wiring_70": 25,
+            "rule_doors_type_1_single_leaf_71": 1200,
+            "rule_doors_type_2_sliding_72": 2500,
+            "rule_doors_type_3_bathroom_73": 850,
+            "rule_doors_type_4_double_leaf_main_door_74": 2400,
+            "rule_windows_type_1_1200_1200_75": 1200,
+            "rule_windows_type_2_1800_1200_76": 1400,
+            "rule_windows_type_3_900_600_77": 950,
+            "rule_boundary_fencing_78": 43000,
+            "rule_gate_79": 6500,
+            "rule_driveway_80": 5000,
+            "rule_landscaping_81": 2000
+          },
+          "customRates": [
+            [
+              "manual-1790154031589-vk2lak",
+              260
+            ],
+            [
+              "manual-1790153802326-fltu5h",
+              30
+            ],
+            [
+              "manual-1790153329217-znr338",
+              30
+            ]
+          ],
+          "customQuantities": [
+            [
+              "manual-1790153329217-znr338",
+              200
+            ],
+            [
+              "manual-1790153802326-fltu5h",
+              200
+            ],
+            [
+              "manual-1790154031589-vk2lak",
+              40
+            ]
+          ],
+          "customDescriptions": [],
+          "customRoomLabels": [
+            [
+              "room-1",
+              "Wet Kitchen"
+            ],
+            [
+              "room-2",
+              "Balcony"
+            ],
+            [
+              "room-3",
+              "Porch"
+            ]
+          ],
+          "excludedItems": [
+            "room-3-floor",
+            "room-3-downlight",
+            "room-3-gate",
+            "room-3-divider",
+            "room-3-ceiling",
+            "room-3-fence"
+          ],
+          "manualItems": [
+            [
+              "room-2",
+              [
+                {
+                  "id": "manual-1790153329217-znr338",
+                  "roomId": "room-2",
+                  "roomType": "balcony",
+                  "description": "New ACP Roof With Heat And Sound Proof Membrane",
+                  "unit": "ls",
+                  "qty": 1,
+                  "rate": 300,
+                  "amount": 300
+                }
+              ]
+            ],
+            [
+              "room-3",
+              [
+                {
+                  "id": "manual-1790153802326-fltu5h",
+                  "roomId": "room-3",
+                  "roomType": "porch",
+                  "description": "New ACP Roof With Heat And Sound Roof Membrane",
+                  "unit": "ls",
+                  "qty": 1,
+                  "rate": 300,
+                  "amount": 300
+                },
+                {
+                  "id": "manual-1790154031589-vk2lak",
+                  "roomId": "room-3",
+                  "roomType": "porch",
+                  "description": "New 1000mm High Glass Railing",
+                  "unit": "ls",
+                  "qty": 1,
+                  "rate": 150,
+                  "amount": 150
+                }
+              ]
+            ]
+          ],
+          "standardRateItems": [
+            {
+              "id": "custom-1790153329217-g0a26z",
+              "description": "New ACP Roof With Heat And Sound Proof Membrane",
+              "unit": "ls",
+              "rate": 300,
+              "roomType": "balcony",
+              "custom": true
+            },
+            {
+              "id": "custom-1790153802326-dfy9ij",
+              "description": "New ACP Roof With Heat And Sound Roof Membrane",
+              "unit": "ls",
+              "rate": 300,
+              "roomType": "porch",
+              "custom": true
+            },
+            {
+              "id": "custom-1790154031589-nwbeka",
+              "description": "New 1000mm High Glass Railing",
+              "unit": "ls",
+              "rate": 150,
+              "roomType": "porch",
+              "custom": true
+            }
+          ],
+          "quotationType": "detail",
+          "projectId": "PRJ-REN-MUE9MN9F-FUBPZ",
+          "projectState": "selangor",
+          "rateSetId": "default",
+          "rateSetName": "Default Rate",
+          "rateSnapshotAt": "2026-09-23T15:36:18.677Z"
+        },
+        "createdAt": "2026-09-23T15:36:18.378Z",
+        "updatedAt": "2026-09-23T15:36:19.779Z",
+        "estimateNumber": "EST-REN-004"
+      },
+      {
+        "schemaVersion": 1,
+        "recordType": "quotation",
         "quotationId": "QT-REN-MUDV5EEV-9EUT3",
         "projectId": "PRJ-REN-MUDV5F3G-TEEF3",
         "quotationNumber": "Q003D",
@@ -299,11 +578,11 @@
     ]
   },
   "createdAt": "2026-09-23T08:33:53.459Z",
-  "updatedAt": "2026-09-23T15:35:33.259Z",
+  "updatedAt": "2026-09-23T15:36:19.779Z",
   "quotationRunningNumber": {
-    "renovation": 3
+    "renovation": 4
   },
   "estimateRunningNumber": {
-    "renovation": 3
+    "renovation": 4
   }
 }
