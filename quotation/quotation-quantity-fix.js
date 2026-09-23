@@ -47,32 +47,32 @@ const itemRow=(i,no)=>{
  const iid=targetId(i.id),idJson=JSON.stringify(i.id);
  const lockedBathroom=/^(?:ARCHITECTURES\s*\/\s*)?BATHROOM\s*\//i.test(String(i.masterPath||''));
  const locked=lockedBathroom||/(?:^|\/)\s*PORCH\s*\/\s*(?:LIGHTING|FAN|POWER POINT)(?:\s*\/|$)/i.test(String(i.masterPath||''))||/DOORS \/ Type 3/i.test(String(i.masterPath||''))||/TYPE 3\s*BATHROOM/i.test(String(i.masterPath||''))||/WINDOWS \/ Type [123]/i.test(String(i.masterPath||''));
- const desc=contractor?\`<textarea id="budget-desc-\${iid}" rows="1" class="w-full min-w-0 border rounded-md px-2 py-1 text-sm whitespace-normal break-words resize-none overflow-hidden" style="min-height:44px" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'" onchange="TERAJU_V2_SAVE_ITEM(\${idJson})">\${esc(i.description)}</textarea>\`:\`<div class="homeowner-locked whitespace-normal break-words leading-5 p-1">\${esc(i.description)}</div>\`;
- const qty=contractor&&!locked?\`<input id="budget-qty-\${iid}" type="number" min="0" step="1" value="\${normQty(i.qty)}" class="w-full border rounded-md px-2 py-1 text-sm text-right" onchange="TERAJU_V2_SAVE_ITEM(\${idJson})">\`:\`<div class="homeowner-locked text-right p-1">\${normQty(i.qty)}</div>\`;
- const rate=contractor?\`<input id="budget-rate-\${iid}" data-budget-rate-id="\${esc(i.id)}" type="number" min="0" step="0.01" value="\${normRate(i.rate).toFixed(2)}" class="w-full border rounded-md px-2 py-1 text-sm text-right" oninput="TERAJU_V2_RATE_INPUT(\${idJson},this)" onchange="TERAJU_V2_SAVE_ITEM(\${idJson})">\`:\`<span class="homeowner-rate-blurred homeowner-locked p-1" aria-label="Rate hidden for homeowner">\${normRate(i.rate).toFixed(2)}</span>\`;
- const del=contractor?\`<button type="button" data-budget-delete-id="\${esc(i.id)}" class="border border-red-200 text-red-700 rounded-md px-2 py-1 text-xs font-semibold mt-1" onclick="deleteBudgetItem(\${idJson})">Delete</button>\`:'';
- return \`<tr data-budget-item-id="\${iid}" data-budget-category="\${esc(i.category||'')}" class="border-b align-top"><td class="py-2 px-2 text-gray-500">\${no}</td><td class="py-2 px-2 cr-description whitespace-normal break-words">\${desc}\${del}</td><td class="py-2 px-2 cr-unit">\${esc(i.unit)}</td><td class="py-2 px-2">\${qty}</td><td class="py-2 px-2">\${rate}</td><td id="budget-amount-\${iid}" class="py-2 px-2 text-right font-semibold">\${money(i.amount,2)}</td></tr>\`;
+ const desc=contractor?`<textarea id="budget-desc-${iid}" rows="1" class="w-full min-w-0 border rounded-md px-2 py-1 text-sm whitespace-normal break-words resize-none overflow-hidden" style="min-height:44px" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'" onchange="TERAJU_V2_SAVE_ITEM(${idJson})">${esc(i.description)}</textarea>`:`<div class="homeowner-locked whitespace-normal break-words leading-5 p-1">${esc(i.description)}</div>`;
+ const qty=contractor&&!locked?`<input id="budget-qty-${iid}" type="number" min="0" step="1" value="${normQty(i.qty)}" class="w-full border rounded-md px-2 py-1 text-sm text-right" onchange="TERAJU_V2_SAVE_ITEM(${idJson})">`:`<div class="homeowner-locked text-right p-1">${normQty(i.qty)}</div>`;
+ const rate=contractor?`<input id="budget-rate-${iid}" data-budget-rate-id="${esc(i.id)}" type="number" min="0" step="0.01" value="${normRate(i.rate).toFixed(2)}" class="w-full border rounded-md px-2 py-1 text-sm text-right" oninput="TERAJU_V2_RATE_INPUT(${idJson},this)" onchange="TERAJU_V2_SAVE_ITEM(${idJson})">`:`<span class="homeowner-rate-blurred homeowner-locked p-1" aria-label="Rate hidden for homeowner">${normRate(i.rate).toFixed(2)}</span>`;
+ const del=contractor?`<button type="button" data-budget-delete-id="${esc(i.id)}" class="border border-red-200 text-red-700 rounded-md px-2 py-1 text-xs font-semibold mt-1" onclick="deleteBudgetItem(${idJson})">Delete</button>`:'';
+ return `<tr data-budget-item-id="${iid}" data-budget-category="${esc(i.category||'')}" class="border-b align-top"><td class="py-2 px-2 text-gray-500">${no}</td><td class="py-2 px-2 cr-description whitespace-normal break-words">${desc}${del}</td><td class="py-2 px-2 cr-unit">${esc(i.unit)}</td><td class="py-2 px-2">${qty}</td><td class="py-2 px-2">${rate}</td><td id="budget-amount-${iid}" class="py-2 px-2 text-right font-semibold">${money(i.amount,2)}</td></tr>`;
 };
 const groupCategory=g=>({'PRELIMINARIES':'preliminaries','STRUCTURAL WORKS':'structures','ARCHITECTURAL WORKS':'architecture','ELECTRICAL WORKS':'electrical','DOORS & WINDOWS':'doors-windows','EXTERNAL WORKS':'external-work'}[String(g||'').toUpperCase()]||String(g||'').toLowerCase());
-const addButton=(key,title,cat,roomId='project')=>contractor?\`<div data-budget-new-anchor="\${esc(key)}" class="no-print"><button type="button" class="mt-2 text-sm font-semibold text-gray-700 hover:text-black" onclick="addNewBudgetItem('\${esc(key)}','\${esc(title)}','\${cat}','\${esc(roomId)}')">＋ New Item</button></div>\`:'';
+const addButton=(key,title,cat,roomId='project')=>contractor?`<div data-budget-new-anchor="${esc(key)}" class="no-print"><button type="button" class="mt-2 text-sm font-semibold text-gray-700 hover:text-black" onclick="addNewBudgetItem('${esc(key)}','${esc(title)}','${cat}','${esc(roomId)}')">＋ New Item</button></div>`:'';
 const tree=buildBudgetHierarchy(active);
 let no=1,lastHeader='',h='<table class="w-full border-collapse text-sm cr-budget-table"><thead><tr class="border-b-2 text-left"><th class="py-3 px-2">Item</th><th class="py-3 px-2">Description</th><th class="py-3 px-2">Unit</th><th class="py-3 px-2 text-right">Quantity</th><th class="py-3 px-2 text-right">Rate (RM)</th><th class="py-3 px-2 text-right">Amount (RM)</th></tr></thead><tbody>';
 tree.forEach(g=>{
- if(g.header!==lastHeader){h+=\`<tr class="cr-group-row"><td colspan="6">\${esc(g.header)}</td></tr>\`;lastHeader=g.header}
- if(g.sub)h+=\`<tr class="cr-hierarchy-row cr-level-2"><td colspan="6">\${esc(g.sub)}</td></tr>\`;
+ if(g.header!==lastHeader){h+=`<tr class="cr-group-row"><td colspan="6">${esc(g.header)}</td></tr>`;lastHeader=g.header}
+ if(g.sub)h+=`<tr class="cr-hierarchy-row cr-level-2"><td colspan="6">${esc(g.sub)}</td></tr>`;
  const cat=groupCategory(g.header);
  g.levels.forEach((list,label)=>{
-   h+=\`<tr class="cr-hierarchy-row cr-level-3"><td colspan="6">\${esc(label)}</td></tr>\`;
+   h+=`<tr class="cr-hierarchy-row cr-level-3"><td colspan="6">${esc(label)}</td></tr>`;
    list.forEach(i=>{h+=itemRow(i,no++)});
-   if(list.length>1){const sub=R2(list.reduce((sum,i)=>sum+N(i.amount),0));h+=\`<tr class="cr-hierarchy-total cr-level-3-total"><td colspan="5" class="py-2 px-2 text-right font-semibold">SUBTOTAL \${esc(label).toUpperCase()}</td><td class="py-2 px-2 text-right font-bold">RM \${money(sub,2)}</td></tr>\`}
-   const key=cat==='structures'?\`structures:\${label}\`:cat==='architecture'?\`room:\${g.sub||label}\`:\`\${cat}:\${g.sub||label}\`;
-   h+=\`<tr class="no-print"><td colspan="6" class="py-1 px-2">\${addButton(key,label,cat,g.sub||'project')}</td></tr>\`;
+   if(list.length>1){const sub=R2(list.reduce((sum,i)=>sum+N(i.amount),0));h+=`<tr class="cr-hierarchy-total cr-level-3-total"><td colspan="5" class="py-2 px-2 text-right font-semibold">SUBTOTAL ${esc(label).toUpperCase()}</td><td class="py-2 px-2 text-right font-bold">RM ${money(sub,2)}</td></tr>`}
+   const key=cat==='structures'?`structures:${label}`:cat==='architecture'?`room:${g.sub||label}`:`${cat}:${g.sub||label}`;
+   h+=`<tr class="no-print"><td colspan="6" class="py-1 px-2">${addButton(key,label,cat,g.sub||'project')}</td></tr>`;
  });
  g.noLevel3.forEach(i=>{h+=itemRow(i,no++)});
- if(g.noLevel3.length){const key=\`\${cat}:\${g.sub||g.header}\`;h+=\`<tr class="no-print"><td colspan="6" class="py-1 px-2">\${addButton(key,g.sub||g.header,cat,g.sub||'project')}</td></tr>\`}
+ if(g.noLevel3.length){const key=`${cat}:${g.sub||g.header}`;h+=`<tr class="no-print"><td colspan="6" class="py-1 px-2">${addButton(key,g.sub||g.header,cat,g.sub||'project')}</td></tr>`}
 });
 const total=active.reduce((sum,i)=>sum+N(i.amount),0);
-h+=\`</tbody><tfoot><tr class="border-t-2"><td colspan="5" class="py-4 px-2 text-right font-bold">TOTAL PRELIMINARY ESTIMATE</td><td class="py-4 px-2 text-right font-bold text-lg">RM \${money(total,2)}</td></tr></tfoot></table>\`;
+h+=`</tbody><tfoot><tr class="border-t-2"><td colspan="5" class="py-4 px-2 text-right font-bold">TOTAL PRELIMINARY ESTIMATE</td><td class="py-4 px-2 text-right font-bold text-lg">RM ${money(total,2)}</td></tr></tfoot></table>`;
 c.innerHTML=h;
 c.querySelectorAll('textarea').forEach(t=>{t.style.overflow='hidden';t.style.resize='none';t.style.height='0px';t.style.height=t.scrollHeight+'px'});
 }
