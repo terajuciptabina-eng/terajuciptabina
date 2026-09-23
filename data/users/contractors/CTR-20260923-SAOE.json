@@ -45,18 +45,21 @@
             {
               "id": "room-2",
               "type": "balcony",
+              "condition": "new",
               "name": "Balcony",
               "area": "200"
             },
             {
               "id": "room-1",
               "type": "wetKitchen",
+              "condition": "existing",
               "name": "Wet Kitchen",
               "area": "200"
             },
             {
               "id": "room-3",
               "type": "porch",
+              "condition": "existing",
               "name": "Porch",
               "area": "200"
             }
@@ -290,16 +293,16 @@
           "projectState": "selangor",
           "rateSetId": "default",
           "rateSetName": "Default Rate",
-          "rateSnapshotAt": "2026-09-23T16:00:41.601Z"
+          "rateSnapshotAt": "2026-09-23T16:09:23.436Z"
         },
         "createdAt": "2026-09-23T15:38:44.972Z",
-        "updatedAt": "2026-09-23T16:00:42.941Z",
+        "updatedAt": "2026-09-23T16:09:24.679Z",
         "estimateNumber": "EST-REN-005"
       }
     ]
   },
   "createdAt": "2026-09-23T08:33:53.459Z",
-  "updatedAt": "2026-09-23T16:01:52.750Z",
+  "updatedAt": "2026-09-23T16:09:24.679Z",
   "quotationRunningNumber": {
     "renovation": 5
   },
