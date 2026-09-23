@@ -128,6 +128,20 @@ async function loadMarketSignal(){
 
     const contractors=Array.isArray(data.database?.contractors)?data.database.contractors:[];
     const changed=[];
+    function resolveContractorState(c,item){
+      const direct=String(item?.state||'').trim().toLowerCase();
+      if(direct)return direct;
+      const candidates=[
+        c?.state,c?.selectedState,c?.rateState,c?.profile?.state,c?.profile?.address?.state,
+        c?.plannerState?.build?.state,c?.plannerState?.renovation?.state,
+        c?.plannerRecords?.build?.[0]?.plannerState?.state,c?.plannerRecords?.renovation?.[0]?.plannerState?.state
+      ];
+      for(const value of candidates){
+        const s=String(value||'').trim().toLowerCase();
+        if(s)return s;
+      }
+      return '—';
+    }
     contractors.forEach(c=>{
       (Array.isArray(c.customItems)?c.customItems:[]).forEach(item=>{
         const rate=Number(item?.rate),globalRate=Number(item?.globalRate);
@@ -136,9 +150,10 @@ async function loadMarketSignal(){
         if(!active)return;
         const p=String(item?.plannerType||'').toLowerCase();
         if(planner!=='all'&&planner!==p)return;
-        const hay=[item?.description,item?.sourceGlobalId,item?.customItemId,c?.contractorId,item?.state].join(' ').toLowerCase();
+        const state=resolveContractorState(c,item);
+        const hay=[item?.description,item?.sourceGlobalId,item?.customItemId,c?.contractorId,state].join(' ').toLowerCase();
         if(search&&!hay.includes(search))return;
-        changed.push({contractorId:c.contractorId||item?.contractorId||'—',state:item?.state||'—',planner:p||'—',description:item?.description||item?.sourceGlobalId||'—',globalRate,rate,delta,capturedAt:item?.capturedAt||item?.updatedAt||''});
+        changed.push({contractorId:c.contractorId||item?.contractorId||'—',state,planner:p||'—',description:item?.description||item?.sourceGlobalId||'—',globalRate,rate,delta,capturedAt:item?.capturedAt||item?.updatedAt||''});
       });
     });
     changed.sort((a,b)=>String(a.state).localeCompare(String(b.state))||String(a.contractorId).localeCompare(String(b.contractorId))||String(a.description).localeCompare(String(b.description)));
