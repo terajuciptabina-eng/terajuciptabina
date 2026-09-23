@@ -33,14 +33,14 @@
         },
         "project": {
           "location": "Eka Height Sendayan",
-          "builtUpArea": 400,
+          "builtUpArea": 600,
           "state": "negeri-sembilan"
         },
-        "total": 84141,
+        "total": 123744,
         "plannerState": {
           "customerName": "Tuan Iman",
           "projectLocation": "Eka Height Sendayan",
-          "builtUpArea": "400",
+          "builtUpArea": "600",
           "rooms": [
             {
               "id": "room-1",
@@ -52,6 +52,12 @@
               "id": "room-2",
               "type": "balcony",
               "name": "Balcony",
+              "area": "200"
+            },
+            {
+              "id": "room-3",
+              "type": "porch",
+              "name": "Porch",
               "area": "200"
             }
           ],
@@ -160,11 +166,28 @@
             "rule_driveway_80": 5000,
             "rule_landscaping_81": 2000
           },
-          "customRates": [],
+          "customRates": [
+            [
+              "manual-1790154031589-vk2lak",
+              260
+            ],
+            [
+              "manual-1790153802326-fltu5h",
+              30
+            ]
+          ],
           "customQuantities": [
             [
               "manual-1790153329217-znr338",
               20
+            ],
+            [
+              "manual-1790153802326-fltu5h",
+              200
+            ],
+            [
+              "manual-1790154031589-vk2lak",
+              40
             ]
           ],
           "customDescriptions": [],
@@ -178,7 +201,14 @@
               "Balcony"
             ]
           ],
-          "excludedItems": [],
+          "excludedItems": [
+            "room-3-floor",
+            "room-3-downlight",
+            "room-3-gate",
+            "room-3-divider",
+            "room-3-ceiling",
+            "room-3-fence"
+          ],
           "manualItems": [
             [
               "room-2",
@@ -194,6 +224,31 @@
                   "amount": 300
                 }
               ]
+            ],
+            [
+              "room-3",
+              [
+                {
+                  "id": "manual-1790153802326-fltu5h",
+                  "roomId": "room-3",
+                  "roomType": "porch",
+                  "description": "New ACP Roof With Heat And Sound Roof Membrane",
+                  "unit": "ls",
+                  "qty": 1,
+                  "rate": 300,
+                  "amount": 300
+                },
+                {
+                  "id": "manual-1790154031589-vk2lak",
+                  "roomId": "room-3",
+                  "roomType": "porch",
+                  "description": "New 1000mm High Glass Railing",
+                  "unit": "ls",
+                  "qty": 1,
+                  "rate": 150,
+                  "amount": 150
+                }
+              ]
             ]
           ],
           "standardRateItems": [
@@ -204,6 +259,22 @@
               "rate": 300,
               "roomType": "balcony",
               "custom": true
+            },
+            {
+              "id": "custom-1790153802326-dfy9ij",
+              "description": "New ACP Roof With Heat And Sound Roof Membrane",
+              "unit": "ls",
+              "rate": 300,
+              "roomType": "porch",
+              "custom": true
+            },
+            {
+              "id": "custom-1790154031589-nwbeka",
+              "description": "New 1000mm High Glass Railing",
+              "unit": "ls",
+              "rate": 150,
+              "roomType": "porch",
+              "custom": true
             }
           ],
           "quotationType": "detail",
@@ -211,10 +282,10 @@
           "projectState": "negeri-sembilan",
           "rateSetId": "default",
           "rateSetName": "Default Rate",
-          "rateSnapshotAt": "2026-09-23T08:52:23.444Z"
+          "rateSnapshotAt": "2026-09-23T09:05:15.494Z"
         },
         "createdAt": "2026-09-23T08:51:00.535Z",
-        "updatedAt": "2026-09-23T08:52:24.098Z",
+        "updatedAt": "2026-09-23T09:05:16.773Z",
         "estimateNumber": "EST-REN-003"
       },
       {
@@ -538,7 +609,7 @@
     ]
   },
   "createdAt": "2026-09-23T08:33:53.459Z",
-  "updatedAt": "2026-09-23T08:52:24.098Z",
+  "updatedAt": "2026-09-23T09:05:16.773Z",
   "quotationRunningNumber": {
     "renovation": 3
   },
