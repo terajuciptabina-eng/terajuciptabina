@@ -117,7 +117,6 @@ function syncRateInput(id,el){
     item.rate=contractorRate;
     item.qty=qty;
     item.amount=amount;
-    if(item.masterPath&&typeof window.__tcCaptureDirectRateOverride==='function')window.__tcCaptureDirectRateOverride(item,contractorRate);
   }
   if(typeof updateRenderedBudgetTotals==='function')updateRenderedBudgetTotals(document.getElementById('constructionBudgetContent'));
 }
