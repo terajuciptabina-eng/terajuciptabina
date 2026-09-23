@@ -305,7 +305,30 @@ async function loadMarketSignal(){
     if(changedTbody)changedTbody.innerHTML='<tr><td colspan="7" class="error" style="display:table-cell">'+esc(e.message||'Unable to load changed contractor rates.')+'</td></tr>';
   }
 }
-async function loadAll(){try{$('error').classList.add('hidden');if(!rules.length)await loadRules();await loadStateRates();const accounts=await loadAccounts();renderAccounts(accounts);await loadReviewQueue();await loadMarketSignal()}catch(e){$('error').textContent=e.message||'Unable to load comparison.';$('error').classList.remove('hidden')}}
+async function loadAll(){
+  $('error').classList.add('hidden');
+  try{
+    if(!rules.length)await loadRules();
+  }catch(e){
+    $('error').textContent=e.message||'Unable to load Admin Calculation Rules.';
+    $('error').classList.remove('hidden');
+  }
+  try{
+    await loadStateRates();
+  }catch(e){
+    $('stateTbody').innerHTML='<tr><td colspan="20" class="error" style="display:table-cell">'+esc(e.message||'Unable to load state rates.')+'</td></tr>';
+  }
+  try{
+    const accounts=await loadAccounts();
+    renderAccounts(accounts);
+  }catch(e){
+    $('result').classList.remove('hidden');
+    $('thead').innerHTML='';
+    $('tbody').innerHTML='<tr><td colspan="100" class="error" style="display:table-cell">'+esc(e.message||'Unable to load account rate database.')+'</td></tr>';
+  }
+  await loadReviewQueue();
+  await loadMarketSignal();
+}
 $('load').onclick=loadAll;loadAll();
 </script>
 </body></html>
