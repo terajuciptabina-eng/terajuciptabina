@@ -16,9 +16,10 @@
 <div id="error" class="error hidden"></div><section id="summary" class="panel summary hidden"></section>
 <section id="result" class="panel hidden"><div class="eyebrow">Account Rate Matrix</div><div class="section-title">Calculation Rules Description × Unit × Account ID</div><div class="table-wrap"><table><thead id="thead"></thead><tbody id="tbody"></tbody></table></div><div class="muted" style="margin-top:10px">Custom account rate items, when present, are shown after the Calculation Rules items.</div></section>
 <section id="stateResult" class="panel"><div class="eyebrow">State Rate Matrix</div><div class="section-title">Calculation Rules Description × Unit × All States / Federal Territories</div><div class="section-sub">All eligible Calculation Rules items are shown in Admin Calculation Rules order. Each state keeps its own rate set.</div><div class="table-wrap"><table><thead id="stateThead"></thead><tbody id="stateTbody"><tr><td colspan="20" class="muted" style="padding:28px;text-align:center">Loading state rates…</td></tr></tbody></table></div></section>
+<section id="marketResult" class="panel"><div class="eyebrow">Contractor Market Signal</div><div class="section-title">Observed Contractor Rate × State</div><div class="section-sub">Derived from saved final contractor quotation snapshots. This is a market signal only; it does not automatically overwrite the Admin State Rate Matrix.</div><div id="marketSummary" class="summary" style="margin-bottom:14px"></div><div class="table-wrap"><table><thead id="marketThead"></thead><tbody id="marketTbody"><tr><td colspan="20" class="muted" style="padding:28px;text-align:center">Loading contractor market signal…</td></tr></tbody></table></div><div class="muted" style="margin-top:10px">Each cell shows median rate, observation count and contractor contribution count. Outliers can be reviewed through the Admin Contractor Market database before any state-rate update.</div></section>
 </main>
 <script>
-const RULES_API='https://terajuciptabina.vercel.app/api/calculation-rules',GH_USERS='https://api.github.com/repos/terajuciptabina-eng/terajuciptabina/contents/data/users',RATE_INDEX='../data/rates/states/index.json',DEFAULT_RATE='../data/rates/default.json';
+const RULES_API='https://terajuciptabina.vercel.app/api/calculation-rules',GH_USERS='https://api.github.com/repos/terajuciptabina-eng/terajuciptabina/contents/data/users',RATE_INDEX='../data/rates/states/index.json',DEFAULT_RATE='../data/rates/default.json',MARKET_API='https://terajuciptabina.vercel.app/api/contractor-rate-market';
 const $=id=>document.getElementById(id),esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
 const CRUI=window.TerajuCalculationRulesUI;
 function money(v){const n=Number(v);return Number.isFinite(n)?'RM '+n.toLocaleString('en-MY',{minimumFractionDigits:2,maximumFractionDigits:2}):'—'}
@@ -35,7 +36,51 @@ async function loadAccountDirectory(kind){const r=await fetch(`${GH_USERS}/${kin
 async function loadAccounts(){const dirs=await Promise.all([loadAccountDirectory('contractors'),loadAccountDirectory('homeowners')]),files=dirs.flat().filter(x=>x.type==='file'&&x.name.endsWith('.json')),out=[];for(const f of files){try{const rr=await fetch(f.download_url,{cache:'no-store'});if(!rr.ok)continue;const a=await rr.json();if(a?.id)out.push(a)}catch(_){}}return out}
 function renderAccounts(accounts){accounts=accounts.filter(a=>$('scope').value==='all'||a.role===$('scope').value);accounts.sort((a,b)=>String(a.profile?.name||a.name||a.id).localeCompare(String(b.profile?.name||b.name||b.id),'ms',{sensitivity:'base'}));const by=collectAccountRates(accounts),search=$('q').value.trim().toLowerCase(),ids=accounts.map(a=>a.id),rows=[];for(const x of ruleRows){const vals=by.get(x.key);if(search&&!x.rule.path.toLowerCase().includes(search)&&!x.rule.description.toLowerCase().includes(search)&&!x.key.toLowerCase().includes(search)&&!ids.some(id=>id.toLowerCase().includes(search)))continue;rows.push({...x,vals,custom:false})}for(const[key,row]of by.entries()){if(!key.startsWith('custom:'))continue;if(search&&!key.toLowerCase().includes(search)&&!row.custom?.description?.toLowerCase().includes(search))continue;rows.push({rule:{group:'CUSTOM RATE ITEMS',path:'CUSTOM RATE ITEM',description:row.custom?.description||key.slice(7),output:row.custom?.unit||'—'},key,vals:row,custom:true})}$('summary').classList.remove('hidden');$('summary').innerHTML=`<div class="stat"><b>${accounts.length}</b><span>Accounts</span></div><div class="stat"><b>${ruleRows.length}</b><span>Calculation Rules items</span></div><div class="stat"><b>${ids.length}</b><span>Account columns</span></div>`;$('thead').innerHTML='<tr><th class="path">Calculation Rules Hierarchy</th><th class="description">Description</th><th class="unit">Unit</th>'+ids.map(id=>{const a=accounts.find(x=>x.id===id);return`<th class="statehead"><span>${esc(id)}</span><br><span class="muted">${esc(a?.profile?.name||a?.name||a?.role||'')}</span></th>`}).join('')+'</tr>';let html='',lastGroup='',seen=new Set();for(const x of rows){if(x.rule.group!==lastGroup){html+=CRUI.groupRow(x.rule.group,rows.filter(r=>r.rule.group===x.rule.group).length,3+ids.length);lastGroup=x.rule.group}if(!x.custom)html+=CRUI.hierarchyRows(x.rule,seen,3+ids.length);const cells=ids.map(id=>{const set=x.vals?.vals?.get(id);return`<td class="rate">${set?[...set].map(money).join('<br>'):'—'}</td>`}).join('');html+=`<tr class="${x.custom?'custom-row':''}"><td class="cr-leaf-item path">${CRUI.esc(CRUI.leaf(x.rule))}</td><td class="cr-description description">${CRUI.esc(x.rule.description)}</td><td class="cr-unit unit">${CRUI.esc(x.rule.output)}</td>${cells}</tr>`}$('tbody').innerHTML=html||'<tr><td colspan="100" class="muted" style="padding:28px;text-align:center">No matching records.</td></tr>';$('result').classList.remove('hidden')}
 async function loadStateRates(){const entries=Object.entries((await (async()=>{const r=await fetch(RATE_INDEX,{cache:'no-store'});if(!r.ok)throw new Error('Unable to load state rate index.');return await r.json()})()).states||{});stateData=await Promise.all(entries.map(async([id,meta])=>{const r=await fetch(RULES_API.replace('/calculation-rules','/rates')+'?state='+encodeURIComponent(id),{cache:'no-store'});if(!r.ok)throw new Error('Unable to load '+meta.name+' rate set.');const payload=await r.json();return{id,name:meta.name,data:payload.rateSet||payload}}));renderState()}
-async function loadAll(){try{$('error').classList.add('hidden');if(!rules.length)await loadRules();await loadStateRates();const accounts=await loadAccounts();renderAccounts(accounts)}catch(e){$('error').textContent=e.message||'Unable to load comparison.';$('error').classList.remove('hidden')}}
+async function loadMarketSignal(){
+  const summary=$('marketSummary'),thead=$('marketThead'),tbody=$('marketTbody');
+  try{
+    const key=sessionStorage.getItem('teraju.admin.key')||'';
+    const r=await fetch(MARKET_API,{headers:{'X-Admin-Key':key},cache:'no-store'});
+    const data=await r.json().catch(()=>({}));
+    if(!r.ok)throw new Error(data.message||'Unable to load contractor market signal.');
+    const planner=$('planner').value==='all'?'all':$('planner').value;
+    const search=$('q').value.trim().toLowerCase();
+    const market=data.market||{};
+    const filteredStates=stateData;
+    let observed=0,contributors=new Set(),latest='';
+    const rows=ruleRows.filter(({rule,key})=>!search||rule.path.toLowerCase().includes(search)||rule.description.toLowerCase().includes(search)||key.toLowerCase().includes(search));
+    summary.innerHTML='<div class="stat"><b>'+Object.keys(market).length+'</b><span>Market observations</span></div><div class="stat"><b>'+rows.length+'</b><span>Matched Calculation Rules</span></div><div class="stat"><b>'+filteredStates.length+'</b><span>States / territories</span></div>';
+    thead.innerHTML='<tr><th class="path">Calculation Rules Hierarchy</th><th class="description">Description</th><th class="unit">Unit</th>'+filteredStates.map(st=>'<th class="statehead">'+esc(st.name)+'</th>').join('')+'</tr>';
+    let html='',lastGroup='',seen=new Set();
+    for(const {rule,key} of rows){
+      if(planner!=='all' && !Object.keys(market).some(k=>k.endsWith('|'+planner+'|'+key))) continue;
+      if(rule.group!==lastGroup){html+=CRUI.groupRow(rule.group,rows.filter(x=>x.rule.group===rule.group).length,3+filteredStates.length);lastGroup=rule.group;seen=new Set()}
+      html+=CRUI.hierarchyRows(rule,seen,3+filteredStates.length);
+      const cells=filteredStates.map(st=>{
+        const candidates=[];
+        for(const p of planner==='all'?['build','renovation']:[planner]){
+          const x=market[st.id+'|'+p+'|'+key];
+          if(x)candidates.push(x);
+        }
+        if(!candidates.length)return '<td class="rate">—</td>';
+        const vals=candidates.flatMap(x=>[x.median]);
+        const medianVal=vals.filter(Number.isFinite)[0];
+        const n=candidates.reduce((s,x)=>s+x.observationCount,0);
+        const c=new Set(candidates.flatMap(x=>Array(x.contractorCount).fill(0))).size;
+        observed+=n;
+        latest=candidates.map(x=>x.latestAt||'').sort().pop()||latest;
+        return '<td class="rate"><strong>'+money(medianVal)+'</strong><br><span class="muted">n='+n+' · '+candidates.map(x=>x.contractorCount).join('+')+' contractors</span></td>';
+      }).join('');
+      html+='<tr><td class="cr-leaf-item path">'+CRUI.esc(CRUI.leaf(rule))+'</td><td class="cr-description description">'+CRUI.esc(rule.description)+'</td><td class="cr-unit unit">'+CRUI.esc(rule.output)+'</td>'+cells+'</tr>';
+    }
+    tbody.innerHTML=html||'<tr><td colspan="20" class="muted" style="padding:28px;text-align:center">No contractor market observations for the current filters.</td></tr>';
+    $('marketResult').dataset.loaded='1';
+  }catch(e){
+    summary.innerHTML='<div class="stat"><b>—</b><span>Market signal unavailable</span></div>';
+    thead.innerHTML='';tbody.innerHTML='<tr><td class="error" style="display:table-cell">'+esc(e.message||'Unable to load contractor market signal.')+'</td></tr>';
+  }
+}
+async function loadAll(){try{$('error').classList.add('hidden');if(!rules.length)await loadRules();await loadStateRates();const accounts=await loadAccounts();renderAccounts(accounts);await loadMarketSignal()}catch(e){$('error').textContent=e.message||'Unable to load comparison.';$('error').classList.remove('hidden')}}
 $('load').onclick=loadAll;$('q').addEventListener('input',()=>{if(stateData.length)renderState()});loadAll();
 </script>
 </body></html>
