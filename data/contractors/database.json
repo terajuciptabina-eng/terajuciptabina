@@ -63,7 +63,11 @@
           "category": "direct-rate-override",
           "groupKey": "structure",
           "groupTitle": "Footing",
-          "updatedAt": "2026-09-19T21:09:06.732Z"
+          "updatedAt": "2026-09-19T21:09:06.732Z",
+          "approvalStatus": "rejected",
+          "reviewedAt": "2026-09-23T17:22:05.685Z",
+          "reviewedBy": "admin",
+          "reviewNote": null
         },
         {
           "customItemId": "ITEM-master-main-building-/-power-point",
@@ -450,6 +454,29 @@
           "reviewNote": null,
           "eventType": "rate-rejected",
           "capturedAt": "2026-09-23T17:21:59.926Z"
+        },
+        {
+          "customItemId": "ITEM-master-main-building-/-footing-/-rebar",
+          "sourceType": "override",
+          "sourceGlobalId": "master-MAIN BUILDING / Footing / Rebar",
+          "plannerType": "build",
+          "description": "Supply and install reinforcement bars to concrete footing.",
+          "unit": "kg",
+          "rate": 0,
+          "globalRate": 8,
+          "rateDelta": -8,
+          "rateDeltaPercent": -100,
+          "overrideActive": true,
+          "category": "direct-rate-override",
+          "groupKey": "structure",
+          "groupTitle": "Footing",
+          "updatedAt": "2026-09-19T21:09:06.732Z",
+          "approvalStatus": "rejected",
+          "reviewedAt": "2026-09-23T17:22:05.685Z",
+          "reviewedBy": "admin",
+          "reviewNote": null,
+          "eventType": "rate-rejected",
+          "capturedAt": "2026-09-23T17:22:05.685Z"
         }
       ]
     },
@@ -553,5 +580,5 @@
       ]
     }
   ],
-  "updatedAt": "2026-09-23T17:21:59.926Z"
+  "updatedAt": "2026-09-23T17:22:05.685Z"
 }
