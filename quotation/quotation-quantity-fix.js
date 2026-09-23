@@ -49,7 +49,7 @@ const itemRow=(i,no)=>{
  const locked=lockedBathroom||/(?:^|\/)\s*PORCH\s*\/\s*(?:LIGHTING|FAN|POWER POINT)(?:\s*\/|$)/i.test(String(i.masterPath||''))||/DOORS \/ Type 3/i.test(String(i.masterPath||''))||/TYPE 3\s*BATHROOM/i.test(String(i.masterPath||''))||/WINDOWS \/ Type [123]/i.test(String(i.masterPath||''));
  const desc=contractor?`<textarea id="budget-desc-${iid}" rows="1" class="w-full min-w-0 border rounded-md px-2 py-1 text-sm whitespace-normal break-words resize-none overflow-hidden" style="min-height:44px" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'" onchange="TERAJU_V2_SAVE_ITEM(${idJson})">${esc(i.description)}</textarea>`:`<div class="homeowner-locked whitespace-normal break-words leading-5 p-1">${esc(i.description)}</div>`;
  const qty=contractor&&!locked?`<input id="budget-qty-${iid}" type="number" min="0" step="1" value="${normQty(i.qty)}" class="w-full border rounded-md px-2 py-1 text-sm text-right" onchange="TERAJU_V2_SAVE_ITEM(${idJson})">`:`<div class="homeowner-locked text-right p-1">${normQty(i.qty)}</div>`;
- const rate=contractor?`<input id="budget-rate-${iid}" data-budget-rate-id="${esc(i.id)}" type="number" min="0" step="0.01" value="${normRate(i.rate).toFixed(2)}" class="w-full border rounded-md px-2 py-1 text-sm text-right" oninput="TERAJU_V2_RATE_INPUT(${idJson},this)" onchange="TERAJU_V2_SAVE_ITEM(${idJson})">`:`<span class="homeowner-rate-blurred homeowner-locked p-1" aria-label="Rate hidden for homeowner">${normRate(i.rate).toFixed(2)}</span>`;
+ const rate=contractor?`<input id="budget-rate-${iid}" data-budget-rate-id="${esc(i.id)}" type="number" min="0" step="0.01" value="${normRate(i.rate).toFixed(2)}" class="w-full border rounded-md px-2 py-1 text-sm text-right" onchange="TERAJU_V2_SAVE_ITEM(${idJson})">`:`<span class="homeowner-rate-blurred homeowner-locked p-1" aria-label="Rate hidden for homeowner">${normRate(i.rate).toFixed(2)}</span>`;
  const del=contractor?`<button type="button" data-budget-delete-id="${esc(i.id)}" class="border border-red-200 text-red-700 rounded-md px-2 py-1 text-xs font-semibold mt-1" onclick="deleteBudgetItem(${idJson})">Delete</button>`:'';
  return `<tr data-budget-item-id="${iid}" data-budget-category="${esc(i.category||'')}" class="border-b align-top"><td class="py-2 px-2 text-gray-500">${no}</td><td class="py-2 px-2 cr-description whitespace-normal break-words">${desc}${del}</td><td class="py-2 px-2 cr-unit">${esc(i.unit)}</td><td class="py-2 px-2">${qty}</td><td class="py-2 px-2">${rate}</td><td id="budget-amount-${iid}" class="py-2 px-2 text-right font-semibold">${money(i.amount,2)}</td></tr>`;
 };
@@ -101,6 +101,36 @@ function editExisting(id){const row=document.querySelector(`[data-budget-item-id
 function applyDirectRate(item,rateEl){if(!item||!rateEl)return;const contractorRate=normRate(rateEl.value);if(typeof customRates!=='undefined')customRates.set(item.id,contractorRate);item.rate=contractorRate;item.amount=R2(N(item.qty)*contractorRate);const amountEl=document.getElementById(`budget-amount-${targetId(item.id)}`);if(amountEl)amountEl.textContent=money2(item.amount);return contractorRate}
 function saveExisting(item){if(!document.body.classList.contains('contractor-mode'))return;const iid=targetId(item.id),desc=document.getElementById(`budget-desc-${iid}`),qty=document.getElementById(`budget-qty-${iid}`),rate=document.getElementById(`budget-rate-${iid}`);const text=String(desc?.value||'').trim();if(!text){alert('Description cannot be empty.');return}if(typeof customDescriptions!=='undefined')customDescriptions.set(item.id,text);if(qty&&typeof customQuantities!=='undefined')customQuantities.set(item.id,normQty(qty.value));if(rate&&typeof customRates!=='undefined'){const contractorRate=applyDirectRate(item,rate);if(item.masterPath&&typeof window.__tcCaptureDirectRateOverride==='function')window.__tcCaptureDirectRateOverride(item,contractorRate)}refresh();saveState()}
 function cancelExisting(){refresh()}
-window.TERAJU_V2_EDIT_ITEM=function(id){return};window.TERAJU_V2_RATE_INPUT=function(id,el){if(!document.body.classList.contains('contractor-mode'))return;const contractorRate=normRate(el?.value);const qtyEl=document.getElementById(`budget-qty-${targetId(id)}`);const qty=normQty(qtyEl?.value||0);const amount=R2(qty*contractorRate);const amountEl=document.getElementById(`budget-amount-${targetId(id)}`);if(amountEl)amountEl.textContent=money2(amount);if(typeof customRates!=='undefined')customRates.set(id,contractorRate);const item=(typeof getAllItems==='function'?getAllItems():[]).find(x=>String(x.id)===String(id));if(item){item.rate=contractorRate;item.qty=qty;item.amount=amount;if(item.masterPath&&typeof window.__tcCaptureDirectRateOverride==='function')window.__tcCaptureDirectRateOverride(item,contractorRate)}if(typeof updateRenderedBudgetTotals==='function')updateRenderedBudgetTotals(document.getElementById('constructionBudgetContent'))};window.TERAJU_V2_SAVE_ITEM=function(id){const item=(typeof getAllItems==='function'?getAllItems():[]).find(x=>String(x.id)===String(id));if(item)saveExisting(item);else{const rateEl=document.getElementById(`budget-rate-${targetId(id)}`);if(rateEl){if(typeof customRates!=='undefined')customRates.set(id,normRate(rateEl.value));saveState()}}};window.TERAJU_V2_CANCEL_ITEM=cancelExisting;
+function syncRateInput(id,el){
+  if(!document.body.classList.contains('contractor-mode')||!el)return;
+  const sid=String(id||el.getAttribute('data-budget-rate-id')||'');
+  if(!sid)return;
+  const contractorRate=normRate(el.value);
+  const qtyEl=document.getElementById(`budget-qty-${targetId(sid)}`);
+  const qty=normQty(qtyEl?.value||0);
+  const amount=R2(qty*contractorRate);
+  const amountEl=document.getElementById(`budget-amount-${targetId(sid)}`);
+  if(amountEl)amountEl.textContent=money2(amount);
+  if(typeof customRates!=='undefined')customRates.set(sid,contractorRate);
+  const item=(typeof getAllItems==='function'?getAllItems():[]).find(x=>String(x.id)===sid);
+  if(item){
+    item.rate=contractorRate;
+    item.qty=qty;
+    item.amount=amount;
+    if(item.masterPath&&typeof window.__tcCaptureDirectRateOverride==='function')window.__tcCaptureDirectRateOverride(item,contractorRate);
+  }
+  if(typeof updateRenderedBudgetTotals==='function')updateRenderedBudgetTotals(document.getElementById('constructionBudgetContent'));
+}
+window.TERAJU_V2_RATE_INPUT=syncRateInput;
+window.TERAJU_V2_SAVE_ITEM=function(id){const item=(typeof getAllItems==='function'?getAllItems():[]).find(x=>String(x.id)===String(id));if(item)saveExisting(item);else{const rateEl=document.getElementById(`budget-rate-${targetId(id)}`);if(rateEl){if(typeof customRates!=='undefined')customRates.set(id,normRate(rateEl.value));saveState()}}};
+window.TERAJU_V2_CANCEL_ITEM=cancelExisting;
+const budgetRoot=document.getElementById('constructionBudgetContent');
+if(budgetRoot&&!budgetRoot.__terajuRateInputBound){
+  budgetRoot.__terajuRateInputBound=true;
+  budgetRoot.addEventListener('input',event=>{
+    const el=event.target?.closest?.('[data-budget-rate-id]');
+    if(el&&budgetRoot.contains(el))syncRateInput(el.getAttribute('data-budget-rate-id'),el);
+  });
+}
 function updateRenderedBudgetTotals(container){const root=container||document.getElementById('constructionBudgetContent');if(!root)return;const totals={};root.querySelectorAll('[data-budget-item-id]').forEach(row=>{const cat=row.getAttribute('data-budget-category')||'';const amountEl=row.querySelector('[id^="budget-amount-"]');const amount=Number(String(amountEl?.textContent||'').replace(/[^0-9.-]+/g,''))||0;totals[cat]=(totals[cat]||0)+amount});const grand=Object.values(totals).reduce((sum,v)=>sum+v,0);const grandEl=root.querySelector('[data-budget-grand-total]');if(grandEl)grandEl.textContent='RM '+money2(grand)}
 })();;
