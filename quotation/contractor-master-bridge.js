@@ -121,11 +121,13 @@
   }
 
   function wrapQuotationSave() {
-    if (!contractor || typeof window.saveQuotation !== 'function' || window.saveQuotation.__terajuMarketWrapped) return false;
-    const original = window.saveQuotation;
+    if (!contractor) return false;
+    const api = window.tcQuotationRecords;
+    if (!api || typeof api.saveQuotation !== 'function' || api.saveQuotation.__terajuMarketWrapped) return false;
+    const original = api.saveQuotation;
     const wrapped = async function() { await captureCurrentCustomItems(); return original.apply(this, arguments); };
     wrapped.__terajuMarketWrapped = true;
-    window.saveQuotation = wrapped;
+    api.saveQuotation = wrapped;
     return true;
   }
 
