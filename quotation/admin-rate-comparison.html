@@ -120,7 +120,12 @@ async function reviewRate(item,action){
     const data=await r.json().catch(()=>({}));
     if(!r.ok)throw new Error(data.message||'Unable to save review decision.');
     await loadReviewQueue();
+    await loadStateRates();
     await loadMarketSignal();
+    if(action==='approve' && data.stateRateUpdated){
+      const c=data.stateRateChange||{};
+      alert('Approved. State Rate Matrix updated.\\n\\n'+String(item.description||'')+'\\n'+String(item.state||'')+'\\nRM '+Number(c.previousRate||0).toFixed(2)+' → RM '+Number(c.newRate||item.rate||0).toFixed(2));
+    }
   }catch(e){alert(e.message||'Unable to save review decision.')}
 }
 
