@@ -59,3 +59,42 @@ window.TerajuRenovationCalculationRules = [
   ["OPTIONAL WORKS","OPTIONAL WORKS / Additional Windows","Additional windows.","CUSTOM RATE / FIXED QUANTITY","1 No. / selected item","Quantity = 1 when selected","No.","Selected optional scope.","Optional Renovation Planner item; contractor-entered rate."],
   ["OPTIONAL WORKS","OPTIONAL WORKS / Additional Electrical / Wiring","Additional electrical / wiring works.","CUSTOM RATE / FIXED QUANTITY","1 LS / selected scope","Quantity = 1 when selected","LS","Selected optional scope.","Optional Renovation Planner item; contractor-entered rate."]
 ];
+
+/* Canonical rate-master metadata for RenovationPlanner V2 Existing Items.
+   The rules above remain the single Renovation calculation source. */
+window.TerajuRenovationRateMaster = (() => {
+  const DEFAULT_RATES = {
+    'Plaster Ceiling':12,
+    'SPC Flooring':14,
+    'Downlight':200,
+    'Ceiling Fan':550,
+    'Curtain Box LED':300,
+    'Bar Lamp':500,
+    'Kitchen Frame':1200,
+    'Making Good':1000,
+    'Swing Glass Door':1200,
+    'Floor Tiles':22,
+    'Wall Tiles':22,
+    'Kitchen Lighting':500,
+    'Sanitary Accessories':3000,
+    'Toilet Door':1200,
+    'Exhaust Fan':200,
+    'Gate + Motor':6400,
+    'Brickwall Divider':2800,
+    'Front Fence':5500,
+    'Facade Wall':60,
+    'Wall Light':250
+  };
+  const leaf = path => String(path||'').split('/').map(v=>v.trim()).filter(Boolean).pop() || '';
+  const slug = value => String(value||'').toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'');
+  const canonicalKey = (rule,index) => 'renovation_rule_' + slug(rule?.[1]) + '_' + index;
+  const isManaged = rule => String(rule?.[0]||'').trim().toUpperCase() !== 'OPTIONAL WORKS';
+  const defaultRate = rule => {
+    const value=DEFAULT_RATES[leaf(rule?.[1])];
+    return Number.isFinite(Number(value)) ? Number(value) : null;
+  };
+  const rows = () => (Array.isArray(window.TerajuRenovationCalculationRules) ? window.TerajuRenovationCalculationRules : [])
+    .map((rule,index)=>({rule,index,key:canonicalKey(rule,index),defaultRate:defaultRate(rule)}))
+    .filter(x=>isManaged(x.rule));
+  return {canonicalKey,defaultRate,isManaged,rows};
+})();
