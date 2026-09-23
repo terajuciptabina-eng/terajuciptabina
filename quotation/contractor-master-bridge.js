@@ -3,14 +3,14 @@
   const qs = new URLSearchParams(location.search);
   const audience = (qs.get('audience') || document.body.dataset.role || '').toLowerCase();
   const contractor = audience === 'contractor';
-  const plannerType = /renovationplanner\.html/i.test(location.pathname) ? 'renovation' : 'build';
-  const contractorId = (qs.get('contractorId') || '').trim();
+  const plannerType = /renovationplanner(?:-v2)?\.html/i.test(location.pathname) ? 'renovation' : 'build';
+  const contractorId = (qs.get('contractorId') || localStorage.getItem('teraju.contractor.local.v1.activeContractorId') || '').trim();
   const MARKET_API = 'https://terajuciptabina.vercel.app/api/contractor-market';
 
   const captureSignatures = new Map();
 
   function currentState() {
-    return String(window.TERAJU_SELECTED_STATE || window.TERAJU_RATE_CONTEXT?.state || qs.get('state') || '').trim().toLowerCase();
+    return String(window.TERAJU_SELECTED_STATE || window.TERAJU_RATE_CONTEXT?.state || qs.get('state') || localStorage.getItem('teraju.planner.state.v1') || '').trim().toLowerCase();
   }
 
   async function captureItem(item) {
@@ -41,7 +41,7 @@
   }
 
   async function captureDirectRateOverride(item, contractorRate) {
-    if (!contractor || !contractorId || plannerType !== 'build' || !item || !item.masterPath) return;
+    if (!contractor || !contractorId || !item || !item.masterPath) return;
     const state = currentState();
     const rate = Number(contractorRate);
     const globalRate = typeof window.__tcGetGlobalRate === 'function'
@@ -53,7 +53,7 @@
     if (!active) return;
     const payload = {
       contractorId,
-      plannerType:'build',
+      plannerType,
       state,
       rateSetId:window.TERAJU_RATE_CONTEXT?.rateSetId || state,
       customItemId:'ITEM-' + String(item.id),
