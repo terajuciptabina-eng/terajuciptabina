@@ -78,29 +78,6 @@
 
 
 
-  async function captureCurrentRateSchedule() {
-    if (!contractor || !contractorId) return;
-    const state = currentState();
-    if (!state) return;
-    try {
-      const items = typeof window.getStandardRateItems === 'function'
-        ? window.getStandardRateItems()
-        : [];
-      const list = Array.isArray(items) ? items : [];
-      for (const item of list) {
-        if (!item || item.custom) continue;
-        const rate = Number(item.rate);
-        if (!Number.isFinite(rate) || rate < 0) continue;
-        await captureItem({
-          ...item,
-          custom: true,
-          customItemId: 'RATE-' + plannerType + '-' + state + '-' + String(item.key || item.id || item.description || '').toLowerCase().replace(/[^a-z0-9]+/g,'-'),
-          sourceGlobalId: item.key || item.id || null
-        });
-      }
-    } catch (_) {}
-  }
-
   async function captureCurrentCustomItems() {
     if (!contractor) return;
     try {
@@ -146,7 +123,7 @@
   function wrapQuotationSave() {
     if (!contractor || typeof window.saveQuotation !== 'function' || window.saveQuotation.__terajuMarketWrapped) return false;
     const original = window.saveQuotation;
-    const wrapped = async function() { await captureCurrentCustomItems(); await captureCurrentRateSchedule(); return original.apply(this, arguments); };
+    const wrapped = async function() { await captureCurrentCustomItems(); return original.apply(this, arguments); };
     wrapped.__terajuMarketWrapped = true;
     window.saveQuotation = wrapped;
     return true;
