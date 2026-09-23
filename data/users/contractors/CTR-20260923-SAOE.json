@@ -36,7 +36,7 @@
           "builtUpArea": 600,
           "state": "negeri-sembilan"
         },
-        "total": 136348,
+        "total": 134948,
         "plannerState": {
           "customerName": "Tuan Iman",
           "projectLocation": "Eka Height Sendayan",
@@ -188,7 +188,7 @@
             ],
             [
               "room-2-floor",
-              30.5
+              23.5
             ]
           ],
           "customQuantities": [
@@ -301,16 +301,16 @@
           "projectState": "negeri-sembilan",
           "rateSetId": "default",
           "rateSetName": "Default Rate",
-          "rateSnapshotAt": "2026-09-23T18:17:37.176Z"
+          "rateSnapshotAt": "2026-09-23T18:54:30.542Z"
         },
         "createdAt": "2026-09-23T17:19:00.431Z",
-        "updatedAt": "2026-09-23T18:17:37.945Z",
+        "updatedAt": "2026-09-23T18:54:32.124Z",
         "estimateNumber": "EST-REN-006"
       }
     ]
   },
   "createdAt": "2026-09-23T08:33:53.459Z",
-  "updatedAt": "2026-09-23T18:17:37.945Z",
+  "updatedAt": "2026-09-23T18:54:32.124Z",
   "quotationRunningNumber": {
     "renovation": 6
   },
