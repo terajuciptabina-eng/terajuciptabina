@@ -36,7 +36,7 @@
           "builtUpArea": 400,
           "state": "negeri-sembilan"
         },
-        "total": 106088.5,
+        "total": 84141,
         "plannerState": {
           "customerName": "Tuan Iman",
           "projectLocation": "Eka Height Sendayan",
@@ -161,27 +161,57 @@
             "rule_landscaping_81": 2000
           },
           "customRates": [],
-          "customQuantities": [],
+          "customQuantities": [
+            [
+              "manual-1790153329217-znr338",
+              20
+            ]
+          ],
           "customDescriptions": [],
           "customRoomLabels": [],
           "excludedItems": [],
-          "manualItems": [],
-          "standardRateItems": [],
+          "manualItems": [
+            [
+              "room-2",
+              [
+                {
+                  "id": "manual-1790153329217-znr338",
+                  "roomId": "room-2",
+                  "roomType": "balcony",
+                  "description": "New ACP Roof With Heat And Sound Proof Membrane",
+                  "unit": "ls",
+                  "qty": 1,
+                  "rate": 300,
+                  "amount": 300
+                }
+              ]
+            ]
+          ],
+          "standardRateItems": [
+            {
+              "id": "custom-1790153329217-g0a26z",
+              "description": "New ACP Roof With Heat And Sound Proof Membrane",
+              "unit": "ls",
+              "rate": 300,
+              "roomType": "balcony",
+              "custom": true
+            }
+          ],
           "quotationType": "simple",
-          "projectId": "PRJ-REN-MUDUSAQR-16OB7",
+          "projectId": "PRJ-REN-MUDUJRVH-VQ4H3",
           "projectState": "negeri-sembilan",
           "rateSetId": "negeri-sembilan",
           "rateSetName": "Negeri Sembilan",
-          "rateSnapshotAt": "2026-09-23T08:40:48.432Z"
+          "rateSnapshotAt": "2026-09-23T08:49:16.254Z"
         },
         "createdAt": "2026-09-23T08:40:47.946Z",
-        "updatedAt": "2026-09-23T08:40:49.251Z",
+        "updatedAt": "2026-09-23T08:49:17.841Z",
         "estimateNumber": "EST-REN-001"
       }
     ]
   },
   "createdAt": "2026-09-23T08:33:53.459Z",
-  "updatedAt": "2026-09-23T08:40:49.251Z",
+  "updatedAt": "2026-09-23T08:49:17.841Z",
   "quotationRunningNumber": {
     "renovation": 1
   },
