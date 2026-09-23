@@ -86,9 +86,9 @@
     "rule_gate_79": 6500,
     "rule_driveway_80": 5000,
     "rule_landscaping_81": 2000,
-    "renovation_rule_balcony_floor_tiles_37": 23.5
+    "renovation_rule_balcony_floor_tiles_37": 22.5
   },
-  "updatedAt": "2026-09-23T18:56:14.929Z",
+  "updatedAt": "2026-09-23T19:02:18.125Z",
   "effectiveDate": "2026-09-23",
   "rateItems": {
     "rule_preliminaries_building_plan_submission_0": {
@@ -702,6 +702,20 @@
       "customItemId": "ITEM-room-2-floor",
       "approvedBy": "admin",
       "approvedAt": "2026-09-23T18:56:14.929Z"
+    },
+    {
+      "masterRateKey": "renovation_rule_balcony_floor_tiles_37",
+      "description": "Floor tiles to Balcony area.",
+      "unit": "sqft",
+      "plannerType": "renovation",
+      "state": "negeri-sembilan",
+      "previousRate": 23.5,
+      "newRate": 22.5,
+      "source": "contractor_approved",
+      "contractorId": "CTR-20260923-SAOE",
+      "customItemId": "ITEM-room-2-floor",
+      "approvedBy": "admin",
+      "approvedAt": "2026-09-23T19:02:18.125Z"
     }
   ]
-}
+}\n
