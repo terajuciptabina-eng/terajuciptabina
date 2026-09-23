@@ -39,7 +39,48 @@ export default async function handler(req, res) {
     }
 
     const body = readPayload();
+    const suppliedAdminKey = clean(req.headers['x-admin-key'], 200);
     const contractorId = clean(body.contractorId, 80).toUpperCase();
+
+    // Hidden admin review action. Contractor capture requests never use this action.
+    if (req.method === 'POST' && body.action) {
+      if (!adminKey || suppliedAdminKey !== adminKey) return res.status(401).json({ message: 'Unauthorized.' });
+      const action = clean(body.action, 30).toLowerCase();
+      if (!['approve','reject'].includes(action)) return res.status(400).json({ message: 'Invalid review action.' });
+      if (!contractorId) return res.status(400).json({ message: 'contractorId is required.' });
+      const state = clean(body.state, 80).toLowerCase();
+      const plannerType = clean(body.plannerType, 30).toLowerCase();
+      const customItemId = clean(body.customItemId, 160);
+      const contractor = database.contractors.find(x => String(x?.contractorId || '').toUpperCase() === contractorId);
+      if (!contractor) return res.status(404).json({ message: 'Contractor record not found.' });
+      contractor.customItems = Array.isArray(contractor.customItems) ? contractor.customItems : [];
+      contractor.marketHistory = Array.isArray(contractor.marketHistory) ? contractor.marketHistory : [];
+      const item = contractor.customItems.find(x =>
+        String(x?.customItemId || '') === customItemId &&
+        String(x?.state || '').toLowerCase() === state &&
+        String(x?.plannerType || '').toLowerCase() === plannerType
+      );
+      if (!item) return res.status(404).json({ message: 'Captured rate observation not found.' });
+      const now = new Date().toISOString();
+      item.approvalStatus = action === 'approve' ? 'approved' : 'rejected';
+      item.reviewedAt = now;
+      item.reviewedBy = 'admin';
+      item.reviewNote = clean(body.note, 1000) || null;
+      contractor.marketHistory.push({...item,eventType:action === 'approve' ? 'rate-approved' : 'rate-rejected',capturedAt:now});
+      database.updatedAt = now;
+      const content = JSON.stringify(database, null, 2) + '\n';
+      const updatedReview = await github({
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: `${action === 'approve' ? 'Approve' : 'Reject'} contractor rate observation ${customItemId}`,
+          content: Buffer.from(content, 'utf8').toString('base64'),
+          sha: current.data?.sha
+        })
+      });
+      if (!updatedReview.response.ok) return res.status(502).json({ message: updatedReview.data?.message || 'Unable to save review decision.' });
+      return res.status(200).json({ ok: true, action, item });
+    }
     if (!contractorId) return res.status(400).json({ message: 'contractorId is required.' });
     const plannerType = clean(body.plannerType, 30).toLowerCase();
     if (!['build', 'renovation'].includes(plannerType)) return res.status(400).json({ message: 'Invalid plannerType.' });
@@ -64,10 +105,14 @@ export default async function handler(req, res) {
       globalRate: Number.isFinite(globalRate) ? Math.round(globalRate * 100) / 100 : null,
       rateDelta: Number.isFinite(globalRate) ? Math.round((rate-globalRate)*100)/100 : null,
       rateDeltaPercent: Number.isFinite(globalRate) && globalRate ? Math.round(((rate-globalRate)/globalRate)*10000)/100 : null,
-      overrideActive: isOverride ? overrideActive : true, category: clean(body.category,80)||'custom',
+      overrideActive: isOverride ? overrideActive : true,
+      state: clean(body.state, 80).toLowerCase() || null,
+      rateSetId: clean(body.rateSetId, 120) || null,
+      approvalStatus: 'pending', reviewedAt: null, reviewedBy: null, reviewNote: null,
+      capturedAt: now, category: clean(body.category,80)||'custom',
       groupKey: clean(body.groupKey,120)||null, groupTitle: clean(body.groupTitle,120)||'Custom Items', updatedAt: now
     };
-    const index = contractor.customItems.findIndex(x => x.customItemId === item.customItemId);
+    const index = contractor.customItems.findIndex(x => x.customItemId === item.customItemId && String(x?.state || '').toLowerCase() === item.state && String(x?.plannerType || '').toLowerCase() === item.plannerType);
     if(index>=0){if(isOverride&&!overrideActive)contractor.customItems.splice(index,1);else contractor.customItems[index]={...contractor.customItems[index],...item}}
     else if(!(isOverride&&!overrideActive))contractor.customItems.push(item);
     contractor.marketHistory.push({...item,eventType:isOverride&&!overrideActive?'override-reset':(isOverride?'override-update':'custom-update'),capturedAt:now});
