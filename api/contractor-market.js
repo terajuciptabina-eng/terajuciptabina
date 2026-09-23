@@ -130,10 +130,17 @@ export default async function handler(req, res) {
 
         const sourcePath = String(item.sourceGlobalId || '').replace(/^master-/i,'').trim();
         const pathSlug = value => String(value || '').toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'');
-        const candidates = Object.keys(stateRateSet.rates || {}).filter(k => {
-          const prefix = plannerType === 'renovation' ? 'renovation_rule_' : 'rule_';
-          return k.startsWith(prefix + pathSlug(sourcePath) + '_');
-        });
+        const prefix = plannerType === 'renovation' ? 'renovation_rule_' : 'rule_';
+        let candidates = Object.keys(stateRateSet.rates || {}).filter(k => k.startsWith(prefix + pathSlug(sourcePath) + '_'));
+        if (!candidates.length) {
+          const defaultFile = await githubFile('data/rates/default.json');
+          if (defaultFile.response.ok) {
+            try {
+              const defaultSet = JSON.parse(Buffer.from(defaultFile.data?.content || '', 'base64').toString('utf8'));
+              candidates = Object.keys(defaultSet.rates || {}).filter(k => k.startsWith(prefix + pathSlug(sourcePath) + '_'));
+            } catch {}
+          }
+        }
         const masterRateKey = clean(body.masterRateKey, 200) || candidates[0] || null;
         if (!masterRateKey) return res.status(400).json({ message: 'Approved rate has no State Rate Matrix key.' });
 
