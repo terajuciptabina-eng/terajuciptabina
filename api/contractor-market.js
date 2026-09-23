@@ -27,6 +27,13 @@ export default async function handler(req, res) {
     return { response, data };
   }
   async function atomicWriteFiles(files, message) {
+    // Every approval/capture may run repeatedly. Refuse to publish malformed JSON.
+    for (const file of files) {
+      if (/\\.json$/i.test(file.path)) {
+        try { JSON.parse(String(file.content || '')); }
+        catch { return { ok:false, message:`Refusing to publish invalid JSON: ${file.path}` }; }
+      }
+    }
     const refResponse = await fetch(`https://api.github.com/repos/${repo}/git/ref/heads/main`, { headers });
     const refText = await refResponse.text(); let refData = null;
     try { refData = refText ? JSON.parse(refText) : null; } catch {}
