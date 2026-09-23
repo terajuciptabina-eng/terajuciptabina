@@ -263,7 +263,6 @@ async function loadMarketSignal(){
     }
     tbody.innerHTML=html||'<tr><td colspan="20" class="muted" style="padding:28px;text-align:center">No changed contractor rates for the current filters.</td></tr>';
 
-    const contractors=Array.isArray(data.database?.contractors)?data.database.contractors:[];
     const changed=[];
     function resolveContractorState(c,item){
       const direct=String(item?.state||'').trim().toLowerCase();
