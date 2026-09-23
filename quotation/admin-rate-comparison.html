@@ -193,14 +193,27 @@ async function loadMarketSignal(){
     const marketApi=data.market||{};
     const market={...marketApi};
     const contractors=Array.isArray(data.database?.contractors)?data.database.contractors:[];
-    // Canonical fallback/overlay: derive observations directly from saved contractor items.
+    // Canonical fallback/overlay: normalize saved contractor source IDs to the same
+    // canonical rule key used by ruleRows. Older captures stored masterPath, while
+    // newer rule rows use renovation_rule_* / rule_* canonical keys.
+    const marketKeyAliases=new Map();
+    for(const row of ruleRows){
+      const canonical=String(row.key||'').trim();
+      const path=String(row.rule?.path||'').trim();
+      if(!canonical)continue;
+      marketKeyAliases.set(canonical,canonical);
+      if(path){
+        marketKeyAliases.set(path,canonical);
+        marketKeyAliases.set('master-'+path,canonical);
+      }
+    }
     // This keeps Market Signal aligned with Changed Contractor Rates even when the API aggregate is stale.
     for(const contractor of contractors){
       for(const item of (Array.isArray(contractor.customItems)?contractor.customItems:[])){
         const state=String(item?.state||'').trim().toLowerCase();
         const p=String(item?.plannerType||'').trim().toLowerCase();
-        let key=String(item?.sourceGlobalId||'').trim();
-        if(key.startsWith('master-'))key=key.slice(7);
+        const rawKey=String(item?.sourceGlobalId||'').trim();
+        const key=marketKeyAliases.get(rawKey)||marketKeyAliases.get(rawKey.replace(/^master-/i,''))||rawKey.replace(/^master-/i,'');
         const rate=Number(item?.rate), globalRate=Number(item?.globalRate);
         if(!state||!['build','renovation'].includes(p)||!key||!Number.isFinite(rate)||!Number.isFinite(globalRate))continue;
         if(item?.overrideActive===false||Math.abs(rate-globalRate)<=0.000001)continue;
