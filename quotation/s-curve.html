@@ -114,6 +114,15 @@
     var exact=requested&&programs.find(function(x){return String(x.quotationId)===String(requested)||String(x.quotationNumber)===String(requested)});
     if(exact){els.wp.innerHTML='<option value="'+esc(exact.quotationId)+'">'+esc(exact.quotationNumber||exact.quotationId)+'</option>';els.wp.value=exact.quotationId;select();return}
     if(programs.length===1){els.wp.innerHTML='<option value="'+esc(programs[0].quotationId)+'">'+esc(programs[0].quotationNumber||programs[0].quotationId)+'</option>';els.wp.value=programs[0].quotationId;select();return}
+    if(requested){
+      var fallback=[];
+      for(var j=0;j<localStorage.length;j++){
+        var fk=localStorage.key(j);
+        if(!fk||fk.indexOf('teraju.workprogram.v1.')!==0)continue;
+        try{var fp=normalize(JSON.parse(localStorage.getItem(fk)));if(fp&&String(fp.quotationId)===String(requested))fallback.push(fp)}catch(e){}
+      }
+      if(fallback.length){programs=fallback;els.wp.innerHTML='<option value="'+esc(fallback[0].quotationId)+'">'+esc(fallback[0].quotationNumber||fallback[0].quotationId)+'</option>';els.wp.value=fallback[0].quotationId;select();return}
+    }
     els.wp.innerHTML=programs.length?programs.map(function(x){return '<option value="'+esc(x.quotationId)+'">'+esc(x.quotationNumber||x.quotationId)+' · '+esc(x.projectStart)+' → '+esc(x.projectFinish)+'</option>'}).join(''):'<option>No saved Work Program</option>';
   }
   els.wp.addEventListener('change',select);
