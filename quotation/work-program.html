@@ -36,7 +36,7 @@ button,input,select{font:inherit;min-height:44px}.card{background:#fff;border:1p
   </div>
  </section>
  <section class="card p-4 sm:p-6">
-  <div class="mb-5 flex flex-col justify-between gap-3 sm:flex-row sm:items-center"><div><h2 class="text-lg font-black">Scheduled Estimate Items</h2><p class="mt-1 text-xs text-slate-500">Every row below comes from the selected Cost Estimate snapshot.</p></div><div class="flex flex-wrap gap-2"><button id="autoSchedule" class="rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-bold text-white">Auto Schedule</button><a id="progressLink" class="rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-bold" href="#">Progress / Actual</a><button id="saveProgram" class="rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-bold">Save Work Program</button></div></div>
+  <div class="mb-5 flex flex-col justify-between gap-3 sm:flex-row sm:items-center"><div><h2 class="text-lg font-black">Scheduled Estimate Items</h2><p class="mt-1 text-xs text-slate-500">Every row below comes from the selected Cost Estimate snapshot.</p></div><div class="flex flex-wrap gap-2"><button id="autoSchedule" class="rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-bold text-white">Suggest Smart Schedule</button><a id="progressLink" class="rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-bold" href="#">Progress / Actual</a><button id="saveProgram" class="rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-bold">Save Work Program</button></div></div>
   <div id="status" class="mb-4 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-500">Loading…</div>
   <div class="table-wrap"><table class="wp-table"><thead><tr><th class="item sticky-left">Established Estimate Item</th><th>Unit</th><th>Qty</th><th>Rate (RM)</th><th>Amount (RM)</th><th>Start</th><th>Finish</th><th>Duration</th><th>Planned %</th><th>Timeline</th></tr></thead><tbody id="programBody"></tbody></table></div>
  </section>
@@ -75,7 +75,68 @@ function renderGantt(){
  els.gantt.innerHTML='<div class="wp-gantt"><div class="wp-gantt-header"><div class="wp-item-label wp-head-label">Work Item</div><div class="wp-weeks">'+header+'</div><div class="wp-duration wp-head-label">Duration</div></div>'+rowsHtml+'</div>';
 }function render(){const ws=weekStarts();let actualHistory={};try{const raw=JSON.parse(localStorage.getItem('teraju.progress.v2.contractor.'+id+'.'+type+'.'+(selected?.quotationId||'none'))||'null'),hist=raw?.history||{},dates=Object.keys(hist).sort();actualHistory=dates.length?hist[dates[dates.length-1]]:{}}catch{}els.body.innerHTML='';let last='';rows.forEach(item=>{const group=item.category||'OTHER';if(group!==last){last=group;const tr=document.createElement('tr');tr.className='section-row';tr.innerHTML='<td class="sticky-left" colspan="10">'+esc(group)+'</td>';els.body.appendChild(tr)}const s=schedule[item.id]||{};const tr=document.createElement('tr');tr.dataset.id=item.id;const timeline=ws.map(w=>{const wk=iso(w),active=s.start&&s.finish&&wk>=s.start&&wk<=s.finish;return '<div class="dot '+(active?'active':'')+'" title="'+wk+'"></div>'}).join('');tr.innerHTML='<td class="item sticky-left"><div class="font-semibold text-slate-800">'+esc(item.description)+'</div>'+(item.section?'<div class="mt-1 text-[10px] text-slate-400">'+esc(item.section)+'</div>':'')+'</td><td>'+esc(item.unit)+'</td><td>'+esc(item.qty)+'</td><td class="amount">'+fmt(item.rate)+'</td><td class="amount font-bold">'+fmt(item.amount)+'</td><td><input data-field="start" type="date" value="'+esc(s.start||'')+'"></td><td><input data-field="finish" type="date" value="'+esc(s.finish||'')+'"></td><td class="duration font-bold">'+(days(s.start,s.finish)||'—')+'</td><td><input data-field="planned" type="number" min="0" max="100" step="1" value="'+esc(s.planned??100)+'"></td><td class="actual-cell">'+(actualHistory[item.id]?.percent==null?'—':Math.round(Number(actualHistory[item.id].percent))+'%')+'</td><td><div class="flex items-center gap-1">'+timeline+'</div></td>';els.body.appendChild(tr)});els.status.textContent=rows.length?rows.length+' established estimate item'+(rows.length===1?'':'s')+' · scheduling only':'No item snapshot found in this estimate. Save/open the estimate again after the Work Program item-snapshot update.';renderAnalytics();renderGantt()}
 function bind(){els.body.querySelectorAll('tr[data-id]').forEach(tr=>{const id=tr.dataset.id;tr.querySelectorAll('input').forEach(input=>input.addEventListener('change',()=>{schedule[id]=schedule[id]||{};schedule[id][input.dataset.field]=input.value;if(input.dataset.field==='planned')schedule[id].planned=Math.max(0,Math.min(100,Number(input.value)||0));saveLocal();render();bind()}))})}
-function autoSchedule(){const a=els.start.value,b=els.finish.value;if(!a||!b||days(a,b)<=0){alert('Set a valid project start and finish first.');return}const span=Math.max(1,Math.ceil(days(a,b)/Math.max(rows.length,1)));rows.forEach((item,i)=>{const st=parseDate(a);st.setDate(st.getDate()+i*span);const en=new Date(st);en.setDate(en.getDate()+span-1);const finish=parseDate(b);if(en>finish)en.setTime(finish.getTime());schedule[item.id]={start:iso(st),finish:iso(en),planned:100}});saveLocal();render();bind()}
+function smartPhase(item){
+ const t=[item.category,item.description,item.section,item.level3,item.header].filter(Boolean).join(' ').toLowerCase();
+ const groups=type==='renovation'?[
+  ['demolition',0.00,0.12,['demol','hack','strip','remove','dismantl','existing']],
+  ['structural / repair',0.08,0.28,['structur','concrete','rc ','beam','column','slab','wall repair','roof repair']],
+  ['m&e rough-in',0.20,0.48,['electrical','wiring','cable','conduit','plumbing','pipe','drain','aircond','mechanical','m&e']],
+  ['waterproofing / screed',0.38,0.58,['waterproof','screed']],
+  ['wall / ceiling works',0.46,0.68,['plaster','ceiling','partition','drywall','skim']],
+  ['floor / wall finishes',0.56,0.78,['tile','floor','wall finish','marble','stone']],
+  ['joinery / fixtures',0.68,0.88,['cabinet','kitchen','wardrobe','joinery','door','window','ironmong','sanitary','fixture']],
+  ['painting / final finishes',0.76,0.94,['paint','painting','polish','coating','final finish']],
+  ['testing / handover',0.90,1.00,['testing','test','commission','clean','handover','defect']]
+ ]:[
+  ['preliminaries / mobilisation',0.00,0.06,['prelim','mobil','setting out','site establishment','temporary']],
+  ['earthwork / site',0.03,0.12,['earth','excavat','backfill','site clearing','earthwork','formation']],
+  ['foundation',0.08,0.22,['foundation','footing','pile','piling','ground beam','ground slab']],
+  ['structure',0.18,0.42,['concrete','rc ','reinforced','beam','column','slab','structure','stair']],
+  ['walling',0.30,0.52,['brick','block','wall','masonry']],
+  ['roofing',0.42,0.60,['roof','truss','gutter','metal deck']],
+  ['m&e first fix',0.48,0.68,['electrical','wiring','cable','conduit','plumbing','pipe','mechanical','m&e','aircond']],
+  ['plaster / screed',0.58,0.74,['plaster','render','screed','skim']],
+  ['openings / metal works',0.62,0.80,['door','window','aluminium','ironmong','metal']],
+  ['ceilings / tiling',0.68,0.86,['ceiling','tile','floor','wall finish','waterproof']],
+  ['finishes',0.76,0.94,['paint','painting','cabinet','joinery','wardrobe','kitchen','sanitary','fixture']],
+  ['m&e second fix',0.84,0.97,['light fitting','socket','switch','sanitary fitting','final connection','second fix']],
+  ['external works',0.82,0.97,['drainage','drain','paving','apron','landscape','fence','external']],
+  ['testing / handover',0.94,1.00,['testing','test','commission','clean','handover','defect']]
+ ];
+ for(const g of groups){if(g[3].some(k=>t.includes(k)))return {name:g[0],start:g[1],end:g[2]}}
+ return {name:'general construction',start:0.30,end:0.78};
+}
+function smartDuration(item,phase,totalDays){
+ const amount=Math.max(1,Number(item.amount)||0),base=Math.sqrt(amount);
+ const same=phase.items.reduce((s,x)=>s+Math.sqrt(Math.max(1,Number(x.amount)||0)),0);
+ const raw=Math.round((base/same)*Math.max(phase.endDay-phase.startDay+1,4)*1.6);
+ return Math.max(3,Math.min(Math.max(3,Math.round(totalDays*0.28)),raw||3));
+}
+function autoSchedule(){
+ const a=els.start.value,b=els.finish.value,totalDays=days(a,b);
+ if(!a||!b||totalDays<=0){alert('Set a valid project start and finish first.');return}
+ const phases={};
+ rows.forEach(item=>{const p=smartPhase(item);(phases[p.name]??={name:p.name,start:p.start,end:p.end,items:[]}).items.push(item)});
+ const phaseList=Object.values(phases).sort((x,y)=>x.start-y.start);
+ phaseList.forEach(p=>{p.startDay=Math.round(p.start*(totalDays-1));p.endDay=Math.round(p.end*(totalDays-1));});
+ const newSchedule={};
+ phaseList.forEach(p=>{
+   const span=Math.max(1,p.endDay-p.startDay+1);
+   const ordered=p.items.slice().sort((x,y)=>(Number(y.amount)||0)-(Number(x.amount)||0));
+   ordered.forEach((item,i)=>{
+     const d=smartDuration(item,p,totalDays);
+     const offset=ordered.length===1?0:Math.round((i/(ordered.length-1))*Math.max(0,span-d)*0.35);
+     let sd=p.startDay+offset,ed=Math.min(p.endDay,sd+d-1);
+     if(ed-sd+1<d)sd=Math.max(p.startDay,ed-d+1);
+     const st=parseDate(a);st.setDate(st.getDate()+sd);
+     const en=parseDate(a);en.setDate(en.getDate()+ed);
+     const finish=parseDate(b);if(en>finish)en.setTime(finish.getTime());
+     newSchedule[item.id]={start:iso(st),finish:iso(en),planned:100,phase:p.name};
+   });
+ });
+ schedule=newSchedule;render();bind();
+ els.status.textContent='Smart Schedule suggested: '+phaseList.length+' construction phases with overlapping activities. Review the dates, then click Save Work Program.';
+}
 async function load(){if(role!=='contractor'){els.status.textContent='Work Program is available for Contractor Workspace.';return}if(!id){els.status.textContent='No contractor ID supplied.';return}try{const r=await fetch(API+'?role=contractor&id='+encodeURIComponent(id)+'&plannerType='+encodeURIComponent(type));const data=await r.json();if(!r.ok)throw new Error(data.message||'Unable to load cost estimates.');quotations=(data.quotations||[]).filter(q=>q&&q.state==='final');els.select.innerHTML=quotations.length?quotations.map(q=>'<option value="'+esc(q.quotationId)+'">'+esc(q.quotationNumber||q.quotationId)+' · RM '+fmt(q.total)+' · '+esc(q.project?.location||'')+'</option>').join(''):'<option value="">No confirmed Cost Estimate</option>';if(!quotations.length){els.status.textContent='No confirmed Cost Estimate found.';return}const first=requested&&quotations.find(q=>q.quotationId===requested);els.select.value=(first||quotations[0]).quotationId;selectQuotation()}catch(e){els.status.textContent=e.message||'Unable to load cost estimates.'}}
 function selectQuotation(){selected=quotations.find(q=>q.quotationId===els.select.value)||null;if(!selected)return;updateNavigation();rows=Array.isArray(selected.items)?selected.items.filter(x=>x&&x.id):[];schedule={};projectDefaults();loadSaved();els.summary.innerHTML='<div class="flex flex-wrap gap-x-6 gap-y-2"><span><b>Estimate:</b> '+esc(selected.quotationNumber||selected.quotationId)+'</span><span><b>Project:</b> '+esc(selected.project?.location||'Not specified')+'</span><span><b>Contract Sum:</b> RM '+fmt(selected.total)+'</span><span><b>Source Items:</b> '+rows.length+'</span></div>';render();bind()}
 els.select.addEventListener('change',()=>{saveLocal();selectQuotation()});els.start.addEventListener('change',()=>{saveLocal();render();bind()});els.finish.addEventListener('change',()=>{saveLocal();render();bind()});document.getElementById('autoSchedule').addEventListener('click',autoSchedule);document.getElementById('saveProgram').addEventListener('click',()=>{saveLocal();els.status.textContent='Work Program saved locally for this contractor/project/estimate.'});document.getElementById('progressLink').addEventListener('click',e=>{const href='progress.html?role=contractor&id='+encodeURIComponent(id)+'&plannerType='+encodeURIComponent(type)+'&quotationId='+encodeURIComponent(selected?.quotationId||'');if(!selected){e.preventDefault();els.status.textContent='Select a confirmed Cost Estimate first.';return}e.currentTarget.href=href;});load();
