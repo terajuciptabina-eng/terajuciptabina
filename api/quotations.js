@@ -43,7 +43,7 @@ export default async function handler(req, res) {
       const now = new Date().toISOString();
       const type = quotationType(sourceQuotation.quotationType);
       const baseNumber = nextBaseNumber(current.record, plannerType);
-      const estimateNumber = sourceQuotation.estimateNumber || displayEstimateNumber(nextEstimateNumber(current.record, plannerType), plannerType);
+      const estimateNumber = displayEstimateNumber(nextEstimateNumber(current.record, plannerType), plannerType);
       const newQuotationId = `QT-${plannerType === 'renovation' ? 'REN' : 'BLD'}-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).slice(2,7).toUpperCase()}`;
       const duplicate = JSON.parse(JSON.stringify(sourceQuotation));
       duplicate.quotationId = newQuotationId;
@@ -58,6 +58,8 @@ export default async function handler(req, res) {
       current.record.plannerRecords[plannerType] = list;
       current.record.quotationRunningNumber = current.record.quotationRunningNumber || {};
       current.record.quotationRunningNumber[plannerType] = baseNumber;
+      current.record.estimateRunningNumber = current.record.estimateRunningNumber || {};
+      current.record.estimateRunningNumber[plannerType] = estimateSequence(estimateNumber);
       current.record.updatedAt = now;
       const updated = await github(pathFor(role, id), { method: 'PUT', body: JSON.stringify({ message: `Duplicate ${plannerType} quotation ${sourceQuotation.quotationNumber} as ${duplicate.quotationNumber}`, content: Buffer.from(JSON.stringify(current.record, null, 2) + '\n').toString('base64'), sha: current.sha }) });
       if (!updated.response.ok) return res.status(502).json({ message: 'Unable to duplicate cost estimate.' });
