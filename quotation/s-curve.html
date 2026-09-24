@@ -12,8 +12,9 @@
 <script>
 (function(){
   var p=new URLSearchParams(location.search);
-  var role=(p.get('role')||'contractor').toLowerCase();
-  var id=(p.get('id')||'').trim().toUpperCase();
+  var role=(p.get('role')||p.get('audience')||'contractor').toLowerCase();
+  var idKey=role==='contractor'?'contractorId':'homeownerId';
+  var id=(p.get('id')||p.get(idKey)||'').trim().toUpperCase();
   var type=(p.get('plannerType')||'build').toLowerCase()==='renovation'?'renovation':'build';
   var requested=p.get('quotationId')||'';
   var els={

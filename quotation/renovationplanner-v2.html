@@ -554,7 +554,7 @@ main>section:not(:first-child){scroll-margin-top:92px} main>section>div:first-ch
     </div>
     <nav class="flex items-center gap-2 flex-wrap justify-end no-print" aria-label="Planner navigation">
       <a id="myQuotationsLink" href="quotations.html" class="planner-nav-link">My Cost Estimates</a>
-      <a href="#" onclick="history.back(); return false;" class="planner-nav-link">Back to Previous</a>
+      <a id="plannerBackLink" href="quotations.html" class="planner-nav-link">Back to Cost Estimates</a>
       <a href="index.html" class="planner-nav-link">Home</a>
     </nav>
   </div>
@@ -2696,6 +2696,22 @@ if (typeof window.__TERAJU_RENOVATION_V2_UPDATE_ESTIMATE === "function") {
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', applyHomeownerName, { once: true });
   else applyHomeownerName();
+})();
+</script>
+<script id="tc-navigation-context">
+(() => {
+  const p = new URLSearchParams(location.search);
+  const audience = (p.get('audience') || document.body.dataset.role || 'homeowner').toLowerCase() === 'contractor' ? 'contractor' : 'homeowner';
+  const idKey = audience === 'contractor' ? 'contractorId' : 'homeownerId';
+  const id = (p.get(idKey) || p.get('id') || '').trim().toUpperCase();
+  const plannerType = location.pathname.toLowerCase().includes('renovationplanner') ? 'renovation' : 'build';
+  const context = `role=${encodeURIComponent(audience)}&id=${encodeURIComponent(id)}&plannerType=${encodeURIComponent(plannerType)}`;
+  const my = document.getElementById('myQuotationsLink');
+  if (my) my.href = `quotations.html?${context}`;
+  document.querySelectorAll('a[onclick*="history.back"]').forEach(a => {
+    a.removeAttribute('onclick');
+    a.href = `quotations.html?${context}`;
+  });
 })();
 </script>
 <script id="tc-teraju-ga4">
