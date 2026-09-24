@@ -1,6 +1,7 @@
 export default async function handler(req, res) {
-  const origin = 'https://terajuciptabina-eng.github.io';
-  res.setHeader('Access-Control-Allow-Origin', origin);
+  const origin = String(req.headers.origin || '');
+  const allowedOrigin = origin === 'https://terajuciptabina-eng.github.io' || /^https:\/\/[^/]+\.vercel\.app$/.test(origin);
+  if (allowedOrigin) res.setHeader('Access-Control-Allow-Origin', origin);
   res.setHeader('Access-Control-Allow-Methods', 'GET, PUT, DELETE, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   if (req.method === 'OPTIONS') return res.status(200).end();
