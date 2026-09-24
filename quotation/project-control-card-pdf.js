@@ -20,17 +20,19 @@ async function deps(){
 }
 function pdfStyle(){
   const s=document.createElement('style');
-  s.textContent='*{box-sizing:border-box!important}table{width:100%!important;max-width:none!important;border-collapse:collapse!important}th,td{vertical-align:top!important;white-space:normal!important;overflow:visible!important;text-overflow:clip!important}input,select{background:#fff!important;color:#111827!important}.overflow-auto,.overflow-x-auto,.overflow-y-auto,.table-wrap,.chart-wrap{overflow:visible!important}.sticky,.sticky-left{position:static!important}.wp-table,.pg-table{font-size:11px!important;line-height:1.35!important}.wp-table .item,.pg-table .item{white-space:normal!important;overflow-wrap:anywhere!important}.chart{min-width:0!important;width:100%!important}';
+  s.textContent='*{box-sizing:border-box!important}html,body{overflow:visible!important;width:max-content!important;max-width:none!important}table{width:max-content!important;min-width:0!important;max-width:none!important;border-collapse:collapse!important}th,td{vertical-align:top!important;white-space:normal!important;overflow:visible!important;text-overflow:clip!important}input,select{background:#fff!important;color:#111827!important}.overflow-auto,.overflow-x-auto,.overflow-y-auto,.table-wrap,.chart-wrap{overflow:visible!important;width:max-content!important;max-width:none!important}.table-wrap>table,.chart-wrap>.chart{width:max-content!important;max-width:none!important}.sticky,.sticky-left{position:static!important}.wp-table,.pg-table{font-size:11px!important;line-height:1.35!important}.wp-table .item,.pg-table .item{white-space:normal!important;overflow-wrap:anywhere!important}.wp-table{min-width:1120px!important}.pg-table{min-width:1050px!important}.chart{min-width:760px!important;height:auto!important}.wp-gantt{overflow:visible!important;min-width:max-content!important}.wp-gantt-header,.wp-gantt-row{width:max-content!important;min-width:max-content!important}.wp-weeks{width:max-content!important}.s-curve-chart{overflow:visible!important}';
   return s;
 }
 async function captureElement(source,renderWidth){
   const clone=source.cloneNode(true);
   clone.querySelectorAll('.pdf-hide,.no-print').forEach(x=>x.remove());
   clone.querySelectorAll('[id]').forEach(x=>x.removeAttribute('id'));
-  clone.style.width=renderWidth+'px';
+  clone.style.width='max-content';
+  clone.style.minWidth=renderWidth+'px';
   clone.style.maxWidth='none';
   clone.style.margin='0';
   clone.style.transform='none';
+  clone.style.overflow='visible';
 
   const holder=document.createElement('div');
   holder.style.cssText='position:fixed;left:-10000px;top:0;width:'+renderWidth+'px;background:#fff;z-index:-999999;padding:0;margin:0;overflow:visible';
