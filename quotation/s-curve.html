@@ -153,4 +153,6 @@ main{padding:10px 8px!important}
     if(programs.length===1){els.wp.innerHTML='<option value="'+esc(programs[0].quotationId)+'">'+esc(programs[0].quotationNumber||programs[0].quotationId)+'</option>';els.wp.value=programs[0].quotationId;await select();return}
     els.wp.innerHTML='<option value="">'+(quotationId?'Requested Work Program not saved':'No saved Work Program')+'</option>';
     els.summary.textContent=quotationId?'The selected Work Program could not be loaded from project-control storage.':'Open S-Curve from a saved Work Program so the quotationId can be carried into project control.';
-  }OCTYPE html>
+</script>
+</body>
+</html>
