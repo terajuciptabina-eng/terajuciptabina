@@ -5,7 +5,7 @@
   "plannerType": "build",
   "quotationId": "QT-BLD-MUF4BGWF-S1CFZ",
   "createdAt": "2026-09-24T17:46:29.508Z",
-  "updatedAt": "2026-09-24T17:50:27.034Z",
+  "updatedAt": "2026-09-24T17:50:46.165Z",
   "workProgram": {
     "schemaVersion": 1,
     "recordType": "work-program",
@@ -1398,7 +1398,7 @@
     "recordType": "progress",
     "quotationId": "QT-BLD-MUF4BGWF-S1CFZ",
     "history": {
-      "2027-02-28": {
+      "2026-12-31": {
         "master-preliminaries-/-building-plan-/-submission": {
           "percent": 100
         },
@@ -1573,11 +1573,11 @@
       }
     },
     "validDates": {
-      "2027-02-28": {
+      "2026-12-31": {
         "valid": true,
-        "savedAt": "2026-09-24T17:49:11.994Z"
+        "savedAt": "2026-09-24T17:50:45.209Z"
       }
     },
-    "updatedAt": "2026-09-24T17:49:12.870Z"
+    "updatedAt": "2026-09-24T17:50:46.165Z"
   }
 }
