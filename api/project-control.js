@@ -61,6 +61,9 @@ export default async function handler(req, res) {
     const existing=current.record&&typeof current.record==='object'?current.record:{schemaVersion:1,recordType:'project-control',contractorId:id,plannerType:type,quotationId,createdAt:now};
     const record={...existing,schemaVersion:1,recordType:'project-control',contractorId:id,plannerType:type,quotationId,updatedAt:now};
 
+    if(payload.contract){
+      record.contract={...payload.contract,updatedAt:now};
+    }
     if(payload.workProgram){
       record.workProgram={...payload.workProgram,updatedAt:now};
       delete record.workProgram.versions;
