@@ -5,7 +5,7 @@
   "plannerType": "renovation",
   "quotationId": "QT-REN-MUFYKF8R-T1DKY",
   "createdAt": "2026-09-24T20:09:23.215Z",
-  "updatedAt": "2026-09-24T20:09:47.161Z",
+  "updatedAt": "2026-09-24T20:09:58.764Z",
   "contract": {
     "schemaVersion": 1,
     "recordType": "contract",
@@ -2878,5 +2878,228 @@
       }
     },
     "updatedAt": "2026-09-24T20:09:47.161Z"
+  },
+  "progress": {
+    "schemaVersion": 4,
+    "recordType": "progress",
+    "quotationId": "QT-REN-MUFYKF8R-T1DKY",
+    "history": {
+      "2026-09-25": {
+        "master-preliminaries-/-building-plan-/-submission": {
+          "percent": 0
+        },
+        "master-preliminaries-/-site-mobilisation-/-project-management": {
+          "percent": 0
+        },
+        "master-main-building-/-footing-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-footing-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-footing-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-slab-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-slab-/-brc": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-/-metal-roofing-sheet": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-brc": {
+          "percent": 0
+        },
+        "master-main-building-/-drainage": {
+          "percent": 0
+        },
+        "master-porch-/-footing-/-concrete": {
+          "percent": 0
+        },
+        "master-porch-/-footing-/-formwork": {
+          "percent": 0
+        },
+        "master-porch-/-footing-/-rebar": {
+          "percent": 0
+        },
+        "master-porch-/-ground-slab-/-concrete": {
+          "percent": 0
+        },
+        "master-porch-/-ground-slab-/-brc": {
+          "percent": 0
+        },
+        "master-porch-/-ground-beam-/-concrete": {
+          "percent": 0
+        },
+        "master-porch-/-ground-beam-/-formwork": {
+          "percent": 0
+        },
+        "master-porch-/-ground-beam-/-rebar": {
+          "percent": 0
+        },
+        "master-porch-/-roof-beam-/-concrete": {
+          "percent": 0
+        },
+        "master-porch-/-roof-beam-/-formwork": {
+          "percent": 0
+        },
+        "master-porch-/-roof-beam-/-rebar": {
+          "percent": 0
+        },
+        "master-porch-/-column-/-concrete": {
+          "percent": 0
+        },
+        "master-porch-/-column-/-formwork": {
+          "percent": 0
+        },
+        "master-porch-/-column-/-rebar": {
+          "percent": 0
+        },
+        "master-porch-/-flat-roof-/-concrete": {
+          "percent": 0
+        },
+        "master-porch-/-flat-roof-/-formwork": {
+          "percent": 0
+        },
+        "master-porch-/-flat-roof-/-brc": {
+          "percent": 0
+        },
+        "master-main-building-/-brickwall-/-internal-wall": {
+          "percent": 0
+        },
+        "master-main-building-/-brickwall-/-external-wall": {
+          "percent": 0
+        },
+        "master-main-building-/-floor-tiles-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-floor-tiles-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-painting-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-painting-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-ceiling-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-ceiling-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-water-tank": {
+          "percent": 0
+        },
+        "master-main-building-/-septic-tank": {
+          "percent": 0
+        },
+        "master-main-building-/-power-point": {
+          "percent": 0
+        },
+        "master-main-building-/-switch": {
+          "percent": 0
+        },
+        "master-main-building-/-lighting": {
+          "percent": 0
+        },
+        "master-main-building-/-fan": {
+          "percent": 0
+        },
+        "master-main-building-/-aircond-point": {
+          "percent": 0
+        },
+        "master-porch-/-lighting": {
+          "percent": 0
+        },
+        "master-porch-/-fan": {
+          "percent": 0
+        },
+        "master-porch-/-power-point": {
+          "percent": 0
+        },
+        "master-earthing": {
+          "percent": 0
+        },
+        "master-db-box": {
+          "percent": 0
+        },
+        "master-wiring": {
+          "percent": 0
+        },
+        "master-doors-/-type-1-single-leaf": {
+          "percent": 0
+        },
+        "master-doors-/-type-4-double-leaf-main-door": {
+          "percent": 0
+        },
+        "master-windows-/-type-2-1800*1200": {
+          "percent": 0
+        },
+        "master-boundary-fencing": {
+          "percent": 0
+        },
+        "master-gate": {
+          "percent": 0
+        },
+        "master-driveway": {
+          "percent": 0
+        },
+        "master-landscaping": {
+          "percent": 0
+        },
+        "manual-1790153329217-znr338": {
+          "percent": 0
+        },
+        "manual-1790153802326-fltu5h": {
+          "percent": 0
+        },
+        "manual-1790154031589-vk2lak": {
+          "percent": 0
+        }
+      }
+    },
+    "validDates": {
+      "2026-09-25": {
+        "valid": true,
+        "savedAt": "2026-09-24T20:09:57.708Z"
+      }
+    },
+    "updatedAt": "2026-09-24T20:09:58.764Z"
   }
 }
