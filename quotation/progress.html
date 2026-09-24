@@ -30,9 +30,11 @@ document.getElementById('demo').addEventListener('click',()=>{
      const s=(selected.schedule||{})[item.id]||{},a=s.start?parse(s.start).getTime():0,b=s.finish?parse(s.finish).getTime():0;
      let planned=0;
      if(a&&b){const dur=Math.max(1,b-a+86400000);planned=at<a?0:at>b?100:((at-a+86400000)/dur)*100}
-     const lag=di===dates.length-1?0.85:0.9;
-     const variation=(ii%7===0&&di>1)?5:0;
-     snap[item.id]={percent:Math.max(0,Math.min(100,Math.round(planned*lag+variation)))};
+     const baseLag=di===0?0.82:0.86;
+     const variation=(ii%7===0&&di>1)?Math.min(4,di):0;
+     const prev=di>0?Number(seeded[dates[di-1]]?.[item.id]?.percent)||0:0;
+     const target=Math.max(prev,Math.round(planned*baseLag+variation));
+     snap[item.id]={percent:Math.max(0,Math.min(100,target))};
    });
    seeded[date]=snap;
  });
