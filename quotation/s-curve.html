@@ -41,20 +41,7 @@
     history={};
     try{
       var x=JSON.parse(localStorage.getItem(pgKey())||'null');
-      if(x&&x.history){var valid=x.validDates||{};history=Object.keys(x.history).reduce(function(out,d){if(valid[d]?.valid===true)out[d]=x.history[d];return out},{});}
-      if(x&&x.testData&&history){
-        var dates=Object.keys(history).sort(),running={};
-        dates.forEach(function(d){
-          var snap=history[d]||{};
-          (selected.items||[]).forEach(function(item){
-            var id=item.id,v=Math.max(0,Math.min(100,Number(snap[id]&&snap[id].percent)||0)),prev=Number(running[id])||0;
-            running[id]=Math.max(prev,v);
-            snap[id]=Object.assign({},snap[id]||{}, {percent:running[id]});
-          });
-          history[d]=snap;
-        });
-        localStorage.setItem(pgKey(),JSON.stringify(Object.assign({},x,{history:history,updatedAt:new Date().toISOString()})));
-      }
+      if(x&&x.schemaVersion>=3&&x.recordType==='progress'&&x.source==='manual-save'&&x.history){var valid=x.validDates||{};history=Object.keys(x.history).reduce(function(out,d){if(valid[d]?.valid===true)out[d]=x.history[d];return out},{});}
     }catch(e){}
   }
   function snapshot(date){
