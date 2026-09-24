@@ -2407,7 +2407,7 @@
           "builtUpArea": 315,
           "state": "selangor"
         },
-        "total": 91582.5,
+        "total": 83082.5,
         "plannerState": {
           "customerName": "Farzana Ana",
           "projectLocation": "Tiada Lokasi",
@@ -2538,15 +2538,17 @@
           "customQuantities": [],
           "customDescriptions": [],
           "customRoomLabels": [],
-          "excludedItems": [],
+          "excludedItems": [
+            "project-preliminaries"
+          ],
           "manualItems": [],
           "standardRateItems": [],
           "quotationType": "simple",
-          "projectId": "PRJ-REN-MUFUWBAQ-KDIZE",
+          "projectId": "PRJ-REN-MUDUJRVH-VQ4H3",
           "projectState": "selangor",
           "rateSetId": "selangor",
           "rateSetName": "Selangor",
-          "rateSnapshotAt": "2026-09-24T18:19:28.045Z"
+          "rateSnapshotAt": "2026-09-24T18:20:15.442Z"
         },
         "itemListVersion": 1,
         "items": [
@@ -3351,7 +3353,7 @@
           }
         ],
         "createdAt": "2026-09-24T18:19:27.103Z",
-        "updatedAt": "2026-09-24T18:19:28.945Z",
+        "updatedAt": "2026-09-24T18:20:17.102Z",
         "estimateNumber": "EST-REN-007"
       },
       {
@@ -3648,7 +3650,7 @@
     ]
   },
   "createdAt": "2026-09-23T08:33:53.459Z",
-  "updatedAt": "2026-09-24T18:19:28.945Z",
+  "updatedAt": "2026-09-24T18:20:17.102Z",
   "quotationRunningNumber": {
     "renovation": 7,
     "build": 2
