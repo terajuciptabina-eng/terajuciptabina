@@ -1,10 +1,10 @@
 export default async function handler(req, res) {
   const origin = 'https://terajuciptabina-eng.github.io';
   res.setHeader('Access-Control-Allow-Origin', origin);
-  res.setHeader('Access-Control-Allow-Methods', 'GET, PUT, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   if (req.method === 'OPTIONS') return res.status(200).end();
-  if (!['GET', 'PUT', 'DELETE'].includes(req.method)) return res.status(405).json({ message: 'Method not allowed' });
+  if (!['GET', 'POST', 'PUT', 'DELETE'].includes(req.method)) return res.status(405).json({ message: 'Method not allowed' });
   const token = process.env.GITHUB_TOKEN;
   const repo = process.env.GITHUB_REPO || 'terajuciptabina-eng/terajuciptabina';
   if (!token) return res.status(500).json({ message: 'GitHub auth storage is not configured.' });
@@ -32,6 +32,37 @@ export default async function handler(req, res) {
     if (!validRole(role) || !id || !validPlanner(plannerType)) return res.status(400).json({ message: 'Invalid role, id or planner type.' });
     const current = await readRecord(role, id); if (!current.record) return res.status(current.status === 404 ? 404 : 502).json({ message: current.status === 404 ? 'Account not found.' : 'Unable to read account record.' });
     if (req.method === 'GET') return res.status(200).json({ role, id, plannerType, quotations: plannerList(current.record, plannerType) });
+    if (req.method === 'POST') {
+      const action = String(source?.action || '').toLowerCase();
+      if (action !== 'duplicate') return res.status(400).json({ message: 'Invalid quotation action.' });
+      const sourceQuotationId = String(source?.quotationId || '').trim();
+      if (!sourceQuotationId) return res.status(400).json({ message: 'Missing quotationId.' });
+      const list = plannerList(current.record, plannerType);
+      const sourceQuotation = list.find(q => q?.quotationId === sourceQuotationId);
+      if (!sourceQuotation) return res.status(404).json({ message: 'Cost estimate not found.' });
+      const now = new Date().toISOString();
+      const type = quotationType(sourceQuotation.quotationType);
+      const baseNumber = nextBaseNumber(current.record, plannerType);
+      const estimateNumber = sourceQuotation.estimateNumber || displayEstimateNumber(nextEstimateNumber(current.record, plannerType), plannerType);
+      const newQuotationId = `QT-${plannerType === 'renovation' ? 'REN' : 'BLD'}-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).slice(2,7).toUpperCase()}`;
+      const duplicate = JSON.parse(JSON.stringify(sourceQuotation));
+      duplicate.quotationId = newQuotationId;
+      duplicate.quotationNumber = displayQuotationNumber(baseNumber, type);
+      duplicate.estimateNumber = estimateNumber;
+      duplicate.createdAt = now;
+      duplicate.updatedAt = now;
+      duplicate.state = 'final';
+      duplicate.plannerState = { ...(duplicate.plannerState || {}), projectId: duplicate.projectId || duplicate.plannerState?.projectId || '', quotationId: newQuotationId };
+      list.unshift(duplicate);
+      current.record.plannerRecords = current.record.plannerRecords || { build: [], renovation: [] };
+      current.record.plannerRecords[plannerType] = list;
+      current.record.quotationRunningNumber = current.record.quotationRunningNumber || {};
+      current.record.quotationRunningNumber[plannerType] = baseNumber;
+      current.record.updatedAt = now;
+      const updated = await github(pathFor(role, id), { method: 'PUT', body: JSON.stringify({ message: `Duplicate ${plannerType} quotation ${sourceQuotation.quotationNumber} as ${duplicate.quotationNumber}`, content: Buffer.from(JSON.stringify(current.record, null, 2) + '\\n').toString('base64'), sha: current.sha }) });
+      if (!updated.response.ok) return res.status(502).json({ message: 'Unable to duplicate cost estimate.' });
+      return res.status(200).json({ success: true, quotation: duplicate });
+    }
     if (req.method === 'DELETE') { const quotationId = String(source?.quotationId || '').trim(); if (!quotationId) return res.status(400).json({ message: 'Missing quotationId.' }); const list = plannerList(current.record, plannerType); current.record.plannerRecords = current.record.plannerRecords || { build: [], renovation: [] }; current.record.plannerRecords[plannerType] = list.filter(q => q?.quotationId !== quotationId); current.record.updatedAt = new Date().toISOString(); const updated = await github(pathFor(role, id), { method: 'PUT', body: JSON.stringify({ message: `Delete ${plannerType} quotation ${quotationId}`, content: Buffer.from(JSON.stringify(current.record, null, 2) + '\n').toString('base64'), sha: current.sha }) }); if (!updated.response.ok) return res.status(502).json({ message: 'Unable to delete quotation.' }); return res.status(200).json({ success: true, quotationId }); }
     const quotation = source?.quotation; if (!quotation || typeof quotation !== 'object') return res.status(400).json({ message: 'Missing quotation record.' }); const quotationId = String(quotation.quotationId || '').trim(); if (!quotationId) return res.status(400).json({ message: 'Missing quotationId.' });
     const now = new Date().toISOString(); const normalized = { ...quotation, quotationId, role, [idKey(role)]: id, plannerType, updatedAt: now, createdAt: quotation.createdAt || now };
