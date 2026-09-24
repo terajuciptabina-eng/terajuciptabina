@@ -33,7 +33,7 @@
         "project": {
           "location": "Port Dickson",
           "builtUpArea": 350,
-          "state": "negeri-sembilan"
+          "state": "selangor"
         },
         "total": 187102.5,
         "plannerState": {
@@ -220,10 +220,10 @@
           "standardRateItems": [],
           "quotationType": "detail",
           "projectId": "PRJ-BLD-MUF4BIIE-R2YWT",
-          "projectState": "negeri-sembilan",
-          "rateSetId": "negeri-sembilan",
-          "rateSetName": "Negeri Sembilan",
-          "rateSnapshotAt": "2026-09-24T06:47:43.213Z"
+          "projectState": "selangor",
+          "rateSetId": "default",
+          "rateSetName": "Default Rate",
+          "rateSnapshotAt": "2026-09-24T14:19:30.646Z"
         },
         "itemListVersion": 1,
         "items": [
@@ -237,7 +237,12 @@
             "amount": 8500,
             "header": "",
             "level3": "",
-            "section": ""
+            "section": "",
+            "groupTitle": "Preliminaries",
+            "groupKey": "preliminaries",
+            "masterPath": "PRELIMINARIES / Building Plan / Submission",
+            "roomId": "project",
+            "room": "Project"
           },
           {
             "id": "master-preliminaries-/-site-mobilisation-/-project-management",
@@ -249,7 +254,12 @@
             "amount": 12000,
             "header": "",
             "level3": "",
-            "section": ""
+            "section": "",
+            "groupTitle": "Preliminaries",
+            "groupKey": "preliminaries",
+            "masterPath": "PRELIMINARIES / Site Mobilisation / Project Management",
+            "roomId": "project",
+            "room": "Project"
           },
           {
             "id": "master-main-building-/-footing-/-concrete",
@@ -261,7 +271,12 @@
             "amount": 550,
             "header": "",
             "level3": "",
-            "section": ""
+            "section": "",
+            "groupTitle": " Footing ",
+            "groupKey": "structure",
+            "masterPath": "MAIN BUILDING / Footing / Concrete",
+            "roomId": "project",
+            "room": "Project"
           },
           {
             "id": "master-main-building-/-footing-/-formwork",
@@ -273,7 +288,12 @@
             "amount": 385,
             "header": "",
             "level3": "",
-            "section": ""
+            "section": "",
+            "groupTitle": " Footing ",
+            "groupKey": "structure",
+            "masterPath": "MAIN BUILDING / Footing / Formwork",
+            "roomId": "project",
+            "room": "Project"
           },
           {
             "id": "master-main-building-/-footing-/-rebar",
@@ -285,7 +305,12 @@
             "amount": 800,
             "header": "",
             "level3": "",
-            "section": ""
+            "section": "",
+            "groupTitle": " Footing ",
+            "groupKey": "structure",
+            "masterPath": "MAIN BUILDING / Footing / Rebar",
+            "roomId": "project",
+            "room": "Project"
           },
           {
             "id": "master-main-building-/-ground-slab-/-concrete",
@@ -297,7 +322,12 @@
             "amount": 2750,
             "header": "",
             "level3": "",
-            "section": ""
+            "section": "",
+            "groupTitle": " Ground Slab ",
+            "groupKey": "structure",
+            "masterPath": "MAIN BUILDING / Ground Slab / Concrete",
+            "roomId": "project",
+            "room": "Project"
           },
           {
             "id": "master-main-building-/-ground-slab-/-brc",
@@ -309,7 +339,12 @@
             "amount": 1353,
             "header": "",
             "level3": "",
-            "section": ""
+            "section": "",
+            "groupTitle": " Ground Slab ",
+            "groupKey": "structure",
+            "masterPath": "MAIN BUILDING / Ground Slab / BRC",
+            "roomId": "project",
+            "room": "Project"
           },
           {
             "id": "master-main-building-/-ground-beam-/-concrete",
@@ -321,7 +356,12 @@
             "amount": 1050,
             "header": "",
             "level3": "",
-            "section": ""
+            "section": "",
+            "groupTitle": " Ground Beam ",
+            "groupKey": "structure",
+            "masterPath": "MAIN BUILDING / Ground Beam / Concrete",
+            "roomId": "project",
+            "room": "Project"
           },
           {
             "id": "master-main-building-/-ground-beam-/-formwork",
@@ -333,7 +373,12 @@
             "amount": 1540,
             "header": "",
             "level3": "",
-            "section": ""
+            "section": "",
+            "groupTitle": " Ground Beam ",
+            "groupKey": "structure",
+            "masterPath": "MAIN BUILDING / Ground Beam / Formwork",
+            "roomId": "project",
+            "room": "Project"
           },
           {
             "id": "master-main-building-/-ground-beam-/-rebar",
@@ -345,7 +390,12 @@
             "amount": 4800,
             "header": "",
             "level3": "",
-            "section": ""
+            "section": "",
+            "groupTitle": " Ground Beam ",
+            "groupKey": "structure",
+            "masterPath": "MAIN BUILDING / Ground Beam / Rebar",
+            "roomId": "project",
+            "room": "Project"
           },
           {
             "id": "master-main-building-/-roof-beam-/-concrete",
@@ -357,7 +407,12 @@
             "amount": 1050,
             "header": "",
             "level3": "",
-            "section": ""
+            "section": "",
+            "groupTitle": " Roof Beam ",
+            "groupKey": "structure",
+            "masterPath": "MAIN BUILDING / Roof Beam / Concrete",
+            "roomId": "project",
+            "room": "Project"
           },
           {
             "id": "master-main-building-/-roof-beam-/-formwork",
@@ -369,7 +424,12 @@
             "amount": 1540,
             "header": "",
             "level3": "",
-            "section": ""
+            "section": "",
+            "groupTitle": " Roof Beam ",
+            "groupKey": "structure",
+            "masterPath": "MAIN BUILDING / Roof Beam / Formwork",
+            "roomId": "project",
+            "room": "Project"
           },
           {
             "id": "master-main-building-/-roof-beam-/-rebar",
@@ -381,7 +441,12 @@
             "amount": 4800,
             "header": "",
             "level3": "",
-            "section": ""
+            "section": "",
+            "groupTitle": " Roof Beam ",
+            "groupKey": "structure",
+            "masterPath": "MAIN BUILDING / Roof Beam / Rebar",
+            "roomId": "project",
+            "room": "Project"
           },
           {
             "id": "master-main-building-/-column-/-concrete",
@@ -393,7 +458,12 @@
             "amount": 550,
             "header": "",
             "level3": "",
-            "section": ""
+            "section": "",
+            "groupTitle": " Column ",
+            "groupKey": "structure",
+            "masterPath": "MAIN BUILDING / Column / Concrete",
+            "roomId": "project",
+            "room": "Project"
           },
           {
             "id": "master-main-building-/-column-/-formwork",
@@ -405,7 +475,12 @@
             "amount": 825,
             "header": "",
             "level3": "",
-            "section": ""
+            "section": "",
+            "groupTitle": " Column ",
+            "groupKey": "structure",
+            "masterPath": "MAIN BUILDING / Column / Formwork",
+            "roomId": "project",
+            "room": "Project"
           },
           {
             "id": "master-main-building-/-column-/-rebar",
@@ -417,7 +492,12 @@
             "amount": 1600,
             "header": "",
             "level3": "",
-            "section": ""
+            "section": "",
+            "groupTitle": " Column ",
+            "groupKey": "structure",
+            "masterPath": "MAIN BUILDING / Column / Rebar",
+            "roomId": "project",
+            "room": "Project"
           },
           {
             "id": "master-main-building-/-roof-/-metal-roofing-sheet",
@@ -429,7 +509,12 @@
             "amount": 23520,
             "header": "",
             "level3": "",
-            "section": ""
+            "section": "",
+            "groupTitle": " Roof ",
+            "groupKey": "structure",
+            "masterPath": "MAIN BUILDING / Roof / Metal Roofing Sheet",
+            "roomId": "project",
+            "room": "Project"
           },
           {
             "id": "master-main-building-/-apron-/-concrete",
@@ -441,7 +526,12 @@
             "amount": 700,
             "header": "",
             "level3": "",
-            "section": ""
+            "section": "",
+            "groupTitle": " Apron ",
+            "groupKey": "structure",
+            "masterPath": "MAIN BUILDING / Apron / Concrete",
+            "roomId": "project",
+            "room": "Project"
           },
           {
             "id": "master-main-building-/-apron-/-formwork",
@@ -453,7 +543,12 @@
             "amount": 110,
             "header": "",
             "level3": "",
-            "section": ""
+            "section": "",
+            "groupTitle": " Apron ",
+            "groupKey": "structure",
+            "masterPath": "MAIN BUILDING / Apron / Formwork",
+            "roomId": "project",
+            "room": "Project"
           },
           {
             "id": "master-main-building-/-apron-/-brc",
@@ -465,7 +560,12 @@
             "amount": 512.5,
             "header": "",
             "level3": "",
-            "section": ""
+            "section": "",
+            "groupTitle": " Apron ",
+            "groupKey": "structure",
+            "masterPath": "MAIN BUILDING / Apron / BRC",
+            "roomId": "project",
+            "room": "Project"
           },
           {
             "id": "master-main-building-/-drainage",
@@ -477,7 +577,12 @@
             "amount": 1085,
             "header": "",
             "level3": "",
-            "section": ""
+            "section": "",
+            "groupTitle": "MAIN BUILDING ",
+            "groupKey": "structure",
+            "masterPath": "MAIN BUILDING / Drainage",
+            "roomId": "project",
+            "room": "Project"
           },
           {
             "id": "master-main-building-/-brickwall-/-internal-wall",
@@ -489,7 +594,12 @@
             "amount": 3150,
             "header": "",
             "level3": "",
-            "section": ""
+            "section": "",
+            "groupTitle": "Architectural Works",
+            "groupKey": "architecture",
+            "masterPath": "MAIN BUILDING / Brickwall / Internal Wall",
+            "roomId": "project",
+            "room": "Project"
           },
           {
             "id": "master-main-building-/-brickwall-/-external-wall",
@@ -501,7 +611,12 @@
             "amount": 2280,
             "header": "",
             "level3": "",
-            "section": ""
+            "section": "",
+            "groupTitle": "Architectural Works",
+            "groupKey": "architecture",
+            "masterPath": "MAIN BUILDING / Brickwall / External Wall",
+            "roomId": "project",
+            "room": "Project"
           },
           {
             "id": "master-main-building-/-floor-tiles-/-internal",
@@ -513,7 +628,12 @@
             "amount": 3135,
             "header": "",
             "level3": "",
-            "section": ""
+            "section": "",
+            "groupTitle": "Architectural Works",
+            "groupKey": "architecture",
+            "masterPath": "MAIN BUILDING / Floor Tiles / Internal",
+            "roomId": "project",
+            "room": "Project"
           },
           {
             "id": "master-main-building-/-floor-tiles-/-external",
@@ -525,7 +645,12 @@
             "amount": 3750,
             "header": "",
             "level3": "",
-            "section": ""
+            "section": "",
+            "groupTitle": "Architectural Works",
+            "groupKey": "architecture",
+            "masterPath": "MAIN BUILDING / Floor Tiles / External",
+            "roomId": "project",
+            "room": "Project"
           },
           {
             "id": "master-main-building-/-painting-/-internal",
@@ -537,7 +662,12 @@
             "amount": 1260,
             "header": "",
             "level3": "",
-            "section": ""
+            "section": "",
+            "groupTitle": "Architectural Works",
+            "groupKey": "architecture",
+            "masterPath": "MAIN BUILDING / Painting / Internal",
+            "roomId": "project",
+            "room": "Project"
           },
           {
             "id": "master-main-building-/-painting-/-external",
@@ -549,7 +679,12 @@
             "amount": 912,
             "header": "",
             "level3": "",
-            "section": ""
+            "section": "",
+            "groupTitle": "Architectural Works",
+            "groupKey": "architecture",
+            "masterPath": "MAIN BUILDING / Painting / External",
+            "roomId": "project",
+            "room": "Project"
           },
           {
             "id": "master-main-building-/-ceiling-/-internal",
@@ -561,7 +696,12 @@
             "amount": 5445,
             "header": "",
             "level3": "",
-            "section": ""
+            "section": "",
+            "groupTitle": "Architectural Works",
+            "groupKey": "architecture",
+            "masterPath": "MAIN BUILDING / Ceiling / Internal",
+            "roomId": "project",
+            "room": "Project"
           },
           {
             "id": "master-main-building-/-ceiling-/-external",
@@ -573,7 +713,12 @@
             "amount": 4125,
             "header": "",
             "level3": "",
-            "section": ""
+            "section": "",
+            "groupTitle": "Architectural Works",
+            "groupKey": "architecture",
+            "masterPath": "MAIN BUILDING / Ceiling / External",
+            "roomId": "project",
+            "room": "Project"
           },
           {
             "id": "master-main-building-/-water-tank",
@@ -585,7 +730,12 @@
             "amount": 600,
             "header": "",
             "level3": "",
-            "section": ""
+            "section": "",
+            "groupTitle": "External Work",
+            "groupKey": "external-work",
+            "masterPath": "MAIN BUILDING / Water Tank",
+            "roomId": "project",
+            "room": "Project"
           },
           {
             "id": "master-main-building-/-septic-tank",
@@ -597,7 +747,12 @@
             "amount": 2500,
             "header": "",
             "level3": "",
-            "section": ""
+            "section": "",
+            "groupTitle": "External Work",
+            "groupKey": "external-work",
+            "masterPath": "MAIN BUILDING / Septic Tank",
+            "roomId": "project",
+            "room": "Project"
           },
           {
             "id": "master-main-building-/-power-point",
@@ -609,7 +764,12 @@
             "amount": 900,
             "header": "",
             "level3": "",
-            "section": ""
+            "section": "",
+            "groupTitle": "Electrical Works",
+            "groupKey": "electrical",
+            "masterPath": "MAIN BUILDING / POWER POINT",
+            "roomId": "project",
+            "room": "Project"
           },
           {
             "id": "master-main-building-/-switch",
@@ -621,7 +781,12 @@
             "amount": 1200,
             "header": "",
             "level3": "",
-            "section": ""
+            "section": "",
+            "groupTitle": "Electrical Works",
+            "groupKey": "electrical",
+            "masterPath": "MAIN BUILDING / SWITCH",
+            "roomId": "project",
+            "room": "Project"
           },
           {
             "id": "master-main-building-/-lighting",
@@ -633,7 +798,12 @@
             "amount": 800,
             "header": "",
             "level3": "",
-            "section": ""
+            "section": "",
+            "groupTitle": "Electrical Works",
+            "groupKey": "electrical",
+            "masterPath": "MAIN BUILDING / LIGHTING",
+            "roomId": "project",
+            "room": "Project"
           },
           {
             "id": "master-main-building-/-fan",
@@ -645,7 +815,12 @@
             "amount": 400,
             "header": "",
             "level3": "",
-            "section": ""
+            "section": "",
+            "groupTitle": "Electrical Works",
+            "groupKey": "electrical",
+            "masterPath": "MAIN BUILDING / FAN",
+            "roomId": "project",
+            "room": "Project"
           },
           {
             "id": "master-main-building-/-aircond-point",
@@ -657,7 +832,12 @@
             "amount": 600,
             "header": "",
             "level3": "",
-            "section": ""
+            "section": "",
+            "groupTitle": "Electrical Works",
+            "groupKey": "electrical",
+            "masterPath": "MAIN BUILDING / AIRCOND POINT",
+            "roomId": "project",
+            "room": "Project"
           },
           {
             "id": "master-earthing",
@@ -669,7 +849,12 @@
             "amount": 2500,
             "header": "",
             "level3": "",
-            "section": ""
+            "section": "",
+            "groupTitle": "Electrical Works",
+            "groupKey": "electrical",
+            "masterPath": "EARTHING",
+            "roomId": "project",
+            "room": "Project"
           },
           {
             "id": "master-db-box",
@@ -681,7 +866,12 @@
             "amount": 2500,
             "header": "",
             "level3": "",
-            "section": ""
+            "section": "",
+            "groupTitle": "Electrical Works",
+            "groupKey": "electrical",
+            "masterPath": "DB BOX",
+            "roomId": "project",
+            "room": "Project"
           },
           {
             "id": "master-wiring",
@@ -693,7 +883,12 @@
             "amount": 5850,
             "header": "",
             "level3": "",
-            "section": ""
+            "section": "",
+            "groupTitle": "Electrical Works",
+            "groupKey": "electrical",
+            "masterPath": "WIRING",
+            "roomId": "project",
+            "room": "Project"
           },
           {
             "id": "master-doors-/-type-1-single-leaf",
@@ -705,7 +900,12 @@
             "amount": 2400,
             "header": "",
             "level3": "",
-            "section": ""
+            "section": "",
+            "groupTitle": "Doors & Windows",
+            "groupKey": "doors-windows",
+            "masterPath": "DOORS / Type 1 Single Leaf",
+            "roomId": "project",
+            "room": "Project"
           },
           {
             "id": "master-doors-/-type-2-sliding",
@@ -717,7 +917,12 @@
             "amount": 2500,
             "header": "",
             "level3": "",
-            "section": ""
+            "section": "",
+            "groupTitle": "Doors & Windows",
+            "groupKey": "doors-windows",
+            "masterPath": "DOORS / Type 2 Sliding",
+            "roomId": "project",
+            "room": "Project"
           },
           {
             "id": "master-doors-/-type-3-bathroom",
@@ -729,7 +934,12 @@
             "amount": 850,
             "header": "",
             "level3": "",
-            "section": ""
+            "section": "",
+            "groupTitle": "Doors & Windows",
+            "groupKey": "doors-windows",
+            "masterPath": "DOORS / Type 3 Bathroom",
+            "roomId": "project",
+            "room": "Project"
           },
           {
             "id": "master-doors-/-type-4-double-leaf-main-door",
@@ -741,7 +951,12 @@
             "amount": 2400,
             "header": "",
             "level3": "",
-            "section": ""
+            "section": "",
+            "groupTitle": "Doors & Windows",
+            "groupKey": "doors-windows",
+            "masterPath": "DOORS / Type 4 Double Leaf Main Door",
+            "roomId": "project",
+            "room": "Project"
           },
           {
             "id": "master-windows-/-type-1-1200*1200",
@@ -753,7 +968,12 @@
             "amount": 1200,
             "header": "",
             "level3": "",
-            "section": ""
+            "section": "",
+            "groupTitle": "Doors & Windows",
+            "groupKey": "doors-windows",
+            "masterPath": "WINDOWS / Type 1 1200×1200",
+            "roomId": "project",
+            "room": "Project"
           },
           {
             "id": "master-windows-/-type-3-900*600",
@@ -765,7 +985,12 @@
             "amount": 950,
             "header": "",
             "level3": "",
-            "section": ""
+            "section": "",
+            "groupTitle": "Doors & Windows",
+            "groupKey": "doors-windows",
+            "masterPath": "WINDOWS / Type 3 900×600",
+            "roomId": "project",
+            "room": "Project"
           },
           {
             "id": "master-boundary-fencing",
@@ -777,7 +1002,12 @@
             "amount": 43000,
             "header": "",
             "level3": "",
-            "section": ""
+            "section": "",
+            "groupTitle": "External Work",
+            "groupKey": "external-work",
+            "masterPath": "BOUNDARY FENCING",
+            "roomId": "project",
+            "room": "Project"
           },
           {
             "id": "master-gate",
@@ -789,7 +1019,12 @@
             "amount": 6500,
             "header": "",
             "level3": "",
-            "section": ""
+            "section": "",
+            "groupTitle": "External Work",
+            "groupKey": "external-work",
+            "masterPath": "GATE",
+            "roomId": "project",
+            "room": "Project"
           },
           {
             "id": "master-driveway",
@@ -801,7 +1036,12 @@
             "amount": 5000,
             "header": "",
             "level3": "",
-            "section": ""
+            "section": "",
+            "groupTitle": "External Work",
+            "groupKey": "external-work",
+            "masterPath": "DRIVEWAY",
+            "roomId": "project",
+            "room": "Project"
           },
           {
             "id": "master-landscaping",
@@ -813,7 +1053,12 @@
             "amount": 2000,
             "header": "",
             "level3": "",
-            "section": ""
+            "section": "",
+            "groupTitle": "External Work",
+            "groupKey": "external-work",
+            "masterPath": "LANDSCAPING",
+            "roomId": "project",
+            "room": "Project"
           },
           {
             "id": "bath-room-3-wall-tiles",
@@ -825,7 +1070,12 @@
             "amount": 4050,
             "header": "",
             "level3": "",
-            "section": ""
+            "section": "",
+            "groupTitle": "Bathroom",
+            "groupKey": "bathroom-room-3",
+            "masterPath": "BATHROOM / Wall Tiles",
+            "roomId": "room-3",
+            "room": "Bathroom"
           },
           {
             "id": "bath-room-3-floor-tiles",
@@ -837,7 +1087,12 @@
             "amount": 750,
             "header": "",
             "level3": "",
-            "section": ""
+            "section": "",
+            "groupTitle": "Bathroom",
+            "groupKey": "bathroom-room-3",
+            "masterPath": "BATHROOM / Floor Tiles",
+            "roomId": "room-3",
+            "room": "Bathroom"
           },
           {
             "id": "bath-room-3-ceiling",
@@ -849,7 +1104,12 @@
             "amount": 825,
             "header": "",
             "level3": "",
-            "section": ""
+            "section": "",
+            "groupTitle": "Bathroom",
+            "groupKey": "bathroom-room-3",
+            "masterPath": "BATHROOM / Ceiling",
+            "roomId": "room-3",
+            "room": "Bathroom"
           },
           {
             "id": "bath-room-3-piping",
@@ -861,7 +1121,12 @@
             "amount": 1100,
             "header": "",
             "level3": "",
-            "section": ""
+            "section": "",
+            "groupTitle": "Bathroom",
+            "groupKey": "bathroom-room-3",
+            "masterPath": "BATHROOM / Piping",
+            "roomId": "room-3",
+            "room": "Bathroom"
           },
           {
             "id": "bath-room-3-wc",
@@ -873,7 +1138,12 @@
             "amount": 800,
             "header": "",
             "level3": "",
-            "section": ""
+            "section": "",
+            "groupTitle": "Bathroom",
+            "groupKey": "bathroom-room-3",
+            "masterPath": "BATHROOM / WC",
+            "roomId": "room-3",
+            "room": "Bathroom"
           },
           {
             "id": "bath-room-3-basin",
@@ -885,7 +1155,12 @@
             "amount": 400,
             "header": "",
             "level3": "",
-            "section": ""
+            "section": "",
+            "groupTitle": "Bathroom",
+            "groupKey": "bathroom-room-3",
+            "masterPath": "BATHROOM / Basin",
+            "roomId": "room-3",
+            "room": "Bathroom"
           },
           {
             "id": "bath-room-3-shower",
@@ -897,7 +1172,12 @@
             "amount": 250,
             "header": "",
             "level3": "",
-            "section": ""
+            "section": "",
+            "groupTitle": "Bathroom",
+            "groupKey": "bathroom-room-3",
+            "masterPath": "BATHROOM / Shower",
+            "roomId": "room-3",
+            "room": "Bathroom"
           },
           {
             "id": "bath-room-3-tap",
@@ -909,11 +1189,16 @@
             "amount": 200,
             "header": "",
             "level3": "",
-            "section": ""
+            "section": "",
+            "groupTitle": "Bathroom",
+            "groupKey": "bathroom-room-3",
+            "masterPath": "BATHROOM / Tap",
+            "roomId": "room-3",
+            "room": "Bathroom"
           }
         ],
         "createdAt": "2026-09-24T05:55:26.415Z",
-        "updatedAt": "2026-09-24T06:47:45.082Z",
+        "updatedAt": "2026-09-24T14:19:31.821Z",
         "estimateNumber": "EST-BLD-002"
       },
       {
@@ -2397,7 +2682,7 @@
     ]
   },
   "createdAt": "2026-09-23T08:33:53.459Z",
-  "updatedAt": "2026-09-24T12:38:54.572Z",
+  "updatedAt": "2026-09-24T14:19:31.821Z",
   "quotationRunningNumber": {
     "renovation": 6,
     "build": 2
