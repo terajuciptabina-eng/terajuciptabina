@@ -1,0 +1,7 @@
+(() => {
+  'use strict';
+  const API='https://terajuciptabina.vercel.app/api/project-control';
+  function ctx(){const p=new URLSearchParams(location.search),c=window.TERAJU_WORKSPACE_CONTEXT||{};return{role:(p.get('role')||c.role||'contractor').toLowerCase(),id:(p.get('id')||c.id||'').trim().toUpperCase(),plannerType:(p.get('plannerType')||c.plannerType||'build').toLowerCase()==='renovation'?'renovation':'build',quotationId:p.get('quotationId')||c.quotationId||''}}
+  async function request(method,payload={}){const c=ctx();const params=new URLSearchParams({id:c.id,plannerType:c.plannerType,quotationId:c.quotationId});let url=API+'?'+params.toString();const r=await fetch(url,{method,headers:{'Content-Type':'application/json'},body:method==='GET'?undefined:JSON.stringify({...payload,id:c.id,plannerType:c.plannerType,quotationId:c.quotationId})});const d=await r.json().catch(()=>({}));if(!r.ok)throw new Error(d.message||'Project control service failed.');return d}
+  window.TERAJU_PROJECT_CONTROL={ctx,load:()=>request('GET'),saveWorkProgram:record=>request('PUT',{record:{workProgram:record}}),saveProgress:record=>request('PUT',{record:{progress:record}}),remove:()=>request('DELETE')};
+})();
