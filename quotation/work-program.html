@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0f172a">
+<title>Work Program | TERAJU WORKS</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+*{box-sizing:border-box}body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f8fafc;color:#0f172a}
+button,input,select{font:inherit;min-height:44px}.card{background:#fff;border:1px solid #e2e8f0;border-radius:18px;box-shadow:0 8px 30px rgba(15,23,42,.06)}
+.table-wrap{overflow:auto;-webkit-overflow-scrolling:touch}.wp-table{width:100%;min-width:1120px;border-collapse:collapse}.wp-table th,.wp-table td{padding:10px 9px;border-bottom:1px solid #e5e7eb;vertical-align:middle}.wp-table th{background:#f8fafc;color:#475569;font-size:11px;text-transform:uppercase;letter-spacing:.06em;position:sticky;top:0;z-index:2}.wp-table td{font-size:12px}.wp-table .item{min-width:300px}.wp-table input{width:100%;border:1px solid #cbd5e1;border-radius:9px;padding:8px 9px;background:#fff}.amount{text-align:right;white-space:nowrap}.muted{color:#64748b}.section-row td{background:#f1f5f9;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:#334155}.week-cell{min-width:68px;text-align:center}.week-cell .dot{height:8px;border-radius:3px;background:#cbd5e1}.week-cell.active .dot{background:#334155}.sticky-left{position:sticky;left:0;z-index:1;background:#fff}.section-row .sticky-left{background:#f1f5f9}
+@media(max-width:767px){main{padding:20px 12px!important}.card{border-radius:16px}.wp-table{min-width:1050px}.wp-table th,.wp-table td{padding:9px 7px}}
+</style>
+</head>
+<body>
+<header class="border-b border-slate-200 bg-white">
+ <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-4">
+  <div class="flex items-center gap-3"><img src="../images/logo.png" class="h-10 w-auto" alt="TERAJU WORKS"><div><div class="font-black tracking-wide">TERAJU WORKS</div><div class="text-[10px] tracking-[.16em] text-slate-500">WORK PROGRAM</div></div></div>
+  <a id="backLink" class="rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-semibold hover:bg-slate-50" href="quotations.html">← Cost Estimates</a>
+ </div>
+</header>
+<main class="mx-auto max-w-7xl px-5 py-8 sm:py-10">
+ <div class="mb-7"><div class="text-[10px] font-black tracking-[.22em] text-slate-500">CONTRACTOR · PROJECT CONTROL</div><h1 class="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Work Program</h1><p class="mt-2 max-w-3xl text-sm leading-6 text-slate-500">Schedule the established Cost Estimate items. Work Program does not create or recalculate work items.</p></div>
+ <section class="card mb-6 p-5 sm:p-6">
+  <div class="grid gap-4 md:grid-cols-4">
+   <div class="md:col-span-2"><label class="mb-1.5 block text-xs font-bold text-slate-500">Confirmed Cost Estimate</label><select id="quotationSelect" class="w-full rounded-xl border border-slate-300 bg-white px-3 py-3 text-sm"></select></div>
+   <div><label class="mb-1.5 block text-xs font-bold text-slate-500">Project Start</label><input id="projectStart" type="date" class="w-full rounded-xl border border-slate-300 px-3 py-3 text-sm"></div>
+   <div><label class="mb-1.5 block text-xs font-bold text-slate-500">Project Finish</label><input id="projectFinish" type="date" class="w-full rounded-xl border border-slate-300 px-3 py-3 text-sm"></div>
+  </div>
+  <div id="sourceSummary" class="mt-5 rounded-xl bg-slate-50 p-4 text-sm text-slate-600">Loading confirmed estimates…</div>
+ </section>
+ <section class="card p-4 sm:p-6">
+  <div class="mb-5 flex flex-col justify-between gap-3 sm:flex-row sm:items-center"><div><h2 class="text-lg font-black">Scheduled Estimate Items</h2><p class="mt-1 text-xs text-slate-500">Every row below comes from the selected Cost Estimate snapshot.</p></div><div class="flex flex-wrap gap-2"><button id="autoSchedule" class="rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-bold text-white">Auto Schedule</button><button id="saveProgram" class="rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-bold">Save Work Program</button></div></div>
+  <div id="status" class="mb-4 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-500">Loading…</div>
+  <div class="table-wrap"><table class="wp-table"><thead><tr><th class="item sticky-left">Established Estimate Item</th><th>Unit</th><th>Qty</th><th>Rate (RM)</th><th>Amount (RM)</th><th>Start</th><th>Finish</th><th>Duration</th><th>Planned %</th><th>Timeline</th></tr></thead><tbody id="programBody"></tbody></table></div>
+ </section>
+</main>
+<script>
+(()=>{const API='https://terajuciptabina.vercel.app/api/quotations';const p=new URLSearchParams(location.search);const role=(p.get('role')||'contractor').toLowerCase()==='contractor'?'contractor':'homeowner';const id=(p.get('id')||'').trim().toUpperCase();const type=(p.get('plannerType')||'build').toLowerCase()==='renovation'?'renovation':'build';const requested=p.get('quotationId')||'';const els={select:document.getElementById('quotationSelect'),start:document.getElementById('projectStart'),finish:document.getElementById('projectFinish'),body:document.getElementById('programBody'),status:document.getElementById('status'),summary:document.getElementById('sourceSummary')};let quotations=[],selected=null,rows=[],schedule={};
+const key=()=> 'teraju.workprogram.v1.'+role+'.'+id+'.'+type+'.'+(selected?.quotationId||'none');
+const fmt=n=>new Intl.NumberFormat('en-MY',{minimumFractionDigits:2,maximumFractionDigits:2}).format(Number(n)||0);
+const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+const parseDate=v=>{const d=new Date(v+'T00:00:00');return isNaN(d)?null:d};const iso=d=>d?new Intl.DateTimeFormat('en-CA',{year:'numeric',month:'2-digit',day:'2-digit'}).format(d):'';
+const days=(a,b)=>{const x=parseDate(a),y=parseDate(b);return x&&y&&y>=x?Math.floor((y-x)/86400000)+1:0};
+function projectDefaults(){const now=new Date(),end=new Date(now);end.setDate(end.getDate()+90);if(!els.start.value)els.start.value=iso(now);if(!els.finish.value)els.finish.value=iso(end)}
+function loadSaved(){try{const x=JSON.parse(localStorage.getItem(key())||'null');if(!x)return;if(x.projectStart)els.start.value=x.projectStart;if(x.projectFinish)els.finish.value=x.projectFinish;schedule=x.schedule||{}}catch{}}
+function saveLocal(){try{localStorage.setItem(key(),JSON.stringify({schemaVersion:1,quotationId:selected.quotationId,projectStart:els.start.value,projectFinish:els.finish.value,schedule,updatedAt:new Date().toISOString()}))}catch{}}
+function weekStarts(){const a=parseDate(els.start.value),b=parseDate(els.finish.value);if(!a||!b||b<a)return[];const out=[];let d=new Date(a);while(d<=b){out.push(new Date(d));d.setDate(d.getDate()+7)}return out}
+function render(){const ws=weekStarts();els.body.innerHTML='';let last='';rows.forEach(item=>{const group=item.category||'OTHER';if(group!==last){last=group;const tr=document.createElement('tr');tr.className='section-row';tr.innerHTML='<td class="sticky-left" colspan="10">'+esc(group)+'</td>';els.body.appendChild(tr)}const s=schedule[item.id]||{};const tr=document.createElement('tr');tr.dataset.id=item.id;const timeline=ws.map(w=>{const wk=iso(w),active=s.start&&s.finish&&wk>=s.start&&wk<=s.finish;return '<td class="week-cell '+(active?'active':'')+'"><div class="dot" title="'+wk+'"></div></td>'}).join('');tr.innerHTML='<td class="item sticky-left"><div class="font-semibold text-slate-800">'+esc(item.description)+'</div>'+(item.section?'<div class="mt-1 text-[10px] text-slate-400">'+esc(item.section)+'</div>':'')+'</td><td>'+esc(item.unit)+'</td><td>'+esc(item.qty)+'</td><td class="amount">'+fmt(item.rate)+'</td><td class="amount font-bold">'+fmt(item.amount)+'</td><td><input data-field="start" type="date" value="'+esc(s.start||'')+'"></td><td><input data-field="finish" type="date" value="'+esc(s.finish||'')+'"></td><td class="duration font-bold">'+(days(s.start,s.finish)||'—')+'</td><td><input data-field="planned" type="number" min="0" max="100" step="1" value="'+esc(s.planned??100)+'"></td><td><div class="flex items-center gap-1">'+timeline+'</div></td>';els.body.appendChild(tr)});els.status.textContent=rows.length?rows.length+' established estimate item'+(rows.length===1?'':'s')+' · scheduling only':'No item snapshot found in this estimate. Save/open the estimate again after the Work Program item-snapshot update.'}
+function bind(){els.body.querySelectorAll('tr[data-id]').forEach(tr=>{const id=tr.dataset.id;tr.querySelectorAll('input').forEach(input=>input.addEventListener('change',()=>{schedule[id]=schedule[id]||{};schedule[id][input.dataset.field]=input.value;if(input.dataset.field==='planned')schedule[id].planned=Math.max(0,Math.min(100,Number(input.value)||0));saveLocal();render();bind()}))})}
+function autoSchedule(){const a=els.start.value,b=els.finish.value;if(!a||!b||days(a,b)<=0){alert('Set a valid project start and finish first.');return}const span=Math.max(1,Math.ceil(days(a,b)/Math.max(rows.length,1)));rows.forEach((item,i)=>{const st=parseDate(a);st.setDate(st.getDate()+i*span);const en=new Date(st);en.setDate(en.getDate()+span-1);const finish=parseDate(b);if(en>finish)en.setTime(finish.getTime());schedule[item.id]={start:iso(st),finish:iso(en),planned:100}});saveLocal();render();bind()}
+async function load(){if(role!=='contractor'){els.status.textContent='Work Program is available for Contractor Workspace.';return}if(!id){els.status.textContent='No contractor ID supplied.';return}try{const r=await fetch(API+'?role=contractor&id='+encodeURIComponent(id)+'&plannerType='+encodeURIComponent(type));const data=await r.json();if(!r.ok)throw new Error(data.message||'Unable to load cost estimates.');quotations=(data.quotations||[]).filter(q=>q&&q.state==='final');els.select.innerHTML=quotations.length?quotations.map(q=>'<option value="'+esc(q.quotationId)+'">'+esc(q.quotationNumber||q.quotationId)+' · RM '+fmt(q.total)+' · '+esc(q.project?.location||'')+'</option>').join(''):'<option value="">No confirmed Cost Estimate</option>';if(!quotations.length){els.status.textContent='No confirmed Cost Estimate found.';return}const first=requested&&quotations.find(q=>q.quotationId===requested);els.select.value=(first||quotations[0]).quotationId;selectQuotation()}catch(e){els.status.textContent=e.message||'Unable to load cost estimates.'}}
+function selectQuotation(){selected=quotations.find(q=>q.quotationId===els.select.value)||null;if(!selected)return;rows=Array.isArray(selected.items)?selected.items.filter(x=>x&&x.id):[];schedule={};projectDefaults();loadSaved();els.summary.innerHTML='<div class="flex flex-wrap gap-x-6 gap-y-2"><span><b>Estimate:</b> '+esc(selected.quotationNumber||selected.quotationId)+'</span><span><b>Project:</b> '+esc(selected.project?.location||'Not specified')+'</span><span><b>Contract Sum:</b> RM '+fmt(selected.total)+'</span><span><b>Source Items:</b> '+rows.length+'</span></div>';render();bind()}
+els.select.addEventListener('change',()=>{saveLocal();selectQuotation()});els.start.addEventListener('change',()=>{saveLocal();render();bind()});els.finish.addEventListener('change',()=>{saveLocal();render();bind()});document.getElementById('autoSchedule').addEventListener('click',autoSchedule);document.getElementById('saveProgram').addEventListener('click',()=>{saveLocal();els.status.textContent='Work Program saved locally for this contractor/project/estimate.'});load();
+})();
+</script>
+</body></html>
