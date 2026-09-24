@@ -5,7 +5,7 @@
   "plannerType": "build",
   "quotationId": "QT-BLD-MUC9DNC0-T6289",
   "createdAt": "2026-09-24T19:21:15.961Z",
-  "updatedAt": "2026-09-24T19:21:41.520Z",
+  "updatedAt": "2026-09-24T19:24:28.552Z",
   "workProgram": {
     "schemaVersion": 1,
     "recordType": "work-program",
@@ -6737,7 +6737,7 @@
       },
       "2026-11-03": {
         "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 83
+          "percent": 95
         },
         "master-preliminaries-/-site-mobilisation-/-project-management": {
           "percent": 83
@@ -14331,7 +14331,7 @@
       },
       "2026-11-03": {
         "valid": true,
-        "savedAt": "2026-09-24T19:21:39.409Z"
+        "savedAt": "2026-09-24T19:24:25.640Z"
       },
       "2026-11-04": {
         "valid": true,
@@ -14538,6 +14538,6 @@
         "savedAt": "2026-09-24T19:21:39.409Z"
       }
     },
-    "updatedAt": "2026-09-24T19:21:41.520Z"
+    "updatedAt": "2026-09-24T19:24:28.552Z"
   }
 }
