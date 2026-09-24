@@ -104,13 +104,17 @@
     draw(data);
     els.data.innerHTML=data.map(function(x){var vv=x.ap-x.pp;return '<tr><td>'+esc(x.date)+'</td><td>RM '+fmt(x.pm)+'</td><td>'+x.pp.toFixed(2)+'%</td><td>RM '+fmt(x.am)+'</td><td>'+x.ap.toFixed(2)+'%</td><td>'+(vv>=0?'+':'')+vv.toFixed(2)+'%</td></tr>'}).join('');
   }
+  function progressUrl(q){
+    return 'progress.html?role='+encodeURIComponent(role)+'&id='+encodeURIComponent(id)+'&plannerType='+encodeURIComponent(type)+'&quotationId='+encodeURIComponent(q||requested||'');
+  }
+  document.getElementById('back').href=progressUrl(requested);
   function select(){
     selected=programs.find(function(x){return x.quotationId===els.wp.value})||null;
     if(!selected)return;
     loadHistory();
     if(!els.asAt.value)els.asAt.value=selected.projectFinish;
     render();
-    document.getElementById('back').href='progress.html?role='+encodeURIComponent(role)+'&id='+encodeURIComponent(id)+'&plannerType='+encodeURIComponent(type)+'&quotationId='+encodeURIComponent(selected.quotationId);
+    document.getElementById('back').href=progressUrl(selected.quotationId);
   }
   function load(){
     if(role!=='contractor'||!id){els.summary.textContent='S-Curve is available for Contractor Workspace.';return}
