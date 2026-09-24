@@ -3,7 +3,7 @@
 if(window.__TERAJU_CARD_PDF__)return;
 window.__TERAJU_CARD_PDF__=true;
 
-const A3={w:420,h:297,margin:10};
+const A3={w:420,h:297,margin:5};
 const CW=A3.w-(A3.margin*2),CH=A3.h-(A3.margin*2);
 
 function load(src,test){
