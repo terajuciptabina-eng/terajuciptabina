@@ -2673,10 +2673,27 @@
           "projectState": "negeri-sembilan",
           "rateSetId": "default",
           "rateSetName": "Default Rate",
-          "rateSnapshotAt": "2026-09-24T20:34:28.573Z"
+          "rateSnapshotAt": "2026-09-24T20:50:37.110Z"
         },
         "itemListVersion": 1,
         "items": [
+          {
+            "id": "project-preliminaries",
+            "category": "preliminaries",
+            "description": "Project preliminaries",
+            "unit": "ls",
+            "qty": 1,
+            "rate": 8888,
+            "amount": 8888,
+            "header": "",
+            "level3": "",
+            "section": "Project",
+            "groupTitle": "Preliminaries",
+            "groupKey": "preliminaries",
+            "masterPath": "PROJECT / PRELIMINARIES",
+            "roomId": "project",
+            "room": "Project"
+          },
           {
             "id": "room-2-floor",
             "category": "",
@@ -3750,7 +3767,7 @@
           }
         ],
         "createdAt": "2026-09-24T20:02:12.651Z",
-        "updatedAt": "2026-09-24T20:34:29.661Z",
+        "updatedAt": "2026-09-24T20:50:38.424Z",
         "estimateNumber": "EST-REN-006"
       },
       {
@@ -5992,7 +6009,7 @@
     ]
   },
   "createdAt": "2026-09-23T08:33:53.459Z",
-  "updatedAt": "2026-09-24T20:34:29.661Z",
+  "updatedAt": "2026-09-24T20:50:38.424Z",
   "quotationRunningNumber": {
     "renovation": 9,
     "build": 2
