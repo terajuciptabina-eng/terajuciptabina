@@ -10,6 +10,114 @@
 <section class="card mt-6 p-5 sm:p-6"><h2 class="text-lg font-black">Weekly Control Data</h2><div class="table-wrap mt-4 overflow-auto"><table class="table"><thead><tr><th>Period</th><th>Planned RM</th><th>Planned %</th><th>Actual RM</th><th>Actual %</th><th>Variance %</th></tr></thead><tbody id="data"></tbody></table></div></section>
 </main>
 <script>
-(()=>{const p=new URLSearchParams(location.search),role=(p.get('role')||'contractor').toLowerCase(),id=(p.get('id')||'').trim().toUpperCase(),type=(p.get('plannerType')||'build').toLowerCase()==='renovation'?'renovation':'build',requested=p.get('quotationId')||'';const els={wp:document.getElementById('wp'),asAt:document.getElementById('asAt'),summary:document.getElementById('summary'),chart:document.getElementById('chart'),data:document.getElementById('data')};let programs=[],selected=null,history={};const fmt=n=>new Intl.NumberFormat('en-MY',{minimumFractionDigits:2,maximumFractionDigits:2}).format(Number(n)||0),esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m])),parse=v=>new Date(v+'T00:00:00'),iso=d=>new Intl.DateTimeFormat('en-CA',{year:'numeric',month:'2-digit',day:'2-digit'}).format(d);function weeks(a,b){const o=[];let d=parse(a),e=parse(b);while(d<=e){o.push(iso(d));d.setDate(d.getDate()+7)}return o}function normalizeProgram(x){if(!x||!x.quotationId)return null;const items=Array.isArray(x.items)?x.items:[];const total=Number(x.total)||items.reduce((s,i)=>s+(Number(i.amount)||0),0);return {...x,total,quotationNumber:x.quotationNumber||x.quotationId,items}}function wpKey(){return 'teraju.workprogram.v1.'+role+'.'+id+'.'+type+'.'+(selected?.quotationId||'none')}function pgKey(){return 'teraju.progress.v2.'+role+'.'+id+'.'+type+'.'+(selected?.quotationId||'none')}function loadHistory(){history={};try{const x=JSON.parse(localStorage.getItem(pgKey())||'null');if(x?.history)history=x.history}catch{}}function snapshot(date){const ds=Object.keys(history).filter(d=>d<=date).sort();return ds.length?history[ds[ds.length-1]]:{}}function dateValue(d){return parse(d).getTime()}function plannedAt(date){let total=0;for(const item of selected.items||[]){const s=(selected.schedule||{})[item.id]||{},a=s.start,b=s.finish;if(!a||!b)continue;const start=dateValue(a),finish=dateValue(b),at=dateValue(date),dur=Math.max(1,finish-start+86400000);if(at<start)continue;const elapsed=Math.min(dur,Math.max(0,at-start+86400000));total+=(Number(item.amount)||0)*elapsed/dur}return total}function actualAt(date){const snap=snapshot(date);let total=0;for(const item of selected.items||[])total+=(Number(item.amount)||0)*Math.max(0,Math.min(100,Number(snap[item.id]?.percent)||0))/100;return total}function render(){if(!selected)return;const sum=Number(selected.total)||0,ws=weeks(selected.projectStart,selected.projectFinish);const end=els.asAt.value||selected.projectFinish;const points=ws.filter(x=>x<=end);if(points.length===0)points.push(selected.projectStart);const data=points.map(d=>{const pm=plannedAt(d),am=actualAt(d);return{date:d,pm,pp:sum?pm/sum*100:0,am,ap:sum?am/sum*100:0}});const last=data[data.length-1];document.getElementById('sum').textContent='RM '+fmt(sum);document.getElementById('planned').textContent=last.pp.toFixed(2)+'%';document.getElementById('actual').textContent=last.ap.toFixed(2)+'%';document.getElementById('variance').textContent=(last.ap-last.pp>=0?'+':'')+(last.ap-last.pp).toFixed(2)+'%';document.getElementById('pv').textContent='RM '+fmt(last.pm);document.getElementById('av').textContent='RM '+fmt(last.am);const v=last.ap-last.pp;document.getElementById('insight').textContent=v===0?'Actual is aligned with planned cumulative progress.':(v<0?'Actual progress is '+Math.abs(v).toFixed(2)+' percentage points below planned.':'Actual progress is '+v.toFixed(2)+' percentage points above planned.');els.summary.innerHTML='<div class="flex flex-wrap gap-x-6 gap-y-2"><span><b>Estimate:</b> '+esc(selected.quotationNumber||selected.quotationId)+'</span><span><b>Period:</b> '+esc(selected.projectStart)+' → '+esc(selected.projectFinish)+'</span><span><b>Progress snapshots:</b> '+Object.keys(history).length+'</span></div>';draw(data);els.data.innerHTML=data.map(x=>'<tr><td>'+esc(x.date)+'</td><td>RM '+fmt(x.pm)+'</td><td>'+x.pp.toFixed(2)+'%</td><td>RM '+fmt(x.am)+'</td><td>'+x.ap.toFixed(2)+'%</td><td>'+(x.ap-x.pp>=0?'+':'')+(x.ap-x.pp).toFixed(2)+'%</td></tr>').join('')}function draw(data){const W=900,H=360,L=58,R=20,T=20,B=55,iw=W-L-R,ih=H-T-B,max=Math.max(100,...data.map(x=>x.pp),...data.map(x=>x.ap));const x=i=>L+(data.length===1?iw/2:i*iw/(data.length-1)),y=v=>T+ih-(v/max)*ih;let grid='';for(let v=0;v<=100;v+=20){const yy=y(v);grid+='<line x1="'+L+'" y1="'+yy+'" x2="'+(W-R)+'" y2="'+yy+'" stroke="#e2e8f0"/><text x="'+(L-8)+'" y="'+(yy+4)+'" text-anchor="end" font-size="10" fill="#64748b">'+v+'%</text>'}const path=(k)=>data.map((d,i)=>(i?'L':'M')+x(i).toFixed(1)+' '+y(d[k]).toFixed(1)).join(' ');const labels=data.map((d,i)=>i%Math.max(1,Math.ceil(data.length/8))===0?'<text x="'+x(i)+'" y="'+(H-22)+'" text-anchor="middle" font-size="9" fill="#64748b">'+d.date.slice(5)+'</text>':'').join('');els.chart.innerHTML='<svg viewBox="0 0 '+W+' '+H" role="img" aria-label="Planned and actual S-Curve"><rect width="'+W+'" height="'+H+'" fill="white"/>'+grid+'<path d="'+path('pp')+'" fill="none" stroke="#334155" stroke-width="3"/><path d="'+path('ap')+'" fill="none" stroke="#94a3b8" stroke-width="3"/>'+labels+'</svg>'}
-function load(){if(role!=='contractor'||!id){els.summary.textContent='S-Curve is available for Contractor Workspace.';return}const prefix='teraju.workprogram.v1.'+role+'.'+id+'.'+type+'.',keys=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k?.startsWith(prefix))keys.push(k)}programs=keys.map(k=>{try{return normalizeProgram(JSON.parse(localStorage.getItem(k)))}catch{return null}}).filter(x=>x?.quotationId&&x?.schedule&&Array.isArray(x.items));const exact=requested&&programs.find(x=>String(x.quotationId)===String(requested)||String(x.quotationNumber)===String(requested));els.wp.innerHTML=programs.length?programs.map(x=>'<option value="'+esc(x.quotationId)+'">'+esc(x.quotationNumber||x.quotationId)+' · '+esc(x.projectStart)+' → '+esc(x.projectFinish)+'</option>').join(''):'<option>No saved Work Program</option>';if(exact){els.wp.value=exact.quotationId;select()}else if(programs.length===1){els.wp.value=programs[0].quotationId;select()}else if(requested){els.wp.innerHTML='<option value="">Requested Work Program not saved</option>'}}function select(){selected=programs.find(x=>x.quotationId===els.wp.value)||null;if(!selected)return;loadHistory();if(!els.asAt.value)els.asAt.value=selected.projectFinish;render()}els.wp.addEventListener('change',select);els.asAt.addEventListener('change',render);document.getElementById('back').href='progress.html?role='+encodeURIComponent(role)+'&id='+encodeURIComponent(id)+'&plannerType='+encodeURIComponent(type)+'&quotationId='+encodeURIComponent(requested||selected?.quotationId||'');load()})();
+(function(){
+  var p=new URLSearchParams(location.search);
+  var role=(p.get('role')||'contractor').toLowerCase();
+  var id=(p.get('id')||'').trim().toUpperCase();
+  var type=(p.get('plannerType')||'build').toLowerCase()==='renovation'?'renovation':'build';
+  var requested=p.get('quotationId')||'';
+  var els={
+    wp:document.getElementById('wp'),asAt:document.getElementById('asAt'),
+    summary:document.getElementById('summary'),chart:document.getElementById('chart'),
+    data:document.getElementById('data')
+  };
+  var programs=[],selected=null,history={};
+  function fmt(n){return new Intl.NumberFormat('en-MY',{minimumFractionDigits:2,maximumFractionDigits:2}).format(Number(n)||0)}
+  function esc(v){return String(v==null?'':v).replace(/[&<>"]/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]})}
+  function parse(v){return new Date(v+'T00:00:00')}
+  function iso(d){return new Intl.DateTimeFormat('en-CA',{year:'numeric',month:'2-digit',day:'2-digit'}).format(d)}
+  function weeks(a,b){var out=[],d=parse(a),e=parse(b);while(d<=e){out.push(iso(d));d.setDate(d.getDate()+7)}return out}
+  function normalize(x){
+    if(!x||!x.quotationId)return null;
+    var items=Array.isArray(x.items)?x.items:[];
+    var total=Number(x.total)||items.reduce(function(s,i){return s+(Number(i.amount)||0)},0);
+    return Object.assign({},x,{total:total,quotationNumber:x.quotationNumber||x.quotationId,items:items});
+  }
+  function wpKey(){return 'teraju.workprogram.v1.'+role+'.'+id+'.'+type+'.'+(selected?selected.quotationId:'none')}
+  function pgKey(){return 'teraju.progress.v2.'+role+'.'+id+'.'+type+'.'+(selected?selected.quotationId:'none')}
+  function loadHistory(){
+    history={};
+    try{var x=JSON.parse(localStorage.getItem(pgKey())||'null');if(x&&x.history)history=x.history}catch(e){}
+  }
+  function snapshot(date){
+    var ds=Object.keys(history).filter(function(d){return d<=date}).sort();
+    return ds.length?history[ds[ds.length-1]]:{};
+  }
+  function plannedAt(date){
+    var total=0,at=parse(date).getTime();
+    (selected.items||[]).forEach(function(item){
+      var s=(selected.schedule||{})[item.id]||{};
+      if(!s.start||!s.finish)return;
+      var a=parse(s.start).getTime(),b=parse(s.finish).getTime(),dur=Math.max(1,b-a+86400000);
+      if(at<a)return;
+      var elapsed=Math.min(dur,Math.max(0,at-a+86400000));
+      total+=(Number(item.amount)||0)*elapsed/dur;
+    });
+    return total;
+  }
+  function actualAt(date){
+    var snap=snapshot(date),total=0;
+    (selected.items||[]).forEach(function(item){
+      var a=snap[item.id],pct=a?Number(a.percent)||0:0;
+      total+=(Number(item.amount)||0)*Math.max(0,Math.min(100,pct))/100;
+    });
+    return total;
+  }
+  function draw(data){
+    var W=900,H=360,L=58,R=20,T=20,B=55,iw=W-L-R,ih=H-T-B;
+    function x(i){return L+(data.length===1?iw/2:i*iw/(data.length-1))}
+    function y(v){return T+ih-(v/100)*ih}
+    var grid='',v;
+    for(v=0;v<=100;v+=20){
+      var yy=y(v);
+      grid+='<line x1="'+L+'" y1="'+yy+'" x2="'+(W-R)+'" y2="'+yy+'" stroke="#e2e8f0"/><text x="'+(L-8)+'" y="'+(yy+4)+'" text-anchor="end" font-size="10" fill="#64748b">'+v+'%</text>';
+    }
+    function path(key){return data.map(function(d,i){return (i?'L':'M')+x(i).toFixed(1)+' '+y(d[key]).toFixed(1)}).join(' ')}
+    var labels=data.map(function(d,i){return i%Math.max(1,Math.ceil(data.length/8))===0?'<text x="'+x(i)+'" y="'+(H-22)+'" text-anchor="middle" font-size="9" fill="#64748b">'+d.date.slice(5)+'</text>':''}).join('');
+    els.chart.innerHTML='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Planned and actual S-Curve"><rect width="'+W+'" height="'+H+'" fill="white"/>'+grid+'<path d="'+path('pp')+'" fill="none" stroke="#334155" stroke-width="3"/><path d="'+path('ap')+'" fill="none" stroke="#94a3b8" stroke-width="3"/>'+labels+'</svg>';
+  }
+  function render(){
+    if(!selected)return;
+    var sum=Number(selected.total)||0,ws=weeks(selected.projectStart,selected.projectFinish);
+    var end=els.asAt.value||selected.projectFinish;
+    var points=ws.filter(function(x){return x<=end});
+    if(!points.length)points=[selected.projectStart];
+    var data=points.map(function(d){
+      var pm=plannedAt(d),am=actualAt(d);
+      return {date:d,pm:pm,pp:sum?pm/sum*100:0,am:am,ap:sum?am/sum*100:0};
+    });
+    var last=data[data.length-1],variance=last.ap-last.pp;
+    document.getElementById('sum').textContent='RM '+fmt(sum);
+    document.getElementById('planned').textContent=last.pp.toFixed(2)+'%';
+    document.getElementById('actual').textContent=last.ap.toFixed(2)+'%';
+    document.getElementById('variance').textContent=(variance>=0?'+':'')+variance.toFixed(2)+'%';
+    document.getElementById('pv').textContent='RM '+fmt(last.pm);
+    document.getElementById('av').textContent='RM '+fmt(last.am);
+    document.getElementById('insight').textContent=variance===0?'Actual is aligned with planned cumulative progress.':(variance<0?'Actual progress is '+Math.abs(variance).toFixed(2)+' percentage points below planned.':'Actual progress is '+variance.toFixed(2)+' percentage points above planned.');
+    els.summary.innerHTML='<div class="flex flex-wrap gap-x-6 gap-y-2"><span><b>Estimate:</b> '+esc(selected.quotationNumber||selected.quotationId)+'</span><span><b>Period:</b> '+esc(selected.projectStart)+' → '+esc(selected.projectFinish)+'</span><span><b>Progress snapshots:</b> '+Object.keys(history).length+'</span></div>';
+    draw(data);
+    els.data.innerHTML=data.map(function(x){var vv=x.ap-x.pp;return '<tr><td>'+esc(x.date)+'</td><td>RM '+fmt(x.pm)+'</td><td>'+x.pp.toFixed(2)+'%</td><td>RM '+fmt(x.am)+'</td><td>'+x.ap.toFixed(2)+'%</td><td>'+(vv>=0?'+':'')+vv.toFixed(2)+'%</td></tr>'}).join('');
+  }
+  function select(){
+    selected=programs.find(function(x){return x.quotationId===els.wp.value})||null;
+    if(!selected)return;
+    loadHistory();
+    if(!els.asAt.value)els.asAt.value=selected.projectFinish;
+    render();
+    document.getElementById('back').href='progress.html?role='+encodeURIComponent(role)+'&id='+encodeURIComponent(id)+'&plannerType='+encodeURIComponent(type)+'&quotationId='+encodeURIComponent(selected.quotationId);
+  }
+  function load(){
+    if(role!=='contractor'||!id){els.summary.textContent='S-Curve is available for Contractor Workspace.';return}
+    var prefix='teraju.workprogram.v1.'+role+'.'+id+'.'+type+'.',keys=[];
+    for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k&&k.indexOf(prefix)===0)keys.push(k)}
+    programs=keys.map(function(k){try{return normalize(JSON.parse(localStorage.getItem(k)))}catch(e){return null}}).filter(function(x){return x&&x.quotationId&&x.schedule&&Array.isArray(x.items)});
+    var exact=requested&&programs.find(function(x){return String(x.quotationId)===String(requested)||String(x.quotationNumber)===String(requested)});
+    if(exact){els.wp.innerHTML='<option value="'+esc(exact.quotationId)+'">'+esc(exact.quotationNumber||exact.quotationId)+'</option>';els.wp.value=exact.quotationId;select();return}
+    if(programs.length===1){els.wp.innerHTML='<option value="'+esc(programs[0].quotationId)+'">'+esc(programs[0].quotationNumber||programs[0].quotationId)+'</option>';els.wp.value=programs[0].quotationId;select();return}
+    els.wp.innerHTML=programs.length?programs.map(function(x){return '<option value="'+esc(x.quotationId)+'">'+esc(x.quotationNumber||x.quotationId)+' · '+esc(x.projectStart)+' → '+esc(x.projectFinish)+'</option>'}).join(''):'<option>No saved Work Program</option>';
+  }
+  els.wp.addEventListener('change',select);
+  els.asAt.addEventListener('change',render);
+  load();
+})();
 </script></body></html>
