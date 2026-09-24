@@ -106,5 +106,19 @@
   }, true);
   signInTab.addEventListener('click', () => setMode('signin'), true); signUpTab.addEventListener('click', () => setMode('signup'), true);
   document.getElementById('logout')?.addEventListener('click', () => { localStorage.removeItem(storageKey); location.reload(); }, true);
-  const local = getLocal(); if (local?.[idKey]) { showPortal(local); syncLocalAccount(local); } else setMode('signup');
+  const query = new URLSearchParams(location.search);
+  const queryId = String(query.get(idKey) || query.get('id') || '').trim().toUpperCase();
+  const local = getLocal();
+  if (queryId) {
+    if (local?.[idKey] === queryId) {
+      showPortal(local); syncLocalAccount(local);
+    } else {
+      getAccount(queryId).then(account => showPortal(account)).catch(() => {
+        if (local?.[idKey]) { showPortal(local); syncLocalAccount(local); }
+        else setMode('signin');
+      });
+    }
+  } else if (local?.[idKey]) {
+    showPortal(local); syncLocalAccount(local);
+  } else setMode('signup');
 })();
