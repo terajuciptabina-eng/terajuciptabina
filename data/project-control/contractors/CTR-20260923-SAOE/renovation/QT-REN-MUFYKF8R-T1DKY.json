@@ -5,7 +5,7 @@
   "plannerType": "renovation",
   "quotationId": "QT-REN-MUFYKF8R-T1DKY",
   "createdAt": "2026-09-24T20:09:23.215Z",
-  "updatedAt": "2026-09-24T20:59:18.502Z",
+  "updatedAt": "2026-09-24T21:14:02.415Z",
   "contract": {
     "schemaVersion": 1,
     "recordType": "contract",
@@ -15,7 +15,7 @@
     "quotationNumber": "Q009D",
     "contractDate": "2026-09-25",
     "projectStart": "2026-10-01",
-    "projectFinish": "2026-12-17",
+    "projectFinish": "2027-02-28",
     "contractSum": 134648,
     "client": {
       "name": "Tuan Iman"
@@ -1117,7 +1117,8 @@
     ],
     "sourceEstimateUpdatedAt": "2026-09-24T20:50:55.699Z",
     "confirmedAt": "2026-09-24T20:09:21.891Z",
-    "updatedAt": "2026-09-24T20:09:23.215Z"
+    "updatedAt": "2026-09-24T21:14:02.415Z",
+    "amendmentReason": "extend tarikh"
   },
   "workProgram": {
     "schemaVersion": 1,
