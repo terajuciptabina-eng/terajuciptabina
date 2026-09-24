@@ -79,7 +79,8 @@
     }
     function path(key){var out='',started=false;data.forEach(function(d,i){var v=d[key];if(v==null||!isFinite(Number(v))){started=false;return}out+=(started?'L':'M')+x(i).toFixed(1)+' '+y(Number(v)).toFixed(1);started=true});return out}
     var labels=data.map(function(d,i){return i%Math.max(1,Math.ceil(data.length/8))===0?'<text x="'+x(i)+'" y="'+(H-22)+'" text-anchor="middle" font-size="9" fill="#64748b">'+d.date.slice(5)+'</text>':''}).join('');
-    els.chart.innerHTML='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Planned and actual S-Curve"><rect width="'+W+'" height="'+H+'" fill="white"/>'+grid+'<path d="'+path('pp')+'" fill="none" stroke="#334155" stroke-width="3"/><path d="'+path('ap')+'" fill="none" stroke="#94a3b8" stroke-width="3"/>'+labels+'</svg>';
+    var actualDots=data.map(function(d,i){return d.ap==null?'':'<circle cx="'+x(i).toFixed(1)+'" cy="'+y(Number(d.ap)).toFixed(1)+'" r="4" fill="#94a3b8"/>';}).join('');
+    els.chart.innerHTML='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Planned and actual S-Curve"><rect width="'+W+'" height="'+H+'" fill="white"/>'+grid+'<path d="'+path('pp')+'" fill="none" stroke="#334155" stroke-width="3"/><path d="'+path('ap')+'" fill="none" stroke="#94a3b8" stroke-width="3"/>'+actualDots+labels+'</svg>';
   }
   function render(){
     if(!selected)return;
@@ -102,7 +103,7 @@
     document.getElementById('insight').textContent=controlPoint.ap==null?'No actual progress recorded for the selected date.':(variance===0?'Actual is aligned with planned cumulative progress.':(variance<0?'Actual progress is '+Math.abs(variance).toFixed(2)+' percentage points below planned.':'Actual progress is '+variance.toFixed(2)+' percentage points above planned.'));
     els.summary.innerHTML='<div class="flex flex-wrap gap-x-6 gap-y-2"><span><b>Estimate:</b> '+esc(selected.quotationNumber||selected.quotationId)+'</span><span><b>Period:</b> '+esc(selected.projectStart)+' → '+esc(selected.projectFinish)+'</span><span><b>Progress snapshots:</b> '+Object.keys(history).length+'</span></div>';
     draw(data);
-    els.data.innerHTML=data.map(function(x){var vv=x.ap-x.pp;return '<tr><td>'+esc(x.date)+'</td><td>RM '+fmt(x.pm)+'</td><td>'+x.pp.toFixed(2)+'%</td><td>RM '+fmt(x.am)+'</td><td>'+x.ap.toFixed(2)+'%</td><td>'+(vv>=0?'+':'')+vv.toFixed(2)+'%</td></tr>'}).join('');
+    els.data.innerHTML=data.map(function(x){var has=x.ap!=null,vv=has?x.ap-x.pp:null;return '<tr><td>'+esc(x.date)+'</td><td>RM '+fmt(x.pm)+'</td><td>'+x.pp.toFixed(2)+'%</td><td>'+(has?'RM '+fmt(x.am):'—')+'</td><td>'+(has?x.ap.toFixed(2)+'%':'—')+'</td><td>'+(has?((vv>=0?'+':'')+vv.toFixed(2)+'%'):'—')+'</td></tr>'}).join('');
   }
   function progressUrl(q){
     return 'progress.html?role='+encodeURIComponent(role)+'&id='+encodeURIComponent(id)+'&plannerType='+encodeURIComponent(type)+'&quotationId='+encodeURIComponent(q||requested||'');
