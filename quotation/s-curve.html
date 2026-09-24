@@ -153,6 +153,11 @@ main{padding:10px 8px!important}
     if(programs.length===1){els.wp.innerHTML='<option value="'+esc(programs[0].quotationId)+'">'+esc(programs[0].quotationNumber||programs[0].quotationId)+'</option>';els.wp.value=programs[0].quotationId;await select();return}
     els.wp.innerHTML='<option value="">'+(quotationId?'Requested Work Program not saved':'No saved Work Program')+'</option>';
     els.summary.textContent=quotationId?'The selected Work Program could not be loaded from project-control storage.':'Open S-Curve from a saved Work Program so the quotationId can be carried into project control.';
-</script>
+  }
+  els.wp.addEventListener('change',select);
+  els.asAt.addEventListener('change',render);
+  load();
+})();
+</script><script src="project-control-card-pdf.js"></script><script>document.addEventListener("click",function(e){const b=e.target.closest("[data-pdf-card]");if(b)window.TERAJU_CARD_PDF.save(b.dataset.pdfCard,b.dataset.pdfName,b)});</script>
 </body>
 </html>
