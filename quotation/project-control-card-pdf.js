@@ -208,7 +208,7 @@ async function save(id,filename,button){
       const rect=target.getBoundingClientRect();
       const renderWidth=Math.max(1,Math.round(rect.width));
 
-      if(target.querySelector('table')){
+      if(target.id!=='sCurvePage' && target.querySelector('table')){
         const canvases=await captureTableChunks(target,renderWidth);
         canvases.forEach(canvas=>addCanvasPages(pdf,canvas,state));
       }else{
