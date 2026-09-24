@@ -5,7 +5,7 @@
   "plannerType": "renovation",
   "quotationId": "QT-REN-MUFYKF8R-T1DKY",
   "createdAt": "2026-09-24T20:09:23.215Z",
-  "updatedAt": "2026-09-24T20:56:39.855Z",
+  "updatedAt": "2026-09-24T20:59:01.996Z",
   "contract": {
     "schemaVersion": 1,
     "recordType": "contract",
@@ -1141,11 +1141,12 @@
         "qty": 1,
         "rate": 8888,
         "amount": 8888,
-        "header": "",
-        "level3": "",
         "section": "Project",
-        "groupTitle": "Preliminaries",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "preliminaries",
+        "groupTitle": "Preliminaries",
         "masterPath": "PROJECT / PRELIMINARIES",
         "roomId": "project",
         "room": "Project"
@@ -1158,11 +1159,12 @@
         "qty": 200,
         "rate": 22,
         "amount": 4400,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": "",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "",
+        "groupTitle": "",
         "masterPath": "BALCONY / Floor Tiles",
         "roomId": "room-2",
         "room": "Balcony"
@@ -1175,11 +1177,12 @@
         "qty": 266,
         "rate": 60,
         "amount": 15960,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": "",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "",
+        "groupTitle": "",
         "masterPath": "BALCONY / Facade Wall",
         "roomId": "room-2",
         "room": "Balcony"
@@ -1192,11 +1195,12 @@
         "qty": 3,
         "rate": 250,
         "amount": 750,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": "",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "",
+        "groupTitle": "",
         "masterPath": "BALCONY / Wall Light",
         "roomId": "room-2",
         "room": "Balcony"
@@ -1209,11 +1213,12 @@
         "qty": 200,
         "rate": 30,
         "amount": 6000,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": "",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "",
+        "groupTitle": "",
         "masterPath": "",
         "roomId": "room-2",
         "room": "Balcony"
@@ -1226,11 +1231,12 @@
         "qty": 200,
         "rate": 30,
         "amount": 6000,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": "",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "",
+        "groupTitle": "",
         "masterPath": "",
         "roomId": "room-3",
         "room": "Porch"
@@ -1243,11 +1249,12 @@
         "qty": 40,
         "rate": 260,
         "amount": 10400,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": "",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "",
+        "groupTitle": "",
         "masterPath": "",
         "roomId": "room-3",
         "room": "Porch"
@@ -1260,11 +1267,12 @@
         "qty": 1,
         "rate": 550,
         "amount": 550,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": " Footing ",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "structure",
+        "groupTitle": " Footing ",
         "masterPath": "MAIN BUILDING / Footing / Concrete",
         "roomId": "project",
         "room": "Project"
@@ -1277,11 +1285,12 @@
         "qty": 4,
         "rate": 55,
         "amount": 220,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": " Footing ",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "structure",
+        "groupTitle": " Footing ",
         "masterPath": "MAIN BUILDING / Footing / Formwork",
         "roomId": "project",
         "room": "Project"
@@ -1294,11 +1303,12 @@
         "qty": 100,
         "rate": 8,
         "amount": 800,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": " Footing ",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "structure",
+        "groupTitle": " Footing ",
         "masterPath": "MAIN BUILDING / Footing / Rebar",
         "roomId": "project",
         "room": "Project"
@@ -1311,11 +1321,12 @@
         "qty": 3,
         "rate": 550,
         "amount": 1650,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": " Ground Slab ",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "structure",
+        "groupTitle": " Ground Slab ",
         "masterPath": "MAIN BUILDING / Ground Slab / Concrete",
         "roomId": "project",
         "room": "Project"
@@ -1328,11 +1339,12 @@
         "qty": 38,
         "rate": 20.5,
         "amount": 779,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": " Ground Slab ",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "structure",
+        "groupTitle": " Ground Slab ",
         "masterPath": "MAIN BUILDING / Ground Slab / BRC",
         "roomId": "project",
         "room": "Project"
@@ -1345,11 +1357,12 @@
         "qty": 2,
         "rate": 350,
         "amount": 700,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": " Ground Beam ",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "structure",
+        "groupTitle": " Ground Beam ",
         "masterPath": "MAIN BUILDING / Ground Beam / Concrete",
         "roomId": "project",
         "room": "Project"
@@ -1362,11 +1375,12 @@
         "qty": 16,
         "rate": 55,
         "amount": 880,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": " Ground Beam ",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "structure",
+        "groupTitle": " Ground Beam ",
         "masterPath": "MAIN BUILDING / Ground Beam / Formwork",
         "roomId": "project",
         "room": "Project"
@@ -1379,11 +1393,12 @@
         "qty": 400,
         "rate": 8,
         "amount": 3200,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": " Ground Beam ",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "structure",
+        "groupTitle": " Ground Beam ",
         "masterPath": "MAIN BUILDING / Ground Beam / Rebar",
         "roomId": "project",
         "room": "Project"
@@ -1396,11 +1411,12 @@
         "qty": 2,
         "rate": 350,
         "amount": 700,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": " Roof Beam ",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "structure",
+        "groupTitle": " Roof Beam ",
         "masterPath": "MAIN BUILDING / Roof Beam / Concrete",
         "roomId": "project",
         "room": "Project"
@@ -1413,11 +1429,12 @@
         "qty": 16,
         "rate": 55,
         "amount": 880,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": " Roof Beam ",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "structure",
+        "groupTitle": " Roof Beam ",
         "masterPath": "MAIN BUILDING / Roof Beam / Formwork",
         "roomId": "project",
         "room": "Project"
@@ -1430,11 +1447,12 @@
         "qty": 400,
         "rate": 8,
         "amount": 3200,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": " Roof Beam ",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "structure",
+        "groupTitle": " Roof Beam ",
         "masterPath": "MAIN BUILDING / Roof Beam / Rebar",
         "roomId": "project",
         "room": "Project"
@@ -1447,11 +1465,12 @@
         "qty": 1,
         "rate": 550,
         "amount": 550,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": " Column ",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "structure",
+        "groupTitle": " Column ",
         "masterPath": "MAIN BUILDING / Column / Concrete",
         "roomId": "project",
         "room": "Project"
@@ -1464,11 +1483,12 @@
         "qty": 9,
         "rate": 55,
         "amount": 495,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": " Column ",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "structure",
+        "groupTitle": " Column ",
         "masterPath": "MAIN BUILDING / Column / Formwork",
         "roomId": "project",
         "room": "Project"
@@ -1481,11 +1501,12 @@
         "qty": 200,
         "rate": 8,
         "amount": 1600,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": " Column ",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "structure",
+        "groupTitle": " Column ",
         "masterPath": "MAIN BUILDING / Column / Rebar",
         "roomId": "project",
         "room": "Project"
@@ -1498,11 +1519,12 @@
         "qty": 32,
         "rate": 420,
         "amount": 13440,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": " Roof ",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "structure",
+        "groupTitle": " Roof ",
         "masterPath": "MAIN BUILDING / Roof / Metal Roofing Sheet",
         "roomId": "project",
         "room": "Project"
@@ -1515,11 +1537,12 @@
         "qty": 1,
         "rate": 350,
         "amount": 350,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": " Apron ",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "structure",
+        "groupTitle": " Apron ",
         "masterPath": "MAIN BUILDING / Apron / Concrete",
         "roomId": "project",
         "room": "Project"
@@ -1532,11 +1555,12 @@
         "qty": 2,
         "rate": 55,
         "amount": 110,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": " Apron ",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "structure",
+        "groupTitle": " Apron ",
         "masterPath": "MAIN BUILDING / Apron / Formwork",
         "roomId": "project",
         "room": "Project"
@@ -1549,11 +1573,12 @@
         "qty": 20,
         "rate": 20.5,
         "amount": 410,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": " Apron ",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "structure",
+        "groupTitle": " Apron ",
         "masterPath": "MAIN BUILDING / Apron / BRC",
         "roomId": "project",
         "room": "Project"
@@ -1566,11 +1591,12 @@
         "qty": 25,
         "rate": 35,
         "amount": 875,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": "MAIN BUILDING ",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "structure",
+        "groupTitle": "MAIN BUILDING ",
         "masterPath": "MAIN BUILDING / Drainage",
         "roomId": "project",
         "room": "Project"
@@ -1583,11 +1609,12 @@
         "qty": 1,
         "rate": 550,
         "amount": 550,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": " Footing ",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "porch",
+        "groupTitle": " Footing ",
         "masterPath": "PORCH / Footing / Concrete",
         "roomId": "project",
         "room": "Project"
@@ -1600,11 +1627,12 @@
         "qty": 4,
         "rate": 55,
         "amount": 220,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": " Footing ",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "porch",
+        "groupTitle": " Footing ",
         "masterPath": "PORCH / Footing / Formwork",
         "roomId": "project",
         "room": "Project"
@@ -1617,11 +1645,12 @@
         "qty": 100,
         "rate": 8,
         "amount": 800,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": " Footing ",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "porch",
+        "groupTitle": " Footing ",
         "masterPath": "PORCH / Footing / Rebar",
         "roomId": "project",
         "room": "Project"
@@ -1634,11 +1663,12 @@
         "qty": 3,
         "rate": 550,
         "amount": 1650,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": " Ground Slab ",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "porch",
+        "groupTitle": " Ground Slab ",
         "masterPath": "PORCH / Ground Slab / Concrete",
         "roomId": "project",
         "room": "Project"
@@ -1651,11 +1681,12 @@
         "qty": 38,
         "rate": 20.5,
         "amount": 779,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": " Ground Slab ",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "porch",
+        "groupTitle": " Ground Slab ",
         "masterPath": "PORCH / Ground Slab / BRC",
         "roomId": "project",
         "room": "Project"
@@ -1668,11 +1699,12 @@
         "qty": 2,
         "rate": 350,
         "amount": 700,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": " Ground Beam ",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "porch",
+        "groupTitle": " Ground Beam ",
         "masterPath": "PORCH / Ground Beam / Concrete",
         "roomId": "project",
         "room": "Project"
@@ -1685,11 +1717,12 @@
         "qty": 16,
         "rate": 55,
         "amount": 880,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": " Ground Beam ",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "porch",
+        "groupTitle": " Ground Beam ",
         "masterPath": "PORCH / Ground Beam / Formwork",
         "roomId": "project",
         "room": "Project"
@@ -1702,11 +1735,12 @@
         "qty": 400,
         "rate": 8,
         "amount": 3200,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": " Ground Beam ",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "porch",
+        "groupTitle": " Ground Beam ",
         "masterPath": "PORCH / Ground Beam / Rebar",
         "roomId": "project",
         "room": "Project"
@@ -1719,11 +1753,12 @@
         "qty": 2,
         "rate": 350,
         "amount": 700,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": " Roof Beam ",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "porch",
+        "groupTitle": " Roof Beam ",
         "masterPath": "PORCH / Roof Beam / Concrete",
         "roomId": "project",
         "room": "Project"
@@ -1736,11 +1771,12 @@
         "qty": 16,
         "rate": 55,
         "amount": 880,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": " Roof Beam ",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "porch",
+        "groupTitle": " Roof Beam ",
         "masterPath": "PORCH / Roof Beam / Formwork",
         "roomId": "project",
         "room": "Project"
@@ -1753,11 +1789,12 @@
         "qty": 400,
         "rate": 8,
         "amount": 3200,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": " Roof Beam ",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "porch",
+        "groupTitle": " Roof Beam ",
         "masterPath": "PORCH / Roof Beam / Rebar",
         "roomId": "project",
         "room": "Project"
@@ -1770,11 +1807,12 @@
         "qty": 1,
         "rate": 550,
         "amount": 550,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": " Column ",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "porch",
+        "groupTitle": " Column ",
         "masterPath": "PORCH / Column / Concrete",
         "roomId": "project",
         "room": "Project"
@@ -1787,11 +1825,12 @@
         "qty": 9,
         "rate": 55,
         "amount": 495,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": " Column ",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "porch",
+        "groupTitle": " Column ",
         "masterPath": "PORCH / Column / Formwork",
         "roomId": "project",
         "room": "Project"
@@ -1804,11 +1843,12 @@
         "qty": 200,
         "rate": 8,
         "amount": 1600,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": " Column ",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "porch",
+        "groupTitle": " Column ",
         "masterPath": "PORCH / Column / Rebar",
         "roomId": "project",
         "room": "Project"
@@ -1821,11 +1861,12 @@
         "qty": 2,
         "rate": 550,
         "amount": 1100,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": " Flat Roof ",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "porch",
+        "groupTitle": " Flat Roof ",
         "masterPath": "PORCH / Flat Roof / Concrete",
         "roomId": "project",
         "room": "Project"
@@ -1838,11 +1879,12 @@
         "qty": 19,
         "rate": 55,
         "amount": 1045,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": " Flat Roof ",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "porch",
+        "groupTitle": " Flat Roof ",
         "masterPath": "PORCH / Flat Roof / Formwork",
         "roomId": "project",
         "room": "Project"
@@ -1855,11 +1897,12 @@
         "qty": 38,
         "rate": 20.5,
         "amount": 779,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": " Flat Roof ",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "porch",
+        "groupTitle": " Flat Roof ",
         "masterPath": "PORCH / Flat Roof / BRC",
         "roomId": "project",
         "room": "Project"
@@ -1872,11 +1915,12 @@
         "qty": 24,
         "rate": 75,
         "amount": 1800,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": "Architectural Works",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "architecture",
+        "groupTitle": "Architectural Works",
         "masterPath": "MAIN BUILDING / Brickwall / Internal Wall",
         "roomId": "project",
         "room": "Project"
@@ -1889,11 +1933,12 @@
         "qty": 11,
         "rate": 120,
         "amount": 1320,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": "Architectural Works",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "architecture",
+        "groupTitle": "Architectural Works",
         "masterPath": "MAIN BUILDING / Brickwall / External Wall",
         "roomId": "project",
         "room": "Project"
@@ -1906,11 +1951,12 @@
         "qty": 19,
         "rate": 95,
         "amount": 1805,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": "Architectural Works",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "architecture",
+        "groupTitle": "Architectural Works",
         "masterPath": "MAIN BUILDING / Floor Tiles / Internal",
         "roomId": "project",
         "room": "Project"
@@ -1923,11 +1969,12 @@
         "qty": 20,
         "rate": 150,
         "amount": 3000,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": "Architectural Works",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "architecture",
+        "groupTitle": "Architectural Works",
         "masterPath": "MAIN BUILDING / Floor Tiles / External",
         "roomId": "project",
         "room": "Project"
@@ -1940,11 +1987,12 @@
         "qty": 24,
         "rate": 30,
         "amount": 720,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": "Architectural Works",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "architecture",
+        "groupTitle": "Architectural Works",
         "masterPath": "MAIN BUILDING / Painting / Internal",
         "roomId": "project",
         "room": "Project"
@@ -1957,11 +2005,12 @@
         "qty": 11,
         "rate": 48,
         "amount": 528,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": "Architectural Works",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "architecture",
+        "groupTitle": "Architectural Works",
         "masterPath": "MAIN BUILDING / Painting / External",
         "roomId": "project",
         "room": "Project"
@@ -1974,11 +2023,12 @@
         "qty": 19,
         "rate": 165,
         "amount": 3135,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": "Architectural Works",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "architecture",
+        "groupTitle": "Architectural Works",
         "masterPath": "MAIN BUILDING / Ceiling / Internal",
         "roomId": "project",
         "room": "Project"
@@ -1991,11 +2041,12 @@
         "qty": 20,
         "rate": 165,
         "amount": 3300,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": "Architectural Works",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "architecture",
+        "groupTitle": "Architectural Works",
         "masterPath": "MAIN BUILDING / Ceiling / External",
         "roomId": "project",
         "room": "Project"
@@ -2008,11 +2059,12 @@
         "qty": 2,
         "rate": 150,
         "amount": 300,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": "Electrical Works",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "electrical",
+        "groupTitle": "Electrical Works",
         "masterPath": "MAIN BUILDING / POWER POINT",
         "roomId": "project",
         "room": "Project"
@@ -2025,11 +2077,12 @@
         "qty": 2,
         "rate": 200,
         "amount": 400,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": "Electrical Works",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "electrical",
+        "groupTitle": "Electrical Works",
         "masterPath": "MAIN BUILDING / SWITCH",
         "roomId": "project",
         "room": "Project"
@@ -2042,11 +2095,12 @@
         "qty": 2,
         "rate": 200,
         "amount": 400,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": "Electrical Works",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "electrical",
+        "groupTitle": "Electrical Works",
         "masterPath": "MAIN BUILDING / LIGHTING",
         "roomId": "project",
         "room": "Project"
@@ -2059,11 +2113,12 @@
         "qty": 0,
         "rate": 200,
         "amount": 0,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": "Electrical Works",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "electrical",
+        "groupTitle": "Electrical Works",
         "masterPath": "MAIN BUILDING / FAN",
         "roomId": "project",
         "room": "Project"
@@ -2076,11 +2131,12 @@
         "qty": 0,
         "rate": 300,
         "amount": 0,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": "Electrical Works",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "electrical",
+        "groupTitle": "Electrical Works",
         "masterPath": "MAIN BUILDING / AIRCOND POINT",
         "roomId": "project",
         "room": "Project"
@@ -2093,11 +2149,12 @@
         "qty": 2,
         "rate": 200,
         "amount": 400,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": "Electrical Works",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "electrical",
+        "groupTitle": "Electrical Works",
         "masterPath": "PORCH / LIGHTING",
         "roomId": "project",
         "room": "Project"
@@ -2110,11 +2167,12 @@
         "qty": 1,
         "rate": 200,
         "amount": 200,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": "Electrical Works",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "electrical",
+        "groupTitle": "Electrical Works",
         "masterPath": "PORCH / FAN",
         "roomId": "project",
         "room": "Project"
@@ -2127,11 +2185,12 @@
         "qty": 1,
         "rate": 150,
         "amount": 150,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": "Electrical Works",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "electrical",
+        "groupTitle": "Electrical Works",
         "masterPath": "PORCH / POWER POINT",
         "roomId": "project",
         "room": "Project"
@@ -2144,11 +2203,12 @@
         "qty": 1,
         "rate": 2500,
         "amount": 2500,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": "Electrical Works",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "electrical",
+        "groupTitle": "Electrical Works",
         "masterPath": "EARTHING",
         "roomId": "project",
         "room": "Project"
@@ -2161,11 +2221,12 @@
         "qty": 1,
         "rate": 2500,
         "amount": 2500,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": "Electrical Works",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "electrical",
+        "groupTitle": "Electrical Works",
         "masterPath": "DB BOX",
         "roomId": "project",
         "room": "Project"
@@ -2178,11 +2239,12 @@
         "qty": 267,
         "rate": 25,
         "amount": 6675,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": "Electrical Works",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "electrical",
+        "groupTitle": "Electrical Works",
         "masterPath": "WIRING",
         "roomId": "project",
         "room": "Project"
@@ -2195,11 +2257,12 @@
         "qty": 1,
         "rate": 1200,
         "amount": 1200,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": "Doors & Windows",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "doors-windows",
+        "groupTitle": "Doors & Windows",
         "masterPath": "DOORS / Type 1 Single Leaf",
         "roomId": "project",
         "room": "Project"
@@ -2212,386 +2275,327 @@
         "qty": 1,
         "rate": 1400,
         "amount": 1400,
-        "header": "",
-        "level3": "",
         "section": "",
-        "groupTitle": "Doors & Windows",
+        "level3": "",
+        "header": "",
+        "group": "",
         "groupKey": "doors-windows",
+        "groupTitle": "Doors & Windows",
         "masterPath": "WINDOWS / Type 2 1800×1200",
         "roomId": "project",
         "room": "Project"
       }
     ],
     "schedule": {
-      "manual-1790153329217-znr338": {
-        "start": "2026-10-28",
-        "finish": "2026-11-04",
-        "planned": 100,
-        "phase": "general construction"
-      },
-      "manual-1790153802326-fltu5h": {
-        "start": "2026-10-30",
-        "finish": "2026-11-06",
-        "planned": 100,
-        "phase": "general construction"
-      },
-      "manual-1790154031589-vk2lak": {
-        "start": "2026-10-23",
-        "finish": "2026-11-02",
-        "planned": 100,
-        "phase": "general construction"
-      },
-      "master-main-building-/-footing-/-concrete": {
-        "start": "2026-10-06",
-        "finish": "2026-10-08",
-        "planned": 100,
-        "phase": "structural / repair"
-      },
-      "master-main-building-/-footing-/-formwork": {
+      "master-main-building-/-roof-/-metal-roofing-sheet": {
         "start": "2026-10-07",
         "finish": "2026-10-09",
-        "planned": 100,
-        "phase": "structural / repair"
-      },
-      "master-main-building-/-footing-/-rebar": {
-        "start": "2026-10-05",
-        "finish": "2026-10-07",
-        "planned": 100,
-        "phase": "structural / repair"
-      },
-      "master-main-building-/-ground-slab-/-concrete": {
-        "start": "2026-10-03",
-        "finish": "2026-10-05",
-        "planned": 100,
-        "phase": "structural / repair"
-      },
-      "master-main-building-/-ground-slab-/-brc": {
-        "start": "2026-10-05",
-        "finish": "2026-10-07",
-        "planned": 100,
-        "phase": "structural / repair"
-      },
-      "master-main-building-/-ground-beam-/-concrete": {
-        "start": "2026-10-05",
-        "finish": "2026-10-07",
-        "planned": 100,
-        "phase": "structural / repair"
-      },
-      "master-main-building-/-ground-beam-/-formwork": {
-        "start": "2026-10-04",
-        "finish": "2026-10-06",
         "planned": 100,
         "phase": "structural / repair"
       },
       "master-main-building-/-ground-beam-/-rebar": {
-        "start": "2026-10-02",
-        "finish": "2026-10-04",
-        "planned": 100,
-        "phase": "structural / repair"
-      },
-      "master-main-building-/-roof-beam-/-concrete": {
-        "start": "2026-10-06",
-        "finish": "2026-10-08",
-        "planned": 100,
-        "phase": "structural / repair"
-      },
-      "master-main-building-/-roof-beam-/-formwork": {
-        "start": "2026-10-04",
-        "finish": "2026-10-06",
+        "start": "2026-10-07",
+        "finish": "2026-10-09",
         "planned": 100,
         "phase": "structural / repair"
       },
       "master-main-building-/-roof-beam-/-rebar": {
-        "start": "2026-10-03",
-        "finish": "2026-10-05",
-        "planned": 100,
-        "phase": "structural / repair"
-      },
-      "master-main-building-/-column-/-concrete": {
-        "start": "2026-10-06",
-        "finish": "2026-10-08",
-        "planned": 100,
-        "phase": "structural / repair"
-      },
-      "master-main-building-/-column-/-formwork": {
         "start": "2026-10-07",
         "finish": "2026-10-09",
         "planned": 100,
         "phase": "structural / repair"
       },
-      "master-main-building-/-column-/-rebar": {
-        "start": "2026-10-03",
-        "finish": "2026-10-05",
-        "planned": 100,
-        "phase": "structural / repair"
-      },
-      "master-main-building-/-roof-/-metal-roofing-sheet": {
-        "start": "2026-10-02",
-        "finish": "2026-10-04",
-        "planned": 100,
-        "phase": "structural / repair"
-      },
-      "master-main-building-/-apron-/-concrete": {
+      "master-porch-/-ground-beam-/-rebar": {
         "start": "2026-10-07",
         "finish": "2026-10-09",
         "planned": 100,
         "phase": "structural / repair"
       },
-      "master-main-building-/-apron-/-formwork": {
+      "master-porch-/-roof-beam-/-rebar": {
         "start": "2026-10-08",
         "finish": "2026-10-10",
         "planned": 100,
         "phase": "structural / repair"
       },
-      "master-main-building-/-apron-/-brc": {
-        "start": "2026-10-07",
-        "finish": "2026-10-09",
-        "planned": 100,
-        "phase": "structural / repair"
-      },
-      "master-main-building-/-drainage": {
-        "start": "2026-10-05",
-        "finish": "2026-10-07",
-        "planned": 100,
-        "phase": "structural / repair"
-      },
-      "master-porch-/-footing-/-concrete": {
-        "start": "2026-10-06",
-        "finish": "2026-10-08",
-        "planned": 100,
-        "phase": "structural / repair"
-      },
-      "master-porch-/-footing-/-formwork": {
-        "start": "2026-10-07",
-        "finish": "2026-10-09",
-        "planned": 100,
-        "phase": "structural / repair"
-      },
-      "master-porch-/-footing-/-rebar": {
-        "start": "2026-10-05",
-        "finish": "2026-10-07",
+      "master-main-building-/-ground-slab-/-concrete": {
+        "start": "2026-10-08",
+        "finish": "2026-10-10",
         "planned": 100,
         "phase": "structural / repair"
       },
       "master-porch-/-ground-slab-/-concrete": {
-        "start": "2026-10-03",
-        "finish": "2026-10-05",
+        "start": "2026-10-08",
+        "finish": "2026-10-10",
         "planned": 100,
         "phase": "structural / repair"
       },
-      "master-porch-/-ground-slab-/-brc": {
-        "start": "2026-10-05",
-        "finish": "2026-10-07",
-        "planned": 100,
-        "phase": "structural / repair"
-      },
-      "master-porch-/-ground-beam-/-concrete": {
-        "start": "2026-10-06",
-        "finish": "2026-10-08",
-        "planned": 100,
-        "phase": "structural / repair"
-      },
-      "master-porch-/-ground-beam-/-formwork": {
-        "start": "2026-10-04",
-        "finish": "2026-10-06",
-        "planned": 100,
-        "phase": "structural / repair"
-      },
-      "master-porch-/-ground-beam-/-rebar": {
-        "start": "2026-10-03",
-        "finish": "2026-10-05",
-        "planned": 100,
-        "phase": "structural / repair"
-      },
-      "master-porch-/-roof-beam-/-concrete": {
-        "start": "2026-10-06",
-        "finish": "2026-10-08",
-        "planned": 100,
-        "phase": "structural / repair"
-      },
-      "master-porch-/-roof-beam-/-formwork": {
-        "start": "2026-10-04",
-        "finish": "2026-10-06",
-        "planned": 100,
-        "phase": "structural / repair"
-      },
-      "master-porch-/-roof-beam-/-rebar": {
-        "start": "2026-10-03",
-        "finish": "2026-10-05",
-        "planned": 100,
-        "phase": "structural / repair"
-      },
-      "master-porch-/-column-/-concrete": {
-        "start": "2026-10-07",
-        "finish": "2026-10-09",
-        "planned": 100,
-        "phase": "structural / repair"
-      },
-      "master-porch-/-column-/-formwork": {
-        "start": "2026-10-07",
-        "finish": "2026-10-09",
+      "master-main-building-/-column-/-rebar": {
+        "start": "2026-10-08",
+        "finish": "2026-10-10",
         "planned": 100,
         "phase": "structural / repair"
       },
       "master-porch-/-column-/-rebar": {
-        "start": "2026-10-04",
-        "finish": "2026-10-06",
+        "start": "2026-10-08",
+        "finish": "2026-10-10",
         "planned": 100,
         "phase": "structural / repair"
       },
       "master-porch-/-flat-roof-/-concrete": {
-        "start": "2026-10-04",
-        "finish": "2026-10-06",
+        "start": "2026-10-08",
+        "finish": "2026-10-10",
         "planned": 100,
         "phase": "structural / repair"
       },
       "master-porch-/-flat-roof-/-formwork": {
-        "start": "2026-10-04",
-        "finish": "2026-10-06",
+        "start": "2026-10-08",
+        "finish": "2026-10-10",
+        "planned": 100,
+        "phase": "structural / repair"
+      },
+      "master-main-building-/-ground-beam-/-formwork": {
+        "start": "2026-10-09",
+        "finish": "2026-10-11",
+        "planned": 100,
+        "phase": "structural / repair"
+      },
+      "master-main-building-/-roof-beam-/-formwork": {
+        "start": "2026-10-09",
+        "finish": "2026-10-11",
+        "planned": 100,
+        "phase": "structural / repair"
+      },
+      "master-porch-/-ground-beam-/-formwork": {
+        "start": "2026-10-09",
+        "finish": "2026-10-11",
+        "planned": 100,
+        "phase": "structural / repair"
+      },
+      "master-porch-/-roof-beam-/-formwork": {
+        "start": "2026-10-09",
+        "finish": "2026-10-11",
+        "planned": 100,
+        "phase": "structural / repair"
+      },
+      "master-main-building-/-drainage": {
+        "start": "2026-10-09",
+        "finish": "2026-10-11",
+        "planned": 100,
+        "phase": "structural / repair"
+      },
+      "master-main-building-/-footing-/-rebar": {
+        "start": "2026-10-09",
+        "finish": "2026-10-11",
+        "planned": 100,
+        "phase": "structural / repair"
+      },
+      "master-porch-/-footing-/-rebar": {
+        "start": "2026-10-09",
+        "finish": "2026-10-11",
+        "planned": 100,
+        "phase": "structural / repair"
+      },
+      "master-main-building-/-ground-slab-/-brc": {
+        "start": "2026-10-10",
+        "finish": "2026-10-12",
+        "planned": 100,
+        "phase": "structural / repair"
+      },
+      "master-porch-/-ground-slab-/-brc": {
+        "start": "2026-10-10",
+        "finish": "2026-10-12",
         "planned": 100,
         "phase": "structural / repair"
       },
       "master-porch-/-flat-roof-/-brc": {
-        "start": "2026-10-05",
-        "finish": "2026-10-07",
+        "start": "2026-10-10",
+        "finish": "2026-10-12",
         "planned": 100,
         "phase": "structural / repair"
       },
-      "master-main-building-/-brickwall-/-internal-wall": {
-        "start": "2026-10-29",
-        "finish": "2026-11-13",
+      "master-main-building-/-ground-beam-/-concrete": {
+        "start": "2026-10-10",
+        "finish": "2026-10-12",
         "planned": 100,
-        "phase": "waterproofing / screed"
+        "phase": "structural / repair"
       },
-      "master-main-building-/-brickwall-/-external-wall": {
-        "start": "2026-10-31",
-        "finish": "2026-11-13",
+      "master-main-building-/-roof-beam-/-concrete": {
+        "start": "2026-10-10",
+        "finish": "2026-10-12",
         "planned": 100,
-        "phase": "waterproofing / screed"
+        "phase": "structural / repair"
       },
-      "master-main-building-/-floor-tiles-/-internal": {
-        "start": "2026-11-16",
-        "finish": "2026-11-30",
+      "master-porch-/-ground-beam-/-concrete": {
+        "start": "2026-10-10",
+        "finish": "2026-10-12",
         "planned": 100,
-        "phase": "floor / wall finishes"
+        "phase": "structural / repair"
       },
-      "master-main-building-/-floor-tiles-/-external": {
-        "start": "2026-11-14",
-        "finish": "2026-12-02",
+      "master-porch-/-roof-beam-/-concrete": {
+        "start": "2026-10-10",
+        "finish": "2026-10-12",
         "planned": 100,
-        "phase": "floor / wall finishes"
+        "phase": "structural / repair"
       },
-      "master-main-building-/-painting-/-internal": {
-        "start": "2026-12-02",
-        "finish": "2026-12-17",
+      "master-main-building-/-footing-/-concrete": {
+        "start": "2026-10-11",
+        "finish": "2026-10-13",
         "planned": 100,
-        "phase": "painting / final finishes"
+        "phase": "structural / repair"
       },
-      "master-main-building-/-painting-/-external": {
-        "start": "2026-12-04",
-        "finish": "2026-12-16",
+      "master-main-building-/-column-/-concrete": {
+        "start": "2026-10-11",
+        "finish": "2026-10-13",
         "planned": 100,
-        "phase": "painting / final finishes"
+        "phase": "structural / repair"
       },
-      "master-main-building-/-ceiling-/-internal": {
-        "start": "2026-11-06",
-        "finish": "2026-11-22",
+      "master-porch-/-footing-/-concrete": {
+        "start": "2026-10-11",
+        "finish": "2026-10-13",
         "planned": 100,
-        "phase": "wall / ceiling works"
+        "phase": "structural / repair"
       },
-      "master-main-building-/-ceiling-/-external": {
-        "start": "2026-11-05",
-        "finish": "2026-11-21",
+      "master-porch-/-column-/-concrete": {
+        "start": "2026-10-11",
+        "finish": "2026-10-13",
         "planned": 100,
-        "phase": "wall / ceiling works"
+        "phase": "structural / repair"
       },
-      "master-main-building-/-power-point": {
+      "master-main-building-/-column-/-formwork": {
+        "start": "2026-10-11",
+        "finish": "2026-10-13",
+        "planned": 100,
+        "phase": "structural / repair"
+      },
+      "master-porch-/-column-/-formwork": {
+        "start": "2026-10-11",
+        "finish": "2026-10-13",
+        "planned": 100,
+        "phase": "structural / repair"
+      },
+      "master-main-building-/-apron-/-brc": {
+        "start": "2026-10-11",
+        "finish": "2026-10-13",
+        "planned": 100,
+        "phase": "structural / repair"
+      },
+      "master-main-building-/-apron-/-concrete": {
+        "start": "2026-10-11",
+        "finish": "2026-10-13",
+        "planned": 100,
+        "phase": "structural / repair"
+      },
+      "master-main-building-/-footing-/-formwork": {
+        "start": "2026-10-12",
+        "finish": "2026-10-14",
+        "planned": 100,
+        "phase": "structural / repair"
+      },
+      "master-porch-/-footing-/-formwork": {
+        "start": "2026-10-12",
+        "finish": "2026-10-14",
+        "planned": 100,
+        "phase": "structural / repair"
+      },
+      "master-main-building-/-apron-/-formwork": {
+        "start": "2026-10-12",
+        "finish": "2026-10-14",
+        "planned": 100,
+        "phase": "structural / repair"
+      },
+      "master-wiring": {
+        "start": "2026-10-16",
+        "finish": "2026-10-25",
+        "planned": 100,
+        "phase": "m&e rough-in"
+      },
+      "master-earthing": {
+        "start": "2026-10-17",
+        "finish": "2026-10-22",
+        "planned": 100,
+        "phase": "m&e rough-in"
+      },
+      "master-db-box": {
+        "start": "2026-10-17",
+        "finish": "2026-10-22",
+        "planned": 100,
+        "phase": "m&e rough-in"
+      },
+      "master-main-building-/-switch": {
         "start": "2026-10-18",
         "finish": "2026-10-20",
         "planned": 100,
         "phase": "m&e rough-in"
       },
-      "master-main-building-/-switch": {
-        "start": "2026-10-15",
-        "finish": "2026-10-17",
-        "planned": 100,
-        "phase": "m&e rough-in"
-      },
       "master-main-building-/-lighting": {
-        "start": "2026-10-16",
-        "finish": "2026-10-18",
+        "start": "2026-10-19",
+        "finish": "2026-10-21",
         "planned": 100,
         "phase": "m&e rough-in"
       },
-      "master-main-building-/-fan": {
+      "master-porch-/-lighting": {
         "start": "2026-10-20",
         "finish": "2026-10-22",
         "planned": 100,
         "phase": "m&e rough-in"
       },
-      "master-main-building-/-aircond-point": {
+      "master-main-building-/-power-point": {
+        "start": "2026-10-20",
+        "finish": "2026-10-22",
+        "planned": 100,
+        "phase": "m&e rough-in"
+      },
+      "master-porch-/-fan": {
         "start": "2026-10-21",
         "finish": "2026-10-23",
         "planned": 100,
         "phase": "m&e rough-in"
       },
-      "master-porch-/-lighting": {
-        "start": "2026-10-17",
-        "finish": "2026-10-19",
-        "planned": 100,
-        "phase": "m&e rough-in"
-      },
-      "master-porch-/-fan": {
-        "start": "2026-10-19",
-        "finish": "2026-10-21",
-        "planned": 100,
-        "phase": "m&e rough-in"
-      },
       "master-porch-/-power-point": {
-        "start": "2026-10-19",
-        "finish": "2026-10-21",
-        "planned": 100,
-        "phase": "m&e rough-in"
-      },
-      "master-earthing": {
-        "start": "2026-10-14",
-        "finish": "2026-10-20",
-        "planned": 100,
-        "phase": "m&e rough-in"
-      },
-      "master-db-box": {
-        "start": "2026-10-14",
-        "finish": "2026-10-20",
-        "planned": 100,
-        "phase": "m&e rough-in"
-      },
-      "master-wiring": {
-        "start": "2026-10-13",
+        "start": "2026-10-22",
         "finish": "2026-10-24",
         "planned": 100,
         "phase": "m&e rough-in"
       },
-      "master-doors-/-type-1-single-leaf": {
-        "start": "2026-11-29",
-        "finish": "2026-12-07",
+      "master-main-building-/-fan": {
+        "start": "2026-10-22",
+        "finish": "2026-10-24",
         "planned": 100,
-        "phase": "joinery / fixtures"
+        "phase": "m&e rough-in"
       },
-      "master-windows-/-type-2-1800*1200": {
-        "start": "2026-11-27",
-        "finish": "2026-12-05",
+      "master-main-building-/-aircond-point": {
+        "start": "2026-10-23",
+        "finish": "2026-10-25",
         "planned": 100,
-        "phase": "joinery / fixtures"
-      },
-      "project-preliminaries": {
-        "start": "2026-10-01",
-        "finish": "2026-10-03",
-        "planned": 100,
-        "phase": "preliminaries / mobilisation"
+        "phase": "m&e rough-in"
       },
       "room-2-facade": {
         "start": "2026-10-24",
         "finish": "2026-11-07",
+        "planned": 100,
+        "phase": "general construction"
+      },
+      "manual-1790154031589-vk2lak": {
+        "start": "2026-10-26",
+        "finish": "2026-11-06",
+        "planned": 100,
+        "phase": "general construction"
+      },
+      "project-preliminaries": {
+        "start": "2026-10-28",
+        "finish": "2026-11-07",
+        "planned": 100,
+        "phase": "general construction"
+      },
+      "manual-1790153329217-znr338": {
+        "start": "2026-10-30",
+        "finish": "2026-11-07",
+        "planned": 100,
+        "phase": "general construction"
+      },
+      "manual-1790153802326-fltu5h": {
+        "start": "2026-11-01",
+        "finish": "2026-11-09",
         "planned": 100,
         "phase": "general construction"
       },
@@ -2601,14 +2605,74 @@
         "planned": 100,
         "phase": "general construction"
       },
+      "master-main-building-/-brickwall-/-internal-wall": {
+        "start": "2026-10-30",
+        "finish": "2026-11-13",
+        "planned": 100,
+        "phase": "waterproofing / screed"
+      },
+      "master-main-building-/-brickwall-/-external-wall": {
+        "start": "2026-10-31",
+        "finish": "2026-11-12",
+        "planned": 100,
+        "phase": "waterproofing / screed"
+      },
+      "master-main-building-/-ceiling-/-external": {
+        "start": "2026-11-05",
+        "finish": "2026-11-19",
+        "planned": 100,
+        "phase": "wall / ceiling works"
+      },
+      "master-main-building-/-ceiling-/-internal": {
+        "start": "2026-11-06",
+        "finish": "2026-11-19",
+        "planned": 100,
+        "phase": "wall / ceiling works"
+      },
       "room-2-floor": {
         "start": "2026-11-13",
         "finish": "2026-11-24",
         "planned": 100,
         "phase": "floor / wall finishes"
+      },
+      "master-main-building-/-floor-tiles-/-external": {
+        "start": "2026-11-14",
+        "finish": "2026-11-23",
+        "planned": 100,
+        "phase": "floor / wall finishes"
+      },
+      "master-main-building-/-floor-tiles-/-internal": {
+        "start": "2026-11-17",
+        "finish": "2026-11-23",
+        "planned": 100,
+        "phase": "floor / wall finishes"
+      },
+      "master-windows-/-type-2-1800*1200": {
+        "start": "2026-11-22",
+        "finish": "2026-12-05",
+        "planned": 100,
+        "phase": "joinery / fixtures"
+      },
+      "master-doors-/-type-1-single-leaf": {
+        "start": "2026-11-23",
+        "finish": "2026-12-05",
+        "planned": 100,
+        "phase": "joinery / fixtures"
+      },
+      "master-main-building-/-painting-/-internal": {
+        "start": "2026-11-29",
+        "finish": "2026-12-10",
+        "planned": 100,
+        "phase": "painting / final finishes"
+      },
+      "master-main-building-/-painting-/-external": {
+        "start": "2026-11-30",
+        "finish": "2026-12-09",
+        "planned": 100,
+        "phase": "painting / final finishes"
       }
     },
-    "updatedAt": "2026-09-24T20:56:39.855Z"
+    "updatedAt": "2026-09-24T20:59:01.996Z"
   },
   "progress": {
     "schemaVersion": 4,
