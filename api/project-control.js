@@ -8,7 +8,7 @@ export default async function handler(req, res) {
 
   const token = process.env.GITHUB_TOKEN;
   const actualRepo = process.env.GITHUB_REPO || 'terajuciptabina-eng/terajuciptabina';
-  const dataBranch = process.env.GITHUB_DATA_BRANCH || 'project-data';
+  const dataBranch = 'main';
   if (!token) return res.status(500).json({message:'GitHub auth storage is not configured.'});
 
   const headers = {Authorization:`Bearer ${token}`,Accept:'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28','Content-Type':'application/json'};
