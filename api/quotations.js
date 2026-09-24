@@ -2,7 +2,7 @@ export default async function handler(req, res) {
   const origin = String(req.headers.origin || '');
   const allowedOrigin =
     origin === 'https://terajuciptabina-eng.github.io' ||
-    origin === 'https://terajuciptabina-pwtg71xci-terajuciptabina-9880.vercel.app';
+    /^https:\/\/terajuciptabina-[a-z0-9]+-terajuciptabina-9880\.vercel\.app$/.test(origin);
   if (allowedOrigin) res.setHeader('Access-Control-Allow-Origin', origin);
   res.setHeader('Access-Control-Allow-Methods', 'GET, PUT, DELETE, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
