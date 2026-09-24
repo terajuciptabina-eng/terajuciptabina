@@ -123,14 +123,19 @@ main{padding:10px 8px!important}
     selected=programs.find(function(x){return x.quotationId===els.wp.value})||null;
     if(!selected)return;
     await loadHistory();
-    if(!els.asAt.value)els.asAt.value=selected.projectFinish;
+    var savedDates=Object.keys(history).sort();
+    var preferredDate=requestedAsAt&&((history[requestedAsAt]&&requestedAsAt<=selected.projectFinish)||requestedAsAt===selected.projectFinish)?requestedAsAt:'';
+    if(!preferredDate&&savedDates.length)preferredDate=savedDates[savedDates.length-1];
+    els.asAt.value=preferredDate||selected.projectFinish;
     render();
     document.getElementById('back').href=progressUrl(selected.quotationId);
   }
   async function load(){
     if(role!=='contractor'||!id){els.summary.textContent='S-Curve is available for Contractor Workspace.';return}
+    var quotationId=requested||ctx.quotationId||'';
     try{
-      var data=await window.TERAJU_PROJECT_CONTROL.load(requested);
+      if(!quotationId)throw new Error('No quotationId supplied to S-Curve.');
+      var data=await window.TERAJU_PROJECT_CONTROL.load(quotationId);
       var serverProgram=data?.record?.workProgram;
       programs=serverProgram&&serverProgram.quotationId?[normalize(serverProgram)]:[];
     }catch(e){
@@ -139,11 +144,11 @@ main{padding:10px 8px!important}
       for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k&&k.indexOf(prefix)===0)keys.push(k)}
       programs=keys.map(function(k){try{return normalize(JSON.parse(localStorage.getItem(k)))}catch(e){return null}}).filter(function(x){return x&&x.quotationId&&x.schedule&&Array.isArray(x.items)});
     }
-    var exact=requested&&programs.find(function(x){return String(x.quotationId)===String(requested)||String(x.quotationNumber)===String(requested)});
+    var exact=quotationId&&programs.find(function(x){return String(x.quotationId)===String(quotationId)||String(x.quotationNumber)===String(quotationId)});
     if(exact){els.wp.innerHTML='<option value="'+esc(exact.quotationId)+'">'+esc(exact.quotationNumber||exact.quotationId)+'</option>';els.wp.value=exact.quotationId;await select();return}
     if(programs.length===1){els.wp.innerHTML='<option value="'+esc(programs[0].quotationId)+'">'+esc(programs[0].quotationNumber||programs[0].quotationId)+'</option>';els.wp.value=programs[0].quotationId;await select();return}
-    if(requested){els.wp.innerHTML='<option value="">Requested Work Program not saved</option>';els.status.textContent='Save the Work Program first.';return}
-    els.wp.innerHTML='<option value="">No saved Work Program</option>';
+    els.wp.innerHTML='<option value="">'+(quotationId?'Requested Work Program not saved':'No saved Work Program')+'</option>';
+    els.summary.textContent=quotationId?'The selected Work Program could not be loaded from project-control storage.':'Open S-Curve from a saved Work Program so the quotationId can be carried into project control.';
   }OCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><meta name="theme-color" content="#0f172a"><title>S-Curve | TERAJU WORKS</title><script src="https://cdn.tailwindcss.com"></script>
 <style>*{box-sizing:border-box}body{font-family:Inter,ui-sans-serif,system-ui,sans-serif;background:#f8fafc;color:#0f172a}.pdf-save-btn{flex:0 0 auto;border-radius:.75rem;border:1px solid #cbd5e1;background:#fff;padding:.5rem .75rem;font-size:.75rem;font-weight:700;line-height:1.25}.pdf-save-btn:hover{background:#f8fafc}
