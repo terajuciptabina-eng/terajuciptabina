@@ -62,7 +62,51 @@ export default async function handler(req, res) {
     const record={...existing,schemaVersion:1,recordType:'project-control',contractorId:id,plannerType:type,quotationId,updatedAt:now};
 
     if(payload.contract){
-      record.contract={...payload.contract,updatedAt:now};
+      const incoming={...payload.contract};
+      const previous=record.contract&&typeof record.contract==='object'?record.contract:null;
+      const sameContract=previous&&JSON.stringify({
+        contractNumber:previous.contractNumber||'',
+        contractDate:previous.contractDate||'',
+        projectStart:previous.projectStart||'',
+        projectFinish:previous.projectFinish||'',
+        contractSum:Number(previous.contractSum)||0,
+        items:Array.isArray(previous.items)?previous.items:[]
+      })===JSON.stringify({
+        contractNumber:incoming.contractNumber||'',
+        contractDate:incoming.contractDate||'',
+        projectStart:incoming.projectStart||'',
+        projectFinish:incoming.projectFinish||'',
+        contractSum:Number(incoming.contractSum)||0,
+        items:Array.isArray(incoming.items)?incoming.items:[]
+      });
+      const existingHistory=Array.isArray(previous?.amendmentHistory)?previous.amendmentHistory:[];
+      if(previous&&!sameContract){
+        const nextVersion=Math.max(Number(previous.version)||1,1)+1;
+        const reason=clean(incoming.amendmentReason)||'Contract amended';
+        const historyEntry={
+          version:Number(previous.version)||1,
+          contractNumber:previous.contractNumber||'',
+          contractDate:previous.contractDate||'',
+          projectStart:previous.projectStart||'',
+          projectFinish:previous.projectFinish||'',
+          contractSum:Number(previous.contractSum)||0,
+          client:previous.client||{},
+          project:previous.project||{},
+          items:Array.isArray(previous.items)?previous.items:[],
+          confirmedAt:previous.confirmedAt||previous.updatedAt||now,
+          amendedAt:now,
+          amendmentReason:reason
+        };
+        incoming.version=nextVersion;
+        incoming.amendmentReason=reason;
+        incoming.amendmentHistory=[...existingHistory,historyEntry];
+        incoming.amendedAt=now;
+      }else{
+        incoming.version=Number(incoming.version)||1;
+        incoming.amendmentHistory=existingHistory;
+      }
+      delete incoming.amendmentReason;
+      record.contract={...incoming,updatedAt:now};
     }
     if(payload.workProgram){
       record.workProgram={...payload.workProgram,updatedAt:now};
