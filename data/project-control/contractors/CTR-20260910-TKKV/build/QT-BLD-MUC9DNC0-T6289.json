@@ -5,7 +5,7 @@
   "plannerType": "build",
   "quotationId": "QT-BLD-MUC9DNC0-T6289",
   "createdAt": "2026-09-24T19:21:15.961Z",
-  "updatedAt": "2026-09-24T19:38:14.607Z",
+  "updatedAt": "2026-09-24T19:38:39.327Z",
   "workProgram": {
     "schemaVersion": 1,
     "recordType": "work-program",
@@ -18,7 +18,7 @@
       "state": "negeri-sembilan"
     },
     "projectStart": "2026-09-25",
-    "projectFinish": "2026-12-24",
+    "projectFinish": "2026-12-31",
     "items": [
       {
         "id": "master-preliminaries-/-building-plan-/-submission",
@@ -870,13 +870,13 @@
     "schedule": {
       "master-preliminaries-/-site-mobilisation-/-project-management": {
         "start": "2026-09-25",
-        "finish": "2026-09-28",
+        "finish": "2026-09-29",
         "planned": 100,
         "phase": "preliminaries / mobilisation"
       },
       "master-preliminaries-/-building-plan-/-submission": {
         "start": "2026-09-26",
-        "finish": "2026-09-28",
+        "finish": "2026-09-29",
         "planned": 100,
         "phase": "preliminaries / mobilisation"
       },
@@ -888,7 +888,7 @@
       },
       "master-boundary-fencing": {
         "start": "2026-09-28",
-        "finish": "2026-10-05",
+        "finish": "2026-10-06",
         "planned": 100,
         "phase": "earthwork / site"
       },
@@ -899,8 +899,8 @@
         "phase": "earthwork / site"
       },
       "master-earthing": {
-        "start": "2026-09-29",
-        "finish": "2026-10-01",
+        "start": "2026-09-30",
+        "finish": "2026-10-02",
         "planned": 100,
         "phase": "earthwork / site"
       },
@@ -911,247 +911,247 @@
         "phase": "earthwork / site"
       },
       "master-main-building-/-ground-beam-/-rebar": {
-        "start": "2026-10-02",
-        "finish": "2026-10-06",
-        "planned": 100,
-        "phase": "foundation"
-      },
-      "master-main-building-/-ground-slab-/-concrete": {
         "start": "2026-10-03",
         "finish": "2026-10-07",
         "planned": 100,
         "phase": "foundation"
       },
-      "master-main-building-/-ground-beam-/-formwork": {
-        "start": "2026-10-03",
-        "finish": "2026-10-05",
+      "master-main-building-/-ground-slab-/-concrete": {
+        "start": "2026-10-04",
+        "finish": "2026-10-08",
         "planned": 100,
         "phase": "foundation"
       },
-      "master-main-building-/-footing-/-rebar": {
+      "master-main-building-/-ground-beam-/-formwork": {
         "start": "2026-10-04",
         "finish": "2026-10-06",
         "planned": 100,
         "phase": "foundation"
       },
+      "master-main-building-/-footing-/-rebar": {
+        "start": "2026-10-05",
+        "finish": "2026-10-07",
+        "planned": 100,
+        "phase": "foundation"
+      },
       "master-main-building-/-ground-beam-/-concrete": {
-        "start": "2026-10-05",
-        "finish": "2026-10-07",
-        "planned": 100,
-        "phase": "foundation"
-      },
-      "master-main-building-/-footing-/-concrete": {
-        "start": "2026-10-05",
-        "finish": "2026-10-07",
-        "planned": 100,
-        "phase": "foundation"
-      },
-      "master-main-building-/-footing-/-formwork": {
         "start": "2026-10-06",
         "finish": "2026-10-08",
         "planned": 100,
         "phase": "foundation"
       },
+      "master-main-building-/-footing-/-concrete": {
+        "start": "2026-10-06",
+        "finish": "2026-10-08",
+        "planned": 100,
+        "phase": "foundation"
+      },
+      "master-main-building-/-footing-/-formwork": {
+        "start": "2026-10-07",
+        "finish": "2026-10-09",
+        "planned": 100,
+        "phase": "foundation"
+      },
       "master-main-building-/-roof-/-metal-roofing-sheet": {
-        "start": "2026-10-11",
-        "finish": "2026-10-21",
+        "start": "2026-10-12",
+        "finish": "2026-10-23",
         "planned": 100,
         "phase": "structure"
       },
       "master-main-building-/-roof-beam-/-rebar": {
-        "start": "2026-10-12",
-        "finish": "2026-10-15",
+        "start": "2026-10-13",
+        "finish": "2026-10-17",
         "planned": 100,
         "phase": "structure"
       },
       "master-main-building-/-column-/-rebar": {
-        "start": "2026-10-12",
-        "finish": "2026-10-14",
-        "planned": 100,
-        "phase": "structure"
-      },
-      "master-main-building-/-roof-beam-/-formwork": {
         "start": "2026-10-13",
         "finish": "2026-10-15",
         "planned": 100,
         "phase": "structure"
       },
-      "master-main-building-/-ground-slab-/-brc": {
+      "master-main-building-/-roof-beam-/-formwork": {
         "start": "2026-10-14",
         "finish": "2026-10-16",
+        "planned": 100,
+        "phase": "structure"
+      },
+      "master-main-building-/-ground-slab-/-brc": {
+        "start": "2026-10-15",
+        "finish": "2026-10-17",
         "planned": 100,
         "phase": "structure"
       },
       "master-main-building-/-drainage": {
-        "start": "2026-10-14",
-        "finish": "2026-10-16",
-        "planned": 100,
-        "phase": "structure"
-      },
-      "master-main-building-/-column-/-formwork": {
-        "start": "2026-10-15",
-        "finish": "2026-10-17",
-        "planned": 100,
-        "phase": "structure"
-      },
-      "master-main-building-/-roof-beam-/-concrete": {
-        "start": "2026-10-15",
-        "finish": "2026-10-17",
-        "planned": 100,
-        "phase": "structure"
-      },
-      "master-main-building-/-apron-/-concrete": {
         "start": "2026-10-16",
         "finish": "2026-10-18",
         "planned": 100,
         "phase": "structure"
       },
-      "master-main-building-/-column-/-concrete": {
+      "master-main-building-/-column-/-formwork": {
+        "start": "2026-10-16",
+        "finish": "2026-10-18",
+        "planned": 100,
+        "phase": "structure"
+      },
+      "master-main-building-/-roof-beam-/-concrete": {
         "start": "2026-10-17",
         "finish": "2026-10-19",
         "planned": 100,
         "phase": "structure"
       },
-      "master-main-building-/-apron-/-brc": {
-        "start": "2026-10-17",
-        "finish": "2026-10-19",
-        "planned": 100,
-        "phase": "structure"
-      },
-      "master-main-building-/-apron-/-formwork": {
+      "master-main-building-/-apron-/-concrete": {
         "start": "2026-10-18",
         "finish": "2026-10-20",
         "planned": 100,
         "phase": "structure"
       },
+      "master-main-building-/-column-/-concrete": {
+        "start": "2026-10-18",
+        "finish": "2026-10-20",
+        "planned": 100,
+        "phase": "structure"
+      },
+      "master-main-building-/-apron-/-brc": {
+        "start": "2026-10-19",
+        "finish": "2026-10-21",
+        "planned": 100,
+        "phase": "structure"
+      },
+      "master-main-building-/-apron-/-formwork": {
+        "start": "2026-10-20",
+        "finish": "2026-10-22",
+        "planned": 100,
+        "phase": "structure"
+      },
       "master-main-building-/-brickwall-/-internal-wall": {
-        "start": "2026-10-22",
-        "finish": "2026-11-01",
+        "start": "2026-10-24",
+        "finish": "2026-11-04",
         "planned": 100,
         "phase": "walling"
       },
       "master-main-building-/-brickwall-/-external-wall": {
-        "start": "2026-10-23",
-        "finish": "2026-10-31",
+        "start": "2026-10-25",
+        "finish": "2026-11-03",
         "planned": 100,
         "phase": "walling"
       },
       "master-main-building-/-painting-/-internal": {
-        "start": "2026-10-25",
-        "finish": "2026-10-31",
+        "start": "2026-10-28",
+        "finish": "2026-11-03",
         "planned": 100,
         "phase": "walling"
       },
       "master-main-building-/-painting-/-external": {
-        "start": "2026-10-27",
-        "finish": "2026-11-01",
+        "start": "2026-10-30",
+        "finish": "2026-11-04",
         "planned": 100,
         "phase": "walling"
       },
       "master-wiring": {
-        "start": "2026-11-07",
-        "finish": "2026-11-17",
+        "start": "2026-11-11",
+        "finish": "2026-11-22",
         "planned": 100,
         "phase": "m&e first fix"
       },
       "master-main-building-/-switch": {
-        "start": "2026-11-08",
-        "finish": "2026-11-11",
+        "start": "2026-11-12",
+        "finish": "2026-11-16",
         "planned": 100,
         "phase": "m&e first fix"
       },
       "master-main-building-/-power-point": {
-        "start": "2026-11-09",
-        "finish": "2026-11-12",
+        "start": "2026-11-13",
+        "finish": "2026-11-16",
         "planned": 100,
         "phase": "m&e first fix"
       },
       "master-main-building-/-lighting": {
-        "start": "2026-11-10",
-        "finish": "2026-11-13",
+        "start": "2026-11-14",
+        "finish": "2026-11-17",
         "planned": 100,
         "phase": "m&e first fix"
       },
       "master-main-building-/-aircond-point": {
-        "start": "2026-11-11",
-        "finish": "2026-11-14",
+        "start": "2026-11-15",
+        "finish": "2026-11-18",
         "planned": 100,
         "phase": "m&e first fix"
       },
       "master-main-building-/-fan": {
-        "start": "2026-11-13",
-        "finish": "2026-11-15",
+        "start": "2026-11-17",
+        "finish": "2026-11-19",
         "planned": 100,
         "phase": "m&e first fix"
       },
       "master-doors-/-type-2-sliding": {
-        "start": "2026-11-20",
-        "finish": "2026-11-28",
+        "start": "2026-11-24",
+        "finish": "2026-12-03",
         "planned": 100,
         "phase": "openings / metal works"
       },
       "master-doors-/-type-1-single-leaf": {
-        "start": "2026-11-21",
-        "finish": "2026-11-29",
+        "start": "2026-11-26",
+        "finish": "2026-12-05",
         "planned": 100,
         "phase": "openings / metal works"
       },
       "master-doors-/-type-4-double-leaf-main-door": {
-        "start": "2026-11-23",
-        "finish": "2026-12-01",
+        "start": "2026-11-27",
+        "finish": "2026-12-06",
         "planned": 100,
         "phase": "openings / metal works"
       },
       "master-main-building-/-ceiling-/-internal": {
-        "start": "2026-11-25",
-        "finish": "2026-12-02",
+        "start": "2026-11-30",
+        "finish": "2026-12-07",
         "planned": 100,
         "phase": "ceilings / tiling"
       },
       "master-main-building-/-ceiling-/-external": {
-        "start": "2026-11-26",
-        "finish": "2026-12-02",
+        "start": "2026-12-01",
+        "finish": "2026-12-07",
         "planned": 100,
         "phase": "ceilings / tiling"
       },
       "master-main-building-/-floor-tiles-/-external": {
-        "start": "2026-11-27",
-        "finish": "2026-12-03",
+        "start": "2026-12-03",
+        "finish": "2026-12-09",
         "planned": 100,
         "phase": "ceilings / tiling"
       },
       "master-main-building-/-floor-tiles-/-internal": {
-        "start": "2026-11-29",
-        "finish": "2026-12-04",
+        "start": "2026-12-04",
+        "finish": "2026-12-09",
         "planned": 100,
         "phase": "ceilings / tiling"
       },
       "master-gate": {
-        "start": "2026-12-08",
-        "finish": "2026-12-16",
+        "start": "2026-12-14",
+        "finish": "2026-12-23",
         "planned": 100,
         "phase": "external works"
       },
       "master-main-building-/-septic-tank": {
-        "start": "2026-12-09",
-        "finish": "2026-12-14",
+        "start": "2026-12-15",
+        "finish": "2026-12-20",
         "planned": 100,
         "phase": "external works"
       },
       "master-landscaping": {
-        "start": "2026-12-10",
-        "finish": "2026-12-14",
+        "start": "2026-12-16",
+        "finish": "2026-12-20",
         "planned": 100,
         "phase": "external works"
       },
       "master-main-building-/-water-tank": {
-        "start": "2026-12-12",
-        "finish": "2026-12-14",
+        "start": "2026-12-18",
+        "finish": "2026-12-20",
         "planned": 100,
         "phase": "external works"
       }
     },
-    "updatedAt": "2026-09-24T19:31:55.934Z"
+    "updatedAt": "2026-09-24T19:38:39.327Z"
   },
   "progress": {
     "schemaVersion": 4,
