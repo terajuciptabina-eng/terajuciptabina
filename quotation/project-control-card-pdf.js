@@ -40,12 +40,15 @@ async function captureElement(source,renderWidth){
   holder.appendChild(clone);
   document.body.appendChild(holder);
   await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+  const actualWidth=Math.max(renderWidth,clone.scrollWidth,Math.ceil(clone.getBoundingClientRect().width));
+  holder.style.width=actualWidth+'px';
+  clone.style.minWidth=actualWidth+'px';
 
   const canvas=await html2canvas(clone,{
     backgroundColor:'#fff',
     scale:Math.min(2,Math.max(1.5,devicePixelRatio||1)),
     useCORS:true,allowTaint:false,logging:false,
-    width:renderWidth,windowWidth:renderWidth,scrollX:0,scrollY:0
+    width:actualWidth,windowWidth:actualWidth,scrollX:0,scrollY:0
   });
   holder.remove();
   return canvas;
