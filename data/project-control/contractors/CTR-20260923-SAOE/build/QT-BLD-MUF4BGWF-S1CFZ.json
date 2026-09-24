@@ -5,7 +5,7 @@
   "plannerType": "build",
   "quotationId": "QT-BLD-MUF4BGWF-S1CFZ",
   "createdAt": "2026-09-24T17:46:29.508Z",
-  "updatedAt": "2026-09-24T18:33:29.997Z",
+  "updatedAt": "2026-09-24T18:33:39.172Z",
   "workProgram": {
     "schemaVersion": 1,
     "recordType": "work-program",
@@ -1575,9 +1575,9 @@
     "validDates": {
       "2026-12-31": {
         "valid": true,
-        "savedAt": "2026-09-24T18:29:54.016Z"
+        "savedAt": "2026-09-24T18:33:38.595Z"
       }
     },
-    "updatedAt": "2026-09-24T18:29:54.601Z"
+    "updatedAt": "2026-09-24T18:33:39.172Z"
   }
 }
