@@ -1423,11 +1423,11 @@
           "manualItems": [],
           "standardRateItems": [],
           "quotationType": "detail",
-          "projectId": "PRJ-REN-MUFZW2EA-YEOTP",
+          "projectId": "PRJ-REN-MUDK95WW-KUEM7",
           "projectState": "negeri-sembilan",
           "rateSetId": "negeri-sembilan",
           "rateSetName": "Negeri Sembilan",
-          "rateSnapshotAt": "2026-09-24T20:39:14.571Z"
+          "rateSnapshotAt": "2026-09-24T20:40:05.842Z"
         },
         "itemListVersion": 1,
         "items": [
@@ -2215,7 +2215,7 @@
           }
         ],
         "createdAt": "2026-09-24T20:39:13.684Z",
-        "updatedAt": "2026-09-24T20:39:15.489Z",
+        "updatedAt": "2026-09-24T20:40:06.992Z",
         "estimateNumber": "EST-REN-003"
       },
       {
@@ -2554,7 +2554,7 @@
     ]
   },
   "createdAt": "2026-09-10T10:58:30.455Z",
-  "updatedAt": "2026-09-24T20:39:15.489Z",
+  "updatedAt": "2026-09-24T20:40:06.992Z",
   "quotationRunningNumber": {
     "build": 5,
     "renovation": 3
