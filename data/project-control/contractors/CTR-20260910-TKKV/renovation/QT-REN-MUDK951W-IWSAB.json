@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "recordType": "project-control",
+  "contractorId": "CTR-20260910-TKKV",
+  "plannerType": "renovation",
+  "quotationId": "QT-REN-MUDK951W-IWSAB",
+  "createdAt": "2026-09-24T21:17:52.110Z",
+  "updatedAt": "2026-09-24T21:17:52.110Z",
+  "contract": {
+    "schemaVersion": 1,
+    "recordType": "contract",
+    "status": "confirmed",
+    "contractNumber": "CTR-20260925-IVF4W",
+    "quotationId": "QT-REN-MUDK951W-IWSAB",
+    "quotationNumber": "Q001S",
+    "contractDate": "2026-09-25",
+    "projectStart": "2026-10-01",
+    "projectFinish": "2026-11-23",
+    "contractSum": 63881,
+    "client": {
+      "name": "Not specified"
+    },
+    "project": {
+      "location": "Not specified",
+      "builtUpArea": 400,
+      "state": "selangor"
+    },
+    "items": [],
+    "sourceEstimateUpdatedAt": "2026-09-23T03:46:00.368Z",
+    "confirmedAt": "2026-09-24T21:17:51.584Z",
+    "updatedAt": "2026-09-24T21:17:52.110Z"
+  }
+}
