@@ -54,7 +54,7 @@ main{padding:10px 8px!important}
   }
   function wpKey(){return 'teraju.workprogram.v1.'+role+'.'+id+'.'+type+'.'+(selected?selected.quotationId:'none')}
   function pgKey(){return 'teraju.progress.v2.'+role+'.'+id+'.'+type+'.'+(selected?selected.quotationId:'none')}
-  async function loadHistory(){history={};try{var data=await window.TERAJU_PROJECT_CONTROL.load(selected&&selected.quotationId||'');var x=data?.record?.progress;if(x&&x.history){var valid=x.validDates||{},dates=Object.keys(x.history).filter(function(d){return valid[d]?.valid===true}).sort();if(dates.length){var d=dates[dates.length-1];history={[d]:x.history[d]};return;}}}catch(e){console.warn('[TERAJU PROJECT CONTROL] Server S-Curve load failed; using local cache.',e)}try{var x=JSON.parse(localStorage.getItem(pgKey())||'null');if(x&&x.schemaVersion>=3&&x.recordType==='progress'&&x.source==='manual-save'&&x.history){var valid=x.validDates||{},dates=Object.keys(x.history).filter(function(d){return valid[d]?.valid===true}).sort();if(dates.length){var d=dates[dates.length-1];history={[d]:x.history[d]};}}}catch(e){}}
+  async function loadHistory(){history={};try{var data=await window.TERAJU_PROJECT_CONTROL.load(selected&&selected.quotationId||'');var x=data?.record?.progress;if(x&&x.history){var valid=x.validDates||{},dates=Object.keys(x.history).filter(function(d){return valid[d]?.valid===true}).sort();if(dates.length){history=dates.reduce(function(out,d){out[d]=x.history[d];return out},{});return;}}}catch(e){console.warn('[TERAJU PROJECT CONTROL] Server S-Curve load failed; using local cache.',e)}try{var x=JSON.parse(localStorage.getItem(pgKey())||'null');if(x&&x.schemaVersion>=3&&x.recordType==='progress'&&x.source==='manual-save'&&x.history){var valid=x.validDates||{},dates=Object.keys(x.history).filter(function(d){return valid[d]?.valid===true}).sort();if(dates.length){history=dates.reduce(function(out,d){out[d]=x.history[d];return out},{});}}}catch(e){}}
   function snapshot(date){
     var ds=Object.keys(history).filter(function(d){return d<=date}).sort();
     return ds.length?history[ds[ds.length-1]]:{};
@@ -135,12 +135,15 @@ main{padding:10px 8px!important}
     if(role!=='contractor'||!id){els.summary.textContent='S-Curve is available for Contractor Workspace.';return}
     var quotationId=requested||ctx.quotationId||'';
     try{
-      if(!quotationId)throw new Error('No quotationId supplied to S-Curve.');
-      var data=await window.TERAJU_PROJECT_CONTROL.load(quotationId);
-      var serverProgram=data?.record?.workProgram;
-      programs=serverProgram&&serverProgram.quotationId?[normalize(serverProgram)]:[];
+      if(quotationId){
+        var data=await window.TERAJU_PROJECT_CONTROL.load(quotationId);
+        var serverProgram=data?.record?.workProgram;
+        programs=serverProgram&&serverProgram.quotationId?[normalize(serverProgram)]:[];
+      }
     }catch(e){
       console.warn('[TERAJU PROJECT CONTROL] Server S-Curve Work Program load failed; using local cache.',e);
+    }
+    if(!programs.length){
       var prefix='teraju.workprogram.v1.'+role+'.'+id+'.'+type+'.',keys=[];
       for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k&&k.indexOf(prefix)===0)keys.push(k)}
       programs=keys.map(function(k){try{return normalize(JSON.parse(localStorage.getItem(k)))}catch(e){return null}}).filter(function(x){return x&&x.quotationId&&x.schedule&&Array.isArray(x.items)});
