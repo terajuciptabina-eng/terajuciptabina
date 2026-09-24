@@ -5,7 +5,7 @@
   "plannerType": "renovation",
   "quotationId": "QT-REN-MUG1AKW4-8QKDI",
   "createdAt": "2026-09-24T21:20:13.327Z",
-  "updatedAt": "2026-09-24T21:20:33.478Z",
+  "updatedAt": "2026-09-24T21:20:43.282Z",
   "contract": {
     "schemaVersion": 1,
     "recordType": "contract",
@@ -541,5 +541,2283 @@
       }
     },
     "updatedAt": "2026-09-24T21:20:33.478Z"
+  },
+  "progress": {
+    "schemaVersion": 4,
+    "recordType": "progress",
+    "quotationId": "QT-REN-MUG1AKW4-8QKDI",
+    "history": {
+      "2026-10-01": {
+        "project-preliminaries": {
+          "percent": 0
+        },
+        "room-1-floor": {
+          "percent": 0
+        },
+        "room-1-walltile": {
+          "percent": 0
+        },
+        "room-1-ceiling": {
+          "percent": 0
+        },
+        "room-1-downlight": {
+          "percent": 0
+        },
+        "room-1-fan": {
+          "percent": 0
+        },
+        "room-1-lamp": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 0
+        },
+        "room-2-spc": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 0
+        },
+        "room-2-fan": {
+          "percent": 0
+        },
+        "room-2-curtain": {
+          "percent": 0
+        }
+      },
+      "2026-10-02": {
+        "project-preliminaries": {
+          "percent": 0
+        },
+        "room-1-floor": {
+          "percent": 0
+        },
+        "room-1-walltile": {
+          "percent": 0
+        },
+        "room-1-ceiling": {
+          "percent": 0
+        },
+        "room-1-downlight": {
+          "percent": 0
+        },
+        "room-1-fan": {
+          "percent": 0
+        },
+        "room-1-lamp": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 0
+        },
+        "room-2-spc": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 0
+        },
+        "room-2-fan": {
+          "percent": 0
+        },
+        "room-2-curtain": {
+          "percent": 0
+        }
+      },
+      "2026-10-03": {
+        "project-preliminaries": {
+          "percent": 0
+        },
+        "room-1-floor": {
+          "percent": 0
+        },
+        "room-1-walltile": {
+          "percent": 0
+        },
+        "room-1-ceiling": {
+          "percent": 0
+        },
+        "room-1-downlight": {
+          "percent": 0
+        },
+        "room-1-fan": {
+          "percent": 0
+        },
+        "room-1-lamp": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 0
+        },
+        "room-2-spc": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 0
+        },
+        "room-2-fan": {
+          "percent": 0
+        },
+        "room-2-curtain": {
+          "percent": 0
+        }
+      },
+      "2026-10-04": {
+        "project-preliminaries": {
+          "percent": 0
+        },
+        "room-1-floor": {
+          "percent": 0
+        },
+        "room-1-walltile": {
+          "percent": 0
+        },
+        "room-1-ceiling": {
+          "percent": 0
+        },
+        "room-1-downlight": {
+          "percent": 0
+        },
+        "room-1-fan": {
+          "percent": 0
+        },
+        "room-1-lamp": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 0
+        },
+        "room-2-spc": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 0
+        },
+        "room-2-fan": {
+          "percent": 0
+        },
+        "room-2-curtain": {
+          "percent": 0
+        }
+      },
+      "2026-10-05": {
+        "project-preliminaries": {
+          "percent": 0
+        },
+        "room-1-floor": {
+          "percent": 0
+        },
+        "room-1-walltile": {
+          "percent": 0
+        },
+        "room-1-ceiling": {
+          "percent": 0
+        },
+        "room-1-downlight": {
+          "percent": 0
+        },
+        "room-1-fan": {
+          "percent": 0
+        },
+        "room-1-lamp": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 0
+        },
+        "room-2-spc": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 0
+        },
+        "room-2-fan": {
+          "percent": 0
+        },
+        "room-2-curtain": {
+          "percent": 0
+        }
+      },
+      "2026-10-06": {
+        "project-preliminaries": {
+          "percent": 0
+        },
+        "room-1-floor": {
+          "percent": 0
+        },
+        "room-1-walltile": {
+          "percent": 0
+        },
+        "room-1-ceiling": {
+          "percent": 0
+        },
+        "room-1-downlight": {
+          "percent": 0
+        },
+        "room-1-fan": {
+          "percent": 0
+        },
+        "room-1-lamp": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 0
+        },
+        "room-2-spc": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 0
+        },
+        "room-2-fan": {
+          "percent": 0
+        },
+        "room-2-curtain": {
+          "percent": 0
+        }
+      },
+      "2026-10-07": {
+        "project-preliminaries": {
+          "percent": 0
+        },
+        "room-1-floor": {
+          "percent": 0
+        },
+        "room-1-walltile": {
+          "percent": 0
+        },
+        "room-1-ceiling": {
+          "percent": 0
+        },
+        "room-1-downlight": {
+          "percent": 0
+        },
+        "room-1-fan": {
+          "percent": 0
+        },
+        "room-1-lamp": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 0
+        },
+        "room-2-spc": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 0
+        },
+        "room-2-fan": {
+          "percent": 0
+        },
+        "room-2-curtain": {
+          "percent": 0
+        }
+      },
+      "2026-10-08": {
+        "project-preliminaries": {
+          "percent": 0
+        },
+        "room-1-floor": {
+          "percent": 0
+        },
+        "room-1-walltile": {
+          "percent": 0
+        },
+        "room-1-ceiling": {
+          "percent": 0
+        },
+        "room-1-downlight": {
+          "percent": 0
+        },
+        "room-1-fan": {
+          "percent": 0
+        },
+        "room-1-lamp": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 0
+        },
+        "room-2-spc": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 0
+        },
+        "room-2-fan": {
+          "percent": 0
+        },
+        "room-2-curtain": {
+          "percent": 0
+        }
+      },
+      "2026-10-09": {
+        "project-preliminaries": {
+          "percent": 0
+        },
+        "room-1-floor": {
+          "percent": 0
+        },
+        "room-1-walltile": {
+          "percent": 0
+        },
+        "room-1-ceiling": {
+          "percent": 0
+        },
+        "room-1-downlight": {
+          "percent": 0
+        },
+        "room-1-fan": {
+          "percent": 0
+        },
+        "room-1-lamp": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 0
+        },
+        "room-2-spc": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 0
+        },
+        "room-2-fan": {
+          "percent": 0
+        },
+        "room-2-curtain": {
+          "percent": 0
+        }
+      },
+      "2026-10-10": {
+        "project-preliminaries": {
+          "percent": 0
+        },
+        "room-1-floor": {
+          "percent": 0
+        },
+        "room-1-walltile": {
+          "percent": 0
+        },
+        "room-1-ceiling": {
+          "percent": 0
+        },
+        "room-1-downlight": {
+          "percent": 0
+        },
+        "room-1-fan": {
+          "percent": 0
+        },
+        "room-1-lamp": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 0
+        },
+        "room-2-spc": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 0
+        },
+        "room-2-fan": {
+          "percent": 0
+        },
+        "room-2-curtain": {
+          "percent": 0
+        }
+      },
+      "2026-10-11": {
+        "project-preliminaries": {
+          "percent": 0
+        },
+        "room-1-floor": {
+          "percent": 0
+        },
+        "room-1-walltile": {
+          "percent": 0
+        },
+        "room-1-ceiling": {
+          "percent": 0
+        },
+        "room-1-downlight": {
+          "percent": 0
+        },
+        "room-1-fan": {
+          "percent": 0
+        },
+        "room-1-lamp": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 0
+        },
+        "room-2-spc": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 0
+        },
+        "room-2-fan": {
+          "percent": 0
+        },
+        "room-2-curtain": {
+          "percent": 0
+        }
+      },
+      "2026-10-12": {
+        "project-preliminaries": {
+          "percent": 0
+        },
+        "room-1-floor": {
+          "percent": 0
+        },
+        "room-1-walltile": {
+          "percent": 0
+        },
+        "room-1-ceiling": {
+          "percent": 0
+        },
+        "room-1-downlight": {
+          "percent": 0
+        },
+        "room-1-fan": {
+          "percent": 0
+        },
+        "room-1-lamp": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 0
+        },
+        "room-2-spc": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 0
+        },
+        "room-2-fan": {
+          "percent": 0
+        },
+        "room-2-curtain": {
+          "percent": 0
+        }
+      },
+      "2026-10-13": {
+        "project-preliminaries": {
+          "percent": 0
+        },
+        "room-1-floor": {
+          "percent": 0
+        },
+        "room-1-walltile": {
+          "percent": 0
+        },
+        "room-1-ceiling": {
+          "percent": 0
+        },
+        "room-1-downlight": {
+          "percent": 0
+        },
+        "room-1-fan": {
+          "percent": 0
+        },
+        "room-1-lamp": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 0
+        },
+        "room-2-spc": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 0
+        },
+        "room-2-fan": {
+          "percent": 0
+        },
+        "room-2-curtain": {
+          "percent": 0
+        }
+      },
+      "2026-10-14": {
+        "project-preliminaries": {
+          "percent": 0
+        },
+        "room-1-floor": {
+          "percent": 0
+        },
+        "room-1-walltile": {
+          "percent": 0
+        },
+        "room-1-ceiling": {
+          "percent": 0
+        },
+        "room-1-downlight": {
+          "percent": 0
+        },
+        "room-1-fan": {
+          "percent": 0
+        },
+        "room-1-lamp": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 0
+        },
+        "room-2-spc": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 0
+        },
+        "room-2-fan": {
+          "percent": 0
+        },
+        "room-2-curtain": {
+          "percent": 0
+        }
+      },
+      "2026-10-15": {
+        "project-preliminaries": {
+          "percent": 0
+        },
+        "room-1-floor": {
+          "percent": 0
+        },
+        "room-1-walltile": {
+          "percent": 0
+        },
+        "room-1-ceiling": {
+          "percent": 0
+        },
+        "room-1-downlight": {
+          "percent": 0
+        },
+        "room-1-fan": {
+          "percent": 0
+        },
+        "room-1-lamp": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 0
+        },
+        "room-2-spc": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 0
+        },
+        "room-2-fan": {
+          "percent": 0
+        },
+        "room-2-curtain": {
+          "percent": 0
+        }
+      },
+      "2026-10-16": {
+        "project-preliminaries": {
+          "percent": 0
+        },
+        "room-1-floor": {
+          "percent": 0
+        },
+        "room-1-walltile": {
+          "percent": 0
+        },
+        "room-1-ceiling": {
+          "percent": 0
+        },
+        "room-1-downlight": {
+          "percent": 0
+        },
+        "room-1-fan": {
+          "percent": 0
+        },
+        "room-1-lamp": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 0
+        },
+        "room-2-spc": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 0
+        },
+        "room-2-fan": {
+          "percent": 0
+        },
+        "room-2-curtain": {
+          "percent": 0
+        }
+      },
+      "2026-10-17": {
+        "project-preliminaries": {
+          "percent": 0
+        },
+        "room-1-floor": {
+          "percent": 0
+        },
+        "room-1-walltile": {
+          "percent": 0
+        },
+        "room-1-ceiling": {
+          "percent": 0
+        },
+        "room-1-downlight": {
+          "percent": 0
+        },
+        "room-1-fan": {
+          "percent": 0
+        },
+        "room-1-lamp": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 0
+        },
+        "room-2-spc": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 0
+        },
+        "room-2-fan": {
+          "percent": 0
+        },
+        "room-2-curtain": {
+          "percent": 0
+        }
+      },
+      "2026-10-18": {
+        "project-preliminaries": {
+          "percent": 1
+        },
+        "room-1-floor": {
+          "percent": 0
+        },
+        "room-1-walltile": {
+          "percent": 0
+        },
+        "room-1-ceiling": {
+          "percent": 0
+        },
+        "room-1-downlight": {
+          "percent": 0
+        },
+        "room-1-fan": {
+          "percent": 0
+        },
+        "room-1-lamp": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 0
+        },
+        "room-2-spc": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 0
+        },
+        "room-2-fan": {
+          "percent": 0
+        },
+        "room-2-curtain": {
+          "percent": 0
+        }
+      },
+      "2026-10-19": {
+        "project-preliminaries": {
+          "percent": 6
+        },
+        "room-1-floor": {
+          "percent": 0
+        },
+        "room-1-walltile": {
+          "percent": 0
+        },
+        "room-1-ceiling": {
+          "percent": 0
+        },
+        "room-1-downlight": {
+          "percent": 0
+        },
+        "room-1-fan": {
+          "percent": 0
+        },
+        "room-1-lamp": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 0
+        },
+        "room-2-spc": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 0
+        },
+        "room-2-fan": {
+          "percent": 0
+        },
+        "room-2-curtain": {
+          "percent": 0
+        }
+      },
+      "2026-10-20": {
+        "project-preliminaries": {
+          "percent": 12
+        },
+        "room-1-floor": {
+          "percent": 0
+        },
+        "room-1-walltile": {
+          "percent": 0
+        },
+        "room-1-ceiling": {
+          "percent": 0
+        },
+        "room-1-downlight": {
+          "percent": 0
+        },
+        "room-1-fan": {
+          "percent": 0
+        },
+        "room-1-lamp": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 0
+        },
+        "room-2-spc": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 0
+        },
+        "room-2-fan": {
+          "percent": 0
+        },
+        "room-2-curtain": {
+          "percent": 0
+        }
+      },
+      "2026-10-21": {
+        "project-preliminaries": {
+          "percent": 20
+        },
+        "room-1-floor": {
+          "percent": 0
+        },
+        "room-1-walltile": {
+          "percent": 0
+        },
+        "room-1-ceiling": {
+          "percent": 0
+        },
+        "room-1-downlight": {
+          "percent": 0
+        },
+        "room-1-fan": {
+          "percent": 0
+        },
+        "room-1-lamp": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 0
+        },
+        "room-2-spc": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 4
+        },
+        "room-2-fan": {
+          "percent": 0
+        },
+        "room-2-curtain": {
+          "percent": 0
+        }
+      },
+      "2026-10-22": {
+        "project-preliminaries": {
+          "percent": 29
+        },
+        "room-1-floor": {
+          "percent": 0
+        },
+        "room-1-walltile": {
+          "percent": 0
+        },
+        "room-1-ceiling": {
+          "percent": 0
+        },
+        "room-1-downlight": {
+          "percent": 0
+        },
+        "room-1-fan": {
+          "percent": 0
+        },
+        "room-1-lamp": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 0
+        },
+        "room-2-spc": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 16
+        },
+        "room-2-fan": {
+          "percent": 0
+        },
+        "room-2-curtain": {
+          "percent": 0
+        }
+      },
+      "2026-10-23": {
+        "project-preliminaries": {
+          "percent": 39
+        },
+        "room-1-floor": {
+          "percent": 0
+        },
+        "room-1-walltile": {
+          "percent": 0
+        },
+        "room-1-ceiling": {
+          "percent": 0
+        },
+        "room-1-downlight": {
+          "percent": 0
+        },
+        "room-1-fan": {
+          "percent": 0
+        },
+        "room-1-lamp": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 0
+        },
+        "room-2-spc": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 32
+        },
+        "room-2-fan": {
+          "percent": 0
+        },
+        "room-2-curtain": {
+          "percent": 0
+        }
+      },
+      "2026-10-24": {
+        "project-preliminaries": {
+          "percent": 50
+        },
+        "room-1-floor": {
+          "percent": 0
+        },
+        "room-1-walltile": {
+          "percent": 0
+        },
+        "room-1-ceiling": {
+          "percent": 0
+        },
+        "room-1-downlight": {
+          "percent": 0
+        },
+        "room-1-fan": {
+          "percent": 0
+        },
+        "room-1-lamp": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 0
+        },
+        "room-2-spc": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 50
+        },
+        "room-2-fan": {
+          "percent": 0
+        },
+        "room-2-curtain": {
+          "percent": 0
+        }
+      },
+      "2026-10-25": {
+        "project-preliminaries": {
+          "percent": 61
+        },
+        "room-1-floor": {
+          "percent": 0
+        },
+        "room-1-walltile": {
+          "percent": 0
+        },
+        "room-1-ceiling": {
+          "percent": 0
+        },
+        "room-1-downlight": {
+          "percent": 0
+        },
+        "room-1-fan": {
+          "percent": 0
+        },
+        "room-1-lamp": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 0
+        },
+        "room-2-spc": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 68
+        },
+        "room-2-fan": {
+          "percent": 0
+        },
+        "room-2-curtain": {
+          "percent": 16
+        }
+      },
+      "2026-10-26": {
+        "project-preliminaries": {
+          "percent": 71
+        },
+        "room-1-floor": {
+          "percent": 0
+        },
+        "room-1-walltile": {
+          "percent": 0
+        },
+        "room-1-ceiling": {
+          "percent": 7
+        },
+        "room-1-downlight": {
+          "percent": 0
+        },
+        "room-1-fan": {
+          "percent": 0
+        },
+        "room-1-lamp": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 0
+        },
+        "room-2-spc": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 84
+        },
+        "room-2-fan": {
+          "percent": 0
+        },
+        "room-2-curtain": {
+          "percent": 50
+        }
+      },
+      "2026-10-27": {
+        "project-preliminaries": {
+          "percent": 80
+        },
+        "room-1-floor": {
+          "percent": 0
+        },
+        "room-1-walltile": {
+          "percent": 0
+        },
+        "room-1-ceiling": {
+          "percent": 26
+        },
+        "room-1-downlight": {
+          "percent": 0
+        },
+        "room-1-fan": {
+          "percent": 0
+        },
+        "room-1-lamp": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 7
+        },
+        "room-2-spc": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 96
+        },
+        "room-2-fan": {
+          "percent": 0
+        },
+        "room-2-curtain": {
+          "percent": 84
+        }
+      },
+      "2026-10-28": {
+        "project-preliminaries": {
+          "percent": 88
+        },
+        "room-1-floor": {
+          "percent": 0
+        },
+        "room-1-walltile": {
+          "percent": 0
+        },
+        "room-1-ceiling": {
+          "percent": 50
+        },
+        "room-1-downlight": {
+          "percent": 0
+        },
+        "room-1-fan": {
+          "percent": 50
+        },
+        "room-1-lamp": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 26
+        },
+        "room-2-spc": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 85
+        },
+        "room-2-fan": {
+          "percent": 0
+        },
+        "room-2-curtain": {
+          "percent": 85
+        }
+      },
+      "2026-10-29": {
+        "project-preliminaries": {
+          "percent": 94
+        },
+        "room-1-floor": {
+          "percent": 0
+        },
+        "room-1-walltile": {
+          "percent": 0
+        },
+        "room-1-ceiling": {
+          "percent": 74
+        },
+        "room-1-downlight": {
+          "percent": 0
+        },
+        "room-1-fan": {
+          "percent": 86
+        },
+        "room-1-lamp": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 50
+        },
+        "room-2-spc": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 86
+        },
+        "room-2-fan": {
+          "percent": 0
+        },
+        "room-2-curtain": {
+          "percent": 86
+        }
+      },
+      "2026-10-30": {
+        "project-preliminaries": {
+          "percent": 99
+        },
+        "room-1-floor": {
+          "percent": 0
+        },
+        "room-1-walltile": {
+          "percent": 0
+        },
+        "room-1-ceiling": {
+          "percent": 93
+        },
+        "room-1-downlight": {
+          "percent": 0
+        },
+        "room-1-fan": {
+          "percent": 86
+        },
+        "room-1-lamp": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 74
+        },
+        "room-2-spc": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 86
+        },
+        "room-2-fan": {
+          "percent": 50
+        },
+        "room-2-curtain": {
+          "percent": 86
+        }
+      },
+      "2026-10-31": {
+        "project-preliminaries": {
+          "percent": 87
+        },
+        "room-1-floor": {
+          "percent": 0
+        },
+        "room-1-walltile": {
+          "percent": 0
+        },
+        "room-1-ceiling": {
+          "percent": 87
+        },
+        "room-1-downlight": {
+          "percent": 0
+        },
+        "room-1-fan": {
+          "percent": 87
+        },
+        "room-1-lamp": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 93
+        },
+        "room-2-spc": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 87
+        },
+        "room-2-fan": {
+          "percent": 87
+        },
+        "room-2-curtain": {
+          "percent": 87
+        }
+      },
+      "2026-11-01": {
+        "project-preliminaries": {
+          "percent": 88
+        },
+        "room-1-floor": {
+          "percent": 0
+        },
+        "room-1-walltile": {
+          "percent": 6
+        },
+        "room-1-ceiling": {
+          "percent": 88
+        },
+        "room-1-downlight": {
+          "percent": 0
+        },
+        "room-1-fan": {
+          "percent": 88
+        },
+        "room-1-lamp": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 88
+        },
+        "room-2-spc": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 88
+        },
+        "room-2-fan": {
+          "percent": 88
+        },
+        "room-2-curtain": {
+          "percent": 88
+        }
+      },
+      "2026-11-02": {
+        "project-preliminaries": {
+          "percent": 88
+        },
+        "room-1-floor": {
+          "percent": 10
+        },
+        "room-1-walltile": {
+          "percent": 20
+        },
+        "room-1-ceiling": {
+          "percent": 88
+        },
+        "room-1-downlight": {
+          "percent": 0
+        },
+        "room-1-fan": {
+          "percent": 88
+        },
+        "room-1-lamp": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 88
+        },
+        "room-2-spc": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 88
+        },
+        "room-2-fan": {
+          "percent": 88
+        },
+        "room-2-curtain": {
+          "percent": 88
+        }
+      },
+      "2026-11-03": {
+        "project-preliminaries": {
+          "percent": 89
+        },
+        "room-1-floor": {
+          "percent": 35
+        },
+        "room-1-walltile": {
+          "percent": 39
+        },
+        "room-1-ceiling": {
+          "percent": 89
+        },
+        "room-1-downlight": {
+          "percent": 0
+        },
+        "room-1-fan": {
+          "percent": 89
+        },
+        "room-1-lamp": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 89
+        },
+        "room-2-spc": {
+          "percent": 16
+        },
+        "room-2-downlight": {
+          "percent": 89
+        },
+        "room-2-fan": {
+          "percent": 89
+        },
+        "room-2-curtain": {
+          "percent": 89
+        }
+      },
+      "2026-11-04": {
+        "project-preliminaries": {
+          "percent": 89
+        },
+        "room-1-floor": {
+          "percent": 65
+        },
+        "room-1-walltile": {
+          "percent": 61
+        },
+        "room-1-ceiling": {
+          "percent": 89
+        },
+        "room-1-downlight": {
+          "percent": 0
+        },
+        "room-1-fan": {
+          "percent": 89
+        },
+        "room-1-lamp": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 89
+        },
+        "room-2-spc": {
+          "percent": 50
+        },
+        "room-2-downlight": {
+          "percent": 89
+        },
+        "room-2-fan": {
+          "percent": 89
+        },
+        "room-2-curtain": {
+          "percent": 89
+        }
+      },
+      "2026-11-05": {
+        "project-preliminaries": {
+          "percent": 90
+        },
+        "room-1-floor": {
+          "percent": 90
+        },
+        "room-1-walltile": {
+          "percent": 80
+        },
+        "room-1-ceiling": {
+          "percent": 90
+        },
+        "room-1-downlight": {
+          "percent": 0
+        },
+        "room-1-fan": {
+          "percent": 90
+        },
+        "room-1-lamp": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 90
+        },
+        "room-2-spc": {
+          "percent": 84
+        },
+        "room-2-downlight": {
+          "percent": 90
+        },
+        "room-2-fan": {
+          "percent": 90
+        },
+        "room-2-curtain": {
+          "percent": 90
+        }
+      },
+      "2026-11-06": {
+        "project-preliminaries": {
+          "percent": 90
+        },
+        "room-1-floor": {
+          "percent": 90
+        },
+        "room-1-walltile": {
+          "percent": 94
+        },
+        "room-1-ceiling": {
+          "percent": 90
+        },
+        "room-1-downlight": {
+          "percent": 0
+        },
+        "room-1-fan": {
+          "percent": 90
+        },
+        "room-1-lamp": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 90
+        },
+        "room-2-spc": {
+          "percent": 90
+        },
+        "room-2-downlight": {
+          "percent": 90
+        },
+        "room-2-fan": {
+          "percent": 90
+        },
+        "room-2-curtain": {
+          "percent": 90
+        }
+      },
+      "2026-11-07": {
+        "project-preliminaries": {
+          "percent": 91
+        },
+        "room-1-floor": {
+          "percent": 91
+        },
+        "room-1-walltile": {
+          "percent": 91
+        },
+        "room-1-ceiling": {
+          "percent": 91
+        },
+        "room-1-downlight": {
+          "percent": 3
+        },
+        "room-1-fan": {
+          "percent": 91
+        },
+        "room-1-lamp": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 91
+        },
+        "room-2-spc": {
+          "percent": 91
+        },
+        "room-2-downlight": {
+          "percent": 91
+        },
+        "room-2-fan": {
+          "percent": 91
+        },
+        "room-2-curtain": {
+          "percent": 91
+        }
+      },
+      "2026-11-08": {
+        "project-preliminaries": {
+          "percent": 92
+        },
+        "room-1-floor": {
+          "percent": 92
+        },
+        "room-1-walltile": {
+          "percent": 92
+        },
+        "room-1-ceiling": {
+          "percent": 92
+        },
+        "room-1-downlight": {
+          "percent": 10
+        },
+        "room-1-fan": {
+          "percent": 92
+        },
+        "room-1-lamp": {
+          "percent": 6
+        },
+        "room-2-ceiling": {
+          "percent": 92
+        },
+        "room-2-spc": {
+          "percent": 92
+        },
+        "room-2-downlight": {
+          "percent": 92
+        },
+        "room-2-fan": {
+          "percent": 92
+        },
+        "room-2-curtain": {
+          "percent": 92
+        }
+      },
+      "2026-11-09": {
+        "project-preliminaries": {
+          "percent": 92
+        },
+        "room-1-floor": {
+          "percent": 92
+        },
+        "room-1-walltile": {
+          "percent": 92
+        },
+        "room-1-ceiling": {
+          "percent": 92
+        },
+        "room-1-downlight": {
+          "percent": 22
+        },
+        "room-1-fan": {
+          "percent": 92
+        },
+        "room-1-lamp": {
+          "percent": 20
+        },
+        "room-2-ceiling": {
+          "percent": 92
+        },
+        "room-2-spc": {
+          "percent": 92
+        },
+        "room-2-downlight": {
+          "percent": 92
+        },
+        "room-2-fan": {
+          "percent": 92
+        },
+        "room-2-curtain": {
+          "percent": 92
+        }
+      },
+      "2026-11-10": {
+        "project-preliminaries": {
+          "percent": 93
+        },
+        "room-1-floor": {
+          "percent": 93
+        },
+        "room-1-walltile": {
+          "percent": 93
+        },
+        "room-1-ceiling": {
+          "percent": 93
+        },
+        "room-1-downlight": {
+          "percent": 35
+        },
+        "room-1-fan": {
+          "percent": 93
+        },
+        "room-1-lamp": {
+          "percent": 39
+        },
+        "room-2-ceiling": {
+          "percent": 93
+        },
+        "room-2-spc": {
+          "percent": 93
+        },
+        "room-2-downlight": {
+          "percent": 93
+        },
+        "room-2-fan": {
+          "percent": 93
+        },
+        "room-2-curtain": {
+          "percent": 93
+        }
+      },
+      "2026-11-11": {
+        "project-preliminaries": {
+          "percent": 93
+        },
+        "room-1-floor": {
+          "percent": 93
+        },
+        "room-1-walltile": {
+          "percent": 93
+        },
+        "room-1-ceiling": {
+          "percent": 93
+        },
+        "room-1-downlight": {
+          "percent": 50
+        },
+        "room-1-fan": {
+          "percent": 93
+        },
+        "room-1-lamp": {
+          "percent": 61
+        },
+        "room-2-ceiling": {
+          "percent": 93
+        },
+        "room-2-spc": {
+          "percent": 93
+        },
+        "room-2-downlight": {
+          "percent": 93
+        },
+        "room-2-fan": {
+          "percent": 93
+        },
+        "room-2-curtain": {
+          "percent": 93
+        }
+      },
+      "2026-11-12": {
+        "project-preliminaries": {
+          "percent": 94
+        },
+        "room-1-floor": {
+          "percent": 94
+        },
+        "room-1-walltile": {
+          "percent": 94
+        },
+        "room-1-ceiling": {
+          "percent": 94
+        },
+        "room-1-downlight": {
+          "percent": 65
+        },
+        "room-1-fan": {
+          "percent": 94
+        },
+        "room-1-lamp": {
+          "percent": 80
+        },
+        "room-2-ceiling": {
+          "percent": 94
+        },
+        "room-2-spc": {
+          "percent": 94
+        },
+        "room-2-downlight": {
+          "percent": 94
+        },
+        "room-2-fan": {
+          "percent": 94
+        },
+        "room-2-curtain": {
+          "percent": 94
+        }
+      },
+      "2026-11-13": {
+        "project-preliminaries": {
+          "percent": 94
+        },
+        "room-1-floor": {
+          "percent": 94
+        },
+        "room-1-walltile": {
+          "percent": 94
+        },
+        "room-1-ceiling": {
+          "percent": 94
+        },
+        "room-1-downlight": {
+          "percent": 78
+        },
+        "room-1-fan": {
+          "percent": 94
+        },
+        "room-1-lamp": {
+          "percent": 94
+        },
+        "room-2-ceiling": {
+          "percent": 94
+        },
+        "room-2-spc": {
+          "percent": 94
+        },
+        "room-2-downlight": {
+          "percent": 94
+        },
+        "room-2-fan": {
+          "percent": 94
+        },
+        "room-2-curtain": {
+          "percent": 94
+        }
+      },
+      "2026-11-14": {
+        "project-preliminaries": {
+          "percent": 95
+        },
+        "room-1-floor": {
+          "percent": 95
+        },
+        "room-1-walltile": {
+          "percent": 95
+        },
+        "room-1-ceiling": {
+          "percent": 95
+        },
+        "room-1-downlight": {
+          "percent": 90
+        },
+        "room-1-fan": {
+          "percent": 95
+        },
+        "room-1-lamp": {
+          "percent": 95
+        },
+        "room-2-ceiling": {
+          "percent": 95
+        },
+        "room-2-spc": {
+          "percent": 95
+        },
+        "room-2-downlight": {
+          "percent": 95
+        },
+        "room-2-fan": {
+          "percent": 95
+        },
+        "room-2-curtain": {
+          "percent": 95
+        }
+      },
+      "2026-11-15": {
+        "project-preliminaries": {
+          "percent": 95
+        },
+        "room-1-floor": {
+          "percent": 95
+        },
+        "room-1-walltile": {
+          "percent": 95
+        },
+        "room-1-ceiling": {
+          "percent": 95
+        },
+        "room-1-downlight": {
+          "percent": 97
+        },
+        "room-1-fan": {
+          "percent": 95
+        },
+        "room-1-lamp": {
+          "percent": 95
+        },
+        "room-2-ceiling": {
+          "percent": 95
+        },
+        "room-2-spc": {
+          "percent": 95
+        },
+        "room-2-downlight": {
+          "percent": 95
+        },
+        "room-2-fan": {
+          "percent": 95
+        },
+        "room-2-curtain": {
+          "percent": 95
+        }
+      },
+      "2026-11-16": {
+        "project-preliminaries": {
+          "percent": 96
+        },
+        "room-1-floor": {
+          "percent": 96
+        },
+        "room-1-walltile": {
+          "percent": 96
+        },
+        "room-1-ceiling": {
+          "percent": 96
+        },
+        "room-1-downlight": {
+          "percent": 96
+        },
+        "room-1-fan": {
+          "percent": 96
+        },
+        "room-1-lamp": {
+          "percent": 96
+        },
+        "room-2-ceiling": {
+          "percent": 96
+        },
+        "room-2-spc": {
+          "percent": 96
+        },
+        "room-2-downlight": {
+          "percent": 96
+        },
+        "room-2-fan": {
+          "percent": 96
+        },
+        "room-2-curtain": {
+          "percent": 96
+        }
+      },
+      "2026-11-17": {
+        "project-preliminaries": {
+          "percent": 97
+        },
+        "room-1-floor": {
+          "percent": 97
+        },
+        "room-1-walltile": {
+          "percent": 97
+        },
+        "room-1-ceiling": {
+          "percent": 97
+        },
+        "room-1-downlight": {
+          "percent": 97
+        },
+        "room-1-fan": {
+          "percent": 97
+        },
+        "room-1-lamp": {
+          "percent": 97
+        },
+        "room-2-ceiling": {
+          "percent": 97
+        },
+        "room-2-spc": {
+          "percent": 97
+        },
+        "room-2-downlight": {
+          "percent": 97
+        },
+        "room-2-fan": {
+          "percent": 97
+        },
+        "room-2-curtain": {
+          "percent": 97
+        }
+      },
+      "2026-11-18": {
+        "project-preliminaries": {
+          "percent": 97
+        },
+        "room-1-floor": {
+          "percent": 97
+        },
+        "room-1-walltile": {
+          "percent": 97
+        },
+        "room-1-ceiling": {
+          "percent": 97
+        },
+        "room-1-downlight": {
+          "percent": 97
+        },
+        "room-1-fan": {
+          "percent": 97
+        },
+        "room-1-lamp": {
+          "percent": 97
+        },
+        "room-2-ceiling": {
+          "percent": 97
+        },
+        "room-2-spc": {
+          "percent": 97
+        },
+        "room-2-downlight": {
+          "percent": 97
+        },
+        "room-2-fan": {
+          "percent": 97
+        },
+        "room-2-curtain": {
+          "percent": 97
+        }
+      },
+      "2026-11-19": {
+        "project-preliminaries": {
+          "percent": 98
+        },
+        "room-1-floor": {
+          "percent": 98
+        },
+        "room-1-walltile": {
+          "percent": 98
+        },
+        "room-1-ceiling": {
+          "percent": 98
+        },
+        "room-1-downlight": {
+          "percent": 98
+        },
+        "room-1-fan": {
+          "percent": 98
+        },
+        "room-1-lamp": {
+          "percent": 98
+        },
+        "room-2-ceiling": {
+          "percent": 98
+        },
+        "room-2-spc": {
+          "percent": 98
+        },
+        "room-2-downlight": {
+          "percent": 98
+        },
+        "room-2-fan": {
+          "percent": 98
+        },
+        "room-2-curtain": {
+          "percent": 98
+        }
+      },
+      "2026-11-20": {
+        "project-preliminaries": {
+          "percent": 98
+        },
+        "room-1-floor": {
+          "percent": 98
+        },
+        "room-1-walltile": {
+          "percent": 98
+        },
+        "room-1-ceiling": {
+          "percent": 98
+        },
+        "room-1-downlight": {
+          "percent": 98
+        },
+        "room-1-fan": {
+          "percent": 98
+        },
+        "room-1-lamp": {
+          "percent": 98
+        },
+        "room-2-ceiling": {
+          "percent": 98
+        },
+        "room-2-spc": {
+          "percent": 98
+        },
+        "room-2-downlight": {
+          "percent": 98
+        },
+        "room-2-fan": {
+          "percent": 98
+        },
+        "room-2-curtain": {
+          "percent": 98
+        }
+      },
+      "2026-11-21": {
+        "project-preliminaries": {
+          "percent": 99
+        },
+        "room-1-floor": {
+          "percent": 99
+        },
+        "room-1-walltile": {
+          "percent": 99
+        },
+        "room-1-ceiling": {
+          "percent": 99
+        },
+        "room-1-downlight": {
+          "percent": 99
+        },
+        "room-1-fan": {
+          "percent": 99
+        },
+        "room-1-lamp": {
+          "percent": 99
+        },
+        "room-2-ceiling": {
+          "percent": 99
+        },
+        "room-2-spc": {
+          "percent": 99
+        },
+        "room-2-downlight": {
+          "percent": 99
+        },
+        "room-2-fan": {
+          "percent": 99
+        },
+        "room-2-curtain": {
+          "percent": 99
+        }
+      },
+      "2026-11-22": {
+        "project-preliminaries": {
+          "percent": 99
+        },
+        "room-1-floor": {
+          "percent": 99
+        },
+        "room-1-walltile": {
+          "percent": 99
+        },
+        "room-1-ceiling": {
+          "percent": 99
+        },
+        "room-1-downlight": {
+          "percent": 99
+        },
+        "room-1-fan": {
+          "percent": 99
+        },
+        "room-1-lamp": {
+          "percent": 99
+        },
+        "room-2-ceiling": {
+          "percent": 99
+        },
+        "room-2-spc": {
+          "percent": 99
+        },
+        "room-2-downlight": {
+          "percent": 99
+        },
+        "room-2-fan": {
+          "percent": 99
+        },
+        "room-2-curtain": {
+          "percent": 99
+        }
+      },
+      "2026-11-23": {
+        "project-preliminaries": {
+          "percent": 100
+        },
+        "room-1-floor": {
+          "percent": 100
+        },
+        "room-1-walltile": {
+          "percent": 100
+        },
+        "room-1-ceiling": {
+          "percent": 100
+        },
+        "room-1-downlight": {
+          "percent": 100
+        },
+        "room-1-fan": {
+          "percent": 100
+        },
+        "room-1-lamp": {
+          "percent": 100
+        },
+        "room-2-ceiling": {
+          "percent": 100
+        },
+        "room-2-spc": {
+          "percent": 100
+        },
+        "room-2-downlight": {
+          "percent": 100
+        },
+        "room-2-fan": {
+          "percent": 100
+        },
+        "room-2-curtain": {
+          "percent": 100
+        }
+      }
+    },
+    "validDates": {
+      "2026-10-01": {
+        "valid": true,
+        "savedAt": "2026-09-24T21:20:42.772Z"
+      },
+      "2026-10-02": {
+        "valid": true,
+        "savedAt": "2026-09-24T21:20:42.772Z"
+      },
+      "2026-10-03": {
+        "valid": true,
+        "savedAt": "2026-09-24T21:20:42.772Z"
+      },
+      "2026-10-04": {
+        "valid": true,
+        "savedAt": "2026-09-24T21:20:42.772Z"
+      },
+      "2026-10-05": {
+        "valid": true,
+        "savedAt": "2026-09-24T21:20:42.772Z"
+      },
+      "2026-10-06": {
+        "valid": true,
+        "savedAt": "2026-09-24T21:20:42.772Z"
+      },
+      "2026-10-07": {
+        "valid": true,
+        "savedAt": "2026-09-24T21:20:42.772Z"
+      },
+      "2026-10-08": {
+        "valid": true,
+        "savedAt": "2026-09-24T21:20:42.772Z"
+      },
+      "2026-10-09": {
+        "valid": true,
+        "savedAt": "2026-09-24T21:20:42.772Z"
+      },
+      "2026-10-10": {
+        "valid": true,
+        "savedAt": "2026-09-24T21:20:42.772Z"
+      },
+      "2026-10-11": {
+        "valid": true,
+        "savedAt": "2026-09-24T21:20:42.772Z"
+      },
+      "2026-10-12": {
+        "valid": true,
+        "savedAt": "2026-09-24T21:20:42.772Z"
+      },
+      "2026-10-13": {
+        "valid": true,
+        "savedAt": "2026-09-24T21:20:42.772Z"
+      },
+      "2026-10-14": {
+        "valid": true,
+        "savedAt": "2026-09-24T21:20:42.772Z"
+      },
+      "2026-10-15": {
+        "valid": true,
+        "savedAt": "2026-09-24T21:20:42.772Z"
+      },
+      "2026-10-16": {
+        "valid": true,
+        "savedAt": "2026-09-24T21:20:42.772Z"
+      },
+      "2026-10-17": {
+        "valid": true,
+        "savedAt": "2026-09-24T21:20:42.772Z"
+      },
+      "2026-10-18": {
+        "valid": true,
+        "savedAt": "2026-09-24T21:20:42.772Z"
+      },
+      "2026-10-19": {
+        "valid": true,
+        "savedAt": "2026-09-24T21:20:42.772Z"
+      },
+      "2026-10-20": {
+        "valid": true,
+        "savedAt": "2026-09-24T21:20:42.772Z"
+      },
+      "2026-10-21": {
+        "valid": true,
+        "savedAt": "2026-09-24T21:20:42.772Z"
+      },
+      "2026-10-22": {
+        "valid": true,
+        "savedAt": "2026-09-24T21:20:42.772Z"
+      },
+      "2026-10-23": {
+        "valid": true,
+        "savedAt": "2026-09-24T21:20:42.772Z"
+      },
+      "2026-10-24": {
+        "valid": true,
+        "savedAt": "2026-09-24T21:20:42.772Z"
+      },
+      "2026-10-25": {
+        "valid": true,
+        "savedAt": "2026-09-24T21:20:42.772Z"
+      },
+      "2026-10-26": {
+        "valid": true,
+        "savedAt": "2026-09-24T21:20:42.772Z"
+      },
+      "2026-10-27": {
+        "valid": true,
+        "savedAt": "2026-09-24T21:20:42.772Z"
+      },
+      "2026-10-28": {
+        "valid": true,
+        "savedAt": "2026-09-24T21:20:42.772Z"
+      },
+      "2026-10-29": {
+        "valid": true,
+        "savedAt": "2026-09-24T21:20:42.772Z"
+      },
+      "2026-10-30": {
+        "valid": true,
+        "savedAt": "2026-09-24T21:20:42.772Z"
+      },
+      "2026-10-31": {
+        "valid": true,
+        "savedAt": "2026-09-24T21:20:42.772Z"
+      },
+      "2026-11-01": {
+        "valid": true,
+        "savedAt": "2026-09-24T21:20:42.772Z"
+      },
+      "2026-11-02": {
+        "valid": true,
+        "savedAt": "2026-09-24T21:20:42.772Z"
+      },
+      "2026-11-03": {
+        "valid": true,
+        "savedAt": "2026-09-24T21:20:42.772Z"
+      },
+      "2026-11-04": {
+        "valid": true,
+        "savedAt": "2026-09-24T21:20:42.772Z"
+      },
+      "2026-11-05": {
+        "valid": true,
+        "savedAt": "2026-09-24T21:20:42.772Z"
+      },
+      "2026-11-06": {
+        "valid": true,
+        "savedAt": "2026-09-24T21:20:42.772Z"
+      },
+      "2026-11-07": {
+        "valid": true,
+        "savedAt": "2026-09-24T21:20:42.772Z"
+      },
+      "2026-11-08": {
+        "valid": true,
+        "savedAt": "2026-09-24T21:20:42.772Z"
+      },
+      "2026-11-09": {
+        "valid": true,
+        "savedAt": "2026-09-24T21:20:42.772Z"
+      },
+      "2026-11-10": {
+        "valid": true,
+        "savedAt": "2026-09-24T21:20:42.772Z"
+      },
+      "2026-11-11": {
+        "valid": true,
+        "savedAt": "2026-09-24T21:20:42.772Z"
+      },
+      "2026-11-12": {
+        "valid": true,
+        "savedAt": "2026-09-24T21:20:42.772Z"
+      },
+      "2026-11-13": {
+        "valid": true,
+        "savedAt": "2026-09-24T21:20:42.772Z"
+      },
+      "2026-11-14": {
+        "valid": true,
+        "savedAt": "2026-09-24T21:20:42.772Z"
+      },
+      "2026-11-15": {
+        "valid": true,
+        "savedAt": "2026-09-24T21:20:42.772Z"
+      },
+      "2026-11-16": {
+        "valid": true,
+        "savedAt": "2026-09-24T21:20:42.772Z"
+      },
+      "2026-11-17": {
+        "valid": true,
+        "savedAt": "2026-09-24T21:20:42.772Z"
+      },
+      "2026-11-18": {
+        "valid": true,
+        "savedAt": "2026-09-24T21:20:42.772Z"
+      },
+      "2026-11-19": {
+        "valid": true,
+        "savedAt": "2026-09-24T21:20:42.772Z"
+      },
+      "2026-11-20": {
+        "valid": true,
+        "savedAt": "2026-09-24T21:20:42.772Z"
+      },
+      "2026-11-21": {
+        "valid": true,
+        "savedAt": "2026-09-24T21:20:42.772Z"
+      },
+      "2026-11-22": {
+        "valid": true,
+        "savedAt": "2026-09-24T21:20:42.772Z"
+      },
+      "2026-11-23": {
+        "valid": true,
+        "savedAt": "2026-09-24T21:20:42.772Z"
+      }
+    },
+    "updatedAt": "2026-09-24T21:20:43.282Z"
   }
 }
