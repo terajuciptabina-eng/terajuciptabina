@@ -2537,7 +2537,16 @@
           "customRates": [],
           "customQuantities": [],
           "customDescriptions": [],
-          "customRoomLabels": [],
+          "customRoomLabels": [
+            [
+              "room-1",
+              "Wet Kitchen"
+            ],
+            [
+              "room-2",
+              "Bedroom"
+            ]
+          ],
           "excludedItems": [
             "project-preliminaries"
           ],
@@ -2546,9 +2555,9 @@
           "quotationType": "simple",
           "projectId": "PRJ-REN-MUDUJRVH-VQ4H3",
           "projectState": "selangor",
-          "rateSetId": "selangor",
-          "rateSetName": "Selangor",
-          "rateSnapshotAt": "2026-09-24T18:20:15.442Z"
+          "rateSetId": "default",
+          "rateSetName": "Default Rate",
+          "rateSnapshotAt": "2026-09-24T18:20:50.733Z"
         },
         "itemListVersion": 1,
         "items": [
@@ -3353,7 +3362,7 @@
           }
         ],
         "createdAt": "2026-09-24T18:19:27.103Z",
-        "updatedAt": "2026-09-24T18:20:17.102Z",
+        "updatedAt": "2026-09-24T18:20:51.612Z",
         "estimateNumber": "EST-REN-007"
       },
       {
@@ -3650,7 +3659,7 @@
     ]
   },
   "createdAt": "2026-09-23T08:33:53.459Z",
-  "updatedAt": "2026-09-24T18:20:17.102Z",
+  "updatedAt": "2026-09-24T18:20:51.612Z",
   "quotationRunningNumber": {
     "renovation": 7,
     "build": 2
