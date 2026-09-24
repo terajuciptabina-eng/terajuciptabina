@@ -9,6 +9,7 @@
 <section class="card p-5 sm:p-6"><div class="flex flex-wrap items-center justify-between gap-3"><div><h2 class="text-lg font-black">Planned vs Actual</h2><p class="mt-1 text-xs text-slate-500">Weekly cumulative contract value.</p></div><div class="legend"><span><i class="dot"></i> Planned</span><span><i class="dot actual"></i> Actual</span></div></div><div id="chart" class="chart-wrap mt-5"></div></section>
 <section class="card mt-6 p-5 sm:p-6"><h2 class="text-lg font-black">Weekly Control Data</h2><div class="table-wrap mt-4 overflow-auto"><table class="table"><thead><tr><th>Period</th><th>Planned RM</th><th>Planned %</th><th>Actual RM</th><th>Actual %</th><th>Variance %</th></tr></thead><tbody id="data"></tbody></table></div></section>
 </main>
+<script src="workspace-context.js"></script>
 <script>
 (function(){
   var p=new URLSearchParams(location.search);
