@@ -6,7 +6,6 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (!['GET','PUT','DELETE'].includes(req.method)) return res.status(405).json({message:'Method not allowed'});
   const token=process.env.GITHUB_TOKEN;
-  const repo=process.env.GITHUB_REPO||'terajucipbina-eng/terajucipbina';
   const actualRepo=process.env.GITHUB_REPO||'terajuciptabina-eng/terajuciptabina';
   if(!token) return res.status(500).json({message:'GitHub auth storage is not configured.'});
   const headers={Authorization:`Bearer ${token}`,Accept:'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28','Content-Type':'application/json'};
@@ -33,18 +32,14 @@ export default async function handler(req, res) {
     const existing=current.record&&typeof current.record==='object'?current.record:{schemaVersion:1,recordType:'project-control',contractorId:id,plannerType:type,quotationId,createdAt:now};
     const record={...existing,schemaVersion:1,recordType:'project-control',contractorId:id,plannerType:type,quotationId,updatedAt:now};
     if(payload.workProgram){
-      const wp={...payload.workProgram,updatedAt:now};
-      const versions=Array.isArray(existing.workProgram?.versions)?existing.workProgram.versions:[];
-      const version={...wp,savedAt:now};
-      record.workProgram={...wp,versions:[...versions,version].slice(-100)};
+      record.workProgram={...payload.workProgram,updatedAt:now};
+      delete record.workProgram.versions;
     }
     if(payload.progress){
       const incoming=payload.progress;
-      const oldHistory=existing.progress?.history&&typeof existing.progress.history==='object'?existing.progress.history:{};
-      const oldValid=existing.progress?.validDates&&typeof existing.progress.validDates==='object'?existing.progress.validDates:{};
       const newHistory=incoming.history&&typeof incoming.history==='object'?incoming.history:{};
       const newValid=incoming.validDates&&typeof incoming.validDates==='object'?incoming.validDates:{};
-      record.progress={schemaVersion:3,recordType:'progress',quotationId,history:{...oldHistory,...newHistory},validDates:{...oldValid,...newValid},updatedAt:now};
+      record.progress={schemaVersion:4,recordType:'progress',quotationId,history:newHistory,validDates:newValid,updatedAt:now};
     }
     const content=Buffer.from(JSON.stringify(record,null,2)+'\n').toString('base64');
     const body={message:`Save project control ${type} ${quotationId}`,content};
