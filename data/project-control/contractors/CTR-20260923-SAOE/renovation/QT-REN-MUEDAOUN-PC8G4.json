@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "recordType": "project-control",
+  "contractorId": "CTR-20260923-SAOE",
+  "plannerType": "renovation",
+  "quotationId": "QT-REN-MUEDAOUN-PC8G4",
+  "createdAt": "2026-09-24T21:04:09.115Z",
+  "updatedAt": "2026-09-24T21:04:09.115Z",
+  "contract": {
+    "schemaVersion": 1,
+    "recordType": "contract",
+    "status": "confirmed",
+    "contractNumber": "CTR-20260925-F6GUF",
+    "quotationId": "QT-REN-MUEDAOUN-PC8G4",
+    "quotationNumber": "Q006D",
+    "contractDate": "2026-09-25",
+    "projectStart": "2026-10-01",
+    "projectFinish": "2027-01-31",
+    "contractSum": 134648,
+    "client": {
+      "name": "Tuan Iman"
+    },
+    "project": {
+      "location": "Eka Height Sendayan",
+      "builtUpArea": 600,
+      "state": "negeri-sembilan"
+    },
+    "items": [],
+    "sourceEstimateUpdatedAt": "2026-09-23T20:08:21.704Z",
+    "confirmedAt": "2026-09-24T21:04:08.390Z",
+    "updatedAt": "2026-09-24T21:04:09.115Z"
+  }
+}
