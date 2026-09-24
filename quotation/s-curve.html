@@ -97,10 +97,12 @@
   function render(){
     if(!selected)return;
     var sum=Number(selected.total)||0,ws=weeks(selected.projectStart,selected.projectFinish);
-    var end=els.asAt.value||selected.projectFinish;
+    var selectedDate=els.asAt.value||selected.projectFinish;
+    var actualDates=Object.keys(history).filter(function(d){return d<=selectedDate}).sort();
+    var actualEnd=actualDates.length?actualDates[actualDates.length-1]:null;
     var points=ws.length?ws:[selected.projectStart];
     var data=points.map(function(d){
-      var pm=plannedAt(d),hasActual=d<=end,am=hasActual?actualAt(d):null;
+      var pm=plannedAt(d),hasActual=!!actualEnd&&d<=actualEnd,am=hasActual?actualAt(d):null;
       return {date:d,pm:pm,pp:sum?pm/sum*100:0,am:am,ap:hasActual&&sum?am/sum*100:null};
     });
     var controlPoint=data.filter(function(d){return d.ap!=null}).slice(-1)[0]||data[0],variance=controlPoint.ap==null?0:controlPoint.ap-controlPoint.pp;
