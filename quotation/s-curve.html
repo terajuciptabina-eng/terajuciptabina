@@ -17,7 +17,7 @@
   var idKey=role==='contractor'?'contractorId':'homeownerId';
   var id=(p.get('id')||p.get(idKey)||ctx.id||'').trim().toUpperCase();
   var type=(p.get('plannerType')||ctx.plannerType||'build').toLowerCase()==='renovation'?'renovation':'build';
-  var requested=p.get('quotationId')||ctx.quotationId||'';
+  var requested=p.get('quotationId')||ctx.quotationId||'',requestedAsAt=p.get('asAt')||'';
   var els={
     wp:document.getElementById('wp'),asAt:document.getElementById('asAt'),
     summary:document.getElementById('summary'),chart:document.getElementById('chart'),
@@ -106,7 +106,7 @@
     els.data.innerHTML=data.map(function(x){var has=x.ap!=null,vv=has?x.ap-x.pp:null;return '<tr><td>'+esc(x.date)+'</td><td>RM '+fmt(x.pm)+'</td><td>'+x.pp.toFixed(2)+'%</td><td>'+(has?'RM '+fmt(x.am):'—')+'</td><td>'+(has?x.ap.toFixed(2)+'%':'—')+'</td><td>'+(has?((vv>=0?'+':'')+vv.toFixed(2)+'%'):'—')+'</td></tr>'}).join('');
   }
   function progressUrl(q){
-    return 'progress.html?role='+encodeURIComponent(role)+'&id='+encodeURIComponent(id)+'&plannerType='+encodeURIComponent(type)+'&quotationId='+encodeURIComponent(q||requested||'');
+    return 'progress.html?role='+encodeURIComponent(role)+'&id='+encodeURIComponent(id)+'&plannerType='+encodeURIComponent(type)+'&quotationId='+encodeURIComponent(q||requested||'')+(requestedAsAt?'&asAt='+encodeURIComponent(requestedAsAt):'');
   }
   document.getElementById('back').href=progressUrl(requested);
   function select(){
