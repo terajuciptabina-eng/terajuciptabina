@@ -88,7 +88,7 @@
       var yy=y(v);
       grid+='<line x1="'+L+'" y1="'+yy+'" x2="'+(W-R)+'" y2="'+yy+'" stroke="#e2e8f0"/><text x="'+(L-8)+'" y="'+(yy+4)+'" text-anchor="end" font-size="10" fill="#64748b">'+v+'%</text>';
     }
-    function path(key){return data.map(function(d,i){return (i?'L':'M')+x(i).toFixed(1)+' '+y(d[key]).toFixed(1)}).join(' ')}
+    function path(key){var out='',started=false;data.forEach(function(d,i){var v=d[key];if(v==null||!isFinite(Number(v))){started=false;return}out+=(started?'L':'M')+x(i).toFixed(1)+' '+y(Number(v)).toFixed(1);started=true});return out}
     var labels=data.map(function(d,i){return i%Math.max(1,Math.ceil(data.length/8))===0?'<text x="'+x(i)+'" y="'+(H-22)+'" text-anchor="middle" font-size="9" fill="#64748b">'+d.date.slice(5)+'</text>':''}).join('');
     els.chart.innerHTML='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Planned and actual S-Curve"><rect width="'+W+'" height="'+H+'" fill="white"/>'+grid+'<path d="'+path('pp')+'" fill="none" stroke="#334155" stroke-width="3"/><path d="'+path('ap')+'" fill="none" stroke="#94a3b8" stroke-width="3"/>'+labels+'</svg>';
   }
@@ -96,20 +96,19 @@
     if(!selected)return;
     var sum=Number(selected.total)||0,ws=weeks(selected.projectStart,selected.projectFinish);
     var end=els.asAt.value||selected.projectFinish;
-    var points=ws.filter(function(x){return x<=end});
-    if(!points.length)points=[selected.projectStart];
+    var points=ws.length?ws:[selected.projectStart];
     var data=points.map(function(d){
-      var pm=plannedAt(d),am=actualAt(d);
-      return {date:d,pm:pm,pp:sum?pm/sum*100:0,am:am,ap:sum?am/sum*100:0};
+      var pm=plannedAt(d),hasActual=d<=end,am=hasActual?actualAt(d):null;
+      return {date:d,pm:pm,pp:sum?pm/sum*100:0,am:am,ap:hasActual&&sum?am/sum*100:null};
     });
-    var last=data[data.length-1],variance=last.ap-last.pp;
+    var controlPoint=data.filter(function(d){return d.ap!=null}).slice(-1)[0]||data[0],variance=controlPoint.ap==null?0:controlPoint.ap-controlPoint.pp;
     document.getElementById('sum').textContent='RM '+fmt(sum);
-    document.getElementById('planned').textContent=last.pp.toFixed(2)+'%';
-    document.getElementById('actual').textContent=last.ap.toFixed(2)+'%';
-    document.getElementById('variance').textContent=(variance>=0?'+':'')+variance.toFixed(2)+'%';
-    document.getElementById('pv').textContent='RM '+fmt(last.pm);
-    document.getElementById('av').textContent='RM '+fmt(last.am);
-    document.getElementById('insight').textContent=variance===0?'Actual is aligned with planned cumulative progress.':(variance<0?'Actual progress is '+Math.abs(variance).toFixed(2)+' percentage points below planned.':'Actual progress is '+variance.toFixed(2)+' percentage points above planned.');
+    document.getElementById('planned').textContent=controlPoint.pp.toFixed(2)+'%';
+    document.getElementById('actual').textContent=controlPoint.ap==null?'—':controlPoint.ap.toFixed(2)+'%';
+    document.getElementById('variance').textContent=controlPoint.ap==null?'—':(variance>=0?'+':'')+variance.toFixed(2)+'%';
+    document.getElementById('pv').textContent='RM '+fmt(controlPoint.pm);
+    document.getElementById('av').textContent=controlPoint.am==null?'—':'RM '+fmt(controlPoint.am);
+    document.getElementById('insight').textContent=controlPoint.ap==null?'No actual progress recorded for the selected date.':(variance===0?'Actual is aligned with planned cumulative progress.':(variance<0?'Actual progress is '+Math.abs(variance).toFixed(2)+' percentage points below planned.':'Actual progress is '+variance.toFixed(2)+' percentage points above planned.'));
     els.summary.innerHTML='<div class="flex flex-wrap gap-x-6 gap-y-2"><span><b>Estimate:</b> '+esc(selected.quotationNumber||selected.quotationId)+'</span><span><b>Period:</b> '+esc(selected.projectStart)+' → '+esc(selected.projectFinish)+'</span><span><b>Progress snapshots:</b> '+Object.keys(history).length+'</span></div>';
     draw(data);
     els.data.innerHTML=data.map(function(x){var vv=x.ap-x.pp;return '<tr><td>'+esc(x.date)+'</td><td>RM '+fmt(x.pm)+'</td><td>'+x.pp.toFixed(2)+'%</td><td>RM '+fmt(x.am)+'</td><td>'+x.ap.toFixed(2)+'%</td><td>'+(vv>=0?'+':'')+vv.toFixed(2)+'%</td></tr>'}).join('');
