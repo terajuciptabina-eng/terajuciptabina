@@ -51,7 +51,7 @@ const days=(a,b)=>{const x=parseDate(a),y=parseDate(b);return x&&y&&y>=x?Math.fl
 function updateNavigation(){document.getElementById('backLink').href=contextUrl();document.getElementById('progressLink').href=`progress.html?role=contractor&id=${encodeURIComponent(id)}&plannerType=${encodeURIComponent(type)}&quotationId=${encodeURIComponent(selected?.quotationId||'')}`}
 function projectDefaults(){const now=new Date(),end=new Date(now);end.setDate(end.getDate()+90);if(!els.start.value)els.start.value=iso(now);if(!els.finish.value)els.finish.value=iso(end)}
 function loadSaved(){try{const x=JSON.parse(localStorage.getItem(key())||'null');if(!x)return;if(x.projectStart)els.start.value=x.projectStart;if(x.projectFinish)els.finish.value=x.projectFinish;schedule=x.schedule||{}}catch{}}
-function saveLocal(){try{localStorage.setItem(key(),JSON.stringify({schemaVersion:1,quotationId:selected.quotationId,quotationNumber:selected.quotationNumber||selected.quotationId,total:Number(selected.total)||0,project:selected.project||{},projectStart:els.start.value,projectFinish:els.finish.value,items:rows.map(x=>({id:x.id,category:x.category||'',description:x.description||'',unit:x.unit||'',qty:Number(x.qty)||0,rate:Number(x.rate)||0,amount:Number(x.amount)||0,section:x.section||'',level3:x.level3||'',header:x.header||''})),schedule,updatedAt:new Date().toISOString()}))}catch{}}
+function saveLocal(){try{localStorage.setItem(key(),JSON.stringify({schemaVersion:1,quotationId:selected.quotationId,quotationNumber:selected.quotationNumber||selected.quotationId,total:Number(selected.total)||0,project:selected.project||{},projectStart:els.start.value,projectFinish:els.finish.value,items:rows.map(x=>({id:x.id,category:x.category||'',description:x.description||'',unit:x.unit||'',qty:Number(x.qty)||0,rate:Number(x.rate)||0,amount:Number(x.amount)||0,section:x.section||'',level3:x.level3||'',header:x.header||'',group:x.group||'',groupKey:x.groupKey||'',groupTitle:x.groupTitle||'',masterPath:x.masterPath||'',roomId:x.roomId||'',room:x.room||''})),schedule,updatedAt:new Date().toISOString()}))}catch{}}
 function weekStarts(){const a=parseDate(els.start.value),b=parseDate(els.finish.value);if(!a||!b||b<a)return[];const out=[];let d=new Date(a);while(d<=b){out.push(new Date(d));d.setDate(d.getDate()+7)}return out}
 function renderAnalytics(){
  const total=rows.reduce((s,x)=>s+(Number(x.amount)||0),0),duration=days(els.start.value,els.finish.value),scheduled=rows.filter(x=>{const s=schedule[x.id]||{};return s.start&&s.finish}).length;
@@ -65,19 +65,30 @@ function renderAnalytics(){
  els.legend.textContent=active+' active · '+completed+' completed by today · Actual '+actualPct.toFixed(1)+'% · Variance '+(variance>=0?'+':'')+variance.toFixed(1)+' pp at '+actualDate;
 }
 function renderGantt(){
- const items=rows.filter(x=>{const s=schedule[x.id]||{};return s.start&&s.finish}).slice(0,60);
+ const items=rows.filter(x=>{const s=schedule[x.id]||{};return s.start&&s.finish}).slice(0,120);
  if(!items.length){els.gantt.innerHTML='<div class="rounded-xl bg-slate-50 p-4 text-sm text-slate-500">Set Start / Finish dates to see the visual programme.</div>';return}
  const start=parseDate(els.start.value),finish=parseDate(els.finish.value),weeks=[];let d=new Date(start);
  while(d<=finish){const ws=new Date(d),we=new Date(d);we.setDate(we.getDate()+6);if(we>finish)we.setTime(finish.getTime());weeks.push({start:ws,end:we});d.setDate(d.getDate()+7)}
  const dayLabels=['S','M','T','W','T','F','S'];
  const header=weeks.map((w,i)=>'<div class="wp-week-head"><div class="wp-week-title">W'+(i+1)+'</div><div class="wp-week-date">'+iso(w.start).slice(5)+' → '+iso(w.end).slice(5)+'</div><div class="wp-day-head">'+Array.from({length:7},(_,j)=>{const x=new Date(w.start);x.setDate(x.getDate()+j);return x<=w.end?'<span>'+dayLabels[x.getDay()]+' '+x.getDate()+'</span>':'<span></span>'}).join('')+'</div></div>').join('');
- const grouped=[];let currentGroup='',currentSub='';
  const niceGroup=g=>({preliminaries:'PRELIMINARIES',structures:'STRUCTURAL WORKS',structure:'STRUCTURAL WORKS',architecture:'ARCHITECTURAL WORKS',architectures:'ARCHITECTURAL WORKS',electrical:'ELECTRICAL WORKS','doors-windows':'DOORS & WINDOWS','external-work':'EXTERNAL WORKS'}[String(g||'').toLowerCase()]||String(g||'').trim()||'OTHER');
+ const clean=v=>String(v||'').trim().replace(/\\s+/g,' ');
+ const pathParts=item=>clean(item.masterPath||'').split('/').map(clean).filter(Boolean);
+ const derive=item=>{
+   const parts=pathParts(item);
+   const top=niceGroup(item.groupKey||item.group||item.category||item.header||item.section||(parts[0]||'OTHER'));
+   const topNorm=top.toLowerCase();
+   let candidates=parts.filter(p=>!['preliminaries','structures','structure','architectures','architecture','electrical','doors & windows','doors-windows','external work','external works'].includes(p.toLowerCase()));
+   let sub=clean(item.groupTitle||item.header||item.level3||item.section||candidates[0]||'');
+   if(!sub && candidates.length) sub=candidates[0];
+   if(sub.toLowerCase()===topNorm) sub='';
+   return {top,sub};
+ };
+ const grouped=[];let currentGroup='',currentSub='';
  items.forEach(item=>{
-   const top=niceGroup(item.groupKey||item.category||item.group||item.header||item.section);
-   const sub=String(item.groupTitle||item.header||'').trim();
+   const {top,sub}=derive(item);
    if(top!==currentGroup){currentGroup=top;currentSub='';grouped.push({type:'group',name:top});}
-   if(sub&&sub.toUpperCase()!==top.toUpperCase()&&sub!==currentSub){currentSub=sub;grouped.push({type:'subgroup',name:sub});}
+   if(sub&&sub!==currentSub){currentSub=sub;grouped.push({type:'subgroup',name:sub});}
    grouped.push({type:'item',item});
  });
  const rowsHtml=grouped.map(entry=>{
