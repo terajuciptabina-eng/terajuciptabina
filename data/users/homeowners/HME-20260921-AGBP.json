@@ -542,7 +542,7 @@
         "estimateNumber": "EST-REN-001"
       },
       {
-        "schemaVersion": 1,
+        "schemaVersion": 2,
         "recordType": "quotation",
         "quotationId": "QT-REN-MUCKB4UV-T8FT6",
         "projectId": "PRJ-REN-MUCKB5HG-TSMIR",
@@ -560,7 +560,7 @@
           "builtUpArea": 200,
           "state": "selangor"
         },
-        "total": 69147,
+        "total": 15350,
         "plannerState": {
           "customerName": "Sue test whatsapp",
           "projectLocation": "",
@@ -569,6 +569,7 @@
             {
               "id": "room-1",
               "type": "living",
+              "condition": "existing",
               "name": "Living / Dining",
               "area": "200"
             }
@@ -690,16 +691,121 @@
           "projectState": "selangor",
           "rateSetId": "default",
           "rateSetName": "Default Rate",
-          "rateSnapshotAt": "2026-09-22T18:24:42.361Z"
+          "rateSnapshotAt": "2026-09-24T21:24:34.316Z"
         },
+        "itemListVersion": 1,
+        "items": [
+          {
+            "id": "project-preliminaries",
+            "category": "preliminaries",
+            "description": "Project preliminaries",
+            "unit": "ls",
+            "qty": 1,
+            "rate": 8500,
+            "amount": 8500,
+            "header": "",
+            "level3": "",
+            "section": "Project",
+            "groupTitle": "Preliminaries",
+            "groupKey": "preliminaries",
+            "masterPath": "PROJECT / PRELIMINARIES",
+            "roomId": "project",
+            "room": "Project"
+          },
+          {
+            "id": "room-1-ceiling",
+            "category": "",
+            "description": "Plaster ceiling to Living / Dining area.",
+            "unit": "sqft",
+            "qty": 200,
+            "rate": 12,
+            "amount": 2400,
+            "header": "",
+            "level3": "",
+            "section": "",
+            "groupTitle": "",
+            "groupKey": "",
+            "masterPath": "LIVING / DINING / Plaster Ceiling",
+            "roomId": "room-1",
+            "room": "Living / Dining"
+          },
+          {
+            "id": "room-1-spc",
+            "category": "",
+            "description": "SPC flooring to Living / Dining area.",
+            "unit": "sqft",
+            "qty": 200,
+            "rate": 14,
+            "amount": 2800,
+            "header": "",
+            "level3": "",
+            "section": "",
+            "groupTitle": "",
+            "groupKey": "",
+            "masterPath": "LIVING / DINING / SPC Flooring",
+            "roomId": "room-1",
+            "room": "Living / Dining"
+          },
+          {
+            "id": "room-1-downlight",
+            "category": "",
+            "description": "Downlights to Living / Dining area.",
+            "unit": "No.",
+            "qty": 4,
+            "rate": 200,
+            "amount": 800,
+            "header": "",
+            "level3": "",
+            "section": "",
+            "groupTitle": "",
+            "groupKey": "",
+            "masterPath": "LIVING / DINING / Downlight",
+            "roomId": "room-1",
+            "room": "Living / Dining"
+          },
+          {
+            "id": "room-1-fan",
+            "category": "",
+            "description": "Ceiling fan to Living / Dining area.",
+            "unit": "No.",
+            "qty": 1,
+            "rate": 550,
+            "amount": 550,
+            "header": "",
+            "level3": "",
+            "section": "",
+            "groupTitle": "",
+            "groupKey": "",
+            "masterPath": "LIVING / DINING / Ceiling Fan",
+            "roomId": "room-1",
+            "room": "Living / Dining"
+          },
+          {
+            "id": "room-1-curtain",
+            "category": "",
+            "description": "Curtain box LED to Living / Dining area.",
+            "unit": "No.",
+            "qty": 1,
+            "rate": 300,
+            "amount": 300,
+            "header": "",
+            "level3": "",
+            "section": "",
+            "groupTitle": "",
+            "groupKey": "",
+            "masterPath": "LIVING / DINING / Curtain Box LED",
+            "roomId": "room-1",
+            "room": "Living / Dining"
+          }
+        ],
         "createdAt": "2026-09-22T10:59:46.133Z",
-        "updatedAt": "2026-09-22T18:24:43.166Z",
+        "updatedAt": "2026-09-24T21:24:34.911Z",
         "estimateNumber": "EST-REN-001"
       }
     ]
   },
   "createdAt": "2026-09-21T05:42:03.987Z",
-  "updatedAt": "2026-09-23T03:01:43.351Z",
+  "updatedAt": "2026-09-24T21:24:34.911Z",
   "quotationRunningNumber": {
     "renovation": 1,
     "build": 1
