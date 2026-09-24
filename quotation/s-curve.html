@@ -12,12 +12,12 @@
 <script src="workspace-context.js"></script>
 <script>
 (function(){
-  var p=new URLSearchParams(location.search);
-  var role=(p.get('role')||p.get('audience')||'contractor').toLowerCase();
+  var p=new URLSearchParams(location.search),ctx=window.TERAJU_WORKSPACE_CONTEXT||{};
+  var role=(p.get('role')||p.get('audience')||ctx.role||'contractor').toLowerCase();
   var idKey=role==='contractor'?'contractorId':'homeownerId';
-  var id=(p.get('id')||p.get(idKey)||'').trim().toUpperCase();
-  var type=(p.get('plannerType')||'build').toLowerCase()==='renovation'?'renovation':'build';
-  var requested=p.get('quotationId')||'';
+  var id=(p.get('id')||p.get(idKey)||ctx.id||'').trim().toUpperCase();
+  var type=(p.get('plannerType')||ctx.plannerType||'build').toLowerCase()==='renovation'?'renovation':'build';
+  var requested=p.get('quotationId')||ctx.quotationId||'';
   var els={
     wp:document.getElementById('wp'),asAt:document.getElementById('asAt'),
     summary:document.getElementById('summary'),chart:document.getElementById('chart'),
