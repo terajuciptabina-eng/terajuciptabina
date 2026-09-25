@@ -148,7 +148,17 @@ extract.onclick=async()=>{
     }});
     const spatialOcr=extractSpatialWords(out.data.words||[]);
     const ocrRows=spatialOcr.length?spatialOcr:parseText(out.data.text);
-    if(ocrRows.length>rows.length)rows=ocrRows;
+    // Prefer the rendered-floor OCR when the PDF text layer produced only a
+    // weak/isolated match. Merge rather than keeping the first false-positive.
+    if(ocrRows.length) {
+      const merged=[...ocrRows,...rows];
+      const seen=new Set();
+      rows=merged.filter(x=>{
+        const k=String(x.room||'').trim().toLowerCase();
+        if(!k||seen.has(k))return false;
+        seen.add(k);return true;
+      });
+    }
   }
   render();
   setStatus(rows.length?'Extraction complete. Review detected values before import.':'No reliable room/area pairs found. Try a clearer image or use manual rows.',''+(rows.length?'ok':'warn'))
@@ -180,11 +190,40 @@ function extractSpatialTextItems(items){
  return out;
 }
 function extractSpatialWords(words){
- const out=[],seen=new Set(),w=(words||[]).filter(x=>Number(x.confidence??100)>=35&&x.text).map(x=>({t:String(x.text).trim(),x0:x.bbox?.x0||0,x1:x.bbox?.x1||0,y0:x.bbox?.y0||0}));
- for(let i=0;i<w.length;i++)for(let len=1;len<=5&&i+len<=w.length;len++){
-   const g=w.slice(i,i+len),phrase=g.map(x=>x.t).join(' '),room=phrase.match(ROOM_PHRASE_RE);if(!room)continue;
-   const last=g[g.length-1],near=w.filter(n=>Math.abs(n.y0-last.y0)<35&&n.x0>=last.x1-20&&n.x0<=last.x1+240).map(n=>({n,m:n.t.match(/^(\\d+(?:[.,]\\d+)?)(?:\\s*(M²|M2|SQ\\.?\\s*M|SQ\\.?\\s*FT|SQFT|FT2))?$/i)})).filter(x=>x.m);
-   near.sort((a,b)=>Math.abs(a.n.x0-last.x1)-Math.abs(b.n.x0-last.x1));if(near[0]){spatialAdd(out,seen,room[0],near[0].m[1],near[0].m[2]||'M2');i+=len-1;break}
+ const out=[],seen=new Set(),w=(words||[]).filter(x=>Number(x.confidence??100)>=35&&x.text).map(x=>({
+   t:String(x.text).trim(),x0:x.bbox?.x0||0,x1:x.bbox?.x1||0,y0:x.bbox?.y0||0,y1:x.bbox?.y1||x.bbox?.y0||0
+ })).filter(x=>x.t);
+ for(let i=0;i<w.length;i++){
+   for(let len=1;len<=6&&i+len<=w.length;len++){
+     const g=w.slice(i,i+len),phrase=g.map(x=>x.t).join(' '),room=phrase.match(ROOM_PHRASE_RE);
+     if(!room)continue;
+     const box=g[g.length-1];
+     const candidates=w.filter(n=>{
+       if(n===box)return false;
+       const dx=n.x0-box.x1,dy=Math.abs((n.y0+n.y1)/2-(box.y0+box.y1)/2);
+       const m=n.t.match(/^(\\d+(?:[.,]\\d+)?)(?:\\s*(M²|M2|SQ\\.?\\s*M|SQ\\.?\\s*FT|SQFT|FT2))?$/i);
+       if(!m)return false;
+       // Area labels normally sit on the same line or immediately below/above
+       // the room label. Avoid grabbing drawing dimensions far away.
+       return dx>=-40&&dx<=180&&dy<=55;
+     }).map(n=>({
+       n,m:n.t.match(/^(\\d+(?:[.,]\\d+)?)(?:\\s*(M²|M2|SQ\\.?\\s*M|SQ\\.?\\s*FT|SQFT|FT2))?$/i)
+     }));
+     candidates.sort((a,b)=>{
+       const au=a.m[2]?0:1,bu=b.m[2]?0:1;
+       if(au!==bu)return au-bu;
+       return Math.abs(a.n.x0-box.x1)+Math.abs(a.n.y0-box.y0)-Math.abs(b.n.x0-box.x1)-Math.abs(b.n.y0-box.y0);
+     });
+     if(candidates[0]){
+       const m=candidates[0].m;
+       const n=Number(String(m[1]).replace(',','.'));
+       const unit=(m[2]||'').toUpperCase().replace(/\\s/g,'');
+       // Architectural room areas are usually modest; reject obvious
+       // dimension/overall-area annotations.
+       if(n>0&&n<=1000)spatialAdd(out,seen,room[0],m[1],m[2]||'M2');
+       if(out.length){i+=len-1;break}
+     }
+   }
  }
  return out;
 }
