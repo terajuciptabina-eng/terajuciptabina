@@ -5,7 +5,7 @@
   "plannerType": "build",
   "quotationId": "QT-BLD-MUGQSFCN-42TH4",
   "createdAt": "2026-09-25T09:13:16.100Z",
-  "updatedAt": "2026-09-25T12:58:30.643Z",
+  "updatedAt": "2026-09-25T13:00:04.145Z",
   "contract": {
     "schemaVersion": 1,
     "recordType": "contract",
@@ -3257,7 +3257,7 @@
     "recordType": "work-program",
     "quotationId": "QT-BLD-MUGQSFCN-42TH4",
     "quotationNumber": "Q002D",
-    "total": 305800,
+    "total": 288393,
     "project": {
       "location": "cyberjaya",
       "builtUpArea": 880,
@@ -3266,42 +3266,6 @@
     "projectStart": "2026-10-01",
     "projectFinish": "2026-12-31",
     "items": [
-      {
-        "id": "master-preliminaries-/-building-plan-/-submission",
-        "category": "preliminaries",
-        "description": "Submission of building plan / permit application and Engineer’s drawings to the Local Authority, including preparation of required documents, submission, coordination and necessary authority liaison, complete.",
-        "unit": "LS",
-        "qty": 1,
-        "rate": 8500,
-        "amount": 8500,
-        "section": "",
-        "level3": "",
-        "header": "",
-        "group": "",
-        "groupKey": "preliminaries",
-        "groupTitle": "Preliminaries",
-        "masterPath": "PRELIMINARIES / Building Plan / Submission",
-        "roomId": "project",
-        "room": "Project"
-      },
-      {
-        "id": "master-preliminaries-/-site-mobilisation-/-project-management",
-        "category": "preliminaries",
-        "description": "Preliminaries, site mobilisation, temporary facilities, site protection, insurance, project coordination, supervision and general project management, complete.",
-        "unit": "LS",
-        "qty": 1,
-        "rate": 12000,
-        "amount": 12000,
-        "section": "",
-        "level3": "",
-        "header": "",
-        "group": "",
-        "groupKey": "preliminaries",
-        "groupTitle": "Preliminaries",
-        "masterPath": "PRELIMINARIES / Site Mobilisation / Project Management",
-        "roomId": "project",
-        "room": "Project"
-      },
       {
         "id": "master-main-building-/-footing-/-concrete",
         "category": "structures",
@@ -4830,7 +4794,7 @@
         "groupTitle": "Bathroom",
         "masterPath": "BATHROOM / Wall Tiles",
         "roomId": "room-8",
-        "room": "Bathroom 3"
+        "room": "Guest Bath"
       },
       {
         "id": "bath-room-8-floor-tiles",
@@ -4848,7 +4812,7 @@
         "groupTitle": "Bathroom",
         "masterPath": "BATHROOM / Floor Tiles",
         "roomId": "room-8",
-        "room": "Bathroom 3"
+        "room": "Guest Bath"
       },
       {
         "id": "bath-room-8-ceiling",
@@ -4866,7 +4830,7 @@
         "groupTitle": "Bathroom",
         "masterPath": "BATHROOM / Ceiling",
         "roomId": "room-8",
-        "room": "Bathroom 3"
+        "room": "Guest Bath"
       },
       {
         "id": "bath-room-8-piping",
@@ -4884,7 +4848,7 @@
         "groupTitle": "Bathroom",
         "masterPath": "BATHROOM / Piping",
         "roomId": "room-8",
-        "room": "Bathroom 3"
+        "room": "Guest Bath"
       },
       {
         "id": "bath-room-8-wc",
@@ -4902,7 +4866,7 @@
         "groupTitle": "Bathroom",
         "masterPath": "BATHROOM / WC",
         "roomId": "room-8",
-        "room": "Bathroom 3"
+        "room": "Guest Bath"
       },
       {
         "id": "bath-room-8-basin",
@@ -4920,7 +4884,7 @@
         "groupTitle": "Bathroom",
         "masterPath": "BATHROOM / Basin",
         "roomId": "room-8",
-        "room": "Bathroom 3"
+        "room": "Guest Bath"
       },
       {
         "id": "bath-room-8-shower",
@@ -4938,7 +4902,7 @@
         "groupTitle": "Bathroom",
         "masterPath": "BATHROOM / Shower",
         "roomId": "room-8",
-        "room": "Bathroom 3"
+        "room": "Guest Bath"
       },
       {
         "id": "bath-room-8-tap",
@@ -4956,22 +4920,46 @@
         "groupTitle": "Bathroom",
         "masterPath": "BATHROOM / Tap",
         "roomId": "room-8",
-        "room": "Bathroom 3"
+        "room": "Guest Bath"
+      },
+      {
+        "id": "manual-1790340889153-mh4kbk",
+        "category": "structures",
+        "description": "test 123",
+        "unit": "ls",
+        "qty": 3,
+        "rate": 456,
+        "amount": 1368,
+        "section": "",
+        "level3": "",
+        "header": "",
+        "group": "",
+        "groupKey": "structures:MAIN BUILDING:Footing",
+        "groupTitle": "Footing",
+        "masterPath": "MAIN BUILDING / Footing",
+        "roomId": "project",
+        "room": "Project"
+      },
+      {
+        "id": "manual-1790340955451-wq3j8w",
+        "category": "external-work",
+        "description": "hardscape",
+        "unit": "ls",
+        "qty": 5,
+        "rate": 345,
+        "amount": 1725,
+        "section": "",
+        "level3": "",
+        "header": "",
+        "group": "",
+        "groupKey": "external-work:EXTERNAL WORK:LANDSCAPING",
+        "groupTitle": "LANDSCAPING",
+        "masterPath": "EXTERNAL WORK / EXTERNAL WORK / LANDSCAPING",
+        "roomId": "project",
+        "room": "Project"
       }
     ],
     "schedule": {
-      "master-preliminaries-/-site-mobilisation-/-project-management": {
-        "start": "2026-10-01",
-        "finish": "2026-10-05",
-        "planned": 100,
-        "phase": "preliminaries / mobilisation"
-      },
-      "master-preliminaries-/-building-plan-/-submission": {
-        "start": "2026-10-02",
-        "finish": "2026-10-05",
-        "planned": 100,
-        "phase": "preliminaries / mobilisation"
-      },
       "master-boundary-fencing": {
         "start": "2026-10-04",
         "finish": "2026-10-11",
@@ -5088,7 +5076,7 @@
       },
       "master-main-building-/-roof-/-metal-roofing-sheet": {
         "start": "2026-10-17",
-        "finish": "2026-10-25",
+        "finish": "2026-10-24",
         "planned": 100,
         "phase": "structure"
       },
@@ -5141,6 +5129,12 @@
         "phase": "structure"
       },
       "master-main-building-/-drainage": {
+        "start": "2026-10-20",
+        "finish": "2026-10-22",
+        "planned": 100,
+        "phase": "structure"
+      },
+      "manual-1790340889153-mh4kbk": {
         "start": "2026-10-20",
         "finish": "2026-10-22",
         "planned": 100,
@@ -5502,18 +5496,24 @@
       },
       "master-gate": {
         "start": "2026-12-15",
-        "finish": "2026-12-23",
+        "finish": "2026-12-21",
         "planned": 100,
         "phase": "external works"
       },
       "master-main-building-/-septic-tank": {
         "start": "2026-12-16",
-        "finish": "2026-12-21",
+        "finish": "2026-12-20",
         "planned": 100,
         "phase": "external works"
       },
       "master-landscaping": {
         "start": "2026-12-17",
+        "finish": "2026-12-20",
+        "planned": 100,
+        "phase": "external works"
+      },
+      "manual-1790340955451-wq3j8w": {
+        "start": "2026-12-18",
         "finish": "2026-12-21",
         "planned": 100,
         "phase": "external works"
@@ -5525,7 +5525,7 @@
         "phase": "external works"
       }
     },
-    "updatedAt": "2026-09-25T09:20:14.978Z"
+    "updatedAt": "2026-09-25T13:00:04.145Z"
   },
   "progress": {
     "schemaVersion": 4,
