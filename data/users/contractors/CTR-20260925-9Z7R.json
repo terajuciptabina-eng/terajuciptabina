@@ -292,7 +292,7 @@
           "projectState": "selangor",
           "rateSetId": "default",
           "rateSetName": "Default Rate",
-          "rateSnapshotAt": "2026-09-25T10:36:26.061Z"
+          "rateSnapshotAt": "2026-09-25T10:36:51.481Z"
         },
         "itemListVersion": 1,
         "items": [
@@ -1862,7 +1862,7 @@
           }
         ],
         "createdAt": "2026-09-25T09:12:15.287Z",
-        "updatedAt": "2026-09-25T10:36:27.604Z",
+        "updatedAt": "2026-09-25T10:36:53.483Z",
         "estimateNumber": "EST-BLD-002"
       },
       {
@@ -3712,7 +3712,7 @@
     "renovation": []
   },
   "createdAt": "2026-09-25T08:00:35.953Z",
-  "updatedAt": "2026-09-25T10:36:27.604Z",
+  "updatedAt": "2026-09-25T10:36:53.483Z",
   "quotationRunningNumber": {
     "build": 2
   },
