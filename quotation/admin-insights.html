@@ -14,26 +14,26 @@ body{margin:0;background:#f3f4f6;color:#111827;font-family:Inter,system-ui,-appl
 .title{font-size:28px;font-weight:850;margin:5px 0}
 .muted{color:#6b7280;font-size:12px;line-height:1.5}
 .tag{display:inline-flex;align-items:center;min-height:30px;padding:0 10px;border:1px solid #e5e7eb;border-radius:999px;background:#f8fafc;font-size:10px;font-weight:800;white-space:nowrap}
-.nav{display:flex;gap:8px;flex-wrap:wrap;padding:0 24px 14px}
-.nav a{color:#374151;text-decoration:none;font-size:12px;font-weight:700;padding:8px 11px;border:1px solid #e5e7eb;border-radius:10px;background:#fff}
+.nav{display:flex;gap:6px;flex-wrap:nowrap;padding:0 18px 10px;overflow-x:auto}
+.nav a{color:#374151;text-decoration:none;font-size:11px;font-weight:700;padding:6px 9px;border:1px solid #e5e7eb;border-radius:8px;background:#fff;white-space:nowrap}
 .nav .back-nav{font-weight:800}
-.wrap{padding:22px 24px;max-width:1700px;margin:auto}
-.toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px}
-.toolbar select,.toolbar button{min-height:40px;border:1px solid #d1d5db;border-radius:10px;padding:0 12px;font:inherit;background:#fff;font-weight:700}
+.wrap{padding:14px 18px;max-width:none;margin:auto}
+.toolbar{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}
+.toolbar select,.toolbar button{min-height:34px;border:1px solid #d1d5db;border-radius:8px;padding:0 10px;font:inherit;background:#fff;font-weight:700}
 .toolbar button{background:#111827;color:#fff;border-color:#111827;cursor:pointer}
-.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:14px}
-.kpi{background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:17px;box-shadow:0 6px 20px rgba(0,0,0,.035)}
-.kpi .label{font-size:11px;font-weight:800;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}
-.kpi .value{font-size:27px;font-weight:850;margin-top:7px}
-.kpi .sub{font-size:11px;color:#6b7280;margin-top:4px}
-.grid{display:grid;grid-template-columns:1.55fr 1fr;gap:14px;margin-bottom:14px}
-.panel{background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:17px;box-shadow:0 6px 20px rgba(0,0,0,.035);min-width:0}
-.panel h2{font-size:16px;margin:0 0 3px}
-.panel .caption{font-size:11px;color:#6b7280;margin-bottom:12px}
-.chartbox{position:relative;height:300px}
-.chartbox.small{height:270px}
-.chartbox.tall{height:350px}
-.insight-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.kpis{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-bottom:9px}
+.kpi{background:#fff;border:1px solid #e5e7eb;border-radius:11px;padding:11px 12px;box-shadow:0 4px 12px rgba(0,0,0,.03)}
+.kpi .label{font-size:9px;font-weight:800;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}
+.kpi .value{font-size:21px;font-weight:850;margin-top:4px;white-space:nowrap}
+.kpi .sub{font-size:9px;color:#6b7280;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.grid{display:grid;grid-template-columns:1.55fr 1fr;gap:9px;margin-bottom:9px}
+.panel{background:#fff;border:1px solid #e5e7eb;border-radius:11px;padding:12px;box-shadow:0 4px 12px rgba(0,0,0,.03);min-width:0}
+.panel h2{font-size:14px;margin:0 0 2px}
+.panel .caption{font-size:10px;color:#6b7280;margin-bottom:7px}
+.chartbox{position:relative;height:225px}
+.chartbox.small{height:205px}
+.chartbox.tall{height:260px}
+.insight-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
 .list{display:grid;gap:9px}
 .row{display:grid;grid-template-columns:minmax(120px,1fr) 80px 1.4fr;gap:10px;align-items:center;font-size:12px}
 .bar{height:8px;border-radius:99px;background:#e5e7eb;overflow:hidden}
@@ -45,6 +45,7 @@ th{font-size:10px;text-transform:uppercase;color:#6b7280;background:#fafafa}
 .status{font-size:12px;color:#6b7280}
 .error{color:#b91c1c}
 .hidden{display:none!important}
+@media(min-width:1200px){.header .top{padding:12px 18px}.title{font-size:24px}.kpis .kpi:nth-child(n+6){padding-top:9px;padding-bottom:9px}.insight-grid .panel{min-height:220px}}
 @media(max-width:1050px){.kpis{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}}
 @media(max-width:700px){.header .top{display:block;padding:14px}.nav{padding:0 14px 14px}.wrap{padding:16px 12px}.kpis{grid-template-columns:1fr 1fr}.insight-grid{grid-template-columns:1fr}.toolbar{display:block}.toolbar select,.toolbar button{margin-top:8px;width:100%}.title{font-size:23px}.chartbox{height:250px}}
 </style>
