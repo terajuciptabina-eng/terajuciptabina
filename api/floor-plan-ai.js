@@ -1,6 +1,9 @@
 const ALLOWED_ORIGIN = 'https://terajuciptabina-eng.github.io';
-const MODEL = process.env.OPENAI_FLOORPLAN_MODEL || 'gpt-5.6-sol';
+const PROVIDER = String(process.env.AI_PROVIDER || 'groq').toLowerCase();
+const OPENAI_MODEL = process.env.OPENAI_FLOORPLAN_MODEL || 'gpt-5.6-sol';
+const GROQ_MODEL = process.env.GROQ_FLOORPLAN_MODEL || 'qwen/qwen3.8-27b';
 const MAX_IMAGES = 8;
+const GROQ_MAX_IMAGES_PER_REQUEST = 3;
 const MAX_BODY_BYTES = 5 * 1024 * 1024;
 
 const schema = {
@@ -65,16 +68,171 @@ Rules:
 3. Never use dimension strings, grid numbers, drawing coordinates, title-block numbers, scale values, door/window sizes, boundary/setback dimensions, or unrelated schedule numbers as room areas.
 4. Preserve duplicate room names as separate physical instances. Example: two BALCONY labels means two separate spaces if they are visibly separate.
 5. A room label and its area may be visually separated; use the room's position and surrounding boundaries to associate them.
-6. For multi-page documents, classify every page first. Extract spaces primarily from floor-plan pages. Ignore presentation renders, site/context plans, roof plans and elevations for room extraction. A schedule/accommodation page may be used only to cross-check explicitly printed room names and areas.
+6. Classify every supplied page first. Extract spaces primarily from floor-plan pages. Ignore presentation renders, site/context plans, roof plans and elevations for room extraction. A schedule/accommodation page may be used only to cross-check explicitly printed room names and areas when it is supplied in the same request.
 7. If a floor plan and a schedule disagree, keep the floor-plan value as the primary value and add a warning.
 8. Do not invent missing room names, areas or dimensions. Use null for missing area/dimensions.
 9. Return every distinct physical room/space you can identify, including porches, balconies, verandahs, halls, walkways, stairs, utility spaces and other enclosed/defined spaces when they are clearly labelled.
 10. Keep names readable and faithful to the drawing. Do not normalize away useful identifiers such as BEDROOM 1, BATH 2, etc.
 11. Confidence describes extraction confidence, not construction certainty.
-12. Return JSON matching the supplied schema only.`;
+12. Some requests may contain only a subset of a multi-page document. Never assume that an unseen page exists or use an unseen page as evidence.
+13. Return JSON matching the supplied schema only.`;
 
 function jsonError(res, status, message) {
   return res.status(status).json({ success: false, message });
+}
+
+function chunk(items, size) {
+  const result = [];
+  for (let i = 0; i < items.length; i += size) result.push(items.slice(i, i + size));
+  return result;
+}
+
+function uniquePages(pages) {
+  const seen = new Set();
+  return pages.filter(page => {
+    const key = String(page?.page);
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
+function uniqueSpaces(spaces) {
+  const used = new Set();
+  return spaces.map((space, index) => {
+    const base = String(space?.id || `${space?.page || 0}-${index + 1}`);
+    let id = base;
+    let suffix = 2;
+    while (used.has(id)) id = `${base}-${suffix++}`;
+    used.add(id);
+    return { ...space, id };
+  });
+}
+
+async function parseStructuredResponse(response, provider) {
+  const raw = await response.text();
+  let data = null;
+  try { data = raw ? JSON.parse(raw) : null; } catch {}
+
+  if (!response.ok) {
+    console.error(`${provider} floor-plan extraction failed:`, response.status, data || raw);
+    throw new Error(data?.error?.message || `${provider} floor-plan extraction failed.`);
+  }
+
+  const outputText = provider === 'groq'
+    ? data?.choices?.[0]?.message?.content || ''
+    : data?.output_text ||
+      data?.output?.flatMap(item => item?.content || [])
+        ?.filter(item => item?.type === 'output_text')
+        ?.map(item => item.text)
+        ?.join('') || '';
+
+  let extraction;
+  try {
+    extraction = JSON.parse(outputText);
+  } catch {
+    console.error(`${provider} returned non-JSON floor-plan output:`, outputText);
+    throw new Error(`${provider} returned an invalid structured floor-plan result.`);
+  }
+
+  if (!extraction || !Array.isArray(extraction.spaces) || !Array.isArray(extraction.pages)) {
+    throw new Error(`${provider} returned an incomplete floor-plan result.`);
+  }
+
+  return extraction;
+}
+
+async function callGroq(images, fileName) {
+  const apiKey = process.env.GROQ_API_KEY;
+  if (!apiKey) throw new Error('Groq API is not configured. Add GROQ_API_KEY to the Vercel project environment.');
+
+  const content = [{
+    type: 'text',
+    text: `${SYSTEM_PROMPT}
+
+Source file: ${fileName}
+This request contains ${images.length} page image(s). Page numbers are provided immediately before each image.
+Analyze only the supplied pages.`
+  }];
+
+  for (const image of images) {
+    const page = Number(image.page) || 1;
+    content.push({ type: 'text', text: `PAGE ${page}` });
+    content.push({
+      type: 'image_url',
+      image_url: { url: image.data }
+    });
+  }
+
+  const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      model: GROQ_MODEL,
+      messages: [{ role: 'user', content }],
+      temperature: 0.1,
+      max_completion_tokens: 12000,
+      response_format: {
+        type: 'json_schema',
+        json_schema: {
+          name: 'floor_plan_extraction',
+          strict: true,
+          schema
+        }
+      },
+      stream: false
+    })
+  });
+
+  return parseStructuredResponse(response, 'Groq');
+}
+
+async function callOpenAI(images, fileName) {
+  const apiKey = process.env.OPENAI_API_KEY;
+  if (!apiKey) throw new Error('OpenAI API is not configured. Add OPENAI_API_KEY to the Vercel project environment.');
+
+  const content = [{
+    type: 'input_text',
+    text: `${SYSTEM_PROMPT}
+
+Source file: ${fileName}
+There are ${images.length} page image(s). Page numbers are provided in the content immediately before each image.`
+  }];
+
+  for (const image of images) {
+    const page = Number(image.page) || 1;
+    content.push({ type: 'input_text', text: `PAGE ${page}` });
+    content.push({
+      type: 'input_image',
+      image_url: image.data,
+      detail: 'high'
+    });
+  }
+
+  const response = await fetch('https://api.openai.com/v1/responses', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      model: OPENAI_MODEL,
+      input: [{ role: 'user', content }],
+      text: {
+        format: {
+          type: 'json_schema',
+          name: 'floor_plan_extraction',
+          strict: true,
+          schema
+        }
+      }
+    })
+  });
+
+  return parseStructuredResponse(response, 'OpenAI');
 }
 
 export default async function handler(req, res) {
@@ -84,9 +242,6 @@ export default async function handler(req, res) {
 
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return jsonError(res, 405, 'Method not allowed.');
-
-  const apiKey = process.env.OPENAI_API_KEY;
-  if (!apiKey) return jsonError(res, 500, 'OpenAI API is not configured. Add OPENAI_API_KEY to the Vercel project environment.');
 
   try {
     const body = req.body || {};
@@ -107,83 +262,52 @@ export default async function handler(req, res) {
       return jsonError(res, 413, 'Floor-plan images are too large. Please use the built-in image/PDF compression and try again.');
     }
 
-    const content = [
-      {
-        type: 'input_text',
-        text: `${SYSTEM_PROMPT}
+    const selectedProvider = PROVIDER === 'openai' ? 'openai' : 'groq';
+    const batches = selectedProvider === 'groq'
+      ? chunk(images, GROQ_MAX_IMAGES_PER_REQUEST)
+      : [images];
 
-Source file: ${fileName}
-There are ${images.length} page image(s). Page numbers are provided in the content immediately before each image.`
-      }
+    const extractions = [];
+    for (const batch of batches) {
+      extractions.push(
+        selectedProvider === 'groq'
+          ? await callGroq(batch, fileName)
+          : await callOpenAI(batch, fileName)
+      );
+    }
+
+    const pages = uniquePages(extractions.flatMap(item => item.pages || []))
+      .sort((a, b) => Number(a.page) - Number(b.page));
+
+    const spaces = uniqueSpaces(
+      extractions
+        .flatMap(item => item.spaces || [])
+        .sort((a, b) => Number(a.page) - Number(b.page))
+    );
+
+    const warnings = [
+      ...new Set(
+        extractions
+          .flatMap(item => item.warnings || [])
+          .filter(Boolean)
+      )
     ];
 
-    for (const image of images) {
-      const page = Number(image.page) || 1;
-      content.push({ type: 'input_text', text: `PAGE ${page}` });
-      content.push({
-        type: 'input_image',
-        image_url: image.data,
-        detail: 'high'
-      });
-    }
-
-    const response = await fetch('https://api.openai.com/v1/responses', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        model: MODEL,
-        input: [{ role: 'user', content }],
-        text: {
-          format: {
-            type: 'json_schema',
-            name: 'floor_plan_extraction',
-            strict: true,
-            schema
-          }
-        }
-      })
-    });
-
-    const raw = await response.text();
-    let data = null;
-    try { data = raw ? JSON.parse(raw) : null; } catch {}
-
-    if (!response.ok) {
-      console.error('OpenAI floor-plan extraction failed:', response.status, data || raw);
-      return jsonError(res, 502, data?.error?.message || 'OpenAI floor-plan extraction failed.');
-    }
-
-    const outputText = data?.output_text ||
-      data?.output?.flatMap(item => item?.content || [])
-        ?.filter(item => item?.type === 'output_text')
-        ?.map(item => item.text)
-        ?.join('') || '';
-
-    let extraction;
-    try {
-      extraction = JSON.parse(outputText);
-    } catch {
-      console.error('OpenAI returned non-JSON floor-plan output:', outputText);
-      return jsonError(res, 502, 'OpenAI returned an invalid structured floor-plan result.');
-    }
-
-    if (!extraction || !Array.isArray(extraction.spaces) || !Array.isArray(extraction.pages)) {
-      return jsonError(res, 502, 'OpenAI returned an incomplete floor-plan result.');
+    if (selectedProvider === 'groq' && batches.length > 1) {
+      warnings.push(`Groq processed ${images.length} pages in ${batches.length} visual batches because the selected vision model accepts up to ${GROQ_MAX_IMAGES_PER_REQUEST} images per request.`);
     }
 
     return res.status(200).json({
       success: true,
-      model: MODEL,
+      provider: selectedProvider,
+      model: selectedProvider === 'groq' ? GROQ_MODEL : OPENAI_MODEL,
       fileName,
-      pages: extraction.pages,
-      spaces: extraction.spaces,
-      warnings: extraction.warnings || []
+      pages,
+      spaces,
+      warnings
     });
   } catch (error) {
     console.error('floor-plan-ai error:', error);
-    return jsonError(res, 500, 'Unable to process the floor plan.');
+    return jsonError(res, 502, error?.message || 'Unable to process the floor plan.');
   }
 }
