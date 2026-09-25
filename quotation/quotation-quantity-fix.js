@@ -120,8 +120,14 @@ const level=keyParts.slice(2).join(':')||'MANUAL ITEM';
  * synthetic "STRUCTURES" level instead of FOOTING.
  */
 const sub=keyParts[1]&&keyParts[1]!=='project'?keyParts[1]:groupTitle;
+/*
+ * The target key already carries the visible hierarchy for structures:
+ * structures:MAIN BUILDING:FOOTING -> MAIN BUILDING / FOOTING
+ * structures:PORCH:GROUND BEAM -> PORCH / GROUND BEAM
+ * group/category is kept separately as STRUCTURES for filtering.
+ */
 const masterPath=cat==='structures'
-  ? [group,level].filter(Boolean).join(' / ')
+  ? [sub,level].filter(Boolean).join(' / ')
   : [group,sub,level].filter(Boolean).join(' / ');
 const actualRoomId=String(roomId||'project');
 const id='manual-'+Date.now()+'-'+Math.random().toString(36).slice(2,8);
