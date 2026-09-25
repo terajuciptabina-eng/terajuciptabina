@@ -5,7 +5,7 @@
   "plannerType": "renovation",
   "quotationId": "QT-REN-MUFYKF8R-T1DKY",
   "createdAt": "2026-09-24T20:09:23.215Z",
-  "updatedAt": "2026-09-25T16:54:06.558Z",
+  "updatedAt": "2026-09-25T17:01:17.864Z",
   "contract": {
     "schemaVersion": 1,
     "recordType": "contract",
@@ -3985,14 +3985,212 @@
         "master-windows-/-type-2-1800*1200": {
           "percent": 0
         }
+      },
+      "2026-12-10": {
+        "project-preliminaries": {
+          "percent": 98
+        },
+        "room-2-floor": {
+          "percent": 0
+        },
+        "room-2-facade": {
+          "percent": 99
+        },
+        "room-2-walllight": {
+          "percent": 26
+        },
+        "manual-1790153329217-znr338": {
+          "percent": 83
+        },
+        "manual-1790153802326-fltu5h": {
+          "percent": 54
+        },
+        "manual-1790154031589-vk2lak": {
+          "percent": 84
+        },
+        "master-main-building-/-footing-/-concrete": {
+          "percent": 84
+        },
+        "master-main-building-/-footing-/-formwork": {
+          "percent": 84
+        },
+        "master-main-building-/-footing-/-rebar": {
+          "percent": 84
+        },
+        "master-main-building-/-ground-slab-/-concrete": {
+          "percent": 84
+        },
+        "master-main-building-/-ground-slab-/-brc": {
+          "percent": 84
+        },
+        "master-main-building-/-ground-beam-/-concrete": {
+          "percent": 84
+        },
+        "master-main-building-/-ground-beam-/-formwork": {
+          "percent": 84
+        },
+        "master-main-building-/-ground-beam-/-rebar": {
+          "percent": 84
+        },
+        "master-main-building-/-roof-beam-/-concrete": {
+          "percent": 84
+        },
+        "master-main-building-/-roof-beam-/-formwork": {
+          "percent": 84
+        },
+        "master-main-building-/-roof-beam-/-rebar": {
+          "percent": 84
+        },
+        "master-main-building-/-column-/-concrete": {
+          "percent": 84
+        },
+        "master-main-building-/-column-/-formwork": {
+          "percent": 84
+        },
+        "master-main-building-/-column-/-rebar": {
+          "percent": 84
+        },
+        "master-main-building-/-roof-/-metal-roofing-sheet": {
+          "percent": 84
+        },
+        "master-main-building-/-apron-/-concrete": {
+          "percent": 84
+        },
+        "master-main-building-/-apron-/-formwork": {
+          "percent": 84
+        },
+        "master-main-building-/-apron-/-brc": {
+          "percent": 84
+        },
+        "master-main-building-/-drainage": {
+          "percent": 84
+        },
+        "master-porch-/-footing-/-concrete": {
+          "percent": 84
+        },
+        "master-porch-/-footing-/-formwork": {
+          "percent": 84
+        },
+        "master-porch-/-footing-/-rebar": {
+          "percent": 84
+        },
+        "master-porch-/-ground-slab-/-concrete": {
+          "percent": 84
+        },
+        "master-porch-/-ground-slab-/-brc": {
+          "percent": 84
+        },
+        "master-porch-/-ground-beam-/-concrete": {
+          "percent": 84
+        },
+        "master-porch-/-ground-beam-/-formwork": {
+          "percent": 84
+        },
+        "master-porch-/-ground-beam-/-rebar": {
+          "percent": 84
+        },
+        "master-porch-/-roof-beam-/-concrete": {
+          "percent": 84
+        },
+        "master-porch-/-roof-beam-/-formwork": {
+          "percent": 84
+        },
+        "master-porch-/-roof-beam-/-rebar": {
+          "percent": 84
+        },
+        "master-porch-/-column-/-concrete": {
+          "percent": 84
+        },
+        "master-porch-/-column-/-formwork": {
+          "percent": 84
+        },
+        "master-porch-/-column-/-rebar": {
+          "percent": 84
+        },
+        "master-porch-/-flat-roof-/-concrete": {
+          "percent": 84
+        },
+        "master-porch-/-flat-roof-/-formwork": {
+          "percent": 84
+        },
+        "master-porch-/-flat-roof-/-brc": {
+          "percent": 84
+        },
+        "master-main-building-/-brickwall-/-internal-wall": {
+          "percent": 50
+        },
+        "master-main-building-/-brickwall-/-external-wall": {
+          "percent": 43
+        },
+        "master-main-building-/-floor-tiles-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-floor-tiles-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-painting-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-painting-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-ceiling-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-ceiling-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-power-point": {
+          "percent": 84
+        },
+        "master-main-building-/-switch": {
+          "percent": 84
+        },
+        "master-main-building-/-lighting": {
+          "percent": 84
+        },
+        "master-main-building-/-fan": {
+          "percent": 84
+        },
+        "master-main-building-/-aircond-point": {
+          "percent": 84
+        },
+        "master-porch-/-lighting": {
+          "percent": 84
+        },
+        "master-porch-/-fan": {
+          "percent": 84
+        },
+        "master-porch-/-power-point": {
+          "percent": 84
+        },
+        "master-earthing": {
+          "percent": 84
+        },
+        "master-db-box": {
+          "percent": 84
+        },
+        "master-wiring": {
+          "percent": 84
+        },
+        "master-doors-/-type-1-single-leaf": {
+          "percent": 0
+        },
+        "master-windows-/-type-2-1800*1200": {
+          "percent": 0
+        }
       }
     },
     "validDates": {
       "2027-02-28": {
         "valid": true,
         "savedAt": "2026-09-25T16:54:05.749Z"
+      },
+      "2026-12-10": {
+        "valid": true,
+        "savedAt": "2026-09-25T17:01:17.177Z"
       }
     },
-    "updatedAt": "2026-09-25T16:54:06.558Z"
+    "updatedAt": "2026-09-25T17:01:17.864Z"
   }
 }
