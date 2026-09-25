@@ -110,9 +110,19 @@ const keyParts=String(targetKey||'').split(':');
 const cat=String(category||'').toLowerCase();
 const groupMap={preliminaries:'PRELIMINARIES',structures:'STRUCTURES',architecture:'ARCHITECTURES',electrical:'ELECTRICAL','doors-windows':'DOORS & WINDOWS','external-work':'EXTERNAL WORK'};
 const group=groupMap[cat]||String(category||'').toUpperCase();
-const sub=keyParts[1]&&keyParts[1]!=='project'?keyParts[1]:groupTitle;
 const level=keyParts.slice(2).join(':')||'MANUAL ITEM';
-const masterPath=[group,sub,level].filter(Boolean).join(' / ');
+/*
+ * Manual item hierarchy must use the same masterPath shape as the canonical
+ * structure tree. For STRUCTURES the first path segment is already the
+ * section and the second segment is the level (e.g. STRUCTURES / FOOTING).
+ * The previous builder duplicated STRUCTURES, producing
+ * STRUCTURES / STRUCTURES / FOOTING, so the item was rendered under a
+ * synthetic "STRUCTURES" level instead of FOOTING.
+ */
+const sub=keyParts[1]&&keyParts[1]!=='project'?keyParts[1]:groupTitle;
+const masterPath=cat==='structures'
+  ? [group,level].filter(Boolean).join(' / ')
+  : [group,sub,level].filter(Boolean).join(' / ');
 const actualRoomId=String(roomId||'project');
 const id='manual-'+Date.now()+'-'+Math.random().toString(36).slice(2,8);
 const item={id,description:desc,unit,qty,rate,category:cat,groupKey:targetKey,groupTitle,roomId:actualRoomId,masterPath,amount:R2(qty*rate)};
