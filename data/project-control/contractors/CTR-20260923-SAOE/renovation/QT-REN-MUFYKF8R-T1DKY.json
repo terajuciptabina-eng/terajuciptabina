@@ -5,7 +5,7 @@
   "plannerType": "renovation",
   "quotationId": "QT-REN-MUFYKF8R-T1DKY",
   "createdAt": "2026-09-24T20:09:23.215Z",
-  "updatedAt": "2026-09-25T16:46:43.747Z",
+  "updatedAt": "2026-09-25T16:47:09.120Z",
   "contract": {
     "schemaVersion": 1,
     "recordType": "contract",
@@ -2237,7 +2237,7 @@
     "recordType": "work-program",
     "quotationId": "QT-REN-MUFYKF8R-T1DKY",
     "quotationNumber": "Q009D",
-    "total": 134648,
+    "total": 125300,
     "project": {
       "location": "Eka Height Sendayan",
       "builtUpArea": 600,
@@ -2252,8 +2252,8 @@
         "description": "Project preliminaries",
         "unit": "ls",
         "qty": 1,
-        "rate": 8888,
-        "amount": 8888,
+        "rate": 9500,
+        "amount": 9500,
         "section": "Project",
         "level3": "",
         "header": "",
@@ -2287,9 +2287,9 @@
         "category": "",
         "description": "Facade wall works to Balcony area.",
         "unit": "sqft",
-        "qty": 266,
+        "qty": 100,
         "rate": 60,
-        "amount": 15960,
+        "amount": 6000,
         "section": "",
         "level3": "",
         "header": "",
@@ -3682,39 +3682,39 @@
         "planned": 100,
         "phase": "m&e rough-in"
       },
-      "room-2-facade": {
-        "start": "2026-11-15",
-        "finish": "2026-12-13",
-        "planned": 100,
-        "phase": "general construction"
-      },
       "manual-1790154031589-vk2lak": {
-        "start": "2026-11-18",
-        "finish": "2026-12-11",
+        "start": "2026-11-15",
+        "finish": "2026-12-10",
         "planned": 100,
         "phase": "general construction"
       },
       "project-preliminaries": {
+        "start": "2026-11-18",
+        "finish": "2026-12-12",
+        "planned": 100,
+        "phase": "general construction"
+      },
+      "room-2-facade": {
         "start": "2026-11-22",
-        "finish": "2026-12-13",
+        "finish": "2026-12-11",
         "planned": 100,
         "phase": "general construction"
       },
       "manual-1790153329217-znr338": {
-        "start": "2026-11-27",
-        "finish": "2026-12-14",
+        "start": "2026-11-26",
+        "finish": "2026-12-15",
         "planned": 100,
         "phase": "general construction"
       },
       "manual-1790153802326-fltu5h": {
         "start": "2026-11-30",
-        "finish": "2026-12-17",
+        "finish": "2026-12-19",
         "planned": 100,
         "phase": "general construction"
       },
       "room-2-walllight": {
         "start": "2026-12-08",
-        "finish": "2026-12-13",
+        "finish": "2026-12-14",
         "planned": 100,
         "phase": "general construction"
       },
@@ -3785,7 +3785,7 @@
         "phase": "painting / final finishes"
       }
     },
-    "updatedAt": "2026-09-25T16:18:06.506Z"
+    "updatedAt": "2026-09-25T16:47:09.120Z"
   },
   "progress": {
     "schemaVersion": 4,
