@@ -16,3 +16,9 @@
 .tw-theme > .page .logout{background:#fff!important;color:#172033!important;border-color:#cbd5e1!important}
 .tw-theme > .page .card h2{color:#172033!important}
 .tw-theme > .page .card p{color:#64748b!important}
+
+/* Light content areas below the dark workspace header */
+.tw-theme .wrap > .top .eyebrow{color:#059669!important}
+.tw-theme .wrap > .top .title{color:#172033!important}
+.tw-theme .wrap > .top .sub{color:#64748b!important}
+.tw-theme .wrap > .top .muted{color:#64748b!important}
