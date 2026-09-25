@@ -84,14 +84,14 @@ function renderAreas(){
 function render(){
  renderAreas();
  if(!rows.length){result.innerHTML='<div class="empty">No extraction yet.</div>';imp.disabled=true;return}
- result.innerHTML='<table class="table"><thead><tr><th>Room / Space</th><th>Area</th><th>Dimensions</th><th>Confidence</th></tr></thead><tbody>'+rows.map((r,i)=>'<tr><td><input data-i="'+i+'" data-k="room" value="'+esc(r.room||'')+'"></td><td><input data-i="'+i+'" data-k="area" type="number" step="0.01" value="'+esc(r.area??'')+'"></td><td><input data-i="'+i+'" data-k="dimensions" value="'+esc(r.dimensions||'')+'"></td><td><span class="pill">'+esc(r.confidence||'Review')+'</span></td></tr>').join('')+'</tbody></table>';
+ result.innerHTML='<table class="table"><thead><tr><th>Room / Space</th><th>Area</th><th>Source Unit</th><th>Dimensions</th><th>Confidence</th></tr></thead><tbody>'+rows.map((r,i)=>'<tr><td><input data-i="'+i+'" data-k="room" value="'+esc(r.room||'')+'"></td><td><input data-i="'+i+'" data-k="area" type="number" step="0.01" value="'+esc(r.area??'')+'"></td><td>'+esc(r.sourceArea??r.areaUnit??'sqft')+'</td><td><input data-i="'+i+'" data-k="dimensions" value="'+esc(r.dimensions||'')+'"></td><td><span class="pill">'+esc(r.confidence||'Review')+'</span></td></tr>').join('')+'</tbody></table>';
  result.querySelectorAll('input').forEach(el=>el.addEventListener('input',()=>{const i=+el.dataset.i;rows[i][el.dataset.k]=el.value;rows[i].area=el.dataset.k==='area'?Number(el.value)||0:rows[i].area;updateMetrics()}));
  imp.disabled=false;updateMetrics()
 }
 function esc(v){return String(v).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
 function updateMetrics(){
  $('metrics').style.display=rows.length?'grid':'none';$('mRooms').textContent=rows.length;
- $('mArea').textContent=rows.reduce((a,r)=>a+(Number(r.area)||0),0).toLocaleString('en-MY',{maximumFractionDigits:2})+' sqft';
+ $('mArea').textContent=rows.reduce((a,r)=>a+(Number(r.areaSqft??r.area)||0),0).toLocaleString('en-MY',{maximumFractionDigits:2})+' sqft';
  $('mSource').textContent=currentFile?.type==='application/pdf'?'PDF':currentFile?'IMAGE':'Sample';
 }
 function showImage(src){
@@ -114,7 +114,7 @@ drop.onclick=()=>file.click();file.onchange=()=>file.files[0]&&load(file.files[0
 drop.addEventListener('drop',ev=>{const f=ev.dataTransfer.files[0];if(f)load(f)});
 sample.onclick=()=>{const f={name:'tested-camera-floor-plan.jpg',type:'image/jpeg'};const r=SAMPLE.map(x=>({...x}));areas.push({name:'Ground Floor / Area 1',file:f,rows:r});activeArea=areas.length-1;rows=r;currentFile=f;render();setStatus('Loaded tested camera sample as Ground Floor / Area 1.','ok')};
 $('addArea').onclick=()=>{const name=prompt('Area / Floor name (e.g. Ground Floor, First Floor, Area 2):','Area '+(areas.length+1));if(!name)return;areas.push({name:name.trim(),file:null,rows:[]});activeArea=areas.length-1;rows=areas[activeArea].rows;currentFile=null;render();setStatus('Added '+name+'. Upload its floor plan, then extract.','ok')};
-add.onclick=()=>{if(activeArea===null){areas.push({name:'Area '+(areas.length+1),file:null,rows:[]});activeArea=areas.length-1}rows.push({room:'',area:0,unit:'sqft',dimensions:'',confidence:'Review'});areas[activeArea].rows=rows;render()};
+add.onclick=()=>{if(activeArea===null){areas.push({name:'Area '+(areas.length+1),file:null,rows:[]});activeArea=areas.length-1}rows.push({room:'',area:0,areaSqft:0,areaUnit:'sqft',sourceArea:'sqft',unit:'sqft',dimensions:'',confidence:'Review'});areas[activeArea].rows=rows;render()};
 extract.onclick=async()=>{
  if(!currentFile)return;
  if(currentFile.name==='tested-camera-floor-plan.jpg'){rows=SAMPLE.map(x=>({...x}));render();setStatus('Extraction complete: 8 spaces detected from the tested camera image.','ok');return}
@@ -137,6 +137,12 @@ extract.onclick=async()=>{
      });
      ocrSource=dataUrl;
    }
+   if(typeof ocrSource==='string' && ocrSource.startsWith('data:image/')){
+     const img=await new Promise((resolve,reject)=>{const im=new Image();im.onload=()=>resolve(im);im.onerror=()=>reject(new Error('Unable to decode image for OCR.'));im.src=ocrSource});
+     const c=document.createElement('canvas'),scale=Math.min(3,Math.max(1,1800/Math.max(img.naturalWidth||img.width,1)));
+     c.width=Math.round((img.naturalWidth||img.width)*scale);c.height=Math.round((img.naturalHeight||img.height)*scale);
+     const cx=c.getContext('2d');cx.filter='grayscale(1) contrast(1.35)';cx.drawImage(img,0,0,c.width,c.height);ocrSource=c.toDataURL('image/png')
+   }
    const out=await Tesseract.recognize(ocrSource,'eng',{logger:m=>{
      if(m.status==='recognizing text')setStatus('OCR '+Math.round((m.progress||0)*100)+'%…');
      else if(m.status==='loading tesseract core')setStatus('Loading OCR engine…');
@@ -149,17 +155,23 @@ extract.onclick=async()=>{
  }catch(e){console.error(e);setStatus('Extraction failed: '+(e.message||e),'warn')}
 };
 function parseText(text){
- const out=[];const areaRe=/([A-Z][A-Z0-9 &\-\/]{2,60})\s+(\d+(?:\.\d+)?)\s*(?:SQ\.?\s*FT|SQFT|FT2)/gi;
- let m;while((m=areaRe.exec(text))){
+ const out=[];
+ const areaRe=/([A-Z][A-Z0-9 &\-\/]{2,80})\s+(\d+(?:\.\d+)?)\s*(SQ\.?\s*FT|SQFT|FT2|M2|M²|SQ\.?\s*M|SQUARE\s*MET(?:ER|RE)S?)/gi;
+ let m;
+ while((m=areaRe.exec(text))){
    const raw=m[1].split(/\n+/).map(x=>x.trim()).filter(Boolean);
    let room=(raw[raw.length-1]||'').replace(/\s+/g,' ').trim();
-   if(!room||/BOUNDARY|SETBACK|SCALE|PUBLISHER|ARAS|CADANGAN|TERES|JALAN|TAMAN|UNTUK|TENTUAN/i.test(room))continue;
-   const area=Number(m[2]); if(!Number.isFinite(area)||area<=0)continue;
-   out.push({room,area,unit:'sqft',dimensions:'',confidence:'Review'})
+   room=room.replace(/[^A-Z0-9 &\-\/]/gi,'').replace(/\s+/g,' ').trim();
+   if(!room||/BOUNDARY|SETBACK|SCALE|PUBLISHER|ARAS|CADANGAN|TERES|JALAN|TAMAN|UNTUK|TENTUAN|CONCEPT|ARCHITECT|DRAWING/i.test(room))continue;
+   const sourceArea=Number(m[2]); if(!Number.isFinite(sourceArea)||sourceArea<=0)continue;
+   const rawUnit=m[3].toUpperCase();
+   const isM2=/M2|M²|SQ\.?\s*M|SQUARE\s*MET/.test(rawUnit);
+   const areaSqft=isM2?sourceArea*10.7639104167:sourceArea;
+   out.push({room,area:sourceArea,areaSqft,areaUnit:isM2?'m²':'sqft',sourceArea,unit:'sqft',dimensions:'',confidence:isM2?'Review':'Review'})
  }
  return out.filter((r,i,a)=>a.findIndex(x=>x.room.toLowerCase()===r.room.toLowerCase())===i)
 }
-imp.onclick=()=>{areas.forEach(a=>a.rows=activeArea!==null&&areas[activeArea]===a?rows:a.rows);const payload={recordType:'floor-plan-import-prototype',areas:areas.map((a,i)=>({name:a.name||('Area '+(i+1)),source:a.file?.name||null,rooms:a.rows.map(r=>({name:String(r.room||'').trim(),area:Number(r.area)||0,unit:'sqft',dimensions:String(r.dimensions||'').trim(),confidence:r.confidence,verified:true}))}))};localStorage.setItem('teraju.floorplan.import.prototype',JSON.stringify(payload));setStatus('Prototype payload saved locally. BuildPlanner V2 was not modified.','ok');console.log('[TERAJU FLOOR PLAN IMPORT]',payload);alert('Prototype import saved locally. BuildPlanner V2 was not modified.')}
+imp.onclick=()=>{areas.forEach(a=>a.rows=activeArea!==null&&areas[activeArea]===a?rows:a.rows);const payload={recordType:'floor-plan-import-prototype',areas:areas.map((a,i)=>({name:a.name||('Area '+(i+1)),source:a.file?.name||null,rooms:a.rows.map(r=>({name:String(r.room||'').trim(),area:Number(r.areaSqft??r.area)||0,unit:'sqft',sourceArea:Number(r.area)||0,sourceUnit:r.areaUnit||'sqft',dimensions:String(r.dimensions||'').trim(),confidence:r.confidence,verified:true}))}))};localStorage.setItem('teraju.floorplan.import.prototype',JSON.stringify(payload));setStatus('Prototype payload saved locally. BuildPlanner V2 was not modified.','ok');console.log('[TERAJU FLOOR PLAN IMPORT]',payload);alert('Prototype import saved locally. BuildPlanner V2 was not modified.')}
 </script>
 </body>
 </html>
