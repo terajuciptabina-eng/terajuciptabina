@@ -111,14 +111,6 @@ const cat=String(category||'').toLowerCase();
 const groupMap={preliminaries:'PRELIMINARIES',structures:'STRUCTURES',architecture:'ARCHITECTURES',electrical:'ELECTRICAL','doors-windows':'DOORS & WINDOWS','external-work':'EXTERNAL WORK'};
 const group=groupMap[cat]||String(category||'').toUpperCase();
 const level=keyParts.slice(2).join(':')||'MANUAL ITEM';
-/*
- * Manual item hierarchy must use the same masterPath shape as the canonical
- * structure tree. For STRUCTURES the first path segment is already the
- * section and the second segment is the level (e.g. STRUCTURES / FOOTING).
- * The previous builder duplicated STRUCTURES, producing
- * STRUCTURES / STRUCTURES / FOOTING, so the item was rendered under a
- * synthetic "STRUCTURES" level instead of FOOTING.
- */
 const sub=keyParts[1]&&keyParts[1]!=='project'?keyParts[1]:groupTitle;
 /*
  * The target key already carries the visible hierarchy for structures:
