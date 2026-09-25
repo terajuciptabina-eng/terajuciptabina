@@ -287,7 +287,7 @@ applyAudienceUI();if(isHomeowner()){document.getElementById('roomsContainer').in
 <script src="quotation-document-engine.js?v=20260923-pagination-v1"></script>
 <script src="state-rate-record-bridge.js?v=20260923-hidden-rate-capture-v1"></script>
 <script src="contractor-master-bridge.js?v=20260923-hidden-rate-capture-v1"></script>
-<script src="quotation-records.js?v=20260923-hidden-rate-capture-v1"></script>
+<script src="quotation-records.js?v=20260925-saved-budget-restore-v1"></script>
 <script id="tc-homeowner-customer-default">(()=>{const params=new URLSearchParams(location.search),role=(params.get('audience')||document.body.dataset.role||'homeowner').toLowerCase();if(role!=='homeowner'||params.get('quotationId'))return;const storageKey='teraju.homeowner.github.v1';function applyHomeownerName(){const input=document.getElementById('customerName');if(!input||input.value.trim())return;try{const account=JSON.parse(localStorage.getItem(storageKey)||'null'),name=String(account?.profile?.name||'').trim();if(!name)return;input.value=name;input.dispatchEvent(new Event('input',{bubbles:true}));input.dispatchEvent(new Event('change',{bubbles:true}))}catch{}}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',applyHomeownerName,{once:true});else applyHomeownerName()})();</script>
 <script id="tc-navigation-context">
 (() => {
