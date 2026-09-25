@@ -6,6 +6,7 @@
 <meta name="theme-color" content="#0f172a">
 <title>Work Program | TERAJU WORKS</title>
 <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 <style>
 *{box-sizing:border-box}body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f8fafc;color:#0f172a}
 button,input,select{font:inherit;min-height:38px}.pdf-save-btn{flex:0 0 auto;border-radius:.65rem;border:1px solid #cbd5e1;background:#fff;padding:.42rem .7rem;font-size:.7rem;font-weight:800;line-height:1.15}.pdf-save-btn:hover{background:#f8fafc}
@@ -85,6 +86,26 @@ main{padding:16px 10px!important}
     <div class="rounded-xl border border-slate-200 bg-white p-3"><div class="text-[9px] font-black uppercase tracking-[.14em] text-slate-400">Actual / Progress</div><div id="insightActual" class="mt-1 text-sm font-black">—</div><div id="insightActualMeta" class="mt-1 text-[11px] text-slate-500">—</div></div>
     <div class="rounded-xl border border-slate-200 bg-white p-3"><div class="text-[9px] font-black uppercase tracking-[.14em] text-slate-400">S-Curve Control</div><div id="insightCurve" class="mt-1 text-sm font-black">—</div><div id="insightCurveMeta" class="mt-1 text-[11px] text-slate-500">—</div></div>
    </div>
+   <div class="mt-2 grid gap-2 lg:grid-cols-3">
+    <div class="rounded-xl border border-slate-200 bg-white p-3 lg:col-span-2">
+      <div class="mb-2"><div class="text-[9px] font-black uppercase tracking-[.14em] text-slate-400">S-CURVE VISUAL</div><h3 class="mt-0.5 text-sm font-black">Planned vs Actual Progress</h3><p class="text-[10px] text-slate-500">Cumulative progress derived from Work Program dates and saved Actual / Progress snapshots.</p></div>
+      <div class="relative h-[260px]"><canvas id="insightSCurveChart"></canvas></div>
+    </div>
+    <div class="rounded-xl border border-slate-200 bg-white p-3">
+      <div class="mb-2"><div class="text-[9px] font-black uppercase tracking-[.14em] text-slate-400">WORK PROGRAM VISUAL</div><h3 class="mt-0.5 text-sm font-black">Scheduled Value by Work Group</h3><p class="text-[10px] text-slate-500">Contract value distributed across the scheduled work groups.</p></div>
+      <div class="relative h-[260px]"><canvas id="insightGroupChart"></canvas></div>
+    </div>
+   </div>
+   <div class="mt-2 grid gap-2 lg:grid-cols-2">
+    <div class="rounded-xl border border-slate-200 bg-white p-3">
+      <div class="mb-2"><div class="text-[9px] font-black uppercase tracking-[.14em] text-slate-400">PROGRESS VISUAL</div><h3 class="mt-0.5 text-sm font-black">Actual Progress Trend</h3><p class="text-[10px] text-slate-500">Saved project-control snapshots over time.</p></div>
+      <div class="relative h-[230px]"><canvas id="insightProgressChart"></canvas></div>
+    </div>
+    <div class="rounded-xl border border-slate-200 bg-white p-3">
+      <div class="mb-2"><div class="text-[9px] font-black uppercase tracking-[.14em] text-slate-400">SCHEDULE CONTROL</div><h3 class="mt-0.5 text-sm font-black">Work Program Coverage</h3><p class="text-[10px] text-slate-500">Scheduled versus unscheduled established estimate items.</p></div>
+      <div class="relative h-[230px]"><canvas id="insightCoverageChart"></canvas></div>
+    </div>
+   </div>
   </section><section id="scheduledEstimateCard" class="card p-2.5 sm:p-3">
    <div class="mb-1.5 flex flex-col justify-between gap-2 sm:flex-row sm:items-center"><div><h2 class="text-lg font-black">Scheduled Estimate Items</h2><p class="mt-0.5 text-xs text-slate-500">Every row below comes from the selected Cost Estimate snapshot.</p></div><div class="flex flex-wrap items-center gap-1.5"><button id="autoSchedule" class="rounded-xl bg-slate-900 px-3 py-2 text-xs font-bold text-white">Suggest Smart Schedule</button><button id="saveProgram" class="rounded-xl border border-slate-300 bg-white px-3 py-2 text-xs font-bold">Save Work Program</button><a id="progressLink" class="rounded-xl border border-slate-300 bg-white px-3 py-2 text-xs font-bold" href="#">Progress / Actual</a><button type="button" class="pdf-hide pdf-save-btn" data-pdf-card="scheduledEstimateCard" data-pdf-name="TERAJU-WORKS-Scheduled-Estimate-Items">Save PDF</button></div></div>
    <div id="status" class="mb-1.5 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-500">Loading…</div>
@@ -94,12 +115,29 @@ main{padding:16px 10px!important}
 <script src="workspace-context.js"></script><script src="project-control-api.js"></script>
 <script>
 (()=>{const API='https://terajuciptabina.vercel.app/api/quotations';const p=new URLSearchParams(location.search);const ctx=window.TERAJU_WORKSPACE_CONTEXT||{};const role=(p.get('role')||p.get('audience')||ctx.role||'contractor').toLowerCase()==='contractor'?'contractor':'homeowner';const idKey=role==='contractor'?'contractorId':'homeownerId';const id=(p.get('id')||p.get(idKey)||ctx.id||'').trim().toUpperCase();const type=(p.get('plannerType')||ctx.plannerType||'build').toLowerCase()==='renovation'?'renovation':'build';const requested=p.get('quotationId')||ctx.quotationId||'';const els={select:document.getElementById('quotationSelect'),start:document.getElementById('projectStart'),finish:document.getElementById('projectFinish'),body:document.getElementById('programBody'),status:document.getElementById('status'),summary:document.getElementById('sourceSummary'),analytics:document.getElementById('wpAnalytics'),gantt:document.getElementById('wpGantt'),legend:document.getElementById('wpTimelineLegend')};
-const insightEls={status:document.getElementById('insightStatus'),kpis:document.getElementById('insightKpis'),estimate:document.getElementById('insightEstimate'),estimateMeta:document.getElementById('insightEstimateMeta'),program:document.getElementById('insightProgram'),programMeta:document.getElementById('insightProgramMeta'),actual:document.getElementById('insightActual'),actualMeta:document.getElementById('insightActualMeta'),curve:document.getElementById('insightCurve'),curveMeta:document.getElementById('insightCurveMeta'),progressLink:document.getElementById('insightProgressLink'),curveLink:document.getElementById('insightSCurveLink')};let quotations=[],selected=null,rows=[],schedule={},ruleIndex={},serverWorkProgram=null,serverContract=null,serverProgress=null;
+const insightEls={status:document.getElementById('insightStatus'),kpis:document.getElementById('insightKpis'),estimate:document.getElementById('insightEstimate'),estimateMeta:document.getElementById('insightEstimateMeta'),program:document.getElementById('insightProgram'),programMeta:document.getElementById('insightProgramMeta'),actual:document.getElementById('insightActual'),actualMeta:document.getElementById('insightActualMeta'),curve:document.getElementById('insightCurve'),curveMeta:document.getElementById('insightCurveMeta'),scurveCanvas:document.getElementById('insightSCurveChart'),groupCanvas:document.getElementById('insightGroupChart'),progressCanvas:document.getElementById('insightProgressChart'),coverageCanvas:document.getElementById('insightCoverageChart'),progressLink:document.getElementById('insightProgressLink'),curveLink:document.getElementById('insightSCurveLink')};let quotations=[],selected=null,rows=[],schedule={},ruleIndex={},serverWorkProgram=null,serverContract=null,serverProgress=null;
 const key=()=> 'teraju.workprogram.v1.'+role+'.'+id+'.'+type+'.'+(selected?.quotationId||'none');const contextUrl=()=>`quotations.html?role=contractor&id=${encodeURIComponent(id)}&plannerType=${encodeURIComponent(type)}`;
 const fmt=n=>new Intl.NumberFormat('en-MY',{minimumFractionDigits:2,maximumFractionDigits:2}).format(Number(n)||0);
 const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
 const parseDate=v=>{const d=new Date(v+'T00:00:00');return isNaN(d)?null:d};const iso=d=>d?new Intl.DateTimeFormat('en-CA',{year:'numeric',month:'2-digit',day:'2-digit'}).format(d):'';
 const days=(a,b)=>{const x=parseDate(a),y=parseDate(b);return x&&y&&y>=x?Math.floor((y-x)/86400000)+1:0};
+let insightCharts={scurve:null,group:null,progress:null,coverage:null};
+function destroyInsightCharts(){Object.values(insightCharts).forEach(chart=>{try{chart?.destroy()}catch{}});insightCharts={scurve:null,group:null,progress:null,coverage:null}}
+function renderInsightCharts({dates,history,valid,rows,schedule,total,latestDate,latest,scheduled}){
+ if(!window.Chart||!insightEls.scurveCanvas)return;
+ destroyInsightCharts();
+ const navy='#172033',emerald='#10b981',slate='#64748b',grid='#e2e8f0';
+ const validDates=dates;
+ const plannedSeries=validDates.map(d=>{const at=parseDate(d);let value=0;rows.forEach(item=>{const s=schedule[item.id]||{};if(!s.start||!s.finish)return;const st=parseDate(s.start),fn=parseDate(s.finish),span=Math.max(1,fn-st),p=at<st?0:at>=fn?1:Math.max(0,Math.min(1,(at-st)/span));value+=(Number(item.amount)||0)*p});return total?value/total*100:0});
+ const actualSeries=validDates.map(d=>{const snap=history[d]||{};let value=0;rows.forEach(item=>value+=(Number(item.amount)||0)*Math.max(0,Math.min(100,Number(snap[item.id]?.percent)||0))/100);return total?value/total*100:0});
+ const chartOptions={responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{boxWidth:10,usePointStyle:true,font:{size:10,weight:'700'}}},tooltip:{callbacks:{label:ctx=>ctx.dataset.label+': '+Number(ctx.parsed.y||0).toFixed(1)+'%'}}},scales:{x:{grid:{display:false},ticks:{maxTicksLimit:8,font:{size:9}}},y:{min:0,max:100,grid:{color:grid},ticks:{font:{size:9},callback:v=>v+'%'}}}};
+ insightCharts.scurve=new Chart(insightEls.scurveCanvas,{type:'line',data:{labels:validDates,datasets:[{label:'Planned',data:plannedSeries,borderColor:navy,backgroundColor:'rgba(23,32,51,.06)',borderWidth:2,pointRadius:0,tension:.25,fill:false},{label:'Actual',data:actualSeries,borderColor:emerald,backgroundColor:'rgba(16,185,129,.08)',borderWidth:2,pointRadius:0,tension:.18,fill:false}]},options:chartOptions});
+ const groups={};rows.forEach(item=>{const key=String(item.group||item.category||'OTHER').trim()||'OTHER';groups[key]=(groups[key]||0)+(Number(item.amount)||0)});
+ const groupEntries=Object.entries(groups).sort((a,b)=>b[1]-a[1]);
+ insightCharts.group=new Chart(insightEls.groupCanvas,{type:'bar',data:{labels:groupEntries.map(x=>x[0]),datasets:[{label:'Scheduled Value (RM)',data:groupEntries.map(x=>x[1]),backgroundColor:navy,borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>'RM '+fmt(ctx.parsed.x)}}},scales:{x:{grid:{color:grid},ticks:{font:{size:9},callback:v=>'RM '+Intl.NumberFormat('en-MY',{notation:'compact',maximumFractionDigits:1}).format(v)}},y:{grid:{display:false},ticks:{font:{size:8}}}}}});
+ insightCharts.progress=new Chart(insightEls.progressCanvas,{type:'line',data:{labels:validDates,datasets:[{label:'Actual Progress',data:actualSeries,borderColor:emerald,backgroundColor:'rgba(16,185,129,.08)',borderWidth:2,pointRadius:0,tension:.18,fill:true}]},options:chartOptions});
+ insightCharts.coverage=new Chart(insightEls.coverageCanvas,{type:'doughnut',data:{labels:['Scheduled','Unscheduled'],datasets:[{data:[scheduled,Math.max(0,rows.length-scheduled)],backgroundColor:[emerald,'#cbd5e1'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,cutout:'68%',plugins:{legend:{position:'bottom',labels:{boxWidth:10,usePointStyle:true,font:{size:10,weight:'700'}}},tooltip:{callbacks:{label:ctx=>ctx.label+': '+ctx.parsed+' items'}}}}});
+}
 function renderInsight(){
  if(!selected)return;
  const money=n=>'RM '+fmt(n),contract=serverContract||selected.contractSnapshot||{},total=Number(contract.contractSum??selected.total)||0;
@@ -121,6 +159,7 @@ function renderInsight(){
  insightEls.actual.textContent=latestDate?actualPct.toFixed(1)+'%':'No saved data';insightEls.actualMeta.textContent=latestDate?money(actualValue)+' actual value · '+dates.length+' valid snapshot'+(dates.length===1?'':'s')+(previousDate?' · previous '+previousPct.toFixed(1)+'%':''):'Save Progress / Actual to populate this insight.';
  insightEls.curve.textContent=latestDate?plannedPct.toFixed(1)+'% planned vs '+actualPct.toFixed(1)+'% actual':'Awaiting actual data';insightEls.curveMeta.textContent=latestDate?'Variance '+(variance>=0?'+':'')+variance.toFixed(1)+' pp · latest control date '+latestDate:'S-Curve uses Work Program schedule + saved Actual snapshots.';
  insightEls.status.textContent=latestDate?'Live project-control view · Cost Estimate / Contract baseline + Work Program + Actual / Progress + S-Curve · latest actual '+latestDate:'Cost Estimate / Contract and Work Program data loaded. Actual / Progress and S-Curve will populate after a valid Progress snapshot is saved.';
+ renderInsightCharts({dates,history,valid,rows,schedule,total,latestDate,latest,scheduled});
  const q=encodeURIComponent(selected.quotationId||'');insightEls.progressLink.href='progress.html?role=contractor&id='+encodeURIComponent(id)+'&plannerType='+encodeURIComponent(type)+'&quotationId='+q;insightEls.curveLink.href='s-curve.html?role=contractor&id='+encodeURIComponent(id)+'&plannerType='+encodeURIComponent(type)+'&quotationId='+q+(latestDate?'&asAt='+encodeURIComponent(latestDate):'');
 }
 function updateNavigation(){document.getElementById('backLink').href=contextUrl();document.getElementById('progressLink').href=`progress.html?role=contractor&id=${encodeURIComponent(id)}&plannerType=${encodeURIComponent(type)}&quotationId=${encodeURIComponent(selected?.quotationId||'')}`}
