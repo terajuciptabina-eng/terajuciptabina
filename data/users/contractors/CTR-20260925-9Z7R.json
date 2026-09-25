@@ -35,7 +35,7 @@
           "builtUpArea": 880,
           "state": "selangor"
         },
-        "total": 285300,
+        "total": 286668,
         "plannerState": {
           "customerName": "iskandar",
           "projectLocation": "cyberjaya",
@@ -285,14 +285,33 @@
             "master-preliminaries-/-site-mobilisation-/-project-management",
             "master-preliminaries-/-building-plan-/-submission"
           ],
-          "manualItems": [],
+          "manualItems": [
+            [
+              "structures:MAIN BUILDING:Footing",
+              [
+                {
+                  "id": "manual-1790340889153-mh4kbk",
+                  "description": "test 123",
+                  "unit": "ls",
+                  "qty": 3,
+                  "rate": 456,
+                  "category": "structures",
+                  "groupKey": "structures:MAIN BUILDING:Footing",
+                  "groupTitle": "Footing",
+                  "roomId": "project",
+                  "masterPath": "MAIN BUILDING / Footing",
+                  "amount": 456
+                }
+              ]
+            ]
+          ],
           "standardRateItems": [],
           "quotationType": "detail",
           "projectId": "PRJ-BLD-MUGODDOV-CV38P",
           "projectState": "selangor",
           "rateSetId": "default",
           "rateSetName": "Default Rate",
-          "rateSnapshotAt": "2026-09-25T10:36:51.481Z"
+          "rateSnapshotAt": "2026-09-25T12:55:05.754Z"
         },
         "itemListVersion": 1,
         "items": [
@@ -1859,10 +1878,27 @@
             "masterPath": "BATHROOM / Tap",
             "roomId": "room-8",
             "room": "Guest Bath"
+          },
+          {
+            "id": "manual-1790340889153-mh4kbk",
+            "category": "structures",
+            "description": "test 123",
+            "unit": "ls",
+            "qty": 3,
+            "rate": 456,
+            "amount": 1368,
+            "header": "",
+            "level3": "",
+            "section": "",
+            "groupTitle": "Footing",
+            "groupKey": "structures:MAIN BUILDING:Footing",
+            "masterPath": "MAIN BUILDING / Footing",
+            "roomId": "project",
+            "room": "Project"
           }
         ],
         "createdAt": "2026-09-25T09:12:15.287Z",
-        "updatedAt": "2026-09-25T10:36:53.483Z",
+        "updatedAt": "2026-09-25T12:55:07.281Z",
         "estimateNumber": "EST-BLD-002"
       },
       {
@@ -3712,7 +3748,7 @@
     "renovation": []
   },
   "createdAt": "2026-09-25T08:00:35.953Z",
-  "updatedAt": "2026-09-25T10:36:53.483Z",
+  "updatedAt": "2026-09-25T12:55:07.281Z",
   "quotationRunningNumber": {
     "build": 2
   },
