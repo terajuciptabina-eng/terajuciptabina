@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin Insights | TERAJU WORKS</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f3f4f6;color:#111827;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.header{background:#fff;border-bottom:1px solid #e5e7eb}
+.header .top{padding:18px 24px;display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+.eyebrow{font-size:11px;font-weight:800;letter-spacing:.09em;color:#6b7280;text-transform:uppercase}
+.title{font-size:28px;font-weight:850;margin:5px 0}
+.muted{color:#6b7280;font-size:12px;line-height:1.5}
+.tag{display:inline-flex;align-items:center;min-height:30px;padding:0 10px;border:1px solid #e5e7eb;border-radius:999px;background:#f8fafc;font-size:10px;font-weight:800;white-space:nowrap}
+.nav{display:flex;gap:8px;flex-wrap:wrap;padding:0 24px 14px}
+.nav a{color:#374151;text-decoration:none;font-size:12px;font-weight:700;padding:8px 11px;border:1px solid #e5e7eb;border-radius:10px;background:#fff}
+.nav .back-nav{font-weight:800}
+.wrap{padding:22px 24px;max-width:1700px;margin:auto}
+.toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px}
+.toolbar select,.toolbar button{min-height:40px;border:1px solid #d1d5db;border-radius:10px;padding:0 12px;font:inherit;background:#fff;font-weight:700}
+.toolbar button{background:#111827;color:#fff;border-color:#111827;cursor:pointer}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:14px}
+.kpi{background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:17px;box-shadow:0 6px 20px rgba(0,0,0,.035)}
+.kpi .label{font-size:11px;font-weight:800;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}
+.kpi .value{font-size:27px;font-weight:850;margin-top:7px}
+.kpi .sub{font-size:11px;color:#6b7280;margin-top:4px}
+.grid{display:grid;grid-template-columns:1.55fr 1fr;gap:14px;margin-bottom:14px}
+.panel{background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:17px;box-shadow:0 6px 20px rgba(0,0,0,.035);min-width:0}
+.panel h2{font-size:16px;margin:0 0 3px}
+.panel .caption{font-size:11px;color:#6b7280;margin-bottom:12px}
+.chartbox{position:relative;height:300px}
+.chartbox.small{height:270px}
+.chartbox.tall{height:350px}
+.insight-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.list{display:grid;gap:9px}
+.row{display:grid;grid-template-columns:minmax(120px,1fr) 80px 1.4fr;gap:10px;align-items:center;font-size:12px}
+.bar{height:8px;border-radius:99px;background:#e5e7eb;overflow:hidden}
+.bar i{display:block;height:100%;background:#111827;border-radius:99px}
+.table{overflow:auto;border:1px solid #eef0f2;border-radius:12px}
+table{width:100%;border-collapse:collapse;min-width:760px}
+th,td{text-align:left;padding:10px;border-bottom:1px solid #eef0f2;font-size:12px;vertical-align:top}
+th{font-size:10px;text-transform:uppercase;color:#6b7280;background:#fafafa}
+.status{font-size:12px;color:#6b7280}
+.error{color:#b91c1c}
+.hidden{display:none!important}
+@media(max-width:1050px){.kpis{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}}
+@media(max-width:700px){.header .top{display:block;padding:14px}.nav{padding:0 14px 14px}.wrap{padding:16px 12px}.kpis{grid-template-columns:1fr 1fr}.insight-grid{grid-template-columns:1fr}.toolbar{display:block}.toolbar select,.toolbar button{margin-top:8px;width:100%}.title{font-size:23px}.chartbox{height:250px}}
+</style>
+</head>
+<body>
+<header class="header">
+  <div class="top">
+    <div>
+      <div class="eyebrow">TERAJU WORKS · ADMIN</div>
+      <div class="title">Insights Dashboard</div>
+      <div class="muted">Live analytics derived from the Admin database. No sample or dummy metrics.</div>
+    </div>
+    <div class="tag" id="updated">Loading…</div>
+  </div>
+  <nav class="nav">
+    <a class="back-nav" href="admin.html">← Back</a>
+    <a href="admin.html">Home</a>
+    <a href="admin-database.html">Database</a>
+    <a href="admin-calculation-rules.html">Calculation Rules</a>
+    <a href="admin-rate-management.html">Rate Management</a>
+    <a href="admin-rate-comparison.html">Rate Comparison</a>
+    <a href="admin-quotation.html">Admin Quotation</a>
+  </nav>
+</header>
+
+<main class="wrap">
+  <div class="toolbar">
+    <div class="status" id="status">Loading database…</div>
+    <div>
+      <select id="range"><option value="30">Last 30 days</option><option value="90">Last 90 days</option><option value="365">Last 12 months</option><option value="all">All time</option></select>
+      <button id="refresh">Refresh</button>
+    </div>
+  </div>
+
+  <section class="kpis">
+    <div class="kpi"><div class="label">Total Users</div><div class="value" id="users">—</div><div class="sub" id="usersSub">Homeowners + Contractors</div></div>
+    <div class="kpi"><div class="label">Homeowners</div><div class="value" id="homeowners">—</div><div class="sub">Registered accounts</div></div>
+    <div class="kpi"><div class="label">Contractors</div><div class="value" id="contractors">—</div><div class="sub">Registered accounts</div></div>
+    <div class="kpi"><div class="label">Cost Estimates</div><div class="value" id="estimates">—</div><div class="sub" id="estimateSub">Build + Renovation</div></div>
+    <div class="kpi"><div class="label">Estimated Project Value</div><div class="value" id="value">—</div><div class="sub">Sum of stored estimate totals</div></div>
+    <div class="kpi"><div class="label">Average Estimate</div><div class="value" id="average">—</div><div class="sub">Across stored estimates with value</div></div>
+    <div class="kpi"><div class="label">Active Users</div><div class="value" id="active">—</div><div class="sub">Updated within selected period</div></div>
+    <div class="kpi"><div class="label">Users With Estimates</div><div class="value" id="engaged">—</div><div class="sub">At least one stored estimate</div></div>
+  </section>
+
+  <section class="grid">
+    <div class="panel">
+      <h2>User Growth</h2><div class="caption">Accounts created over time</div>
+      <div class="chartbox"><canvas id="growthChart"></canvas></div>
+    </div>
+    <div class="panel">
+      <h2>Planner Usage</h2><div class="caption">Stored BuildPlanner vs RenovationPlanner records</div>
+      <div class="chartbox small"><canvas id="plannerChart"></canvas></div>
+    </div>
+  </section>
+
+  <section class="grid">
+    <div class="panel">
+      <h2>Estimates Over Time</h2><div class="caption">Number of stored quotation / estimate records</div>
+      <div class="chartbox"><canvas id="estimateChart"></canvas></div>
+    </div>
+    <div class="panel">
+      <h2>Estimated Project Value</h2><div class="caption">Stored estimate totals by month</div>
+      <div class="chartbox"><canvas id="valueChart"></canvas></div>
+    </div>
+  </section>
+
+  <section class="insight-grid">
+    <div class="panel">
+      <h2>State Distribution</h2><div class="caption">Accounts grouped by stored state / territory</div>
+      <div id="states" class="list"></div>
+    </div>
+    <div class="panel">
+      <h2>Recent Activity</h2><div class="caption">Accounts with the latest database updates</div>
+      <div class="table"><table><thead><tr><th>Account</th><th>Type</th><th>Estimates</th><th>Last Updated</th></tr></thead><tbody id="recent"></tbody></table></div>
+    </div>
+  </section>
+</main>
+
+<script>
+const API='https://terajuciptabina.vercel.app/api/admin';
+const KEY='teraju.admin.key',USER='teraju.admin.username';
+const charts={};
+let accounts=[];
+const money=n=>new Intl.NumberFormat('en-MY',{style:'currency',currency:'MYR',maximumFractionDigits:0}).format(Number(n)||0);
+const num=n=>new Intl.NumberFormat('en-MY').format(Number(n)||0);
+const esc=v=>String(v??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function session(){const username=sessionStorage.getItem(USER)||'',password=sessionStorage.getItem(KEY)||'';if(!username||!password){location.href='admin.html';throw new Error('Admin session not found.');}return{username,password}}
+function headers(){const s=session();return{'X-Admin-Username':s.username,'X-Admin-Password':s.password}}
+function recordsFor(a){
+  const p=a.plannerRecords||{};
+  return [...(Array.isArray(p.build)?p.build:[]),...(Array.isArray(p.renovation)?p.renovation:[])];
+}
+function dateKey(d){const x=new Date(d);if(Number.isNaN(x.getTime()))return null;return x.toISOString().slice(0,10)}
+function monthKey(d){const x=new Date(d);if(Number.isNaN(x.getTime()))return null;return x.toISOString().slice(0,7)}
+function selectedSince(){
+  const v=document.getElementById('range').value;
+  if(v==='all')return null;
+  const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()-Number(v)+1);return d;
+}
+function filteredAccounts(){
+  const since=selectedSince();
+  if(!since)return accounts;
+  return accounts.filter(a=>{const d=new Date(a.updatedAt||a.createdAt);return !Number.isNaN(d.getTime())&&d>=since});
+}
+function destroy(name){if(charts[name]){charts[name].destroy();delete charts[name]}}
+function chartDefaults(){return{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{boxWidth:10,font:{size:11}}}},scales:{x:{grid:{display:false},ticks:{font:{size:10}}},y:{beginAtZero:true,ticks:{font:{size:10}}}}}}
+function render(){
+  const selected=filteredAccounts();
+  const allRecords=accounts.flatMap(recordsFor);
+  const selectedRecords=selected.flatMap(recordsFor);
+  const homeowners=accounts.filter(a=>String(a.role).toLowerCase()==='homeowner').length;
+  const contractors=accounts.filter(a=>String(a.role).toLowerCase()==='contractor').length;
+  const value=selectedRecords.reduce((s,r)=>s+(Number(r.total)||0),0);
+  const valued=selectedRecords.filter(r=>Number.isFinite(Number(r.total))&&Number(r.total)>0);
+  const avg=valued.length?value/valued.length:0;
+  document.getElementById('users').textContent=num(accounts.length);
+  document.getElementById('homeowners').textContent=num(homeowners);
+  document.getElementById('contractors').textContent=num(contractors);
+  document.getElementById('estimates').textContent=num(selectedRecords.length);
+  document.getElementById('estimateSub').textContent=num(selectedRecords.filter(r=>r.plannerType==='build').length)+' Build · '+num(selectedRecords.filter(r=>r.plannerType==='renovation').length)+' Renovation';
+  document.getElementById('value').textContent=money(value);
+  document.getElementById('average').textContent=money(avg);
+  document.getElementById('active').textContent=num(selected.length);
+  document.getElementById('engaged').textContent=num(accounts.filter(a=>recordsFor(a).length>0).length);
+  document.getElementById('usersSub').textContent=num(homeowners)+' Homeowner · '+num(contractors)+' Contractor';
+
+  const growth={};const estimateCounts={};const values={};
+  const since=selectedSince();
+  const start=since?new Date(since):null;
+  accounts.forEach(a=>{
+    const d=new Date(a.createdAt);if(Number.isNaN(d.getTime()))return;
+    if(start&&d<start)return;
+    const k=monthKey(d);if(k)growth[k]=(growth[k]||0)+1;
+  });
+  selectedRecords.forEach(r=>{
+    const d=new Date(r.updatedAt||r.createdAt);const k=monthKey(d);if(!k)return;
+    estimateCounts[k]=(estimateCounts[k]||0)+1;values[k]=(values[k]||0)+(Number(r.total)||0);
+  });
+  const keys=[...new Set([...Object.keys(growth),...Object.keys(estimateCounts),...Object.keys(values)])].sort();
+  const labels=keys.map(k=>{const [y,m]=k.split('-');return new Date(Number(y),Number(m)-1,1).toLocaleDateString('en-MY',{month:'short',year:'2-digit'})});
+  const cd=chartDefaults();
+  destroy('growthChart');charts.growthChart=new Chart(document.getElementById('growthChart'),{type:'line',data:{labels,datasets:[{label:'New users',data:keys.map(k=>growth[k]||0),tension:.35,fill:false,borderWidth:2,pointRadius:3}]},options:cd});
+  destroy('estimateChart');charts.estimateChart=new Chart(document.getElementById('estimateChart'),{type:'bar',data:{labels,datasets:[{label:'Estimates',data:keys.map(k=>estimateCounts[k]||0),borderRadius:5}]},options:cd});
+  destroy('valueChart');charts.valueChart=new Chart(document.getElementById('valueChart'),{type:'line',data:{labels,datasets:[{label:'RM',data:keys.map(k=>Math.round(values[k]||0)),tension:.3,fill:true,borderWidth:2}]},options:{...cd,scales:{...cd.scales,y:{beginAtZero:true,ticks:{font:{size:10},callback:v=>'RM '+Number(v).toLocaleString()}}}}});
+  const build=selectedRecords.filter(r=>r.plannerType==='build').length;
+  const renovation=selectedRecords.filter(r=>r.plannerType==='renovation').length;
+  destroy('plannerChart');charts.plannerChart=new Chart(document.getElementById('plannerChart'),{type:'doughnut',data:{labels:['BuildPlanner','RenovationPlanner'],datasets:[{data:[build,renovation]}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}}}}});
+  renderStates();
+  renderRecent();
+}
+function renderStates(){
+  const map={};accounts.forEach(a=>{const s=String(a.state||'Not specified').trim()||'Not specified';map[s]=(map[s]||0)+1});
+  const rows=Object.entries(map).sort((a,b)=>b[1]-a[1]);const max=rows[0]?.[1]||1;
+  document.getElementById('states').innerHTML=rows.length?rows.map(([s,n])=>'<div class="row"><b>'+esc(s)+'</b><span>'+num(n)+'</span><div class="bar"><i style="width:'+Math.round(n/max*100)+'%"></i></div></div>').join(''):'<div class="muted">No state data.</div>';
+}
+function renderRecent(){
+  const rows=[...accounts].sort((a,b)=>new Date(b.updatedAt||b.createdAt)-new Date(a.updatedAt||a.createdAt)).slice(0,12);
+  document.getElementById('recent').innerHTML=rows.map(a=>'<tr><td><b>'+esc(a.name||a.id||'-')+'</b><br><span class="muted">'+esc(a.id)+'</span></td><td>'+esc(a.role||'-')+'</td><td>'+num(recordsFor(a).length)+'</td><td>'+esc(a.updatedAt||a.createdAt||'-')+'</td></tr>').join('');
+}
+async function load(){
+  const status=document.getElementById('status');status.className='status';status.textContent='Loading database…';
+  try{
+    const r=await fetch(API+'?records=1',{headers:headers(),cache:'no-store'});
+    let d={};try{d=await r.json()}catch{}
+    if(!r.ok)throw new Error(d.message||'Unable to load database.');
+    accounts=Array.isArray(d.accounts)?d.accounts:[];
+    document.getElementById('updated').textContent='Updated '+new Date().toLocaleString('en-MY');
+    status.textContent=num(accounts.length)+' accounts loaded from GitHub database.';
+    render();
+  }catch(e){status.className='status error';status.textContent=e.message||'Unable to load insights.'}
+}
+document.getElementById('range').onchange=render;
+document.getElementById('refresh').onclick=load;
+load();
+</script>
+</body>
+</html>
