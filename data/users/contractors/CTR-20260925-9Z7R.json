@@ -35,7 +35,7 @@
           "builtUpArea": 880,
           "state": "selangor"
         },
-        "total": 305800,
+        "total": 285300,
         "plannerState": {
           "customerName": "iskandar",
           "projectLocation": "cyberjaya",
@@ -243,54 +243,59 @@
           "customRates": [],
           "customQuantities": [],
           "customDescriptions": [],
-          "customRoomLabels": [],
-          "excludedItems": [],
+          "customRoomLabels": [
+            [
+              "room-1",
+              "Living"
+            ],
+            [
+              "room-2",
+              "Kitchen"
+            ],
+            [
+              "room-3",
+              "Bedroom"
+            ],
+            [
+              "room-4",
+              "Bedroom 2"
+            ],
+            [
+              "room-5",
+              "Bedroom 3"
+            ],
+            [
+              "room-6",
+              "Bathroom"
+            ],
+            [
+              "room-7",
+              "Bathroom 2"
+            ],
+            [
+              "room-8",
+              "Guest Bath"
+            ],
+            [
+              "room-9",
+              "Porch"
+            ]
+          ],
+          "excludedItems": [
+            "master-preliminaries-/-site-mobilisation-/-project-management",
+            "master-preliminaries-/-building-plan-/-submission"
+          ],
           "manualItems": [],
           "standardRateItems": [],
           "quotationType": "detail",
           "projectId": "PRJ-BLD-MUGODDOV-CV38P",
           "projectState": "selangor",
-          "rateSetId": "selangor",
-          "rateSetName": "Selangor",
-          "rateSnapshotAt": "2026-09-25T08:05:02.848Z",
-          "quotationId": "QT-BLD-MUGQSFCN-42TH4"
+          "rateSetId": "default",
+          "rateSetName": "Default Rate",
+          "rateSnapshotAt": "2026-09-25T10:36:26.061Z"
         },
         "itemListVersion": 1,
         "items": [
-          {
-            "id": "master-preliminaries-/-building-plan-/-submission",
-            "category": "preliminaries",
-            "description": "Submission of building plan / permit application and Engineer’s drawings to the Local Authority, including preparation of required documents, submission, coordination and necessary authority liaison, complete.",
-            "unit": "LS",
-            "qty": 1,
-            "rate": 8500,
-            "amount": 8500,
-            "header": "",
-            "level3": "",
-            "section": "",
-            "groupTitle": "Preliminaries",
-            "groupKey": "preliminaries",
-            "masterPath": "PRELIMINARIES / Building Plan / Submission",
-            "roomId": "project",
-            "room": "Project"
-          },
-          {
-            "id": "master-preliminaries-/-site-mobilisation-/-project-management",
-            "category": "preliminaries",
-            "description": "Preliminaries, site mobilisation, temporary facilities, site protection, insurance, project coordination, supervision and general project management, complete.",
-            "unit": "LS",
-            "qty": 1,
-            "rate": 12000,
-            "amount": 12000,
-            "header": "",
-            "level3": "",
-            "section": "",
-            "groupTitle": "Preliminaries",
-            "groupKey": "preliminaries",
-            "masterPath": "PRELIMINARIES / Site Mobilisation / Project Management",
-            "roomId": "project",
-            "room": "Project"
-          },
           {
             "id": "master-main-building-/-footing-/-concrete",
             "category": "structures",
@@ -1734,7 +1739,7 @@
             "groupKey": "bathroom-room-8",
             "masterPath": "BATHROOM / Wall Tiles",
             "roomId": "room-8",
-            "room": "Bathroom 3"
+            "room": "Guest Bath"
           },
           {
             "id": "bath-room-8-floor-tiles",
@@ -1751,7 +1756,7 @@
             "groupKey": "bathroom-room-8",
             "masterPath": "BATHROOM / Floor Tiles",
             "roomId": "room-8",
-            "room": "Bathroom 3"
+            "room": "Guest Bath"
           },
           {
             "id": "bath-room-8-ceiling",
@@ -1768,7 +1773,7 @@
             "groupKey": "bathroom-room-8",
             "masterPath": "BATHROOM / Ceiling",
             "roomId": "room-8",
-            "room": "Bathroom 3"
+            "room": "Guest Bath"
           },
           {
             "id": "bath-room-8-piping",
@@ -1785,7 +1790,7 @@
             "groupKey": "bathroom-room-8",
             "masterPath": "BATHROOM / Piping",
             "roomId": "room-8",
-            "room": "Bathroom 3"
+            "room": "Guest Bath"
           },
           {
             "id": "bath-room-8-wc",
@@ -1802,7 +1807,7 @@
             "groupKey": "bathroom-room-8",
             "masterPath": "BATHROOM / WC",
             "roomId": "room-8",
-            "room": "Bathroom 3"
+            "room": "Guest Bath"
           },
           {
             "id": "bath-room-8-basin",
@@ -1819,7 +1824,7 @@
             "groupKey": "bathroom-room-8",
             "masterPath": "BATHROOM / Basin",
             "roomId": "room-8",
-            "room": "Bathroom 3"
+            "room": "Guest Bath"
           },
           {
             "id": "bath-room-8-shower",
@@ -1836,7 +1841,7 @@
             "groupKey": "bathroom-room-8",
             "masterPath": "BATHROOM / Shower",
             "roomId": "room-8",
-            "room": "Bathroom 3"
+            "room": "Guest Bath"
           },
           {
             "id": "bath-room-8-tap",
@@ -1853,11 +1858,11 @@
             "groupKey": "bathroom-room-8",
             "masterPath": "BATHROOM / Tap",
             "roomId": "room-8",
-            "room": "Bathroom 3"
+            "room": "Guest Bath"
           }
         ],
         "createdAt": "2026-09-25T09:12:15.287Z",
-        "updatedAt": "2026-09-25T09:12:15.287Z",
+        "updatedAt": "2026-09-25T10:36:27.604Z",
         "estimateNumber": "EST-BLD-002"
       },
       {
@@ -3701,13 +3706,13 @@
         ],
         "createdAt": "2026-09-25T08:04:31.049Z",
         "updatedAt": "2026-09-25T08:05:04.841Z",
-        "estimateNumber": "EST-BLD-001"
+        "estimateNumber": "EST-BLD-002"
       }
     ],
     "renovation": []
   },
   "createdAt": "2026-09-25T08:00:35.953Z",
-  "updatedAt": "2026-09-25T09:12:15.287Z",
+  "updatedAt": "2026-09-25T10:36:27.604Z",
   "quotationRunningNumber": {
     "build": 2
   },
