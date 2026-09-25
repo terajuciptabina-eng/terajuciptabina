@@ -104,33 +104,40 @@ async function renderPdf(fileObj){
  const canvas=document.createElement('canvas'),ctx=canvas.getContext('2d');canvas.width=vp.width;canvas.height=vp.height;await page.render({canvasContext:ctx,viewport:vp}).promise;preview.innerHTML='';preview.appendChild(canvas);currentImage=canvas.toDataURL('image/png');return pdf
 }
 async function load(f){
- currentFile=f;rows=[];activeArea=null;render();$('metrics').style.display='none';extract.disabled=false;setStatus('Loading '+f.name+'…');
- if(f.type==='application/pdf'||/\.pdf$/i.test(f.name)){await renderPdf(f)}else{showImage(URL.createObjectURL(f))}
- setStatus('Ready. Click “Extract Room & Area”.','ok')
+ try{
+   if(!f){setStatus('No floor plan file received.','warn');return}
+   currentFile=f;rows=[];activeArea=null;render();$('metrics').style.display='none';extract.disabled=false;
+   setStatus('Loading '+(f.name||'floor plan')+'…');
+   if(f.type==='application/pdf'||/\\.pdf$/i.test(f.name||'')) await renderPdf(f);
+   else showImage(URL.createObjectURL(f));
+   setStatus('Ready. Click “Extract Room & Area”.','ok')
+ }catch(e){
+   console.error('[FLOOR PLAN] load failed',e);
+   currentFile=null;extract.disabled=true;
+   setStatus('Unable to load this floor plan. Try JPG/PNG/WEBP or PDF.','warn')
+ }
 }
-drop.onclick=()=>file.click();file.onchange=()=>file.files[0]&&load(file.files[0]);
-['dragenter','dragover'].forEach(e=>drop.addEventListener(e,ev=>{ev.preventDefault();drop.classList.add('drag')}));
-['dragleave','drop'].forEach(e=>drop.addEventListener(e,ev=>{ev.preventDefault();drop.classList.remove('drag')}));
-drop.addEventListener('drop',async ev=>{
+drop.onclick=()=>file.click();
+file.onchange=async()=>{const f=file.files?.[0];if(f)await load(f);file.value=''};
+['dragenter','dragover'].forEach(e=>drop.addEventListener(e,ev=>{ev.preventDefault();ev.stopPropagation();drop.classList.add('drag')},{capture:true}));
+['dragleave'].forEach(e=>drop.addEventListener(e,ev=>{ev.preventDefault();ev.stopPropagation();drop.classList.remove('drag')},{capture:true}));
+drop.addEventListener('drop',ev=>{
  ev.preventDefault();ev.stopPropagation();drop.classList.remove('drag');
  const dt=ev.dataTransfer;
- let f=dt?.files?.[0]||null;
- if(!f && dt?.items?.length){
+ let f=dt&&dt.files&&dt.files.length?dt.files[0]:null;
+ if(!f&&dt&&dt.items){
    for(const item of Array.from(dt.items)){
      if(item.kind==='file'){f=item.getAsFile();if(f)break}
    }
  }
- if(f){
-   if(/^image\\/(jpeg|png|webp)$/i.test(f.type)||f.type==='application/pdf'||/\\.(jpe?g|png|webp|pdf)$/i.test(f.name)) load(f);
-   else setStatus('Unsupported file. Please drop JPG, PNG, WEBP or PDF.','warn');
- }else{
-   const uri=dt?.getData?.('text/uri-list')||dt?.getData?.('text/plain')||'';
-   if(/^https?:\\/\\//i.test(uri)&&/\\.(jpe?g|png|webp)(?:[?#].*)?$/i.test(uri)){
-     try{const res=await fetch(uri);if(!res.ok)throw new Error('Image fetch failed');const blob=await res.blob();load(new File([blob],'dropped-image.'+(blob.type.split('/')[1]||'png'),{type:blob.type}))}
-     catch(e){setStatus('Browser blocked the dropped image URL. Save the image locally, then drop the JPG/PNG file.','warn')}
-   }else setStatus('No file detected. Drop a JPG, PNG, WEBP or PDF file from Finder, or use “click to choose”.','warn')
- }
-});
+ if(!f){setStatus('Safari did not provide a file. Save the image to Finder first, then drag the JPG/PNG/WEBP file here.','warn');return}
+ const ok=/^image\\/(jpeg|png|webp)$/i.test(f.type)||f.type==='application/pdf'||/\\.(jpe?g|png|webp|pdf)$/i.test(f.name||'');
+ if(!ok){setStatus('Unsupported file. Please use JPG, PNG, WEBP or PDF.','warn');return}
+ load(f)
+},{capture:true});
+// Prevent Safari from navigating the whole page when a file is dragged outside the drop zone.
+window.addEventListener('dragover',ev=>ev.preventDefault(),{capture:true});
+window.addEventListener('drop',ev=>{if(!drop.contains(ev.target))ev.preventDefault()},{capture:true});
 sample.onclick=()=>{const f={name:'tested-camera-floor-plan.jpg',type:'image/jpeg'};const r=SAMPLE.map(x=>({...x}));areas.push({name:'Ground Floor / Area 1',file:f,rows:r});activeArea=areas.length-1;rows=r;currentFile=f;render();setStatus('Loaded tested camera sample as Ground Floor / Area 1.','ok')};
 $('addArea').onclick=()=>{const name=prompt('Area / Floor name (e.g. Ground Floor, First Floor, Area 2):','Area '+(areas.length+1));if(!name)return;areas.push({name:name.trim(),file:null,rows:[]});activeArea=areas.length-1;rows=areas[activeArea].rows;currentFile=null;render();setStatus('Added '+name+'. Upload its floor plan, then extract.','ok')};
 add.onclick=()=>{if(activeArea===null){areas.push({name:'Area '+(areas.length+1),file:null,rows:[]});activeArea=areas.length-1}rows.push({room:'',area:0,areaSqft:0,areaUnit:'sqft',sourceArea:'sqft',unit:'sqft',dimensions:'',confidence:'Review'});areas[activeArea].rows=rows;render()};
