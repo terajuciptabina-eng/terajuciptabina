@@ -35,7 +35,7 @@
           "builtUpArea": 880,
           "state": "selangor"
         },
-        "total": 286668,
+        "total": 288393,
         "plannerState": {
           "customerName": "iskandar",
           "projectLocation": "cyberjaya",
@@ -303,6 +303,24 @@
                   "amount": 456
                 }
               ]
+            ],
+            [
+              "external-work:EXTERNAL WORK:LANDSCAPING",
+              [
+                {
+                  "id": "manual-1790340955451-wq3j8w",
+                  "description": "hardscape",
+                  "unit": "ls",
+                  "qty": 5,
+                  "rate": 345,
+                  "category": "external-work",
+                  "groupKey": "external-work:EXTERNAL WORK:LANDSCAPING",
+                  "groupTitle": "LANDSCAPING",
+                  "roomId": "project",
+                  "masterPath": "EXTERNAL WORK / EXTERNAL WORK / LANDSCAPING",
+                  "amount": 345
+                }
+              ]
             ]
           ],
           "standardRateItems": [],
@@ -311,7 +329,7 @@
           "projectState": "selangor",
           "rateSetId": "default",
           "rateSetName": "Default Rate",
-          "rateSnapshotAt": "2026-09-25T12:55:05.754Z"
+          "rateSnapshotAt": "2026-09-25T12:56:12.541Z"
         },
         "itemListVersion": 1,
         "items": [
@@ -1895,10 +1913,27 @@
             "masterPath": "MAIN BUILDING / Footing",
             "roomId": "project",
             "room": "Project"
+          },
+          {
+            "id": "manual-1790340955451-wq3j8w",
+            "category": "external-work",
+            "description": "hardscape",
+            "unit": "ls",
+            "qty": 5,
+            "rate": 345,
+            "amount": 1725,
+            "header": "",
+            "level3": "",
+            "section": "",
+            "groupTitle": "LANDSCAPING",
+            "groupKey": "external-work:EXTERNAL WORK:LANDSCAPING",
+            "masterPath": "EXTERNAL WORK / EXTERNAL WORK / LANDSCAPING",
+            "roomId": "project",
+            "room": "Project"
           }
         ],
         "createdAt": "2026-09-25T09:12:15.287Z",
-        "updatedAt": "2026-09-25T12:55:07.281Z",
+        "updatedAt": "2026-09-25T12:56:13.739Z",
         "estimateNumber": "EST-BLD-002"
       },
       {
@@ -3748,7 +3783,7 @@
     "renovation": []
   },
   "createdAt": "2026-09-25T08:00:35.953Z",
-  "updatedAt": "2026-09-25T12:55:07.281Z",
+  "updatedAt": "2026-09-25T12:56:13.739Z",
   "quotationRunningNumber": {
     "build": 2
   },
