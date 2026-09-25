@@ -140,7 +140,7 @@ function syncRateInput(id,el){
     manual.item.rate=contractorRate;
     manual.item.qty=qty;
     manual.item.amount=amount;
-  }else if(typeof customRates!=='undefined)customRates.set(sid,contractorRate);
+  }else if(typeof customRates!=='undefined')customRates.set(sid,contractorRate);
   const item=(typeof getAllItems==='function'?getAllItems():[]).find(x=>String(x.id)===sid);
   if(item){
     item.rate=contractorRate;
