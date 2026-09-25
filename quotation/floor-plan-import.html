@@ -175,6 +175,9 @@ extract.onclick=async()=>{
    if(spatialOcr.length)spatialRows=spatialOcr;
   }
   rows=spatialRows.length?spatialRows:parseText(text);
+  if(activeArea!==null){
+    areas[activeArea].rows=rows;
+  }
   // PDF drawings often contain a text layer, but the text order/units may not match
   // the room-area parser. If structured PDF text yields nothing, fall back to the
   // already-rendered page image and OCR instead of treating that as a hard failure.
@@ -198,6 +201,9 @@ extract.onclick=async()=>{
         seen.add(k);return true;
       });
     }
+  }
+  if(activeArea!==null){
+    areas[activeArea].rows=rows;
   }
   render();
   setStatus(rows.length?'Extraction complete. Review detected values before import.':'No reliable room/area pairs found. Try a clearer image or use manual rows.',''+(rows.length?'ok':'warn'))
