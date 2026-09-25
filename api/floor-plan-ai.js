@@ -152,7 +152,15 @@ async function callGroq(images, fileName) {
 
 Source file: ${fileName}
 This request contains ${images.length} page image(s). Page numbers are provided immediately before each image.
-Analyze only the supplied pages.`
+Analyze only the supplied pages.
+
+Return ONLY one valid JSON object with exactly these top-level arrays:
+{
+  "pages": [{"page": 1, "type": "floor_plan|site_plan|roof_plan|elevation|schedule|presentation|other", "floor": "string or null", "confidence": "high|medium|low"}],
+  "spaces": [{"id": "unique string", "page": 1, "floor": "string or null", "name": "room/space name", "area": 0, "unit": "sqft|sqm|unknown", "dimensions": "string or null", "confidence": "high|medium|low", "source": "explicit_label|schedule_crosscheck|visual_context|unknown", "notes": "string or null"}],
+  "warnings": ["string"]
+}
+Use null when area or dimensions are unavailable. Do not add markdown or commentary.`
   }];
 
   for (const image of images) {
@@ -176,13 +184,10 @@ Analyze only the supplied pages.`
       temperature: 0.1,
       max_completion_tokens: 12000,
       response_format: {
-        type: 'json_schema',
-        json_schema: {
-          name: 'floor_plan_extraction',
-          strict: true,
-          schema
-        }
+        type: 'json_object'
       },
+      reasoning_effort: 'none',
+      include_reasoning: false,
       stream: false
     })
   });
