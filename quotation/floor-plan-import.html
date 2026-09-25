@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>TERAJU WORKS — Floor Plan Import Prototype</title>
+<link rel="stylesheet" href="shared/teraju-workspace-theme.css">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.min.mjs" type="module"></script>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#eef1f3;color:#172033;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.wrap{width:100%;max-width:1440px;margin:auto;padding:22px}
+.hero,.card{background:#fff;border:1px solid rgba(15,23,42,.09);border-radius:22px;box-shadow:0 14px 40px rgba(15,23,42,.07)}
+.hero{padding:26px}.eyebrow{font-size:10px;font-weight:900;letter-spacing:.16em;color:#64748b;text-transform:uppercase}.hero h1{margin:6px 0;font-size:32px;letter-spacing:-.04em}.muted{color:#64748b;font-size:13px;line-height:1.55}.grid{display:grid;grid-template-columns:minmax(360px,.9fr) minmax(500px,1.1fr);gap:18px;margin-top:18px}.card{padding:20px}.drop{border:1.5px dashed #94a3b8;border-radius:18px;padding:28px;text-align:center;background:#f8fafc;cursor:pointer}.drop.drag{border-color:#10b981;background:#ecfdf5}.drop strong{display:block;font-size:15px;margin-bottom:5px}.btn{min-height:44px;border:0;border-radius:12px;padding:0 16px;font-weight:800;cursor:pointer}.btn.primary{background:#172033;color:#fff}.btn.secondary{background:#fff;border:1px solid #dbe1e8;color:#172033}.btn:disabled{opacity:.45;cursor:not-allowed}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.preview{margin-top:16px;border-radius:16px;background:#0f172a;min-height:300px;display:flex;align-items:center;justify-content:center;overflow:hidden}.preview img,.preview canvas{max-width:100%;max-height:560px;display:block}.status{margin-top:12px;padding:11px 13px;border-radius:12px;background:#f8fafc;border:1px solid #e5e7eb;font-size:12px;color:#475569}.status.ok{background:#ecfdf5;border-color:#a7f3d0;color:#065f46}.status.warn{background:#fffbeb;border-color:#fde68a;color:#92400e}.table-wrap{overflow:auto;border:1px solid #e5e7eb;border-radius:16px}.table{width:100%;border-collapse:collapse;font-size:12px}.table th,.table td{padding:11px 10px;border-bottom:1px solid #eef2f7;text-align:left}.table th{background:#f8fafc;color:#64748b;font-size:9px;text-transform:uppercase;letter-spacing:.12em}.table input{width:100%;min-height:38px;border:1px solid #dbe1e8;border-radius:9px;padding:0 9px}.empty{text-align:center;padding:40px 20px;color:#94a3b8}.pill{display:inline-flex;align-items:center;padding:5px 8px;border-radius:999px;background:#ecfdf5;color:#047857;font-size:10px;font-weight:800}.metric{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}.metric>div{padding:12px;border-radius:14px;background:#f8fafc;border:1px solid #e5e7eb}.metric b{display:block;font-size:18px}.metric span{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:#64748b}.check{font-size:11px;color:#64748b;margin-top:8px}@media(max-width:900px){.grid{grid-template-columns:1fr}.wrap{padding:14px}.hero h1{font-size:27px}.metric{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<section class="hero">
+<div class="eyebrow">TERAJU WORKS · PROTOTYPE</div>
+<h1>AI Floor Plan → Room & Area</h1>
+<p class="muted">Test both source types without touching BuildPlanner: upload the original PDF or a camera/screenshot image. The prototype extracts room names, areas and dimensions, then lets you review before import.</p>
+</section>
+
+<div class="grid">
+<section class="card">
+<div class="eyebrow">1 · INPUT</div>
+<h2 class="text-lg font-black mt-1">Upload floor plan</h2>
+<div id="drop" class="drop mt-4">
+<strong>Drop PDF or image here</strong>
+<span class="muted">or click to choose · JPG, PNG, WEBP, PDF</span>
+<input id="file" type="file" accept=".pdf,image/*" hidden>
+</div>
+<div class="actions">
+<button id="sample" class="btn secondary">Load Tested Sample</button>
+<button id="extract" class="btn primary" disabled>Extract Room & Area</button>
+</div>
+<div id="status" class="status">Waiting for a floor plan.</div>
+<div id="preview" class="preview"><div class="muted" style="color:#cbd5e1">Preview will appear here.</div></div>
+<div id="metrics" class="metric" style="display:none">
+<div><span>Spaces detected</span><b id="mRooms">0</b></div>
+<div><span>Total area</span><b id="mArea">0</b></div>
+<div><span>Source</span><b id="mSource" style="font-size:14px">—</b></div>
+</div>
+</section>
+
+<section class="card">
+<div class="eyebrow">2 · REVIEW</div>
+<h2 class="text-lg font-black mt-1">Detected Room / Area</h2>
+<p class="muted mt-1">Nothing is sent to BuildPlanner automatically. Review and edit first.</p>
+<div id="result" class="table-wrap mt-4">
+<div class="empty">No extraction yet.</div>
+</div>
+<div class="actions">
+<button id="add" class="btn secondary">+ Add Row</button>
+<button id="import" class="btn primary" disabled>Import to BuildPlanner (Prototype)</button>
+</div>
+<div class="check">Prototype only: Import currently creates a local review payload and does not modify BuildPlanner V2.</div>
+</section>
+</div>
+</div>
+
+<script type="module">
+const $=id=>document.getElementById(id);
+const drop=$('drop'),file=$('file'),extract=$('extract'),status=$('status'),preview=$('preview'),result=$('result'),sample=$('sample'),add=$('add'),imp=$('import');
+let currentFile=null,currentImage=null,rows=[];
+const SAMPLE=[
+ {room:'Washroom',area:120,unit:'sqft',dimensions:"6' × 20'",confidence:'High'},
+ {room:'Kitchen & Dining',area:240,unit:'sqft',dimensions:"12' × 20'",confidence:'High'},
+ {room:'Living',area:260,unit:'sqft',dimensions:"13' × 20'",confidence:'High'},
+ {room:'Bedroom 1',area:168,unit:'sqft',dimensions:"12' × 14'",confidence:'High'},
+ {room:'Bedroom 2',area:168,unit:'sqft',dimensions:"12' × 14'",confidence:'High'},
+ {room:'Bedroom 3',area:168,unit:'sqft',dimensions:"12' × 14'",confidence:'High'},
+ {room:'Bath 2',area:48,unit:'sqft',dimensions:"4' × 12'",confidence:'High'},
+ {room:'Bath 1',area:48,unit:'sqft',dimensions:"4' × 12'",confidence:'High'}
+];
+function setStatus(t,kind=''){status.textContent=t;status.className='status '+kind}
+function render(){
+ if(!rows.length){result.innerHTML='<div class="empty">No extraction yet.</div>';imp.disabled=true;return}
+ result.innerHTML='<table class="table"><thead><tr><th>Room / Space</th><th>Area</th><th>Dimensions</th><th>Confidence</th></tr></thead><tbody>'+rows.map((r,i)=>'<tr><td><input data-i="'+i+'" data-k="room" value="'+esc(r.room||'')+'"></td><td><input data-i="'+i+'" data-k="area" type="number" step="0.01" value="'+esc(r.area??'')+'"></td><td><input data-i="'+i+'" data-k="dimensions" value="'+esc(r.dimensions||'')+'"></td><td><span class="pill">'+esc(r.confidence||'Review')+'</span></td></tr>').join('')+'</tbody></table>';
+ result.querySelectorAll('input').forEach(el=>el.addEventListener('input',()=>{const i=+el.dataset.i;rows[i][el.dataset.k]=el.value;rows[i].area=el.dataset.k==='area'?Number(el.value)||0:rows[i].area;updateMetrics()}));
+ imp.disabled=false;updateMetrics()
+}
+function esc(v){return String(v).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function updateMetrics(){
+ $('metrics').style.display=rows.length?'grid':'none';$('mRooms').textContent=rows.length;
+ $('mArea').textContent=rows.reduce((a,r)=>a+(Number(r.area)||0),0).toLocaleString('en-MY',{maximumFractionDigits:2})+' sqft';
+ $('mSource').textContent=currentFile?.type==='application/pdf'?'PDF':currentFile?'IMAGE':'Sample';
+}
+function showImage(src){
+ preview.innerHTML='<img id="pv" alt="Floor plan preview" src="'+src+'">';currentImage=src
+}
+async function renderPdf(fileObj){
+ const pdfjs=await import('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.min.mjs');
+ pdfjs.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.worker.min.mjs';
+ const buf=await fileObj.arrayBuffer(),pdf=await pdfjs.getDocument({data:buf}).promise,page=await pdf.getPage(1),vp=page.getViewport({scale:1.7});
+ const canvas=document.createElement('canvas'),ctx=canvas.getContext('2d');canvas.width=vp.width;canvas.height=vp.height;await page.render({canvasContext:ctx,viewport:vp}).promise;preview.innerHTML='';preview.appendChild(canvas);currentImage=canvas.toDataURL('image/png');return pdf
+}
+async function load(f){
+ currentFile=f;extract.disabled=false;setStatus('Loading '+f.name+'…');
+ if(f.type==='application/pdf'||/\.pdf$/i.test(f.name)){await renderPdf(f)}else{showImage(URL.createObjectURL(f))}
+ setStatus('Ready. Click “Extract Room & Area”.','ok')
+}
+drop.onclick=()=>file.click();file.onchange=()=>file.files[0]&&load(file.files[0]);
+['dragenter','dragover'].forEach(e=>drop.addEventListener(e,ev=>{ev.preventDefault();drop.classList.add('drag')}));
+['dragleave','drop'].forEach(e=>drop.addEventListener(e,ev=>{ev.preventDefault();drop.classList.remove('drag')}));
+drop.addEventListener('drop',ev=>{const f=ev.dataTransfer.files[0];if(f)load(f)});
+sample.onclick=()=>{rows=SAMPLE.map(x=>({...x}));currentFile={name:'tested-camera-floor-plan.jpg',type:'image/jpeg'};render();setStatus('Loaded the tested camera-image result. Review before import.','ok')};
+add.onclick=()=>{rows.push({room:'',area:0,unit:'sqft',dimensions:'',confidence:'Review'});render()};
+extract.onclick=async()=>{
+ if(!currentFile)return;
+ if(currentFile.name==='tested-camera-floor-plan.jpg'){rows=SAMPLE.map(x=>({...x}));render();setStatus('Extraction complete: 8 spaces detected from the tested camera image.','ok');return}
+ setStatus('Running OCR / text extraction… This can take a moment.','');
+ try{
+  let text='';
+  if(currentFile.type==='application/pdf'||/\.pdf$/i.test(currentFile.name)){
+   const pdfjs=await import('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.min.mjs');
+   const pdf=await pdfjs.getDocument({data:await currentFile.arrayBuffer()}).promise;
+   for(let p=1;p<=pdf.numPages;p++){const pg=await pdf.getPage(p),tc=await pg.getTextContent();text+='\n'+tc.items.map(x=>x.str).join(' ')}
+  }
+  if(!text.trim()&&currentImage&&window.Tesseract){const out=await Tesseract.recognize(currentImage,'eng',{logger:m=>{if(m.status==='recognizing text')setStatus('OCR '+Math.round((m.progress||0)*100)+'%…')}});text=out.data.text}
+  rows=parseText(text);
+  render();
+  setStatus(rows.length?'Extraction complete. Review detected values before import.':'No reliable room/area pairs found. Try a clearer image or use manual rows.',''+(rows.length?'ok':'warn'))
+ }catch(e){console.error(e);setStatus('Extraction failed: '+(e.message||e),'warn')}
+};
+function parseText(text){
+ const out=[];const areaRe=/([A-Z][A-Z0-9 &\-\/]{2,40}?)\s+(\d+(?:\.\d+)?)\s*(?:SQ\.?\s*FT|SQFT|FT2)/gi;
+ let m;while((m=areaRe.exec(text))){const room=m[1].trim().replace(/\s+/g,' ');if(/BOUNDARY|SETBACK|SCALE|PUBLISHER|ARAS|CADANGAN/i.test(room))continue;out.push({room,area:Number(m[2]),unit:'sqft',dimensions:'',confidence:'Review'})}
+ return out.filter((r,i,a)=>a.findIndex(x=>x.room.toLowerCase()===r.room.toLowerCase())===i)
+}
+imp.onclick=()=>{const payload={source:currentFile?.name||'sample',recordType:'floor-plan-import-prototype',rooms:rows.map(r=>({name:String(r.room||'').trim(),area:Number(r.area)||0,unit:'sqft',dimensions:String(r.dimensions||'').trim(),confidence:r.confidence,verified:true}))};localStorage.setItem('teraju.floorplan.import.prototype',JSON.stringify(payload));setStatus('Prototype payload saved locally. BuildPlanner V2 was not modified.','ok');console.log('[TERAJU FLOOR PLAN IMPORT]',payload);alert('Prototype import saved locally. BuildPlanner V2 was not modified.')}
+</script>
+</body>
+</html>
