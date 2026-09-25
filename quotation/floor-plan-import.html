@@ -84,8 +84,8 @@ function renderAreas(){
 function render(){
  renderAreas();
  if(!rows.length){result.innerHTML='<div class="empty">No extraction yet.</div>';imp.disabled=true;return}
- result.innerHTML='<table class="table"><thead><tr><th>Room / Space</th><th>Area</th><th>Source Unit</th><th>Dimensions</th><th>Confidence</th></tr></thead><tbody>'+rows.map((r,i)=>'<tr><td><input data-i="'+i+'" data-k="room" value="'+esc(r.room||'')+'"></td><td><input data-i="'+i+'" data-k="area" type="number" step="0.01" value="'+esc(r.area??'')+'"></td><td>'+esc(r.sourceArea??r.areaUnit??'sqft')+'</td><td><input data-i="'+i+'" data-k="dimensions" value="'+esc(r.dimensions||'')+'"></td><td><span class="pill">'+esc(r.confidence||'Review')+'</span></td></tr>').join('')+'</tbody></table>';
- result.querySelectorAll('input').forEach(el=>el.addEventListener('input',()=>{const i=+el.dataset.i;rows[i][el.dataset.k]=el.value;rows[i].area=el.dataset.k==='area'?Number(el.value)||0:rows[i].area;updateMetrics()}));
+ result.innerHTML='<table class="table"><thead><tr><th>Room / Space</th><th>Area (sqft)</th><th>Source</th><th>Dimensions</th><th>Confidence</th></tr></thead><tbody>'+rows.map((r,i)=>'<tr><td><input data-i="'+i+'" data-k="room" value="'+esc(r.room||'')+'"></td><td><input data-i="'+i+'" data-k="areaSqft" type="number" step="0.01" value="'+esc(r.areaSqft??r.area??'')+'"></td><td>'+esc(r.sourceArea!=null?(Number(r.sourceArea).toLocaleString('en-MY',{maximumFractionDigits:2})+' '+(r.areaUnit||'sqft')):(r.areaUnit||'sqft'))+'</td><td><input data-i="'+i+'" data-k="dimensions" value="'+esc(r.dimensions||'')+'"></td><td><span class="pill">'+esc(r.confidence||'Review')+'</span></td></tr>').join('')+'</tbody></table>';
+ result.querySelectorAll('input').forEach(el=>el.addEventListener('input',()=>{const i=+el.dataset.i;rows[i][el.dataset.k]=el.value;if(el.dataset.k==='areaSqft')rows[i].areaSqft=Number(el.value)||0;updateMetrics()}));
  imp.disabled=false;updateMetrics()
 }
 function esc(v){return String(v).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
@@ -150,10 +150,25 @@ extract.onclick=async()=>{
    }});
    text=out.data.text
  }
-  rows=parseText(text); if(activeArea===null){areas.push({name:'Area '+(areas.length+1),file:currentFile,rows:rows});activeArea=areas.length-1}else{areas[activeArea].file=currentFile;areas[activeArea].rows=rows} render();
+  rows=(currentFile&&currentFile.type!=='application/pdf'&&!/\\.pdf$/i.test(currentFile.name))?parseOcrText(text):parseText(text); if(activeArea===null){areas.push({name:'Area '+(areas.length+1),file:currentFile,rows:rows});activeArea=areas.length-1}else{areas[activeArea].file=currentFile;areas[activeArea].rows=rows} render();
   setStatus(rows.length?'Extraction complete. Review detected values before import.':'No reliable room/area pairs found. Try a clearer image or use manual rows.',''+(rows.length?'ok':'warn'))
  }catch(e){console.error(e);setStatus('Extraction failed: '+(e.message||e),'warn')}
 };
+function parseOcrText(text){
+ const out=[];
+ const lines=String(text||'').split(/\\r?\\n+/).map(x=>x.replace(/[|_]+/g,' ').replace(/\\s+/g,' ').trim()).filter(Boolean);
+ const areaRe=/^(.*?)[\\s:,-]+(\\d+(?:[.,]\\d+)?)\\s*(sq\\.?\\s*ft|sqft|ft2|m2|m²|sq\\.?\\s*m|sqm|square\\s*met(?:er|re)s?)\\b/i;
+ for(const line of lines){
+   const m=line.match(areaRe); if(!m)continue;
+   let room=m[1].trim().replace(/^.*?(?:\\b(?:Cr|Nr|No|C|A|B)\\b)\\s+/i,'');
+   room=room.replace(/[^a-z0-9 &\\-\\/]/gi,'').replace(/\\s+/g,' ').trim();
+   if(!room||room.length<3||/BOUNDARY|SETBACK|SCALE|PUBLISHER|ARAS|CADANGAN|TERES|JALAN|TAMAN|UNTUK|TENTUAN|CONCEPT|ARCHITECT|DRAWING|PDF|ADOBE|ACROBAT|HOME|TOOLS/i.test(room))continue;
+   const sourceArea=Number(String(m[2]).replace(',','.'));if(!Number.isFinite(sourceArea)||sourceArea<=0)continue;
+   const rawUnit=m[3].toLowerCase();const isM2=/m2|m²|sq\\.?\\s*m|sqm|square\\s*met/.test(rawUnit);
+   out.push({room:room.replace(/\\bNEW\\s+/i,'NEW '),area:isM2?sourceArea*10.7639104167:sourceArea,areaSqft:isM2?sourceArea*10.7639104167:sourceArea,areaUnit:isM2?'m²':'sqft',sourceArea,unit:'sqft',dimensions:'',confidence:'Review'});
+ }
+ return out.filter((r,i,a)=>a.findIndex(x=>x.room.toLowerCase()===r.room.toLowerCase())===i)
+}
 function parseText(text){
  const out=[];
  const areaRe=/([A-Z][A-Z0-9 &\-\/]{2,80})\s+(\d+(?:\.\d+)?)\s*(SQ\.?\s*FT|SQFT|FT2|M2|M²|SQ\.?\s*M|SQUARE\s*MET(?:ER|RE)S?)/gi;
