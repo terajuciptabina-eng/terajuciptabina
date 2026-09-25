@@ -119,9 +119,14 @@ async function renderPdf(fileObj){
 async function load(f){
  try{
   if(!f){setStatus('No floor plan file received.','warn');return}
-  currentFile=f;rows=[];activeArea=activeArea===null?0:activeArea;
-  if(activeArea===null){areas.push({name:'Area 1',file:f,rows:[]});activeArea=0}
-  else {areas[activeArea].file=f;areas[activeArea].rows=[]}
+  currentFile=f;rows=[];
+  if(activeArea===null||!areas[activeArea]){
+    areas.push({name:'Area '+(areas.length+1),file:f,rows:[]});
+    activeArea=areas.length-1;
+  }else{
+    areas[activeArea].file=f;
+    areas[activeArea].rows=[];
+  }
   rows=areas[activeArea].rows;render();
   extract.disabled=false;setStatus('Loading '+(f.name||'floor plan')+'…');
   if(f.type==='application/pdf'||/\.pdf$/i.test(f.name||''))await renderPdf(f);else showImage(URL.createObjectURL(f));
