@@ -183,26 +183,25 @@ function parseText(text){
  }
  // Architectural floor-plan fallback: room labels are often OCR'd without a reliable unit token.
  // If a known room keyword is present, pair it with the nearest plausible area number.
- const roomRe=/\\b(?:NEW\\s+)?(?:MASTER\\s+)?(?:BEDROOM(?:\\s*[A-Z0-9]+)?|LIVING(?:\\s*&\\s*DINING|\\s+ROOM)?|KITCHEN(?:\\s*&\\s*DINING)?|DINING(?:\\s+ROOM)?|TOILET(?:\\s*[A-Z0-9]+)?|BATH(?:ROOM)?(?:\\s*[A-Z0-9]+)?|MASTER\\s+BEDROOM|MASTER\\s+BATH|STUDY|FAMILY\\s+AREA|FAMILY\\s+ROOM|STORE|STORE\\s+ROOM|PORCH|CAR\\s+PORCH|BALCONY|WALKWAY|STAIR(?:CASE)?|UTILITY|YARD|TERRACE)\\b/ig;
- const numRe=/(\\d+(?:[.,]\\d+)?)/g;
+ const roomRe=/\b(?:NEW\s+)?(?:MASTER\s+)?(?:BEDROOM(?:\s*[A-Z0-9]+)?|LIVING(?:\s*&\s*DINING|\s+ROOM)?|KITCHEN(?:\s*&\s*DINING)?|DINING(?:\s+ROOM)?|TOILET(?:\s*[A-Z0-9]+)?|BATH(?:ROOM)?(?:\s*[A-Z0-9]+)?|MASTER\s+BEDROOM|MASTER\s+BATH|STUDY|FAMILY\s+AREA|FAMILY\s+ROOM|STORE|STORE\s+ROOM|PORCH|CAR\s+PORCH|BALCONY|WALKWAY|STAIR(?:CASE)?|UTILITY|YARD|TERRACE)\b/ig;
  for(let i=0;i<lines.length;i++){
    const line=lines[i];
    const rm=line.match(roomRe);
    if(!rm)continue;
    let candidate=null;
-   const same=line.slice((rm.index||0)+rm[0].length).match(/(\\d+(?:[.,]\\d+)?)/);
+   const same=line.slice((rm.index||0)+rm[0].length).match(/(\d+(?:[.,]\d+)?)/);
    if(same)candidate=same[1];
    if(!candidate&&i+1<lines.length){
-     const n=lines[i+1].match(/^(?:AREA\\s*)?(\\d+(?:[.,]\\d+)?)/i);
+     const n=lines[i+1].match(/^(?:AREA\s*)?(\d+(?:[.,]\d+)?)/i);
      if(n)candidate=n[1];
    }
    if(!candidate&&i>0){
-     const n=lines[i-1].match(/(\\d+(?:[.,]\\d+)?)\\s*(?:M2|M²|SQ\\.?\\s*M|SQFT|SQ\\.?\\s*FT|FT2)?$/i);
+     const n=lines[i-1].match(/(\d+(?:[.,]\d+)?)\s*(?:M2|M²|SQ\.?\s*M|SQFT|SQ\.?\s*FT|FT2)?$/i);
      if(n)candidate=n[1];
    }
    if(candidate){
      const before=lines.slice(Math.max(0,i-1),i+2).join(' ');
-     const explicitUnit=before.match(/(M2|M²|SQ\\.?\\s*M|SQFT|SQ\\.?\\s*FT|FT2)\\b/i);
+     const explicitUnit=before.match(/(M2|M²|SQ\.?\s*M|SQFT|SQ\.?\s*FT|FT2)\b/i);
      add(rm[0],candidate,explicitUnit?explicitUnit[1]:'M2');
    }
  }
