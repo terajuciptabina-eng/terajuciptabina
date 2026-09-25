@@ -1,3 +1,4 @@
+// Groq floor-plan provider deployment marker: JSON Object Mode + reasoning disabled.
 const ALLOWED_ORIGIN = 'https://terajuciptabina-eng.github.io';
 const PROVIDER = String(process.env.AI_PROVIDER || 'groq').toLowerCase();
 const OPENAI_MODEL = process.env.OPENAI_FLOORPLAN_MODEL || 'gpt-5.6-sol';
