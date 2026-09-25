@@ -46,7 +46,7 @@ main{padding:10px 8px!important}
   function esc(v){return String(v==null?'':v).replace(/[&<>"]/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]})}
   function parse(v){return new Date(v+'T00:00:00')}
   function iso(d){return new Intl.DateTimeFormat('en-CA',{year:'numeric',month:'2-digit',day:'2-digit'}).format(d)}
-  function weeks(a,b){var out=[],d=parse(a),e=parse(b);while(d<=e){out.push(iso(d));d.setDate(d.getDate()+7)}if(!out.length||out[out.length-1]!==b)out.push(b);return out}
+  function weeks(a,b,extra){var out=[],seen={},d=parse(a),e=parse(b);while(d<=e){var v=iso(d);if(!seen[v]){out.push(v);seen[v]=1}d.setDate(d.getDate()+7)}if(!out.length||out[out.length-1]!==b){if(!seen[b])out.push(b);seen[b]=1}if(extra&&!seen[extra]){out.push(extra);out.sort()}return out}
   function normalize(x){
     if(!x||!x.quotationId)return null;
     var items=Array.isArray(x.items)?x.items:[];
@@ -96,16 +96,13 @@ main{padding:10px 8px!important}
   }
   function render(){
     if(!selected)return;
-    var sum=Number(selected.total)||0,ws=weeks(selected.projectStart,selected.projectFinish);
-    var selectedDate=els.asAt.value||selected.projectFinish;
-    var actualDates=Object.keys(history).filter(function(d){return d<=selectedDate}).sort();
-    var actualEnd=actualDates.length?actualDates[actualDates.length-1]:null;
+    var sum=Number(selected.total)||0,selectedDate=els.asAt.value||selected.projectFinish,actualDates=Object.keys(history).filter(function(d){return d<=selectedDate}).sort(),actualEnd=actualDates.length?actualDates[actualDates.length-1]:null,ws=weeks(selected.projectStart,selected.projectFinish,actualEnd);
     var points=ws.length?ws:[selected.projectStart];
     var data=points.map(function(d){
       var pm=plannedAt(d),hasActual=!!actualEnd&&d<=actualEnd,am=hasActual?actualAt(d):null;
       return {date:d,pm:pm,pp:sum?pm/sum*100:0,am:am,ap:hasActual&&sum?am/sum*100:null};
     });
-    var controlPoint=data.filter(function(d){return d.ap!=null}).slice(-1)[0]||data[0],variance=controlPoint.ap==null?0:controlPoint.ap-controlPoint.pp;
+    var controlPoint=actualEnd?data.find(function(d){return d.date===actualEnd})||data.filter(function(d){return d.ap!=null}).slice(-1)[0]||data[0]:data[0],variance=controlPoint.ap==null?0:controlPoint.ap-controlPoint.pp;
     document.getElementById('sum').textContent='RM '+fmt(sum);
     document.getElementById('planned').textContent=controlPoint.pp.toFixed(2)+'%';
     document.getElementById('actual').textContent=controlPoint.ap==null?'—':controlPoint.ap.toFixed(2)+'%';
