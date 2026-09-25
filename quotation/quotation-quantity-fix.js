@@ -73,7 +73,7 @@ tree.forEach(g=>{
  if(g.noLevel3.length){const key=`${cat}:${g.sub||g.header}`;h+=`<tr class="no-print"><td colspan="6" class="py-1 px-2">${addButton(key,g.sub||g.header,cat,g.noLevel3[0]?.roomId||'project')}</td></tr>`}
 });
 const total=active.reduce((sum,i)=>sum+N(i.amount),0);
-h+=`</tbody><tfoot><tr class="border-t-2"><td colspan="5" class="py-4 px-2 text-right font-bold">TOTAL PRELIMINARY ESTIMATE</td><td class="py-4 px-2 text-right font-bold text-lg">RM ${money(total,2)}</td></tr></tfoot></table>`;
+h+=`</tbody><tfoot><tr class="border-t-2"><td colspan="5" class="py-4 px-2 text-right font-bold">TOTAL PRELIMINARY ESTIMATE</td><td data-budget-grand-total class="py-4 px-2 text-right font-bold text-lg">RM ${money(total,2)}</td></tr></tfoot></table>`;
 c.innerHTML=h;
 c.querySelectorAll('[data-budget-new-action]').forEach(btn=>{btn.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();window.addNewBudgetItem(btn.dataset.budgetNewTarget||'',btn.dataset.budgetNewTitle||'',btn.dataset.budgetNewCategory||'',btn.dataset.budgetNewRoom||'project')})});
 c.querySelectorAll('textarea').forEach(t=>{t.style.overflow='hidden';t.style.resize='none';t.style.height='0px';t.style.height=t.scrollHeight+'px'});
@@ -126,23 +126,30 @@ function applyDirectRate(item,rateEl){if(!item||!rateEl)return;const contractorR
 function findManualItem(id){if(typeof manualItems==='undefined')return null;const sid=String(id||'');for(const [key,list] of manualItems.entries()){const found=(list||[]).find(x=>String(x?.id||'')===sid);if(found)return{key,item:found}}return null}
 function saveExisting(item){if(!document.body.classList.contains('contractor-mode'))return;const iid=targetId(item.id),desc=document.getElementById(`budget-desc-${iid}`),qty=document.getElementById(`budget-qty-${iid}`),rate=document.getElementById(`budget-rate-${iid}`);const text=String(desc?.value||'').trim();if(!text){alert('Description cannot be empty.');return}const manual=findManualItem(item.id);if(manual){const m=manual.item;m.description=text;if(qty)m.qty=normQty(qty.value);if(rate)m.rate=normRate(rate.value);m.amount=R2(N(m.qty)*N(m.rate));refresh();saveState();return}if(typeof customDescriptions!=='undefined')customDescriptions.set(item.id,text);if(qty&&typeof customQuantities!=='undefined')customQuantities.set(item.id,normQty(qty.value));if(rate&&typeof customRates!=='undefined'){const contractorRate=applyDirectRate(item,rate);if(item.masterPath&&typeof window.__tcCaptureDirectRateOverride==='function')window.__tcCaptureDirectRateOverride(item,contractorRate)}refresh();saveState()}
 function cancelExisting(){refresh()}
+function refreshRenderedBudgetAmounts(){
+  const root=document.getElementById('constructionBudgetContent');
+  if(!root)return;
+  const items=(typeof window.getAllItems==='function'?window.getAllItems():[]);
+  const active=items.filter(i=>typeof excludedItems==='undefined'||!excludedItems.has(i.id));
+  active.forEach(item=>{
+    const amountEl=document.getElementById(`budget-amount-${targetId(item.id)}`);
+    if(amountEl)amountEl.textContent=money2(item.amount);
+  });
+  const total=active.reduce((sum,item)=>sum+N(item.amount),0);
+  const grandEl=root.querySelector('[data-budget-grand-total]');
+  if(grandEl)grandEl.textContent='RM '+money2(total);
+}
 function syncRateInput(id,el){
   if(!document.body.classList.contains('contractor-mode')||!el)return;
   const sid=String(id||el.getAttribute('data-budget-rate-id')||'');
   if(!sid)return;
   const contractorRate=normRate(el.value);
-  const qtyEl=document.getElementById(`budget-qty-${targetId(sid)}`);
-  const qty=normQty(qtyEl?.value||0);
-  const amount=R2(qty*contractorRate);
-  const amountEl=document.getElementById(`budget-amount-${targetId(sid)}`);
-  if(amountEl)amountEl.textContent=money2(amount);
   const manual=findManualItem(sid);
   if(manual){
     manual.item.rate=contractorRate;
-    manual.item.qty=qty;
-    manual.item.amount=amount;
   }else if(typeof customRates!=='undefined')customRates.set(sid,contractorRate);
-  const item=(typeof getAllItems==='function'?getAllItems():[]).find(x=>String(x.id)===sid);
+  refreshRenderedBudgetAmounts();
+  const item=(typeof window.getAllItems==='function'?window.getAllItems():[]).find(x=>String(x.id)===sid);
   if(item){
     item.rate=contractorRate;
     item.qty=qty;
@@ -163,12 +170,32 @@ document.addEventListener("click",function(event){
   if(id&&typeof window.deleteBudgetItem==="function")window.deleteBudgetItem(id);
 },true);
 const budgetRoot=document.getElementById('constructionBudgetContent');
-if(budgetRoot&&!budgetRoot.__terajuRateInputBound){
-  budgetRoot.__terajuRateInputBound=true;
+if(budgetRoot&&!budgetRoot.__terajuBudgetInputBound){
+  budgetRoot.__terajuBudgetInputBound=true;
   budgetRoot.addEventListener('input',event=>{
-    const el=event.target?.closest?.('[data-budget-rate-id]');
-    if(el&&budgetRoot.contains(el))syncRateInput(el.getAttribute('data-budget-rate-id'),el);
+    const rateEl=event.target?.closest?.('[data-budget-rate-id]');
+    if(rateEl&&budgetRoot.contains(rateEl)){
+      syncRateInput(rateEl.getAttribute('data-budget-rate-id'),rateEl);
+      return;
+    }
+    const qtyEl=event.target?.closest?.('[id^="budget-qty-"]');
+    if(qtyEl&&budgetRoot.contains(qtyEl)){
+      syncQuantityInput(qtyEl.id.replace(/^budget-qty-/,'').replace(/-+$/,''),qtyEl);
+    }
   });
+}
+function syncQuantityInput(id,el){
+  if(!document.body.classList.contains('contractor-mode')||!el)return;
+  const sid=String(id||'').trim();
+  if(!sid)return;
+  const qty=normQty(el.value);
+  const manual=findManualItem(sid);
+  if(manual){
+    manual.item.qty=qty;
+  }else if(typeof customQuantities!=='undefined'){
+    customQuantities.set(sid,qty);
+  }
+  refreshRenderedBudgetAmounts();
 }
 function updateRenderedBudgetTotals(container){const root=container||document.getElementById('constructionBudgetContent');if(!root)return;const totals={};root.querySelectorAll('[data-budget-item-id]').forEach(row=>{const cat=row.getAttribute('data-budget-category')||'';const amountEl=row.querySelector('[id^="budget-amount-"]');const amount=Number(String(amountEl?.textContent||'').replace(/[^0-9.-]+/g,''))||0;totals[cat]=(totals[cat]||0)+amount});const grand=Object.values(totals).reduce((sum,v)=>sum+v,0);const grandEl=root.querySelector('[data-budget-grand-total]');if(grandEl)grandEl.textContent='RM '+money2(grand)}
 })();;
