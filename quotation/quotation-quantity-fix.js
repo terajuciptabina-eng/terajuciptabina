@@ -123,6 +123,15 @@ function syncRateInput(id,el){
 window.TERAJU_V2_RATE_INPUT=syncRateInput;
 window.TERAJU_V2_SAVE_ITEM=function(id){const item=(typeof getAllItems==='function'?getAllItems():[]).find(x=>String(x.id)===String(id));if(item)saveExisting(item);else{const rateEl=document.getElementById(`budget-rate-${targetId(id)}`);if(rateEl){if(typeof customRates!=='undefined')customRates.set(id,normRate(rateEl.value));saveState()}}};
 window.TERAJU_V2_CANCEL_ITEM=cancelExisting;
+// Canonical BuildPlanner V2 delete binding: capture the click before any legacy inline handlers.
+document.addEventListener("click",function(event){
+  const btn=event.target?.closest?.("[data-budget-delete-id]");
+  if(!btn)return;
+  event.preventDefault();
+  event.stopPropagation();
+  const id=btn.getAttribute("data-budget-delete-id")||"";
+  if(id&&typeof window.deleteBudgetItem==="function")window.deleteBudgetItem(id);
+},true);
 const budgetRoot=document.getElementById('constructionBudgetContent');
 if(budgetRoot&&!budgetRoot.__terajuRateInputBound){
   budgetRoot.__terajuRateInputBound=true;
