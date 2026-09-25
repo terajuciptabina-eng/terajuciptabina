@@ -155,7 +155,8 @@ function filteredAccounts(){
   return accounts.filter(a=>{const d=new Date(a.updatedAt||a.createdAt);return !Number.isNaN(d.getTime())&&d>=since});
 }
 function destroy(name){if(charts[name]){charts[name].destroy();delete charts[name]}}
-function chartDefaults(){return{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{boxWidth:10,font:{size:11}}}},scales:{x:{grid:{display:false},ticks:{font:{size:10}}},y:{beginAtZero:true,ticks:{font:{size:10}}}}}}
+const TERAJU_COLORS={navy:'#172033',navySoft:'#334155',emerald:'#10b981',emeraldSoft:'#6ee7b7',slate:'#64748b',grid:'rgba(23,32,51,.08)'};
+function chartDefaults(){return{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{boxWidth:10,font:{size:11},color:TERAJU_COLORS.navy}}},scales:{x:{grid:{display:false},ticks:{font:{size:10},color:TERAJU_COLORS.slate}},y:{beginAtZero:true,grid:{color:TERAJU_COLORS.grid},ticks:{font:{size:10},color:TERAJU_COLORS.slate}}}}}
 function chartBucket(d,mode){
   const x=new Date(d);if(Number.isNaN(x.getTime()))return null;
   if(mode==='day')return x.toISOString().slice(0,10);
@@ -212,12 +213,12 @@ function render(){
   let running=0;
   const cumulative=keys.map(k=>{running+=growth[k]||0;return running;});
   const cd=chartDefaults();
-  destroy('growthChart');charts.growthChart=new Chart(document.getElementById('growthChart'),{type:'line',data:{labels,datasets:[{label:'Registered users',data:cumulative,tension:.3,fill:true,borderWidth:2,pointRadius:3}]},options:cd});
-  destroy('estimateChart');charts.estimateChart=new Chart(document.getElementById('estimateChart'),{type:'bar',data:{labels,datasets:[{label:'Estimates',data:keys.map(k=>estimateCounts[k]||0),borderRadius:5}]},options:cd});
-  destroy('valueChart');charts.valueChart=new Chart(document.getElementById('valueChart'),{type:'bar',data:{labels,datasets:[{label:'Homeowner — Potential Project Value',data:keys.map(k=>Math.round(homeownerValues[k]||0)),borderRadius:4},{label:'Contractor — Estimate / Market Value',data:keys.map(k=>Math.round(contractorValues[k]||0)),borderRadius:4}]},options:{...cd,plugins:{...cd.plugins,legend:{position:'top',labels:{boxWidth:10,font:{size:10}}}},scales:{...cd.scales,x:{...cd.scales.x,stacked:false},y:{beginAtZero:true,ticks:{font:{size:10},callback:v=>'RM '+Number(v).toLocaleString()}}}}});
+  destroy('growthChart');charts.growthChart=new Chart(document.getElementById('growthChart'),{type:'line',data:{labels,datasets:[{label:'Registered users',data:cumulative,tension:.3,fill:true,borderColor:TERAJU_COLORS.emerald,backgroundColor:'rgba(16,185,129,.16)',pointBackgroundColor:TERAJU_COLORS.emerald,pointBorderColor:'#fff',borderWidth:2,pointRadius:3}]},options:cd});
+  destroy('estimateChart');charts.estimateChart=new Chart(document.getElementById('estimateChart'),{type:'bar',data:{labels,datasets:[{label:'Estimates',data:keys.map(k=>estimateCounts[k]||0),backgroundColor:TERAJU_COLORS.navySoft,borderColor:TERAJU_COLORS.navy,borderWidth:1,borderRadius:5}]},options:cd});
+  destroy('valueChart');charts.valueChart=new Chart(document.getElementById('valueChart'),{type:'bar',data:{labels,datasets:[{label:'Homeowner — Potential Project Value',data:keys.map(k=>Math.round(homeownerValues[k]||0)),backgroundColor:TERAJU_COLORS.emerald,borderColor:TERAJU_COLORS.emerald,borderWidth:1,borderRadius:4},{label:'Contractor — Estimate / Market Value',data:keys.map(k=>Math.round(contractorValues[k]||0)),backgroundColor:TERAJU_COLORS.navy,borderColor:TERAJU_COLORS.navy,borderWidth:1,borderRadius:4}]},options:{...cd,plugins:{...cd.plugins,legend:{position:'top',labels:{boxWidth:10,font:{size:10}}}},scales:{...cd.scales,x:{...cd.scales.x,stacked:false},y:{beginAtZero:true,ticks:{font:{size:10},callback:v=>'RM '+Number(v).toLocaleString()}}}}});
   const build=selectedRecords.filter(r=>r.plannerType==='build').length;
   const renovation=selectedRecords.filter(r=>r.plannerType==='renovation').length;
-  destroy('plannerChart');charts.plannerChart=new Chart(document.getElementById('plannerChart'),{type:'doughnut',data:{labels:['BuildPlanner','RenovationPlanner'],datasets:[{data:[build,renovation]}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}}}}});
+  destroy('plannerChart');charts.plannerChart=new Chart(document.getElementById('plannerChart'),{type:'doughnut',data:{labels:['BuildPlanner','RenovationPlanner'],datasets:[{data:[build,renovation],backgroundColor:[TERAJU_COLORS.navy,TERAJU_COLORS.emerald],borderColor:'#fff',borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11},color:TERAJU_COLORS.navy}}}}});
   renderStates();
   renderRecent();
 }
