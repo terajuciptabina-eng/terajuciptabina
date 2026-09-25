@@ -147,13 +147,7 @@
       const original=window.getAllItems;
       const wrapped=function(){
         const items=original.apply(this,arguments);
-        const result=(Array.isArray(items)?items:[]).filter(item=>item?.category!=='Additional Contractor Item');
-        result.forEach(item=>{
-          const key=rateKey(item);
-          if(key&&typeof RATES!=='undefined'&&Object.prototype.hasOwnProperty.call(RATES,key))item.rate=Number(RATES[key])||0;
-          item.amount=(Number(item.qty)||0)*(Number(item.rate)||0);
-        });
-        return result;
+        return (Array.isArray(items)?items:[]).filter(item=>item?.category!=='Additional Contractor Item');
       };
       wrapped.__terajuUnifiedBuildRate=true;
       window.getAllItems=wrapped;
