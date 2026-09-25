@@ -134,14 +134,37 @@ extract.onclick=async()=>{
    }});text=out.data.text
   }
   rows=parseText(text);
+  // PDF drawings often contain a text layer, but the text order/units may not match
+  // the room-area parser. If structured PDF text yields nothing, fall back to the
+  // already-rendered page image and OCR instead of treating that as a hard failure.
+  if(!rows.length&&currentImage&&window.Tesseract){
+    setStatus('PDF text layer found no room/area pairs. Switching to image OCR…','');
+    const out=await Tesseract.recognize(currentImage,'eng',{logger:m=>{
+      if(m.status==='recognizing text')setStatus('OCR '+Math.round((m.progress||0)*100)+'%…');
+      else if(m.status==='loading tesseract core')setStatus('Loading OCR engine…');
+      else if(m.status==='loading language traineddata')setStatus('Loading OCR language…');
+    }});
+    rows=parseText(out.data.text);
+  }
   render();
   setStatus(rows.length?'Extraction complete. Review detected values before import.':'No reliable room/area pairs found. Try a clearer image or use manual rows.',''+(rows.length?'ok':'warn'))
  }catch(e){console.error(e);setStatus('Extraction failed: '+(e.message||e),'warn')}
 };
 function parseText(text){
- const out=[];const areaRe=/([A-Z][A-Z0-9 &\-\/]{2,40}?)\s+(\d+(?:\.\d+)?)\s*(?:SQ\.?\s*FT|SQFT|FT2)/gi;
- let m;while((m=areaRe.exec(text))){const room=m[1].trim().replace(/\s+/g,' ');if(/BOUNDARY|SETBACK|SCALE|PUBLISHER|ARAS|CADANGAN/i.test(room))continue;out.push({room,area:Number(m[2]),unit:'sqft',dimensions:'',confidence:'Review'})}
- return out.filter((r,i,a)=>a.findIndex(x=>x.room.toLowerCase()===r.room.toLowerCase())===i)
+ const out=[];
+ // Support both imperial drawings (sq ft / ft2) and metric drawings (m2 / m²).
+ const areaRe=/([A-Z][A-Z0-9 &\-\/]{2,50}?)\s+(\d+(?:\.\d+)?)\s*(SQ\.?\s*FT|SQFT|FT2|M2|M²|SQ\.?\s*M)/gi;
+ let m;
+ while((m=areaRe.exec(String(text||'')))){
+   let room=m[1].trim().replace(/\s+/g,' ');
+   const unit=m[3].toUpperCase().replace(/\s/g,'');
+   if(/BOUNDARY|SETBACK|SCALE|PUBLISHER|ARAS|CADANGAN|DESIGNED|DRAWN|PROPOSED|HOUSE/i.test(room))continue;
+   const sourceArea=Number(m[2]);
+   const isMetric=unit==='M2'||unit==='M²'||unit==='SQ.M';
+   const area=isMetric?sourceArea*10.7639104167:sourceArea;
+   out.push({room,area:Math.round(area*100)/100,unit:'sqft',dimensions:'',confidence:'Review'});
+ }
+ return out.filter((r,i,a)=>a.findIndex(x=>x.room.toLowerCase()===r.room.toLowerCase())===i);
 }
 imp.onclick=()=>{const payload={source:currentFile?.name||'sample',recordType:'floor-plan-import-prototype',rooms:rows.map(r=>({name:String(r.room||'').trim(),area:Number(r.area)||0,unit:'sqft',dimensions:String(r.dimensions||'').trim(),confidence:r.confidence,verified:true}))};localStorage.setItem('teraju.floorplan.import.prototype',JSON.stringify(payload));setStatus('Prototype payload saved locally. BuildPlanner V2 was not modified.','ok');console.log('[TERAJU FLOOR PLAN IMPORT]',payload);alert('Prototype import saved locally. BuildPlanner V2 was not modified.')}
 </script>
