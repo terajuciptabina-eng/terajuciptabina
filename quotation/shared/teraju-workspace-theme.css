@@ -8,3 +8,11 @@
 .tw-theme input,.tw-theme select,.tw-theme textarea{background:#fff!important;border-color:#cbd5e1!important;color:var(--tw-text)!important;border-radius:9px!important}.tw-theme button{border-radius:9px!important}.tw-theme button:not(.pdf-save-btn):not(.logout){background:var(--tw-navy)!important;border-color:var(--tw-navy)!important;color:#fff!important;box-shadow:0 4px 11px rgba(23,32,51,.13)}.tw-theme .pdf-save-btn,.tw-theme .logout{background:#fff!important;color:var(--tw-navy)!important;border-color:#cbd5e1!important}
 .tw-theme th{background:#f8fafc!important;color:#475569!important}.tw-theme .section-row td{background:#e9eef3!important;color:var(--tw-navy)!important}.tw-theme .badge{background:var(--tw-emerald-soft)!important;color:#047857!important}.tw-theme .bar i{background:linear-gradient(90deg,var(--tw-navy),var(--tw-emerald))!important}.tw-theme .dot{background:var(--tw-navy)!important}.tw-theme .dot.actual{background:var(--tw-emerald)!important}
 @media(min-width:1200px){.tw-theme .wrap,.tw-theme main,.tw-theme .page{max-width:none}.tw-theme .panel{border-radius:13px}}@media(max-width:767px){.tw-theme .nav{overflow-x:auto;flex-wrap:nowrap}.tw-theme .nav a{white-space:nowrap}}
+
+/* Light admin landing page: keep readable text outside dark workspace headers */
+.tw-theme > .page .eyebrow{color:#059669!important}
+.tw-theme > .page .title{color:#172033!important}
+.tw-theme > .page .muted{color:#64748b!important}
+.tw-theme > .page .logout{background:#fff!important;color:#172033!important;border-color:#cbd5e1!important}
+.tw-theme > .page .card h2{color:#172033!important}
+.tw-theme > .page .card p{color:#64748b!important}
