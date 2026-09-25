@@ -2405,9 +2405,9 @@
         "project": {
           "location": "Eka Height Sendayan",
           "builtUpArea": 600,
-          "state": "negeri-sembilan"
+          "state": "selangor"
         },
-        "total": 134648,
+        "total": 125300,
         "plannerState": {
           "customerName": "Tuan Iman",
           "projectLocation": "Eka Height Sendayan",
@@ -2556,7 +2556,7 @@
             ],
             [
               "project-preliminaries",
-              8888
+              9500
             ],
             [
               "room-2-floor",
@@ -2575,6 +2575,10 @@
             [
               "manual-1790154031589-vk2lak",
               40
+            ],
+            [
+              "room-2-facade",
+              100
             ]
           ],
           "customDescriptions": [],
@@ -2670,10 +2674,10 @@
           ],
           "quotationType": "detail",
           "projectId": "PRJ-REN-MUEDAQ5A-8R1AZ",
-          "projectState": "negeri-sembilan",
+          "projectState": "selangor",
           "rateSetId": "default",
           "rateSetName": "Default Rate",
-          "rateSnapshotAt": "2026-09-24T20:58:13.777Z"
+          "rateSnapshotAt": "2026-09-25T05:06:04.282Z"
         },
         "itemListVersion": 1,
         "items": [
@@ -2683,8 +2687,8 @@
             "description": "Project preliminaries",
             "unit": "ls",
             "qty": 1,
-            "rate": 8888,
-            "amount": 8888,
+            "rate": 9500,
+            "amount": 9500,
             "header": "",
             "level3": "",
             "section": "Project",
@@ -2716,9 +2720,9 @@
             "category": "",
             "description": "Facade wall works to Balcony area.",
             "unit": "sqft",
-            "qty": 266,
+            "qty": 100,
             "rate": 60,
-            "amount": 15960,
+            "amount": 6000,
             "header": "",
             "level3": "",
             "section": "",
@@ -3767,7 +3771,7 @@
           }
         ],
         "createdAt": "2026-09-24T20:02:12.651Z",
-        "updatedAt": "2026-09-24T20:58:14.734Z",
+        "updatedAt": "2026-09-25T05:06:05.305Z",
         "estimateNumber": "EST-REN-006"
       },
       {
@@ -6009,7 +6013,7 @@
     ]
   },
   "createdAt": "2026-09-23T08:33:53.459Z",
-  "updatedAt": "2026-09-24T20:58:14.734Z",
+  "updatedAt": "2026-09-25T05:06:05.305Z",
   "quotationRunningNumber": {
     "renovation": 9,
     "build": 2
