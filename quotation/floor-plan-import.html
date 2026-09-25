@@ -27,7 +27,7 @@
 <section class="card">
 <div class="eyebrow">1 · INPUT</div>
 <h2 class="text-lg font-black mt-1">Upload floor plan</h2>
-<div id="drop" class="drop mt-4">
+<div id="drop" class="drop mt-4" role="button" tabindex="0" aria-label="Choose floor plan file">
 <strong>Drop JPG / PNG / WEBP image or PDF here</strong>
 <span class="muted">or click to choose · JPG, PNG, WEBP, PDF</span>
 <input id="file" type="file" accept=".pdf,image/*" hidden>
@@ -117,7 +117,7 @@ async function load(f){
    setStatus('Unable to load this floor plan. Try JPG/PNG/WEBP or PDF.','warn')
  }
 }
-drop.onclick=()=>file.click();
+drop.onclick=()=>file.click();drop.onkeydown=ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();file.click()}};
 file.onchange=async()=>{const f=file.files?.[0];if(f)await load(f);file.value=''};
 ['dragenter','dragover'].forEach(e=>drop.addEventListener(e,ev=>{ev.preventDefault();ev.stopPropagation();drop.classList.add('drag')},{capture:true}));
 ['dragleave'].forEach(e=>drop.addEventListener(e,ev=>{ev.preventDefault();ev.stopPropagation();drop.classList.remove('drag')},{capture:true}));
@@ -185,12 +185,7 @@ extract.onclick=async()=>{
      }});
      if((out.data.text||'').length>(bestText||'').length)bestText=out.data.text
    }
-   const out={data:{text:bestText}};
-     if(m.status==='recognizing text')setStatus('OCR '+Math.round((m.progress||0)*100)+'%…');
-     else if(m.status==='loading tesseract core')setStatus('Loading OCR engine…');
-     else if(m.status==='loading language traineddata')setStatus('Loading OCR language…');
-   }});
-   text=out.data.text
+   text=bestText
  }
   rows=(currentFile&&currentFile.type!=='application/pdf'&&!/\\.pdf$/i.test(currentFile.name))?parseOcrText(text):parseText(text); if(activeArea===null){areas.push({name:'Area '+(areas.length+1),file:currentFile,rows:rows});activeArea=areas.length-1}else{areas[activeArea].file=currentFile;areas[activeArea].rows=rows} render();
   setStatus(rows.length?'Extraction complete. Review detected values before import.':'No reliable room/area pairs found. Try a clearer image or use manual rows.',''+(rows.length?'ok':'warn'))
