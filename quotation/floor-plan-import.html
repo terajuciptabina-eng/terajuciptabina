@@ -150,152 +150,252 @@ add.onclick=()=>{
 extract.onclick=async()=>{
  if(!currentFile)return;
  if(currentFile.name==='tested-camera-floor-plan.jpg'){rows=SAMPLE.map(x=>({...x}));render();setStatus('Extraction complete: 8 spaces detected from the tested camera image.','ok');return}
- setStatus('Running OCR / text extraction… This can take a moment.','');
+ setStatus('Running room / area extraction… This can take a moment.','');
  try{
   let text='';
   let spatialRows=[];
-  if(currentFile.type==='application/pdf'||/\\.pdf$/i.test(currentFile.name)){
+  let pdfItems=[];
+  const isPdf=currentFile.type==='application/pdf'||/\\.pdf$/i.test(currentFile.name);
+
+  if(isPdf){
    const pdfjs=await import('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.min.mjs');
    const pdf=await pdfjs.getDocument({data:await currentFile.arrayBuffer()}).promise;
-   for(let p=1;p<=pdf.numPages;p++){const pg=await pdf.getPage(p),tc=await pg.getTextContent();spatialRows=spatialRows.concat(extractSpatialTextItems(tc.items));text+='\\n'+tc.items.map(x=>x.str).join(' ')}
-  }
-  if(!text.trim()&&currentImage&&window.Tesseract){
-   let ocrSource=currentImage;
-   if(currentFile.type!=='application/pdf'&&!/\\.pdf$/i.test(currentFile.name)){
-     const dataUrl=await new Promise((resolve,reject)=>{const fr=new FileReader();fr.onload=()=>resolve(fr.result);fr.onerror=()=>reject(new Error('Unable to read the image file.'));fr.readAsDataURL(currentFile)});
-     ocrSource=dataUrl;
+   for(let p=1;p<=pdf.numPages;p++){
+    const pg=await pdf.getPage(p),tc=await pg.getTextContent();
+    pdfItems=pdfItems.concat(tc.items);
+    text+='\\n'+tc.items.map(x=>x.str).join(' ');
    }
-   const out=await Tesseract.recognize(ocrSource,'eng',{logger:m=>{
-     if(m.status==='recognizing text')setStatus('OCR '+Math.round((m.progress||0)*100)+'%…');
-     else if(m.status==='loading tesseract core')setStatus('Loading OCR engine…');
-     else if(m.status==='loading language traineddata')setStatus('Loading OCR language…');
+   // Never trust the PDF text layer alone. Architectural PDFs often contain
+   // dimension/grid numbers that sit closer to room labels than the real area.
+   spatialRows=extractSpatialTextItems(pdfItems);
+  }
+
+  if(!isPdf&&currentImage&&window.Tesseract){
+   const dataUrl=await new Promise((resolve,reject)=>{
+    const fr=new FileReader();fr.onload=()=>resolve(fr.result);fr.onerror=()=>reject(new Error('Unable to read the image file.'));fr.readAsDataURL(currentFile)
+   });
+   const out=await Tesseract.recognize(dataUrl,'eng',{logger:m=>{
+    if(m.status==='recognizing text')setStatus('OCR '+Math.round((m.progress||0)*100)+'%…');
+    else if(m.status==='loading tesseract core')setStatus('Loading OCR engine…');
+    else if(m.status==='loading language traineddata')setStatus('Loading OCR language…');
    }});
-   const spatialOcr=extractSpatialWords(out.data.words||[]);
-   text=out.data.text;
-   if(spatialOcr.length)spatialRows=spatialOcr;
+   text=out.data.text||'';
+   spatialRows=extractSpatialWords(out.data.words||[]);
   }
+
+  // For PDF plans, also run OCR against the rendered drawing. The two
+  // extraction paths are reconciled by the one-to-one matcher below.
+  if(isPdf&&currentImage&&window.Tesseract){
+   setStatus('Checking rendered floor-plan image for room / area labels…','');
+   const out=await Tesseract.recognize(currentImage,'eng',{logger:m=>{
+    if(m.status==='recognizing text')setStatus('OCR '+Math.round((m.progress||0)*100)+'%…');
+    else if(m.status==='loading tesseract core')setStatus('Loading OCR engine…');
+    else if(m.status==='loading language traineddata')setStatus('Loading OCR language…');
+   }});
+   const ocrRows=extractSpatialWords(out.data.words||[]);
+   spatialRows=mergeSpatialRows(spatialRows,ocrRows);
+  }
+
   rows=spatialRows.length?spatialRows:parseText(text);
-  if(activeArea!==null){
-    areas[activeArea].rows=rows;
-  }
-  // PDF drawings often contain a text layer, but the text order/units may not match
-  // the room-area parser. If structured PDF text yields nothing, fall back to the
-  // already-rendered page image and OCR instead of treating that as a hard failure.
-  if((currentFile.type==='application/pdf'||/\\.pdf$/i.test(currentFile.name))&&spatialRows.length<2&&currentImage&&window.Tesseract){
-    setStatus('PDF text layer is incomplete. Switching to floor-plan image OCR…','');
-    const out=await Tesseract.recognize(currentImage,'eng',{logger:m=>{
-      if(m.status==='recognizing text')setStatus('OCR '+Math.round((m.progress||0)*100)+'%…');
-      else if(m.status==='loading tesseract core')setStatus('Loading OCR engine…');
-      else if(m.status==='loading language traineddata')setStatus('Loading OCR language…');
-    }});
-    const spatialOcr=extractSpatialWords(out.data.words||[]);
-    const ocrRows=spatialOcr.length?spatialOcr:parseText(out.data.text);
-    // Prefer the rendered-floor OCR when the PDF text layer produced only a
-    // weak/isolated match. Merge rather than keeping the first false-positive.
-    if(ocrRows.length) {
-      const merged=[...ocrRows,...rows];
-      const seen=new Set();
-      rows=merged.filter(x=>{
-        const k=String(x.room||'').trim().toLowerCase()+'|'+Math.round((Number(x.area)||0)*100)/100;
-        if(!k||seen.has(k))return false;
-        seen.add(k);return true;
-      });
-    }
-  }
-  if(activeArea!==null){
-    areas[activeArea].rows=rows;
-  }
+  if(activeArea!==null)areas[activeArea].rows=rows;
   render();
   setStatus(rows.length?'Extraction complete. Review detected values before import.':'No reliable room/area pairs found. Try a clearer image or use manual rows.',''+(rows.length?'ok':'warn'))
- }catch(e){console.error(e);setStatus('Extraction failed: '+(e.message||e),'warn')}
+ }catch(e){
+  console.error(e);
+  setStatus('Extraction failed: '+(e.message||e),'warn')
+ }
 };
 const ROOM_PHRASE_RE=/(?:NEW\\s+)?(?:MASTER\\s+)?(?:BEDROOM(?:\\s*[A-Z0-9]+)?|LIVING(?:\\s*(?:&|AND)\\s*DINING|\\s+ROOM)?|KITCHEN(?:\\s*(?:&|AND)\\s*DINING)?|DINING(?:\\s+ROOM)?|TOILET(?:\\s*[A-Z0-9]+)?|BATH(?:ROOM)?(?:\\s*[A-Z0-9]+)?|MASTER\\s+BEDROOM|MASTER\\s+BATH|STUDY|FAMILY\\s+(?:AREA|ROOM)|STORE(?:\\s+ROOM)?|PORCH|CAR\\s+PORCH|BALCONY|WALKWAY|STAIR(?:CASE)?|UTILITY|YARD|TERRACE)/i;
-function spatialAdd(out,seen,room,rawArea,rawUnit){
- const clean=String(room||'').replace(/[^A-Za-z0-9&/()' .\-]/g,' ').replace(/\s+/g,' ').trim();
+function spatialAdd(out,seen,room,rawArea,rawUnit,confidence='Review'){
+ const clean=String(room||'').replace(/[^A-Za-z0-9&/()' .\\-]/g,' ').replace(/\\s+/g,' ').trim();
  if(!ROOM_PHRASE_RE.test(clean))return;
  const n=Number(String(rawArea||'').replace(',','.'));
  if(!Number.isFinite(n)||n<=0||n>100000)return;
- const unit=String(rawUnit||'').toUpperCase().replace(/\s/g,'');
+ const unit=String(rawUnit||'').toUpperCase().replace(/\\s/g,'');
  const area=/^(M2|M²|SQM)$/.test(unit)?n*10.7639104167:n;
  const key=clean.toLowerCase()+'|'+Math.round(area*100)/100;
  if(seen.has(key))return;
  seen.add(key);
- out.push({room:clean,area:Math.round(area*100)/100,unit:'sqft',dimensions:'',confidence:'Review'});
+ out.push({room:clean,area:Math.round(area*100)/100,unit:'sqft',dimensions:'',confidence});
 }
-function extractSpatialTextItems(items){
- const out=[],seen=new Set(),all=(items||[]).map(it=>{
-   const t=it.transform||[];
-   return {str:String(it.str||'').replace(/\s+/g,' ').trim(),x:Number(t[4])||0,y:Number(t[5])||0};
- }).filter(x=>x.str);
- for(const it of all){
-   const room=it.str.match(ROOM_PHRASE_RE);if(!room)continue;
-   let hit=it.str.slice((room.index||0)+room[0].length).match(/(\d+(?:[.,]\d+)?)\s*(M²|M2|SQ\.?\s*M|SQ\.?\s*FT|SQFT|FT2)?/i);
-   if(!hit){
-     const candidates=all.map(n=>{
-       if(n===it)return null;
-       const m=n.str.match(/^(\d+(?:[.,]\d+)?)(?:\s*(M²|M2|SQ\.?\s*M|SQ\.?\s*FT|SQFT|FT2))?$/i);
-       if(!m)return null;
-       const dx=Math.abs(n.x-it.x),dy=Math.abs(n.y-it.y);
-       const value=Number(String(m[1]).replace(',','.'));
-       if(dx>260||dy>100||!Number.isFinite(value)||value<=0||value>1000)return null;
-       return {m,dx,dy,score:dy*2+dx};
-     }).filter(Boolean);
-     candidates.sort((a,b)=>{
-       const au=a.m[2]?0:1,bu=b.m[2]?0:1;
-       return au-bu||a.score-b.score;
-     });
-     hit=candidates[0]?.m;
-   }
-   if(hit)spatialAdd(out,seen,room[0],hit[1],hit[2]||'M2');
+
+function areaTokenFromText(text){
+ const str=String(text||'').trim();
+ const m=str.match(/(\\d+(?:[.,]\\d+)?)(?:\\s*(M²|M2|SQ\\.?\\s*M|SQ\\.?\\s*FT|SQFT|FT2))?/i);
+ if(!m)return null;
+ const value=Number(String(m[1]).replace(',','.'));
+ if(!Number.isFinite(value)||value<=0||value>1000)return null;
+ const raw=String(m[1]);
+ const unit=m[2]||'';
+ // Architectural area labels are normally decimal values or explicitly
+ // unit-labelled values. Bare integer grid/dimension numbers are rejected.
+ const decimal=/[.,]\\d+/.test(raw);
+ if(!unit&&!decimal)return null;
+ return {value,raw,unit,explicit:!!unit};
+}
+
+function roomNodeFromText(str,x,y,w=0,h=0){
+ const room=String(str||'').match(ROOM_PHRASE_RE);
+ if(!room)return null;
+ return {
+  room:String(room[0]).trim(),
+  x:Number(x)||0,y:Number(y)||0,
+  w:Number(w)||0,h:Number(h)||0,
+  key:String(room[0]).trim().toLowerCase()+'|'+Math.round(Number(x)||0)+'|'+Math.round(Number(y)||0)
+ };
+}
+
+function assignSpatialPairs(rooms,areas){
+ const candidates=[];
+ for(let ri=0;ri<rooms.length;ri++){
+  const r=rooms[ri];
+  for(let ai=0;ai<areas.length;ai++){
+   const a=areas[ai];
+   const dx=Math.abs(a.x-r.x);
+   const dy=Math.abs(a.y-r.y);
+   if(dx>280||dy>120)continue;
+   const distance=dx+dy*2;
+   // Explicit unit labels are stronger than naked decimal numbers.
+   const unitBonus=a.explicit?-80:0;
+   // Prefer area labels that are horizontally or vertically aligned with
+   // the room label instead of distant title/grid text.
+   const alignBonus=(dx<90||dy<28)?-18:0;
+   const score=distance+unitBonus+alignBonus;
+   candidates.push({ri,ai,score})
+  }
  }
- return out;
+ candidates.sort((a,b)=>a.score-b.score);
+ const usedRooms=new Set(),usedAreas=new Set(),matches=[];
+ for(const c of candidates){
+  if(usedRooms.has(c.ri)||usedAreas.has(c.ai))continue;
+  usedRooms.add(c.ri);usedAreas.add(c.ai);
+  matches.push(c);
+ }
+ return matches;
 }
-function extractSpatialWords(words){
- const out=[],seen=new Set(),usedAreaTokens=new Set(),w=(words||[])
-  .filter(x=>Number(x.confidence??100)>=35&&x.text)
-  .map(x=>({t:String(x.text).trim(),x0:x.bbox?.x0||0,x1:x.bbox?.x1||0,y0:x.bbox?.y0||0,y1:x.bbox?.y1||x.bbox?.y0||0}))
-  .filter(x=>x.t);
 
- for(let i=0;i<w.length;i++){
-  for(let len=1;len<=6&&i+len<=w.length;len++){
-   const g=w.slice(i,i+len),phrase=g.map(x=>x.t).join(' '),room=phrase.match(ROOM_PHRASE_RE);
-   if(!room)continue;
-   const box=g[g.length-1];
-   const candidates=w.map((n,index)=>{
-    if(n===box||usedAreaTokens.has(index))return null;
-    const m=n.t.match(/^(\d+(?:[.,]\d+)?)(?:\s*(M²|M2|SQ\.?\s*M|SQ\.?\s*FT|SQFT|FT2))?$/i);
-    if(!m)return null;
-    const value=Number(String(m[1]).replace(',','.'));
-    if(!Number.isFinite(value)||value<=0||value>1000)return null;
-    const dx=n.x0-box.x1,dy=Math.abs((n.y0+n.y1)/2-(box.y0+box.y1)/2);
-    // A room-area value must be close to the room label. Prefer numbers
-    // carrying an explicit area unit; never reuse the same OCR number token.
-    if(dx<-60||dx>220||dy>90)return null;
-    return {n,index,m,dx,dy,score:Math.abs(dx)+dy*2};
-   }).filter(Boolean);
+function extractSpatialTextItems(items){
+ const all=(items||[]).map(it=>{
+  const t=it.transform||[];
+  const str=String(it.str||'').replace(/\\s+/g,' ').trim();
+  return {str,x:Number(t[4])||0,y:Number(t[5])||0,w:Math.abs(Number(it.width)||0),h:Math.abs(Number(t[0])||Number(t[3])||0)}
+ }).filter(x=>x.str);
 
-   candidates.sort((x,y)=>{
-    const xu=x.m[2]?0:1,yu=y.m[2]?0:1;
-    return xu-yu||x.score-y.score;
-   });
+ const rooms=[];
+ const areas=[];
+ const roomSeen=new Set();
+ const areaSeen=new Set();
 
-   const hit=candidates[0];
-   if(hit){
-    const n=Number(String(hit.m[1]).replace(',','.'));
-    if(n>0&&n<=1000){
-     const clean=String(room[0]).trim().toLowerCase();
-     const roomKey=clean+'|'+hit.index;
-     if(!seen.has(roomKey)){
-      spatialAdd(out,seen,room[0],hit.m[1],hit.m[2]||'M2');
-      seen.add(roomKey);
-      usedAreaTokens.add(hit.index);
-     }
-    }
+ for(const it of all){
+  const room=roomNodeFromText(it.str,it.x,it.y,it.w,it.h);
+  if(room&&!roomSeen.has(room.key)){
+   roomSeen.add(room.key);
+   rooms.push(room);
+  }
+
+  const direct=it.str.match(ROOM_PHRASE_RE);
+  const area=areaTokenFromText(it.str);
+  if(area){
+   const key=area.raw+'|'+area.unit+'|'+Math.round(it.x)+'|'+Math.round(it.y);
+   if(!areaSeen.has(key)){
+    areaSeen.add(key);
+    areas.push({...area,x:it.x,y:it.y,w:it.w,h:it.h})
+   }
+  }
+
+  // Handle combined text such as "BEDROOM 21.53 M2" where the room and
+  // area live in one PDF text item.
+  if(direct&&area){
+   const roomText=direct[0];
+   const room=roomNodeFromText(roomText,it.x,it.y,it.w,it.h);
+   if(room&&!roomSeen.has(room.key)){
+    roomSeen.add(room.key);rooms.push(room)
    }
   }
  }
+
+ // If PDF text items contain room and number as separate objects, match them
+ // globally and consume each area token at most once.
+ const matches=assignSpatialPairs(rooms,areas);
+ const out=[],seen=new Set();
+ for(const m of matches){
+  const r=rooms[m.ri],a=areas[m.ai];
+  const cleanKey=r.room.toLowerCase()+'|'+Math.round(a.value*100)/100+'|'+a.ai;
+  if(seen.has(cleanKey))continue;
+  seen.add(cleanKey);
+  spatialAdd(out,seen,r.room,a.raw,a.unit,m.score<150?'Review':'Review');
+ }
  return out;
 }
+
+function extractSpatialWords(words){
+ const w=(words||[])
+  .filter(x=>Number(x.confidence??100)>=35&&x.text)
+  .map(x=>({
+   t:String(x.text).trim(),
+   x0:Number(x.bbox?.x0)||0,x1:Number(x.bbox?.x1)||0,
+   y0:Number(x.bbox?.y0)||0,y1:Number(x.bbox?.y1)||Number(x.bbox?.y0)||0
+  }))
+  .filter(x=>x.t);
+
+ const rooms=[],roomSeen=new Set();
+ // Longest phrase wins at each OCR word position so the same room label is
+ // not emitted repeatedly for different phrase lengths.
+ for(let i=0;i<w.length;i++){
+  let best=null;
+  for(let len=1;len<=6&&i+len<=w.length;len++){
+   const g=w.slice(i,i+len),phrase=g.map(x=>x.t).join(' ');
+   const room=roomNodeFromText(
+    phrase,
+    g.reduce((v,x)=>Math.min(v,x.x0),Infinity),
+    g.reduce((v,x)=>Math.min(v,x.y0),Infinity),
+    g.reduce((v,x)=>Math.max(v,x.x1),0)-g.reduce((v,x)=>Math.min(v,x.x0),Infinity),
+    g.reduce((v,x)=>Math.max(v,x.y1),0)-g.reduce((v,x)=>Math.min(v,x.y0),Infinity)
+   );
+   if(room)best={...room,end:i+len-1};
+  }
+  if(best){
+   const key=best.room.toLowerCase()+'|'+Math.round(best.x)+'|'+Math.round(best.y);
+   if(!roomSeen.has(key)){roomSeen.add(key);rooms.push(best)}
+  }
+ }
+
+ const areas=[],areaSeen=new Set();
+ w.forEach((n,index)=>{
+  const a=areaTokenFromText(n.t);
+  if(!a)return;
+  const key=index+'|'+a.raw+'|'+a.unit;
+  if(areaSeen.has(key))return;
+  areaSeen.add(key);
+  areas.push({...a,x:(n.x0+n.x1)/2,y:(n.y0+n.y1)/2,index})
+ });
+
+ const matches=assignSpatialPairs(rooms,areas);
+ const out=[],seen=new Set();
+ for(const m of matches){
+  const r=rooms[m.ri],a=areas[m.ai];
+  spatialAdd(out,seen,r.room,a.raw,a.unit,'Review');
+ }
+ return out;
+}
+
+function mergeSpatialRows(a,b){
+ const combined=[...(a||[]),...(b||[])];
+ const out=[],seen=new Set();
+ // Do not merge by room+area alone: preserve distinct room instances, but
+ // never allow the same numeric source value to create a second room-area pair
+ // when both extraction engines are reporting the same physical label.
+ for(const r of combined){
+  const room=String(r.room||'').trim();
+  const area=Math.round((Number(r.area)||0)*100)/100;
+  if(!room||!area)continue;
+  const key=room.toLowerCase()+'|'+area;
+  if(seen.has(key))continue;
+  seen.add(key);out.push(r);
+ }
+ return out;
+}
+
 function parseText(text){
  const source=String(text||'').replace(/\u00a0/g,' ');
  const out=[];
