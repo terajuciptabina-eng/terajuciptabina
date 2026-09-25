@@ -3,7 +3,7 @@ const ALLOWED_ORIGIN = 'https://terajuciptabina-eng.github.io';
 const PROVIDER = String(process.env.AI_PROVIDER || 'groq').toLowerCase();
 const OPENAI_MODEL = process.env.OPENAI_FLOORPLAN_MODEL || 'gpt-5.6-sol';
 const GROQ_MODEL = process.env.GROQ_FLOORPLAN_MODEL || 'qwen/qwen3.8-27b';
-const OPENROUTER_MODEL = process.env.OPENROUTER_FLOORPLAN_MODEL || 'qwen/qwen2.5-vl-72b-instruct';
+const OPENROUTER_MODEL = process.env.OPENROUTER_FLOORPLAN_MODEL || 'openrouter/free';
 const MAX_IMAGES = 8;
 const GROQ_MAX_IMAGES_PER_REQUEST = 3;
 const MAX_BODY_BYTES = 5 * 1024 * 1024;
@@ -121,8 +121,12 @@ async function parseStructuredResponse(response, provider) {
     throw new Error(data?.error?.message || `${provider} floor-plan extraction failed.`);
   }
 
-  const outputText = provider === 'groq'
-    ? data?.choices?.[0]?.message?.content || ''
+  const outputText = provider === 'groq' || provider === 'openrouter'
+    ? (typeof data?.choices?.[0]?.message?.content === 'string'
+        ? data.choices[0].message.content
+        : Array.isArray(data?.choices?.[0]?.message?.content)
+          ? data.choices[0].message.content.map(item => item?.text || '').join('')
+          : '')
     : data?.output_text ||
       data?.output?.flatMap(item => item?.content || [])
         ?.filter(item => item?.type === 'output_text')
@@ -240,7 +244,15 @@ Use null when area or dimensions are unavailable. Do not add markdown or comment
       messages: [{ role: 'user', content }],
       temperature: 0.1,
       max_tokens: 12000,
-      response_format: { type: 'json_object' }
+      response_format: {
+        type: 'json_schema',
+        json_schema: {
+          name: 'floor_plan_extraction',
+          strict: true,
+          schema
+        }
+      },
+      provider: { require_parameters: true }
     })
   });
 
