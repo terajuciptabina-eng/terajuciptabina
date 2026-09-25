@@ -248,11 +248,11 @@
           "manualItems": [],
           "standardRateItems": [],
           "quotationType": "detail",
-          "projectId": "PRJ-BLD-MUGODDOV-CV38P",
+          "projectId": "PRJ-BLD-MUC9DO17-POXRW",
           "projectState": "selangor",
           "rateSetId": "selangor",
           "rateSetName": "Selangor",
-          "rateSnapshotAt": "2026-09-25T08:04:32.927Z"
+          "rateSnapshotAt": "2026-09-25T08:05:02.848Z"
         },
         "itemListVersion": 1,
         "items": [
@@ -1856,14 +1856,14 @@
           }
         ],
         "createdAt": "2026-09-25T08:04:31.049Z",
-        "updatedAt": "2026-09-25T08:04:34.063Z",
+        "updatedAt": "2026-09-25T08:05:04.841Z",
         "estimateNumber": "EST-BLD-001"
       }
     ],
     "renovation": []
   },
   "createdAt": "2026-09-25T08:00:35.953Z",
-  "updatedAt": "2026-09-25T08:04:34.063Z",
+  "updatedAt": "2026-09-25T08:05:04.841Z",
   "quotationRunningNumber": {
     "build": 1
   },
