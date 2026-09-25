@@ -139,14 +139,16 @@ extract.onclick=async()=>{
   // PDF drawings often contain a text layer, but the text order/units may not match
   // the room-area parser. If structured PDF text yields nothing, fall back to the
   // already-rendered page image and OCR instead of treating that as a hard failure.
-  if(!rows.length&&currentImage&&window.Tesseract){
-    setStatus('PDF text layer found no room/area pairs. Switching to image OCR…','');
+  if((currentFile.type==='application/pdf'||/\\.pdf$/i.test(currentFile.name))&&spatialRows.length<2&&currentImage&&window.Tesseract){
+    setStatus('PDF text layer is incomplete. Switching to floor-plan image OCR…','');
     const out=await Tesseract.recognize(currentImage,'eng',{logger:m=>{
       if(m.status==='recognizing text')setStatus('OCR '+Math.round((m.progress||0)*100)+'%…');
       else if(m.status==='loading tesseract core')setStatus('Loading OCR engine…');
       else if(m.status==='loading language traineddata')setStatus('Loading OCR language…');
     }});
-    rows=parseText(out.data.text);
+    const spatialOcr=extractSpatialWords(out.data.words||[]);
+    const ocrRows=spatialOcr.length?spatialOcr:parseText(out.data.text);
+    if(ocrRows.length>rows.length)rows=ocrRows;
   }
   render();
   setStatus(rows.length?'Extraction complete. Review detected values before import.':'No reliable room/area pairs found. Try a clearer image or use manual rows.',''+(rows.length?'ok':'warn'))
