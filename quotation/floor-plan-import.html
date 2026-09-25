@@ -33,7 +33,7 @@
 <input id="file" type="file" accept=".pdf,image/*" hidden>
 </div>
 <div class="actions">
-<button id="sample" class="btn secondary">Load Tested Sample</button>
+<button id="sample" class="btn secondary">Load Tested Sample</button><button id="addArea" class="btn secondary">+ Add Floor / Area</button>
 <button id="extract" class="btn primary" disabled>Extract Room & Area</button>
 </div>
 <div id="status" class="status">Waiting for a floor plan.</div>
@@ -47,7 +47,7 @@
 
 <section class="card">
 <div class="eyebrow">2 · REVIEW</div>
-<h2 class="text-lg font-black mt-1">Detected Room / Area</h2>
+<h2 class="text-lg font-black mt-1">Detected Room / Area</h2><div id="areaList" class="actions" style="margin-top:10px"></div>
 <p class="muted mt-1">Nothing is sent to BuildPlanner automatically. Review and edit first.</p>
 <div id="result" class="table-wrap mt-4">
 <div class="empty">No extraction yet.</div>
@@ -64,7 +64,7 @@
 <script type="module">
 const $=id=>document.getElementById(id);
 const drop=$('drop'),file=$('file'),extract=$('extract'),status=$('status'),preview=$('preview'),result=$('result'),sample=$('sample'),add=$('add'),imp=$('import');
-let currentFile=null,currentImage=null,rows=[];
+let currentFile=null,currentImage=null,rows=[],areas=[],activeArea=null;
 const SAMPLE=[
  {room:'Washroom',area:120,unit:'sqft',dimensions:"6' × 20'",confidence:'High'},
  {room:'Kitchen & Dining',area:240,unit:'sqft',dimensions:"12' × 20'",confidence:'High'},
@@ -76,7 +76,13 @@ const SAMPLE=[
  {room:'Bath 1',area:48,unit:'sqft',dimensions:"4' × 12'",confidence:'High'}
 ];
 function setStatus(t,kind=''){status.textContent=t;status.className='status '+kind}
+function renderAreas(){
+ const box=$('areaList');
+ box.innerHTML=areas.map((a,i)=>'<button class="btn '+(activeArea===i?'primary':'secondary')+'" data-area="'+i+'">'+esc(a.name||('Area '+(i+1)))+' · '+a.rows.length+' spaces</button>').join('');
+ box.querySelectorAll('[data-area]').forEach(b=>b.onclick=()=>{activeArea=+b.dataset.area;rows=areas[activeArea].rows;currentFile=areas[activeArea].file;render();renderAreas();setStatus('Reviewing '+areas[activeArea].name+'.','ok')});
+}
 function render(){
+ renderAreas();
  if(!rows.length){result.innerHTML='<div class="empty">No extraction yet.</div>';imp.disabled=true;return}
  result.innerHTML='<table class="table"><thead><tr><th>Room / Space</th><th>Area</th><th>Dimensions</th><th>Confidence</th></tr></thead><tbody>'+rows.map((r,i)=>'<tr><td><input data-i="'+i+'" data-k="room" value="'+esc(r.room||'')+'"></td><td><input data-i="'+i+'" data-k="area" type="number" step="0.01" value="'+esc(r.area??'')+'"></td><td><input data-i="'+i+'" data-k="dimensions" value="'+esc(r.dimensions||'')+'"></td><td><span class="pill">'+esc(r.confidence||'Review')+'</span></td></tr>').join('')+'</tbody></table>';
  result.querySelectorAll('input').forEach(el=>el.addEventListener('input',()=>{const i=+el.dataset.i;rows[i][el.dataset.k]=el.value;rows[i].area=el.dataset.k==='area'?Number(el.value)||0:rows[i].area;updateMetrics()}));
@@ -98,7 +104,7 @@ async function renderPdf(fileObj){
  const canvas=document.createElement('canvas'),ctx=canvas.getContext('2d');canvas.width=vp.width;canvas.height=vp.height;await page.render({canvasContext:ctx,viewport:vp}).promise;preview.innerHTML='';preview.appendChild(canvas);currentImage=canvas.toDataURL('image/png');return pdf
 }
 async function load(f){
- currentFile=f;rows=[];render();$('metrics').style.display='none';extract.disabled=false;setStatus('Loading '+f.name+'…');
+ currentFile=f;rows=[];activeArea=null;render();$('metrics').style.display='none';extract.disabled=false;setStatus('Loading '+f.name+'…');
  if(f.type==='application/pdf'||/\.pdf$/i.test(f.name)){await renderPdf(f)}else{showImage(URL.createObjectURL(f))}
  setStatus('Ready. Click “Extract Room & Area”.','ok')
 }
@@ -106,8 +112,9 @@ drop.onclick=()=>file.click();file.onchange=()=>file.files[0]&&load(file.files[0
 ['dragenter','dragover'].forEach(e=>drop.addEventListener(e,ev=>{ev.preventDefault();drop.classList.add('drag')}));
 ['dragleave','drop'].forEach(e=>drop.addEventListener(e,ev=>{ev.preventDefault();drop.classList.remove('drag')}));
 drop.addEventListener('drop',ev=>{const f=ev.dataTransfer.files[0];if(f)load(f)});
-sample.onclick=()=>{rows=SAMPLE.map(x=>({...x}));currentFile={name:'tested-camera-floor-plan.jpg',type:'image/jpeg'};render();setStatus('Loaded the tested camera-image result. Review before import.','ok')};
-add.onclick=()=>{rows.push({room:'',area:0,unit:'sqft',dimensions:'',confidence:'Review'});render()};
+sample.onclick=()=>{const f={name:'tested-camera-floor-plan.jpg',type:'image/jpeg'};const r=SAMPLE.map(x=>({...x}));areas.push({name:'Ground Floor / Area 1',file:f,rows:r});activeArea=areas.length-1;rows=r;currentFile=f;render();setStatus('Loaded tested camera sample as Ground Floor / Area 1.','ok')};
+$('addArea').onclick=()=>{const name=prompt('Area / Floor name (e.g. Ground Floor, First Floor, Area 2):','Area '+(areas.length+1));if(!name)return;areas.push({name:name.trim(),file:null,rows:[]});activeArea=areas.length-1;rows=areas[activeArea].rows;currentFile=null;render();setStatus('Added '+name+'. Upload its floor plan, then extract.','ok')};
+add.onclick=()=>{if(activeArea===null){areas.push({name:'Area '+(areas.length+1),file:null,rows:[]});activeArea=areas.length-1}rows.push({room:'',area:0,unit:'sqft',dimensions:'',confidence:'Review'});areas[activeArea].rows=rows;render()};
 extract.onclick=async()=>{
  if(!currentFile)return;
  if(currentFile.name==='tested-camera-floor-plan.jpg'){rows=SAMPLE.map(x=>({...x}));render();setStatus('Extraction complete: 8 spaces detected from the tested camera image.','ok');return}
@@ -137,8 +144,7 @@ extract.onclick=async()=>{
    }});
    text=out.data.text
  }
-  rows=parseText(text);
-  render();
+  rows=parseText(text); if(activeArea===null){areas.push({name:'Area '+(areas.length+1),file:currentFile,rows:rows});activeArea=areas.length-1}else{areas[activeArea].file=currentFile;areas[activeArea].rows=rows} render();
   setStatus(rows.length?'Extraction complete. Review detected values before import.':'No reliable room/area pairs found. Try a clearer image or use manual rows.',''+(rows.length?'ok':'warn'))
  }catch(e){console.error(e);setStatus('Extraction failed: '+(e.message||e),'warn')}
 };
@@ -153,7 +159,7 @@ function parseText(text){
  }
  return out.filter((r,i,a)=>a.findIndex(x=>x.room.toLowerCase()===r.room.toLowerCase())===i)
 }
-imp.onclick=()=>{const payload={source:currentFile?.name||'sample',recordType:'floor-plan-import-prototype',rooms:rows.map(r=>({name:String(r.room||'').trim(),area:Number(r.area)||0,unit:'sqft',dimensions:String(r.dimensions||'').trim(),confidence:r.confidence,verified:true}))};localStorage.setItem('teraju.floorplan.import.prototype',JSON.stringify(payload));setStatus('Prototype payload saved locally. BuildPlanner V2 was not modified.','ok');console.log('[TERAJU FLOOR PLAN IMPORT]',payload);alert('Prototype import saved locally. BuildPlanner V2 was not modified.')}
+imp.onclick=()=>{areas.forEach(a=>a.rows=activeArea!==null&&areas[activeArea]===a?rows:a.rows);const payload={recordType:'floor-plan-import-prototype',areas:areas.map((a,i)=>({name:a.name||('Area '+(i+1)),source:a.file?.name||null,rooms:a.rows.map(r=>({name:String(r.room||'').trim(),area:Number(r.area)||0,unit:'sqft',dimensions:String(r.dimensions||'').trim(),confidence:r.confidence,verified:true}))}))};localStorage.setItem('teraju.floorplan.import.prototype',JSON.stringify(payload));setStatus('Prototype payload saved locally. BuildPlanner V2 was not modified.','ok');console.log('[TERAJU FLOOR PLAN IMPORT]',payload);alert('Prototype import saved locally. BuildPlanner V2 was not modified.')}
 </script>
 </body>
 </html>
