@@ -5,7 +5,7 @@
   "plannerType": "build",
   "quotationId": "QT-BLD-MUGQSFCN-42TH4",
   "createdAt": "2026-09-25T09:13:16.100Z",
-  "updatedAt": "2026-09-25T13:00:04.145Z",
+  "updatedAt": "2026-09-25T13:00:52.302Z",
   "contract": {
     "schemaVersion": 1,
     "recordType": "contract",
@@ -5533,12 +5533,6 @@
     "quotationId": "QT-BLD-MUGQSFCN-42TH4",
     "history": {
       "2026-10-01": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 0
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 0
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 0
         },
@@ -5813,16 +5807,16 @@
           "percent": 0
         },
         "bath-room-8-tap": {
+          "percent": 0
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 0
+        },
+        "manual-1790340955451-wq3j8w": {
           "percent": 0
         }
       },
       "2026-10-02": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 0
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 16
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 0
         },
@@ -6097,16 +6091,16 @@
           "percent": 0
         },
         "bath-room-8-tap": {
+          "percent": 0
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 0
+        },
+        "manual-1790340955451-wq3j8w": {
           "percent": 0
         }
       },
       "2026-10-03": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 26
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 50
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 0
         },
@@ -6381,16 +6375,16 @@
           "percent": 0
         },
         "bath-room-8-tap": {
+          "percent": 0
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 0
+        },
+        "manual-1790340955451-wq3j8w": {
           "percent": 0
         }
       },
       "2026-10-04": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 74
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 84
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 0
         },
@@ -6666,15 +6660,15 @@
         },
         "bath-room-8-tap": {
           "percent": 0
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 0
+        },
+        "manual-1790340955451-wq3j8w": {
+          "percent": 0
         }
       },
       "2026-10-05": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 71
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 71
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 0
         },
@@ -6950,15 +6944,15 @@
         },
         "bath-room-8-tap": {
           "percent": 0
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 0
+        },
+        "manual-1790340955451-wq3j8w": {
+          "percent": 0
         }
       },
       "2026-10-06": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 72
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 72
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 0
         },
@@ -7234,15 +7228,15 @@
         },
         "bath-room-8-tap": {
           "percent": 0
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 0
+        },
+        "manual-1790340955451-wq3j8w": {
+          "percent": 0
         }
       },
       "2026-10-07": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 72
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 72
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 0
         },
@@ -7518,15 +7512,15 @@
         },
         "bath-room-8-tap": {
           "percent": 0
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 0
+        },
+        "manual-1790340955451-wq3j8w": {
+          "percent": 0
         }
       },
       "2026-10-08": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 72
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 72
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 0
         },
@@ -7802,15 +7796,15 @@
         },
         "bath-room-8-tap": {
           "percent": 0
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 0
+        },
+        "manual-1790340955451-wq3j8w": {
+          "percent": 0
         }
       },
       "2026-10-09": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 73
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 73
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 0
         },
@@ -8086,15 +8080,15 @@
         },
         "bath-room-8-tap": {
           "percent": 0
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 0
+        },
+        "manual-1790340955451-wq3j8w": {
+          "percent": 0
         }
       },
       "2026-10-10": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 73
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 73
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 0
         },
@@ -8370,15 +8364,15 @@
         },
         "bath-room-8-tap": {
           "percent": 0
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 0
+        },
+        "manual-1790340955451-wq3j8w": {
+          "percent": 0
         }
       },
       "2026-10-11": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 73
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 73
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 0
         },
@@ -8653,16 +8647,16 @@
           "percent": 0
         },
         "bath-room-8-tap": {
+          "percent": 0
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 0
+        },
+        "manual-1790340955451-wq3j8w": {
           "percent": 0
         }
       },
       "2026-10-12": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 74
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 74
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 50
         },
@@ -8937,16 +8931,16 @@
           "percent": 0
         },
         "bath-room-8-tap": {
+          "percent": 0
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 0
+        },
+        "manual-1790340955451-wq3j8w": {
           "percent": 0
         }
       },
       "2026-10-13": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 74
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 74
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 74
         },
@@ -9221,16 +9215,16 @@
           "percent": 0
         },
         "bath-room-8-tap": {
+          "percent": 0
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 0
+        },
+        "manual-1790340955451-wq3j8w": {
           "percent": 0
         }
       },
       "2026-10-14": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 74
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 74
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 74
         },
@@ -9505,16 +9499,16 @@
           "percent": 0
         },
         "bath-room-8-tap": {
+          "percent": 0
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 0
+        },
+        "manual-1790340955451-wq3j8w": {
           "percent": 0
         }
       },
       "2026-10-15": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 75
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 75
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 75
         },
@@ -9789,16 +9783,16 @@
           "percent": 0
         },
         "bath-room-8-tap": {
+          "percent": 0
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 0
+        },
+        "manual-1790340955451-wq3j8w": {
           "percent": 0
         }
       },
       "2026-10-16": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 75
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 75
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 75
         },
@@ -10073,16 +10067,16 @@
           "percent": 0
         },
         "bath-room-8-tap": {
+          "percent": 0
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 0
+        },
+        "manual-1790340955451-wq3j8w": {
           "percent": 0
         }
       },
       "2026-10-17": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 75
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 75
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 75
         },
@@ -10357,16 +10351,16 @@
           "percent": 0
         },
         "bath-room-8-tap": {
+          "percent": 0
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 0
+        },
+        "manual-1790340955451-wq3j8w": {
           "percent": 0
         }
       },
       "2026-10-18": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 76
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 76
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 76
         },
@@ -10410,7 +10404,7 @@
           "percent": 0
         },
         "master-main-building-/-roof-/-metal-roofing-sheet": {
-          "percent": 4
+          "percent": 6
         },
         "master-main-building-/-apron-/-concrete": {
           "percent": 0
@@ -10641,16 +10635,16 @@
           "percent": 0
         },
         "bath-room-8-tap": {
+          "percent": 0
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 0
+        },
+        "manual-1790340955451-wq3j8w": {
           "percent": 0
         }
       },
       "2026-10-19": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 76
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 76
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 76
         },
@@ -10694,7 +10688,7 @@
           "percent": 50
         },
         "master-main-building-/-roof-/-metal-roofing-sheet": {
-          "percent": 16
+          "percent": 20
         },
         "master-main-building-/-apron-/-concrete": {
           "percent": 0
@@ -10925,16 +10919,16 @@
           "percent": 0
         },
         "bath-room-8-tap": {
+          "percent": 0
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 0
+        },
+        "manual-1790340955451-wq3j8w": {
           "percent": 0
         }
       },
       "2026-10-20": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 76
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 76
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 76
         },
@@ -10978,7 +10972,7 @@
           "percent": 76
         },
         "master-main-building-/-roof-/-metal-roofing-sheet": {
-          "percent": 32
+          "percent": 39
         },
         "master-main-building-/-apron-/-concrete": {
           "percent": 0
@@ -11209,16 +11203,16 @@
           "percent": 0
         },
         "bath-room-8-tap": {
+          "percent": 0
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 0
+        },
+        "manual-1790340955451-wq3j8w": {
           "percent": 0
         }
       },
       "2026-10-21": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 77
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 77
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 77
         },
@@ -11262,7 +11256,7 @@
           "percent": 77
         },
         "master-main-building-/-roof-/-metal-roofing-sheet": {
-          "percent": 50
+          "percent": 61
         },
         "master-main-building-/-apron-/-concrete": {
           "percent": 0
@@ -11493,16 +11487,16 @@
           "percent": 0
         },
         "bath-room-8-tap": {
+          "percent": 0
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 50
+        },
+        "manual-1790340955451-wq3j8w": {
           "percent": 0
         }
       },
       "2026-10-22": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 77
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 77
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 77
         },
@@ -11546,7 +11540,7 @@
           "percent": 77
         },
         "master-main-building-/-roof-/-metal-roofing-sheet": {
-          "percent": 68
+          "percent": 80
         },
         "master-main-building-/-apron-/-concrete": {
           "percent": 0
@@ -11777,16 +11771,16 @@
           "percent": 0
         },
         "bath-room-8-tap": {
+          "percent": 0
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 77
+        },
+        "manual-1790340955451-wq3j8w": {
           "percent": 0
         }
       },
       "2026-10-23": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 77
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 77
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 77
         },
@@ -11830,7 +11824,7 @@
           "percent": 77
         },
         "master-main-building-/-roof-/-metal-roofing-sheet": {
-          "percent": 84
+          "percent": 94
         },
         "master-main-building-/-apron-/-concrete": {
           "percent": 50
@@ -12061,16 +12055,16 @@
           "percent": 0
         },
         "bath-room-8-tap": {
+          "percent": 0
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 77
+        },
+        "manual-1790340955451-wq3j8w": {
           "percent": 0
         }
       },
       "2026-10-24": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 78
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 78
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 78
         },
@@ -12114,7 +12108,7 @@
           "percent": 78
         },
         "master-main-building-/-roof-/-metal-roofing-sheet": {
-          "percent": 96
+          "percent": 78
         },
         "master-main-building-/-apron-/-concrete": {
           "percent": 78
@@ -12345,16 +12339,16 @@
           "percent": 0
         },
         "bath-room-8-tap": {
+          "percent": 0
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 78
+        },
+        "manual-1790340955451-wq3j8w": {
           "percent": 0
         }
       },
       "2026-10-25": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 78
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 78
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 78
         },
@@ -12629,16 +12623,16 @@
           "percent": 0
         },
         "bath-room-8-tap": {
+          "percent": 0
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 78
+        },
+        "manual-1790340955451-wq3j8w": {
           "percent": 0
         }
       },
       "2026-10-26": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 78
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 78
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 78
         },
@@ -12913,16 +12907,16 @@
           "percent": 0
         },
         "bath-room-8-tap": {
+          "percent": 0
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 78
+        },
+        "manual-1790340955451-wq3j8w": {
           "percent": 0
         }
       },
       "2026-10-27": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 79
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 79
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 79
         },
@@ -13197,16 +13191,16 @@
           "percent": 0
         },
         "bath-room-8-tap": {
+          "percent": 0
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 79
+        },
+        "manual-1790340955451-wq3j8w": {
           "percent": 0
         }
       },
       "2026-10-28": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 79
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 79
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 79
         },
@@ -13481,16 +13475,16 @@
           "percent": 0
         },
         "bath-room-8-tap": {
+          "percent": 0
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 79
+        },
+        "manual-1790340955451-wq3j8w": {
           "percent": 0
         }
       },
       "2026-10-29": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 79
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 79
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 79
         },
@@ -13765,16 +13759,16 @@
           "percent": 0
         },
         "bath-room-8-tap": {
+          "percent": 0
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 79
+        },
+        "manual-1790340955451-wq3j8w": {
           "percent": 0
         }
       },
       "2026-10-30": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 80
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 80
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 80
         },
@@ -14049,16 +14043,16 @@
           "percent": 0
         },
         "bath-room-8-tap": {
+          "percent": 0
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 80
+        },
+        "manual-1790340955451-wq3j8w": {
           "percent": 0
         }
       },
       "2026-10-31": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 80
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 80
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 80
         },
@@ -14333,16 +14327,16 @@
           "percent": 0
         },
         "bath-room-8-tap": {
+          "percent": 0
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 80
+        },
+        "manual-1790340955451-wq3j8w": {
           "percent": 0
         }
       },
       "2026-11-01": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 80
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 80
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 80
         },
@@ -14618,15 +14612,15 @@
         },
         "bath-room-8-tap": {
           "percent": 0
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 80
+        },
+        "manual-1790340955451-wq3j8w": {
+          "percent": 0
         }
       },
       "2026-11-02": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 81
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 81
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 81
         },
@@ -14902,15 +14896,15 @@
         },
         "bath-room-8-tap": {
           "percent": 0
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 81
+        },
+        "manual-1790340955451-wq3j8w": {
+          "percent": 0
         }
       },
       "2026-11-03": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 81
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 81
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 81
         },
@@ -15186,15 +15180,15 @@
         },
         "bath-room-8-tap": {
           "percent": 0
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 81
+        },
+        "manual-1790340955451-wq3j8w": {
+          "percent": 0
         }
       },
       "2026-11-04": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 81
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 81
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 81
         },
@@ -15470,15 +15464,15 @@
         },
         "bath-room-8-tap": {
           "percent": 0
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 81
+        },
+        "manual-1790340955451-wq3j8w": {
+          "percent": 0
         }
       },
       "2026-11-05": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 82
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 82
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 82
         },
@@ -15754,15 +15748,15 @@
         },
         "bath-room-8-tap": {
           "percent": 0
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 82
+        },
+        "manual-1790340955451-wq3j8w": {
+          "percent": 0
         }
       },
       "2026-11-06": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 82
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 82
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 82
         },
@@ -16038,15 +16032,15 @@
         },
         "bath-room-8-tap": {
           "percent": 0
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 82
+        },
+        "manual-1790340955451-wq3j8w": {
+          "percent": 0
         }
       },
       "2026-11-07": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 82
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 82
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 82
         },
@@ -16322,15 +16316,15 @@
         },
         "bath-room-8-tap": {
           "percent": 0
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 82
+        },
+        "manual-1790340955451-wq3j8w": {
+          "percent": 0
         }
       },
       "2026-11-08": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 83
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 83
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 83
         },
@@ -16606,15 +16600,15 @@
         },
         "bath-room-8-tap": {
           "percent": 0
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 83
+        },
+        "manual-1790340955451-wq3j8w": {
+          "percent": 0
         }
       },
       "2026-11-09": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 83
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 83
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 83
         },
@@ -16890,15 +16884,15 @@
         },
         "bath-room-8-tap": {
           "percent": 0
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 83
+        },
+        "manual-1790340955451-wq3j8w": {
+          "percent": 0
         }
       },
       "2026-11-10": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 83
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 83
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 83
         },
@@ -17174,15 +17168,15 @@
         },
         "bath-room-8-tap": {
           "percent": 3
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 83
+        },
+        "manual-1790340955451-wq3j8w": {
+          "percent": 0
         }
       },
       "2026-11-11": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 84
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 84
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 84
         },
@@ -17458,15 +17452,15 @@
         },
         "bath-room-8-tap": {
           "percent": 10
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 84
+        },
+        "manual-1790340955451-wq3j8w": {
+          "percent": 0
         }
       },
       "2026-11-12": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 84
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 84
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 84
         },
@@ -17742,15 +17736,15 @@
         },
         "bath-room-8-tap": {
           "percent": 22
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 84
+        },
+        "manual-1790340955451-wq3j8w": {
+          "percent": 0
         }
       },
       "2026-11-13": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 84
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 84
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 84
         },
@@ -18026,15 +18020,15 @@
         },
         "bath-room-8-tap": {
           "percent": 35
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 84
+        },
+        "manual-1790340955451-wq3j8w": {
+          "percent": 0
         }
       },
       "2026-11-14": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 85
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 85
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 85
         },
@@ -18310,15 +18304,15 @@
         },
         "bath-room-8-tap": {
           "percent": 50
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 85
+        },
+        "manual-1790340955451-wq3j8w": {
+          "percent": 0
         }
       },
       "2026-11-15": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 85
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 85
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 85
         },
@@ -18594,15 +18588,15 @@
         },
         "bath-room-8-tap": {
           "percent": 65
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 85
+        },
+        "manual-1790340955451-wq3j8w": {
+          "percent": 0
         }
       },
       "2026-11-16": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 85
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 85
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 85
         },
@@ -18878,15 +18872,15 @@
         },
         "bath-room-8-tap": {
           "percent": 78
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 85
+        },
+        "manual-1790340955451-wq3j8w": {
+          "percent": 0
         }
       },
       "2026-11-17": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 85
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 85
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 85
         },
@@ -19162,15 +19156,15 @@
         },
         "bath-room-8-tap": {
           "percent": 90
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 85
+        },
+        "manual-1790340955451-wq3j8w": {
+          "percent": 0
         }
       },
       "2026-11-18": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 86
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 86
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 86
         },
@@ -19446,15 +19440,15 @@
         },
         "bath-room-8-tap": {
           "percent": 97
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 86
+        },
+        "manual-1790340955451-wq3j8w": {
+          "percent": 0
         }
       },
       "2026-11-19": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 86
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 86
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 86
         },
@@ -19730,15 +19724,15 @@
         },
         "bath-room-8-tap": {
           "percent": 86
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 86
+        },
+        "manual-1790340955451-wq3j8w": {
+          "percent": 0
         }
       },
       "2026-11-20": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 86
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 86
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 86
         },
@@ -20014,15 +20008,15 @@
         },
         "bath-room-8-tap": {
           "percent": 86
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 86
+        },
+        "manual-1790340955451-wq3j8w": {
+          "percent": 0
         }
       },
       "2026-11-21": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 87
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 87
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 87
         },
@@ -20298,15 +20292,15 @@
         },
         "bath-room-8-tap": {
           "percent": 87
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 87
+        },
+        "manual-1790340955451-wq3j8w": {
+          "percent": 0
         }
       },
       "2026-11-22": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 87
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 87
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 87
         },
@@ -20582,15 +20576,15 @@
         },
         "bath-room-8-tap": {
           "percent": 87
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 87
+        },
+        "manual-1790340955451-wq3j8w": {
+          "percent": 0
         }
       },
       "2026-11-23": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 87
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 87
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 87
         },
@@ -20866,15 +20860,15 @@
         },
         "bath-room-8-tap": {
           "percent": 87
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 87
+        },
+        "manual-1790340955451-wq3j8w": {
+          "percent": 0
         }
       },
       "2026-11-24": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 88
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 88
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 88
         },
@@ -21150,15 +21144,15 @@
         },
         "bath-room-8-tap": {
           "percent": 88
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 88
+        },
+        "manual-1790340955451-wq3j8w": {
+          "percent": 0
         }
       },
       "2026-11-25": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 88
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 88
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 88
         },
@@ -21434,15 +21428,15 @@
         },
         "bath-room-8-tap": {
           "percent": 88
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 88
+        },
+        "manual-1790340955451-wq3j8w": {
+          "percent": 0
         }
       },
       "2026-11-26": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 88
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 88
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 88
         },
@@ -21718,15 +21712,15 @@
         },
         "bath-room-8-tap": {
           "percent": 88
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 88
+        },
+        "manual-1790340955451-wq3j8w": {
+          "percent": 0
         }
       },
       "2026-11-27": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 89
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 89
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 89
         },
@@ -22002,15 +21996,15 @@
         },
         "bath-room-8-tap": {
           "percent": 89
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 89
+        },
+        "manual-1790340955451-wq3j8w": {
+          "percent": 0
         }
       },
       "2026-11-28": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 89
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 89
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 89
         },
@@ -22286,15 +22280,15 @@
         },
         "bath-room-8-tap": {
           "percent": 89
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 89
+        },
+        "manual-1790340955451-wq3j8w": {
+          "percent": 0
         }
       },
       "2026-11-29": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 89
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 89
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 89
         },
@@ -22570,15 +22564,15 @@
         },
         "bath-room-8-tap": {
           "percent": 89
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 89
+        },
+        "manual-1790340955451-wq3j8w": {
+          "percent": 0
         }
       },
       "2026-11-30": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 90
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 90
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 90
         },
@@ -22854,15 +22848,15 @@
         },
         "bath-room-8-tap": {
           "percent": 90
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 90
+        },
+        "manual-1790340955451-wq3j8w": {
+          "percent": 0
         }
       },
       "2026-12-01": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 90
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 90
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 90
         },
@@ -23138,15 +23132,15 @@
         },
         "bath-room-8-tap": {
           "percent": 90
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 90
+        },
+        "manual-1790340955451-wq3j8w": {
+          "percent": 0
         }
       },
       "2026-12-02": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 90
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 90
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 90
         },
@@ -23422,15 +23416,15 @@
         },
         "bath-room-8-tap": {
           "percent": 90
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 90
+        },
+        "manual-1790340955451-wq3j8w": {
+          "percent": 0
         }
       },
       "2026-12-03": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 91
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 91
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 91
         },
@@ -23706,15 +23700,15 @@
         },
         "bath-room-8-tap": {
           "percent": 91
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 91
+        },
+        "manual-1790340955451-wq3j8w": {
+          "percent": 0
         }
       },
       "2026-12-04": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 91
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 91
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 91
         },
@@ -23990,15 +23984,15 @@
         },
         "bath-room-8-tap": {
           "percent": 91
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 91
+        },
+        "manual-1790340955451-wq3j8w": {
+          "percent": 0
         }
       },
       "2026-12-05": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 91
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 91
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 91
         },
@@ -24274,15 +24268,15 @@
         },
         "bath-room-8-tap": {
           "percent": 91
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 91
+        },
+        "manual-1790340955451-wq3j8w": {
+          "percent": 0
         }
       },
       "2026-12-06": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 92
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 92
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 92
         },
@@ -24558,15 +24552,15 @@
         },
         "bath-room-8-tap": {
           "percent": 92
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 92
+        },
+        "manual-1790340955451-wq3j8w": {
+          "percent": 0
         }
       },
       "2026-12-07": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 92
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 92
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 92
         },
@@ -24842,15 +24836,15 @@
         },
         "bath-room-8-tap": {
           "percent": 92
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 92
+        },
+        "manual-1790340955451-wq3j8w": {
+          "percent": 0
         }
       },
       "2026-12-08": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 92
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 92
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 92
         },
@@ -25126,15 +25120,15 @@
         },
         "bath-room-8-tap": {
           "percent": 92
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 92
+        },
+        "manual-1790340955451-wq3j8w": {
+          "percent": 0
         }
       },
       "2026-12-09": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 93
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 93
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 93
         },
@@ -25410,15 +25404,15 @@
         },
         "bath-room-8-tap": {
           "percent": 93
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 93
+        },
+        "manual-1790340955451-wq3j8w": {
+          "percent": 0
         }
       },
       "2026-12-10": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 93
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 93
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 93
         },
@@ -25694,15 +25688,15 @@
         },
         "bath-room-8-tap": {
           "percent": 93
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 93
+        },
+        "manual-1790340955451-wq3j8w": {
+          "percent": 0
         }
       },
       "2026-12-11": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 93
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 93
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 93
         },
@@ -25978,15 +25972,15 @@
         },
         "bath-room-8-tap": {
           "percent": 93
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 93
+        },
+        "manual-1790340955451-wq3j8w": {
+          "percent": 0
         }
       },
       "2026-12-12": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 94
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 94
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 94
         },
@@ -26262,15 +26256,15 @@
         },
         "bath-room-8-tap": {
           "percent": 94
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 94
+        },
+        "manual-1790340955451-wq3j8w": {
+          "percent": 0
         }
       },
       "2026-12-13": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 94
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 94
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 94
         },
@@ -26546,15 +26540,15 @@
         },
         "bath-room-8-tap": {
           "percent": 94
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 94
+        },
+        "manual-1790340955451-wq3j8w": {
+          "percent": 0
         }
       },
       "2026-12-14": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 94
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 94
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 94
         },
@@ -26830,15 +26824,15 @@
         },
         "bath-room-8-tap": {
           "percent": 94
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 94
+        },
+        "manual-1790340955451-wq3j8w": {
+          "percent": 0
         }
       },
       "2026-12-15": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 95
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 95
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 95
         },
@@ -27114,15 +27108,15 @@
         },
         "bath-room-8-tap": {
           "percent": 95
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 95
+        },
+        "manual-1790340955451-wq3j8w": {
+          "percent": 0
         }
       },
       "2026-12-16": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 95
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 95
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 95
         },
@@ -27319,7 +27313,7 @@
           "percent": 95
         },
         "master-gate": {
-          "percent": 4
+          "percent": 7
         },
         "master-driveway": {
           "percent": 95
@@ -27398,15 +27392,15 @@
         },
         "bath-room-8-tap": {
           "percent": 95
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 95
+        },
+        "manual-1790340955451-wq3j8w": {
+          "percent": 0
         }
       },
       "2026-12-17": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 95
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 95
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 95
         },
@@ -27543,7 +27537,7 @@
           "percent": 0
         },
         "master-main-building-/-septic-tank": {
-          "percent": 10
+          "percent": 16
         },
         "master-main-building-/-power-point": {
           "percent": 95
@@ -27603,7 +27597,7 @@
           "percent": 95
         },
         "master-gate": {
-          "percent": 16
+          "percent": 26
         },
         "master-driveway": {
           "percent": 95
@@ -27682,15 +27676,15 @@
         },
         "bath-room-8-tap": {
           "percent": 95
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 95
+        },
+        "manual-1790340955451-wq3j8w": {
+          "percent": 0
         }
       },
       "2026-12-18": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 96
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 96
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 96
         },
@@ -27827,7 +27821,7 @@
           "percent": 0
         },
         "master-main-building-/-septic-tank": {
-          "percent": 35
+          "percent": 50
         },
         "master-main-building-/-power-point": {
           "percent": 96
@@ -27887,13 +27881,13 @@
           "percent": 96
         },
         "master-gate": {
-          "percent": 32
+          "percent": 50
         },
         "master-driveway": {
           "percent": 96
         },
         "master-landscaping": {
-          "percent": 16
+          "percent": 26
         },
         "bath-room-6-wall-tiles": {
           "percent": 96
@@ -27966,15 +27960,15 @@
         },
         "bath-room-8-tap": {
           "percent": 96
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 96
+        },
+        "manual-1790340955451-wq3j8w": {
+          "percent": 0
         }
       },
       "2026-12-19": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 96
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 96
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 96
         },
@@ -28111,7 +28105,7 @@
           "percent": 0
         },
         "master-main-building-/-septic-tank": {
-          "percent": 65
+          "percent": 84
         },
         "master-main-building-/-power-point": {
           "percent": 96
@@ -28171,13 +28165,13 @@
           "percent": 96
         },
         "master-gate": {
-          "percent": 50
+          "percent": 74
         },
         "master-driveway": {
           "percent": 96
         },
         "master-landscaping": {
-          "percent": 50
+          "percent": 74
         },
         "bath-room-6-wall-tiles": {
           "percent": 96
@@ -28250,15 +28244,15 @@
         },
         "bath-room-8-tap": {
           "percent": 96
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 96
+        },
+        "manual-1790340955451-wq3j8w": {
+          "percent": 26
         }
       },
       "2026-12-20": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 96
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 96
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 96
         },
@@ -28395,7 +28389,7 @@
           "percent": 50
         },
         "master-main-building-/-septic-tank": {
-          "percent": 90
+          "percent": 96
         },
         "master-main-building-/-power-point": {
           "percent": 96
@@ -28455,13 +28449,13 @@
           "percent": 96
         },
         "master-gate": {
-          "percent": 68
+          "percent": 93
         },
         "master-driveway": {
           "percent": 96
         },
         "master-landscaping": {
-          "percent": 84
+          "percent": 96
         },
         "bath-room-6-wall-tiles": {
           "percent": 96
@@ -28534,15 +28528,15 @@
         },
         "bath-room-8-tap": {
           "percent": 96
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 96
+        },
+        "manual-1790340955451-wq3j8w": {
+          "percent": 74
         }
       },
       "2026-12-21": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 97
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 97
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 97
         },
@@ -28739,7 +28733,7 @@
           "percent": 97
         },
         "master-gate": {
-          "percent": 84
+          "percent": 97
         },
         "master-driveway": {
           "percent": 97
@@ -28817,16 +28811,16 @@
           "percent": 97
         },
         "bath-room-8-tap": {
+          "percent": 97
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 97
+        },
+        "manual-1790340955451-wq3j8w": {
           "percent": 97
         }
       },
       "2026-12-22": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 97
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 97
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 97
         },
@@ -29023,7 +29017,7 @@
           "percent": 97
         },
         "master-gate": {
-          "percent": 96
+          "percent": 97
         },
         "master-driveway": {
           "percent": 97
@@ -29101,16 +29095,16 @@
           "percent": 97
         },
         "bath-room-8-tap": {
+          "percent": 97
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 97
+        },
+        "manual-1790340955451-wq3j8w": {
           "percent": 97
         }
       },
       "2026-12-23": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 97
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 97
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 97
         },
@@ -29385,16 +29379,16 @@
           "percent": 97
         },
         "bath-room-8-tap": {
+          "percent": 97
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 97
+        },
+        "manual-1790340955451-wq3j8w": {
           "percent": 97
         }
       },
       "2026-12-24": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 98
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 98
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 98
         },
@@ -29669,16 +29663,16 @@
           "percent": 98
         },
         "bath-room-8-tap": {
+          "percent": 98
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 98
+        },
+        "manual-1790340955451-wq3j8w": {
           "percent": 98
         }
       },
       "2026-12-25": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 98
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 98
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 98
         },
@@ -29953,16 +29947,16 @@
           "percent": 98
         },
         "bath-room-8-tap": {
+          "percent": 98
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 98
+        },
+        "manual-1790340955451-wq3j8w": {
           "percent": 98
         }
       },
       "2026-12-26": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 98
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 98
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 98
         },
@@ -30237,16 +30231,16 @@
           "percent": 98
         },
         "bath-room-8-tap": {
+          "percent": 98
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 98
+        },
+        "manual-1790340955451-wq3j8w": {
           "percent": 98
         }
       },
       "2026-12-27": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 99
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 99
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 99
         },
@@ -30521,16 +30515,16 @@
           "percent": 99
         },
         "bath-room-8-tap": {
+          "percent": 99
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 99
+        },
+        "manual-1790340955451-wq3j8w": {
           "percent": 99
         }
       },
       "2026-12-28": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 99
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 99
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 99
         },
@@ -30805,16 +30799,16 @@
           "percent": 99
         },
         "bath-room-8-tap": {
+          "percent": 99
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 99
+        },
+        "manual-1790340955451-wq3j8w": {
           "percent": 99
         }
       },
       "2026-12-29": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 99
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 99
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 99
         },
@@ -31089,16 +31083,16 @@
           "percent": 99
         },
         "bath-room-8-tap": {
+          "percent": 99
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 99
+        },
+        "manual-1790340955451-wq3j8w": {
           "percent": 99
         }
       },
       "2026-12-30": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 100
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 100
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 100
         },
@@ -31373,16 +31367,16 @@
           "percent": 100
         },
         "bath-room-8-tap": {
+          "percent": 100
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 100
+        },
+        "manual-1790340955451-wq3j8w": {
           "percent": 100
         }
       },
       "2026-12-31": {
-        "master-preliminaries-/-building-plan-/-submission": {
-          "percent": 100
-        },
-        "master-preliminaries-/-site-mobilisation-/-project-management": {
-          "percent": 100
-        },
         "master-main-building-/-footing-/-concrete": {
           "percent": 100
         },
@@ -31657,6 +31651,12 @@
           "percent": 100
         },
         "bath-room-8-tap": {
+          "percent": 100
+        },
+        "manual-1790340889153-mh4kbk": {
+          "percent": 100
+        },
+        "manual-1790340955451-wq3j8w": {
           "percent": 100
         }
       }
@@ -32031,6 +32031,6 @@
         "savedAt": "2026-09-25T09:20:31.992Z"
       }
     },
-    "updatedAt": "2026-09-25T09:20:34.728Z"
+    "updatedAt": "2026-09-25T13:00:52.302Z"
   }
 }
