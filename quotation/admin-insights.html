@@ -84,7 +84,9 @@ th{font-size:10px;text-transform:uppercase;color:#6b7280;background:#fafafa}
     <div class="kpi"><div class="label">Homeowners</div><div class="value" id="homeowners">—</div><div class="sub">Registered accounts</div></div>
     <div class="kpi"><div class="label">Contractors</div><div class="value" id="contractors">—</div><div class="sub">Registered accounts</div></div>
     <div class="kpi"><div class="label">Cost Estimates</div><div class="value" id="estimates">—</div><div class="sub" id="estimateSub">Build + Renovation</div></div>
-    <div class="kpi"><div class="label">Estimated Project Value</div><div class="value" id="value">—</div><div class="sub">Sum of stored estimate totals</div></div>
+    <div class="kpi"><div class="label">Total Project Value</div><div class="value" id="value">—</div><div class="sub">Homeowner + Contractor estimates</div></div>
+    <div class="kpi"><div class="label">Homeowner Project Value</div><div class="value" id="homeownerValue">—</div><div class="sub">Stored estimate totals</div></div>
+    <div class="kpi"><div class="label">Contractor Project Value</div><div class="value" id="contractorValue">—</div><div class="sub">Stored estimate totals</div></div>
     <div class="kpi"><div class="label">Average Estimate</div><div class="value" id="average">—</div><div class="sub">Across stored estimates with value</div></div>
     <div class="kpi"><div class="label">Active Users</div><div class="value" id="active">—</div><div class="sub">Updated within selected period</div></div>
     <div class="kpi"><div class="label">Users With Estimates</div><div class="value" id="engaged">—</div><div class="sub">At least one stored estimate</div></div>
@@ -107,7 +109,7 @@ th{font-size:10px;text-transform:uppercase;color:#6b7280;background:#fafafa}
       <div class="chartbox"><canvas id="estimateChart"></canvas></div>
     </div>
     <div class="panel">
-      <h2>Estimated Project Value</h2><div class="caption">Stored estimate totals by month</div>
+      <h2>Project Value by User Type</h2><div class="caption">Stored estimate totals by month, separated by Homeowner and Contractor</div>
       <div class="chartbox"><canvas id="valueChart"></canvas></div>
     </div>
   </section>
@@ -155,11 +157,14 @@ function chartDefaults(){return{responsive:true,maintainAspectRatio:false,plugin
 function render(){
   const selected=filteredAccounts();
   const allRecords=accounts.flatMap(recordsFor);
-  const selectedRecords=selected.flatMap(recordsFor);
+  const selectedEntries=selected.flatMap(a=>recordsFor(a).map(record=>({record,role:String(a.role||'').toLowerCase()})));
+  const selectedRecords=selectedEntries.map(x=>x.record);
   const homeowners=accounts.filter(a=>String(a.role).toLowerCase()==='homeowner').length;
   const contractors=accounts.filter(a=>String(a.role).toLowerCase()==='contractor').length;
-  const value=selectedRecords.reduce((s,r)=>s+(Number(r.total)||0),0);
-  const valued=selectedRecords.filter(r=>Number.isFinite(Number(r.total))&&Number(r.total)>0);
+  const value=selectedEntries.reduce((s,x)=>s+(Number(x.record.total)||0),0);
+  const homeownerValue=selectedEntries.filter(x=>x.role==='homeowner').reduce((s,x)=>s+(Number(x.record.total)||0),0);
+  const contractorValue=selectedEntries.filter(x=>x.role==='contractor').reduce((s,x)=>s+(Number(x.record.total)||0),0);
+  const valued=selectedEntries.filter(x=>Number.isFinite(Number(x.record.total))&&Number(x.record.total)>0);
   const avg=valued.length?value/valued.length:0;
   document.getElementById('users').textContent=num(accounts.length);
   document.getElementById('homeowners').textContent=num(homeowners);
@@ -167,12 +172,14 @@ function render(){
   document.getElementById('estimates').textContent=num(selectedRecords.length);
   document.getElementById('estimateSub').textContent=num(selectedRecords.filter(r=>r.plannerType==='build').length)+' Build · '+num(selectedRecords.filter(r=>r.plannerType==='renovation').length)+' Renovation';
   document.getElementById('value').textContent=money(value);
+  document.getElementById('homeownerValue').textContent=money(homeownerValue);
+  document.getElementById('contractorValue').textContent=money(contractorValue);
   document.getElementById('average').textContent=money(avg);
   document.getElementById('active').textContent=num(selected.length);
   document.getElementById('engaged').textContent=num(accounts.filter(a=>recordsFor(a).length>0).length);
   document.getElementById('usersSub').textContent=num(homeowners)+' Homeowner · '+num(contractors)+' Contractor';
 
-  const growth={};const estimateCounts={};const values={};
+  const growth={};const estimateCounts={};const homeownerValues={};const contractorValues={};const values={};
   const since=selectedSince();
   const start=since?new Date(since):null;
   accounts.forEach(a=>{
@@ -180,16 +187,16 @@ function render(){
     if(start&&d<start)return;
     const k=monthKey(d);if(k)growth[k]=(growth[k]||0)+1;
   });
-  selectedRecords.forEach(r=>{
+  selectedEntries.forEach(({record:r,role})=>{
     const d=new Date(r.updatedAt||r.createdAt);const k=monthKey(d);if(!k)return;
-    estimateCounts[k]=(estimateCounts[k]||0)+1;values[k]=(values[k]||0)+(Number(r.total)||0);
+     estimateCounts[k]=(estimateCounts[k]||0)+1;const amount=Number(r.total)||0;values[k]=(values[k]||0)+amount;if(role==='homeowner')homeownerValues[k]=(homeownerValues[k]||0)+amount;if(role==='contractor')contractorValues[k]=(contractorValues[k]||0)+amount;
   });
   const keys=[...new Set([...Object.keys(growth),...Object.keys(estimateCounts),...Object.keys(values)])].sort();
   const labels=keys.map(k=>{const [y,m]=k.split('-');return new Date(Number(y),Number(m)-1,1).toLocaleDateString('en-MY',{month:'short',year:'2-digit'})});
   const cd=chartDefaults();
   destroy('growthChart');charts.growthChart=new Chart(document.getElementById('growthChart'),{type:'line',data:{labels,datasets:[{label:'New users',data:keys.map(k=>growth[k]||0),tension:.35,fill:false,borderWidth:2,pointRadius:3}]},options:cd});
   destroy('estimateChart');charts.estimateChart=new Chart(document.getElementById('estimateChart'),{type:'bar',data:{labels,datasets:[{label:'Estimates',data:keys.map(k=>estimateCounts[k]||0),borderRadius:5}]},options:cd});
-  destroy('valueChart');charts.valueChart=new Chart(document.getElementById('valueChart'),{type:'line',data:{labels,datasets:[{label:'RM',data:keys.map(k=>Math.round(values[k]||0)),tension:.3,fill:true,borderWidth:2}]},options:{...cd,scales:{...cd.scales,y:{beginAtZero:true,ticks:{font:{size:10},callback:v=>'RM '+Number(v).toLocaleString()}}}}});
+  destroy('valueChart');charts.valueChart=new Chart(document.getElementById('valueChart'),{type:'line',data:{labels,datasets:[{label:'Homeowner',data:keys.map(k=>Math.round(homeownerValues[k]||0)),tension:.3,fill:false,borderWidth:2,pointRadius:3},{label:'Contractor',data:keys.map(k=>Math.round(contractorValues[k]||0)),tension:.3,fill:false,borderWidth:2,pointRadius:3},{label:'Total',data:keys.map(k=>Math.round(values[k]||0)),tension:.3,fill:false,borderWidth:2,borderDash:[6,4],pointRadius:2}]},options:{...cd,plugins:{...cd.plugins,legend:{position:'top',labels:{boxWidth:10,font:{size:11}}}},scales:{...cd.scales,y:{beginAtZero:true,ticks:{font:{size:10},callback:v=>'RM '+Number(v).toLocaleString()}}}}});
   const build=selectedRecords.filter(r=>r.plannerType==='build').length;
   const renovation=selectedRecords.filter(r=>r.plannerType==='renovation').length;
   destroy('plannerChart');charts.plannerChart=new Chart(document.getElementById('plannerChart'),{type:'doughnut',data:{labels:['BuildPlanner','RenovationPlanner'],datasets:[{data:[build,renovation]}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}}}}});
