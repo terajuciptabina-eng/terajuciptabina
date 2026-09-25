@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "contractor",
+  "contractorId": "CTR-20260925-TLQ2",
+  "profile": {
+    "name": "Serum niaga",
+    "email": "zuldesa1@yahoo.com.my",
+    "phone": "0175193787"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-09-25T10:07:24.418Z",
+  "updatedAt": "2026-09-25T10:07:24.418Z"
+}
