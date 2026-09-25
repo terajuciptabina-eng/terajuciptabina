@@ -116,7 +116,7 @@ th{font-size:10px;text-transform:uppercase;color:#6b7280;background:#fafafa}
 
   <section class="insight-grid">
     <div class="panel">
-      <h2>State Distribution</h2><div class="caption">Accounts grouped by stored state / territory</div>
+      <h2>State Distribution</h2><div class="caption">Projects / estimates grouped by project state</div>
       <div id="states" class="list"></div>
     </div>
     <div class="panel">
@@ -204,9 +204,16 @@ function render(){
   renderRecent();
 }
 function renderStates(){
-  const map={};accounts.forEach(a=>{const s=String(a.state||'Not specified').trim()||'Not specified';map[s]=(map[s]||0)+1});
+  const map={};
+  const selected=filteredAccounts();
+  selected.forEach(a=>{
+    recordsFor(a).forEach(r=>{
+      const s=String((r.project&&r.project.state)||r.plannerState?.projectState||'Not specified').trim()||'Not specified';
+      map[s]=(map[s]||0)+1;
+    });
+  });
   const rows=Object.entries(map).sort((a,b)=>b[1]-a[1]);const max=rows[0]?.[1]||1;
-  document.getElementById('states').innerHTML=rows.length?rows.map(([s,n])=>'<div class="row"><b>'+esc(s)+'</b><span>'+num(n)+'</span><div class="bar"><i style="width:'+Math.round(n/max*100)+'%"></i></div></div>').join(''):'<div class="muted">No state data.</div>';
+  document.getElementById('states').innerHTML=rows.length?rows.map(([s,n])=>'<div class="row"><b>'+esc(s)+'</b><span>'+num(n)+'</span><div class="bar"><i style="width:'+Math.round(n/max*100)+'%"></i></div></div>').join(''):'<div class="muted">No project state data.</div>';
 }
 function renderRecent(){
   const rows=[...accounts].sort((a,b)=>new Date(b.updatedAt||b.createdAt)-new Date(a.updatedAt||a.createdAt)).slice(0,12);
