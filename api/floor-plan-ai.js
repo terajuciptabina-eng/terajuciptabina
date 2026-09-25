@@ -3,6 +3,7 @@ const ALLOWED_ORIGIN = 'https://terajuciptabina-eng.github.io';
 const PROVIDER = String(process.env.AI_PROVIDER || 'groq').toLowerCase();
 const OPENAI_MODEL = process.env.OPENAI_FLOORPLAN_MODEL || 'gpt-5.6-sol';
 const GROQ_MODEL = process.env.GROQ_FLOORPLAN_MODEL || 'qwen/qwen3.8-27b';
+const OPENROUTER_MODEL = process.env.OPENROUTER_FLOORPLAN_MODEL || 'qwen/qwen2.5-vl-72b-instruct';
 const MAX_IMAGES = 8;
 const GROQ_MAX_IMAGES_PER_REQUEST = 3;
 const MAX_BODY_BYTES = 5 * 1024 * 1024;
@@ -196,6 +197,56 @@ Use null when area or dimensions are unavailable. Do not add markdown or comment
   return parseStructuredResponse(response, 'Groq');
 }
 
+async function callOpenRouter(images, fileName) {
+  const apiKey = process.env.OPENROUTER_API_KEY;
+  if (!apiKey) throw new Error('OpenRouter API is not configured. Add OPENROUTER_API_KEY to the Vercel project environment.');
+
+  const content = [{
+    type: 'text',
+    text: `${SYSTEM_PROMPT}
+
+Source file: ${fileName}
+This request contains ${images.length} page image(s). Page numbers are provided immediately before each image.
+Analyze only the supplied pages.
+
+Return ONLY one valid JSON object with exactly these top-level arrays:
+{
+  "pages": [{"page": 1, "type": "floor_plan|site_plan|roof_plan|elevation|schedule|presentation|other", "floor": "string or null", "confidence": "high|medium|low"}],
+  "spaces": [{"id": "unique string", "page": 1, "floor": "string or null", "name": "room/space name", "area": 0, "unit": "sqft|sqm|unknown", "dimensions": "string or null", "confidence": "high|medium|low", "source": "explicit_label|schedule_crosscheck|visual_context|unknown", "notes": "string or null"}],
+  "warnings": ["string"]
+}
+Use null when area or dimensions are unavailable. Do not add markdown or commentary.`
+  }];
+
+  for (const image of images) {
+    const page = Number(image.page) || 1;
+    content.push({ type: 'text', text: `PAGE ${page}` });
+    content.push({
+      type: 'image_url',
+      image_url: { url: image.data }
+    });
+  }
+
+  const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      'Content-Type': 'application/json',
+      'HTTP-Referer': ALLOWED_ORIGIN,
+      'X-Title': 'TERAJU WORKS Floor Plan AI'
+    },
+    body: JSON.stringify({
+      model: OPENROUTER_MODEL,
+      messages: [{ role: 'user', content }],
+      temperature: 0.1,
+      max_tokens: 12000,
+      response_format: { type: 'json_object' }
+    })
+  });
+
+  return parseStructuredResponse(response, 'OpenRouter');
+}
+
 async function callOpenAI(images, fileName) {
   const apiKey = process.env.OPENAI_API_KEY;
   if (!apiKey) throw new Error('OpenAI API is not configured. Add OPENAI_API_KEY to the Vercel project environment.');
@@ -269,17 +320,23 @@ export default async function handler(req, res) {
     }
 
     const selectedProvider = PROVIDER === 'openai' ? 'openai' : 'groq';
-    const batches = selectedProvider === 'groq'
-      ? chunk(images, GROQ_MAX_IMAGES_PER_REQUEST)
-      : [images];
+    const batches = chunk(images, GROQ_MAX_IMAGES_PER_REQUEST);
 
     const extractions = [];
+    let actualProvider = selectedProvider;
     for (const batch of batches) {
-      extractions.push(
-        selectedProvider === 'groq'
-          ? await callGroq(batch, fileName)
-          : await callOpenAI(batch, fileName)
-      );
+      try {
+        extractions.push(
+          selectedProvider === 'openai'
+            ? await callOpenAI(batch, fileName)
+            : await callGroq(batch, fileName)
+        );
+      } catch (primaryError) {
+        if (selectedProvider !== 'groq') throw primaryError;
+        console.warn('Groq floor-plan extraction failed; falling back to OpenRouter:', primaryError?.message || primaryError);
+        actualProvider = 'openrouter';
+        extractions.push(await callOpenRouter(batch, fileName));
+      }
     }
 
     const pages = uniquePages(extractions.flatMap(item => item.pages || []))
@@ -299,14 +356,14 @@ export default async function handler(req, res) {
       )
     ];
 
-    if (selectedProvider === 'groq' && batches.length > 1) {
-      warnings.push(`Groq processed ${images.length} pages in ${batches.length} visual batches because the selected vision model accepts up to ${GROQ_MAX_IMAGES_PER_REQUEST} images per request.`);
+    if (actualProvider === 'groq' && batches.length > 1) {
+      warnings.push(`Groq processed ${images.length} pages in ${batches.length} visual batches.`);
     }
 
     return res.status(200).json({
       success: true,
-      provider: selectedProvider,
-      model: selectedProvider === 'groq' ? GROQ_MODEL : OPENAI_MODEL,
+      provider: actualProvider,
+      model: actualProvider === 'groq' ? GROQ_MODEL : actualProvider === 'openrouter' ? OPENROUTER_MODEL : OPENAI_MODEL,
       fileName,
       pages,
       spaces,
