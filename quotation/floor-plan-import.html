@@ -139,11 +139,27 @@ extract.onclick=async()=>{
    }
    if(typeof ocrSource==='string' && ocrSource.startsWith('data:image/')){
      const img=await new Promise((resolve,reject)=>{const im=new Image();im.onload=()=>resolve(im);im.onerror=()=>reject(new Error('Unable to decode image for OCR.'));im.src=ocrSource});
-     const c=document.createElement('canvas'),scale=Math.min(3,Math.max(1,1800/Math.max(img.naturalWidth||img.width,1)));
+     const c=document.createElement('canvas'),scale=Math.min(4,Math.max(2,2400/Math.max(img.naturalWidth||img.width,1)));
      c.width=Math.round((img.naturalWidth||img.width)*scale);c.height=Math.round((img.naturalHeight||img.height)*scale);
-     const cx=c.getContext('2d');cx.filter='grayscale(1) contrast(1.35)';cx.drawImage(img,0,0,c.width,c.height);ocrSource=c.toDataURL('image/png')
+     const cx=c.getContext('2d');cx.drawImage(img,0,0,c.width,c.height);
+     const src=c.getImageData(0,0,c.width,c.height);
+     for(let i=0;i<src.data.length;i+=4){
+       const y=0.299*src.data[i]+0.587*src.data[i+1]+0.114*src.data[i+2];
+       const v=Math.max(0,Math.min(255,(y-128)*1.7+128));
+       src.data[i]=src.data[i+1]=src.data[i+2]=v
+     }
+     cx.putImageData(src,0,0);ocrSource=c.toDataURL('image/png')
    }
-   const out=await Tesseract.recognize(ocrSource,'eng',{logger:m=>{
+   const modes=['--psm 11','--psm 12','--psm 6']; let bestText='';
+   for(const mode of modes){
+     const out=await Tesseract.recognize(ocrSource,'eng',{config:{tessedit_pageseg_mode:mode.replace('--psm ','')},logger:m=>{
+       if(m.status==='recognizing text')setStatus('OCR '+Math.round((m.progress||0)*100)+'% ('+mode+')…');
+       else if(m.status==='loading tesseract core')setStatus('Loading OCR engine…');
+       else if(m.status==='loading language traineddata')setStatus('Loading OCR language…');
+     }});
+     if((out.data.text||'').length>(bestText||'').length)bestText=out.data.text
+   }
+   const out={data:{text:bestText}};
      if(m.status==='recognizing text')setStatus('OCR '+Math.round((m.progress||0)*100)+'%…');
      else if(m.status==='loading tesseract core')setStatus('Loading OCR engine…');
      else if(m.status==='loading language traineddata')setStatus('Loading OCR language…');
