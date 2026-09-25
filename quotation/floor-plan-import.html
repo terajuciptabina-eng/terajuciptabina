@@ -251,39 +251,48 @@ function extractSpatialTextItems(items){
  return out;
 }
 function extractSpatialWords(words){
- const out=[],seen=new Set(),w=(words||[]).filter(x=>Number(x.confidence??100)>=35&&x.text).map(x=>({
-   t:String(x.text).trim(),x0:x.bbox?.x0||0,x1:x.bbox?.x1||0,y0:x.bbox?.y0||0,y1:x.bbox?.y1||x.bbox?.y0||0
- })).filter(x=>x.t);
+ const out=[],seen=new Set(),usedAreaTokens=new Set(),w=(words||[])
+  .filter(x=>Number(x.confidence??100)>=35&&x.text)
+  .map(x=>({t:String(x.text).trim(),x0:x.bbox?.x0||0,x1:x.bbox?.x1||0,y0:x.bbox?.y0||0,y1:x.bbox?.y1||x.bbox?.y0||0}))
+  .filter(x=>x.t);
+
  for(let i=0;i<w.length;i++){
-   for(let len=1;len<=6&&i+len<=w.length;len++){
-     const g=w.slice(i,i+len),phrase=g.map(x=>x.t).join(' '),room=phrase.match(ROOM_PHRASE_RE);
-     if(!room)continue;
-     const box=g[g.length-1];
-     const candidates=w.filter(n=>{
-       if(n===box)return false;
-       const dx=n.x0-box.x1,dy=Math.abs((n.y0+n.y1)/2-(box.y0+box.y1)/2);
-       const m=n.t.match(/^(\\d+(?:[.,]\\d+)?)(?:\\s*(M²|M2|SQ\\.?\\s*M|SQ\\.?\\s*FT|SQFT|FT2))?$/i);
-       if(!m)return false;
-       // Area labels normally sit on the same line or immediately below/above
-       // the room label. Avoid grabbing drawing dimensions far away.
-       return dx>=-40&&dx<=180&&dy<=55;
-     }).map(n=>({
-       n,m:n.t.match(/^(\\d+(?:[.,]\\d+)?)(?:\\s*(M²|M2|SQ\\.?\\s*M|SQ\\.?\\s*FT|SQFT|FT2))?$/i)
-     }));
-     candidates.sort((a,b)=>{
-       const au=a.m[2]?0:1,bu=b.m[2]?0:1;
-       if(au!==bu)return au-bu;
-       return Math.abs(a.n.x0-box.x1)+Math.abs(a.n.y0-box.y0)-Math.abs(b.n.x0-box.x1)-Math.abs(b.n.y0-box.y0);
-     });
-     if(candidates[0]){
-       const m=candidates[0].m;
-       const n=Number(String(m[1]).replace(',','.'));
-       const unit=(m[2]||'').toUpperCase().replace(/\\s/g,'');
-       // Architectural room areas are usually modest; reject obvious
-       // dimension/overall-area annotations.
-       if(n>0&&n<=1000)spatialAdd(out,seen,room[0],m[1],m[2]||'M2');
+  for(let len=1;len<=6&&i+len<=w.length;len++){
+   const g=w.slice(i,i+len),phrase=g.map(x=>x.t).join(' '),room=phrase.match(ROOM_PHRASE_RE);
+   if(!room)continue;
+   const box=g[g.length-1];
+   const candidates=w.map((n,index)=>{
+    if(n===box||usedAreaTokens.has(index))return null;
+    const m=n.t.match(/^(\d+(?:[.,]\d+)?)(?:\s*(M²|M2|SQ\.?\s*M|SQ\.?\s*FT|SQFT|FT2))?$/i);
+    if(!m)return null;
+    const value=Number(String(m[1]).replace(',','.'));
+    if(!Number.isFinite(value)||value<=0||value>1000)return null;
+    const dx=n.x0-box.x1,dy=Math.abs((n.y0+n.y1)/2-(box.y0+box.y1)/2);
+    // A room-area value must be close to the room label. Prefer numbers
+    // carrying an explicit area unit; never reuse the same OCR number token.
+    if(dx<-60||dx>220||dy>90)return null;
+    return {n,index,m,dx,dy,score:Math.abs(dx)+dy*2};
+   }).filter(Boolean);
+
+   candidates.sort((x,y)=>{
+    const xu=x.m[2]?0:1,yu=y.m[2]?0:1;
+    return xu-yu||x.score-y.score;
+   });
+
+   const hit=candidates[0];
+   if(hit){
+    const n=Number(String(hit.m[1]).replace(',','.'));
+    if(n>0&&n<=1000){
+     const clean=String(room[0]).trim().toLowerCase();
+     const roomKey=clean+'|'+hit.index;
+     if(!seen.has(roomKey)){
+      spatialAdd(out,seen,room[0],hit.m[1],hit.m[2]||'M2');
+      seen.add(roomKey);
+      usedAreaTokens.add(hit.index);
      }
+    }
    }
+  }
  }
  return out;
 }
