@@ -12,7 +12,7 @@
 *{box-sizing:border-box}body{margin:0;background:#eef1f3;color:#172033;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
 .wrap{width:100%;max-width:1440px;margin:auto;padding:22px}
 .hero,.card{background:#fff;border:1px solid rgba(15,23,42,.09);border-radius:22px;box-shadow:0 14px 40px rgba(15,23,42,.07)}
-.hero{padding:26px}.eyebrow{font-size:10px;font-weight:900;letter-spacing:.16em;color:#64748b;text-transform:uppercase}.hero h1{margin:6px 0;font-size:32px;letter-spacing:-.04em}.muted{color:#64748b;font-size:13px;line-height:1.55}.grid{display:grid;grid-template-columns:minmax(360px,.9fr) minmax(500px,1.1fr);gap:18px;margin-top:18px}.card{padding:20px}.drop{border:1.5px dashed #94a3b8;border-radius:18px;padding:28px;text-align:center;background:#f8fafc;cursor:pointer}.drop.drag{border-color:#10b981;background:#ecfdf5}.drop strong{display:block;font-size:15px;margin-bottom:5px}.btn{min-height:44px;border:0;border-radius:12px;padding:0 16px;font-weight:800;cursor:pointer}.btn.primary{background:#172033;color:#fff}.btn.secondary{background:#fff;border:1px solid #dbe1e8;color:#172033}.btn:disabled{opacity:.45;cursor:not-allowed}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.preview{margin-top:16px;border-radius:16px;background:#0f172a;min-height:300px;display:flex;align-items:center;justify-content:center;overflow:hidden}.preview img,.preview canvas{max-width:100%;max-height:560px;display:block}.status{margin-top:12px;padding:11px 13px;border-radius:12px;background:#f8fafc;border:1px solid #e5e7eb;font-size:12px;color:#475569}.status.ok{background:#ecfdf5;border-color:#a7f3d0;color:#065f46}.status.warn{background:#fffbeb;border-color:#fde68a;color:#92400e}.table-wrap{overflow:auto;border:1px solid #e5e7eb;border-radius:16px}.table{width:100%;border-collapse:collapse;font-size:12px}.table th,.table td{padding:11px 10px;border-bottom:1px solid #eef2f7;text-align:left}.table th{background:#f8fafc;color:#64748b;font-size:9px;text-transform:uppercase;letter-spacing:.12em}.table input{width:100%;min-height:38px;border:1px solid #dbe1e8;border-radius:9px;padding:0 9px}.empty{text-align:center;padding:40px 20px;color:#94a3b8}.pill{display:inline-flex;align-items:center;padding:5px 8px;border-radius:999px;background:#ecfdf5;color:#047857;font-size:10px;font-weight:800}.metric{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}.metric>div{padding:12px;border-radius:14px;background:#f8fafc;border:1px solid #e5e7eb}.metric b{display:block;font-size:18px}.metric span{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:#64748b}.check{font-size:11px;color:#64748b;margin-top:8px}@media(max-width:900px){.grid{grid-template-columns:1fr}.wrap{padding:14px}.hero h1{font-size:27px}.metric{grid-template-columns:1fr 1fr}}
+.hero{padding:26px}.eyebrow{font-size:10px;font-weight:900;letter-spacing:.16em;color:#64748b;text-transform:uppercase}.hero h1{margin:6px 0;font-size:32px;letter-spacing:-.04em}.muted{color:#64748b;font-size:13px;line-height:1.55}.grid{display:grid;grid-template-columns:minmax(360px,.9fr) minmax(500px,1.1fr);gap:18px;margin-top:18px}.card{padding:20px}.drop{border:1.5px dashed #94a3b8;border-radius:18px;padding:28px;text-align:center;background:#f8fafc;cursor:pointer}.drop{position:relative;cursor:pointer}.drop input[type=file]{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;z-index:2}.drop>*{position:relative;z-index:1}.drop.drag{border-color:#10b981;background:#ecfdf5}.drop strong{display:block;font-size:15px;margin-bottom:5px}.btn{min-height:44px;border:0;border-radius:12px;padding:0 16px;font-weight:800;cursor:pointer}.btn.primary{background:#172033;color:#fff}.btn.secondary{background:#fff;border:1px solid #dbe1e8;color:#172033}.btn:disabled{opacity:.45;cursor:not-allowed}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.preview{margin-top:16px;border-radius:16px;background:#0f172a;min-height:300px;display:flex;align-items:center;justify-content:center;overflow:hidden}.preview img,.preview canvas{max-width:100%;max-height:560px;display:block}.status{margin-top:12px;padding:11px 13px;border-radius:12px;background:#f8fafc;border:1px solid #e5e7eb;font-size:12px;color:#475569}.status.ok{background:#ecfdf5;border-color:#a7f3d0;color:#065f46}.status.warn{background:#fffbeb;border-color:#fde68a;color:#92400e}.table-wrap{overflow:auto;border:1px solid #e5e7eb;border-radius:16px}.table{width:100%;border-collapse:collapse;font-size:12px}.table th,.table td{padding:11px 10px;border-bottom:1px solid #eef2f7;text-align:left}.table th{background:#f8fafc;color:#64748b;font-size:9px;text-transform:uppercase;letter-spacing:.12em}.table input{width:100%;min-height:38px;border:1px solid #dbe1e8;border-radius:9px;padding:0 9px}.empty{text-align:center;padding:40px 20px;color:#94a3b8}.pill{display:inline-flex;align-items:center;padding:5px 8px;border-radius:999px;background:#ecfdf5;color:#047857;font-size:10px;font-weight:800}.metric{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}.metric>div{padding:12px;border-radius:14px;background:#f8fafc;border:1px solid #e5e7eb}.metric b{display:block;font-size:18px}.metric span{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:#64748b}.check{font-size:11px;color:#64748b;margin-top:8px}@media(max-width:900px){.grid{grid-template-columns:1fr}.wrap{padding:14px}.hero h1{font-size:27px}.metric{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
@@ -30,7 +30,7 @@
 <div id="drop" class="drop mt-4" role="button" tabindex="0" aria-label="Choose floor plan file">
 <strong>Drop JPG / PNG / WEBP image or PDF here</strong>
 <span class="muted">or click to choose · JPG, PNG, WEBP, PDF</span>
-<input id="file" type="file" accept=".pdf,image/*" hidden>
+<input id="file" type="file" accept=".pdf,image/jpeg,image/png,image/webp">
 </div>
 <div class="actions">
 <button id="sample" class="btn secondary">Load Tested Sample</button><button id="addArea" class="btn secondary">+ Add Floor / Area</button>
@@ -108,7 +108,7 @@ async function load(f){
    if(!f){setStatus('No floor plan file received.','warn');return}
    currentFile=f;rows=[];activeArea=null;render();$('metrics').style.display='none';extract.disabled=false;
    setStatus('Loading '+(f.name||'floor plan')+'…');
-   if(f.type==='application/pdf'||/\\.pdf$/i.test(f.name||'')) await renderPdf(f);
+   if(f.type==='application/pdf'||/\.pdf$/i.test(f.name||'')) await renderPdf(f);
    else showImage(URL.createObjectURL(f));
    setStatus('Ready. Click “Extract Room & Area”.','ok')
  }catch(e){
@@ -117,7 +117,7 @@ async function load(f){
    setStatus('Unable to load this floor plan. Try JPG/PNG/WEBP or PDF.','warn')
  }
 }
-drop.onclick=()=>file.click();drop.onkeydown=ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();file.click()}};
+drop.onkeydown=ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();file.click()}};
 file.onchange=async()=>{const f=file.files?.[0];if(f)await load(f);file.value=''};
 ['dragenter','dragover'].forEach(e=>drop.addEventListener(e,ev=>{ev.preventDefault();ev.stopPropagation();drop.classList.add('drag')},{capture:true}));
 ['dragleave'].forEach(e=>drop.addEventListener(e,ev=>{ev.preventDefault();ev.stopPropagation();drop.classList.remove('drag')},{capture:true}));
@@ -154,7 +154,7 @@ extract.onclick=async()=>{
   }
   if(!text.trim()&&currentFile&&window.Tesseract){
    let ocrSource=currentFile;
-   if(currentFile.type!=='application/pdf'&&!/\\.pdf$/i.test(currentFile.name)){
+   if(currentFile.type!=='application/pdf'&&!/\.pdf$/i.test(currentFile.name)){
      const dataUrl=await new Promise((resolve,reject)=>{
        const fr=new FileReader();
        fr.onload=()=>resolve(fr.result);
@@ -187,7 +187,7 @@ extract.onclick=async()=>{
    }
    text=bestText
  }
-  rows=(currentFile&&currentFile.type!=='application/pdf'&&!/\\.pdf$/i.test(currentFile.name))?parseOcrText(text):parseText(text); if(activeArea===null){areas.push({name:'Area '+(areas.length+1),file:currentFile,rows:rows});activeArea=areas.length-1}else{areas[activeArea].file=currentFile;areas[activeArea].rows=rows} render();
+  rows=(currentFile&&currentFile.type!=='application/pdf'&&!/\.pdf$/i.test(currentFile.name))?parseOcrText(text):parseText(text); if(activeArea===null){areas.push({name:'Area '+(areas.length+1),file:currentFile,rows:rows});activeArea=areas.length-1}else{areas[activeArea].file=currentFile;areas[activeArea].rows=rows} render();
   setStatus(rows.length?'Extraction complete. Review detected values before import.':'No reliable room/area pairs found. Try a clearer image or use manual rows.',''+(rows.length?'ok':'warn'))
  }catch(e){console.error(e);setStatus('Extraction failed: '+(e.message||e),'warn')}
 };
