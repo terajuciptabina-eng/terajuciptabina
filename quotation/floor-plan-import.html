@@ -28,7 +28,7 @@
 <div class="eyebrow">1 · INPUT</div>
 <h2 class="text-lg font-black mt-1">Upload floor plan</h2>
 <div id="drop" class="drop mt-4">
-<strong>Drop PDF or image here</strong>
+<strong>Drop JPG / PNG / WEBP image or PDF here</strong>
 <span class="muted">or click to choose · JPG, PNG, WEBP, PDF</span>
 <input id="file" type="file" accept=".pdf,image/*" hidden>
 </div>
@@ -111,7 +111,26 @@ async function load(f){
 drop.onclick=()=>file.click();file.onchange=()=>file.files[0]&&load(file.files[0]);
 ['dragenter','dragover'].forEach(e=>drop.addEventListener(e,ev=>{ev.preventDefault();drop.classList.add('drag')}));
 ['dragleave','drop'].forEach(e=>drop.addEventListener(e,ev=>{ev.preventDefault();drop.classList.remove('drag')}));
-drop.addEventListener('drop',ev=>{const f=ev.dataTransfer.files[0];if(f)load(f)});
+drop.addEventListener('drop',async ev=>{
+ ev.preventDefault();ev.stopPropagation();drop.classList.remove('drag');
+ const dt=ev.dataTransfer;
+ let f=dt?.files?.[0]||null;
+ if(!f && dt?.items?.length){
+   for(const item of Array.from(dt.items)){
+     if(item.kind==='file'){f=item.getAsFile();if(f)break}
+   }
+ }
+ if(f){
+   if(/^image\\/(jpeg|png|webp)$/i.test(f.type)||f.type==='application/pdf'||/\\.(jpe?g|png|webp|pdf)$/i.test(f.name)) load(f);
+   else setStatus('Unsupported file. Please drop JPG, PNG, WEBP or PDF.','warn');
+ }else{
+   const uri=dt?.getData?.('text/uri-list')||dt?.getData?.('text/plain')||'';
+   if(/^https?:\\/\\//i.test(uri)&&/\\.(jpe?g|png|webp)(?:[?#].*)?$/i.test(uri)){
+     try{const res=await fetch(uri);if(!res.ok)throw new Error('Image fetch failed');const blob=await res.blob();load(new File([blob],'dropped-image.'+(blob.type.split('/')[1]||'png'),{type:blob.type}))}
+     catch(e){setStatus('Browser blocked the dropped image URL. Save the image locally, then drop the JPG/PNG file.','warn')}
+   }else setStatus('No file detected. Drop a JPG, PNG, WEBP or PDF file from Finder, or use “click to choose”.','warn')
+ }
+});
 sample.onclick=()=>{const f={name:'tested-camera-floor-plan.jpg',type:'image/jpeg'};const r=SAMPLE.map(x=>({...x}));areas.push({name:'Ground Floor / Area 1',file:f,rows:r});activeArea=areas.length-1;rows=r;currentFile=f;render();setStatus('Loaded tested camera sample as Ground Floor / Area 1.','ok')};
 $('addArea').onclick=()=>{const name=prompt('Area / Floor name (e.g. Ground Floor, First Floor, Area 2):','Area '+(areas.length+1));if(!name)return;areas.push({name:name.trim(),file:null,rows:[]});activeArea=areas.length-1;rows=areas[activeArea].rows;currentFile=null;render();setStatus('Added '+name+'. Upload its floor plan, then extract.','ok')};
 add.onclick=()=>{if(activeArea===null){areas.push({name:'Area '+(areas.length+1),file:null,rows:[]});activeArea=areas.length-1}rows.push({room:'',area:0,areaSqft:0,areaUnit:'sqft',sourceArea:'sqft',unit:'sqft',dimensions:'',confidence:'Review'});areas[activeArea].rows=rows;render()};
