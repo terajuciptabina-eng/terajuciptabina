@@ -1,4 +1,4 @@
-// Groq floor-plan provider deployment marker: JSON Object Mode + reasoning disabled. OpenRouter free fallback. Auto-deploy trigger.
+// Groq floor-plan provider deployment marker: OpenRouter free JSON object fallback.
 const ALLOWED_ORIGIN = 'https://terajuciptabina-eng.github.io';
 const PROVIDER = String(process.env.AI_PROVIDER || 'groq').toLowerCase();
 const OPENAI_MODEL = process.env.OPENAI_FLOORPLAN_MODEL || 'gpt-5.6-sol';
@@ -245,14 +245,8 @@ Use null when area or dimensions are unavailable. Do not add markdown or comment
       temperature: 0.1,
       max_tokens: 12000,
       response_format: {
-        type: 'json_schema',
-        json_schema: {
-          name: 'floor_plan_extraction',
-          strict: true,
-          schema
-        }
-      },
-      provider: { require_parameters: true }
+        type: 'json_object'
+      }
     })
   });
 
