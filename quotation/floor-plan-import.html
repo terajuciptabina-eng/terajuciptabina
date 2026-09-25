@@ -114,26 +114,28 @@ extract.onclick=async()=>{
  setStatus('Running OCR / text extraction… This can take a moment.','');
  try{
   let text='';
-  if(currentFile.type==='application/pdf'||/\.pdf$/i.test(currentFile.name)){
+  let spatialRows=[];
+  if(currentFile.type==='application/pdf'||/\\.pdf$/i.test(currentFile.name)){
    const pdfjs=await import('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.min.mjs');
    const pdf=await pdfjs.getDocument({data:await currentFile.arrayBuffer()}).promise;
-   for(let p=1;p<=pdf.numPages;p++){const pg=await pdf.getPage(p),tc=await pg.getTextContent();text+='\n'+tc.items.map(x=>x.str).join(' ')}
+   for(let p=1;p<=pdf.numPages;p++){const pg=await pdf.getPage(p),tc=await pg.getTextContent();spatialRows=spatialRows.concat(extractSpatialTextItems(tc.items));text+='\\n'+tc.items.map(x=>x.str).join(' ')}
   }
   if(!text.trim()&&currentImage&&window.Tesseract){
    let ocrSource=currentImage;
    if(currentFile.type!=='application/pdf'&&!/\\.pdf$/i.test(currentFile.name)){
-     const dataUrl=await new Promise((resolve,reject)=>{
-       const fr=new FileReader();fr.onload=()=>resolve(fr.result);fr.onerror=()=>reject(new Error('Unable to read the image file.'));fr.readAsDataURL(currentFile);
-     });
+     const dataUrl=await new Promise((resolve,reject)=>{const fr=new FileReader();fr.onload=()=>resolve(fr.result);fr.onerror=()=>reject(new Error('Unable to read the image file.'));fr.readAsDataURL(currentFile)});
      ocrSource=dataUrl;
    }
    const out=await Tesseract.recognize(ocrSource,'eng',{logger:m=>{
      if(m.status==='recognizing text')setStatus('OCR '+Math.round((m.progress||0)*100)+'%…');
      else if(m.status==='loading tesseract core')setStatus('Loading OCR engine…');
      else if(m.status==='loading language traineddata')setStatus('Loading OCR language…');
-   }});text=out.data.text
+   }});
+   const spatialOcr=extractSpatialWords(out.data.words||[]);
+   text=out.data.text;
+   if(spatialOcr.length)spatialRows=spatialOcr;
   }
-  rows=parseText(text);
+  rows=spatialRows.length?spatialRows:parseText(text);
   // PDF drawings often contain a text layer, but the text order/units may not match
   // the room-area parser. If structured PDF text yields nothing, fall back to the
   // already-rendered page image and OCR instead of treating that as a hard failure.
@@ -150,6 +152,40 @@ extract.onclick=async()=>{
   setStatus(rows.length?'Extraction complete. Review detected values before import.':'No reliable room/area pairs found. Try a clearer image or use manual rows.',''+(rows.length?'ok':'warn'))
  }catch(e){console.error(e);setStatus('Extraction failed: '+(e.message||e),'warn')}
 };
+const ROOM_PHRASE_RE=/(?:NEW\\s+)?(?:MASTER\\s+)?(?:BEDROOM(?:\\s*[A-Z0-9]+)?|LIVING(?:\\s*(?:&|AND)\\s*DINING|\\s+ROOM)?|KITCHEN(?:\\s*(?:&|AND)\\s*DINING)?|DINING(?:\\s+ROOM)?|TOILET(?:\\s*[A-Z0-9]+)?|BATH(?:ROOM)?(?:\\s*[A-Z0-9]+)?|MASTER\\s+BEDROOM|MASTER\\s+BATH|STUDY|FAMILY\\s+(?:AREA|ROOM)|STORE(?:\\s+ROOM)?|PORCH|CAR\\s+PORCH|BALCONY|WALKWAY|STAIR(?:CASE)?|UTILITY|YARD|TERRACE)/i;
+function spatialAdd(out,seen,room,rawArea,rawUnit){
+ const clean=String(room||'').replace(/[^A-Za-z0-9&/()' .\\-]/g,' ').replace(/\\s+/g,' ').trim();
+ if(!ROOM_PHRASE_RE.test(clean))return;
+ const n=Number(String(rawArea||'').replace(',','.'));
+ if(!Number.isFinite(n)||n<=0||n>100000)return;
+ const unit=String(rawUnit||'').toUpperCase().replace(/\\s/g,'');
+ const area=/^(M2|M²|SQM)$/.test(unit)?n*10.7639104167:n;
+ const key=clean.toLowerCase();if(seen.has(key))return;seen.add(key);
+ out.push({room:clean,area:Math.round(area*100)/100,unit:'sqft',dimensions:'',confidence:'Review'});
+}
+function extractSpatialTextItems(items){
+ const out=[],seen=new Set(),all=(items||[]).map(it=>{const t=it.transform||[];return {str:String(it.str||'').replace(/\\s+/g,' ').trim(),x:Number(t[4])||0,y:Number(t[5])||0}}).filter(x=>x.str);
+ for(const it of all){
+   const room=it.str.match(ROOM_PHRASE_RE);if(!room)continue;
+   let hit=it.str.slice((room.index||0)+room[0].length).match(/(\\d+(?:[.,]\\d+)?)\\s*(M²|M2|SQ\\.?\\s*M|SQ\\.?\\s*FT|SQFT|FT2)?/i);
+   if(!hit){
+     const near=all.filter(n=>n!==it&&Math.abs(n.y-it.y)<=45&&n.x>=it.x-30&&n.x<=it.x+280)
+       .map(n=>({n,m:n.str.match(/^(\\d+(?:[.,]\\d+)?)(?:\\s*(M²|M2|SQ\\.?\\s*M|SQ\\.?\\s*FT|SQFT|FT2))?$/i)})).filter(x=>x.m);
+     near.sort((a,b)=>Math.abs(a.n.x-it.x)-Math.abs(b.n.x-it.x));hit=near[0]?.m;
+   }
+   if(hit)spatialAdd(out,seen,room[0],hit[1],hit[2]||'M2');
+ }
+ return out;
+}
+function extractSpatialWords(words){
+ const out=[],seen=new Set(),w=(words||[]).filter(x=>Number(x.confidence??100)>=35&&x.text).map(x=>({t:String(x.text).trim(),x0:x.bbox?.x0||0,x1:x.bbox?.x1||0,y0:x.bbox?.y0||0}));
+ for(let i=0;i<w.length;i++)for(let len=1;len<=5&&i+len<=w.length;len++){
+   const g=w.slice(i,i+len),phrase=g.map(x=>x.t).join(' '),room=phrase.match(ROOM_PHRASE_RE);if(!room)continue;
+   const last=g[g.length-1],near=w.filter(n=>Math.abs(n.y0-last.y0)<35&&n.x0>=last.x1-20&&n.x0<=last.x1+240).map(n=>({n,m:n.t.match(/^(\\d+(?:[.,]\\d+)?)(?:\\s*(M²|M2|SQ\\.?\\s*M|SQ\\.?\\s*FT|SQFT|FT2))?$/i)})).filter(x=>x.m);
+   near.sort((a,b)=>Math.abs(a.n.x0-last.x1)-Math.abs(b.n.x0-last.x1));if(near[0]){spatialAdd(out,seen,room[0],near[0].m[1],near[0].m[2]||'M2');i+=len-1;break}
+ }
+ return out;
+}
 function parseText(text){
  const source=String(text||'').replace(/\u00a0/g,' ');
  const out=[];
