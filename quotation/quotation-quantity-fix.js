@@ -66,10 +66,10 @@ tree.forEach(g=>{
    list.forEach(i=>{h+=itemRow(i,no++)});
    if(list.length>1){const sub=R2(list.reduce((sum,i)=>sum+N(i.amount),0));h+=`<tr class="cr-hierarchy-total cr-level-3-total"><td colspan="5" class="py-2 px-2 text-right font-semibold">SUBTOTAL ${esc(label).toUpperCase()}</td><td class="py-2 px-2 text-right font-bold">RM ${money(sub,2)}</td></tr>`}
    const key=`${cat}:${g.sub||'project'}:${label}`;
-   h+=`<tr class="no-print"><td colspan="6" class="py-1 px-2">${addButton(key,label,cat,'project')}</td></tr>`;
+   h+=`<tr class="no-print"><td colspan="6" class="py-1 px-2">${addButton(key,label,cat,list[0]?.roomId||'project')}</td></tr>`;
  });
  g.noLevel3.forEach(i=>{h+=itemRow(i,no++)});
- if(g.noLevel3.length){const key=`${cat}:${g.sub||g.header}`;h+=`<tr class="no-print"><td colspan="6" class="py-1 px-2">${addButton(key,g.sub||g.header,cat,g.sub||'project')}</td></tr>`}
+ if(g.noLevel3.length){const key=`${cat}:${g.sub||g.header}`;h+=`<tr class="no-print"><td colspan="6" class="py-1 px-2">${addButton(key,g.sub||g.header,cat,g.noLevel3[0]?.roomId||'project')}</td></tr>`}
 });
 const total=active.reduce((sum,i)=>sum+N(i.amount),0);
 h+=`</tbody><tfoot><tr class="border-t-2"><td colspan="5" class="py-4 px-2 text-right font-bold">TOTAL PRELIMINARY ESTIMATE</td><td class="py-4 px-2 text-right font-bold text-lg">RM ${money(total,2)}</td></tr></tfoot></table>`;
