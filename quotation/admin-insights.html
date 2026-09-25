@@ -95,7 +95,7 @@ th{font-size:10px;text-transform:uppercase;color:#6b7280;background:#fafafa}
 
   <section class="grid">
     <div class="panel">
-      <h2>User Growth</h2><div class="caption">Accounts created over time</div>
+      <h2>User Growth</h2><div class="caption">Cumulative registered accounts over time</div>
       <div class="chartbox"><canvas id="growthChart"></canvas></div>
     </div>
     <div class="panel">
@@ -106,7 +106,7 @@ th{font-size:10px;text-transform:uppercase;color:#6b7280;background:#fafafa}
 
   <section class="grid">
     <div class="panel">
-      <h2>Estimates Over Time</h2><div class="caption">Number of stored quotation / estimate records</div>
+      <h2>Estimate Activity</h2><div class="caption">Number of stored estimates created or updated over time</div>
       <div class="chartbox"><canvas id="estimateChart"></canvas></div>
     </div>
     <div class="panel">
@@ -155,9 +155,25 @@ function filteredAccounts(){
 }
 function destroy(name){if(charts[name]){charts[name].destroy();delete charts[name]}}
 function chartDefaults(){return{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{boxWidth:10,font:{size:11}}}},scales:{x:{grid:{display:false},ticks:{font:{size:10}}},y:{beginAtZero:true,ticks:{font:{size:10}}}}}}
+function chartBucket(d,mode){
+  const x=new Date(d);if(Number.isNaN(x.getTime()))return null;
+  if(mode==='day')return x.toISOString().slice(0,10);
+  if(mode==='week'){const y=new Date(x);const day=(y.getDay()+6)%7;y.setDate(y.getDate()-day);return y.toISOString().slice(0,10);}
+  return x.toISOString().slice(0,7);
+}
+function chartMode(){
+  const v=document.getElementById('range').value;
+  if(v==='30')return'day';
+  if(v==='90')return'week';
+  return'month';
+}
+function chartLabel(k,mode){
+  if(mode==='month'){const [y,m]=k.split('-');return new Date(Number(y),Number(m)-1,1).toLocaleDateString('en-MY',{month:'short',year:'2-digit'});}
+  const d=new Date(k+'T00:00:00');
+  return mode==='week'?'Wk '+d.toLocaleDateString('en-MY',{day:'2-digit',month:'short'}):d.toLocaleDateString('en-MY',{day:'2-digit',month:'short'});
+}
 function render(){
   const selected=filteredAccounts();
-  const allRecords=accounts.flatMap(recordsFor);
   const selectedEntries=selected.flatMap(a=>recordsFor(a).map(record=>({record,role:String(a.role||'').toLowerCase()})));
   const selectedRecords=selectedEntries.map(x=>x.record);
   const homeowners=accounts.filter(a=>String(a.role).toLowerCase()==='homeowner').length;
@@ -180,24 +196,26 @@ function render(){
   document.getElementById('engaged').textContent=num(accounts.filter(a=>recordsFor(a).length>0).length);
   document.getElementById('usersSub').textContent=num(homeowners)+' Homeowner · '+num(contractors)+' Contractor';
 
-  const growth={};const estimateCounts={};const homeownerValues={};const contractorValues={};const values={};
-  const since=selectedSince();
-  const start=since?new Date(since):null;
+  const mode=chartMode(),growth={},estimateCounts={},homeownerValues={},contractorValues={};
   accounts.forEach(a=>{
     const d=new Date(a.createdAt);if(Number.isNaN(d.getTime()))return;
-    if(start&&d<start)return;
-    const k=monthKey(d);if(k)growth[k]=(growth[k]||0)+1;
+    const k=chartBucket(d,mode);if(k)growth[k]=(growth[k]||0)+1;
   });
   selectedEntries.forEach(({record:r,role})=>{
-    const d=new Date(r.updatedAt||r.createdAt);const k=monthKey(d);if(!k)return;
-     estimateCounts[k]=(estimateCounts[k]||0)+1;const amount=Number(r.total)||0;values[k]=(values[k]||0)+amount;if(role==='homeowner')homeownerValues[k]=(homeownerValues[k]||0)+amount;if(role==='contractor')contractorValues[k]=(contractorValues[k]||0)+amount;
+    const d=new Date(r.updatedAt||r.createdAt);const k=chartBucket(d,mode);if(!k)return;
+    estimateCounts[k]=(estimateCounts[k]||0)+1;
+    const amount=Number(r.total)||0;
+    if(role==='homeowner')homeownerValues[k]=(homeownerValues[k]||0)+amount;
+    if(role==='contractor')contractorValues[k]=(contractorValues[k]||0)+amount;
   });
-  const keys=[...new Set([...Object.keys(growth),...Object.keys(estimateCounts),...Object.keys(values)])].sort();
-  const labels=keys.map(k=>{const [y,m]=k.split('-');return new Date(Number(y),Number(m)-1,1).toLocaleDateString('en-MY',{month:'short',year:'2-digit'})});
+  const keys=[...new Set([...Object.keys(growth),...Object.keys(estimateCounts),...Object.keys(homeownerValues),...Object.keys(contractorValues)])].sort();
+  const labels=keys.map(k=>chartLabel(k,mode));
+  let running=0;
+  const cumulative=keys.map(k=>{running+=growth[k]||0;return running;});
   const cd=chartDefaults();
-  destroy('growthChart');charts.growthChart=new Chart(document.getElementById('growthChart'),{type:'line',data:{labels,datasets:[{label:'New users',data:keys.map(k=>growth[k]||0),tension:.35,fill:false,borderWidth:2,pointRadius:3}]},options:cd});
+  destroy('growthChart');charts.growthChart=new Chart(document.getElementById('growthChart'),{type:'line',data:{labels,datasets:[{label:'Registered users',data:cumulative,tension:.3,fill:true,borderWidth:2,pointRadius:3}]},options:cd});
   destroy('estimateChart');charts.estimateChart=new Chart(document.getElementById('estimateChart'),{type:'bar',data:{labels,datasets:[{label:'Estimates',data:keys.map(k=>estimateCounts[k]||0),borderRadius:5}]},options:cd});
-  destroy('valueChart');charts.valueChart=new Chart(document.getElementById('valueChart'),{type:'line',data:{labels,datasets:[{label:'Homeowner',data:keys.map(k=>Math.round(homeownerValues[k]||0)),tension:.3,fill:false,borderWidth:2,pointRadius:3},{label:'Contractor',data:keys.map(k=>Math.round(contractorValues[k]||0)),tension:.3,fill:false,borderWidth:2,pointRadius:3},{label:'Total',data:keys.map(k=>Math.round(values[k]||0)),tension:.3,fill:false,borderWidth:2,borderDash:[6,4],pointRadius:2}]},options:{...cd,plugins:{...cd.plugins,legend:{position:'top',labels:{boxWidth:10,font:{size:11}}}},scales:{...cd.scales,y:{beginAtZero:true,ticks:{font:{size:10},callback:v=>'RM '+Number(v).toLocaleString()}}}}});
+  destroy('valueChart');charts.valueChart=new Chart(document.getElementById('valueChart'),{type:'bar',data:{labels,datasets:[{label:'Homeowner',data:keys.map(k=>Math.round(homeownerValues[k]||0)),borderRadius:4},{label:'Contractor',data:keys.map(k=>Math.round(contractorValues[k]||0)),borderRadius:4}]},options:{...cd,plugins:{...cd.plugins,legend:{position:'top',labels:{boxWidth:10,font:{size:11}}}},scales:{...cd.scales,x:{...cd.scales.x,stacked:false},y:{beginAtZero:true,ticks:{font:{size:10},callback:v=>'RM '+Number(v).toLocaleString()}}}}});
   const build=selectedRecords.filter(r=>r.plannerType==='build').length;
   const renovation=selectedRecords.filter(r=>r.plannerType==='renovation').length;
   destroy('plannerChart');charts.plannerChart=new Chart(document.getElementById('plannerChart'),{type:'doughnut',data:{labels:['BuildPlanner','RenovationPlanner'],datasets:[{data:[build,renovation]}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}}}}});
