@@ -22,3 +22,14 @@
 .tw-theme .wrap > .top .title{color:#172033!important}
 .tw-theme .wrap > .top .sub{color:#64748b!important}
 .tw-theme .wrap > .top .muted{color:#64748b!important}
+
+/* Standard action layout across Project Control and Admin panels */
+.tw-theme > header{border-bottom:1px solid #e2e8f0!important;background:#fff!important;box-shadow:0 5px 18px rgba(15,23,42,.045)!important}
+.tw-theme > header a{display:inline-flex!important;align-items:center!important;justify-content:center!important;min-height:40px!important;padding:0 14px!important;border:1px solid #cbd5e1!important;border-radius:10px!important;background:#fff!important;color:#172033!important;font-size:12px!important;font-weight:800!important;text-decoration:none!important;white-space:nowrap!important;box-shadow:0 3px 9px rgba(15,23,42,.05)!important}
+.tw-theme > header a:hover{background:#f8fafc!important;border-color:#10b981!important;color:#047857!important}
+.tw-theme .pdf-save-btn{display:inline-flex!important;align-items:center!important;justify-content:center!important;min-height:38px!important;padding:0 13px!important;border:1px solid #cbd5e1!important;border-radius:10px!important;background:#fff!important;color:#172033!important;font-size:11px!important;font-weight:800!important;white-space:nowrap!important;box-shadow:0 3px 9px rgba(15,23,42,.05)!important}
+.tw-theme .pdf-save-btn:hover{background:#f8fafc!important;border-color:#10b981!important;color:#047857!important}
+.tw-theme .card>.flex.flex-wrap.items-center.justify-between{min-height:38px}
+.tw-theme .card>.flex.flex-wrap.items-center.justify-between>.flex.items-center{margin-left:auto}
+.tw-theme .card>.flex.items-center.justify-between{min-height:38px}
+.tw-theme .card>.flex.items-center.justify-between>.flex.items-center{margin-left:auto}
