@@ -119,7 +119,20 @@ extract.onclick=async()=>{
    const pdf=await pdfjs.getDocument({data:await currentFile.arrayBuffer()}).promise;
    for(let p=1;p<=pdf.numPages;p++){const pg=await pdf.getPage(p),tc=await pg.getTextContent();text+='\n'+tc.items.map(x=>x.str).join(' ')}
   }
-  if(!text.trim()&&currentImage&&window.Tesseract){const out=await Tesseract.recognize(currentImage,'eng',{logger:m=>{if(m.status==='recognizing text')setStatus('OCR '+Math.round((m.progress||0)*100)+'%…')}});text=out.data.text}
+  if(!text.trim()&&currentImage&&window.Tesseract){
+   let ocrSource=currentImage;
+   if(currentFile.type!=='application/pdf'&&!/\\.pdf$/i.test(currentFile.name)){
+     const dataUrl=await new Promise((resolve,reject)=>{
+       const fr=new FileReader();fr.onload=()=>resolve(fr.result);fr.onerror=()=>reject(new Error('Unable to read the image file.'));fr.readAsDataURL(currentFile);
+     });
+     ocrSource=dataUrl;
+   }
+   const out=await Tesseract.recognize(ocrSource,'eng',{logger:m=>{
+     if(m.status==='recognizing text')setStatus('OCR '+Math.round((m.progress||0)*100)+'%…');
+     else if(m.status==='loading tesseract core')setStatus('Loading OCR engine…');
+     else if(m.status==='loading language traineddata')setStatus('Loading OCR language…');
+   }});text=out.data.text
+  }
   rows=parseText(text);
   render();
   setStatus(rows.length?'Extraction complete. Review detected values before import.':'No reliable room/area pairs found. Try a clearer image or use manual rows.',''+(rows.length?'ok':'warn'))
