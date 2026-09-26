@@ -122,155 +122,148 @@ async function parseStructuredResponse(response, provider) {
 
   if (!response.ok) {
     console.error(`${provider} floor-plan extraction failed:`, response.status, data || raw);
-    throw new Error(data?.error?.message || `${provider} floor-plan extraction failed.`);
+    throw new Error((data && data.error && data.error.message) || `${provider} floor-plan extraction failed.`);
   }
 
-  const message = data?.choices?.[0]?.message;
-  if (provider === 'groq' || provider === 'openrouter') {
-    console.info(provider + ' response metadata:', JSON.stringify({
-      model: data?.model || null,
-      finish_reason: data?.choices?.[0]?.finish_reason || null,
-      content_type: Array.isArray(message?.content) ? 'array' : typeof message?.content,
-      has_reasoning: Boolean(message?.reasoning),
-      has_reasoning_content: Boolean(message?.reasoning_content),
-      refusal: message?.refusal || null
-    }));
-  }
+  const message = data && data.choices && data.choices[0] && data.choices[0].message;
   const outputText = provider === 'groq' || provider === 'openrouter'
-    ? (typeof message?.content === 'string'
+    ? (typeof (message && message.content) === 'string'
         ? message.content
-        : Array.isArray(message?.content)
-          ? message.content.map(item => item?.text || item?.content || '').join('')
-          : (typeof message?.reasoning_content === 'string'
-              ? message.reasoning_content
-              : (typeof message?.reasoning === 'string' ? message.reasoning : '')))
-    : data?.output_text ||
-      data?.output?.flatMap(item => item?.content || [])
-        ?.filter(item => item?.type === 'output_text')
-        ?.map(item => item.text)
-        ?.join('') || '';
+        : Array.isArray(message && message.content)
+          ? message.content.map(item => item && (item.text || item.content) || '').join('')
+          : '')
+    : data.output_text ||
+      (data.output || []).flatMap(item => item && item.content || [])
+        .filter(item => item && item.type === 'output_text')
+        .map(item => item.text)
+        .join('') || '';
+
+  console.info(provider + ' response metadata:', JSON.stringify({
+    model: data.model || null,
+    finish_reason: data.choices && data.choices[0] && data.choices[0].finish_reason || null,
+    content_type: Array.isArray(message && message.content) ? 'array' : typeof (message && message.content),
+    content_length: outputText.length
+  }));
+
+  const cleaned = outputText.trim();
 
   let extraction;
   try {
-    extraction = JSON.parse(outputText);
+    extraction = JSON.parse(cleaned);
   } catch {
-    console.error(`${provider} returned non-JSON floor-plan output:`, outputText);
+    console.error(`${provider} returned non-JSON floor-plan output:`, JSON.stringify({
+      model: data.model || null,
+      finish_reason: data.choices && data.choices[0] && data.choices[0].finish_reason || null,
+      content_length: outputText.length,
+      content_preview: outputText.slice(0, 500)
+    }));
     throw new Error(`${provider} returned an invalid structured floor-plan result.`);
   }
 
-  if (!extraction || !Array.isArray(extraction.spaces) || !Array.isArray(extraction.pages)) {
-    throw new Error(`${provider} returned an incomplete floor-plan result.`);
-  }
+  return normalizeExtraction(extraction, provider);
+}
 
-  return extraction;
+function normalizeExtraction(extraction, provider) {
+  if (!extraction || typeof extraction !== 'object') throw new Error(`${provider} returned an invalid floor-plan object.`);
+  const warnings = Array.isArray(extraction.warnings)
+    ? extraction.warnings.map(value => String(value || '').trim()).filter(Boolean)
+    : [];
+  const allowedTypes = new Set(['floor_plan','site_plan','roof_plan','elevation','schedule','presentation','other']);
+  const allowedConfidence = new Set(['high','medium','low']);
+  const allowedUnits = new Set(['sqft','sqm','unknown']);
+  const allowedSources = new Set(['explicit_label','schedule_crosscheck','visual_context','unknown']);
+
+  const pages = Array.isArray(extraction.pages)
+    ? extraction.pages.map((page, index) => {
+        const pageNo = Number(page && page.page);
+        const type = String((page && page.type) || 'other');
+        const floor = page && page.floor !== null && page.floor !== undefined && page.floor !== '' ? String(page.floor) : null;
+        const confidence = String((page && page.confidence) || 'low').toLowerCase();
+        if (!Number.isInteger(pageNo) || pageNo < 1) {
+          warnings.push(`Ignored invalid page entry at index ${index + 1}.`);
+          return null;
+        }
+        return { page: pageNo, type: allowedTypes.has(type) ? type : 'other', floor, confidence: allowedConfidence.has(confidence) ? confidence : 'low' };
+      }).filter(Boolean)
+    : [];
+  if (!Array.isArray(extraction.pages)) warnings.push('Model omitted the pages array.');
+
+  const spaces = Array.isArray(extraction.spaces)
+    ? extraction.spaces.map((space, index) => {
+        const name = String((space && space.name) || '').trim();
+        const page = Number(space && space.page);
+        if (!name || !Number.isInteger(page) || page < 1) {
+          warnings.push(`Ignored invalid space entry at index ${index + 1}.`);
+          return null;
+        }
+        const rawArea = space && space.area;
+        const area = rawArea === null || rawArea === undefined || rawArea === '' ? null : Number(rawArea);
+        const validArea = area === null || (Number.isFinite(area) && area >= 0);
+        if (!validArea) warnings.push(`Area for "${name}" on page ${page} was invalid and was cleared.`);
+        const unit = String((space && space.unit) || 'unknown').toLowerCase();
+        const confidence = String((space && space.confidence) || 'low').toLowerCase();
+        const source = String((space && space.source) || 'unknown').toLowerCase();
+        const floor = space && space.floor !== null && space.floor !== undefined && space.floor !== '' ? String(space.floor) : null;
+        return {
+          id: String((space && space.id) || `space-${page}-${index + 1}`),
+          page, floor, name, area: validArea ? area : null,
+          unit: allowedUnits.has(unit) ? unit : 'unknown',
+          dimensions: space && space.dimensions !== null && space.dimensions !== undefined && space.dimensions !== '' ? String(space.dimensions) : null,
+          confidence: allowedConfidence.has(confidence) ? confidence : 'low',
+          source: allowedSources.has(source) ? source : 'unknown',
+          notes: space && space.notes !== null && space.notes !== undefined && space.notes !== '' ? String(space.notes) : null
+        };
+      }).filter(Boolean)
+    : [];
+  if (!Array.isArray(extraction.spaces)) warnings.push('Model omitted the spaces array.');
+  return { pages, spaces, warnings };
 }
 
 async function callGroq(images, fileName) {
   const apiKey = process.env.GROQ_API_KEY;
   if (!apiKey) throw new Error('Groq API is not configured. Add GROQ_API_KEY to the Vercel project environment.');
-
   const content = [{
     type: 'text',
     text: `${SYSTEM_PROMPT}
 
 Source file: ${fileName}
 This request contains ${images.length} page image(s). Page numbers are provided immediately before each image.
-Analyze only the supplied pages.
 
-IMPORTANT: In this first visual pass, do NOT return JSON. Return a concise plain-text extraction of your visual observations:
-- classify each supplied page
-- list each distinct physical room/space
-- record only explicitly printed room areas
-- keep duplicate room names as separate instances
-- note page number and floor
-- explicitly state when an area is missing or unclear
-Do not calculate or guess areas. Do not use dimensions, grid numbers, title-block numbers or unrelated numbers as areas.`
+Return ONLY one valid JSON object. Do not return markdown, code fences, explanations or analysis.
+
+Required top-level structure:
+{
+  "pages": [{"page": 1, "type": "floor_plan", "floor": "Ground Floor", "confidence": "high"}],
+  "spaces": [{"id": "page-1-space-1", "page": 1, "floor": "Ground Floor", "name": "Living", "area": 240, "unit": "sqft", "dimensions": "12' x 20'", "confidence": "high", "source": "explicit_label", "notes": null}],
+  "warnings": []
+}
+
+For every physical room or defined space, keep a separate spaces entry even when names repeat. If an area is not explicitly printed for that physical space, set area to null. Never calculate an area from dimensions. Never use dimensions, grid numbers, coordinates, title-block numbers, scale values, door/window sizes or unrelated numbers as room areas.
+
+Classify every supplied page. Extract rooms primarily from floor-plan pages. Ignore presentation, site/context, roof and elevation pages for room extraction. A schedule/accommodation page may cross-check names and areas only when it is supplied in this same request.
+
+Analyze the actual drawing context: the room label, its position, surrounding walls/boundaries and any explicit area printed for that room. Do not merge separate physical spaces just because their names match. Do not invent missing rooms or areas.`
   }];
-
   for (const image of images) {
     const page = Number(image.page) || 1;
     content.push({ type: 'text', text: `PAGE ${page}` });
-    content.push({
-      type: 'image_url',
-      image_url: { url: image.data }
-    });
+    content.push({ type: 'image_url', image_url: { url: image.data } });
   }
-
-  const visionResponse = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+  const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
     method: 'POST',
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      'Content-Type': 'application/json'
-    },
+    headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({
       model: GROQ_MODEL,
       messages: [{ role: 'user', content }],
       temperature: 0.2,
-      max_completion_tokens: 8000,
-      reasoning_effort: 'none',
-      reasoning_format: 'hidden',
-      stream: false
-    })
-  });
-
-  const visionRaw = await visionResponse.text();
-  let visionData = null;
-  try { visionData = visionRaw ? JSON.parse(visionRaw) : null; } catch {}
-  if (!visionResponse.ok) {
-    console.error('Groq visual pass failed:', visionResponse.status, visionData || visionRaw);
-    throw new Error(visionData?.error?.message || 'Groq visual extraction failed.');
-  }
-
-  const observations = typeof visionData?.choices?.[0]?.message?.content === 'string'
-    ? visionData.choices[0].message.content
-    : Array.isArray(visionData?.choices?.[0]?.message?.content)
-      ? visionData.choices[0].message.content.map(item => item?.text || item?.content || '').join('')
-      : '';
-
-  if (!observations.trim()) {
-    console.error('Groq visual pass returned empty content:', JSON.stringify({
-      model: visionData?.model || null,
-      finish_reason: visionData?.choices?.[0]?.finish_reason || null,
-      message_keys: Object.keys(visionData?.choices?.[0]?.message || {})
-    }));
-    throw new Error('Groq visual extraction returned no usable observations.');
-  }
-
-  const structuredPrompt = `Convert the following visual floor-plan observations into the required JSON schema.
-
-${SYSTEM_PROMPT}
-
-VISUAL OBSERVATIONS:
-${observations}
-
-Return ONLY the JSON object matching the supplied schema. Preserve every distinct physical room/space found in the observations. Never invent an area that the observations do not explicitly contain.`;
-
-  const structuredResponse = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      model: GROQ_MODEL,
-      messages: [{ role: 'user', content: structuredPrompt }],
-      temperature: 0,
       max_completion_tokens: 12000,
-      response_format: {
-        type: 'json_schema',
-        json_schema: {
-          name: 'floor_plan_extraction',
-          strict: true,
-          schema
-        }
-      },
+      response_format: { type: 'json_object' },
       reasoning_effort: 'none',
       reasoning_format: 'hidden',
       stream: false
     })
   });
-
-  return parseStructuredResponse(structuredResponse, 'Groq');
+  return parseStructuredResponse(response, 'Groq');
 }
 
 async function callOpenRouter(images, fileName, model = OPENROUTER_MODEL) {
@@ -401,41 +394,45 @@ export default async function handler(req, res) {
     const batches = chunk(images, GROQ_MAX_IMAGES_PER_REQUEST);
 
     const extractions = [];
-    let actualProvider = selectedProvider;
-    let actualModel = selectedProvider === 'openai' ? OPENAI_MODEL : GROQ_MODEL;
+    const providersUsed = new Set();
+    const modelsUsed = new Set();
     for (const batch of batches) {
       try {
         if (selectedProvider === 'openai') {
           extractions.push(await callOpenAI(batch, fileName));
+          providersUsed.add('openai');
+          modelsUsed.add(OPENAI_MODEL);
         } else {
           extractions.push(await callGroq(batch, fileName));
+          providersUsed.add('groq');
+          modelsUsed.add(GROQ_MODEL);
         }
       } catch (primaryError) {
         if (selectedProvider !== 'groq') throw primaryError;
-        console.warn('Groq floor-plan extraction failed; falling back to OpenRouter:', primaryError?.message || primaryError);
-        actualProvider = 'openrouter';
-
-        const fallbackModels = [OPENROUTER_MODEL, ...OPENROUTER_FALLBACK_MODELS]
-          .filter((model, index, list) => model && list.indexOf(model) === index);
+        const primaryMessage = primaryError && primaryError.message ? primaryError.message : primaryError;
+        console.warn('Groq floor-plan extraction failed; falling back to OpenRouter:', primaryMessage);
+        const fallbackModels = [OPENROUTER_MODEL, ...OPENROUTER_FALLBACK_MODELS].filter((model, index, list) => model && list.indexOf(model) === index);
         let fallbackResult = null;
         let lastFallbackError = primaryError;
-
         for (const model of fallbackModels) {
           try {
             console.info(`Trying OpenRouter floor-plan model: ${model}`);
             fallbackResult = await callOpenRouter(batch, fileName, model);
-            actualModel = model;
             break;
           } catch (fallbackError) {
             lastFallbackError = fallbackError;
-            console.warn(`OpenRouter floor-plan model failed (${model}):`, fallbackError?.message || fallbackError);
+            const fallbackMessage = fallbackError && fallbackError.message ? fallbackError.message : fallbackError;
+            console.warn(`OpenRouter floor-plan model failed (${model}):`, fallbackMessage);
           }
         }
-
         if (!fallbackResult) throw lastFallbackError;
         extractions.push(fallbackResult.extraction);
+        providersUsed.add('openrouter');
+        modelsUsed.add(fallbackResult.model);
       }
     }
+    const actualProvider = [...providersUsed].join('+') || selectedProvider;
+    const actualModel = [...modelsUsed].join(', ') || (selectedProvider === 'openai' ? OPENAI_MODEL : GROQ_MODEL);
 
     const pages = uniquePages(extractions.flatMap(item => item.pages || []))
       .sort((a, b) => Number(a.page) - Number(b.page));
