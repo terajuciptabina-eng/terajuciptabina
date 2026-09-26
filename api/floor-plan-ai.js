@@ -258,8 +258,6 @@ Analyze the actual drawing context: the room label, its position, surrounding wa
       temperature: 0.2,
       max_completion_tokens: 12000,
       response_format: { type: 'json_object' },
-      reasoning_effort: 'none',
-      reasoning_format: 'hidden',
       stream: false
     })
   });
