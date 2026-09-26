@@ -5,7 +5,7 @@
   "plannerType": "renovation",
   "quotationId": "QT-REN-MUIOQKX3-HNQ1U",
   "createdAt": "2026-09-26T17:53:35.772Z",
-  "updatedAt": "2026-09-26T17:54:01.389Z",
+  "updatedAt": "2026-09-26T17:54:32.067Z",
   "contract": {
     "schemaVersion": 1,
     "recordType": "contract",
@@ -953,5 +953,4407 @@
       }
     },
     "updatedAt": "2026-09-26T17:54:01.389Z"
+  },
+  "progress": {
+    "schemaVersion": 4,
+    "recordType": "progress",
+    "quotationId": "QT-REN-MUIOQKX3-HNQ1U",
+    "history": {
+      "2026-10-01": {
+        "room-1-ceiling": {
+          "percent": 0
+        },
+        "room-1-downlight": {
+          "percent": 0
+        },
+        "room-1-fan": {
+          "percent": 0
+        },
+        "room-1-curtain": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 0
+        },
+        "room-2-fan": {
+          "percent": 0
+        },
+        "room-3-ceiling": {
+          "percent": 0
+        },
+        "room-3-downlight": {
+          "percent": 0
+        },
+        "room-3-fan": {
+          "percent": 0
+        },
+        "room-4-downlight": {
+          "percent": 0
+        },
+        "room-5-downlight": {
+          "percent": 0
+        },
+        "room-6-ceiling": {
+          "percent": 0
+        },
+        "room-6-downlight": {
+          "percent": 0
+        },
+        "room-6-barlamp": {
+          "percent": 0
+        },
+        "room-7-ceiling": {
+          "percent": 0
+        },
+        "room-7-downlight": {
+          "percent": 0
+        },
+        "room-7-fan": {
+          "percent": 0
+        },
+        "room-7-curtain": {
+          "percent": 0
+        },
+        "room-8-ceiling": {
+          "percent": 0
+        },
+        "room-8-downlight": {
+          "percent": 0
+        },
+        "room-8-fan": {
+          "percent": 0
+        }
+      },
+      "2026-10-02": {
+        "room-1-ceiling": {
+          "percent": 0
+        },
+        "room-1-downlight": {
+          "percent": 0
+        },
+        "room-1-fan": {
+          "percent": 0
+        },
+        "room-1-curtain": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 0
+        },
+        "room-2-fan": {
+          "percent": 0
+        },
+        "room-3-ceiling": {
+          "percent": 0
+        },
+        "room-3-downlight": {
+          "percent": 0
+        },
+        "room-3-fan": {
+          "percent": 0
+        },
+        "room-4-downlight": {
+          "percent": 0
+        },
+        "room-5-downlight": {
+          "percent": 0
+        },
+        "room-6-ceiling": {
+          "percent": 0
+        },
+        "room-6-downlight": {
+          "percent": 0
+        },
+        "room-6-barlamp": {
+          "percent": 0
+        },
+        "room-7-ceiling": {
+          "percent": 0
+        },
+        "room-7-downlight": {
+          "percent": 0
+        },
+        "room-7-fan": {
+          "percent": 0
+        },
+        "room-7-curtain": {
+          "percent": 0
+        },
+        "room-8-ceiling": {
+          "percent": 0
+        },
+        "room-8-downlight": {
+          "percent": 0
+        },
+        "room-8-fan": {
+          "percent": 0
+        }
+      },
+      "2026-10-03": {
+        "room-1-ceiling": {
+          "percent": 0
+        },
+        "room-1-downlight": {
+          "percent": 0
+        },
+        "room-1-fan": {
+          "percent": 0
+        },
+        "room-1-curtain": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 0
+        },
+        "room-2-fan": {
+          "percent": 0
+        },
+        "room-3-ceiling": {
+          "percent": 0
+        },
+        "room-3-downlight": {
+          "percent": 0
+        },
+        "room-3-fan": {
+          "percent": 0
+        },
+        "room-4-downlight": {
+          "percent": 0
+        },
+        "room-5-downlight": {
+          "percent": 0
+        },
+        "room-6-ceiling": {
+          "percent": 0
+        },
+        "room-6-downlight": {
+          "percent": 0
+        },
+        "room-6-barlamp": {
+          "percent": 0
+        },
+        "room-7-ceiling": {
+          "percent": 0
+        },
+        "room-7-downlight": {
+          "percent": 0
+        },
+        "room-7-fan": {
+          "percent": 0
+        },
+        "room-7-curtain": {
+          "percent": 0
+        },
+        "room-8-ceiling": {
+          "percent": 0
+        },
+        "room-8-downlight": {
+          "percent": 0
+        },
+        "room-8-fan": {
+          "percent": 0
+        }
+      },
+      "2026-10-04": {
+        "room-1-ceiling": {
+          "percent": 0
+        },
+        "room-1-downlight": {
+          "percent": 0
+        },
+        "room-1-fan": {
+          "percent": 0
+        },
+        "room-1-curtain": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 0
+        },
+        "room-2-fan": {
+          "percent": 0
+        },
+        "room-3-ceiling": {
+          "percent": 0
+        },
+        "room-3-downlight": {
+          "percent": 0
+        },
+        "room-3-fan": {
+          "percent": 0
+        },
+        "room-4-downlight": {
+          "percent": 0
+        },
+        "room-5-downlight": {
+          "percent": 0
+        },
+        "room-6-ceiling": {
+          "percent": 0
+        },
+        "room-6-downlight": {
+          "percent": 0
+        },
+        "room-6-barlamp": {
+          "percent": 0
+        },
+        "room-7-ceiling": {
+          "percent": 0
+        },
+        "room-7-downlight": {
+          "percent": 0
+        },
+        "room-7-fan": {
+          "percent": 0
+        },
+        "room-7-curtain": {
+          "percent": 0
+        },
+        "room-8-ceiling": {
+          "percent": 0
+        },
+        "room-8-downlight": {
+          "percent": 0
+        },
+        "room-8-fan": {
+          "percent": 0
+        }
+      },
+      "2026-10-05": {
+        "room-1-ceiling": {
+          "percent": 0
+        },
+        "room-1-downlight": {
+          "percent": 0
+        },
+        "room-1-fan": {
+          "percent": 0
+        },
+        "room-1-curtain": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 0
+        },
+        "room-2-fan": {
+          "percent": 0
+        },
+        "room-3-ceiling": {
+          "percent": 0
+        },
+        "room-3-downlight": {
+          "percent": 0
+        },
+        "room-3-fan": {
+          "percent": 0
+        },
+        "room-4-downlight": {
+          "percent": 0
+        },
+        "room-5-downlight": {
+          "percent": 0
+        },
+        "room-6-ceiling": {
+          "percent": 0
+        },
+        "room-6-downlight": {
+          "percent": 0
+        },
+        "room-6-barlamp": {
+          "percent": 0
+        },
+        "room-7-ceiling": {
+          "percent": 0
+        },
+        "room-7-downlight": {
+          "percent": 0
+        },
+        "room-7-fan": {
+          "percent": 0
+        },
+        "room-7-curtain": {
+          "percent": 0
+        },
+        "room-8-ceiling": {
+          "percent": 0
+        },
+        "room-8-downlight": {
+          "percent": 0
+        },
+        "room-8-fan": {
+          "percent": 0
+        }
+      },
+      "2026-10-06": {
+        "room-1-ceiling": {
+          "percent": 0
+        },
+        "room-1-downlight": {
+          "percent": 0
+        },
+        "room-1-fan": {
+          "percent": 0
+        },
+        "room-1-curtain": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 0
+        },
+        "room-2-fan": {
+          "percent": 0
+        },
+        "room-3-ceiling": {
+          "percent": 0
+        },
+        "room-3-downlight": {
+          "percent": 0
+        },
+        "room-3-fan": {
+          "percent": 0
+        },
+        "room-4-downlight": {
+          "percent": 0
+        },
+        "room-5-downlight": {
+          "percent": 0
+        },
+        "room-6-ceiling": {
+          "percent": 0
+        },
+        "room-6-downlight": {
+          "percent": 0
+        },
+        "room-6-barlamp": {
+          "percent": 0
+        },
+        "room-7-ceiling": {
+          "percent": 0
+        },
+        "room-7-downlight": {
+          "percent": 0
+        },
+        "room-7-fan": {
+          "percent": 0
+        },
+        "room-7-curtain": {
+          "percent": 0
+        },
+        "room-8-ceiling": {
+          "percent": 0
+        },
+        "room-8-downlight": {
+          "percent": 0
+        },
+        "room-8-fan": {
+          "percent": 0
+        }
+      },
+      "2026-10-07": {
+        "room-1-ceiling": {
+          "percent": 0
+        },
+        "room-1-downlight": {
+          "percent": 0
+        },
+        "room-1-fan": {
+          "percent": 0
+        },
+        "room-1-curtain": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 0
+        },
+        "room-2-fan": {
+          "percent": 0
+        },
+        "room-3-ceiling": {
+          "percent": 0
+        },
+        "room-3-downlight": {
+          "percent": 0
+        },
+        "room-3-fan": {
+          "percent": 0
+        },
+        "room-4-downlight": {
+          "percent": 0
+        },
+        "room-5-downlight": {
+          "percent": 0
+        },
+        "room-6-ceiling": {
+          "percent": 0
+        },
+        "room-6-downlight": {
+          "percent": 0
+        },
+        "room-6-barlamp": {
+          "percent": 0
+        },
+        "room-7-ceiling": {
+          "percent": 0
+        },
+        "room-7-downlight": {
+          "percent": 0
+        },
+        "room-7-fan": {
+          "percent": 0
+        },
+        "room-7-curtain": {
+          "percent": 0
+        },
+        "room-8-ceiling": {
+          "percent": 0
+        },
+        "room-8-downlight": {
+          "percent": 0
+        },
+        "room-8-fan": {
+          "percent": 0
+        }
+      },
+      "2026-10-08": {
+        "room-1-ceiling": {
+          "percent": 0
+        },
+        "room-1-downlight": {
+          "percent": 0
+        },
+        "room-1-fan": {
+          "percent": 0
+        },
+        "room-1-curtain": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 0
+        },
+        "room-2-fan": {
+          "percent": 0
+        },
+        "room-3-ceiling": {
+          "percent": 0
+        },
+        "room-3-downlight": {
+          "percent": 0
+        },
+        "room-3-fan": {
+          "percent": 0
+        },
+        "room-4-downlight": {
+          "percent": 0
+        },
+        "room-5-downlight": {
+          "percent": 0
+        },
+        "room-6-ceiling": {
+          "percent": 0
+        },
+        "room-6-downlight": {
+          "percent": 0
+        },
+        "room-6-barlamp": {
+          "percent": 0
+        },
+        "room-7-ceiling": {
+          "percent": 0
+        },
+        "room-7-downlight": {
+          "percent": 0
+        },
+        "room-7-fan": {
+          "percent": 0
+        },
+        "room-7-curtain": {
+          "percent": 0
+        },
+        "room-8-ceiling": {
+          "percent": 0
+        },
+        "room-8-downlight": {
+          "percent": 0
+        },
+        "room-8-fan": {
+          "percent": 0
+        }
+      },
+      "2026-10-09": {
+        "room-1-ceiling": {
+          "percent": 0
+        },
+        "room-1-downlight": {
+          "percent": 0
+        },
+        "room-1-fan": {
+          "percent": 0
+        },
+        "room-1-curtain": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 0
+        },
+        "room-2-fan": {
+          "percent": 0
+        },
+        "room-3-ceiling": {
+          "percent": 0
+        },
+        "room-3-downlight": {
+          "percent": 0
+        },
+        "room-3-fan": {
+          "percent": 0
+        },
+        "room-4-downlight": {
+          "percent": 0
+        },
+        "room-5-downlight": {
+          "percent": 0
+        },
+        "room-6-ceiling": {
+          "percent": 0
+        },
+        "room-6-downlight": {
+          "percent": 0
+        },
+        "room-6-barlamp": {
+          "percent": 0
+        },
+        "room-7-ceiling": {
+          "percent": 0
+        },
+        "room-7-downlight": {
+          "percent": 0
+        },
+        "room-7-fan": {
+          "percent": 0
+        },
+        "room-7-curtain": {
+          "percent": 0
+        },
+        "room-8-ceiling": {
+          "percent": 0
+        },
+        "room-8-downlight": {
+          "percent": 0
+        },
+        "room-8-fan": {
+          "percent": 0
+        }
+      },
+      "2026-10-10": {
+        "room-1-ceiling": {
+          "percent": 0
+        },
+        "room-1-downlight": {
+          "percent": 0
+        },
+        "room-1-fan": {
+          "percent": 0
+        },
+        "room-1-curtain": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 0
+        },
+        "room-2-fan": {
+          "percent": 0
+        },
+        "room-3-ceiling": {
+          "percent": 0
+        },
+        "room-3-downlight": {
+          "percent": 0
+        },
+        "room-3-fan": {
+          "percent": 0
+        },
+        "room-4-downlight": {
+          "percent": 0
+        },
+        "room-5-downlight": {
+          "percent": 0
+        },
+        "room-6-ceiling": {
+          "percent": 0
+        },
+        "room-6-downlight": {
+          "percent": 0
+        },
+        "room-6-barlamp": {
+          "percent": 0
+        },
+        "room-7-ceiling": {
+          "percent": 0
+        },
+        "room-7-downlight": {
+          "percent": 0
+        },
+        "room-7-fan": {
+          "percent": 0
+        },
+        "room-7-curtain": {
+          "percent": 0
+        },
+        "room-8-ceiling": {
+          "percent": 0
+        },
+        "room-8-downlight": {
+          "percent": 0
+        },
+        "room-8-fan": {
+          "percent": 0
+        }
+      },
+      "2026-10-11": {
+        "room-1-ceiling": {
+          "percent": 0
+        },
+        "room-1-downlight": {
+          "percent": 0
+        },
+        "room-1-fan": {
+          "percent": 0
+        },
+        "room-1-curtain": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 0
+        },
+        "room-2-fan": {
+          "percent": 0
+        },
+        "room-3-ceiling": {
+          "percent": 0
+        },
+        "room-3-downlight": {
+          "percent": 0
+        },
+        "room-3-fan": {
+          "percent": 0
+        },
+        "room-4-downlight": {
+          "percent": 0
+        },
+        "room-5-downlight": {
+          "percent": 0
+        },
+        "room-6-ceiling": {
+          "percent": 0
+        },
+        "room-6-downlight": {
+          "percent": 0
+        },
+        "room-6-barlamp": {
+          "percent": 0
+        },
+        "room-7-ceiling": {
+          "percent": 0
+        },
+        "room-7-downlight": {
+          "percent": 0
+        },
+        "room-7-fan": {
+          "percent": 0
+        },
+        "room-7-curtain": {
+          "percent": 0
+        },
+        "room-8-ceiling": {
+          "percent": 0
+        },
+        "room-8-downlight": {
+          "percent": 0
+        },
+        "room-8-fan": {
+          "percent": 0
+        }
+      },
+      "2026-10-12": {
+        "room-1-ceiling": {
+          "percent": 0
+        },
+        "room-1-downlight": {
+          "percent": 0
+        },
+        "room-1-fan": {
+          "percent": 0
+        },
+        "room-1-curtain": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 0
+        },
+        "room-2-fan": {
+          "percent": 0
+        },
+        "room-3-ceiling": {
+          "percent": 0
+        },
+        "room-3-downlight": {
+          "percent": 0
+        },
+        "room-3-fan": {
+          "percent": 0
+        },
+        "room-4-downlight": {
+          "percent": 0
+        },
+        "room-5-downlight": {
+          "percent": 0
+        },
+        "room-6-ceiling": {
+          "percent": 0
+        },
+        "room-6-downlight": {
+          "percent": 0
+        },
+        "room-6-barlamp": {
+          "percent": 0
+        },
+        "room-7-ceiling": {
+          "percent": 0
+        },
+        "room-7-downlight": {
+          "percent": 0
+        },
+        "room-7-fan": {
+          "percent": 0
+        },
+        "room-7-curtain": {
+          "percent": 0
+        },
+        "room-8-ceiling": {
+          "percent": 0
+        },
+        "room-8-downlight": {
+          "percent": 0
+        },
+        "room-8-fan": {
+          "percent": 0
+        }
+      },
+      "2026-10-13": {
+        "room-1-ceiling": {
+          "percent": 0
+        },
+        "room-1-downlight": {
+          "percent": 0
+        },
+        "room-1-fan": {
+          "percent": 0
+        },
+        "room-1-curtain": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 0
+        },
+        "room-2-fan": {
+          "percent": 0
+        },
+        "room-3-ceiling": {
+          "percent": 0
+        },
+        "room-3-downlight": {
+          "percent": 0
+        },
+        "room-3-fan": {
+          "percent": 0
+        },
+        "room-4-downlight": {
+          "percent": 0
+        },
+        "room-5-downlight": {
+          "percent": 0
+        },
+        "room-6-ceiling": {
+          "percent": 0
+        },
+        "room-6-downlight": {
+          "percent": 0
+        },
+        "room-6-barlamp": {
+          "percent": 0
+        },
+        "room-7-ceiling": {
+          "percent": 0
+        },
+        "room-7-downlight": {
+          "percent": 0
+        },
+        "room-7-fan": {
+          "percent": 0
+        },
+        "room-7-curtain": {
+          "percent": 0
+        },
+        "room-8-ceiling": {
+          "percent": 0
+        },
+        "room-8-downlight": {
+          "percent": 0
+        },
+        "room-8-fan": {
+          "percent": 0
+        }
+      },
+      "2026-10-14": {
+        "room-1-ceiling": {
+          "percent": 0
+        },
+        "room-1-downlight": {
+          "percent": 0
+        },
+        "room-1-fan": {
+          "percent": 0
+        },
+        "room-1-curtain": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 0
+        },
+        "room-2-fan": {
+          "percent": 0
+        },
+        "room-3-ceiling": {
+          "percent": 0
+        },
+        "room-3-downlight": {
+          "percent": 0
+        },
+        "room-3-fan": {
+          "percent": 0
+        },
+        "room-4-downlight": {
+          "percent": 0
+        },
+        "room-5-downlight": {
+          "percent": 0
+        },
+        "room-6-ceiling": {
+          "percent": 0
+        },
+        "room-6-downlight": {
+          "percent": 0
+        },
+        "room-6-barlamp": {
+          "percent": 0
+        },
+        "room-7-ceiling": {
+          "percent": 0
+        },
+        "room-7-downlight": {
+          "percent": 0
+        },
+        "room-7-fan": {
+          "percent": 0
+        },
+        "room-7-curtain": {
+          "percent": 0
+        },
+        "room-8-ceiling": {
+          "percent": 0
+        },
+        "room-8-downlight": {
+          "percent": 0
+        },
+        "room-8-fan": {
+          "percent": 0
+        }
+      },
+      "2026-10-15": {
+        "room-1-ceiling": {
+          "percent": 0
+        },
+        "room-1-downlight": {
+          "percent": 0
+        },
+        "room-1-fan": {
+          "percent": 0
+        },
+        "room-1-curtain": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 0
+        },
+        "room-2-fan": {
+          "percent": 0
+        },
+        "room-3-ceiling": {
+          "percent": 0
+        },
+        "room-3-downlight": {
+          "percent": 0
+        },
+        "room-3-fan": {
+          "percent": 0
+        },
+        "room-4-downlight": {
+          "percent": 0
+        },
+        "room-5-downlight": {
+          "percent": 0
+        },
+        "room-6-ceiling": {
+          "percent": 0
+        },
+        "room-6-downlight": {
+          "percent": 0
+        },
+        "room-6-barlamp": {
+          "percent": 0
+        },
+        "room-7-ceiling": {
+          "percent": 0
+        },
+        "room-7-downlight": {
+          "percent": 0
+        },
+        "room-7-fan": {
+          "percent": 0
+        },
+        "room-7-curtain": {
+          "percent": 0
+        },
+        "room-8-ceiling": {
+          "percent": 0
+        },
+        "room-8-downlight": {
+          "percent": 0
+        },
+        "room-8-fan": {
+          "percent": 0
+        }
+      },
+      "2026-10-16": {
+        "room-1-ceiling": {
+          "percent": 0
+        },
+        "room-1-downlight": {
+          "percent": 0
+        },
+        "room-1-fan": {
+          "percent": 0
+        },
+        "room-1-curtain": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 0
+        },
+        "room-2-fan": {
+          "percent": 0
+        },
+        "room-3-ceiling": {
+          "percent": 0
+        },
+        "room-3-downlight": {
+          "percent": 0
+        },
+        "room-3-fan": {
+          "percent": 0
+        },
+        "room-4-downlight": {
+          "percent": 0
+        },
+        "room-5-downlight": {
+          "percent": 0
+        },
+        "room-6-ceiling": {
+          "percent": 0
+        },
+        "room-6-downlight": {
+          "percent": 0
+        },
+        "room-6-barlamp": {
+          "percent": 0
+        },
+        "room-7-ceiling": {
+          "percent": 0
+        },
+        "room-7-downlight": {
+          "percent": 0
+        },
+        "room-7-fan": {
+          "percent": 0
+        },
+        "room-7-curtain": {
+          "percent": 0
+        },
+        "room-8-ceiling": {
+          "percent": 0
+        },
+        "room-8-downlight": {
+          "percent": 0
+        },
+        "room-8-fan": {
+          "percent": 0
+        }
+      },
+      "2026-10-17": {
+        "room-1-ceiling": {
+          "percent": 0
+        },
+        "room-1-downlight": {
+          "percent": 0
+        },
+        "room-1-fan": {
+          "percent": 0
+        },
+        "room-1-curtain": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 0
+        },
+        "room-2-fan": {
+          "percent": 0
+        },
+        "room-3-ceiling": {
+          "percent": 0
+        },
+        "room-3-downlight": {
+          "percent": 0
+        },
+        "room-3-fan": {
+          "percent": 0
+        },
+        "room-4-downlight": {
+          "percent": 0
+        },
+        "room-5-downlight": {
+          "percent": 0
+        },
+        "room-6-ceiling": {
+          "percent": 0
+        },
+        "room-6-downlight": {
+          "percent": 0
+        },
+        "room-6-barlamp": {
+          "percent": 0
+        },
+        "room-7-ceiling": {
+          "percent": 0
+        },
+        "room-7-downlight": {
+          "percent": 0
+        },
+        "room-7-fan": {
+          "percent": 0
+        },
+        "room-7-curtain": {
+          "percent": 0
+        },
+        "room-8-ceiling": {
+          "percent": 0
+        },
+        "room-8-downlight": {
+          "percent": 0
+        },
+        "room-8-fan": {
+          "percent": 0
+        }
+      },
+      "2026-10-18": {
+        "room-1-ceiling": {
+          "percent": 0
+        },
+        "room-1-downlight": {
+          "percent": 0
+        },
+        "room-1-fan": {
+          "percent": 0
+        },
+        "room-1-curtain": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 0
+        },
+        "room-2-fan": {
+          "percent": 0
+        },
+        "room-3-ceiling": {
+          "percent": 0
+        },
+        "room-3-downlight": {
+          "percent": 0
+        },
+        "room-3-fan": {
+          "percent": 0
+        },
+        "room-4-downlight": {
+          "percent": 0
+        },
+        "room-5-downlight": {
+          "percent": 0
+        },
+        "room-6-ceiling": {
+          "percent": 0
+        },
+        "room-6-downlight": {
+          "percent": 0
+        },
+        "room-6-barlamp": {
+          "percent": 0
+        },
+        "room-7-ceiling": {
+          "percent": 0
+        },
+        "room-7-downlight": {
+          "percent": 0
+        },
+        "room-7-fan": {
+          "percent": 0
+        },
+        "room-7-curtain": {
+          "percent": 0
+        },
+        "room-8-ceiling": {
+          "percent": 0
+        },
+        "room-8-downlight": {
+          "percent": 0
+        },
+        "room-8-fan": {
+          "percent": 0
+        }
+      },
+      "2026-10-19": {
+        "room-1-ceiling": {
+          "percent": 0
+        },
+        "room-1-downlight": {
+          "percent": 0
+        },
+        "room-1-fan": {
+          "percent": 0
+        },
+        "room-1-curtain": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 0
+        },
+        "room-2-fan": {
+          "percent": 0
+        },
+        "room-3-ceiling": {
+          "percent": 0
+        },
+        "room-3-downlight": {
+          "percent": 0
+        },
+        "room-3-fan": {
+          "percent": 0
+        },
+        "room-4-downlight": {
+          "percent": 0
+        },
+        "room-5-downlight": {
+          "percent": 0
+        },
+        "room-6-ceiling": {
+          "percent": 0
+        },
+        "room-6-downlight": {
+          "percent": 0
+        },
+        "room-6-barlamp": {
+          "percent": 0
+        },
+        "room-7-ceiling": {
+          "percent": 0
+        },
+        "room-7-downlight": {
+          "percent": 0
+        },
+        "room-7-fan": {
+          "percent": 0
+        },
+        "room-7-curtain": {
+          "percent": 0
+        },
+        "room-8-ceiling": {
+          "percent": 0
+        },
+        "room-8-downlight": {
+          "percent": 0
+        },
+        "room-8-fan": {
+          "percent": 0
+        }
+      },
+      "2026-10-20": {
+        "room-1-ceiling": {
+          "percent": 0
+        },
+        "room-1-downlight": {
+          "percent": 10
+        },
+        "room-1-fan": {
+          "percent": 0
+        },
+        "room-1-curtain": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 0
+        },
+        "room-2-fan": {
+          "percent": 0
+        },
+        "room-3-ceiling": {
+          "percent": 0
+        },
+        "room-3-downlight": {
+          "percent": 0
+        },
+        "room-3-fan": {
+          "percent": 0
+        },
+        "room-4-downlight": {
+          "percent": 0
+        },
+        "room-5-downlight": {
+          "percent": 0
+        },
+        "room-6-ceiling": {
+          "percent": 0
+        },
+        "room-6-downlight": {
+          "percent": 0
+        },
+        "room-6-barlamp": {
+          "percent": 0
+        },
+        "room-7-ceiling": {
+          "percent": 0
+        },
+        "room-7-downlight": {
+          "percent": 0
+        },
+        "room-7-fan": {
+          "percent": 0
+        },
+        "room-7-curtain": {
+          "percent": 0
+        },
+        "room-8-ceiling": {
+          "percent": 0
+        },
+        "room-8-downlight": {
+          "percent": 0
+        },
+        "room-8-fan": {
+          "percent": 0
+        }
+      },
+      "2026-10-21": {
+        "room-1-ceiling": {
+          "percent": 0
+        },
+        "room-1-downlight": {
+          "percent": 35
+        },
+        "room-1-fan": {
+          "percent": 0
+        },
+        "room-1-curtain": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 10
+        },
+        "room-2-fan": {
+          "percent": 0
+        },
+        "room-3-ceiling": {
+          "percent": 0
+        },
+        "room-3-downlight": {
+          "percent": 0
+        },
+        "room-3-fan": {
+          "percent": 0
+        },
+        "room-4-downlight": {
+          "percent": 0
+        },
+        "room-5-downlight": {
+          "percent": 0
+        },
+        "room-6-ceiling": {
+          "percent": 0
+        },
+        "room-6-downlight": {
+          "percent": 0
+        },
+        "room-6-barlamp": {
+          "percent": 0
+        },
+        "room-7-ceiling": {
+          "percent": 0
+        },
+        "room-7-downlight": {
+          "percent": 0
+        },
+        "room-7-fan": {
+          "percent": 0
+        },
+        "room-7-curtain": {
+          "percent": 0
+        },
+        "room-8-ceiling": {
+          "percent": 0
+        },
+        "room-8-downlight": {
+          "percent": 0
+        },
+        "room-8-fan": {
+          "percent": 0
+        }
+      },
+      "2026-10-22": {
+        "room-1-ceiling": {
+          "percent": 0
+        },
+        "room-1-downlight": {
+          "percent": 65
+        },
+        "room-1-fan": {
+          "percent": 0
+        },
+        "room-1-curtain": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 35
+        },
+        "room-2-fan": {
+          "percent": 0
+        },
+        "room-3-ceiling": {
+          "percent": 0
+        },
+        "room-3-downlight": {
+          "percent": 10
+        },
+        "room-3-fan": {
+          "percent": 0
+        },
+        "room-4-downlight": {
+          "percent": 0
+        },
+        "room-5-downlight": {
+          "percent": 0
+        },
+        "room-6-ceiling": {
+          "percent": 0
+        },
+        "room-6-downlight": {
+          "percent": 0
+        },
+        "room-6-barlamp": {
+          "percent": 0
+        },
+        "room-7-ceiling": {
+          "percent": 0
+        },
+        "room-7-downlight": {
+          "percent": 0
+        },
+        "room-7-fan": {
+          "percent": 0
+        },
+        "room-7-curtain": {
+          "percent": 0
+        },
+        "room-8-ceiling": {
+          "percent": 0
+        },
+        "room-8-downlight": {
+          "percent": 0
+        },
+        "room-8-fan": {
+          "percent": 0
+        }
+      },
+      "2026-10-23": {
+        "room-1-ceiling": {
+          "percent": 0
+        },
+        "room-1-downlight": {
+          "percent": 90
+        },
+        "room-1-fan": {
+          "percent": 0
+        },
+        "room-1-curtain": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 65
+        },
+        "room-2-fan": {
+          "percent": 0
+        },
+        "room-3-ceiling": {
+          "percent": 0
+        },
+        "room-3-downlight": {
+          "percent": 35
+        },
+        "room-3-fan": {
+          "percent": 0
+        },
+        "room-4-downlight": {
+          "percent": 0
+        },
+        "room-5-downlight": {
+          "percent": 0
+        },
+        "room-6-ceiling": {
+          "percent": 0
+        },
+        "room-6-downlight": {
+          "percent": 0
+        },
+        "room-6-barlamp": {
+          "percent": 0
+        },
+        "room-7-ceiling": {
+          "percent": 0
+        },
+        "room-7-downlight": {
+          "percent": 10
+        },
+        "room-7-fan": {
+          "percent": 0
+        },
+        "room-7-curtain": {
+          "percent": 0
+        },
+        "room-8-ceiling": {
+          "percent": 0
+        },
+        "room-8-downlight": {
+          "percent": 0
+        },
+        "room-8-fan": {
+          "percent": 0
+        }
+      },
+      "2026-10-24": {
+        "room-1-ceiling": {
+          "percent": 0
+        },
+        "room-1-downlight": {
+          "percent": 82
+        },
+        "room-1-fan": {
+          "percent": 0
+        },
+        "room-1-curtain": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 90
+        },
+        "room-2-fan": {
+          "percent": 0
+        },
+        "room-3-ceiling": {
+          "percent": 0
+        },
+        "room-3-downlight": {
+          "percent": 65
+        },
+        "room-3-fan": {
+          "percent": 0
+        },
+        "room-4-downlight": {
+          "percent": 0
+        },
+        "room-5-downlight": {
+          "percent": 0
+        },
+        "room-6-ceiling": {
+          "percent": 0
+        },
+        "room-6-downlight": {
+          "percent": 0
+        },
+        "room-6-barlamp": {
+          "percent": 0
+        },
+        "room-7-ceiling": {
+          "percent": 0
+        },
+        "room-7-downlight": {
+          "percent": 35
+        },
+        "room-7-fan": {
+          "percent": 0
+        },
+        "room-7-curtain": {
+          "percent": 0
+        },
+        "room-8-ceiling": {
+          "percent": 0
+        },
+        "room-8-downlight": {
+          "percent": 10
+        },
+        "room-8-fan": {
+          "percent": 0
+        }
+      },
+      "2026-10-25": {
+        "room-1-ceiling": {
+          "percent": 0
+        },
+        "room-1-downlight": {
+          "percent": 82
+        },
+        "room-1-fan": {
+          "percent": 0
+        },
+        "room-1-curtain": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 82
+        },
+        "room-2-fan": {
+          "percent": 0
+        },
+        "room-3-ceiling": {
+          "percent": 0
+        },
+        "room-3-downlight": {
+          "percent": 90
+        },
+        "room-3-fan": {
+          "percent": 0
+        },
+        "room-4-downlight": {
+          "percent": 0
+        },
+        "room-5-downlight": {
+          "percent": 0
+        },
+        "room-6-ceiling": {
+          "percent": 0
+        },
+        "room-6-downlight": {
+          "percent": 0
+        },
+        "room-6-barlamp": {
+          "percent": 0
+        },
+        "room-7-ceiling": {
+          "percent": 0
+        },
+        "room-7-downlight": {
+          "percent": 65
+        },
+        "room-7-fan": {
+          "percent": 0
+        },
+        "room-7-curtain": {
+          "percent": 0
+        },
+        "room-8-ceiling": {
+          "percent": 0
+        },
+        "room-8-downlight": {
+          "percent": 35
+        },
+        "room-8-fan": {
+          "percent": 0
+        }
+      },
+      "2026-10-26": {
+        "room-1-ceiling": {
+          "percent": 0
+        },
+        "room-1-downlight": {
+          "percent": 83
+        },
+        "room-1-fan": {
+          "percent": 0
+        },
+        "room-1-curtain": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 83
+        },
+        "room-2-fan": {
+          "percent": 0
+        },
+        "room-3-ceiling": {
+          "percent": 0
+        },
+        "room-3-downlight": {
+          "percent": 83
+        },
+        "room-3-fan": {
+          "percent": 0
+        },
+        "room-4-downlight": {
+          "percent": 26
+        },
+        "room-5-downlight": {
+          "percent": 0
+        },
+        "room-6-ceiling": {
+          "percent": 0
+        },
+        "room-6-downlight": {
+          "percent": 0
+        },
+        "room-6-barlamp": {
+          "percent": 0
+        },
+        "room-7-ceiling": {
+          "percent": 0
+        },
+        "room-7-downlight": {
+          "percent": 90
+        },
+        "room-7-fan": {
+          "percent": 0
+        },
+        "room-7-curtain": {
+          "percent": 0
+        },
+        "room-8-ceiling": {
+          "percent": 0
+        },
+        "room-8-downlight": {
+          "percent": 65
+        },
+        "room-8-fan": {
+          "percent": 0
+        }
+      },
+      "2026-10-27": {
+        "room-1-ceiling": {
+          "percent": 0
+        },
+        "room-1-downlight": {
+          "percent": 83
+        },
+        "room-1-fan": {
+          "percent": 0
+        },
+        "room-1-curtain": {
+          "percent": 0
+        },
+        "room-2-ceiling": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 83
+        },
+        "room-2-fan": {
+          "percent": 0
+        },
+        "room-3-ceiling": {
+          "percent": 0
+        },
+        "room-3-downlight": {
+          "percent": 83
+        },
+        "room-3-fan": {
+          "percent": 0
+        },
+        "room-4-downlight": {
+          "percent": 74
+        },
+        "room-5-downlight": {
+          "percent": 26
+        },
+        "room-6-ceiling": {
+          "percent": 0
+        },
+        "room-6-downlight": {
+          "percent": 0
+        },
+        "room-6-barlamp": {
+          "percent": 0
+        },
+        "room-7-ceiling": {
+          "percent": 0
+        },
+        "room-7-downlight": {
+          "percent": 83
+        },
+        "room-7-fan": {
+          "percent": 0
+        },
+        "room-7-curtain": {
+          "percent": 0
+        },
+        "room-8-ceiling": {
+          "percent": 0
+        },
+        "room-8-downlight": {
+          "percent": 90
+        },
+        "room-8-fan": {
+          "percent": 0
+        }
+      },
+      "2026-10-28": {
+        "room-1-ceiling": {
+          "percent": 0
+        },
+        "room-1-downlight": {
+          "percent": 84
+        },
+        "room-1-fan": {
+          "percent": 0
+        },
+        "room-1-curtain": {
+          "percent": 26
+        },
+        "room-2-ceiling": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 84
+        },
+        "room-2-fan": {
+          "percent": 0
+        },
+        "room-3-ceiling": {
+          "percent": 0
+        },
+        "room-3-downlight": {
+          "percent": 84
+        },
+        "room-3-fan": {
+          "percent": 0
+        },
+        "room-4-downlight": {
+          "percent": 84
+        },
+        "room-5-downlight": {
+          "percent": 74
+        },
+        "room-6-ceiling": {
+          "percent": 0
+        },
+        "room-6-downlight": {
+          "percent": 0
+        },
+        "room-6-barlamp": {
+          "percent": 0
+        },
+        "room-7-ceiling": {
+          "percent": 0
+        },
+        "room-7-downlight": {
+          "percent": 84
+        },
+        "room-7-fan": {
+          "percent": 0
+        },
+        "room-7-curtain": {
+          "percent": 0
+        },
+        "room-8-ceiling": {
+          "percent": 0
+        },
+        "room-8-downlight": {
+          "percent": 84
+        },
+        "room-8-fan": {
+          "percent": 0
+        }
+      },
+      "2026-10-29": {
+        "room-1-ceiling": {
+          "percent": 0
+        },
+        "room-1-downlight": {
+          "percent": 84
+        },
+        "room-1-fan": {
+          "percent": 0
+        },
+        "room-1-curtain": {
+          "percent": 74
+        },
+        "room-2-ceiling": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 84
+        },
+        "room-2-fan": {
+          "percent": 0
+        },
+        "room-3-ceiling": {
+          "percent": 0
+        },
+        "room-3-downlight": {
+          "percent": 84
+        },
+        "room-3-fan": {
+          "percent": 0
+        },
+        "room-4-downlight": {
+          "percent": 84
+        },
+        "room-5-downlight": {
+          "percent": 84
+        },
+        "room-6-ceiling": {
+          "percent": 0
+        },
+        "room-6-downlight": {
+          "percent": 0
+        },
+        "room-6-barlamp": {
+          "percent": 0
+        },
+        "room-7-ceiling": {
+          "percent": 0
+        },
+        "room-7-downlight": {
+          "percent": 84
+        },
+        "room-7-fan": {
+          "percent": 0
+        },
+        "room-7-curtain": {
+          "percent": 26
+        },
+        "room-8-ceiling": {
+          "percent": 0
+        },
+        "room-8-downlight": {
+          "percent": 84
+        },
+        "room-8-fan": {
+          "percent": 0
+        }
+      },
+      "2026-10-30": {
+        "room-1-ceiling": {
+          "percent": 50
+        },
+        "room-1-downlight": {
+          "percent": 85
+        },
+        "room-1-fan": {
+          "percent": 0
+        },
+        "room-1-curtain": {
+          "percent": 85
+        },
+        "room-2-ceiling": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 85
+        },
+        "room-2-fan": {
+          "percent": 0
+        },
+        "room-3-ceiling": {
+          "percent": 0
+        },
+        "room-3-downlight": {
+          "percent": 85
+        },
+        "room-3-fan": {
+          "percent": 0
+        },
+        "room-4-downlight": {
+          "percent": 85
+        },
+        "room-5-downlight": {
+          "percent": 85
+        },
+        "room-6-ceiling": {
+          "percent": 0
+        },
+        "room-6-downlight": {
+          "percent": 0
+        },
+        "room-6-barlamp": {
+          "percent": 0
+        },
+        "room-7-ceiling": {
+          "percent": 50
+        },
+        "room-7-downlight": {
+          "percent": 85
+        },
+        "room-7-fan": {
+          "percent": 0
+        },
+        "room-7-curtain": {
+          "percent": 74
+        },
+        "room-8-ceiling": {
+          "percent": 0
+        },
+        "room-8-downlight": {
+          "percent": 85
+        },
+        "room-8-fan": {
+          "percent": 0
+        }
+      },
+      "2026-10-31": {
+        "room-1-ceiling": {
+          "percent": 85
+        },
+        "room-1-downlight": {
+          "percent": 85
+        },
+        "room-1-fan": {
+          "percent": 0
+        },
+        "room-1-curtain": {
+          "percent": 85
+        },
+        "room-2-ceiling": {
+          "percent": 0
+        },
+        "room-2-downlight": {
+          "percent": 85
+        },
+        "room-2-fan": {
+          "percent": 0
+        },
+        "room-3-ceiling": {
+          "percent": 50
+        },
+        "room-3-downlight": {
+          "percent": 85
+        },
+        "room-3-fan": {
+          "percent": 0
+        },
+        "room-4-downlight": {
+          "percent": 85
+        },
+        "room-5-downlight": {
+          "percent": 85
+        },
+        "room-6-ceiling": {
+          "percent": 50
+        },
+        "room-6-downlight": {
+          "percent": 0
+        },
+        "room-6-barlamp": {
+          "percent": 0
+        },
+        "room-7-ceiling": {
+          "percent": 85
+        },
+        "room-7-downlight": {
+          "percent": 85
+        },
+        "room-7-fan": {
+          "percent": 0
+        },
+        "room-7-curtain": {
+          "percent": 85
+        },
+        "room-8-ceiling": {
+          "percent": 0
+        },
+        "room-8-downlight": {
+          "percent": 85
+        },
+        "room-8-fan": {
+          "percent": 0
+        }
+      },
+      "2026-11-01": {
+        "room-1-ceiling": {
+          "percent": 86
+        },
+        "room-1-downlight": {
+          "percent": 86
+        },
+        "room-1-fan": {
+          "percent": 50
+        },
+        "room-1-curtain": {
+          "percent": 86
+        },
+        "room-2-ceiling": {
+          "percent": 50
+        },
+        "room-2-downlight": {
+          "percent": 86
+        },
+        "room-2-fan": {
+          "percent": 0
+        },
+        "room-3-ceiling": {
+          "percent": 86
+        },
+        "room-3-downlight": {
+          "percent": 86
+        },
+        "room-3-fan": {
+          "percent": 0
+        },
+        "room-4-downlight": {
+          "percent": 86
+        },
+        "room-5-downlight": {
+          "percent": 86
+        },
+        "room-6-ceiling": {
+          "percent": 86
+        },
+        "room-6-downlight": {
+          "percent": 0
+        },
+        "room-6-barlamp": {
+          "percent": 0
+        },
+        "room-7-ceiling": {
+          "percent": 86
+        },
+        "room-7-downlight": {
+          "percent": 86
+        },
+        "room-7-fan": {
+          "percent": 0
+        },
+        "room-7-curtain": {
+          "percent": 86
+        },
+        "room-8-ceiling": {
+          "percent": 50
+        },
+        "room-8-downlight": {
+          "percent": 86
+        },
+        "room-8-fan": {
+          "percent": 0
+        }
+      },
+      "2026-11-02": {
+        "room-1-ceiling": {
+          "percent": 86
+        },
+        "room-1-downlight": {
+          "percent": 86
+        },
+        "room-1-fan": {
+          "percent": 86
+        },
+        "room-1-curtain": {
+          "percent": 86
+        },
+        "room-2-ceiling": {
+          "percent": 86
+        },
+        "room-2-downlight": {
+          "percent": 86
+        },
+        "room-2-fan": {
+          "percent": 50
+        },
+        "room-3-ceiling": {
+          "percent": 86
+        },
+        "room-3-downlight": {
+          "percent": 86
+        },
+        "room-3-fan": {
+          "percent": 50
+        },
+        "room-4-downlight": {
+          "percent": 86
+        },
+        "room-5-downlight": {
+          "percent": 86
+        },
+        "room-6-ceiling": {
+          "percent": 86
+        },
+        "room-6-downlight": {
+          "percent": 0
+        },
+        "room-6-barlamp": {
+          "percent": 0
+        },
+        "room-7-ceiling": {
+          "percent": 86
+        },
+        "room-7-downlight": {
+          "percent": 86
+        },
+        "room-7-fan": {
+          "percent": 50
+        },
+        "room-7-curtain": {
+          "percent": 86
+        },
+        "room-8-ceiling": {
+          "percent": 86
+        },
+        "room-8-downlight": {
+          "percent": 86
+        },
+        "room-8-fan": {
+          "percent": 0
+        }
+      },
+      "2026-11-03": {
+        "room-1-ceiling": {
+          "percent": 87
+        },
+        "room-1-downlight": {
+          "percent": 87
+        },
+        "room-1-fan": {
+          "percent": 87
+        },
+        "room-1-curtain": {
+          "percent": 87
+        },
+        "room-2-ceiling": {
+          "percent": 87
+        },
+        "room-2-downlight": {
+          "percent": 87
+        },
+        "room-2-fan": {
+          "percent": 87
+        },
+        "room-3-ceiling": {
+          "percent": 87
+        },
+        "room-3-downlight": {
+          "percent": 87
+        },
+        "room-3-fan": {
+          "percent": 87
+        },
+        "room-4-downlight": {
+          "percent": 87
+        },
+        "room-5-downlight": {
+          "percent": 87
+        },
+        "room-6-ceiling": {
+          "percent": 87
+        },
+        "room-6-downlight": {
+          "percent": 0
+        },
+        "room-6-barlamp": {
+          "percent": 0
+        },
+        "room-7-ceiling": {
+          "percent": 87
+        },
+        "room-7-downlight": {
+          "percent": 87
+        },
+        "room-7-fan": {
+          "percent": 87
+        },
+        "room-7-curtain": {
+          "percent": 87
+        },
+        "room-8-ceiling": {
+          "percent": 87
+        },
+        "room-8-downlight": {
+          "percent": 87
+        },
+        "room-8-fan": {
+          "percent": 50
+        }
+      },
+      "2026-11-04": {
+        "room-1-ceiling": {
+          "percent": 87
+        },
+        "room-1-downlight": {
+          "percent": 87
+        },
+        "room-1-fan": {
+          "percent": 87
+        },
+        "room-1-curtain": {
+          "percent": 87
+        },
+        "room-2-ceiling": {
+          "percent": 87
+        },
+        "room-2-downlight": {
+          "percent": 87
+        },
+        "room-2-fan": {
+          "percent": 87
+        },
+        "room-3-ceiling": {
+          "percent": 87
+        },
+        "room-3-downlight": {
+          "percent": 87
+        },
+        "room-3-fan": {
+          "percent": 87
+        },
+        "room-4-downlight": {
+          "percent": 87
+        },
+        "room-5-downlight": {
+          "percent": 87
+        },
+        "room-6-ceiling": {
+          "percent": 87
+        },
+        "room-6-downlight": {
+          "percent": 0
+        },
+        "room-6-barlamp": {
+          "percent": 0
+        },
+        "room-7-ceiling": {
+          "percent": 87
+        },
+        "room-7-downlight": {
+          "percent": 87
+        },
+        "room-7-fan": {
+          "percent": 87
+        },
+        "room-7-curtain": {
+          "percent": 87
+        },
+        "room-8-ceiling": {
+          "percent": 87
+        },
+        "room-8-downlight": {
+          "percent": 87
+        },
+        "room-8-fan": {
+          "percent": 87
+        }
+      },
+      "2026-11-05": {
+        "room-1-ceiling": {
+          "percent": 88
+        },
+        "room-1-downlight": {
+          "percent": 88
+        },
+        "room-1-fan": {
+          "percent": 88
+        },
+        "room-1-curtain": {
+          "percent": 88
+        },
+        "room-2-ceiling": {
+          "percent": 88
+        },
+        "room-2-downlight": {
+          "percent": 88
+        },
+        "room-2-fan": {
+          "percent": 88
+        },
+        "room-3-ceiling": {
+          "percent": 88
+        },
+        "room-3-downlight": {
+          "percent": 88
+        },
+        "room-3-fan": {
+          "percent": 88
+        },
+        "room-4-downlight": {
+          "percent": 88
+        },
+        "room-5-downlight": {
+          "percent": 88
+        },
+        "room-6-ceiling": {
+          "percent": 88
+        },
+        "room-6-downlight": {
+          "percent": 0
+        },
+        "room-6-barlamp": {
+          "percent": 0
+        },
+        "room-7-ceiling": {
+          "percent": 88
+        },
+        "room-7-downlight": {
+          "percent": 88
+        },
+        "room-7-fan": {
+          "percent": 88
+        },
+        "room-7-curtain": {
+          "percent": 88
+        },
+        "room-8-ceiling": {
+          "percent": 88
+        },
+        "room-8-downlight": {
+          "percent": 88
+        },
+        "room-8-fan": {
+          "percent": 88
+        }
+      },
+      "2026-11-06": {
+        "room-1-ceiling": {
+          "percent": 88
+        },
+        "room-1-downlight": {
+          "percent": 88
+        },
+        "room-1-fan": {
+          "percent": 88
+        },
+        "room-1-curtain": {
+          "percent": 88
+        },
+        "room-2-ceiling": {
+          "percent": 88
+        },
+        "room-2-downlight": {
+          "percent": 88
+        },
+        "room-2-fan": {
+          "percent": 88
+        },
+        "room-3-ceiling": {
+          "percent": 88
+        },
+        "room-3-downlight": {
+          "percent": 88
+        },
+        "room-3-fan": {
+          "percent": 88
+        },
+        "room-4-downlight": {
+          "percent": 88
+        },
+        "room-5-downlight": {
+          "percent": 88
+        },
+        "room-6-ceiling": {
+          "percent": 88
+        },
+        "room-6-downlight": {
+          "percent": 0
+        },
+        "room-6-barlamp": {
+          "percent": 0
+        },
+        "room-7-ceiling": {
+          "percent": 88
+        },
+        "room-7-downlight": {
+          "percent": 88
+        },
+        "room-7-fan": {
+          "percent": 88
+        },
+        "room-7-curtain": {
+          "percent": 88
+        },
+        "room-8-ceiling": {
+          "percent": 88
+        },
+        "room-8-downlight": {
+          "percent": 88
+        },
+        "room-8-fan": {
+          "percent": 88
+        }
+      },
+      "2026-11-07": {
+        "room-1-ceiling": {
+          "percent": 89
+        },
+        "room-1-downlight": {
+          "percent": 89
+        },
+        "room-1-fan": {
+          "percent": 89
+        },
+        "room-1-curtain": {
+          "percent": 89
+        },
+        "room-2-ceiling": {
+          "percent": 89
+        },
+        "room-2-downlight": {
+          "percent": 89
+        },
+        "room-2-fan": {
+          "percent": 89
+        },
+        "room-3-ceiling": {
+          "percent": 89
+        },
+        "room-3-downlight": {
+          "percent": 89
+        },
+        "room-3-fan": {
+          "percent": 89
+        },
+        "room-4-downlight": {
+          "percent": 89
+        },
+        "room-5-downlight": {
+          "percent": 89
+        },
+        "room-6-ceiling": {
+          "percent": 89
+        },
+        "room-6-downlight": {
+          "percent": 0
+        },
+        "room-6-barlamp": {
+          "percent": 0
+        },
+        "room-7-ceiling": {
+          "percent": 89
+        },
+        "room-7-downlight": {
+          "percent": 89
+        },
+        "room-7-fan": {
+          "percent": 89
+        },
+        "room-7-curtain": {
+          "percent": 89
+        },
+        "room-8-ceiling": {
+          "percent": 89
+        },
+        "room-8-downlight": {
+          "percent": 89
+        },
+        "room-8-fan": {
+          "percent": 89
+        }
+      },
+      "2026-11-08": {
+        "room-1-ceiling": {
+          "percent": 89
+        },
+        "room-1-downlight": {
+          "percent": 89
+        },
+        "room-1-fan": {
+          "percent": 89
+        },
+        "room-1-curtain": {
+          "percent": 89
+        },
+        "room-2-ceiling": {
+          "percent": 89
+        },
+        "room-2-downlight": {
+          "percent": 89
+        },
+        "room-2-fan": {
+          "percent": 89
+        },
+        "room-3-ceiling": {
+          "percent": 89
+        },
+        "room-3-downlight": {
+          "percent": 89
+        },
+        "room-3-fan": {
+          "percent": 89
+        },
+        "room-4-downlight": {
+          "percent": 89
+        },
+        "room-5-downlight": {
+          "percent": 89
+        },
+        "room-6-ceiling": {
+          "percent": 89
+        },
+        "room-6-downlight": {
+          "percent": 0
+        },
+        "room-6-barlamp": {
+          "percent": 0
+        },
+        "room-7-ceiling": {
+          "percent": 89
+        },
+        "room-7-downlight": {
+          "percent": 89
+        },
+        "room-7-fan": {
+          "percent": 89
+        },
+        "room-7-curtain": {
+          "percent": 89
+        },
+        "room-8-ceiling": {
+          "percent": 89
+        },
+        "room-8-downlight": {
+          "percent": 89
+        },
+        "room-8-fan": {
+          "percent": 89
+        }
+      },
+      "2026-11-09": {
+        "room-1-ceiling": {
+          "percent": 90
+        },
+        "room-1-downlight": {
+          "percent": 90
+        },
+        "room-1-fan": {
+          "percent": 90
+        },
+        "room-1-curtain": {
+          "percent": 90
+        },
+        "room-2-ceiling": {
+          "percent": 90
+        },
+        "room-2-downlight": {
+          "percent": 90
+        },
+        "room-2-fan": {
+          "percent": 90
+        },
+        "room-3-ceiling": {
+          "percent": 90
+        },
+        "room-3-downlight": {
+          "percent": 90
+        },
+        "room-3-fan": {
+          "percent": 90
+        },
+        "room-4-downlight": {
+          "percent": 90
+        },
+        "room-5-downlight": {
+          "percent": 90
+        },
+        "room-6-ceiling": {
+          "percent": 90
+        },
+        "room-6-downlight": {
+          "percent": 0
+        },
+        "room-6-barlamp": {
+          "percent": 0
+        },
+        "room-7-ceiling": {
+          "percent": 90
+        },
+        "room-7-downlight": {
+          "percent": 90
+        },
+        "room-7-fan": {
+          "percent": 90
+        },
+        "room-7-curtain": {
+          "percent": 90
+        },
+        "room-8-ceiling": {
+          "percent": 90
+        },
+        "room-8-downlight": {
+          "percent": 90
+        },
+        "room-8-fan": {
+          "percent": 90
+        }
+      },
+      "2026-11-10": {
+        "room-1-ceiling": {
+          "percent": 90
+        },
+        "room-1-downlight": {
+          "percent": 90
+        },
+        "room-1-fan": {
+          "percent": 90
+        },
+        "room-1-curtain": {
+          "percent": 90
+        },
+        "room-2-ceiling": {
+          "percent": 90
+        },
+        "room-2-downlight": {
+          "percent": 90
+        },
+        "room-2-fan": {
+          "percent": 90
+        },
+        "room-3-ceiling": {
+          "percent": 90
+        },
+        "room-3-downlight": {
+          "percent": 90
+        },
+        "room-3-fan": {
+          "percent": 90
+        },
+        "room-4-downlight": {
+          "percent": 90
+        },
+        "room-5-downlight": {
+          "percent": 90
+        },
+        "room-6-ceiling": {
+          "percent": 90
+        },
+        "room-6-downlight": {
+          "percent": 0
+        },
+        "room-6-barlamp": {
+          "percent": 0
+        },
+        "room-7-ceiling": {
+          "percent": 90
+        },
+        "room-7-downlight": {
+          "percent": 90
+        },
+        "room-7-fan": {
+          "percent": 90
+        },
+        "room-7-curtain": {
+          "percent": 90
+        },
+        "room-8-ceiling": {
+          "percent": 90
+        },
+        "room-8-downlight": {
+          "percent": 90
+        },
+        "room-8-fan": {
+          "percent": 90
+        }
+      },
+      "2026-11-11": {
+        "room-1-ceiling": {
+          "percent": 90
+        },
+        "room-1-downlight": {
+          "percent": 90
+        },
+        "room-1-fan": {
+          "percent": 90
+        },
+        "room-1-curtain": {
+          "percent": 90
+        },
+        "room-2-ceiling": {
+          "percent": 90
+        },
+        "room-2-downlight": {
+          "percent": 90
+        },
+        "room-2-fan": {
+          "percent": 90
+        },
+        "room-3-ceiling": {
+          "percent": 90
+        },
+        "room-3-downlight": {
+          "percent": 90
+        },
+        "room-3-fan": {
+          "percent": 90
+        },
+        "room-4-downlight": {
+          "percent": 90
+        },
+        "room-5-downlight": {
+          "percent": 90
+        },
+        "room-6-ceiling": {
+          "percent": 90
+        },
+        "room-6-downlight": {
+          "percent": 0
+        },
+        "room-6-barlamp": {
+          "percent": 0
+        },
+        "room-7-ceiling": {
+          "percent": 90
+        },
+        "room-7-downlight": {
+          "percent": 90
+        },
+        "room-7-fan": {
+          "percent": 90
+        },
+        "room-7-curtain": {
+          "percent": 90
+        },
+        "room-8-ceiling": {
+          "percent": 90
+        },
+        "room-8-downlight": {
+          "percent": 90
+        },
+        "room-8-fan": {
+          "percent": 90
+        }
+      },
+      "2026-11-12": {
+        "room-1-ceiling": {
+          "percent": 91
+        },
+        "room-1-downlight": {
+          "percent": 91
+        },
+        "room-1-fan": {
+          "percent": 91
+        },
+        "room-1-curtain": {
+          "percent": 91
+        },
+        "room-2-ceiling": {
+          "percent": 91
+        },
+        "room-2-downlight": {
+          "percent": 91
+        },
+        "room-2-fan": {
+          "percent": 91
+        },
+        "room-3-ceiling": {
+          "percent": 91
+        },
+        "room-3-downlight": {
+          "percent": 91
+        },
+        "room-3-fan": {
+          "percent": 91
+        },
+        "room-4-downlight": {
+          "percent": 91
+        },
+        "room-5-downlight": {
+          "percent": 91
+        },
+        "room-6-ceiling": {
+          "percent": 91
+        },
+        "room-6-downlight": {
+          "percent": 2
+        },
+        "room-6-barlamp": {
+          "percent": 0
+        },
+        "room-7-ceiling": {
+          "percent": 91
+        },
+        "room-7-downlight": {
+          "percent": 91
+        },
+        "room-7-fan": {
+          "percent": 91
+        },
+        "room-7-curtain": {
+          "percent": 91
+        },
+        "room-8-ceiling": {
+          "percent": 91
+        },
+        "room-8-downlight": {
+          "percent": 91
+        },
+        "room-8-fan": {
+          "percent": 91
+        }
+      },
+      "2026-11-13": {
+        "room-1-ceiling": {
+          "percent": 91
+        },
+        "room-1-downlight": {
+          "percent": 91
+        },
+        "room-1-fan": {
+          "percent": 91
+        },
+        "room-1-curtain": {
+          "percent": 91
+        },
+        "room-2-ceiling": {
+          "percent": 91
+        },
+        "room-2-downlight": {
+          "percent": 91
+        },
+        "room-2-fan": {
+          "percent": 91
+        },
+        "room-3-ceiling": {
+          "percent": 91
+        },
+        "room-3-downlight": {
+          "percent": 91
+        },
+        "room-3-fan": {
+          "percent": 91
+        },
+        "room-4-downlight": {
+          "percent": 91
+        },
+        "room-5-downlight": {
+          "percent": 91
+        },
+        "room-6-ceiling": {
+          "percent": 91
+        },
+        "room-6-downlight": {
+          "percent": 9
+        },
+        "room-6-barlamp": {
+          "percent": 4
+        },
+        "room-7-ceiling": {
+          "percent": 91
+        },
+        "room-7-downlight": {
+          "percent": 91
+        },
+        "room-7-fan": {
+          "percent": 91
+        },
+        "room-7-curtain": {
+          "percent": 91
+        },
+        "room-8-ceiling": {
+          "percent": 91
+        },
+        "room-8-downlight": {
+          "percent": 91
+        },
+        "room-8-fan": {
+          "percent": 91
+        }
+      },
+      "2026-11-14": {
+        "room-1-ceiling": {
+          "percent": 92
+        },
+        "room-1-downlight": {
+          "percent": 92
+        },
+        "room-1-fan": {
+          "percent": 92
+        },
+        "room-1-curtain": {
+          "percent": 92
+        },
+        "room-2-ceiling": {
+          "percent": 92
+        },
+        "room-2-downlight": {
+          "percent": 92
+        },
+        "room-2-fan": {
+          "percent": 92
+        },
+        "room-3-ceiling": {
+          "percent": 92
+        },
+        "room-3-downlight": {
+          "percent": 92
+        },
+        "room-3-fan": {
+          "percent": 92
+        },
+        "room-4-downlight": {
+          "percent": 92
+        },
+        "room-5-downlight": {
+          "percent": 92
+        },
+        "room-6-ceiling": {
+          "percent": 92
+        },
+        "room-6-downlight": {
+          "percent": 18
+        },
+        "room-6-barlamp": {
+          "percent": 16
+        },
+        "room-7-ceiling": {
+          "percent": 92
+        },
+        "room-7-downlight": {
+          "percent": 92
+        },
+        "room-7-fan": {
+          "percent": 92
+        },
+        "room-7-curtain": {
+          "percent": 92
+        },
+        "room-8-ceiling": {
+          "percent": 92
+        },
+        "room-8-downlight": {
+          "percent": 92
+        },
+        "room-8-fan": {
+          "percent": 92
+        }
+      },
+      "2026-11-15": {
+        "room-1-ceiling": {
+          "percent": 93
+        },
+        "room-1-downlight": {
+          "percent": 93
+        },
+        "room-1-fan": {
+          "percent": 93
+        },
+        "room-1-curtain": {
+          "percent": 93
+        },
+        "room-2-ceiling": {
+          "percent": 93
+        },
+        "room-2-downlight": {
+          "percent": 93
+        },
+        "room-2-fan": {
+          "percent": 93
+        },
+        "room-3-ceiling": {
+          "percent": 93
+        },
+        "room-3-downlight": {
+          "percent": 93
+        },
+        "room-3-fan": {
+          "percent": 93
+        },
+        "room-4-downlight": {
+          "percent": 93
+        },
+        "room-5-downlight": {
+          "percent": 93
+        },
+        "room-6-ceiling": {
+          "percent": 93
+        },
+        "room-6-downlight": {
+          "percent": 30
+        },
+        "room-6-barlamp": {
+          "percent": 32
+        },
+        "room-7-ceiling": {
+          "percent": 93
+        },
+        "room-7-downlight": {
+          "percent": 93
+        },
+        "room-7-fan": {
+          "percent": 93
+        },
+        "room-7-curtain": {
+          "percent": 93
+        },
+        "room-8-ceiling": {
+          "percent": 93
+        },
+        "room-8-downlight": {
+          "percent": 93
+        },
+        "room-8-fan": {
+          "percent": 93
+        }
+      },
+      "2026-11-16": {
+        "room-1-ceiling": {
+          "percent": 93
+        },
+        "room-1-downlight": {
+          "percent": 93
+        },
+        "room-1-fan": {
+          "percent": 93
+        },
+        "room-1-curtain": {
+          "percent": 93
+        },
+        "room-2-ceiling": {
+          "percent": 93
+        },
+        "room-2-downlight": {
+          "percent": 93
+        },
+        "room-2-fan": {
+          "percent": 93
+        },
+        "room-3-ceiling": {
+          "percent": 93
+        },
+        "room-3-downlight": {
+          "percent": 93
+        },
+        "room-3-fan": {
+          "percent": 93
+        },
+        "room-4-downlight": {
+          "percent": 93
+        },
+        "room-5-downlight": {
+          "percent": 93
+        },
+        "room-6-ceiling": {
+          "percent": 93
+        },
+        "room-6-downlight": {
+          "percent": 43
+        },
+        "room-6-barlamp": {
+          "percent": 50
+        },
+        "room-7-ceiling": {
+          "percent": 93
+        },
+        "room-7-downlight": {
+          "percent": 93
+        },
+        "room-7-fan": {
+          "percent": 93
+        },
+        "room-7-curtain": {
+          "percent": 93
+        },
+        "room-8-ceiling": {
+          "percent": 93
+        },
+        "room-8-downlight": {
+          "percent": 93
+        },
+        "room-8-fan": {
+          "percent": 93
+        }
+      },
+      "2026-11-17": {
+        "room-1-ceiling": {
+          "percent": 94
+        },
+        "room-1-downlight": {
+          "percent": 94
+        },
+        "room-1-fan": {
+          "percent": 94
+        },
+        "room-1-curtain": {
+          "percent": 94
+        },
+        "room-2-ceiling": {
+          "percent": 94
+        },
+        "room-2-downlight": {
+          "percent": 94
+        },
+        "room-2-fan": {
+          "percent": 94
+        },
+        "room-3-ceiling": {
+          "percent": 94
+        },
+        "room-3-downlight": {
+          "percent": 94
+        },
+        "room-3-fan": {
+          "percent": 94
+        },
+        "room-4-downlight": {
+          "percent": 94
+        },
+        "room-5-downlight": {
+          "percent": 94
+        },
+        "room-6-ceiling": {
+          "percent": 94
+        },
+        "room-6-downlight": {
+          "percent": 57
+        },
+        "room-6-barlamp": {
+          "percent": 68
+        },
+        "room-7-ceiling": {
+          "percent": 94
+        },
+        "room-7-downlight": {
+          "percent": 94
+        },
+        "room-7-fan": {
+          "percent": 94
+        },
+        "room-7-curtain": {
+          "percent": 94
+        },
+        "room-8-ceiling": {
+          "percent": 94
+        },
+        "room-8-downlight": {
+          "percent": 94
+        },
+        "room-8-fan": {
+          "percent": 94
+        }
+      },
+      "2026-11-18": {
+        "room-1-ceiling": {
+          "percent": 94
+        },
+        "room-1-downlight": {
+          "percent": 94
+        },
+        "room-1-fan": {
+          "percent": 94
+        },
+        "room-1-curtain": {
+          "percent": 94
+        },
+        "room-2-ceiling": {
+          "percent": 94
+        },
+        "room-2-downlight": {
+          "percent": 94
+        },
+        "room-2-fan": {
+          "percent": 94
+        },
+        "room-3-ceiling": {
+          "percent": 94
+        },
+        "room-3-downlight": {
+          "percent": 94
+        },
+        "room-3-fan": {
+          "percent": 94
+        },
+        "room-4-downlight": {
+          "percent": 94
+        },
+        "room-5-downlight": {
+          "percent": 94
+        },
+        "room-6-ceiling": {
+          "percent": 94
+        },
+        "room-6-downlight": {
+          "percent": 70
+        },
+        "room-6-barlamp": {
+          "percent": 84
+        },
+        "room-7-ceiling": {
+          "percent": 94
+        },
+        "room-7-downlight": {
+          "percent": 94
+        },
+        "room-7-fan": {
+          "percent": 94
+        },
+        "room-7-curtain": {
+          "percent": 94
+        },
+        "room-8-ceiling": {
+          "percent": 94
+        },
+        "room-8-downlight": {
+          "percent": 94
+        },
+        "room-8-fan": {
+          "percent": 94
+        }
+      },
+      "2026-11-19": {
+        "room-1-ceiling": {
+          "percent": 95
+        },
+        "room-1-downlight": {
+          "percent": 95
+        },
+        "room-1-fan": {
+          "percent": 95
+        },
+        "room-1-curtain": {
+          "percent": 95
+        },
+        "room-2-ceiling": {
+          "percent": 95
+        },
+        "room-2-downlight": {
+          "percent": 95
+        },
+        "room-2-fan": {
+          "percent": 95
+        },
+        "room-3-ceiling": {
+          "percent": 95
+        },
+        "room-3-downlight": {
+          "percent": 95
+        },
+        "room-3-fan": {
+          "percent": 95
+        },
+        "room-4-downlight": {
+          "percent": 95
+        },
+        "room-5-downlight": {
+          "percent": 95
+        },
+        "room-6-ceiling": {
+          "percent": 95
+        },
+        "room-6-downlight": {
+          "percent": 82
+        },
+        "room-6-barlamp": {
+          "percent": 96
+        },
+        "room-7-ceiling": {
+          "percent": 95
+        },
+        "room-7-downlight": {
+          "percent": 95
+        },
+        "room-7-fan": {
+          "percent": 95
+        },
+        "room-7-curtain": {
+          "percent": 95
+        },
+        "room-8-ceiling": {
+          "percent": 95
+        },
+        "room-8-downlight": {
+          "percent": 95
+        },
+        "room-8-fan": {
+          "percent": 95
+        }
+      },
+      "2026-11-20": {
+        "room-1-ceiling": {
+          "percent": 95
+        },
+        "room-1-downlight": {
+          "percent": 95
+        },
+        "room-1-fan": {
+          "percent": 95
+        },
+        "room-1-curtain": {
+          "percent": 95
+        },
+        "room-2-ceiling": {
+          "percent": 95
+        },
+        "room-2-downlight": {
+          "percent": 95
+        },
+        "room-2-fan": {
+          "percent": 95
+        },
+        "room-3-ceiling": {
+          "percent": 95
+        },
+        "room-3-downlight": {
+          "percent": 95
+        },
+        "room-3-fan": {
+          "percent": 95
+        },
+        "room-4-downlight": {
+          "percent": 95
+        },
+        "room-5-downlight": {
+          "percent": 95
+        },
+        "room-6-ceiling": {
+          "percent": 95
+        },
+        "room-6-downlight": {
+          "percent": 91
+        },
+        "room-6-barlamp": {
+          "percent": 95
+        },
+        "room-7-ceiling": {
+          "percent": 95
+        },
+        "room-7-downlight": {
+          "percent": 95
+        },
+        "room-7-fan": {
+          "percent": 95
+        },
+        "room-7-curtain": {
+          "percent": 95
+        },
+        "room-8-ceiling": {
+          "percent": 95
+        },
+        "room-8-downlight": {
+          "percent": 95
+        },
+        "room-8-fan": {
+          "percent": 95
+        }
+      },
+      "2026-11-21": {
+        "room-1-ceiling": {
+          "percent": 96
+        },
+        "room-1-downlight": {
+          "percent": 96
+        },
+        "room-1-fan": {
+          "percent": 96
+        },
+        "room-1-curtain": {
+          "percent": 96
+        },
+        "room-2-ceiling": {
+          "percent": 96
+        },
+        "room-2-downlight": {
+          "percent": 96
+        },
+        "room-2-fan": {
+          "percent": 96
+        },
+        "room-3-ceiling": {
+          "percent": 96
+        },
+        "room-3-downlight": {
+          "percent": 96
+        },
+        "room-3-fan": {
+          "percent": 96
+        },
+        "room-4-downlight": {
+          "percent": 96
+        },
+        "room-5-downlight": {
+          "percent": 96
+        },
+        "room-6-ceiling": {
+          "percent": 96
+        },
+        "room-6-downlight": {
+          "percent": 98
+        },
+        "room-6-barlamp": {
+          "percent": 96
+        },
+        "room-7-ceiling": {
+          "percent": 96
+        },
+        "room-7-downlight": {
+          "percent": 96
+        },
+        "room-7-fan": {
+          "percent": 96
+        },
+        "room-7-curtain": {
+          "percent": 96
+        },
+        "room-8-ceiling": {
+          "percent": 96
+        },
+        "room-8-downlight": {
+          "percent": 96
+        },
+        "room-8-fan": {
+          "percent": 96
+        }
+      },
+      "2026-11-22": {
+        "room-1-ceiling": {
+          "percent": 96
+        },
+        "room-1-downlight": {
+          "percent": 96
+        },
+        "room-1-fan": {
+          "percent": 96
+        },
+        "room-1-curtain": {
+          "percent": 96
+        },
+        "room-2-ceiling": {
+          "percent": 96
+        },
+        "room-2-downlight": {
+          "percent": 96
+        },
+        "room-2-fan": {
+          "percent": 96
+        },
+        "room-3-ceiling": {
+          "percent": 96
+        },
+        "room-3-downlight": {
+          "percent": 96
+        },
+        "room-3-fan": {
+          "percent": 96
+        },
+        "room-4-downlight": {
+          "percent": 96
+        },
+        "room-5-downlight": {
+          "percent": 96
+        },
+        "room-6-ceiling": {
+          "percent": 96
+        },
+        "room-6-downlight": {
+          "percent": 96
+        },
+        "room-6-barlamp": {
+          "percent": 96
+        },
+        "room-7-ceiling": {
+          "percent": 96
+        },
+        "room-7-downlight": {
+          "percent": 96
+        },
+        "room-7-fan": {
+          "percent": 96
+        },
+        "room-7-curtain": {
+          "percent": 96
+        },
+        "room-8-ceiling": {
+          "percent": 96
+        },
+        "room-8-downlight": {
+          "percent": 96
+        },
+        "room-8-fan": {
+          "percent": 96
+        }
+      },
+      "2026-11-23": {
+        "room-1-ceiling": {
+          "percent": 96
+        },
+        "room-1-downlight": {
+          "percent": 96
+        },
+        "room-1-fan": {
+          "percent": 96
+        },
+        "room-1-curtain": {
+          "percent": 96
+        },
+        "room-2-ceiling": {
+          "percent": 96
+        },
+        "room-2-downlight": {
+          "percent": 96
+        },
+        "room-2-fan": {
+          "percent": 96
+        },
+        "room-3-ceiling": {
+          "percent": 96
+        },
+        "room-3-downlight": {
+          "percent": 96
+        },
+        "room-3-fan": {
+          "percent": 96
+        },
+        "room-4-downlight": {
+          "percent": 96
+        },
+        "room-5-downlight": {
+          "percent": 96
+        },
+        "room-6-ceiling": {
+          "percent": 96
+        },
+        "room-6-downlight": {
+          "percent": 96
+        },
+        "room-6-barlamp": {
+          "percent": 96
+        },
+        "room-7-ceiling": {
+          "percent": 96
+        },
+        "room-7-downlight": {
+          "percent": 96
+        },
+        "room-7-fan": {
+          "percent": 96
+        },
+        "room-7-curtain": {
+          "percent": 96
+        },
+        "room-8-ceiling": {
+          "percent": 96
+        },
+        "room-8-downlight": {
+          "percent": 96
+        },
+        "room-8-fan": {
+          "percent": 96
+        }
+      },
+      "2026-11-24": {
+        "room-1-ceiling": {
+          "percent": 97
+        },
+        "room-1-downlight": {
+          "percent": 97
+        },
+        "room-1-fan": {
+          "percent": 97
+        },
+        "room-1-curtain": {
+          "percent": 97
+        },
+        "room-2-ceiling": {
+          "percent": 97
+        },
+        "room-2-downlight": {
+          "percent": 97
+        },
+        "room-2-fan": {
+          "percent": 97
+        },
+        "room-3-ceiling": {
+          "percent": 97
+        },
+        "room-3-downlight": {
+          "percent": 97
+        },
+        "room-3-fan": {
+          "percent": 97
+        },
+        "room-4-downlight": {
+          "percent": 97
+        },
+        "room-5-downlight": {
+          "percent": 97
+        },
+        "room-6-ceiling": {
+          "percent": 97
+        },
+        "room-6-downlight": {
+          "percent": 97
+        },
+        "room-6-barlamp": {
+          "percent": 97
+        },
+        "room-7-ceiling": {
+          "percent": 97
+        },
+        "room-7-downlight": {
+          "percent": 97
+        },
+        "room-7-fan": {
+          "percent": 97
+        },
+        "room-7-curtain": {
+          "percent": 97
+        },
+        "room-8-ceiling": {
+          "percent": 97
+        },
+        "room-8-downlight": {
+          "percent": 97
+        },
+        "room-8-fan": {
+          "percent": 97
+        }
+      },
+      "2026-11-25": {
+        "room-1-ceiling": {
+          "percent": 97
+        },
+        "room-1-downlight": {
+          "percent": 97
+        },
+        "room-1-fan": {
+          "percent": 97
+        },
+        "room-1-curtain": {
+          "percent": 97
+        },
+        "room-2-ceiling": {
+          "percent": 97
+        },
+        "room-2-downlight": {
+          "percent": 97
+        },
+        "room-2-fan": {
+          "percent": 97
+        },
+        "room-3-ceiling": {
+          "percent": 97
+        },
+        "room-3-downlight": {
+          "percent": 97
+        },
+        "room-3-fan": {
+          "percent": 97
+        },
+        "room-4-downlight": {
+          "percent": 97
+        },
+        "room-5-downlight": {
+          "percent": 97
+        },
+        "room-6-ceiling": {
+          "percent": 97
+        },
+        "room-6-downlight": {
+          "percent": 97
+        },
+        "room-6-barlamp": {
+          "percent": 97
+        },
+        "room-7-ceiling": {
+          "percent": 97
+        },
+        "room-7-downlight": {
+          "percent": 97
+        },
+        "room-7-fan": {
+          "percent": 97
+        },
+        "room-7-curtain": {
+          "percent": 97
+        },
+        "room-8-ceiling": {
+          "percent": 97
+        },
+        "room-8-downlight": {
+          "percent": 97
+        },
+        "room-8-fan": {
+          "percent": 97
+        }
+      },
+      "2026-11-26": {
+        "room-1-ceiling": {
+          "percent": 98
+        },
+        "room-1-downlight": {
+          "percent": 98
+        },
+        "room-1-fan": {
+          "percent": 98
+        },
+        "room-1-curtain": {
+          "percent": 98
+        },
+        "room-2-ceiling": {
+          "percent": 98
+        },
+        "room-2-downlight": {
+          "percent": 98
+        },
+        "room-2-fan": {
+          "percent": 98
+        },
+        "room-3-ceiling": {
+          "percent": 98
+        },
+        "room-3-downlight": {
+          "percent": 98
+        },
+        "room-3-fan": {
+          "percent": 98
+        },
+        "room-4-downlight": {
+          "percent": 98
+        },
+        "room-5-downlight": {
+          "percent": 98
+        },
+        "room-6-ceiling": {
+          "percent": 98
+        },
+        "room-6-downlight": {
+          "percent": 98
+        },
+        "room-6-barlamp": {
+          "percent": 98
+        },
+        "room-7-ceiling": {
+          "percent": 98
+        },
+        "room-7-downlight": {
+          "percent": 98
+        },
+        "room-7-fan": {
+          "percent": 98
+        },
+        "room-7-curtain": {
+          "percent": 98
+        },
+        "room-8-ceiling": {
+          "percent": 98
+        },
+        "room-8-downlight": {
+          "percent": 98
+        },
+        "room-8-fan": {
+          "percent": 98
+        }
+      },
+      "2026-11-27": {
+        "room-1-ceiling": {
+          "percent": 98
+        },
+        "room-1-downlight": {
+          "percent": 98
+        },
+        "room-1-fan": {
+          "percent": 98
+        },
+        "room-1-curtain": {
+          "percent": 98
+        },
+        "room-2-ceiling": {
+          "percent": 98
+        },
+        "room-2-downlight": {
+          "percent": 98
+        },
+        "room-2-fan": {
+          "percent": 98
+        },
+        "room-3-ceiling": {
+          "percent": 98
+        },
+        "room-3-downlight": {
+          "percent": 98
+        },
+        "room-3-fan": {
+          "percent": 98
+        },
+        "room-4-downlight": {
+          "percent": 98
+        },
+        "room-5-downlight": {
+          "percent": 98
+        },
+        "room-6-ceiling": {
+          "percent": 98
+        },
+        "room-6-downlight": {
+          "percent": 98
+        },
+        "room-6-barlamp": {
+          "percent": 98
+        },
+        "room-7-ceiling": {
+          "percent": 98
+        },
+        "room-7-downlight": {
+          "percent": 98
+        },
+        "room-7-fan": {
+          "percent": 98
+        },
+        "room-7-curtain": {
+          "percent": 98
+        },
+        "room-8-ceiling": {
+          "percent": 98
+        },
+        "room-8-downlight": {
+          "percent": 98
+        },
+        "room-8-fan": {
+          "percent": 98
+        }
+      },
+      "2026-11-28": {
+        "room-1-ceiling": {
+          "percent": 99
+        },
+        "room-1-downlight": {
+          "percent": 99
+        },
+        "room-1-fan": {
+          "percent": 99
+        },
+        "room-1-curtain": {
+          "percent": 99
+        },
+        "room-2-ceiling": {
+          "percent": 99
+        },
+        "room-2-downlight": {
+          "percent": 99
+        },
+        "room-2-fan": {
+          "percent": 99
+        },
+        "room-3-ceiling": {
+          "percent": 99
+        },
+        "room-3-downlight": {
+          "percent": 99
+        },
+        "room-3-fan": {
+          "percent": 99
+        },
+        "room-4-downlight": {
+          "percent": 99
+        },
+        "room-5-downlight": {
+          "percent": 99
+        },
+        "room-6-ceiling": {
+          "percent": 99
+        },
+        "room-6-downlight": {
+          "percent": 99
+        },
+        "room-6-barlamp": {
+          "percent": 99
+        },
+        "room-7-ceiling": {
+          "percent": 99
+        },
+        "room-7-downlight": {
+          "percent": 99
+        },
+        "room-7-fan": {
+          "percent": 99
+        },
+        "room-7-curtain": {
+          "percent": 99
+        },
+        "room-8-ceiling": {
+          "percent": 99
+        },
+        "room-8-downlight": {
+          "percent": 99
+        },
+        "room-8-fan": {
+          "percent": 99
+        }
+      },
+      "2026-11-29": {
+        "room-1-ceiling": {
+          "percent": 99
+        },
+        "room-1-downlight": {
+          "percent": 99
+        },
+        "room-1-fan": {
+          "percent": 99
+        },
+        "room-1-curtain": {
+          "percent": 99
+        },
+        "room-2-ceiling": {
+          "percent": 99
+        },
+        "room-2-downlight": {
+          "percent": 99
+        },
+        "room-2-fan": {
+          "percent": 99
+        },
+        "room-3-ceiling": {
+          "percent": 99
+        },
+        "room-3-downlight": {
+          "percent": 99
+        },
+        "room-3-fan": {
+          "percent": 99
+        },
+        "room-4-downlight": {
+          "percent": 99
+        },
+        "room-5-downlight": {
+          "percent": 99
+        },
+        "room-6-ceiling": {
+          "percent": 99
+        },
+        "room-6-downlight": {
+          "percent": 99
+        },
+        "room-6-barlamp": {
+          "percent": 99
+        },
+        "room-7-ceiling": {
+          "percent": 99
+        },
+        "room-7-downlight": {
+          "percent": 99
+        },
+        "room-7-fan": {
+          "percent": 99
+        },
+        "room-7-curtain": {
+          "percent": 99
+        },
+        "room-8-ceiling": {
+          "percent": 99
+        },
+        "room-8-downlight": {
+          "percent": 99
+        },
+        "room-8-fan": {
+          "percent": 99
+        }
+      },
+      "2026-11-30": {
+        "room-1-ceiling": {
+          "percent": 100
+        },
+        "room-1-downlight": {
+          "percent": 100
+        },
+        "room-1-fan": {
+          "percent": 100
+        },
+        "room-1-curtain": {
+          "percent": 100
+        },
+        "room-2-ceiling": {
+          "percent": 100
+        },
+        "room-2-downlight": {
+          "percent": 100
+        },
+        "room-2-fan": {
+          "percent": 100
+        },
+        "room-3-ceiling": {
+          "percent": 100
+        },
+        "room-3-downlight": {
+          "percent": 100
+        },
+        "room-3-fan": {
+          "percent": 100
+        },
+        "room-4-downlight": {
+          "percent": 100
+        },
+        "room-5-downlight": {
+          "percent": 100
+        },
+        "room-6-ceiling": {
+          "percent": 100
+        },
+        "room-6-downlight": {
+          "percent": 100
+        },
+        "room-6-barlamp": {
+          "percent": 100
+        },
+        "room-7-ceiling": {
+          "percent": 100
+        },
+        "room-7-downlight": {
+          "percent": 100
+        },
+        "room-7-fan": {
+          "percent": 100
+        },
+        "room-7-curtain": {
+          "percent": 100
+        },
+        "room-8-ceiling": {
+          "percent": 100
+        },
+        "room-8-downlight": {
+          "percent": 100
+        },
+        "room-8-fan": {
+          "percent": 100
+        }
+      }
+    },
+    "validDates": {
+      "2026-10-01": {
+        "valid": true,
+        "savedAt": "2026-09-26T17:54:31.248Z"
+      },
+      "2026-10-02": {
+        "valid": true,
+        "savedAt": "2026-09-26T17:54:31.248Z"
+      },
+      "2026-10-03": {
+        "valid": true,
+        "savedAt": "2026-09-26T17:54:31.248Z"
+      },
+      "2026-10-04": {
+        "valid": true,
+        "savedAt": "2026-09-26T17:54:31.248Z"
+      },
+      "2026-10-05": {
+        "valid": true,
+        "savedAt": "2026-09-26T17:54:31.248Z"
+      },
+      "2026-10-06": {
+        "valid": true,
+        "savedAt": "2026-09-26T17:54:31.248Z"
+      },
+      "2026-10-07": {
+        "valid": true,
+        "savedAt": "2026-09-26T17:54:31.248Z"
+      },
+      "2026-10-08": {
+        "valid": true,
+        "savedAt": "2026-09-26T17:54:31.248Z"
+      },
+      "2026-10-09": {
+        "valid": true,
+        "savedAt": "2026-09-26T17:54:31.248Z"
+      },
+      "2026-10-10": {
+        "valid": true,
+        "savedAt": "2026-09-26T17:54:31.248Z"
+      },
+      "2026-10-11": {
+        "valid": true,
+        "savedAt": "2026-09-26T17:54:31.248Z"
+      },
+      "2026-10-12": {
+        "valid": true,
+        "savedAt": "2026-09-26T17:54:31.248Z"
+      },
+      "2026-10-13": {
+        "valid": true,
+        "savedAt": "2026-09-26T17:54:31.248Z"
+      },
+      "2026-10-14": {
+        "valid": true,
+        "savedAt": "2026-09-26T17:54:31.248Z"
+      },
+      "2026-10-15": {
+        "valid": true,
+        "savedAt": "2026-09-26T17:54:31.248Z"
+      },
+      "2026-10-16": {
+        "valid": true,
+        "savedAt": "2026-09-26T17:54:31.248Z"
+      },
+      "2026-10-17": {
+        "valid": true,
+        "savedAt": "2026-09-26T17:54:31.248Z"
+      },
+      "2026-10-18": {
+        "valid": true,
+        "savedAt": "2026-09-26T17:54:31.248Z"
+      },
+      "2026-10-19": {
+        "valid": true,
+        "savedAt": "2026-09-26T17:54:31.248Z"
+      },
+      "2026-10-20": {
+        "valid": true,
+        "savedAt": "2026-09-26T17:54:31.248Z"
+      },
+      "2026-10-21": {
+        "valid": true,
+        "savedAt": "2026-09-26T17:54:31.248Z"
+      },
+      "2026-10-22": {
+        "valid": true,
+        "savedAt": "2026-09-26T17:54:31.248Z"
+      },
+      "2026-10-23": {
+        "valid": true,
+        "savedAt": "2026-09-26T17:54:31.248Z"
+      },
+      "2026-10-24": {
+        "valid": true,
+        "savedAt": "2026-09-26T17:54:31.248Z"
+      },
+      "2026-10-25": {
+        "valid": true,
+        "savedAt": "2026-09-26T17:54:31.248Z"
+      },
+      "2026-10-26": {
+        "valid": true,
+        "savedAt": "2026-09-26T17:54:31.248Z"
+      },
+      "2026-10-27": {
+        "valid": true,
+        "savedAt": "2026-09-26T17:54:31.248Z"
+      },
+      "2026-10-28": {
+        "valid": true,
+        "savedAt": "2026-09-26T17:54:31.248Z"
+      },
+      "2026-10-29": {
+        "valid": true,
+        "savedAt": "2026-09-26T17:54:31.248Z"
+      },
+      "2026-10-30": {
+        "valid": true,
+        "savedAt": "2026-09-26T17:54:31.248Z"
+      },
+      "2026-10-31": {
+        "valid": true,
+        "savedAt": "2026-09-26T17:54:31.248Z"
+      },
+      "2026-11-01": {
+        "valid": true,
+        "savedAt": "2026-09-26T17:54:31.248Z"
+      },
+      "2026-11-02": {
+        "valid": true,
+        "savedAt": "2026-09-26T17:54:31.248Z"
+      },
+      "2026-11-03": {
+        "valid": true,
+        "savedAt": "2026-09-26T17:54:31.248Z"
+      },
+      "2026-11-04": {
+        "valid": true,
+        "savedAt": "2026-09-26T17:54:31.248Z"
+      },
+      "2026-11-05": {
+        "valid": true,
+        "savedAt": "2026-09-26T17:54:31.248Z"
+      },
+      "2026-11-06": {
+        "valid": true,
+        "savedAt": "2026-09-26T17:54:31.248Z"
+      },
+      "2026-11-07": {
+        "valid": true,
+        "savedAt": "2026-09-26T17:54:31.248Z"
+      },
+      "2026-11-08": {
+        "valid": true,
+        "savedAt": "2026-09-26T17:54:31.248Z"
+      },
+      "2026-11-09": {
+        "valid": true,
+        "savedAt": "2026-09-26T17:54:31.248Z"
+      },
+      "2026-11-10": {
+        "valid": true,
+        "savedAt": "2026-09-26T17:54:31.248Z"
+      },
+      "2026-11-11": {
+        "valid": true,
+        "savedAt": "2026-09-26T17:54:31.248Z"
+      },
+      "2026-11-12": {
+        "valid": true,
+        "savedAt": "2026-09-26T17:54:31.248Z"
+      },
+      "2026-11-13": {
+        "valid": true,
+        "savedAt": "2026-09-26T17:54:31.248Z"
+      },
+      "2026-11-14": {
+        "valid": true,
+        "savedAt": "2026-09-26T17:54:31.248Z"
+      },
+      "2026-11-15": {
+        "valid": true,
+        "savedAt": "2026-09-26T17:54:31.248Z"
+      },
+      "2026-11-16": {
+        "valid": true,
+        "savedAt": "2026-09-26T17:54:31.248Z"
+      },
+      "2026-11-17": {
+        "valid": true,
+        "savedAt": "2026-09-26T17:54:31.248Z"
+      },
+      "2026-11-18": {
+        "valid": true,
+        "savedAt": "2026-09-26T17:54:31.248Z"
+      },
+      "2026-11-19": {
+        "valid": true,
+        "savedAt": "2026-09-26T17:54:31.248Z"
+      },
+      "2026-11-20": {
+        "valid": true,
+        "savedAt": "2026-09-26T17:54:31.248Z"
+      },
+      "2026-11-21": {
+        "valid": true,
+        "savedAt": "2026-09-26T17:54:31.248Z"
+      },
+      "2026-11-22": {
+        "valid": true,
+        "savedAt": "2026-09-26T17:54:31.248Z"
+      },
+      "2026-11-23": {
+        "valid": true,
+        "savedAt": "2026-09-26T17:54:31.248Z"
+      },
+      "2026-11-24": {
+        "valid": true,
+        "savedAt": "2026-09-26T17:54:31.248Z"
+      },
+      "2026-11-25": {
+        "valid": true,
+        "savedAt": "2026-09-26T17:54:31.248Z"
+      },
+      "2026-11-26": {
+        "valid": true,
+        "savedAt": "2026-09-26T17:54:31.248Z"
+      },
+      "2026-11-27": {
+        "valid": true,
+        "savedAt": "2026-09-26T17:54:31.248Z"
+      },
+      "2026-11-28": {
+        "valid": true,
+        "savedAt": "2026-09-26T17:54:31.248Z"
+      },
+      "2026-11-29": {
+        "valid": true,
+        "savedAt": "2026-09-26T17:54:31.248Z"
+      },
+      "2026-11-30": {
+        "valid": true,
+        "savedAt": "2026-09-26T17:54:31.248Z"
+      }
+    },
+    "updatedAt": "2026-09-26T17:54:32.067Z"
   }
 }
