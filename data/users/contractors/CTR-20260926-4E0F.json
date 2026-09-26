@@ -450,11 +450,11 @@
           "manualItems": [],
           "standardRateItems": [],
           "quotationType": "detail",
-          "projectId": "PRJ-BLD-MUIEA2U3-AC5ZO",
+          "projectId": "PRJ-BLD-MUF4BIIE-R2YWT",
           "projectState": "melaka",
           "rateSetId": "melaka",
           "rateSetName": "Melaka",
-          "rateSnapshotAt": "2026-09-26T12:57:34.867Z"
+          "rateSnapshotAt": "2026-09-26T12:58:13.527Z"
         },
         "itemListVersion": 1,
         "items": [
@@ -2194,14 +2194,14 @@
           }
         ],
         "createdAt": "2026-09-26T12:57:32.943Z",
-        "updatedAt": "2026-09-26T12:57:36.218Z",
+        "updatedAt": "2026-09-26T12:58:14.726Z",
         "estimateNumber": "EST-BLD-001"
       }
     ],
     "renovation": []
   },
   "createdAt": "2026-09-26T12:55:08.466Z",
-  "updatedAt": "2026-09-26T12:57:36.218Z",
+  "updatedAt": "2026-09-26T12:58:14.726Z",
   "quotationRunningNumber": {
     "build": 1
   },
