@@ -346,4 +346,53 @@ applyAudienceUI();if(isHomeowner()){document.getElementById('roomsContainer').in
 .planner-header #workspaceIdLabel{color:rgba(203,213,225,.72)!important}
 .planner-header #workspaceIdDisplay{color:#f8fafc!important;text-shadow:0 1px 8px rgba(0,0,0,.24)!important}
 </style>
+<script id="tc-floor-plan-import-receiver">
+(function(){
+  if(!/buildplanner-v2\.html$/i.test(location.pathname))return;
+  let raw=null;
+  try{raw=sessionStorage.getItem('teraju.floorplan.import.pending.v1')}catch(e){}
+  if(!raw)return;
+  let payload=null;
+  try{payload=JSON.parse(raw)}catch(e){console.error('[TERAJU FLOOR PLAN IMPORT] Invalid pending payload',e);sessionStorage.removeItem('teraju.floorplan.import.pending.v1');return}
+  if(!payload||payload.version!==1||!Array.isArray(payload.rooms)||!payload.rooms.length)return;
+  const wait=()=>{
+    const ready=typeof addRoom==='function'&&typeof updateEstimate==='function'&&document.getElementById('roomsContainer');
+    if(!ready){setTimeout(wait,100);return}
+    const existing=document.querySelectorAll('#roomsContainer .room-card').length;
+    if(existing&&!window.__TERAJU_FLOORPLAN_IMPORT_CONFIRMED){
+      const ok=confirm('Import '+payload.rooms.length+' reviewed room/area entries from the floor plan into the existing BuildPlanner list?\n\nOK = Add to existing rooms\nCancel = Do not import');
+      if(!ok){sessionStorage.removeItem('teraju.floorplan.import.pending.v1');return}
+      window.__TERAJU_FLOORPLAN_IMPORT_CONFIRMED=true;
+    }
+    let imported=0;
+    const stamp=Date.now();
+    payload.rooms.forEach((r,index)=>{
+      const name=String(r.name||'').trim(),area=Number(r.area)||0,type=String(r.roomTypeKey||'other');
+      if(!name||area<=0)return;
+      const id='ai-floorplan-'+stamp+'-'+index;
+      try{
+        addRoom(type,area,id,name);
+        const card=document.getElementById(id),nameInput=card?.querySelector('.room-name');
+        if(nameInput){
+          nameInput.value=name;
+          nameInput.dataset.generated='false';
+          if(typeof customRoomLabels!=='undefined'&&customRoomLabels instanceof Map)customRoomLabels.set(id,name);
+        }
+        imported++;
+      }catch(e){console.error('[TERAJU FLOOR PLAN IMPORT] Room import failed',r,e)}
+    });
+    if(imported){
+      try{updateEstimate();if(typeof saveContractorState==='function')saveContractorState()}catch(e){console.error('[TERAJU FLOOR PLAN IMPORT] Finalize failed',e)}
+      sessionStorage.removeItem('teraju.floorplan.import.pending.v1');
+      const rooms=document.getElementById('roomsContainer');
+      rooms?.scrollIntoView({behavior:'smooth',block:'start'});
+      setTimeout(()=>alert('Floor plan import complete: '+imported+' room/area entries added to BuildPlanner.'),250);
+    }else{
+      sessionStorage.removeItem('teraju.floorplan.import.pending.v1');
+      alert('No valid floor plan room/area entries were imported.');
+    }
+  };
+  setTimeout(wait,150);
+})();
+</script>
 </body></html>
