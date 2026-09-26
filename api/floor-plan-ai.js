@@ -333,7 +333,7 @@ Rules:
 - Never calculate area and never use dimension strings, grid numbers, title-block numbers, scale values, door/window sizes or unrelated numbers as area.
 - Preserve duplicate room names as separate physical spaces.
 - Include porches, verandahs, balconies, halls, utility spaces and other spaces ONLY when the drawing explicitly labels the physical space or clearly names it.
-- Do NOT infer a room/space from symbols, furniture, dimension lines, grid numbers, circulation lines, doors, openings, wall geometry or visual shapes alone.
+- Do NOT infer a room/space from symbols, furniture, dimension lines, grid numbers, circulation lines, doors, openings, wall geometry or visual shapes alone. A SPACE record requires a readable room/space name visibly printed on the drawing. Never create a name such as BATH 3, BEDROOM 4, HALL, STAIRS or BALCONY unless that exact name is visibly printed.
 - In particular, NEVER create a STAIRS/STAIRCASE/STAIR space unless the drawing explicitly labels that physical space as stairs/staircase.
 - Scan the entire drawing exhaustively and enumerate every visible room/space label, including labels near edges or partly obscured by watermark/glare. Do not stop after the first few rooms. If a label and explicit area are visibly present, include them even when the text is partially obscured.
 - Do not invent a room name just because a graphic resembles a familiar architectural feature.
@@ -362,9 +362,8 @@ Rules:
     body: JSON.stringify({
       model: GROQ_MODEL,
       input: [{ role: 'user', content: visionContent }],
-      temperature: 0.7,
-      reasoning: { effort: 'low' },
-      max_output_tokens: 1600
+      temperature: 0.2,
+      max_output_tokens: 1000
     })
   });
 
