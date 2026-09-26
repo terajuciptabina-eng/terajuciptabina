@@ -219,12 +219,78 @@ function normalizeExtraction(extraction, provider) {
   return { pages, spaces, warnings };
 }
 
+function parseGroqInventory(text) {
+  const pages = [];
+  const spaces = [];
+  const warnings = [];
+  const lines = String(text || '').split(/\\r?\\n/).map(line => line.trim()).filter(Boolean);
+
+  for (const line of lines) {
+    const fields = line.split('|').map(value => value.trim());
+    const kind = String(fields[0] || '').toUpperCase();
+
+    if (kind === 'PAGE') {
+      const page = Number(fields[1]);
+      if (!Number.isInteger(page) || page < 1) continue;
+      const type = String(fields[2] || 'other').toLowerCase();
+      const floorRaw = String(fields[3] || '').trim();
+      const confidence = String(fields[4] || 'low').toLowerCase();
+      pages.push({
+        page,
+        type: ['floor_plan','site_plan','roof_plan','elevation','schedule','presentation','other'].includes(type) ? type : 'other',
+        floor: floorRaw && floorRaw !== 'NULL' ? floorRaw : null,
+        confidence: ['high','medium','low'].includes(confidence) ? confidence : 'low'
+      });
+      continue;
+    }
+
+    if (kind === 'SPACE') {
+      const page = Number(fields[1]);
+      const floorRaw = String(fields[2] || '').trim();
+      const name = String(fields[3] || '').trim();
+      const areaRaw = String(fields[4] || '').trim();
+      const unitRaw = String(fields[5] || 'unknown').toLowerCase();
+      const dimensionsRaw = String(fields[6] || '').trim();
+      const confidenceRaw = String(fields[7] || 'low').toLowerCase();
+      const sourceRaw = String(fields[8] || 'unknown').toLowerCase();
+      const notesRaw = fields.slice(9).join(' | ').trim();
+
+      if (!Number.isInteger(page) || page < 1 || !name) continue;
+
+      let area = null;
+      if (areaRaw && areaRaw.toUpperCase() !== 'NULL' && areaRaw.toUpperCase() !== 'AREA NOT EXPLICIT' && areaRaw.toUpperCase() !== 'UNCLEAR') {
+        const numericArea = Number(areaRaw.replace(/,/g, ''));
+        if (Number.isFinite(numericArea) && numericArea >= 0) area = numericArea;
+      }
+
+      spaces.push({
+        id: `space-${page}-${spaces.length + 1}`,
+        page,
+        floor: floorRaw && floorRaw !== 'NULL' ? floorRaw : null,
+        name,
+        area,
+        unit: ['sqft','sqm','unknown'].includes(unitRaw) ? unitRaw : 'unknown',
+        dimensions: dimensionsRaw && dimensionsRaw.toUpperCase() !== 'NULL' ? dimensionsRaw : null,
+        confidence: ['high','medium','low'].includes(confidenceRaw) ? confidenceRaw : 'low',
+        source: ['explicit_label','schedule_crosscheck','visual_context','unknown'].includes(sourceRaw) ? sourceRaw : 'unknown',
+        notes: notesRaw && notesRaw.toUpperCase() !== 'NULL' ? notesRaw : null
+      });
+    }
+  }
+
+  if (!pages.length) warnings.push('Groq visual pass returned no page classification lines.');
+  if (!spaces.length) warnings.push('Groq visual pass returned no parseable SPACE lines.');
+
+  return normalizeExtraction({ pages, spaces, warnings }, 'Groq');
+}
+
 async function callGroq(images, fileName) {
   const apiKey = process.env.GROQ_API_KEY;
   if (!apiKey) throw new Error('Groq API is not configured. Add GROQ_API_KEY to the Vercel project environment.');
 
-  // PASS 1: visual understanding. Do not constrain the vision model to JSON.
-  // This lets the model spend its output budget actually reading the drawing.
+  // Single-pass Groq Vision. The model performs visual understanding and emits a
+  // compact line-based inventory. We parse that inventory locally, avoiding a
+  // second Groq request that can exhaust the free output-token-per-minute quota.
   const visionContent = [{
     type: 'input_text',
     text: `You are the visual-analysis stage of an architectural floor-plan extraction system.
@@ -232,22 +298,29 @@ async function callGroq(images, fileName) {
 Source file: ${fileName}
 This request contains ${images.length} page image(s).
 
-Read the supplied drawing(s) visually and produce a detailed plain-text inventory for the next extraction stage.
+Read the supplied drawing(s) visually. Output ONLY compact pipe-delimited records. NO prose, NO markdown, NO explanations.
 
-For EACH supplied page:
-- classify the page: floor plan, site plan, roof plan, elevation, schedule, presentation or other
-- identify the floor if visible
-- on floor-plan pages, inspect every distinct physical room/space
-- read the room label INSIDE or associated with its actual bounded space
-- read the explicit area printed for that room if present
-- preserve duplicate names as separate physical spaces
-- include porches, verandahs, balconies, halls, stairs, walkways, utility spaces and other clearly labelled/defined spaces
-- if an area is not explicitly printed, say AREA NOT EXPLICIT rather than calculating or guessing
-- do NOT use dimensions, grid numbers, title-block numbers, scale values, door/window sizes or unrelated numbers as room areas
-- use surrounding walls/boundaries and the position of labels to associate each area with the correct room
-- if text is unclear, say UNCLEAR rather than inventing it
+For every supplied page output exactly one:
+PAGE|page number|page type|floor or NULL|confidence
 
-This is a visual reading task. Do not summarize the drawing. Give a concrete page-by-page room inventory with the actual labels and numbers you can see.`
+For every distinct physical room/space you can identify output exactly one:
+SPACE|page number|floor or NULL|room/space name|explicit area number or NULL|sqm/sqft/unknown|dimensions or NULL|confidence|source|short note or NULL
+
+Rules:
+- Classify every page: floor_plan, site_plan, roof_plan, elevation, schedule, presentation or other.
+- Extract rooms/spaces primarily from floor-plan pages.
+- Read the room label associated with its actual bounded space.
+- Read an area ONLY when that area is explicitly printed for that room/space. If not explicit, use NULL.
+- Never calculate area and never use dimension strings, grid numbers, title-block numbers, scale values, door/window sizes or unrelated numbers as area.
+- Preserve duplicate room names as separate physical spaces.
+- Include clearly labelled/defined porches, verandahs, balconies, halls, stairs, walkways, utility spaces and other spaces.
+- Use surrounding walls/boundaries and label position to associate the correct area with the correct room.
+- If text is unclear, use the best readable label only when supported by the drawing; otherwise use UNCLEAR in the note and area=NULL.
+- source must be explicit_label, schedule_crosscheck, visual_context or unknown.
+- Use no pipe character inside any field.
+- Keep each SPACE record to one line.
+- Do not omit a distinct physical room merely because another room has the same name.
+- Do not invent unseen pages or values.`
   }];
 
   for (const image of images) {
@@ -266,8 +339,8 @@ This is a visual reading task. Do not summarize the drawing. Give a concrete pag
     body: JSON.stringify({
       model: GROQ_MODEL,
       input: [{ role: 'user', content: visionContent }],
-      temperature: 0.7,
-      max_output_tokens: 12000
+      temperature: 0.2,
+      max_output_tokens: 800
     })
   });
 
@@ -288,50 +361,24 @@ This is a visual reading task. Do not summarize the drawing. Give a concrete pag
   console.info('Groq visual pass metadata:', JSON.stringify({
     model: visionData?.model || GROQ_MODEL,
     status: visionData?.status || null,
-    content_length: visualText.length
+    content_length: visualText.length,
+    output_tokens: visionData?.usage?.output_tokens ?? null
   }));
 
   if (!visualText.trim()) {
     throw new Error('Groq visual pass returned no analysis.');
   }
 
-  // PASS 2: convert the visual inventory into the application's strict schema.
-  const structuredPrompt = `You are the structured extraction stage of an architectural floor-plan system.
+  const extraction = parseGroqInventory(visualText);
+  if (!extraction.spaces.length) {
+    console.error('Groq visual inventory parse produced 0 spaces:', JSON.stringify({
+      content_length: visualText.length,
+      content_preview: visualText.slice(0, 2000)
+    }));
+    throw new Error('Groq visual analysis returned no parseable room/space records.');
+  }
 
-Convert the following VISUAL INVENTORY into the supplied JSON schema.
-
-CRITICAL RULES:
-- Preserve every distinct physical room/space from the visual inventory.
-- Do not drop rooms merely because names repeat.
-- If the visual inventory says AREA NOT EXPLICIT or UNCLEAR, use area=null.
-- Never calculate area from dimensions.
-- Never turn dimensions, grid numbers, title-block numbers or unrelated numbers into area.
-- Keep page classification and floor information.
-- source should be explicit_label when the area is visibly printed for that room, schedule_crosscheck only when explicitly cross-checked from a supplied schedule, visual_context when the room is visually identified but the area is not explicit, otherwise unknown.
-- Return the complete object, not a summary.
-
-VISUAL INVENTORY:
-${visualText}`;
-
-  const structuredResponse = await fetch('https://api.groq.com/openai/v1/responses', {
-    method: 'POST',
-    headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      model: GROQ_MODEL,
-      input: [{ role: 'user', content: [{ type: 'input_text', text: structuredPrompt }] }],
-      text: {
-        format: {
-          type: 'json_schema',
-          name: 'floor_plan_extraction',
-          strict: true,
-          schema
-        }
-      },
-      max_output_tokens: 12000
-    })
-  });
-
-  return parseStructuredResponse(structuredResponse, 'Groq');
+  return extraction;
 }
 
 async function callOpenRouter(images, fileName, model = OPENROUTER_MODEL) {
