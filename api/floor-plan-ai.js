@@ -3,7 +3,11 @@ const ALLOWED_ORIGIN = 'https://terajuciptabina-eng.github.io';
 const PROVIDER = String(process.env.AI_PROVIDER || 'groq').toLowerCase();
 const OPENAI_MODEL = process.env.OPENAI_FLOORPLAN_MODEL || 'gpt-5.6-sol';
 const GROQ_MODEL = process.env.GROQ_FLOORPLAN_MODEL || 'qwen/qwen3.8-27b';
-const OPENROUTER_MODEL = process.env.OPENROUTER_FLOORPLAN_MODEL || 'openrouter/free';
+const OPENROUTER_MODEL = process.env.OPENROUTER_FLOORPLAN_MODEL || 'google/gemma-4-31b-it:free';
+const OPENROUTER_FALLBACK_MODELS = String(
+  process.env.OPENROUTER_FLOORPLAN_FALLBACK_MODELS ||
+  'google/gemma-4-26b-a4b-it:free,openrouter/free'
+).split(',').map(value => value.trim()).filter(Boolean);
 const MAX_IMAGES = 8;
 const GROQ_MAX_IMAGES_PER_REQUEST = 3;
 const MAX_BODY_BYTES = 5 * 1024 * 1024;
@@ -201,7 +205,7 @@ Use null when area or dimensions are unavailable. Do not add markdown or comment
   return parseStructuredResponse(response, 'Groq');
 }
 
-async function callOpenRouter(images, fileName) {
+async function callOpenRouter(images, fileName, model = OPENROUTER_MODEL) {
   const apiKey = process.env.OPENROUTER_API_KEY;
   if (!apiKey) throw new Error('OpenRouter API is not configured. Add OPENROUTER_API_KEY to the Vercel project environment.');
 
@@ -240,7 +244,7 @@ Use null when area or dimensions are unavailable. Do not add markdown or comment
       'X-Title': 'TERAJU WORKS Floor Plan AI'
     },
     body: JSON.stringify({
-      model: OPENROUTER_MODEL,
+      model,
       messages: [{ role: 'user', content }],
       temperature: 0.1,
       max_tokens: 12000,
@@ -250,7 +254,7 @@ Use null when area or dimensions are unavailable. Do not add markdown or comment
     })
   });
 
-  return parseStructuredResponse(response, 'OpenRouter');
+  return parseStructuredResponse(response, 'OpenRouter').then(extraction => ({ extraction, model }));
 }
 
 async function callOpenAI(images, fileName) {
@@ -330,18 +334,38 @@ export default async function handler(req, res) {
 
     const extractions = [];
     let actualProvider = selectedProvider;
+    let actualModel = selectedProvider === 'openai' ? OPENAI_MODEL : GROQ_MODEL;
     for (const batch of batches) {
       try {
-        extractions.push(
-          selectedProvider === 'openai'
-            ? await callOpenAI(batch, fileName)
-            : await callGroq(batch, fileName)
-        );
+        if (selectedProvider === 'openai') {
+          extractions.push(await callOpenAI(batch, fileName));
+        } else {
+          extractions.push(await callGroq(batch, fileName));
+        }
       } catch (primaryError) {
         if (selectedProvider !== 'groq') throw primaryError;
         console.warn('Groq floor-plan extraction failed; falling back to OpenRouter:', primaryError?.message || primaryError);
         actualProvider = 'openrouter';
-        extractions.push(await callOpenRouter(batch, fileName));
+
+        const fallbackModels = [OPENROUTER_MODEL, ...OPENROUTER_FALLBACK_MODELS]
+          .filter((model, index, list) => model && list.indexOf(model) === index);
+        let fallbackResult = null;
+        let lastFallbackError = primaryError;
+
+        for (const model of fallbackModels) {
+          try {
+            console.info(`Trying OpenRouter floor-plan model: ${model}`);
+            fallbackResult = await callOpenRouter(batch, fileName, model);
+            actualModel = model;
+            break;
+          } catch (fallbackError) {
+            lastFallbackError = fallbackError;
+            console.warn(`OpenRouter floor-plan model failed (${model}):`, fallbackError?.message || fallbackError);
+          }
+        }
+
+        if (!fallbackResult) throw lastFallbackError;
+        extractions.push(fallbackResult.extraction);
       }
     }
 
@@ -369,7 +393,7 @@ export default async function handler(req, res) {
     return res.status(200).json({
       success: true,
       provider: actualProvider,
-      model: actualProvider === 'groq' ? GROQ_MODEL : actualProvider === 'openrouter' ? OPENROUTER_MODEL : OPENAI_MODEL,
+      model: actualModel,
       fileName,
       pages,
       spaces,
