@@ -228,18 +228,18 @@ async function renderPdfAiImages(fileObj){
 }
 const BUILDPLANNER_ROOM_TYPES=['Living','Dining','Bedroom','Master Bedroom','Family','Kitchen','Store','Utility','Bathroom','Porch','Other'];
 function mapToBuildPlannerType(name){
- const n=String(name||'').trim().toLowerCase().replace(/[^a-z0-9]+/g,' ').replace(/\\s+/g,' ').trim();
+ const n=String(name||'').trim().toLowerCase().replace(/[^a-z0-9]+/g,' ').replace(/\s+/g,' ').trim();
  if(!n)return 'Other';
- if(/\\bmaster\\s+bed(room)?\\b/.test(n))return 'Master Bedroom';
- if(/\\bbed(room)?\\b/.test(n))return 'Bedroom';
- if(/\\bbath(room)?\\b|\\bbath\\b|\\btoilet\\b|\\bwashroom\\b|\\bwc\\b|\\bpowder\\b/.test(n))return 'Bathroom';
- if(/\\bkitchen\\b/.test(n))return 'Kitchen';
- if(/\\bdining\\b/.test(n))return 'Dining';
- if(/\\bliving\\b/.test(n))return 'Living';
- if(/\\bfamily\\b/.test(n))return 'Family';
- if(/\\bstore(room)?\\b/.test(n))return 'Store';
- if(/\\butility\\b|\\blaundry\\b/.test(n))return 'Utility';
- if(/\\bporch\\b/.test(n))return 'Porch';
+ if(/\bmaster\s+bed(room)?\b/.test(n))return 'Master Bedroom';
+ if(/\bbed(room)?\b/.test(n))return 'Bedroom';
+ if(/\bbath(room)?\b|\bbath\b|\btoilet\b|\bwashroom\b|\bwc\b|\bpowder\b/.test(n))return 'Bathroom';
+ if(/\bkitchen\b/.test(n))return 'Kitchen';
+ if(/\bdining\b/.test(n))return 'Dining';
+ if(/\bliving\b/.test(n))return 'Living';
+ if(/\bfamily\b/.test(n))return 'Family';
+ if(/\bstore(room)?\b/.test(n))return 'Store';
+ if(/\butility\b|\blaundry\b/.test(n))return 'Utility';
+ if(/\bporch\b/.test(n))return 'Porch';
  return 'Other';
 }
 function normalizeAiRows(spaces){
