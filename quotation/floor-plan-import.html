@@ -82,7 +82,21 @@ function renderAreas(){
  const el=document.getElementById('areaList');
  if(!el)return;
  el.innerHTML=areas.map((a,i)=>'<button class="btn '+(i===activeArea?'primary':'secondary')+'" data-area="'+i+'">'+esc(a.name)+' · '+a.rows.length+' spaces</button>').join('');
- el.querySelectorAll('[data-area]').forEach(btn=>btn.onclick=()=>{activeArea=Number(btn.dataset.area);rows=areas[activeArea].rows;currentFile=areas[activeArea].file||null;currentImage=null;render();});
+ el.querySelectorAll('[data-area]').forEach(btn=>btn.onclick=async()=>{
+  activeArea=Number(btn.dataset.area);
+  rows=areas[activeArea].rows;
+  currentFile=areas[activeArea].file||null;
+  currentImage=areas[activeArea].previewImage||null;
+  render();
+  if(currentImage)showImage(currentImage);
+  else preview.innerHTML='<div class="muted" style="color:#cbd5e1">No floor plan uploaded for this area.</div>';
+  setStatus(rows.length
+    ? areas[activeArea].file
+      ? 'Viewing '+areas[activeArea].name+' · '+rows.length+' spaces.'
+      : areas[activeArea].name+' has '+rows.length+' spaces in review.'
+    : 'No extraction yet for '+areas[activeArea].name+'.',
+    rows.length?'ok':'');
+ });
 }
 function render(){
  renderAreas();
@@ -115,6 +129,7 @@ async function load(f){
    activeArea=0;
   }else{
    areas[activeArea].file=f;
+   areas[activeArea].previewImage=null;
    areas[activeArea].rows=[];
   }
   rows=areas[activeArea].rows;render();
@@ -294,7 +309,7 @@ extract.onclick=async()=>{
   const data=await response.json().catch(()=>null);
   if(!response.ok||!data?.success)throw new Error(data?.message||'AI Vision extraction failed.');
   rows=normalizeAiRows(data.spaces);
-  if(activeArea!==null)areas[activeArea].rows=rows;
+  if(activeArea!==null){areas[activeArea].rows=rows;areas[activeArea].previewImage=images[0]?.data||null;}
   render();
   const pageSummary=(data.pages||[]).map(p=>'Page '+p.page+': '+p.type+(p.floor?' · '+p.floor:'')).join(' | ');
   const warningCount=Array.isArray(data.warnings)?data.warnings.length:0;
