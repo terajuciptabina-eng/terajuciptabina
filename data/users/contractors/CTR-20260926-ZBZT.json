@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "contractor",
+  "contractorId": "CTR-20260926-ZBZT",
+  "profile": {
+    "name": "EFR DESIGN HOMES",
+    "email": "efrdesign@yahoo.com",
+    "phone": "0105260096"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-09-26T23:42:24.718Z",
+  "updatedAt": "2026-09-26T23:42:24.718Z"
+}
