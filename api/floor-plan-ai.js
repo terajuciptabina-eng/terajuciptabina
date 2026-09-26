@@ -258,10 +258,22 @@ function parseGroqInventory(text) {
       if (!Number.isInteger(page) || page < 1 || !name) continue;
 
       let area = null;
+      let normalizedUnit = ['sqft','sqm','unknown'].includes(unitRaw) ? unitRaw : 'unknown';
       if (areaRaw && areaRaw.toUpperCase() !== 'NULL' && areaRaw.toUpperCase() !== 'AREA NOT EXPLICIT' && areaRaw.toUpperCase() !== 'UNCLEAR') {
-        const numericArea = Number(areaRaw.replace(/,/g, ''));
+        // Vision models sometimes return the numeric area together with its unit
+        // (e.g. "120.00 sq ft") even though the pipe schema has a separate unit field.
+        // Extract the numeric value robustly instead of rejecting the whole field.
+        const numericMatch = areaRaw.replace(/,/g, '').match(/-?\d+(?:\.\d+)?/);
+        const numericArea = numericMatch ? Number(numericMatch[0]) : NaN;
         if (Number.isFinite(numericArea) && numericArea >= 0) area = numericArea;
+        if (normalizedUnit === 'unknown' && /sq\s*ft|sqft|square\s*feet/i.test(areaRaw)) normalizedUnit = 'sqft';
+        if (normalizedUnit === 'unknown' && /sq\s*m|sqm|square\s*met(?:re|er)s?/i.test(areaRaw)) normalizedUnit = 'sqm';
       }
+
+      const normalizedConfidence =
+        confidenceRaw === 'high' || confidenceRaw === 'medium' || confidenceRaw === 'low'
+          ? confidenceRaw
+          : (Number(confidenceRaw) >= 0.85 ? 'high' : Number(confidenceRaw) >= 0.65 ? 'medium' : 'low');
 
       spaces.push({
         id: `space-${page}-${spaces.length + 1}`,
@@ -269,9 +281,9 @@ function parseGroqInventory(text) {
         floor: floorRaw && floorRaw !== 'NULL' ? floorRaw : null,
         name,
         area,
-        unit: ['sqft','sqm','unknown'].includes(unitRaw) ? unitRaw : 'unknown',
+        unit: normalizedUnit,
         dimensions: dimensionsRaw && dimensionsRaw.toUpperCase() !== 'NULL' ? dimensionsRaw : null,
-        confidence: ['high','medium','low'].includes(confidenceRaw) ? confidenceRaw : 'low',
+        confidence: normalizedConfidence,
         source: ['explicit_label','schedule_crosscheck','visual_context','unknown'].includes(sourceRaw) ? sourceRaw : 'unknown',
         notes: notesRaw && notesRaw.toUpperCase() !== 'NULL' ? notesRaw : null
       });
