@@ -126,12 +126,24 @@ async function parseStructuredResponse(response, provider) {
   }
 
   const message = data?.choices?.[0]?.message;
+  if (provider === 'groq' || provider === 'openrouter') {
+    console.info(provider + ' response metadata:', JSON.stringify({
+      model: data?.model || null,
+      finish_reason: data?.choices?.[0]?.finish_reason || null,
+      content_type: Array.isArray(message?.content) ? 'array' : typeof message?.content,
+      has_reasoning: Boolean(message?.reasoning),
+      has_reasoning_content: Boolean(message?.reasoning_content),
+      refusal: message?.refusal || null
+    }));
+  }
   const outputText = provider === 'groq' || provider === 'openrouter'
     ? (typeof message?.content === 'string'
         ? message.content
         : Array.isArray(message?.content)
           ? message.content.map(item => item?.text || item?.content || '').join('')
-          : (typeof message?.reasoning_content === 'string' ? message.reasoning_content : ''))
+          : (typeof message?.reasoning_content === 'string'
+              ? message.reasoning_content
+              : (typeof message?.reasoning === 'string' ? message.reasoning : '')))
     : data?.output_text ||
       data?.output?.flatMap(item => item?.content || [])
         ?.filter(item => item?.type === 'output_text')
@@ -203,7 +215,7 @@ Use null when area or dimensions are unavailable. Do not add markdown or comment
         }
       },
       reasoning_effort: 'none',
-      include_reasoning: false,
+      reasoning_format: 'hidden',
       stream: false
     })
   });
