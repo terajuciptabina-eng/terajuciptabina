@@ -141,7 +141,7 @@ async function parseStructuredResponse(response, provider) {
   console.info(provider + ' response metadata:', JSON.stringify({
     model: data.model || null,
     finish_reason: data.choices && data.choices[0] && data.choices[0].finish_reason || null,
-    content_type: Array.isArray(message && message.content) ? 'array' : typeof (message && message.content),
+    content_type: outputText ? (chatOutputText ? (Array.isArray(message && message.content) ? 'chat-array' : 'chat-string') : 'responses-output_text') : 'empty',
     content_length: outputText.length
   }));
 
@@ -223,38 +223,102 @@ async function callGroq(images, fileName) {
   const apiKey = process.env.GROQ_API_KEY;
   if (!apiKey) throw new Error('Groq API is not configured. Add GROQ_API_KEY to the Vercel project environment.');
 
-  const content = [{
+  // PASS 1: visual understanding. Do not constrain the vision model to JSON.
+  // This lets the model spend its output budget actually reading the drawing.
+  const visionContent = [{
     type: 'input_text',
-    text: `${SYSTEM_PROMPT}
+    text: `You are the visual-analysis stage of an architectural floor-plan extraction system.
 
 Source file: ${fileName}
-This request contains ${images.length} page image(s). Page numbers are provided immediately before each image.
+This request contains ${images.length} page image(s).
 
-Return ONLY one valid JSON object matching the supplied schema. Do not return markdown, code fences, explanations or analysis.
+Read the supplied drawing(s) visually and produce a detailed plain-text inventory for the next extraction stage.
 
-For every physical room or defined space, keep a separate spaces entry even when names repeat. If an area is not explicitly printed for that physical space, set area to null. Never calculate an area from dimensions. Never use dimensions, grid numbers, coordinates, title-block numbers, scale values, door/window sizes or unrelated numbers as room areas.
+For EACH supplied page:
+- classify the page: floor plan, site plan, roof plan, elevation, schedule, presentation or other
+- identify the floor if visible
+- on floor-plan pages, inspect every distinct physical room/space
+- read the room label INSIDE or associated with its actual bounded space
+- read the explicit area printed for that room if present
+- preserve duplicate names as separate physical spaces
+- include porches, verandahs, balconies, halls, stairs, walkways, utility spaces and other clearly labelled/defined spaces
+- if an area is not explicitly printed, say AREA NOT EXPLICIT rather than calculating or guessing
+- do NOT use dimensions, grid numbers, title-block numbers, scale values, door/window sizes or unrelated numbers as room areas
+- use surrounding walls/boundaries and the position of labels to associate each area with the correct room
+- if text is unclear, say UNCLEAR rather than inventing it
 
-Classify every supplied page. Extract rooms primarily from floor-plan pages. Ignore presentation, site/context, roof and elevation pages for room extraction. A schedule/accommodation page may cross-check names and areas only when it is supplied in this same request.
-
-Analyze the actual drawing context: the room label, its position, surrounding walls/boundaries and any explicit area printed for that room. Do not merge separate physical spaces just because their names match. Do not invent missing rooms or areas.`
+This is a visual reading task. Do not summarize the drawing. Give a concrete page-by-page room inventory with the actual labels and numbers you can see.`
   }];
 
   for (const image of images) {
     const page = Number(image.page) || 1;
-    content.push({ type: 'input_text', text: `PAGE ${page}` });
-    content.push({
+    visionContent.push({ type: 'input_text', text: `PAGE ${page}` });
+    visionContent.push({
       type: 'input_image',
       image_url: image.data,
       detail: 'high'
     });
   }
 
-  const response = await fetch('https://api.groq.com/openai/v1/responses', {
+  const visionResponse = await fetch('https://api.groq.com/openai/v1/responses', {
     method: 'POST',
     headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({
       model: GROQ_MODEL,
-      input: [{ role: 'user', content }],
+      input: [{ role: 'user', content: visionContent }],
+      temperature: 0.7,
+      max_output_tokens: 12000
+    })
+  });
+
+  const visionRaw = await visionResponse.text();
+  let visionData = null;
+  try { visionData = visionRaw ? JSON.parse(visionRaw) : null; } catch {}
+  if (!visionResponse.ok) {
+    console.error('Groq visual pass failed:', visionResponse.status, visionData || visionRaw);
+    throw new Error((visionData && visionData.error && visionData.error.message) || 'Groq visual analysis failed.');
+  }
+
+  const visualText = visionData?.output_text ||
+    (visionData?.output || []).flatMap(item => item?.content || [])
+      .filter(item => item?.type === 'output_text')
+      .map(item => item.text)
+      .join('') || '';
+
+  console.info('Groq visual pass metadata:', JSON.stringify({
+    model: visionData?.model || GROQ_MODEL,
+    status: visionData?.status || null,
+    content_length: visualText.length
+  }));
+
+  if (!visualText.trim()) {
+    throw new Error('Groq visual pass returned no analysis.');
+  }
+
+  // PASS 2: convert the visual inventory into the application's strict schema.
+  const structuredPrompt = `You are the structured extraction stage of an architectural floor-plan system.
+
+Convert the following VISUAL INVENTORY into the supplied JSON schema.
+
+CRITICAL RULES:
+- Preserve every distinct physical room/space from the visual inventory.
+- Do not drop rooms merely because names repeat.
+- If the visual inventory says AREA NOT EXPLICIT or UNCLEAR, use area=null.
+- Never calculate area from dimensions.
+- Never turn dimensions, grid numbers, title-block numbers or unrelated numbers into area.
+- Keep page classification and floor information.
+- source should be explicit_label when the area is visibly printed for that room, schedule_crosscheck only when explicitly cross-checked from a supplied schedule, visual_context when the room is visually identified but the area is not explicit, otherwise unknown.
+- Return the complete object, not a summary.
+
+VISUAL INVENTORY:
+${visualText}`;
+
+  const structuredResponse = await fetch('https://api.groq.com/openai/v1/responses', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: GROQ_MODEL,
+      input: [{ role: 'user', content: [{ type: 'input_text', text: structuredPrompt }] }],
       text: {
         format: {
           type: 'json_schema',
@@ -262,10 +326,12 @@ Analyze the actual drawing context: the room label, its position, surrounding wa
           strict: true,
           schema
         }
-      }
+      },
+      max_output_tokens: 12000
     })
   });
-  return parseStructuredResponse(response, 'Groq');
+
+  return parseStructuredResponse(structuredResponse, 'Groq');
 }
 
 async function callOpenRouter(images, fileName, model = OPENROUTER_MODEL) {
