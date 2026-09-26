@@ -252,7 +252,7 @@ function parseGroqInventory(text) {
       // room name and area value. Accept both the canonical schema and that
       // harmless variant without guessing any area.
       const shifted = String(fields[4] || '').trim().toUpperCase() === 'NULL'
-        && /^-?\d+(?:\.\d+)?$/.test(String(fields[5] || '').trim())
+        && /-?\d+(?:\.\d+)?/.test(String(fields[5] || '').trim())
         && /^(sqft|sqm|sq\s*ft|sq\s*m)$/i.test(String(fields[6] || '').trim());
 
       const areaRaw = String(fields[shifted ? 5 : 4] || '').trim();
@@ -329,6 +329,7 @@ Rules:
 - Classify every page: floor_plan, site_plan, roof_plan, elevation, schedule, presentation or other.
 - Extract rooms/spaces primarily from floor-plan pages.
 - Read the room label associated with its actual bounded space.
+- Preserve the room/space label exactly as printed, including visible numbers such as BEDROOM 1, BEDROOM 2, etc. Do not shorten a label by dropping its number.
 - Read an area ONLY when that area is explicitly printed for that room/space. If not explicit, use NULL.
 - Never calculate area and never use dimension strings, grid numbers, title-block numbers, scale values, door/window sizes or unrelated numbers as area.
 - Preserve duplicate room names as separate physical spaces.
