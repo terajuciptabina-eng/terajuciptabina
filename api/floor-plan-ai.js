@@ -126,17 +126,17 @@ async function parseStructuredResponse(response, provider) {
   }
 
   const message = data && data.choices && data.choices[0] && data.choices[0].message;
-  const outputText = provider === 'groq' || provider === 'openrouter'
-    ? (typeof (message && message.content) === 'string'
-        ? message.content
-        : Array.isArray(message && message.content)
-          ? message.content.map(item => item && (item.text || item.content) || '').join('')
-          : '')
-    : data.output_text ||
-      (data.output || []).flatMap(item => item && item.content || [])
-        .filter(item => item && item.type === 'output_text')
-        .map(item => item.text)
-        .join('') || '';
+  const chatOutputText = typeof (message && message.content) === 'string'
+    ? message.content
+    : Array.isArray(message && message.content)
+      ? message.content.map(item => item && (item.text || item.content) || '').join('')
+      : '';
+  const responsesOutputText = data.output_text ||
+    (data.output || []).flatMap(item => item && item.content || [])
+      .filter(item => item && item.type === 'output_text')
+      .map(item => item.text)
+      .join('') || '';
+  const outputText = chatOutputText || responsesOutputText;
 
   console.info(provider + ' response metadata:', JSON.stringify({
     model: data.model || null,
@@ -222,21 +222,15 @@ function normalizeExtraction(extraction, provider) {
 async function callGroq(images, fileName) {
   const apiKey = process.env.GROQ_API_KEY;
   if (!apiKey) throw new Error('Groq API is not configured. Add GROQ_API_KEY to the Vercel project environment.');
+
   const content = [{
-    type: 'text',
+    type: 'input_text',
     text: `${SYSTEM_PROMPT}
 
 Source file: ${fileName}
 This request contains ${images.length} page image(s). Page numbers are provided immediately before each image.
 
-Return ONLY one valid JSON object. Do not return markdown, code fences, explanations or analysis.
-
-Required top-level structure:
-{
-  "pages": [{"page": 1, "type": "floor_plan", "floor": "Ground Floor", "confidence": "high"}],
-  "spaces": [{"id": "page-1-space-1", "page": 1, "floor": "Ground Floor", "name": "Living", "area": 240, "unit": "sqft", "dimensions": "12' x 20'", "confidence": "high", "source": "explicit_label", "notes": null}],
-  "warnings": []
-}
+Return ONLY one valid JSON object matching the supplied schema. Do not return markdown, code fences, explanations or analysis.
 
 For every physical room or defined space, keep a separate spaces entry even when names repeat. If an area is not explicitly printed for that physical space, set area to null. Never calculate an area from dimensions. Never use dimensions, grid numbers, coordinates, title-block numbers, scale values, door/window sizes or unrelated numbers as room areas.
 
@@ -244,21 +238,31 @@ Classify every supplied page. Extract rooms primarily from floor-plan pages. Ign
 
 Analyze the actual drawing context: the room label, its position, surrounding walls/boundaries and any explicit area printed for that room. Do not merge separate physical spaces just because their names match. Do not invent missing rooms or areas.`
   }];
+
   for (const image of images) {
     const page = Number(image.page) || 1;
-    content.push({ type: 'text', text: `PAGE ${page}` });
-    content.push({ type: 'image_url', image_url: { url: image.data } });
+    content.push({ type: 'input_text', text: `PAGE ${page}` });
+    content.push({
+      type: 'input_image',
+      image_url: image.data,
+      detail: 'high'
+    });
   }
-  const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+
+  const response = await fetch('https://api.groq.com/openai/v1/responses', {
     method: 'POST',
     headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({
       model: GROQ_MODEL,
-      messages: [{ role: 'user', content }],
-      temperature: 0.2,
-      max_completion_tokens: 12000,
-      response_format: { type: 'json_object' },
-      stream: false
+      input: [{ role: 'user', content }],
+      text: {
+        format: {
+          type: 'json_schema',
+          name: 'floor_plan_extraction',
+          strict: true,
+          schema
+        }
+      }
     })
   });
   return parseStructuredResponse(response, 'Groq');
