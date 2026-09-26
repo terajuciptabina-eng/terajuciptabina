@@ -248,12 +248,19 @@ function parseGroqInventory(text) {
       const page = Number(fields[1]);
       const floorRaw = String(fields[2] || '').trim();
       const name = String(fields[3] || '').trim();
-      const areaRaw = String(fields[4] || '').trim();
-      const unitRaw = String(fields[5] || 'unknown').toLowerCase();
-      const dimensionsRaw = String(fields[6] || '').trim();
-      const confidenceRaw = String(fields[7] || 'low').toLowerCase();
-      const sourceRaw = String(fields[8] || 'unknown').toLowerCase();
-      const notesRaw = fields.slice(9).join(' | ').trim();
+      // Groq can occasionally emit an extra NULL placeholder between the
+      // room name and area value. Accept both the canonical schema and that
+      // harmless variant without guessing any area.
+      const shifted = String(fields[4] || '').trim().toUpperCase() === 'NULL'
+        && /^-?\d+(?:\.\d+)?$/.test(String(fields[5] || '').trim())
+        && /^(sqft|sqm|sq\s*ft|sq\s*m)$/i.test(String(fields[6] || '').trim());
+
+      const areaRaw = String(fields[shifted ? 5 : 4] || '').trim();
+      const unitRaw = String(fields[shifted ? 6 : 5] || 'unknown').toLowerCase().replace(/\s+/g, '');
+      const dimensionsRaw = String(fields[shifted ? 7 : 6] || '').trim();
+      const confidenceRaw = String(fields[shifted ? 8 : 7] || 'low').toLowerCase();
+      const sourceRaw = String(fields[shifted ? 9 : 8] || 'unknown').toLowerCase();
+      const notesRaw = fields.slice(shifted ? 10 : 9).join(' | ').trim();
 
       if (!Number.isInteger(page) || page < 1 || !name) continue;
 
