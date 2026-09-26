@@ -363,8 +363,8 @@ Rules:
       model: GROQ_MODEL,
       input: [{ role: 'user', content: visionContent }],
       temperature: 0.7,
-      reasoning: { effort: 'medium' },
-      max_output_tokens: 1200
+      reasoning: { effort: 'low' },
+      max_output_tokens: 1600
     })
   });
 
