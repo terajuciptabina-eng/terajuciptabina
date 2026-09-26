@@ -315,7 +315,7 @@ async function callGroq(images, fileName) {
     text: `You are the visual-analysis stage of an architectural floor-plan extraction system.
 
 Source file: ${fileName}
-This request contains ${images.length} page image(s).
+This request contains ${images.length} visual image(s). Some visual images may be multiple views of the same page; combine them as one page and deduplicate repeated spaces.
 
 Read the supplied drawing(s) visually. Output ONLY compact pipe-delimited records. NO prose, NO markdown, NO explanations.
 
@@ -344,6 +344,7 @@ Rules:
 - Use no pipe character inside any field.
 - Keep each SPACE record to one line.
 - Do not omit a distinct physical room merely because another room has the same name.
+- The same page may be supplied as multiple visual views (full page and detail crops). Treat them as ONE page. Combine evidence across views, deduplicate the same physical space, and keep the clearest readable label/area. Never count the same room twice merely because it appears in multiple views.
 - Do not invent unseen pages or values.`
   }];
 
