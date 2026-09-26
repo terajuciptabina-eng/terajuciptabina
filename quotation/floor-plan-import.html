@@ -18,9 +18,9 @@
 <body>
 <div class="wrap">
 <section class="hero">
-<div class="eyebrow">TERAJU WORKS · PROTOTYPE</div>
+<div class="eyebrow">TERAJU WORKS · BUILDPLANNER</div>
 <h1>AI Floor Plan → Room & Area</h1>
-<p class="muted">Test both source types without touching BuildPlanner: upload the original PDF or a camera/screenshot image. AI Vision analyses the complete drawing context, classifies pages and extracts room names, explicit areas and dimensions, then lets you review before import.</p>
+<p class="muted">Start from BuildPlanner V2, upload the original PDF or a camera/screenshot image, let AI Vision extract the rooms and areas, review the result, then return to BuildPlanner V2 to continue the calculation.</p>
 </section>
 
 <div class="grid">
@@ -33,7 +33,7 @@
 <input id="file" type="file" accept=".pdf,image/*" hidden>
 </div>
 <div class="actions">
-<button id="sample" class="btn secondary">Load Tested Sample</button>
+<button id="backToBuildPlanner" class="btn secondary" type="button">← Back to BuildPlanner</button><button id="sample" class="btn secondary">Load Tested Sample</button>
 <button id="addArea" class="btn secondary">+ Add Floor / Area</button>
 <button id="extract" class="btn primary" disabled>AI Vision Extract</button>
 </div>
@@ -56,7 +56,7 @@
 </div>
 <div class="actions">
 <button id="add" class="btn secondary">+ Add Row</button>
-<button id="import" class="btn primary" disabled>Import to BuildPlanner (Prototype)</button>
+<button id="import" class="btn primary" disabled>Import & Return to BuildPlanner</button>
 </div>
 <div class="check">Reviewed rooms are transferred into BuildPlanner V2 only after you confirm this import.</div>
 </section>
@@ -138,6 +138,7 @@ async function load(f){
   setStatus('Ready. Click “Extract Room & Area”.','ok')
  }catch(e){console.error('[FLOOR PLAN] load failed',e);setStatus('Unable to load this floor plan. Try JPG/PNG/WEBP or PDF.','warn')}
 }
+backToBuildPlanner.onclick=()=>{const p=new URLSearchParams(location.search),returnTo=p.get('returnTo')||'buildplanner-v2.html',target=new URL(returnTo,location.href);[...target.searchParams.keys()].forEach(k=>target.searchParams.delete(k));p.forEach((v,k)=>{if(k!=='returnTo'&&k!=='floorPlanImport')target.searchParams.set(k,v)});location.href=target.toString()};
 drop.onclick=()=>file.click();file.onchange=()=>file.files[0]&&load(file.files[0]);
 ['dragenter','dragover'].forEach(e=>drop.addEventListener(e,ev=>{ev.preventDefault();drop.classList.add('drag')}));
 ['dragleave','drop'].forEach(e=>drop.addEventListener(e,ev=>{ev.preventDefault();drop.classList.remove('drag')}));
@@ -355,8 +356,11 @@ imp.onclick=()=>{
  };
  try{
   sessionStorage.setItem('teraju.floorplan.import.pending.v1',JSON.stringify(payload));
-  const target=new URL('buildplanner-v2.html',location.href);
-  ['audience','contractorId','homeownerId','id'].forEach(k=>{const v=new URL(location.href).searchParams.get(k);if(v)target.searchParams.set(k,v)});
+  const sourceParams=new URLSearchParams(location.search);
+  const returnTo=sourceParams.get('returnTo')||'buildplanner-v2.html';
+  const target=new URL(returnTo,location.href);
+  [...target.searchParams.keys()].forEach(k=>target.searchParams.delete(k));
+  sourceParams.forEach((v,k)=>{if(k!=='returnTo'&&k!=='floorPlanImport')target.searchParams.set(k,v)});
   target.searchParams.set('floorPlanImport','1');
   setStatus('Opening BuildPlanner V2 with '+imported.length+' reviewed rooms…','ok');
   location.href=target.toString();
