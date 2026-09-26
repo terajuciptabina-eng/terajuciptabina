@@ -5,7 +5,7 @@
   "plannerType": "build",
   "quotationId": "QT-BLD-MUID7ZKA-5P78X",
   "createdAt": "2026-09-26T12:30:25.235Z",
-  "updatedAt": "2026-09-26T12:31:19.364Z",
+  "updatedAt": "2026-09-26T12:32:18.766Z",
   "contract": {
     "schemaVersion": 1,
     "recordType": "contract",
@@ -3085,5 +3085,5487 @@
       }
     },
     "updatedAt": "2026-09-26T12:31:19.364Z"
+  },
+  "progress": {
+    "schemaVersion": 4,
+    "recordType": "progress",
+    "quotationId": "QT-BLD-MUID7ZKA-5P78X",
+    "history": {
+      "2026-11-01": {
+        "master-preliminaries-/-building-plan-/-submission": {
+          "percent": 0
+        },
+        "master-preliminaries-/-site-mobilisation-/-project-management": {
+          "percent": 0
+        },
+        "master-main-building-/-footing-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-footing-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-footing-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-slab-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-slab-/-brc": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-/-metal-roofing-sheet": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-brc": {
+          "percent": 0
+        },
+        "master-main-building-/-drainage": {
+          "percent": 0
+        },
+        "master-main-building-/-brickwall-/-internal-wall": {
+          "percent": 0
+        },
+        "master-main-building-/-brickwall-/-external-wall": {
+          "percent": 0
+        },
+        "master-main-building-/-floor-tiles-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-floor-tiles-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-painting-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-painting-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-ceiling-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-ceiling-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-water-tank": {
+          "percent": 0
+        },
+        "master-main-building-/-septic-tank": {
+          "percent": 0
+        },
+        "master-main-building-/-power-point": {
+          "percent": 0
+        },
+        "master-main-building-/-switch": {
+          "percent": 0
+        },
+        "master-main-building-/-lighting": {
+          "percent": 0
+        },
+        "master-main-building-/-fan": {
+          "percent": 0
+        },
+        "master-main-building-/-aircond-point": {
+          "percent": 0
+        },
+        "master-earthing": {
+          "percent": 0
+        },
+        "master-db-box": {
+          "percent": 0
+        },
+        "master-wiring": {
+          "percent": 0
+        },
+        "master-doors-/-type-1-single-leaf": {
+          "percent": 0
+        },
+        "master-doors-/-type-2-sliding": {
+          "percent": 0
+        },
+        "master-doors-/-type-3-bathroom": {
+          "percent": 0
+        },
+        "master-doors-/-type-4-double-leaf-main-door": {
+          "percent": 0
+        },
+        "master-windows-/-type-1-1200*1200": {
+          "percent": 0
+        },
+        "master-windows-/-type-2-1800*1200": {
+          "percent": 0
+        },
+        "master-windows-/-type-3-900*600": {
+          "percent": 0
+        },
+        "master-boundary-fencing": {
+          "percent": 0
+        },
+        "master-gate": {
+          "percent": 0
+        },
+        "master-driveway": {
+          "percent": 0
+        },
+        "master-landscaping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-tap": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-tap": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-tap": {
+          "percent": 0
+        }
+      },
+      "2026-11-02": {
+        "master-preliminaries-/-building-plan-/-submission": {
+          "percent": 0
+        },
+        "master-preliminaries-/-site-mobilisation-/-project-management": {
+          "percent": 3
+        },
+        "master-main-building-/-footing-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-footing-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-footing-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-slab-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-slab-/-brc": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-/-metal-roofing-sheet": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-brc": {
+          "percent": 0
+        },
+        "master-main-building-/-drainage": {
+          "percent": 0
+        },
+        "master-main-building-/-brickwall-/-internal-wall": {
+          "percent": 0
+        },
+        "master-main-building-/-brickwall-/-external-wall": {
+          "percent": 0
+        },
+        "master-main-building-/-floor-tiles-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-floor-tiles-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-painting-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-painting-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-ceiling-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-ceiling-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-water-tank": {
+          "percent": 0
+        },
+        "master-main-building-/-septic-tank": {
+          "percent": 0
+        },
+        "master-main-building-/-power-point": {
+          "percent": 0
+        },
+        "master-main-building-/-switch": {
+          "percent": 0
+        },
+        "master-main-building-/-lighting": {
+          "percent": 0
+        },
+        "master-main-building-/-fan": {
+          "percent": 0
+        },
+        "master-main-building-/-aircond-point": {
+          "percent": 0
+        },
+        "master-earthing": {
+          "percent": 0
+        },
+        "master-db-box": {
+          "percent": 0
+        },
+        "master-wiring": {
+          "percent": 0
+        },
+        "master-doors-/-type-1-single-leaf": {
+          "percent": 0
+        },
+        "master-doors-/-type-2-sliding": {
+          "percent": 0
+        },
+        "master-doors-/-type-3-bathroom": {
+          "percent": 0
+        },
+        "master-doors-/-type-4-double-leaf-main-door": {
+          "percent": 0
+        },
+        "master-windows-/-type-1-1200*1200": {
+          "percent": 0
+        },
+        "master-windows-/-type-2-1800*1200": {
+          "percent": 0
+        },
+        "master-windows-/-type-3-900*600": {
+          "percent": 0
+        },
+        "master-boundary-fencing": {
+          "percent": 0
+        },
+        "master-gate": {
+          "percent": 0
+        },
+        "master-driveway": {
+          "percent": 0
+        },
+        "master-landscaping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-tap": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-tap": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-tap": {
+          "percent": 0
+        }
+      },
+      "2026-11-03": {
+        "master-preliminaries-/-building-plan-/-submission": {
+          "percent": 4
+        },
+        "master-preliminaries-/-site-mobilisation-/-project-management": {
+          "percent": 13
+        },
+        "master-main-building-/-footing-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-footing-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-footing-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-slab-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-slab-/-brc": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-/-metal-roofing-sheet": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-brc": {
+          "percent": 0
+        },
+        "master-main-building-/-drainage": {
+          "percent": 0
+        },
+        "master-main-building-/-brickwall-/-internal-wall": {
+          "percent": 0
+        },
+        "master-main-building-/-brickwall-/-external-wall": {
+          "percent": 0
+        },
+        "master-main-building-/-floor-tiles-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-floor-tiles-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-painting-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-painting-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-ceiling-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-ceiling-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-water-tank": {
+          "percent": 0
+        },
+        "master-main-building-/-septic-tank": {
+          "percent": 0
+        },
+        "master-main-building-/-power-point": {
+          "percent": 0
+        },
+        "master-main-building-/-switch": {
+          "percent": 0
+        },
+        "master-main-building-/-lighting": {
+          "percent": 0
+        },
+        "master-main-building-/-fan": {
+          "percent": 0
+        },
+        "master-main-building-/-aircond-point": {
+          "percent": 0
+        },
+        "master-earthing": {
+          "percent": 0
+        },
+        "master-db-box": {
+          "percent": 0
+        },
+        "master-wiring": {
+          "percent": 0
+        },
+        "master-doors-/-type-1-single-leaf": {
+          "percent": 0
+        },
+        "master-doors-/-type-2-sliding": {
+          "percent": 0
+        },
+        "master-doors-/-type-3-bathroom": {
+          "percent": 0
+        },
+        "master-doors-/-type-4-double-leaf-main-door": {
+          "percent": 0
+        },
+        "master-windows-/-type-1-1200*1200": {
+          "percent": 0
+        },
+        "master-windows-/-type-2-1800*1200": {
+          "percent": 0
+        },
+        "master-windows-/-type-3-900*600": {
+          "percent": 0
+        },
+        "master-boundary-fencing": {
+          "percent": 0
+        },
+        "master-gate": {
+          "percent": 0
+        },
+        "master-driveway": {
+          "percent": 0
+        },
+        "master-landscaping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-tap": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-tap": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-tap": {
+          "percent": 0
+        }
+      },
+      "2026-11-04": {
+        "master-preliminaries-/-building-plan-/-submission": {
+          "percent": 16
+        },
+        "master-preliminaries-/-site-mobilisation-/-project-management": {
+          "percent": 26
+        },
+        "master-main-building-/-footing-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-footing-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-footing-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-slab-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-slab-/-brc": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-/-metal-roofing-sheet": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-brc": {
+          "percent": 0
+        },
+        "master-main-building-/-drainage": {
+          "percent": 0
+        },
+        "master-main-building-/-brickwall-/-internal-wall": {
+          "percent": 0
+        },
+        "master-main-building-/-brickwall-/-external-wall": {
+          "percent": 0
+        },
+        "master-main-building-/-floor-tiles-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-floor-tiles-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-painting-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-painting-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-ceiling-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-ceiling-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-water-tank": {
+          "percent": 0
+        },
+        "master-main-building-/-septic-tank": {
+          "percent": 0
+        },
+        "master-main-building-/-power-point": {
+          "percent": 0
+        },
+        "master-main-building-/-switch": {
+          "percent": 0
+        },
+        "master-main-building-/-lighting": {
+          "percent": 0
+        },
+        "master-main-building-/-fan": {
+          "percent": 0
+        },
+        "master-main-building-/-aircond-point": {
+          "percent": 0
+        },
+        "master-earthing": {
+          "percent": 0
+        },
+        "master-db-box": {
+          "percent": 0
+        },
+        "master-wiring": {
+          "percent": 0
+        },
+        "master-doors-/-type-1-single-leaf": {
+          "percent": 0
+        },
+        "master-doors-/-type-2-sliding": {
+          "percent": 0
+        },
+        "master-doors-/-type-3-bathroom": {
+          "percent": 0
+        },
+        "master-doors-/-type-4-double-leaf-main-door": {
+          "percent": 0
+        },
+        "master-windows-/-type-1-1200*1200": {
+          "percent": 0
+        },
+        "master-windows-/-type-2-1800*1200": {
+          "percent": 0
+        },
+        "master-windows-/-type-3-900*600": {
+          "percent": 0
+        },
+        "master-boundary-fencing": {
+          "percent": 0
+        },
+        "master-gate": {
+          "percent": 0
+        },
+        "master-driveway": {
+          "percent": 0
+        },
+        "master-landscaping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-tap": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-tap": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-tap": {
+          "percent": 0
+        }
+      },
+      "2026-11-05": {
+        "master-preliminaries-/-building-plan-/-submission": {
+          "percent": 32
+        },
+        "master-preliminaries-/-site-mobilisation-/-project-management": {
+          "percent": 42
+        },
+        "master-main-building-/-footing-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-footing-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-footing-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-slab-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-slab-/-brc": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-/-metal-roofing-sheet": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-brc": {
+          "percent": 0
+        },
+        "master-main-building-/-drainage": {
+          "percent": 0
+        },
+        "master-main-building-/-brickwall-/-internal-wall": {
+          "percent": 0
+        },
+        "master-main-building-/-brickwall-/-external-wall": {
+          "percent": 0
+        },
+        "master-main-building-/-floor-tiles-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-floor-tiles-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-painting-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-painting-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-ceiling-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-ceiling-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-water-tank": {
+          "percent": 0
+        },
+        "master-main-building-/-septic-tank": {
+          "percent": 0
+        },
+        "master-main-building-/-power-point": {
+          "percent": 0
+        },
+        "master-main-building-/-switch": {
+          "percent": 0
+        },
+        "master-main-building-/-lighting": {
+          "percent": 0
+        },
+        "master-main-building-/-fan": {
+          "percent": 0
+        },
+        "master-main-building-/-aircond-point": {
+          "percent": 0
+        },
+        "master-earthing": {
+          "percent": 0
+        },
+        "master-db-box": {
+          "percent": 0
+        },
+        "master-wiring": {
+          "percent": 0
+        },
+        "master-doors-/-type-1-single-leaf": {
+          "percent": 0
+        },
+        "master-doors-/-type-2-sliding": {
+          "percent": 0
+        },
+        "master-doors-/-type-3-bathroom": {
+          "percent": 0
+        },
+        "master-doors-/-type-4-double-leaf-main-door": {
+          "percent": 0
+        },
+        "master-windows-/-type-1-1200*1200": {
+          "percent": 0
+        },
+        "master-windows-/-type-2-1800*1200": {
+          "percent": 0
+        },
+        "master-windows-/-type-3-900*600": {
+          "percent": 0
+        },
+        "master-boundary-fencing": {
+          "percent": 0
+        },
+        "master-gate": {
+          "percent": 0
+        },
+        "master-driveway": {
+          "percent": 0
+        },
+        "master-landscaping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-tap": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-tap": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-tap": {
+          "percent": 0
+        }
+      },
+      "2026-11-06": {
+        "master-preliminaries-/-building-plan-/-submission": {
+          "percent": 50
+        },
+        "master-preliminaries-/-site-mobilisation-/-project-management": {
+          "percent": 58
+        },
+        "master-main-building-/-footing-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-footing-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-footing-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-slab-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-slab-/-brc": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-/-metal-roofing-sheet": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-brc": {
+          "percent": 0
+        },
+        "master-main-building-/-drainage": {
+          "percent": 0
+        },
+        "master-main-building-/-brickwall-/-internal-wall": {
+          "percent": 0
+        },
+        "master-main-building-/-brickwall-/-external-wall": {
+          "percent": 0
+        },
+        "master-main-building-/-floor-tiles-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-floor-tiles-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-painting-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-painting-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-ceiling-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-ceiling-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-water-tank": {
+          "percent": 0
+        },
+        "master-main-building-/-septic-tank": {
+          "percent": 0
+        },
+        "master-main-building-/-power-point": {
+          "percent": 0
+        },
+        "master-main-building-/-switch": {
+          "percent": 0
+        },
+        "master-main-building-/-lighting": {
+          "percent": 0
+        },
+        "master-main-building-/-fan": {
+          "percent": 0
+        },
+        "master-main-building-/-aircond-point": {
+          "percent": 0
+        },
+        "master-earthing": {
+          "percent": 0
+        },
+        "master-db-box": {
+          "percent": 0
+        },
+        "master-wiring": {
+          "percent": 0
+        },
+        "master-doors-/-type-1-single-leaf": {
+          "percent": 0
+        },
+        "master-doors-/-type-2-sliding": {
+          "percent": 0
+        },
+        "master-doors-/-type-3-bathroom": {
+          "percent": 0
+        },
+        "master-doors-/-type-4-double-leaf-main-door": {
+          "percent": 0
+        },
+        "master-windows-/-type-1-1200*1200": {
+          "percent": 0
+        },
+        "master-windows-/-type-2-1800*1200": {
+          "percent": 0
+        },
+        "master-windows-/-type-3-900*600": {
+          "percent": 0
+        },
+        "master-boundary-fencing": {
+          "percent": 0
+        },
+        "master-gate": {
+          "percent": 0
+        },
+        "master-driveway": {
+          "percent": 0
+        },
+        "master-landscaping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-tap": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-tap": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-tap": {
+          "percent": 0
+        }
+      },
+      "2026-11-07": {
+        "master-preliminaries-/-building-plan-/-submission": {
+          "percent": 68
+        },
+        "master-preliminaries-/-site-mobilisation-/-project-management": {
+          "percent": 74
+        },
+        "master-main-building-/-footing-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-footing-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-footing-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-slab-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-slab-/-brc": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-/-metal-roofing-sheet": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-brc": {
+          "percent": 0
+        },
+        "master-main-building-/-drainage": {
+          "percent": 0
+        },
+        "master-main-building-/-brickwall-/-internal-wall": {
+          "percent": 0
+        },
+        "master-main-building-/-brickwall-/-external-wall": {
+          "percent": 0
+        },
+        "master-main-building-/-floor-tiles-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-floor-tiles-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-painting-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-painting-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-ceiling-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-ceiling-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-water-tank": {
+          "percent": 0
+        },
+        "master-main-building-/-septic-tank": {
+          "percent": 0
+        },
+        "master-main-building-/-power-point": {
+          "percent": 0
+        },
+        "master-main-building-/-switch": {
+          "percent": 0
+        },
+        "master-main-building-/-lighting": {
+          "percent": 0
+        },
+        "master-main-building-/-fan": {
+          "percent": 0
+        },
+        "master-main-building-/-aircond-point": {
+          "percent": 0
+        },
+        "master-earthing": {
+          "percent": 0
+        },
+        "master-db-box": {
+          "percent": 0
+        },
+        "master-wiring": {
+          "percent": 0
+        },
+        "master-doors-/-type-1-single-leaf": {
+          "percent": 0
+        },
+        "master-doors-/-type-2-sliding": {
+          "percent": 0
+        },
+        "master-doors-/-type-3-bathroom": {
+          "percent": 0
+        },
+        "master-doors-/-type-4-double-leaf-main-door": {
+          "percent": 0
+        },
+        "master-windows-/-type-1-1200*1200": {
+          "percent": 0
+        },
+        "master-windows-/-type-2-1800*1200": {
+          "percent": 0
+        },
+        "master-windows-/-type-3-900*600": {
+          "percent": 0
+        },
+        "master-boundary-fencing": {
+          "percent": 1
+        },
+        "master-gate": {
+          "percent": 0
+        },
+        "master-driveway": {
+          "percent": 0
+        },
+        "master-landscaping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-tap": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-tap": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-tap": {
+          "percent": 0
+        }
+      },
+      "2026-11-08": {
+        "master-preliminaries-/-building-plan-/-submission": {
+          "percent": 84
+        },
+        "master-preliminaries-/-site-mobilisation-/-project-management": {
+          "percent": 87
+        },
+        "master-main-building-/-footing-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-footing-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-footing-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-slab-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-slab-/-brc": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-/-metal-roofing-sheet": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-brc": {
+          "percent": 0
+        },
+        "master-main-building-/-drainage": {
+          "percent": 0
+        },
+        "master-main-building-/-brickwall-/-internal-wall": {
+          "percent": 0
+        },
+        "master-main-building-/-brickwall-/-external-wall": {
+          "percent": 0
+        },
+        "master-main-building-/-floor-tiles-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-floor-tiles-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-painting-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-painting-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-ceiling-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-ceiling-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-water-tank": {
+          "percent": 0
+        },
+        "master-main-building-/-septic-tank": {
+          "percent": 0
+        },
+        "master-main-building-/-power-point": {
+          "percent": 0
+        },
+        "master-main-building-/-switch": {
+          "percent": 0
+        },
+        "master-main-building-/-lighting": {
+          "percent": 0
+        },
+        "master-main-building-/-fan": {
+          "percent": 0
+        },
+        "master-main-building-/-aircond-point": {
+          "percent": 0
+        },
+        "master-earthing": {
+          "percent": 0
+        },
+        "master-db-box": {
+          "percent": 0
+        },
+        "master-wiring": {
+          "percent": 0
+        },
+        "master-doors-/-type-1-single-leaf": {
+          "percent": 0
+        },
+        "master-doors-/-type-2-sliding": {
+          "percent": 0
+        },
+        "master-doors-/-type-3-bathroom": {
+          "percent": 0
+        },
+        "master-doors-/-type-4-double-leaf-main-door": {
+          "percent": 0
+        },
+        "master-windows-/-type-1-1200*1200": {
+          "percent": 0
+        },
+        "master-windows-/-type-2-1800*1200": {
+          "percent": 0
+        },
+        "master-windows-/-type-3-900*600": {
+          "percent": 0
+        },
+        "master-boundary-fencing": {
+          "percent": 5
+        },
+        "master-gate": {
+          "percent": 0
+        },
+        "master-driveway": {
+          "percent": 0
+        },
+        "master-landscaping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-tap": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-tap": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-tap": {
+          "percent": 0
+        }
+      },
+      "2026-11-09": {
+        "master-preliminaries-/-building-plan-/-submission": {
+          "percent": 96
+        },
+        "master-preliminaries-/-site-mobilisation-/-project-management": {
+          "percent": 97
+        },
+        "master-main-building-/-footing-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-footing-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-footing-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-slab-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-slab-/-brc": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-/-metal-roofing-sheet": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-brc": {
+          "percent": 0
+        },
+        "master-main-building-/-drainage": {
+          "percent": 0
+        },
+        "master-main-building-/-brickwall-/-internal-wall": {
+          "percent": 0
+        },
+        "master-main-building-/-brickwall-/-external-wall": {
+          "percent": 0
+        },
+        "master-main-building-/-floor-tiles-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-floor-tiles-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-painting-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-painting-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-ceiling-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-ceiling-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-water-tank": {
+          "percent": 0
+        },
+        "master-main-building-/-septic-tank": {
+          "percent": 0
+        },
+        "master-main-building-/-power-point": {
+          "percent": 0
+        },
+        "master-main-building-/-switch": {
+          "percent": 0
+        },
+        "master-main-building-/-lighting": {
+          "percent": 0
+        },
+        "master-main-building-/-fan": {
+          "percent": 0
+        },
+        "master-main-building-/-aircond-point": {
+          "percent": 0
+        },
+        "master-earthing": {
+          "percent": 0
+        },
+        "master-db-box": {
+          "percent": 0
+        },
+        "master-wiring": {
+          "percent": 0
+        },
+        "master-doors-/-type-1-single-leaf": {
+          "percent": 0
+        },
+        "master-doors-/-type-2-sliding": {
+          "percent": 0
+        },
+        "master-doors-/-type-3-bathroom": {
+          "percent": 0
+        },
+        "master-doors-/-type-4-double-leaf-main-door": {
+          "percent": 0
+        },
+        "master-windows-/-type-1-1200*1200": {
+          "percent": 0
+        },
+        "master-windows-/-type-2-1800*1200": {
+          "percent": 0
+        },
+        "master-windows-/-type-3-900*600": {
+          "percent": 0
+        },
+        "master-boundary-fencing": {
+          "percent": 10
+        },
+        "master-gate": {
+          "percent": 0
+        },
+        "master-driveway": {
+          "percent": 16
+        },
+        "master-landscaping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-tap": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-tap": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-tap": {
+          "percent": 0
+        }
+      },
+      "2026-11-10": {
+        "master-preliminaries-/-building-plan-/-submission": {
+          "percent": 72
+        },
+        "master-preliminaries-/-site-mobilisation-/-project-management": {
+          "percent": 72
+        },
+        "master-main-building-/-footing-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-footing-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-footing-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-slab-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-slab-/-brc": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-/-metal-roofing-sheet": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-brc": {
+          "percent": 0
+        },
+        "master-main-building-/-drainage": {
+          "percent": 0
+        },
+        "master-main-building-/-brickwall-/-internal-wall": {
+          "percent": 0
+        },
+        "master-main-building-/-brickwall-/-external-wall": {
+          "percent": 0
+        },
+        "master-main-building-/-floor-tiles-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-floor-tiles-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-painting-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-painting-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-ceiling-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-ceiling-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-water-tank": {
+          "percent": 0
+        },
+        "master-main-building-/-septic-tank": {
+          "percent": 0
+        },
+        "master-main-building-/-power-point": {
+          "percent": 0
+        },
+        "master-main-building-/-switch": {
+          "percent": 0
+        },
+        "master-main-building-/-lighting": {
+          "percent": 0
+        },
+        "master-main-building-/-fan": {
+          "percent": 0
+        },
+        "master-main-building-/-aircond-point": {
+          "percent": 0
+        },
+        "master-earthing": {
+          "percent": 26
+        },
+        "master-db-box": {
+          "percent": 0
+        },
+        "master-wiring": {
+          "percent": 0
+        },
+        "master-doors-/-type-1-single-leaf": {
+          "percent": 0
+        },
+        "master-doors-/-type-2-sliding": {
+          "percent": 0
+        },
+        "master-doors-/-type-3-bathroom": {
+          "percent": 0
+        },
+        "master-doors-/-type-4-double-leaf-main-door": {
+          "percent": 0
+        },
+        "master-windows-/-type-1-1200*1200": {
+          "percent": 0
+        },
+        "master-windows-/-type-2-1800*1200": {
+          "percent": 0
+        },
+        "master-windows-/-type-3-900*600": {
+          "percent": 0
+        },
+        "master-boundary-fencing": {
+          "percent": 18
+        },
+        "master-gate": {
+          "percent": 0
+        },
+        "master-driveway": {
+          "percent": 50
+        },
+        "master-landscaping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-tap": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-tap": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-tap": {
+          "percent": 0
+        }
+      },
+      "2026-11-11": {
+        "master-preliminaries-/-building-plan-/-submission": {
+          "percent": 72
+        },
+        "master-preliminaries-/-site-mobilisation-/-project-management": {
+          "percent": 72
+        },
+        "master-main-building-/-footing-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-footing-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-footing-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-slab-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-slab-/-brc": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-/-metal-roofing-sheet": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-brc": {
+          "percent": 0
+        },
+        "master-main-building-/-drainage": {
+          "percent": 0
+        },
+        "master-main-building-/-brickwall-/-internal-wall": {
+          "percent": 0
+        },
+        "master-main-building-/-brickwall-/-external-wall": {
+          "percent": 0
+        },
+        "master-main-building-/-floor-tiles-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-floor-tiles-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-painting-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-painting-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-ceiling-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-ceiling-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-water-tank": {
+          "percent": 0
+        },
+        "master-main-building-/-septic-tank": {
+          "percent": 0
+        },
+        "master-main-building-/-power-point": {
+          "percent": 0
+        },
+        "master-main-building-/-switch": {
+          "percent": 0
+        },
+        "master-main-building-/-lighting": {
+          "percent": 0
+        },
+        "master-main-building-/-fan": {
+          "percent": 0
+        },
+        "master-main-building-/-aircond-point": {
+          "percent": 0
+        },
+        "master-earthing": {
+          "percent": 74
+        },
+        "master-db-box": {
+          "percent": 0
+        },
+        "master-wiring": {
+          "percent": 0
+        },
+        "master-doors-/-type-1-single-leaf": {
+          "percent": 0
+        },
+        "master-doors-/-type-2-sliding": {
+          "percent": 0
+        },
+        "master-doors-/-type-3-bathroom": {
+          "percent": 0
+        },
+        "master-doors-/-type-4-double-leaf-main-door": {
+          "percent": 0
+        },
+        "master-windows-/-type-1-1200*1200": {
+          "percent": 0
+        },
+        "master-windows-/-type-2-1800*1200": {
+          "percent": 0
+        },
+        "master-windows-/-type-3-900*600": {
+          "percent": 0
+        },
+        "master-boundary-fencing": {
+          "percent": 26
+        },
+        "master-gate": {
+          "percent": 0
+        },
+        "master-driveway": {
+          "percent": 84
+        },
+        "master-landscaping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-tap": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-tap": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-tap": {
+          "percent": 0
+        }
+      },
+      "2026-11-12": {
+        "master-preliminaries-/-building-plan-/-submission": {
+          "percent": 72
+        },
+        "master-preliminaries-/-site-mobilisation-/-project-management": {
+          "percent": 72
+        },
+        "master-main-building-/-footing-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-footing-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-footing-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-slab-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-slab-/-brc": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-/-metal-roofing-sheet": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-brc": {
+          "percent": 0
+        },
+        "master-main-building-/-drainage": {
+          "percent": 0
+        },
+        "master-main-building-/-brickwall-/-internal-wall": {
+          "percent": 0
+        },
+        "master-main-building-/-brickwall-/-external-wall": {
+          "percent": 0
+        },
+        "master-main-building-/-floor-tiles-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-floor-tiles-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-painting-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-painting-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-ceiling-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-ceiling-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-water-tank": {
+          "percent": 0
+        },
+        "master-main-building-/-septic-tank": {
+          "percent": 0
+        },
+        "master-main-building-/-power-point": {
+          "percent": 0
+        },
+        "master-main-building-/-switch": {
+          "percent": 0
+        },
+        "master-main-building-/-lighting": {
+          "percent": 0
+        },
+        "master-main-building-/-fan": {
+          "percent": 0
+        },
+        "master-main-building-/-aircond-point": {
+          "percent": 0
+        },
+        "master-earthing": {
+          "percent": 72
+        },
+        "master-db-box": {
+          "percent": 26
+        },
+        "master-wiring": {
+          "percent": 0
+        },
+        "master-doors-/-type-1-single-leaf": {
+          "percent": 0
+        },
+        "master-doors-/-type-2-sliding": {
+          "percent": 0
+        },
+        "master-doors-/-type-3-bathroom": {
+          "percent": 0
+        },
+        "master-doors-/-type-4-double-leaf-main-door": {
+          "percent": 0
+        },
+        "master-windows-/-type-1-1200*1200": {
+          "percent": 0
+        },
+        "master-windows-/-type-2-1800*1200": {
+          "percent": 0
+        },
+        "master-windows-/-type-3-900*600": {
+          "percent": 0
+        },
+        "master-boundary-fencing": {
+          "percent": 35
+        },
+        "master-gate": {
+          "percent": 0
+        },
+        "master-driveway": {
+          "percent": 72
+        },
+        "master-landscaping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-tap": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-tap": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-tap": {
+          "percent": 0
+        }
+      },
+      "2026-11-13": {
+        "master-preliminaries-/-building-plan-/-submission": {
+          "percent": 72
+        },
+        "master-preliminaries-/-site-mobilisation-/-project-management": {
+          "percent": 72
+        },
+        "master-main-building-/-footing-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-footing-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-footing-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-slab-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-slab-/-brc": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-/-metal-roofing-sheet": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-brc": {
+          "percent": 0
+        },
+        "master-main-building-/-drainage": {
+          "percent": 0
+        },
+        "master-main-building-/-brickwall-/-internal-wall": {
+          "percent": 0
+        },
+        "master-main-building-/-brickwall-/-external-wall": {
+          "percent": 0
+        },
+        "master-main-building-/-floor-tiles-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-floor-tiles-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-painting-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-painting-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-ceiling-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-ceiling-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-water-tank": {
+          "percent": 0
+        },
+        "master-main-building-/-septic-tank": {
+          "percent": 0
+        },
+        "master-main-building-/-power-point": {
+          "percent": 0
+        },
+        "master-main-building-/-switch": {
+          "percent": 0
+        },
+        "master-main-building-/-lighting": {
+          "percent": 0
+        },
+        "master-main-building-/-fan": {
+          "percent": 0
+        },
+        "master-main-building-/-aircond-point": {
+          "percent": 0
+        },
+        "master-earthing": {
+          "percent": 72
+        },
+        "master-db-box": {
+          "percent": 74
+        },
+        "master-wiring": {
+          "percent": 0
+        },
+        "master-doors-/-type-1-single-leaf": {
+          "percent": 0
+        },
+        "master-doors-/-type-2-sliding": {
+          "percent": 0
+        },
+        "master-doors-/-type-3-bathroom": {
+          "percent": 0
+        },
+        "master-doors-/-type-4-double-leaf-main-door": {
+          "percent": 0
+        },
+        "master-windows-/-type-1-1200*1200": {
+          "percent": 0
+        },
+        "master-windows-/-type-2-1800*1200": {
+          "percent": 0
+        },
+        "master-windows-/-type-3-900*600": {
+          "percent": 0
+        },
+        "master-boundary-fencing": {
+          "percent": 45
+        },
+        "master-gate": {
+          "percent": 0
+        },
+        "master-driveway": {
+          "percent": 72
+        },
+        "master-landscaping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-tap": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-tap": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-tap": {
+          "percent": 0
+        }
+      },
+      "2026-11-14": {
+        "master-preliminaries-/-building-plan-/-submission": {
+          "percent": 72
+        },
+        "master-preliminaries-/-site-mobilisation-/-project-management": {
+          "percent": 72
+        },
+        "master-main-building-/-footing-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-footing-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-footing-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-slab-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-slab-/-brc": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-/-metal-roofing-sheet": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-brc": {
+          "percent": 0
+        },
+        "master-main-building-/-drainage": {
+          "percent": 0
+        },
+        "master-main-building-/-brickwall-/-internal-wall": {
+          "percent": 0
+        },
+        "master-main-building-/-brickwall-/-external-wall": {
+          "percent": 0
+        },
+        "master-main-building-/-floor-tiles-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-floor-tiles-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-painting-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-painting-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-ceiling-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-ceiling-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-water-tank": {
+          "percent": 0
+        },
+        "master-main-building-/-septic-tank": {
+          "percent": 0
+        },
+        "master-main-building-/-power-point": {
+          "percent": 0
+        },
+        "master-main-building-/-switch": {
+          "percent": 0
+        },
+        "master-main-building-/-lighting": {
+          "percent": 0
+        },
+        "master-main-building-/-fan": {
+          "percent": 0
+        },
+        "master-main-building-/-aircond-point": {
+          "percent": 0
+        },
+        "master-earthing": {
+          "percent": 72
+        },
+        "master-db-box": {
+          "percent": 72
+        },
+        "master-wiring": {
+          "percent": 0
+        },
+        "master-doors-/-type-1-single-leaf": {
+          "percent": 0
+        },
+        "master-doors-/-type-2-sliding": {
+          "percent": 0
+        },
+        "master-doors-/-type-3-bathroom": {
+          "percent": 0
+        },
+        "master-doors-/-type-4-double-leaf-main-door": {
+          "percent": 0
+        },
+        "master-windows-/-type-1-1200*1200": {
+          "percent": 0
+        },
+        "master-windows-/-type-2-1800*1200": {
+          "percent": 0
+        },
+        "master-windows-/-type-3-900*600": {
+          "percent": 0
+        },
+        "master-boundary-fencing": {
+          "percent": 55
+        },
+        "master-gate": {
+          "percent": 0
+        },
+        "master-driveway": {
+          "percent": 72
+        },
+        "master-landscaping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-tap": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-tap": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-tap": {
+          "percent": 0
+        }
+      },
+      "2026-11-15": {
+        "master-preliminaries-/-building-plan-/-submission": {
+          "percent": 72
+        },
+        "master-preliminaries-/-site-mobilisation-/-project-management": {
+          "percent": 72
+        },
+        "master-main-building-/-footing-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-footing-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-footing-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-slab-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-slab-/-brc": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-/-metal-roofing-sheet": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-brc": {
+          "percent": 0
+        },
+        "master-main-building-/-drainage": {
+          "percent": 0
+        },
+        "master-main-building-/-brickwall-/-internal-wall": {
+          "percent": 0
+        },
+        "master-main-building-/-brickwall-/-external-wall": {
+          "percent": 0
+        },
+        "master-main-building-/-floor-tiles-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-floor-tiles-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-painting-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-painting-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-ceiling-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-ceiling-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-water-tank": {
+          "percent": 0
+        },
+        "master-main-building-/-septic-tank": {
+          "percent": 0
+        },
+        "master-main-building-/-power-point": {
+          "percent": 0
+        },
+        "master-main-building-/-switch": {
+          "percent": 0
+        },
+        "master-main-building-/-lighting": {
+          "percent": 0
+        },
+        "master-main-building-/-fan": {
+          "percent": 0
+        },
+        "master-main-building-/-aircond-point": {
+          "percent": 0
+        },
+        "master-earthing": {
+          "percent": 72
+        },
+        "master-db-box": {
+          "percent": 72
+        },
+        "master-wiring": {
+          "percent": 0
+        },
+        "master-doors-/-type-1-single-leaf": {
+          "percent": 0
+        },
+        "master-doors-/-type-2-sliding": {
+          "percent": 0
+        },
+        "master-doors-/-type-3-bathroom": {
+          "percent": 0
+        },
+        "master-doors-/-type-4-double-leaf-main-door": {
+          "percent": 0
+        },
+        "master-windows-/-type-1-1200*1200": {
+          "percent": 0
+        },
+        "master-windows-/-type-2-1800*1200": {
+          "percent": 0
+        },
+        "master-windows-/-type-3-900*600": {
+          "percent": 0
+        },
+        "master-boundary-fencing": {
+          "percent": 65
+        },
+        "master-gate": {
+          "percent": 0
+        },
+        "master-driveway": {
+          "percent": 72
+        },
+        "master-landscaping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-tap": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-tap": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-tap": {
+          "percent": 0
+        }
+      },
+      "2026-11-16": {
+        "master-preliminaries-/-building-plan-/-submission": {
+          "percent": 73
+        },
+        "master-preliminaries-/-site-mobilisation-/-project-management": {
+          "percent": 73
+        },
+        "master-main-building-/-footing-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-footing-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-footing-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-slab-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-slab-/-brc": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-rebar": {
+          "percent": 3
+        },
+        "master-main-building-/-roof-beam-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-/-metal-roofing-sheet": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-brc": {
+          "percent": 0
+        },
+        "master-main-building-/-drainage": {
+          "percent": 0
+        },
+        "master-main-building-/-brickwall-/-internal-wall": {
+          "percent": 0
+        },
+        "master-main-building-/-brickwall-/-external-wall": {
+          "percent": 0
+        },
+        "master-main-building-/-floor-tiles-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-floor-tiles-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-painting-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-painting-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-ceiling-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-ceiling-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-water-tank": {
+          "percent": 0
+        },
+        "master-main-building-/-septic-tank": {
+          "percent": 0
+        },
+        "master-main-building-/-power-point": {
+          "percent": 0
+        },
+        "master-main-building-/-switch": {
+          "percent": 0
+        },
+        "master-main-building-/-lighting": {
+          "percent": 0
+        },
+        "master-main-building-/-fan": {
+          "percent": 0
+        },
+        "master-main-building-/-aircond-point": {
+          "percent": 0
+        },
+        "master-earthing": {
+          "percent": 73
+        },
+        "master-db-box": {
+          "percent": 73
+        },
+        "master-wiring": {
+          "percent": 0
+        },
+        "master-doors-/-type-1-single-leaf": {
+          "percent": 0
+        },
+        "master-doors-/-type-2-sliding": {
+          "percent": 0
+        },
+        "master-doors-/-type-3-bathroom": {
+          "percent": 0
+        },
+        "master-doors-/-type-4-double-leaf-main-door": {
+          "percent": 0
+        },
+        "master-windows-/-type-1-1200*1200": {
+          "percent": 0
+        },
+        "master-windows-/-type-2-1800*1200": {
+          "percent": 0
+        },
+        "master-windows-/-type-3-900*600": {
+          "percent": 0
+        },
+        "master-boundary-fencing": {
+          "percent": 74
+        },
+        "master-gate": {
+          "percent": 0
+        },
+        "master-driveway": {
+          "percent": 73
+        },
+        "master-landscaping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-tap": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-tap": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-tap": {
+          "percent": 0
+        }
+      },
+      "2026-11-17": {
+        "master-preliminaries-/-building-plan-/-submission": {
+          "percent": 73
+        },
+        "master-preliminaries-/-site-mobilisation-/-project-management": {
+          "percent": 73
+        },
+        "master-main-building-/-footing-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-footing-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-footing-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-slab-/-concrete": {
+          "percent": 3
+        },
+        "master-main-building-/-ground-slab-/-brc": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-rebar": {
+          "percent": 10
+        },
+        "master-main-building-/-roof-beam-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-/-metal-roofing-sheet": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-brc": {
+          "percent": 0
+        },
+        "master-main-building-/-drainage": {
+          "percent": 0
+        },
+        "master-main-building-/-brickwall-/-internal-wall": {
+          "percent": 0
+        },
+        "master-main-building-/-brickwall-/-external-wall": {
+          "percent": 0
+        },
+        "master-main-building-/-floor-tiles-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-floor-tiles-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-painting-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-painting-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-ceiling-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-ceiling-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-water-tank": {
+          "percent": 0
+        },
+        "master-main-building-/-septic-tank": {
+          "percent": 0
+        },
+        "master-main-building-/-power-point": {
+          "percent": 0
+        },
+        "master-main-building-/-switch": {
+          "percent": 0
+        },
+        "master-main-building-/-lighting": {
+          "percent": 0
+        },
+        "master-main-building-/-fan": {
+          "percent": 0
+        },
+        "master-main-building-/-aircond-point": {
+          "percent": 0
+        },
+        "master-earthing": {
+          "percent": 73
+        },
+        "master-db-box": {
+          "percent": 73
+        },
+        "master-wiring": {
+          "percent": 0
+        },
+        "master-doors-/-type-1-single-leaf": {
+          "percent": 0
+        },
+        "master-doors-/-type-2-sliding": {
+          "percent": 0
+        },
+        "master-doors-/-type-3-bathroom": {
+          "percent": 0
+        },
+        "master-doors-/-type-4-double-leaf-main-door": {
+          "percent": 0
+        },
+        "master-windows-/-type-1-1200*1200": {
+          "percent": 0
+        },
+        "master-windows-/-type-2-1800*1200": {
+          "percent": 0
+        },
+        "master-windows-/-type-3-900*600": {
+          "percent": 0
+        },
+        "master-boundary-fencing": {
+          "percent": 82
+        },
+        "master-gate": {
+          "percent": 0
+        },
+        "master-driveway": {
+          "percent": 73
+        },
+        "master-landscaping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-tap": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-tap": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-tap": {
+          "percent": 0
+        }
+      },
+      "2026-11-18": {
+        "master-preliminaries-/-building-plan-/-submission": {
+          "percent": 73
+        },
+        "master-preliminaries-/-site-mobilisation-/-project-management": {
+          "percent": 73
+        },
+        "master-main-building-/-footing-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-footing-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-footing-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-slab-/-concrete": {
+          "percent": 13
+        },
+        "master-main-building-/-ground-slab-/-brc": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-formwork": {
+          "percent": 7
+        },
+        "master-main-building-/-ground-beam-/-rebar": {
+          "percent": 22
+        },
+        "master-main-building-/-roof-beam-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-/-metal-roofing-sheet": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-brc": {
+          "percent": 0
+        },
+        "master-main-building-/-drainage": {
+          "percent": 0
+        },
+        "master-main-building-/-brickwall-/-internal-wall": {
+          "percent": 0
+        },
+        "master-main-building-/-brickwall-/-external-wall": {
+          "percent": 0
+        },
+        "master-main-building-/-floor-tiles-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-floor-tiles-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-painting-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-painting-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-ceiling-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-ceiling-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-water-tank": {
+          "percent": 0
+        },
+        "master-main-building-/-septic-tank": {
+          "percent": 0
+        },
+        "master-main-building-/-power-point": {
+          "percent": 0
+        },
+        "master-main-building-/-switch": {
+          "percent": 0
+        },
+        "master-main-building-/-lighting": {
+          "percent": 0
+        },
+        "master-main-building-/-fan": {
+          "percent": 0
+        },
+        "master-main-building-/-aircond-point": {
+          "percent": 0
+        },
+        "master-earthing": {
+          "percent": 73
+        },
+        "master-db-box": {
+          "percent": 73
+        },
+        "master-wiring": {
+          "percent": 0
+        },
+        "master-doors-/-type-1-single-leaf": {
+          "percent": 0
+        },
+        "master-doors-/-type-2-sliding": {
+          "percent": 0
+        },
+        "master-doors-/-type-3-bathroom": {
+          "percent": 0
+        },
+        "master-doors-/-type-4-double-leaf-main-door": {
+          "percent": 0
+        },
+        "master-windows-/-type-1-1200*1200": {
+          "percent": 0
+        },
+        "master-windows-/-type-2-1800*1200": {
+          "percent": 0
+        },
+        "master-windows-/-type-3-900*600": {
+          "percent": 0
+        },
+        "master-boundary-fencing": {
+          "percent": 90
+        },
+        "master-gate": {
+          "percent": 0
+        },
+        "master-driveway": {
+          "percent": 73
+        },
+        "master-landscaping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-tap": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-tap": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-tap": {
+          "percent": 0
+        }
+      },
+      "2026-11-19": {
+        "master-preliminaries-/-building-plan-/-submission": {
+          "percent": 73
+        },
+        "master-preliminaries-/-site-mobilisation-/-project-management": {
+          "percent": 73
+        },
+        "master-main-building-/-footing-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-footing-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-footing-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-slab-/-concrete": {
+          "percent": 26
+        },
+        "master-main-building-/-ground-slab-/-brc": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-formwork": {
+          "percent": 26
+        },
+        "master-main-building-/-ground-beam-/-rebar": {
+          "percent": 35
+        },
+        "master-main-building-/-roof-beam-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-/-metal-roofing-sheet": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-brc": {
+          "percent": 0
+        },
+        "master-main-building-/-drainage": {
+          "percent": 0
+        },
+        "master-main-building-/-brickwall-/-internal-wall": {
+          "percent": 0
+        },
+        "master-main-building-/-brickwall-/-external-wall": {
+          "percent": 0
+        },
+        "master-main-building-/-floor-tiles-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-floor-tiles-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-painting-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-painting-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-ceiling-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-ceiling-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-water-tank": {
+          "percent": 0
+        },
+        "master-main-building-/-septic-tank": {
+          "percent": 0
+        },
+        "master-main-building-/-power-point": {
+          "percent": 0
+        },
+        "master-main-building-/-switch": {
+          "percent": 0
+        },
+        "master-main-building-/-lighting": {
+          "percent": 0
+        },
+        "master-main-building-/-fan": {
+          "percent": 0
+        },
+        "master-main-building-/-aircond-point": {
+          "percent": 0
+        },
+        "master-earthing": {
+          "percent": 73
+        },
+        "master-db-box": {
+          "percent": 73
+        },
+        "master-wiring": {
+          "percent": 0
+        },
+        "master-doors-/-type-1-single-leaf": {
+          "percent": 0
+        },
+        "master-doors-/-type-2-sliding": {
+          "percent": 0
+        },
+        "master-doors-/-type-3-bathroom": {
+          "percent": 0
+        },
+        "master-doors-/-type-4-double-leaf-main-door": {
+          "percent": 0
+        },
+        "master-windows-/-type-1-1200*1200": {
+          "percent": 0
+        },
+        "master-windows-/-type-2-1800*1200": {
+          "percent": 0
+        },
+        "master-windows-/-type-3-900*600": {
+          "percent": 0
+        },
+        "master-boundary-fencing": {
+          "percent": 95
+        },
+        "master-gate": {
+          "percent": 0
+        },
+        "master-driveway": {
+          "percent": 73
+        },
+        "master-landscaping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-tap": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-tap": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-tap": {
+          "percent": 0
+        }
+      },
+      "2026-11-20": {
+        "master-preliminaries-/-building-plan-/-submission": {
+          "percent": 73
+        },
+        "master-preliminaries-/-site-mobilisation-/-project-management": {
+          "percent": 73
+        },
+        "master-main-building-/-footing-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-footing-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-footing-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-slab-/-concrete": {
+          "percent": 42
+        },
+        "master-main-building-/-ground-slab-/-brc": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-concrete": {
+          "percent": 16
+        },
+        "master-main-building-/-ground-beam-/-formwork": {
+          "percent": 50
+        },
+        "master-main-building-/-ground-beam-/-rebar": {
+          "percent": 50
+        },
+        "master-main-building-/-roof-beam-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-/-metal-roofing-sheet": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-brc": {
+          "percent": 0
+        },
+        "master-main-building-/-drainage": {
+          "percent": 0
+        },
+        "master-main-building-/-brickwall-/-internal-wall": {
+          "percent": 0
+        },
+        "master-main-building-/-brickwall-/-external-wall": {
+          "percent": 0
+        },
+        "master-main-building-/-floor-tiles-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-floor-tiles-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-painting-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-painting-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-ceiling-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-ceiling-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-water-tank": {
+          "percent": 0
+        },
+        "master-main-building-/-septic-tank": {
+          "percent": 0
+        },
+        "master-main-building-/-power-point": {
+          "percent": 0
+        },
+        "master-main-building-/-switch": {
+          "percent": 0
+        },
+        "master-main-building-/-lighting": {
+          "percent": 0
+        },
+        "master-main-building-/-fan": {
+          "percent": 0
+        },
+        "master-main-building-/-aircond-point": {
+          "percent": 0
+        },
+        "master-earthing": {
+          "percent": 73
+        },
+        "master-db-box": {
+          "percent": 73
+        },
+        "master-wiring": {
+          "percent": 0
+        },
+        "master-doors-/-type-1-single-leaf": {
+          "percent": 0
+        },
+        "master-doors-/-type-2-sliding": {
+          "percent": 0
+        },
+        "master-doors-/-type-3-bathroom": {
+          "percent": 0
+        },
+        "master-doors-/-type-4-double-leaf-main-door": {
+          "percent": 0
+        },
+        "master-windows-/-type-1-1200*1200": {
+          "percent": 0
+        },
+        "master-windows-/-type-2-1800*1200": {
+          "percent": 0
+        },
+        "master-windows-/-type-3-900*600": {
+          "percent": 0
+        },
+        "master-boundary-fencing": {
+          "percent": 99
+        },
+        "master-gate": {
+          "percent": 0
+        },
+        "master-driveway": {
+          "percent": 73
+        },
+        "master-landscaping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-tap": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-tap": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-tap": {
+          "percent": 0
+        }
+      },
+      "2026-11-21": {
+        "master-preliminaries-/-building-plan-/-submission": {
+          "percent": 73
+        },
+        "master-preliminaries-/-site-mobilisation-/-project-management": {
+          "percent": 73
+        },
+        "master-main-building-/-footing-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-footing-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-footing-/-rebar": {
+          "percent": 26
+        },
+        "master-main-building-/-ground-slab-/-concrete": {
+          "percent": 58
+        },
+        "master-main-building-/-ground-slab-/-brc": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-concrete": {
+          "percent": 50
+        },
+        "master-main-building-/-ground-beam-/-formwork": {
+          "percent": 74
+        },
+        "master-main-building-/-ground-beam-/-rebar": {
+          "percent": 65
+        },
+        "master-main-building-/-roof-beam-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-/-metal-roofing-sheet": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-brc": {
+          "percent": 0
+        },
+        "master-main-building-/-drainage": {
+          "percent": 0
+        },
+        "master-main-building-/-brickwall-/-internal-wall": {
+          "percent": 0
+        },
+        "master-main-building-/-brickwall-/-external-wall": {
+          "percent": 0
+        },
+        "master-main-building-/-floor-tiles-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-floor-tiles-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-painting-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-painting-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-ceiling-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-ceiling-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-water-tank": {
+          "percent": 0
+        },
+        "master-main-building-/-septic-tank": {
+          "percent": 0
+        },
+        "master-main-building-/-power-point": {
+          "percent": 0
+        },
+        "master-main-building-/-switch": {
+          "percent": 0
+        },
+        "master-main-building-/-lighting": {
+          "percent": 0
+        },
+        "master-main-building-/-fan": {
+          "percent": 0
+        },
+        "master-main-building-/-aircond-point": {
+          "percent": 0
+        },
+        "master-earthing": {
+          "percent": 73
+        },
+        "master-db-box": {
+          "percent": 73
+        },
+        "master-wiring": {
+          "percent": 0
+        },
+        "master-doors-/-type-1-single-leaf": {
+          "percent": 0
+        },
+        "master-doors-/-type-2-sliding": {
+          "percent": 0
+        },
+        "master-doors-/-type-3-bathroom": {
+          "percent": 0
+        },
+        "master-doors-/-type-4-double-leaf-main-door": {
+          "percent": 0
+        },
+        "master-windows-/-type-1-1200*1200": {
+          "percent": 0
+        },
+        "master-windows-/-type-2-1800*1200": {
+          "percent": 0
+        },
+        "master-windows-/-type-3-900*600": {
+          "percent": 0
+        },
+        "master-boundary-fencing": {
+          "percent": 73
+        },
+        "master-gate": {
+          "percent": 0
+        },
+        "master-driveway": {
+          "percent": 73
+        },
+        "master-landscaping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-tap": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-tap": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-tap": {
+          "percent": 0
+        }
+      },
+      "2026-11-22": {
+        "master-preliminaries-/-building-plan-/-submission": {
+          "percent": 74
+        },
+        "master-preliminaries-/-site-mobilisation-/-project-management": {
+          "percent": 74
+        },
+        "master-main-building-/-footing-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-footing-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-footing-/-rebar": {
+          "percent": 74
+        },
+        "master-main-building-/-ground-slab-/-concrete": {
+          "percent": 74
+        },
+        "master-main-building-/-ground-slab-/-brc": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-concrete": {
+          "percent": 84
+        },
+        "master-main-building-/-ground-beam-/-formwork": {
+          "percent": 93
+        },
+        "master-main-building-/-ground-beam-/-rebar": {
+          "percent": 78
+        },
+        "master-main-building-/-roof-beam-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-/-metal-roofing-sheet": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-brc": {
+          "percent": 0
+        },
+        "master-main-building-/-drainage": {
+          "percent": 0
+        },
+        "master-main-building-/-brickwall-/-internal-wall": {
+          "percent": 0
+        },
+        "master-main-building-/-brickwall-/-external-wall": {
+          "percent": 0
+        },
+        "master-main-building-/-floor-tiles-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-floor-tiles-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-painting-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-painting-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-ceiling-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-ceiling-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-water-tank": {
+          "percent": 0
+        },
+        "master-main-building-/-septic-tank": {
+          "percent": 0
+        },
+        "master-main-building-/-power-point": {
+          "percent": 0
+        },
+        "master-main-building-/-switch": {
+          "percent": 0
+        },
+        "master-main-building-/-lighting": {
+          "percent": 0
+        },
+        "master-main-building-/-fan": {
+          "percent": 0
+        },
+        "master-main-building-/-aircond-point": {
+          "percent": 0
+        },
+        "master-earthing": {
+          "percent": 74
+        },
+        "master-db-box": {
+          "percent": 74
+        },
+        "master-wiring": {
+          "percent": 0
+        },
+        "master-doors-/-type-1-single-leaf": {
+          "percent": 0
+        },
+        "master-doors-/-type-2-sliding": {
+          "percent": 0
+        },
+        "master-doors-/-type-3-bathroom": {
+          "percent": 0
+        },
+        "master-doors-/-type-4-double-leaf-main-door": {
+          "percent": 0
+        },
+        "master-windows-/-type-1-1200*1200": {
+          "percent": 0
+        },
+        "master-windows-/-type-2-1800*1200": {
+          "percent": 0
+        },
+        "master-windows-/-type-3-900*600": {
+          "percent": 0
+        },
+        "master-boundary-fencing": {
+          "percent": 74
+        },
+        "master-gate": {
+          "percent": 0
+        },
+        "master-driveway": {
+          "percent": 74
+        },
+        "master-landscaping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-tap": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-tap": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-tap": {
+          "percent": 0
+        }
+      },
+      "2026-11-23": {
+        "master-preliminaries-/-building-plan-/-submission": {
+          "percent": 74
+        },
+        "master-preliminaries-/-site-mobilisation-/-project-management": {
+          "percent": 74
+        },
+        "master-main-building-/-footing-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-footing-/-formwork": {
+          "percent": 26
+        },
+        "master-main-building-/-footing-/-rebar": {
+          "percent": 74
+        },
+        "master-main-building-/-ground-slab-/-concrete": {
+          "percent": 87
+        },
+        "master-main-building-/-ground-slab-/-brc": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-concrete": {
+          "percent": 74
+        },
+        "master-main-building-/-ground-beam-/-formwork": {
+          "percent": 74
+        },
+        "master-main-building-/-ground-beam-/-rebar": {
+          "percent": 90
+        },
+        "master-main-building-/-roof-beam-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-/-metal-roofing-sheet": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-brc": {
+          "percent": 0
+        },
+        "master-main-building-/-drainage": {
+          "percent": 0
+        },
+        "master-main-building-/-brickwall-/-internal-wall": {
+          "percent": 0
+        },
+        "master-main-building-/-brickwall-/-external-wall": {
+          "percent": 0
+        },
+        "master-main-building-/-floor-tiles-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-floor-tiles-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-painting-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-painting-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-ceiling-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-ceiling-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-water-tank": {
+          "percent": 0
+        },
+        "master-main-building-/-septic-tank": {
+          "percent": 0
+        },
+        "master-main-building-/-power-point": {
+          "percent": 0
+        },
+        "master-main-building-/-switch": {
+          "percent": 0
+        },
+        "master-main-building-/-lighting": {
+          "percent": 0
+        },
+        "master-main-building-/-fan": {
+          "percent": 0
+        },
+        "master-main-building-/-aircond-point": {
+          "percent": 0
+        },
+        "master-earthing": {
+          "percent": 74
+        },
+        "master-db-box": {
+          "percent": 74
+        },
+        "master-wiring": {
+          "percent": 0
+        },
+        "master-doors-/-type-1-single-leaf": {
+          "percent": 0
+        },
+        "master-doors-/-type-2-sliding": {
+          "percent": 0
+        },
+        "master-doors-/-type-3-bathroom": {
+          "percent": 0
+        },
+        "master-doors-/-type-4-double-leaf-main-door": {
+          "percent": 0
+        },
+        "master-windows-/-type-1-1200*1200": {
+          "percent": 0
+        },
+        "master-windows-/-type-2-1800*1200": {
+          "percent": 0
+        },
+        "master-windows-/-type-3-900*600": {
+          "percent": 0
+        },
+        "master-boundary-fencing": {
+          "percent": 74
+        },
+        "master-gate": {
+          "percent": 0
+        },
+        "master-driveway": {
+          "percent": 74
+        },
+        "master-landscaping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-tap": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-tap": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-tap": {
+          "percent": 0
+        }
+      },
+      "2026-11-24": {
+        "master-preliminaries-/-building-plan-/-submission": {
+          "percent": 74
+        },
+        "master-preliminaries-/-site-mobilisation-/-project-management": {
+          "percent": 74
+        },
+        "master-main-building-/-footing-/-concrete": {
+          "percent": 50
+        },
+        "master-main-building-/-footing-/-formwork": {
+          "percent": 74
+        },
+        "master-main-building-/-footing-/-rebar": {
+          "percent": 74
+        },
+        "master-main-building-/-ground-slab-/-concrete": {
+          "percent": 97
+        },
+        "master-main-building-/-ground-slab-/-brc": {
+          "percent": 0
+        },
+        "master-main-building-/-ground-beam-/-concrete": {
+          "percent": 74
+        },
+        "master-main-building-/-ground-beam-/-formwork": {
+          "percent": 74
+        },
+        "master-main-building-/-ground-beam-/-rebar": {
+          "percent": 97
+        },
+        "master-main-building-/-roof-beam-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-beam-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-column-/-rebar": {
+          "percent": 0
+        },
+        "master-main-building-/-roof-/-metal-roofing-sheet": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-concrete": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-formwork": {
+          "percent": 0
+        },
+        "master-main-building-/-apron-/-brc": {
+          "percent": 0
+        },
+        "master-main-building-/-drainage": {
+          "percent": 0
+        },
+        "master-main-building-/-brickwall-/-internal-wall": {
+          "percent": 0
+        },
+        "master-main-building-/-brickwall-/-external-wall": {
+          "percent": 0
+        },
+        "master-main-building-/-floor-tiles-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-floor-tiles-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-painting-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-painting-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-ceiling-/-internal": {
+          "percent": 0
+        },
+        "master-main-building-/-ceiling-/-external": {
+          "percent": 0
+        },
+        "master-main-building-/-water-tank": {
+          "percent": 0
+        },
+        "master-main-building-/-septic-tank": {
+          "percent": 0
+        },
+        "master-main-building-/-power-point": {
+          "percent": 0
+        },
+        "master-main-building-/-switch": {
+          "percent": 0
+        },
+        "master-main-building-/-lighting": {
+          "percent": 0
+        },
+        "master-main-building-/-fan": {
+          "percent": 0
+        },
+        "master-main-building-/-aircond-point": {
+          "percent": 0
+        },
+        "master-earthing": {
+          "percent": 74
+        },
+        "master-db-box": {
+          "percent": 74
+        },
+        "master-wiring": {
+          "percent": 0
+        },
+        "master-doors-/-type-1-single-leaf": {
+          "percent": 0
+        },
+        "master-doors-/-type-2-sliding": {
+          "percent": 0
+        },
+        "master-doors-/-type-3-bathroom": {
+          "percent": 0
+        },
+        "master-doors-/-type-4-double-leaf-main-door": {
+          "percent": 0
+        },
+        "master-windows-/-type-1-1200*1200": {
+          "percent": 0
+        },
+        "master-windows-/-type-2-1800*1200": {
+          "percent": 0
+        },
+        "master-windows-/-type-3-900*600": {
+          "percent": 0
+        },
+        "master-boundary-fencing": {
+          "percent": 74
+        },
+        "master-gate": {
+          "percent": 0
+        },
+        "master-driveway": {
+          "percent": 74
+        },
+        "master-landscaping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-0-tap": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-6-tap": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-wall-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-floor-tiles": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-ceiling": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-piping": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-wc": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-basin": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-shower": {
+          "percent": 0
+        },
+        "bath-ai-floorplan-1790425571484-7-tap": {
+          "percent": 0
+        }
+      }
+    },
+    "validDates": {
+      "2026-11-01": {
+        "valid": true,
+        "savedAt": "2026-09-26T12:32:16.842Z"
+      },
+      "2026-11-02": {
+        "valid": true,
+        "savedAt": "2026-09-26T12:32:16.842Z"
+      },
+      "2026-11-03": {
+        "valid": true,
+        "savedAt": "2026-09-26T12:32:16.842Z"
+      },
+      "2026-11-04": {
+        "valid": true,
+        "savedAt": "2026-09-26T12:32:16.842Z"
+      },
+      "2026-11-05": {
+        "valid": true,
+        "savedAt": "2026-09-26T12:32:16.842Z"
+      },
+      "2026-11-06": {
+        "valid": true,
+        "savedAt": "2026-09-26T12:32:16.842Z"
+      },
+      "2026-11-07": {
+        "valid": true,
+        "savedAt": "2026-09-26T12:32:16.842Z"
+      },
+      "2026-11-08": {
+        "valid": true,
+        "savedAt": "2026-09-26T12:32:16.842Z"
+      },
+      "2026-11-09": {
+        "valid": true,
+        "savedAt": "2026-09-26T12:32:16.842Z"
+      },
+      "2026-11-10": {
+        "valid": true,
+        "savedAt": "2026-09-26T12:32:16.842Z"
+      },
+      "2026-11-11": {
+        "valid": true,
+        "savedAt": "2026-09-26T12:32:16.842Z"
+      },
+      "2026-11-12": {
+        "valid": true,
+        "savedAt": "2026-09-26T12:32:16.842Z"
+      },
+      "2026-11-13": {
+        "valid": true,
+        "savedAt": "2026-09-26T12:32:16.842Z"
+      },
+      "2026-11-14": {
+        "valid": true,
+        "savedAt": "2026-09-26T12:32:16.842Z"
+      },
+      "2026-11-15": {
+        "valid": true,
+        "savedAt": "2026-09-26T12:32:16.842Z"
+      },
+      "2026-11-16": {
+        "valid": true,
+        "savedAt": "2026-09-26T12:32:16.842Z"
+      },
+      "2026-11-17": {
+        "valid": true,
+        "savedAt": "2026-09-26T12:32:16.842Z"
+      },
+      "2026-11-18": {
+        "valid": true,
+        "savedAt": "2026-09-26T12:32:16.842Z"
+      },
+      "2026-11-19": {
+        "valid": true,
+        "savedAt": "2026-09-26T12:32:16.842Z"
+      },
+      "2026-11-20": {
+        "valid": true,
+        "savedAt": "2026-09-26T12:32:16.842Z"
+      },
+      "2026-11-21": {
+        "valid": true,
+        "savedAt": "2026-09-26T12:32:16.842Z"
+      },
+      "2026-11-22": {
+        "valid": true,
+        "savedAt": "2026-09-26T12:32:16.842Z"
+      },
+      "2026-11-23": {
+        "valid": true,
+        "savedAt": "2026-09-26T12:32:16.842Z"
+      },
+      "2026-11-24": {
+        "valid": true,
+        "savedAt": "2026-09-26T12:32:16.842Z"
+      }
+    },
+    "updatedAt": "2026-09-26T12:32:18.766Z"
   }
 }
