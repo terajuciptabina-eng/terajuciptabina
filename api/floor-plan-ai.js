@@ -332,7 +332,10 @@ Rules:
 - Read an area ONLY when that area is explicitly printed for that room/space. If not explicit, use NULL.
 - Never calculate area and never use dimension strings, grid numbers, title-block numbers, scale values, door/window sizes or unrelated numbers as area.
 - Preserve duplicate room names as separate physical spaces.
-- Include clearly labelled/defined porches, verandahs, balconies, halls, stairs, walkways, utility spaces and other spaces.
+- Include porches, verandahs, balconies, halls, utility spaces and other spaces ONLY when the drawing explicitly labels the physical space or clearly names it.
+- Do NOT infer a room/space from symbols, furniture, dimension lines, grid numbers, circulation lines, doors, openings, wall geometry or visual shapes alone.
+- In particular, NEVER create a STAIRS/STAIRCASE/STAIR space unless the drawing explicitly labels that physical space as stairs/staircase.
+- Do not invent a room name just because a graphic resembles a familiar architectural feature.
 - Use surrounding walls/boundaries and label position to associate the correct area with the correct room.
 - If text is unclear, use the best readable label only when supported by the drawing; otherwise use UNCLEAR in the note and area=NULL.
 - source must be explicit_label, schedule_crosscheck, visual_context or unknown.
