@@ -191,12 +191,12 @@ function money(v,d=2){return new Intl.NumberFormat('en-MY',{minimumFractionDigit
 function escapeHtml(v){return String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;').replace(/'/g,'&#039;')}
 function formatQty(v){const n=Number(v)||0;return Math.ceil(n)}
 function roundQty(v){const n=Number(v)||0;return Math.max(0,Math.ceil(n))}
-function openFloorPlanImport(){const target=new URL('floor-plan-import.html',location.href);const params=new URLSearchParams(location.search);params.forEach((v,k)=>{if(k!=='floorPlanImport')target.searchParams.set(k,v)});target.searchParams.set('returnTo','buildplanner-v2.html');location.href=target.toString()}
+function openFloorPlanImport(){const target=new URL('floor-plan-import.html',location.href),params=new URLSearchParams(location.search),roomCount=document.querySelectorAll('#roomsContainer .room-card').length;try{sessionStorage.setItem('teraju.floorplan.import.context.v1',JSON.stringify({version:1,roomCount,startedAt:new Date().toISOString(),quotationId:params.get('quotationId')||''}))}catch(e){console.warn('[TERAJU FLOOR PLAN IMPORT] Unable to save import context',e)}params.forEach((v,k)=>{if(k!=='floorPlanImport')target.searchParams.set(k,v)});target.searchParams.set('returnTo','buildplanner-v2.html');location.href=target.toString()}
 function toggleProjectInfo(){const p=document.getElementById('projectInfo'),a=document.getElementById('projectArrow');if(!p)return;p.classList.toggle('hidden');if(a)a.textContent=p.classList.contains('hidden')?'▼':'▲'}
 function roomOptions(){return Object.entries(ROOM_TYPES).map(([k,n])=>`<option value="${k}">${escapeHtml(n)}</option>`).join('')}
 function addRoomBase(defaultType='other',defaultArea='',forcedId='',forcedName=''){roomCounter++;const id=forcedId||('room-'+roomCounter),container=document.getElementById('roomsContainer'),div=document.createElement('div');div.id=id;div.className='room-card border rounded-xl p-4 bg-gray-50';div.innerHTML=`<div class="grid md:grid-cols-[1fr_1fr_1fr_auto] gap-4 items-end"><div><label class="block text-sm font-medium mb-2">Room Type</label><select class="room-type w-full border rounded-lg px-4 py-3 bg-white">${roomOptions()}</select></div><div><label class="block text-sm font-medium mb-2">Room / Area Name</label><input type="text" value="${escapeHtml(forcedName||ROOM_TYPES[defaultType]||'Area')}" class="room-name w-full border rounded-lg px-4 py-3 bg-white"></div><div><label class="block text-sm font-medium mb-2">Area (sqft)</label><input type="number" min="1" step="1" value="${escapeHtml(defaultArea)}" class="room-area w-full border rounded-lg px-4 py-3 bg-white"></div><div class="no-print flex gap-2"><button type="button" onclick="moveRoom('${id}',-1)" class="border rounded-lg px-3">▲</button><button type="button" onclick="moveRoom('${id}',1)" class="border rounded-lg px-3">▼</button><button type="button" onclick="removeRoom('${id}')" class="border border-red-300 text-red-600 rounded-lg px-4">Remove</button></div></div>`;container.appendChild(div);updateRoomsEmptyState();div.querySelector('.room-type').value=defaultType;div.querySelector('.room-name').dataset.generated='true';div.querySelector('.room-name').addEventListener('change',e=>{const l=String(e.target.value||'').trim(),generated=e.target.dataset.generated==='true';if(generated){e.target.dataset.generated='false';customRoomLabels.delete(id)}if(l&&!generated)customRoomLabels.set(id,l);updateEstimate()});div.querySelector('.room-type').addEventListener('change',()=>{const input=div.querySelector('.room-name'),type=div.querySelector('.room-type').value||'other';if(input&&input.dataset.generated!=='false'){const count=[...document.querySelectorAll('#roomsContainer .room-card')].filter(r=>(r.querySelector('.room-type')?.value||'other')===type).length;const base=ROOM_TYPES[type]||'Area';input.value=count>1?base+' '+count:base;input.dataset.generated='true';customRoomLabels.delete(id)}updateEstimate()});div.querySelector('.room-area').addEventListener('input',()=>{updateEstimate();saveContractorState()});div.querySelector('.room-name').addEventListener('input',()=>{if(IS_CONTRACTOR)saveContractorState()});if(IS_CONTRACTOR&&!customRoomLabels.has(id)){const initial=String(forcedName||'').trim();if(initial)customRoomLabels.set(id,initial)}updateEstimate();if(!restoringContractorState)saveContractorState()}
 function updateRoomsEmptyState(){const container=document.getElementById('roomsContainer'),empty=document.getElementById('roomsEmptyState'),btn=document.getElementById('addRoomAreaBtn'),anchor=document.getElementById('roomsAddButtonAnchor');if(!container||!empty||!btn||!anchor)return;const hasRooms=!!container.querySelector('.room-card');empty.classList.toggle('hidden',hasRooms);anchor.appendChild(btn)}
-function removeRoom(id){document.getElementById(id)?.remove();customRoomLabels.delete(id);updateRoomsEmptyState();updateEstimate()}
+function removeRoom(id){document.getElementById(id)?.remove();customRoomLabels.delete(id);updateRoomsEmptyState();updateEstimate();if(typeof saveContractorState==='function')saveContractorState()}
 function moveRoom(id,d){const r=document.getElementById(id),c=document.getElementById('roomsContainer');if(!r||!c)return;if(d<0&&r.previousElementSibling)c.insertBefore(r,r.previousElementSibling);if(d>0&&r.nextElementSibling)c.insertBefore(r.nextElementSibling,r);updateEstimate()}
 function addRoom(...args){const blankAreaCall=args.length===0;if(blankAreaCall){const existing=[...document.querySelectorAll('#roomsContainer .room-card')],last=existing[existing.length-1],lastType=last?.querySelector('.room-type')?.value||'other';addRoomBase(lastType,'');const card=document.querySelector('#roomsContainer .room-card:last-child');const nameInput=card?.querySelector('.room-name');const areaInput=card?.querySelector('.room-area');if(nameInput){const count=[...document.querySelectorAll('#roomsContainer .room-card')].filter(r=>(r.querySelector('.room-type')?.value||'other')===lastType).length;const base=ROOM_TYPES[lastType]||'Area';nameInput.value=count>1?base+' '+count:base;nameInput.removeAttribute('value')}if(areaInput){areaInput.value='';areaInput.placeholder='e.g. 200'}updateEstimate();if(typeof saveContractorState==='function')saveContractorState()}else{addRoomBase(...args)}}
 function getRoomGroupsBase(){const rooms=[...document.querySelectorAll('#roomsContainer .room-card')],idx={};return rooms.map(r=>{const id=r.id,t=r.querySelector('.room-type')?.value||'other',a=parseFloat(r.querySelector('.room-area')?.value)||0;idx[t]=(idx[t]||0)+1;const b=ROOM_TYPES[t]||'Area',label=customRoomLabels.has(id)?customRoomLabels.get(id):(idx[t]>1?`${b} ${idx[t]}`:b);return{roomId:id,roomType:t,label,area:a}})}
@@ -360,9 +360,16 @@ applyAudienceUI();if(isHomeowner()){document.getElementById('roomsContainer').in
     const ready=typeof addRoom==='function'&&typeof updateEstimate==='function'&&document.getElementById('roomsContainer');
     if(!ready){setTimeout(wait,100);return}
     const existing=document.querySelectorAll('#roomsContainer .room-card').length;
-    if(existing&&!window.__TERAJU_FLOORPLAN_IMPORT_CONFIRMED){
+    let importContext=null;
+    try{importContext=JSON.parse(sessionStorage.getItem('teraju.floorplan.import.context.v1')||'null')}catch(e){}
+    const replaceBecauseStartedEmpty=importContext?.version===1&&Number(importContext.roomCount)===0;
+    if(replaceBecauseStartedEmpty&&existing){
+      document.getElementById('roomsContainer').innerHTML='';
+      if(typeof customRoomLabels!=='undefined'&&customRoomLabels instanceof Map)customRoomLabels.clear();
+      if(typeof updateRoomsEmptyState==='function')updateRoomsEmptyState();
+    }else if(existing&&!window.__TERAJU_FLOORPLAN_IMPORT_CONFIRMED){
       const ok=confirm('Import '+payload.rooms.length+' reviewed room/area entries from the floor plan into the existing BuildPlanner list?\n\nOK = Add to existing rooms\nCancel = Do not import');
-      if(!ok){sessionStorage.removeItem('teraju.floorplan.import.pending.v1');return}
+      if(!ok){sessionStorage.removeItem('teraju.floorplan.import.pending.v1');sessionStorage.removeItem('teraju.floorplan.import.context.v1');return}
       window.__TERAJU_FLOORPLAN_IMPORT_CONFIRMED=true;
     }
     let imported=0;
@@ -384,12 +391,12 @@ applyAudienceUI();if(isHomeowner()){document.getElementById('roomsContainer').in
     });
     if(imported){
       try{updateEstimate();if(typeof saveContractorState==='function')saveContractorState()}catch(e){console.error('[TERAJU FLOOR PLAN IMPORT] Finalize failed',e)}
-      sessionStorage.removeItem('teraju.floorplan.import.pending.v1');
+      sessionStorage.removeItem('teraju.floorplan.import.pending.v1');sessionStorage.removeItem('teraju.floorplan.import.context.v1');
       const rooms=document.getElementById('roomsContainer');
       rooms?.scrollIntoView({behavior:'smooth',block:'start'});
       setTimeout(()=>alert('Floor plan import complete: '+imported+' room/area entries added to BuildPlanner.'),250);
     }else{
-      sessionStorage.removeItem('teraju.floorplan.import.pending.v1');
+      sessionStorage.removeItem('teraju.floorplan.import.pending.v1');sessionStorage.removeItem('teraju.floorplan.import.context.v1');
       alert('No valid floor plan room/area entries were imported.');
     }
   };
