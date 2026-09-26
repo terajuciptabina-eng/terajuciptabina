@@ -125,12 +125,13 @@ async function parseStructuredResponse(response, provider) {
     throw new Error(data?.error?.message || `${provider} floor-plan extraction failed.`);
   }
 
+  const message = data?.choices?.[0]?.message;
   const outputText = provider === 'groq' || provider === 'openrouter'
-    ? (typeof data?.choices?.[0]?.message?.content === 'string'
-        ? data.choices[0].message.content
-        : Array.isArray(data?.choices?.[0]?.message?.content)
-          ? data.choices[0].message.content.map(item => item?.text || '').join('')
-          : '')
+    ? (typeof message?.content === 'string'
+        ? message.content
+        : Array.isArray(message?.content)
+          ? message.content.map(item => item?.text || item?.content || '').join('')
+          : (typeof message?.reasoning_content === 'string' ? message.reasoning_content : ''))
     : data?.output_text ||
       data?.output?.flatMap(item => item?.content || [])
         ?.filter(item => item?.type === 'output_text')
@@ -194,7 +195,12 @@ Use null when area or dimensions are unavailable. Do not add markdown or comment
       temperature: 0.1,
       max_completion_tokens: 12000,
       response_format: {
-        type: 'json_object'
+        type: 'json_schema',
+        json_schema: {
+          name: 'floor_plan_extraction',
+          strict: true,
+          schema
+        }
       },
       reasoning_effort: 'none',
       include_reasoning: false,
