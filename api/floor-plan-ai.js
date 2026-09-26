@@ -362,8 +362,10 @@ Rules:
     body: JSON.stringify({
       model: GROQ_MODEL,
       input: [{ role: 'user', content: visionContent }],
-      temperature: 0.2,
-      max_output_tokens: 800
+      temperature: 0.7,
+      reasoning_effort: 'medium',
+      reasoning_format: 'hidden',
+      max_output_tokens: 1200
     })
   });
 
