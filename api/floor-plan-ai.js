@@ -223,7 +223,7 @@ function parseGroqInventory(text) {
   const pages = [];
   const spaces = [];
   const warnings = [];
-  const lines = String(text || '').split(/\\r?\\n/).map(line => line.trim()).filter(Boolean);
+  const lines = String(text || '').split('\n').map(line => line.trim()).filter(Boolean);
 
   for (const line of lines) {
     const fields = line.split('|').map(value => value.trim());
