@@ -171,40 +171,90 @@ async function callGroq(images, fileName) {
 
   const content = [{
     type: 'text',
-    text: `${SYSTEM_PROMPT}
+    text: \`${SYSTEM_PROMPT}
 
-Source file: ${fileName}
-This request contains ${images.length} page image(s). Page numbers are provided immediately before each image.
+Source file: \${fileName}
+This request contains \${images.length} page image(s). Page numbers are provided immediately before each image.
 Analyze only the supplied pages.
 
-Return ONLY one valid JSON object with exactly these top-level arrays:
-{
-  "pages": [{"page": 1, "type": "floor_plan|site_plan|roof_plan|elevation|schedule|presentation|other", "floor": "string or null", "confidence": "high|medium|low"}],
-  "spaces": [{"id": "unique string", "page": 1, "floor": "string or null", "name": "room/space name", "area": 0, "unit": "sqft|sqm|unknown", "dimensions": "string or null", "confidence": "high|medium|low", "source": "explicit_label|schedule_crosscheck|visual_context|unknown", "notes": "string or null"}],
-  "warnings": ["string"]
-}
-Use null when area or dimensions are unavailable. Do not add markdown or commentary.`
+IMPORTANT: In this first visual pass, do NOT return JSON. Return a concise plain-text extraction of your visual observations:
+- classify each supplied page
+- list each distinct physical room/space
+- record only explicitly printed room areas
+- keep duplicate room names as separate instances
+- note page number and floor
+- explicitly state when an area is missing or unclear
+Do not calculate or guess areas. Do not use dimensions, grid numbers, title-block numbers or unrelated numbers as areas.\`
   }];
 
   for (const image of images) {
     const page = Number(image.page) || 1;
-    content.push({ type: 'text', text: `PAGE ${page}` });
+    content.push({ type: 'text', text: \`PAGE \${page}\` });
     content.push({
       type: 'image_url',
       image_url: { url: image.data }
     });
   }
 
-  const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+  const visionResponse = await fetch('https://api.groq.com/openai/v1/chat/completions', {
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${apiKey}`,
+      Authorization: \`Bearer \${apiKey}\`,
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
       model: GROQ_MODEL,
       messages: [{ role: 'user', content }],
-      temperature: 0.1,
+      temperature: 0.2,
+      max_completion_tokens: 8000,
+      reasoning_effort: 'none',
+      reasoning_format: 'hidden',
+      stream: false
+    })
+  });
+
+  const visionRaw = await visionResponse.text();
+  let visionData = null;
+  try { visionData = visionRaw ? JSON.parse(visionRaw) : null; } catch {}
+  if (!visionResponse.ok) {
+    console.error('Groq visual pass failed:', visionResponse.status, visionData || visionRaw);
+    throw new Error(visionData?.error?.message || 'Groq visual extraction failed.');
+  }
+
+  const observations = typeof visionData?.choices?.[0]?.message?.content === 'string'
+    ? visionData.choices[0].message.content
+    : Array.isArray(visionData?.choices?.[0]?.message?.content)
+      ? visionData.choices[0].message.content.map(item => item?.text || item?.content || '').join('')
+      : '';
+
+  if (!observations.trim()) {
+    console.error('Groq visual pass returned empty content:', JSON.stringify({
+      model: visionData?.model || null,
+      finish_reason: visionData?.choices?.[0]?.finish_reason || null,
+      message_keys: Object.keys(visionData?.choices?.[0]?.message || {})
+    }));
+    throw new Error('Groq visual extraction returned no usable observations.');
+  }
+
+  const structuredPrompt = \`Convert the following visual floor-plan observations into the required JSON schema.
+
+${SYSTEM_PROMPT}
+
+VISUAL OBSERVATIONS:
+\${observations}
+
+Return ONLY the JSON object matching the supplied schema. Preserve every distinct physical room/space found in the observations. Never invent an area that the observations do not explicitly contain.\`;
+
+  const structuredResponse = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      Authorization: \`Bearer \${apiKey}\`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      model: GROQ_MODEL,
+      messages: [{ role: 'user', content: structuredPrompt }],
+      temperature: 0,
       max_completion_tokens: 12000,
       response_format: {
         type: 'json_schema',
@@ -220,7 +270,7 @@ Use null when area or dimensions are unavailable. Do not add markdown or comment
     })
   });
 
-  return parseStructuredResponse(response, 'Groq');
+  return parseStructuredResponse(structuredResponse, 'Groq');
 }
 
 async function callOpenRouter(images, fileName, model = OPENROUTER_MODEL) {
