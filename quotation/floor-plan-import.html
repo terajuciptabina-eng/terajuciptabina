@@ -236,7 +236,7 @@ extract.onclick=async()=>{
    images=await renderPdfAiImages(currentFile);
   }else{
    setStatus('Preparing image for AI Vision…');
-   images=[{page:1,data:await imageFileToDataUrl(currentFile,1800,.68)}];
+   images=[{page:1,data:await imageFileToDataUrl(currentFile,2400,.82)}];
    showImage(images[0].data);
   }
   if(!images.length)throw new Error('No page image could be prepared.');
