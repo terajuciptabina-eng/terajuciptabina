@@ -393,7 +393,16 @@ applyAudienceUI();if(isHomeowner()){document.getElementById('roomsContainer').in
       alert('No valid floor plan room/area entries were imported.');
     }
   };
-  setTimeout(wait,150);
+  const hasQuotationId=!!new URLSearchParams(location.search).get('quotationId');
+  if(hasQuotationId){
+    const startAfterRestore=()=>{
+      if(window.__TERAJU_QUOTATION_RESTORE_COMPLETE===true){setTimeout(wait,50);return}
+      window.addEventListener('teraju:quotation-restore-complete',()=>setTimeout(wait,50),{once:true});
+    };
+    startAfterRestore();
+  }else{
+    setTimeout(wait,150);
+  }
 })();
 </script>
 </body></html>
