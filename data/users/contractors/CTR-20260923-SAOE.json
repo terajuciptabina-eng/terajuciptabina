@@ -1594,7 +1594,7 @@
           "builtUpArea": 902,
           "state": "selangor"
         },
-        "total": 316556.5,
+        "total": 239556.5,
         "plannerState": {
           "customerName": "Test Ai Project",
           "projectLocation": "Puchong",
@@ -1902,7 +1902,14 @@
               "BALCONY"
             ]
           ],
-          "excludedItems": [],
+          "excludedItems": [
+            "master-preliminaries-/-building-plan-/-submission",
+            "master-preliminaries-/-site-mobilisation-/-project-management",
+            "master-boundary-fencing",
+            "master-gate",
+            "master-driveway",
+            "master-landscaping"
+          ],
           "manualItems": [],
           "standardRateItems": [],
           "quotationType": "detail",
@@ -1910,44 +1917,10 @@
           "projectState": "selangor",
           "rateSetId": "selangor",
           "rateSetName": "Selangor",
-          "rateSnapshotAt": "2026-09-26T17:37:21.491Z"
+          "rateSnapshotAt": "2026-09-26T17:39:29.233Z"
         },
         "itemListVersion": 1,
         "items": [
-          {
-            "id": "master-preliminaries-/-building-plan-/-submission",
-            "category": "preliminaries",
-            "description": "Submission of building plan / permit application and Engineer’s drawings to the Local Authority, including preparation of required documents, submission, coordination and necessary authority liaison, complete.",
-            "unit": "LS",
-            "qty": 1,
-            "rate": 8500,
-            "amount": 8500,
-            "header": "",
-            "level3": "",
-            "section": "",
-            "groupTitle": "Preliminaries",
-            "groupKey": "preliminaries",
-            "masterPath": "PRELIMINARIES / Building Plan / Submission",
-            "roomId": "project",
-            "room": "Project"
-          },
-          {
-            "id": "master-preliminaries-/-site-mobilisation-/-project-management",
-            "category": "preliminaries",
-            "description": "Preliminaries, site mobilisation, temporary facilities, site protection, insurance, project coordination, supervision and general project management, complete.",
-            "unit": "LS",
-            "qty": 1,
-            "rate": 12000,
-            "amount": 12000,
-            "header": "",
-            "level3": "",
-            "section": "",
-            "groupTitle": "Preliminaries",
-            "groupKey": "preliminaries",
-            "masterPath": "PRELIMINARIES / Site Mobilisation / Project Management",
-            "roomId": "project",
-            "room": "Project"
-          },
           {
             "id": "master-main-building-/-footing-/-concrete",
             "category": "structures",
@@ -2697,74 +2670,6 @@
             "room": "Project"
           },
           {
-            "id": "master-boundary-fencing",
-            "category": "external-work",
-            "description": "Boundary fencing, including posts, fencing panels/mesh or other approved fencing system, foundations, concrete footings, fixing accessories, excavation, installation and all necessary associated works, complete.",
-            "unit": "LS",
-            "qty": 1,
-            "rate": 43000,
-            "amount": 43000,
-            "header": "",
-            "level3": "",
-            "section": "",
-            "groupTitle": "External Work",
-            "groupKey": "external-work",
-            "masterPath": "BOUNDARY FENCING",
-            "roomId": "project",
-            "room": "Project"
-          },
-          {
-            "id": "master-gate",
-            "category": "external-work",
-            "description": "Double-leaf mild steel swing gate, complete with mild steel frames, hinges, locking mechanism, handles, gate stops and protective finishing, including fixing, installation and all necessary associated works, complete. (Main Entrance)",
-            "unit": "No.",
-            "qty": 1,
-            "rate": 6500,
-            "amount": 6500,
-            "header": "",
-            "level3": "",
-            "section": "",
-            "groupTitle": "External Work",
-            "groupKey": "external-work",
-            "masterPath": "GATE",
-            "roomId": "project",
-            "room": "Project"
-          },
-          {
-            "id": "master-driveway",
-            "category": "external-work",
-            "description": "Driveway works, including site preparation, excavation where required, sub-base/hardcore, compaction, formwork, reinforcement, concrete/paving finish, joints, edge treatment and all necessary associated works, complete. (Driveway)",
-            "unit": "LS",
-            "qty": 1,
-            "rate": 5000,
-            "amount": 5000,
-            "header": "",
-            "level3": "",
-            "section": "",
-            "groupTitle": "External Work",
-            "groupKey": "external-work",
-            "masterPath": "DRIVEWAY",
-            "roomId": "project",
-            "room": "Project"
-          },
-          {
-            "id": "master-landscaping",
-            "category": "external-work",
-            "description": "Landscaping works, including site preparation, soil preparation, planting of grass, plants and/or shrubs, planting accessories, trimming, watering, maintenance during establishment period and all necessary associated works, complete. (External Areas)",
-            "unit": "LS",
-            "qty": 1,
-            "rate": 2000,
-            "amount": 2000,
-            "header": "",
-            "level3": "",
-            "section": "",
-            "groupTitle": "External Work",
-            "groupKey": "external-work",
-            "masterPath": "LANDSCAPING",
-            "roomId": "project",
-            "room": "Project"
-          },
-          {
             "id": "bath-ai-floorplan-1790444172879-2-wall-tiles",
             "category": "architecture",
             "description": "Supply and install bathroom wall tiles to 10ft wall height.",
@@ -3038,7 +2943,7 @@
           }
         ],
         "createdAt": "2026-09-24T05:55:26.415Z",
-        "updatedAt": "2026-09-26T17:37:22.569Z",
+        "updatedAt": "2026-09-26T17:39:30.453Z",
         "estimateNumber": "EST-BLD-002"
       },
       {
@@ -7853,7 +7758,7 @@
     ]
   },
   "createdAt": "2026-09-23T08:33:53.459Z",
-  "updatedAt": "2026-09-26T17:37:22.569Z",
+  "updatedAt": "2026-09-26T17:39:30.453Z",
   "quotationRunningNumber": {
     "renovation": 9,
     "build": 3
