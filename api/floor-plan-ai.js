@@ -374,7 +374,8 @@ Rules:
     model: visionData?.model || GROQ_MODEL,
     status: visionData?.status || null,
     content_length: visualText.length,
-    output_tokens: visionData?.usage?.output_tokens ?? null
+    output_tokens: visionData?.usage?.output_tokens ?? null,
+    content_preview: visualText.slice(0, 4000)
   }));
 
   if (!visualText.trim()) {
