@@ -171,10 +171,10 @@ async function callGroq(images, fileName) {
 
   const content = [{
     type: 'text',
-    text: \`${SYSTEM_PROMPT}
+    text: `${SYSTEM_PROMPT}
 
-Source file: \${fileName}
-This request contains \${images.length} page image(s). Page numbers are provided immediately before each image.
+Source file: ${fileName}
+This request contains ${images.length} page image(s). Page numbers are provided immediately before each image.
 Analyze only the supplied pages.
 
 IMPORTANT: In this first visual pass, do NOT return JSON. Return a concise plain-text extraction of your visual observations:
@@ -184,12 +184,12 @@ IMPORTANT: In this first visual pass, do NOT return JSON. Return a concise plain
 - keep duplicate room names as separate instances
 - note page number and floor
 - explicitly state when an area is missing or unclear
-Do not calculate or guess areas. Do not use dimensions, grid numbers, title-block numbers or unrelated numbers as areas.\`
+Do not calculate or guess areas. Do not use dimensions, grid numbers, title-block numbers or unrelated numbers as areas.`
   }];
 
   for (const image of images) {
     const page = Number(image.page) || 1;
-    content.push({ type: 'text', text: \`PAGE \${page}\` });
+    content.push({ type: 'text', text: `PAGE ${page}` });
     content.push({
       type: 'image_url',
       image_url: { url: image.data }
@@ -199,7 +199,7 @@ Do not calculate or guess areas. Do not use dimensions, grid numbers, title-bloc
   const visionResponse = await fetch('https://api.groq.com/openai/v1/chat/completions', {
     method: 'POST',
     headers: {
-      Authorization: \`Bearer \${apiKey}\`,
+      Authorization: `Bearer ${apiKey}`,
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
@@ -236,19 +236,19 @@ Do not calculate or guess areas. Do not use dimensions, grid numbers, title-bloc
     throw new Error('Groq visual extraction returned no usable observations.');
   }
 
-  const structuredPrompt = \`Convert the following visual floor-plan observations into the required JSON schema.
+  const structuredPrompt = `Convert the following visual floor-plan observations into the required JSON schema.
 
 ${SYSTEM_PROMPT}
 
 VISUAL OBSERVATIONS:
-\${observations}
+${observations}
 
-Return ONLY the JSON object matching the supplied schema. Preserve every distinct physical room/space found in the observations. Never invent an area that the observations do not explicitly contain.\`;
+Return ONLY the JSON object matching the supplied schema. Preserve every distinct physical room/space found in the observations. Never invent an area that the observations do not explicitly contain.`;
 
   const structuredResponse = await fetch('https://api.groq.com/openai/v1/chat/completions', {
     method: 'POST',
     headers: {
-      Authorization: \`Bearer \${apiKey}\`,
+      Authorization: `Bearer ${apiKey}`,
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
