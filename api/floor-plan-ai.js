@@ -335,6 +335,7 @@ Rules:
 - Include porches, verandahs, balconies, halls, utility spaces and other spaces ONLY when the drawing explicitly labels the physical space or clearly names it.
 - Do NOT infer a room/space from symbols, furniture, dimension lines, grid numbers, circulation lines, doors, openings, wall geometry or visual shapes alone.
 - In particular, NEVER create a STAIRS/STAIRCASE/STAIR space unless the drawing explicitly labels that physical space as stairs/staircase.
+- Scan the entire drawing exhaustively and enumerate every visible room/space label, including labels near edges or partly obscured by watermark/glare. Do not stop after the first few rooms. If a label and explicit area are visibly present, include them even when the text is partially obscured.
 - Do not invent a room name just because a graphic resembles a familiar architectural feature.
 - Use surrounding walls/boundaries and label position to associate the correct area with the correct room.
 - If text is unclear, use the best readable label only when supported by the drawing; otherwise use UNCLEAR in the note and area=NULL.
