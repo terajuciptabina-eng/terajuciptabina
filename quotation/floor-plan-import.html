@@ -58,7 +58,7 @@
 <button id="add" class="btn secondary">+ Add Row</button>
 <button id="import" class="btn primary" disabled>Import to BuildPlanner (Prototype)</button>
 </div>
-<div class="check">Prototype only: Import currently creates a local review payload and does not modify BuildPlanner V2.</div>
+<div class="check">Reviewed rooms are transferred into BuildPlanner V2 only after you confirm this import.</div>
 </section>
 </div>
 </div>
@@ -326,7 +326,45 @@ extract.onclick=async()=>{
   extract.disabled=false
  }
 };
-imp.onclick=()=>{const payload={source:currentFile?.name||'sample',recordType:'floor-plan-import-prototype',rooms:rows.map(r=>({name:String(r.room||'').trim(),roomType:r.roomType||'Other',area:Number(r.area)||0,unit:'sqft',dimensions:String(r.dimensions||'').trim(),confidence:r.confidence,verified:true}))};localStorage.setItem('teraju.floorplan.import.prototype',JSON.stringify(payload));setStatus('Prototype payload saved locally. BuildPlanner V2 was not modified.','ok');console.log('[TERAJU FLOOR PLAN IMPORT]',payload);alert('Prototype import saved locally. BuildPlanner V2 was not modified.')}
+function buildPlannerTypeKey(type,name){
+ const mapped=mapToBuildPlannerType(type||name);
+ return ({Living:'living',Dining:'dining',Bedroom:'bedroom','Master Bedroom':'masterBedroom',Family:'family',Kitchen:'kitchen',Store:'store',Utility:'utility',Bathroom:'bathroom',Porch:'porch',Other:'other'})[mapped]||'other';
+}
+function collectImportRows(){
+ const out=[];
+ areas.forEach((area,areaIndex)=>{
+  (area.rows||[]).forEach((r,rowIndex)=>{
+   const name=String(r.room||'').trim(),areaValue=Number(r.area)||0;
+   if(!name||areaValue<=0)return;
+   const roomType=r.roomType||mapToBuildPlannerType(name);
+   out.push({name,area:areaValue,roomType,roomTypeKey:buildPlannerTypeKey(roomType,name),sourceArea:area.name||('Area '+(areaIndex+1)),sourceIndex:rowIndex});
+  });
+ });
+ return out;
+}
+imp.onclick=()=>{
+ const imported=collectImportRows();
+ if(!imported.length){setStatus('Nothing valid to import. Every room needs a name and area greater than 0.','warn');return}
+ const payload={
+  version:1,
+  recordType:'floor-plan-import',
+  source:currentFile?.name||'floor-plan',
+  importedAt:new Date().toISOString(),
+  areas:areas.map(a=>({name:a.name,spaces:(a.rows||[]).length})),
+  rooms:imported
+ };
+ try{
+  sessionStorage.setItem('teraju.floorplan.import.pending.v1',JSON.stringify(payload));
+  const target=new URL('buildplanner-v2.html',location.href);
+  ['audience','contractorId','homeownerId','id'].forEach(k=>{const v=new URL(location.href).searchParams.get(k);if(v)target.searchParams.set(k,v)});
+  target.searchParams.set('floorPlanImport','1');
+  setStatus('Opening BuildPlanner V2 with '+imported.length+' reviewed rooms…','ok');
+  location.href=target.toString();
+ }catch(e){
+  console.error('[TERAJU FLOOR PLAN IMPORT]',e);
+  setStatus('Unable to prepare the BuildPlanner import.','warn');
+ }
+};
 </script>
 </body>
 </html>
