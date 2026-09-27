@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "contractor",
+  "contractorId": "CTR-20260927-OAMC",
+  "profile": {
+    "name": "Asyraf Reeza Studio Test 2",
+    "email": "asyraf.reeza@gmail.com",
+    "phone": "01125476214"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-09-27T18:56:53.017Z",
+  "updatedAt": "2026-09-27T18:56:53.017Z"
+}
