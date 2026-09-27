@@ -115,10 +115,12 @@ export default async function handler(req, res) {
             parameters: [
               {
                 type: 'text',
+                parameter_name: 'customer_name',
                 text: String(name)
               },
               {
                 type: 'text',
+                parameter_name: 'account_id',
                 text: String(id)
               }
             ]
