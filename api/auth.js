@@ -80,7 +80,10 @@ export default async function handler(req, res) {
       return { sent: false, reason: 'WhatsApp service is not configured.' };
     }
 
-    const recipient = normalizePhone(phone).replace(/^\+/, '');
+    const normalizedPhone = normalizePhone(phone);
+    const recipient = normalizedPhone.startsWith('01')
+      ? `60${normalizedPhone.slice(1)}`
+      : normalizedPhone.replace(/^\+/, '');
     if (!/^601\d{8,9}$/.test(recipient)) {
       console.log('WhatsApp skipped: invalid recipient format', {
         last4: recipient.slice(-4)
