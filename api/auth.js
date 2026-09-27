@@ -82,8 +82,17 @@ export default async function handler(req, res) {
 
     const recipient = normalizePhone(phone).replace(/^\+/, '');
     if (!/^601\d{8,9}$/.test(recipient)) {
+      console.log('WhatsApp skipped: invalid recipient format', {
+        last4: recipient.slice(-4)
+      });
       return { sent: false, reason: 'Invalid WhatsApp recipient number.' };
     }
+
+    console.log('WhatsApp send started', {
+      recipientLast4: recipient.slice(-4),
+      templateName,
+      templateLanguage
+    });
 
     const response = await fetch(`https://graph.facebook.com/v23.0/${phoneNumberId}/messages`, {
       method: 'POST',
@@ -119,14 +128,24 @@ export default async function handler(req, res) {
     let data = null;
     try { data = text ? JSON.parse(text) : null; } catch { data = text; }
 
+    console.log('WhatsApp Meta response', {
+      status: response.status,
+      ok: response.ok
+    });
+
     if (!response.ok) {
       console.error('Welcome WhatsApp failed:', data);
       return { sent: false, reason: 'Welcome WhatsApp message could not be sent.' };
     }
 
+    const messageId = data?.messages?.[0]?.id || null;
+    console.log('WhatsApp send success', {
+      messageId
+    });
+
     return {
       sent: true,
-      messageId: data?.messages?.[0]?.id || null
+      messageId
     };
   }
 
