@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "homeowner",
+  "homeownerId": "HME-20260928-SQJX",
+  "profile": {
+    "name": "Dur",
+    "email": "dursarahman@gmail.com",
+    "phone": "0143071060"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-09-28T13:04:44.308Z",
+  "updatedAt": "2026-09-28T13:04:44.308Z"
+}
