@@ -34,7 +34,8 @@
   function selectedQuotationType() { return document.querySelector('input[name="quotationType"]:checked')?.value === 'detail' ? 'detail' : 'simple'; }
   function makeProjectId() { const prefix = plannerType === 'renovation' ? 'PRJ-REN' : 'PRJ-BLD'; return `${prefix}-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).slice(2,7).toUpperCase()}`; }
   function ensureProjectId() {
-    if (!currentProjectId) { try { currentProjectId = String(localStorage.getItem(projectStorageKey) || '').trim(); } catch {} }
+    const hasExistingQuotation = !!new URLSearchParams(location.search).get('quotationId');
+    if (!currentProjectId && hasExistingQuotation) { try { currentProjectId = String(localStorage.getItem(projectStorageKey) || '').trim(); } catch {} }
     if (!currentProjectId) currentProjectId = makeProjectId();
     try { localStorage.setItem(projectStorageKey, currentProjectId); } catch {}
     return currentProjectId;
