@@ -1587,35 +1587,35 @@
         "state": "final",
         "quotationType": "detail",
         "client": {
-          "name": "test 123345"
+          "name": "Not specified"
         },
         "project": {
-          "location": "cvksabhawbhsadpiouvdasv",
+          "location": "Not specified",
           "builtUpArea": 349,
           "state": "selangor"
         },
         "total": 163610,
         "plannerState": {
-          "customerName": "test 123345",
-          "projectLocation": "cvksabhawbhsadpiouvdasv",
+          "customerName": "",
+          "projectLocation": "",
           "builtUpArea": "349",
           "rooms": [
             {
-              "id": "ai-floorplan-1790583519742-0",
+              "id": "ai-floorplan-1790584447615-0",
               "type": "kitchen",
               "condition": "existing",
               "name": "KITCHEN",
               "area": "100"
             },
             {
-              "id": "ai-floorplan-1790583519742-1",
+              "id": "ai-floorplan-1790584447615-1",
               "type": "living",
               "condition": "existing",
               "name": "LIVING",
               "area": "100"
             },
             {
-              "id": "ai-floorplan-1790583519742-2",
+              "id": "ai-floorplan-1790584447615-2",
               "type": "porch",
               "condition": "existing",
               "name": "PORCH",
@@ -1762,115 +1762,15 @@
           "customDescriptions": [],
           "customRoomLabels": [
             [
-              "ai-floorplan-1790580194775-1",
-              "BEDROOM 2"
-            ],
-            [
-              "ai-floorplan-1790580194775-2",
-              "BEDROOM 3"
-            ],
-            [
-              "ai-floorplan-1790580194775-3",
-              "MASTER BEDROOM"
-            ],
-            [
-              "ai-floorplan-1790580194775-4",
-              "BATH 1"
-            ],
-            [
-              "ai-floorplan-1790580194775-5",
-              "BATH 2"
-            ],
-            [
-              "ai-floorplan-1790580194775-6",
-              "BATH 3"
-            ],
-            [
-              "ai-floorplan-1790580194775-7",
-              "BATH 4"
-            ],
-            [
-              "ai-floorplan-1790580194775-8",
-              "MASTERBATH"
-            ],
-            [
-              "ai-floorplan-1790580194775-9",
-              "POWDER ROOM"
-            ],
-            [
-              "ai-floorplan-1790580194775-10",
-              "HALL"
-            ],
-            [
-              "ai-floorplan-1790580194775-11",
-              "HALL"
-            ],
-            [
-              "ai-floorplan-1790580194775-12",
-              "GUEST LIVING HALL"
-            ],
-            [
-              "ai-floorplan-1790580194775-13",
-              "FAMILY AREA"
-            ],
-            [
-              "ai-floorplan-1790580194775-14",
-              "DINING"
-            ],
-            [
-              "ai-floorplan-1790580194775-15",
-              "DRY KITCHEN"
-            ],
-            [
-              "ai-floorplan-1790580194775-16",
-              "WET KITCHEN"
-            ],
-            [
-              "ai-floorplan-1790580194775-17",
-              "LAUNDRY"
-            ],
-            [
-              "ai-floorplan-1790580194775-18",
-              "SURAU"
-            ],
-            [
-              "ai-floorplan-1790580194775-19",
-              "CLOSET"
-            ],
-            [
-              "ai-floorplan-1790580194775-20",
-              "GYM"
-            ],
-            [
-              "ai-floorplan-1790580194775-21",
-              "PORCH"
-            ],
-            [
-              "ai-floorplan-1790580194775-22",
-              "VERANDAH"
-            ],
-            [
-              "ai-floorplan-1790580194775-23",
-              "VERANDAH"
-            ],
-            [
-              "ai-floorplan-1790580194775-24",
-              "VERANDAH"
-            ],
-            [
-              "ai-floorplan-1790580194775-25",
-              "WUDUK ROOM"
-            ],
-            [
-              "ai-floorplan-1790583519742-0",
+              "ai-floorplan-1790584447615-0",
               "KITCHEN"
             ],
             [
-              "ai-floorplan-1790583519742-1",
+              "ai-floorplan-1790584447615-1",
               "LIVING"
             ],
             [
-              "ai-floorplan-1790583519742-2",
+              "ai-floorplan-1790584447615-2",
               "PORCH"
             ]
           ],
@@ -1882,7 +1782,7 @@
           "projectState": "selangor",
           "rateSetId": "selangor",
           "rateSetName": "Selangor",
-          "rateSnapshotAt": "2026-09-28T08:18:58.802Z"
+          "rateSnapshotAt": "2026-09-28T08:34:24.887Z"
         },
         "itemListVersion": 1,
         "items": [
@@ -3027,7 +2927,7 @@
           }
         ],
         "createdAt": "2026-09-24T05:55:26.415Z",
-        "updatedAt": "2026-09-28T08:19:00.207Z",
+        "updatedAt": "2026-09-28T08:34:26.118Z",
         "estimateNumber": "EST-BLD-002"
       },
       {
@@ -8482,7 +8382,7 @@
     ]
   },
   "createdAt": "2026-09-23T08:33:53.459Z",
-  "updatedAt": "2026-09-28T08:19:00.207Z",
+  "updatedAt": "2026-09-28T08:34:26.118Z",
   "quotationRunningNumber": {
     "renovation": 10,
     "build": 3
