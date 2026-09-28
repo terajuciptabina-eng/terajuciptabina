@@ -310,8 +310,6 @@ applyAudienceUI();if(isHomeowner()){document.getElementById('roomsContainer').in
 <script id="tc-v2-master-bootstrap">
 (function(){
   if(!/buildplanner-v2\.html$/i.test(location.pathname))return;
-   const importParams=new URLSearchParams(location.search);
-   if(importParams.get('floorPlanImport')!=='1')return;
   const tag=document.createElement('script');
   tag.src='quotation-quantity-fix.js?v=20260925-live-quantity-v3';
   tag.onload=()=>{
@@ -363,6 +361,8 @@ applyAudienceUI();if(isHomeowner()){document.getElementById('roomsContainer').in
 <script id="tc-floor-plan-import-receiver">
 (function(){
   if(!/buildplanner-v2\.html$/i.test(location.pathname))return;
+  const importParams=new URLSearchParams(location.search);
+  if(importParams.get('floorPlanImport')!=='1')return;
   let raw=null;
   try{raw=sessionStorage.getItem('teraju.floorplan.import.pending.v1')}catch(e){}
   if(!raw)return;
