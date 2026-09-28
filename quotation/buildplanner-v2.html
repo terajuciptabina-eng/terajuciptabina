@@ -423,9 +423,22 @@ applyAudienceUI();if(isHomeowner()){document.getElementById('roomsContainer').in
   };
   const nextFrame=()=>new Promise(resolve=>requestAnimationFrame(()=>resolve()));
 
-  const wait=async()=>{
+  let loaderStarted=false;
+  const wait=async(startTime=Date.now())=>{
     const ready=typeof addRoom==='function'&&typeof updateEstimate==='function'&&document.getElementById('roomsContainer');
-    if(!ready){setTimeout(wait,100);return}
+    if(!ready){
+      if(Date.now()-startTime>15000){
+        const detail=document.getElementById('tcFpImportDetail');
+        const title=document.querySelector('#tcFloorPlanImportLoading .tc-fp-title');
+        if(title)title.textContent='Import could not start';
+        if(detail)detail.textContent='BuildPlanner calculation engine did not finish loading. Please refresh and try again.';
+        setTimeout(hideLoader,1800);
+        console.error('[TERAJU FLOOR PLAN IMPORT] BuildPlanner engine timeout');
+        return;
+      }
+      setTimeout(()=>wait(startTime),100);
+      return;
+    }
     const existing=document.querySelectorAll('#roomsContainer .room-card').length;
     let importContext=null;
     try{importContext=JSON.parse(sessionStorage.getItem('teraju.floorplan.import.context.v1')||'null')}catch(e){}
@@ -449,9 +462,12 @@ applyAudienceUI();if(isHomeowner()){document.getElementById('roomsContainer').in
     }
 
     enterReviewMode();
-    showLoader();
-    await nextFrame();
-    await nextFrame();
+    if(!loaderStarted){
+      loaderStarted=true;
+      showLoader();
+      await nextFrame();
+      await nextFrame();
+    }
 
     let imported=0;
     const stamp=Date.now();
@@ -496,6 +512,9 @@ applyAudienceUI();if(isHomeowner()){document.getElementById('roomsContainer').in
     }
   };
 
+  // Start the visible import state immediately. Do not wait for the calculation engine first.
+  enterReviewMode();
+  showLoader();
   const hasQuotationId=!!new URLSearchParams(location.search).get('quotationId');
   if(hasQuotationId){
     const startAfterRestore=()=>{
