@@ -368,6 +368,34 @@ applyAudienceUI();if(isHomeowner()){document.getElementById('roomsContainer').in
   try{payload=JSON.parse(raw)}catch(e){console.error('[TERAJU FLOOR PLAN IMPORT] Invalid pending payload',e);sessionStorage.removeItem('teraju.floorplan.import.pending.v1');return}
   if(!payload||payload.version!==1||!Array.isArray(payload.rooms)||!payload.rooms.length)return;
 
+  const enterReviewMode=()=>{
+    window.__TERAJU_FLOORPLAN_REVIEW_MODE=true;
+    const section=document.getElementById('constructionBudgetSection');
+    if(!section)return;
+    let action=document.getElementById('tcFloorPlanGenerateBudget');
+    if(!action){
+      const header=section.querySelector('.flex.items-start.justify-between');
+      if(!header)return;
+      action=document.createElement('div');
+      action.id='tcFloorPlanGenerateBudget';
+      action.className='no-print';
+      action.innerHTML='<p style="margin:0 0 8px;color:#64748b;font-size:12px;line-height:1.45">Review or add any room / area first. Generate the construction budget when your room schedule is final.</p><button type="button" class="bg-black text-white px-5 py-2.5 rounded-lg font-semibold text-sm">Generate Construction Budget</button>';
+      const button=action.querySelector('button');
+      button.addEventListener('click',()=>{
+        window.__TERAJU_FLOORPLAN_REVIEW_MODE=false;
+        try{
+          if(typeof syncBuiltUpAreaFromRooms==='function')syncBuiltUpAreaFromRooms();
+          if(typeof window.renderConstructionBudget==='function')window.renderConstructionBudget();
+          action.remove();
+          document.getElementById('constructionBudgetSection')?.scrollIntoView({behavior:'smooth',block:'start'});
+        }catch(e){console.error('[TERAJU FLOOR PLAN BUDGET] Generate failed',e)}
+      });
+      header.appendChild(action);
+    }
+    const budget=document.getElementById('constructionBudgetContent');
+    if(budget)budget.innerHTML='<div class="border rounded-xl bg-gray-50 p-5 text-center text-sm text-gray-600">Construction budget is waiting for your final room / area review.</div>';
+  };
+
   const createLoader=()=>{
     if(document.getElementById('tcFloorPlanImportLoading'))return document.getElementById('tcFloorPlanImportLoading');
     const el=document.createElement('div');
@@ -420,6 +448,7 @@ applyAudienceUI();if(isHomeowner()){document.getElementById('roomsContainer').in
       return;
     }
 
+    enterReviewMode();
     showLoader();
     await nextFrame();
     await nextFrame();
