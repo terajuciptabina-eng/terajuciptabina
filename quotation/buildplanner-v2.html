@@ -310,6 +310,8 @@ applyAudienceUI();if(isHomeowner()){document.getElementById('roomsContainer').in
 <script id="tc-v2-master-bootstrap">
 (function(){
   if(!/buildplanner-v2\.html$/i.test(location.pathname))return;
+   const importParams=new URLSearchParams(location.search);
+   if(importParams.get('floorPlanImport')!=='1')return;
   const tag=document.createElement('script');
   tag.src='quotation-quantity-fix.js?v=20260925-live-quantity-v3';
   tag.onload=()=>{
@@ -432,6 +434,9 @@ applyAudienceUI();if(isHomeowner()){document.getElementById('roomsContainer').in
         const title=document.querySelector('#tcFloorPlanImportLoading .tc-fp-title');
         if(title)title.textContent='Import could not start';
         if(detail)detail.textContent='BuildPlanner calculation engine did not finish loading. Please refresh and try again.';
+        window.__TERAJU_FLOORPLAN_REVIEW_MODE=false;
+        sessionStorage.removeItem('teraju.floorplan.import.pending.v1');
+        sessionStorage.removeItem('teraju.floorplan.import.context.v1');
         setTimeout(hideLoader,1800);
         console.error('[TERAJU FLOOR PLAN IMPORT] BuildPlanner engine timeout');
         return;
