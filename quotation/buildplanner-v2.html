@@ -222,11 +222,7 @@ function generateQuotation(typeOverride){
  const rooms=getRoomGroups();
  if(!rooms.some(r=>r.area>0)){alert('Please add at least one area with a valid area before generating the quotation.');return}
  const data=getCurrentQuotationData(),quotationNumber=generateQuotationNumber();
- const type=selectedType;
- const customer=String(document.getElementById('customerName')?.value||'').trim();
- const location=String(document.getElementById('projectLocation')?.value||'').trim();
- window.__TERAJU_PROJECT_INFO_SNAPSHOT={customerName:customer,projectLocation:location,capturedAt:new Date().toISOString()};
- const declared=rooms.reduce((s,r)=>s+(r.area||0),0),today=new Intl.DateTimeFormat('en-MY',{day:'2-digit',month:'long',year:'numeric'}).format(new Date()),content=document.getElementById('quotationContent');
+ const type=selectedType,customer=document.getElementById('customerName')?.value||'Not specified',location=document.getElementById('projectLocation')?.value||'Not specified',declared=rooms.reduce((s,r)=>s+(r.area||0),0),today=new Intl.DateTimeFormat('en-MY',{day:'2-digit',month:'long',year:'numeric'}).format(new Date()),content=document.getElementById('quotationContent');
  const all=data.allItems||[],active=all.filter(i=>typeof excludedItems==='undefined'||!excludedItems.has(i.id));
  const tree=typeof window.__TERAJU_BUILD_BUDGET_HIERARCHY==='function'?window.__TERAJU_BUILD_BUDGET_HIERARCHY(active):[];
  const escQ=v=>typeof window.escapeHtml==='function'?window.escapeHtml(v):escapeHtml(v);
