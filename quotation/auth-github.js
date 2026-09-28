@@ -105,7 +105,7 @@
     finally { button.disabled = false; button.textContent = mode === 'signup' ? 'Create workspace' : 'Enter workspace'; }
   }, true);
   signInTab.addEventListener('click', () => setMode('signin'), true); signUpTab.addEventListener('click', () => setMode('signup'), true);
-  document.getElementById('logout')?.addEventListener('click', () => { localStorage.removeItem(storageKey); location.reload(); }, true);
+  document.getElementById('logout')?.addEventListener('click', () => { const logoutButton=document.getElementById('logout'); if(logoutButton){ logoutButton.disabled=true; logoutButton.textContent='Logging out…'; } localStorage.removeItem(storageKey); try{ sessionStorage.removeItem('teraju.workspace.context.v1'); }catch{} window.location.replace(location.pathname); }, true);
   const query = new URLSearchParams(location.search);
   const queryId = String(query.get(idKey) || query.get('id') || '').trim().toUpperCase();
   const local = getLocal();
