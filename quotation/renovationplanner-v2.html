@@ -1783,6 +1783,7 @@ function renderBudgetSummaryAtBottom(items, roomGroups, roomSubtotals, projectPr
 
 function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, total) {
   const container = document.getElementById("estimateContent");
+  const brand = typeof window.__TERAJU_PREVIEW_BRANDING === "function" ? window.__TERAJU_PREVIEW_BRANDING() : null;
   const customer = document.getElementById("customerName")?.value || "Not specified";
   const location = document.getElementById("projectLocation")?.value || "Not specified";
   const totalBuiltArea = roomGroups.reduce((sum, room) => sum + (Number(room.area) || 0), 0);
@@ -2781,7 +2782,6 @@ function generateQuotationConfirmed(type) {
 
   quotationNumber = generateQuotationNumber();
 
-  const brand = typeof window.__TERAJU_PREVIEW_BRANDING === 'function' ? window.__TERAJU_PREVIEW_BRANDING() : null;
   const customer = document.getElementById("customerName")?.value || "Not specified";
   const location = document.getElementById("projectLocation")?.value || "Not specified";
   const totalBuiltArea = data.roomGroups.reduce((sum, room) => sum + (Number(room.area) || 0), 0);
@@ -2864,7 +2864,6 @@ initContractorMode();
 <script src="renovation-calculation-rules.js?v=20260924-rate-master-v1"></script>
 <script src="renovation-planner-v2-engine.js?v=20260930-generate-source-v1"></script>
 <script src="contractor-master-bridge.js?v=20260924-renovation-rate-master-v2"></script>
-<script src="shared/preview-branding.js?v=20260930-preview-branding-v1"></script>
 <script src="quotation-quantity-fix.js?v=20260930"></script>
 <script src="quotation-records.js?v=20260930-source-flow-v1"></script>
 <script>
@@ -2953,6 +2952,7 @@ if (typeof window.__TERAJU_RENOVATION_V2_UPDATE_ESTIMATE === "function") {
   }
 })();
 </script>
+<script src="shared/preview-branding.js?v=20260930-preview-branding-clean-v1"></script>
 <script src="shared/teraju-button-feedback.js?v=20260929-button-feedback-v1"></script>
 </body>
 </html>
