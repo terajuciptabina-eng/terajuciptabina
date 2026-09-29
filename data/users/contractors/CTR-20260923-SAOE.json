@@ -19,6 +19,466 @@
       {
         "schemaVersion": 2,
         "recordType": "quotation",
+        "quotationId": "QT-BLD-MUMM4WGL-855OW",
+        "projectId": "PRJ-BLD-MUMFGQ3X-IMTOO",
+        "quotationNumber": "Q013D",
+        "plannerType": "build",
+        "role": "contractor",
+        "contractorId": "CTR-20260923-SAOE",
+        "state": "final",
+        "quotationType": "detail",
+        "client": {
+          "name": "Zarifatul"
+        },
+        "project": {
+          "location": "Homestay, port dickson, negeri sembilan",
+          "builtUpArea": 3518,
+          "state": "negeri-sembilan"
+        },
+        "total": 0,
+        "plannerState": {
+          "customerName": "Zarifatul",
+          "projectLocation": "Homestay, port dickson, negeri sembilan",
+          "builtUpArea": "3518",
+          "rooms": [
+            {
+              "id": "ai-floorplan-1790668050974-0",
+              "type": "other",
+              "condition": "existing",
+              "name": "HALLWAY",
+              "area": "463.17"
+            },
+            {
+              "id": "ai-floorplan-1790668050974-1",
+              "type": "kitchen",
+              "condition": "existing",
+              "name": "KITCHEN 1",
+              "area": "120.00"
+            },
+            {
+              "id": "ai-floorplan-1790668050974-2",
+              "type": "kitchen",
+              "condition": "existing",
+              "name": "KITCHEN 2",
+              "area": "120.00"
+            },
+            {
+              "id": "ai-floorplan-1790668050974-3",
+              "type": "kitchen",
+              "condition": "existing",
+              "name": "KITCHEN 3",
+              "area": "120.00"
+            },
+            {
+              "id": "ai-floorplan-1790668050974-4",
+              "type": "kitchen",
+              "condition": "existing",
+              "name": "KITCHEN 4",
+              "area": "120.00"
+            },
+            {
+              "id": "ai-floorplan-1790668050974-5",
+              "type": "other",
+              "condition": "existing",
+              "name": "OPEN AREA 1",
+              "area": "123.50"
+            },
+            {
+              "id": "ai-floorplan-1790668050974-6",
+              "type": "other",
+              "condition": "existing",
+              "name": "OPEN AREA 2",
+              "area": "123.50"
+            },
+            {
+              "id": "ai-floorplan-1790668050974-7",
+              "type": "other",
+              "condition": "existing",
+              "name": "OPEN AREA 3",
+              "area": "123.50"
+            },
+            {
+              "id": "ai-floorplan-1790668050974-8",
+              "type": "other",
+              "condition": "existing",
+              "name": "OPEN AREA 4",
+              "area": "123.50"
+            },
+            {
+              "id": "ai-floorplan-1790668050974-9",
+              "type": "porch",
+              "condition": "existing",
+              "name": "VARANDAH 1",
+              "area": "160.00"
+            },
+            {
+              "id": "ai-floorplan-1790668050974-12",
+              "type": "porch",
+              "condition": "existing",
+              "name": "VARANDAH 2",
+              "area": "160.00"
+            },
+            {
+              "id": "ai-floorplan-1790668050974-11",
+              "type": "porch",
+              "condition": "existing",
+              "name": "VARANDAH 3",
+              "area": "160.00"
+            },
+            {
+              "id": "ai-floorplan-1790668050974-10",
+              "type": "porch",
+              "condition": "existing",
+              "name": "VARANDAH 4",
+              "area": "160.00"
+            },
+            {
+              "id": "ai-floorplan-1790668050974-13",
+              "type": "bedroom",
+              "condition": "existing",
+              "name": "Bedroom 1",
+              "area": "312.56"
+            },
+            {
+              "id": "ai-floorplan-1790668050974-14",
+              "type": "bedroom",
+              "condition": "existing",
+              "name": "Bedroom 2",
+              "area": "312.56"
+            },
+            {
+              "id": "ai-floorplan-1790668050974-15",
+              "type": "bedroom",
+              "condition": "existing",
+              "name": "Bedroom 3",
+              "area": "312.56"
+            },
+            {
+              "id": "ai-floorplan-1790668050974-16",
+              "type": "bedroom",
+              "condition": "existing",
+              "name": "Bedroom 4",
+              "area": "312.56"
+            },
+            {
+              "id": "ai-floorplan-1790668050974-17",
+              "type": "bathroom",
+              "condition": "existing",
+              "name": "BATH 1",
+              "area": "22.50"
+            },
+            {
+              "id": "ai-floorplan-1790668050974-18",
+              "type": "bathroom",
+              "condition": "existing",
+              "name": "BATH 2",
+              "area": "22.50"
+            },
+            {
+              "id": "ai-floorplan-1790668050974-19",
+              "type": "bathroom",
+              "condition": "existing",
+              "name": "BATH 3",
+              "area": "22.50"
+            },
+            {
+              "id": "ai-floorplan-1790668050974-20",
+              "type": "bathroom",
+              "condition": "existing",
+              "name": "BATH 4",
+              "area": "22.50"
+            },
+            {
+              "id": "ai-floorplan-1790668050974-21",
+              "type": "bathroom",
+              "condition": "existing",
+              "name": "TOILET 1",
+              "area": "25.01"
+            },
+            {
+              "id": "ai-floorplan-1790668050974-22",
+              "type": "bathroom",
+              "condition": "existing",
+              "name": "TOILET 2",
+              "area": "25.01"
+            },
+            {
+              "id": "ai-floorplan-1790668050974-23",
+              "type": "bathroom",
+              "condition": "existing",
+              "name": "TOILET 3",
+              "area": "25.01"
+            },
+            {
+              "id": "ai-floorplan-1790668050974-24",
+              "type": "bathroom",
+              "condition": "existing",
+              "name": "TOILET 4",
+              "area": "25.01"
+            }
+          ],
+          "rates": {
+            "footingConc": 550,
+            "footingFw": 4.18,
+            "footingRebar": 15,
+            "slabConc": 550,
+            "slabBrc": 6.5,
+            "beamConc": 350,
+            "beamFw": 4.18,
+            "beamRebar": 15,
+            "colConc": 550,
+            "colFw": 4.18,
+            "colRebar": 15,
+            "flatRoofConc": 550,
+            "flatRoofFw": 4.18,
+            "flatRoofBrc": 6.5,
+            "cChannel": 4,
+            "metalSheet": 3.25,
+            "roofDesignConc": 550,
+            "roofDesignFw": 4.18,
+            "roofDesignRebar": 70,
+            "apronConc": 350,
+            "apronFw": 13.72,
+            "apronBrc": 15,
+            "drainage": 25,
+            "ceilingInt": 15,
+            "ceilingExt": 20,
+            "floorTileInt": 4.18,
+            "floorTileExt": 5.57,
+            "paintInt": 1.39,
+            "paintExt": 2.32,
+            "door": 600,
+            "window": 600,
+            "waterTank": 500,
+            "septicTank": 1500,
+            "bathWallTile": 4.18,
+            "bathFloorTile": 4.18,
+            "bathPiping": 1000,
+            "bathShower": 120,
+            "bathTap": 30,
+            "bathWc": 500,
+            "bathBasin": 400,
+            "dbBox": 1000,
+            "wiring": 20,
+            "powerPoint": 50,
+            "switch": 50,
+            "lighting": 250,
+            "fan": 600,
+            "aircond": 300,
+            "earthing": 1500,
+            "permit": 8500,
+            "prelim": 12000,
+            "rule_preliminaries_building_plan_submission_0": 8500,
+            "rule_preliminaries_site_mobilisation_project_management_1": 12000,
+            "rule_main_building_footing_concrete_2": 550,
+            "rule_main_building_footing_formwork_3": 55,
+            "rule_main_building_footing_rebar_4": 8,
+            "rule_main_building_ground_slab_concrete_5": 550,
+            "rule_main_building_ground_slab_brc_6": 20.5,
+            "rule_main_building_ground_beam_concrete_7": 350,
+            "rule_main_building_ground_beam_formwork_8": 55,
+            "rule_main_building_ground_beam_rebar_9": 8,
+            "rule_main_building_roof_beam_concrete_10": 350,
+            "rule_main_building_roof_beam_formwork_11": 55,
+            "rule_main_building_roof_beam_rebar_12": 8,
+            "rule_main_building_column_concrete_13": 550,
+            "rule_main_building_column_formwork_14": 55,
+            "rule_main_building_column_rebar_15": 8,
+            "rule_main_building_flat_roof_concrete_16": 550,
+            "rule_main_building_flat_roof_formwork_17": 55,
+            "rule_main_building_flat_roof_brc_18": 20.5,
+            "rule_main_building_roof_metal_roofing_sheet_19": 420,
+            "rule_main_building_apron_concrete_20": 350,
+            "rule_main_building_apron_formwork_21": 55,
+            "rule_main_building_apron_brc_22": 20.5,
+            "rule_main_building_drainage_23": 35,
+            "rule_porch_footing_concrete_24": 550,
+            "rule_porch_footing_formwork_25": 55,
+            "rule_porch_footing_rebar_26": 8,
+            "rule_porch_ground_slab_concrete_27": 550,
+            "rule_porch_ground_slab_brc_28": 20.5,
+            "rule_porch_ground_beam_concrete_29": 350,
+            "rule_porch_ground_beam_formwork_30": 55,
+            "rule_porch_ground_beam_rebar_31": 8,
+            "rule_porch_roof_beam_concrete_32": 350,
+            "rule_porch_roof_beam_formwork_33": 55,
+            "rule_porch_roof_beam_rebar_34": 8,
+            "rule_porch_column_concrete_35": 550,
+            "rule_porch_column_formwork_36": 55,
+            "rule_porch_column_rebar_37": 8,
+            "rule_porch_flat_roof_concrete_38": 550,
+            "rule_porch_flat_roof_formwork_39": 55,
+            "rule_porch_flat_roof_brc_40": 20.5,
+            "rule_porch_roof_metal_roofing_sheet_41": 450,
+            "rule_main_building_brickwall_internal_wall_42": 75,
+            "rule_main_building_brickwall_external_wall_43": 120,
+            "rule_main_building_floor_tiles_internal_44": 95,
+            "rule_main_building_floor_tiles_external_45": 150,
+            "rule_main_building_painting_internal_46": 30,
+            "rule_main_building_painting_external_47": 48,
+            "rule_main_building_ceiling_internal_48": 165,
+            "rule_main_building_ceiling_external_49": 165,
+            "rule_bathroom_wall_tiles_50": 150,
+            "rule_bathroom_floor_tiles_51": 150,
+            "rule_bathroom_ceiling_52": 165,
+            "rule_bathroom_piping_53": 1100,
+            "rule_bathroom_wc_54": 800,
+            "rule_bathroom_basin_55": 400,
+            "rule_bathroom_shower_56": 250,
+            "rule_bathroom_tap_57": 200,
+            "rule_main_building_water_tank_58": 600,
+            "rule_main_building_septic_tank_59": 2500,
+            "rule_main_building_power_point_60": 150,
+            "rule_main_building_switch_61": 200,
+            "rule_main_building_lighting_62": 200,
+            "rule_main_building_fan_63": 200,
+            "rule_main_building_aircond_point_64": 300,
+            "rule_porch_lighting_65": 200,
+            "rule_porch_fan_66": 200,
+            "rule_porch_power_point_67": 150,
+            "rule_earthing_68": 2500,
+            "rule_db_box_69": 2500,
+            "rule_wiring_70": 25,
+            "rule_doors_type_1_single_leaf_71": 1200,
+            "rule_doors_type_2_sliding_72": 2500,
+            "rule_doors_type_3_bathroom_73": 850,
+            "rule_doors_type_4_double_leaf_main_door_74": 2400,
+            "rule_windows_type_1_1200_1200_75": 1200,
+            "rule_windows_type_2_1800_1200_76": 1400,
+            "rule_windows_type_3_900_600_77": 950,
+            "rule_boundary_fencing_78": 43000,
+            "rule_gate_79": 6500,
+            "rule_driveway_80": 5000,
+            "rule_landscaping_81": 2000,
+            "renovation_rule_balcony_floor_tiles_37": 22
+          },
+          "customRates": [],
+          "customQuantities": [],
+          "customDescriptions": [],
+          "customRoomLabels": [
+            [
+              "ai-floorplan-1790668050974-0",
+              "HALLWAY"
+            ],
+            [
+              "ai-floorplan-1790668050974-14",
+              "Bedroom 2"
+            ],
+            [
+              "ai-floorplan-1790668050974-15",
+              "Bedroom 3"
+            ],
+            [
+              "ai-floorplan-1790668050974-16",
+              "Bedroom 4"
+            ],
+            [
+              "ai-floorplan-1790668050974-1",
+              "KITCHEN 1"
+            ],
+            [
+              "ai-floorplan-1790668050974-2",
+              "KITCHEN 2"
+            ],
+            [
+              "ai-floorplan-1790668050974-3",
+              "KITCHEN 3"
+            ],
+            [
+              "ai-floorplan-1790668050974-4",
+              "KITCHEN 4"
+            ],
+            [
+              "ai-floorplan-1790668050974-5",
+              "OPEN AREA 1"
+            ],
+            [
+              "ai-floorplan-1790668050974-6",
+              "OPEN AREA 2"
+            ],
+            [
+              "ai-floorplan-1790668050974-7",
+              "OPEN AREA 3"
+            ],
+            [
+              "ai-floorplan-1790668050974-8",
+              "OPEN AREA 4"
+            ],
+            [
+              "ai-floorplan-1790668050974-9",
+              "VARANDAH 1"
+            ],
+            [
+              "ai-floorplan-1790668050974-12",
+              "VARANDAH 2"
+            ],
+            [
+              "ai-floorplan-1790668050974-11",
+              "VARANDAH 3"
+            ],
+            [
+              "ai-floorplan-1790668050974-10",
+              "VARANDAH 4"
+            ],
+            [
+              "ai-floorplan-1790668050974-13",
+              "Bedroom 1"
+            ],
+            [
+              "ai-floorplan-1790668050974-17",
+              "BATH 1"
+            ],
+            [
+              "ai-floorplan-1790668050974-18",
+              "BATH 2"
+            ],
+            [
+              "ai-floorplan-1790668050974-19",
+              "BATH 3"
+            ],
+            [
+              "ai-floorplan-1790668050974-20",
+              "BATH 4"
+            ],
+            [
+              "ai-floorplan-1790668050974-21",
+              "TOILET 1"
+            ],
+            [
+              "ai-floorplan-1790668050974-22",
+              "TOILET 2"
+            ],
+            [
+              "ai-floorplan-1790668050974-23",
+              "TOILET 3"
+            ],
+            [
+              "ai-floorplan-1790668050974-24",
+              "TOILET 4"
+            ]
+          ],
+          "excludedItems": [],
+          "manualItems": [],
+          "standardRateItems": [],
+          "quotationType": "detail",
+          "projectId": "PRJ-BLD-MUMFGQ3X-IMTOO",
+          "constructionBudgetGenerated": false,
+          "projectState": "negeri-sembilan",
+          "rateSetId": "default",
+          "rateSetName": "Default Rate",
+          "rateSnapshotAt": "2026-09-29T10:26:53.571Z",
+          "quotationId": "QT-BLD-MUMM4WGL-855OW"
+        },
+        "itemListVersion": 1,
+        "items": [],
+        "createdAt": "2026-09-29T11:48:36.309Z",
+        "updatedAt": "2026-09-29T11:48:36.309Z",
+        "estimateNumber": "EST-BLD-013",
+        "sourceItems": []
+      },
+      {
+        "schemaVersion": 2,
+        "recordType": "quotation",
         "quotationId": "QT-BLD-MUMJJSLH-J0ICE",
         "projectId": "PRJ-BLD-MUMFGQ3X-IMTOO",
         "quotationNumber": "Q012D",
@@ -9792,13 +10252,13 @@
     ]
   },
   "createdAt": "2026-09-23T08:33:53.459Z",
-  "updatedAt": "2026-09-29T11:36:51.877Z",
+  "updatedAt": "2026-09-29T11:48:36.309Z",
   "quotationRunningNumber": {
     "renovation": 10,
-    "build": 12
+    "build": 13
   },
   "estimateRunningNumber": {
     "renovation": 9,
-    "build": 12
+    "build": 13
   }
 }
