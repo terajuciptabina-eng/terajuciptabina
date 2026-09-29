@@ -160,7 +160,8 @@
 <script>
 const DEFAULT_RATES={footingConc:550,footingFw:4.18,footingRebar:15,slabConc:550,slabBrc:6.5,beamConc:350,beamFw:4.18,beamRebar:15,colConc:550,colFw:4.18,colRebar:15,flatRoofConc:550,flatRoofFw:4.18,flatRoofBrc:6.5,cChannel:4,metalSheet:3.25,roofDesignConc:550,roofDesignFw:4.18,roofDesignRebar:70,apronConc:350,apronFw:13.72,apronBrc:15,drainage:25,ceilingInt:15,ceilingExt:20,floorTileInt:4.18,floorTileExt:5.57,paintInt:1.39,paintExt:2.32,door:600,window:600,waterTank:500,septicTank:1500,bathWallTile:4.18,bathFloorTile:4.18,bathPiping:1000,bathShower:120,bathTap:30,bathWc:500,bathBasin:400,dbBox:1000,wiring:20,powerPoint:50,switch:50,lighting:250,fan:600,aircond:300,earthing:1500,permit:8500,prelim:12000};
 let RATES={...DEFAULT_RATES};
-const BUILD_PARAMS=new URLSearchParams(location.search);\nconst AUDIENCE=BUILD_PARAMS.get('audience')||BUILD_PARAMS.get('role')||'homeowner';
+const BUILD_PARAMS=new URLSearchParams(location.search);
+const AUDIENCE=BUILD_PARAMS.get('audience')||BUILD_PARAMS.get('role')||'homeowner';
 const IS_CONTRACTOR=AUDIENCE==='contractor';
 const IS_HOMEOWNER=!IS_CONTRACTOR;
 const CONTRACTOR_ID=BUILD_PARAMS.get('contractorId')||BUILD_PARAMS.get('id')||(()=>{try{return JSON.parse(localStorage.getItem('teraju.contractor.github.v1')||'null')?.contractorId||''}catch{return ''}})()||'';
@@ -422,7 +423,10 @@ applyAudienceUI();window.__TERAJU_ROOM_SCHEDULE_DIRTY=true;setRoomScheduleStatus
       if(typeof customRoomLabels!=='undefined'&&customRoomLabels instanceof Map)customRoomLabels.clear();
       if(typeof updateRoomsEmptyState==='function')updateRoomsEmptyState();
     }else if(existing&&!window.__TERAJU_FLOORPLAN_IMPORT_CONFIRMED){
-      const ok=confirm('Import '+payload.rooms.length+' reviewed room/area entries from the floor plan into the existing BuildPlanner list?\n\nOK = Add to existing rooms\nCancel = Do not import');
+      const ok=confirm('Import '+payload.rooms.length+' reviewed room/area entries from the floor plan into the existing BuildPlanner list?
+
+OK = Add to existing rooms
+Cancel = Do not import');
       if(!ok){sessionStorage.removeItem('teraju.floorplan.import.pending.v1');sessionStorage.removeItem('teraju.floorplan.import.context.v1');return}
       window.__TERAJU_FLOORPLAN_IMPORT_CONFIRMED=true;
     }
