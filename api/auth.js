@@ -201,7 +201,6 @@ export default async function handler(req, res) {
       return res.status(200).json({ success: true, record });
     }
 
-    const body = req.body || {};
     const role = String(body.role || '').toLowerCase();
     const name = String(body.name || '').trim();
     const email = String(body.email || '').trim().toLowerCase();
