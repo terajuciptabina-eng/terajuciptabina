@@ -52,7 +52,18 @@ export default async function handler(req, res) {
       duplicate.createdAt = now;
       duplicate.updatedAt = now;
       duplicate.state = 'final';
-      duplicate.plannerState = { ...(duplicate.plannerState || {}), projectId: duplicate.projectId || duplicate.plannerState?.projectId || '', quotationId: newQuotationId };
+      // A duplicate is a new estimate, not a copy of the source calculation snapshot.
+      // Preserve planning inputs/customizations, but force a fresh TERAJU calculation
+      // from the duplicated Room / Area state when the new estimate is opened/generated.
+      duplicate.items = [];
+      duplicate.sourceItems = [];
+      duplicate.total = 0;
+      duplicate.plannerState = {
+        ...(duplicate.plannerState || {}),
+        projectId: duplicate.projectId || duplicate.plannerState?.projectId || '',
+        quotationId: newQuotationId,
+        constructionBudgetGenerated: false
+      };
       list.unshift(duplicate);
       current.record.plannerRecords = current.record.plannerRecords || { build: [], renovation: [] };
       current.record.plannerRecords[plannerType] = list;
