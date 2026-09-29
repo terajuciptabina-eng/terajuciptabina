@@ -287,7 +287,9 @@ async function generateQuotation(typeOverride){
  document.getElementById('quotationDocument').classList.remove('hidden');
  document.getElementById('quotationPrintActions').classList.remove('hidden');
  setDetailedQuotationLocked(type==='detail');
- renderQuotationPreview();
+ if(typeof window.renderQuotationPreview==='function'){
+   await window.renderQuotationPreview();
+ }
  document.getElementById('quotationDocument').scrollIntoView({behavior:'smooth',block:'start'});
  if(type==='detail')openDetailedQuotationPromo();
  return true;
