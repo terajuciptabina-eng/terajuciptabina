@@ -1,10 +1,10 @@
 export default async function handler(req, res) {
   const origin = 'https://terajuciptabina-eng.github.io';
   res.setHeader('Access-Control-Allow-Origin', origin);
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   if (req.method === 'OPTIONS') return res.status(200).end();
-  if (!['GET', 'POST'].includes(req.method)) return res.status(405).json({ message: 'Method not allowed' });
+  if (!['GET', 'POST', 'PATCH'].includes(req.method)) return res.status(405).json({ message: 'Method not allowed' });
 
   const token = process.env.GITHUB_TOKEN;
   const repo = process.env.GITHUB_REPO || 'terajuciptabina-eng/terajuciptabina';
@@ -164,6 +164,41 @@ export default async function handler(req, res) {
       if (!result.response.ok) return res.status(502).json({ message: 'Unable to read account record.' });
       const content = result.data?.content ? Buffer.from(result.data.content, 'base64').toString('utf8') : '';
       return res.status(200).json(JSON.parse(content));
+    }
+
+    const body = req.body || {};
+    if (req.method === 'PATCH') {
+      const role = String(body.role || '').toLowerCase();
+      const id = String(body.id || '').trim().toUpperCase();
+      if (role !== 'contractor' || !id) return res.status(400).json({ message: 'Contractor role and ID are required.' });
+      const current = await github(pathFor(role, id));
+      if (current.response.status === 404) return res.status(404).json({ message: 'Account not found.' });
+      if (!current.response.ok) return res.status(502).json({ message: 'Unable to read account record.' });
+      const content = current.data?.content ? Buffer.from(current.data.content, 'base64').toString('utf8') : '';
+      let record;
+      try { record = JSON.parse(content); } catch { return res.status(502).json({ message: 'Account record is invalid.' }); }
+      const incoming = body.profile && typeof body.profile === 'object' ? body.profile : {};
+      const existingProfile = record.profile && typeof record.profile === 'object' ? record.profile : {};
+      const nextProfile = { ...existingProfile };
+      ['name','email','phone','registrationNo','address','website','logoDataUrl','previewBrandingMode','previewBrandingConfigured'].forEach(key => {
+        if (Object.prototype.hasOwnProperty.call(incoming, key)) nextProfile[key] = incoming[key];
+      });
+      if (String(nextProfile.name || '').trim() === '') return res.status(400).json({ message: 'Company / contractor name is required.' });
+      if (nextProfile.email && !validEmail(nextProfile.email)) return res.status(400).json({ message: 'Please enter a valid email address.' });
+      if (nextProfile.phone && !validPhone(nextProfile.phone)) return res.status(400).json({ message: 'Please enter a valid Malaysian phone number.' });
+      if (String(nextProfile.logoDataUrl || '').length > 900000) return res.status(413).json({ message: 'Logo image is too large. Please use a smaller image.' });
+      record.profile = nextProfile;
+      record.updatedAt = new Date().toISOString();
+      const updated = await github(pathFor(role, id), {
+        method: 'PUT',
+        body: JSON.stringify({
+          message: 'Update contractor profile ' + id,
+          content: Buffer.from(JSON.stringify(record, null, 2) + '\n').toString('base64'),
+          sha: current.data.sha
+        })
+      });
+      if (!updated.response.ok) return res.status(502).json({ message: 'Unable to save contractor profile.' });
+      return res.status(200).json({ success: true, record });
     }
 
     const body = req.body || {};
