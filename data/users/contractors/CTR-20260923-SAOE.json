@@ -8300,11 +8300,11 @@
           "builtUpArea": 2567,
           "state": "negeri-sembilan"
         },
-        "total": 17670,
+        "total": 147675,
         "plannerState": {
           "customerName": "Ahmad",
           "projectLocation": "Puchong",
-          "builtUpArea": 2567,
+          "builtUpArea": "2567",
           "rooms": [
             {
               "id": "room-1",
@@ -8616,11 +8616,11 @@
           "standardRateItems": [],
           "quotationType": "simple",
           "projectId": "PRJ-REN-MUMZ3WPX-84L3N",
-          "constructionBudgetGenerated": false,
+          "constructionBudgetGenerated": true,
           "projectState": "negeri-sembilan",
           "rateSetId": "default",
           "rateSetName": "Default Rate",
-          "rateSnapshotAt": "2026-09-29T17:52:50.704Z"
+          "rateSnapshotAt": "2026-09-29T17:53:12.677Z"
         },
         "itemListVersion": 1,
         "items": [
@@ -8997,10 +8997,112 @@
             "masterPath": "LIVING / DINING / Ceiling Fan",
             "roomId": "room-8",
             "room": "Living"
+          },
+          {
+            "id": "room-14-floor",
+            "category": "",
+            "description": "Floor tiles to Balcony area.",
+            "unit": "sqft",
+            "qty": 543,
+            "rate": 25,
+            "amount": 13575,
+            "header": "",
+            "level3": "",
+            "section": "",
+            "groupTitle": "",
+            "groupKey": "",
+            "masterPath": "BALCONY / Floor Tiles",
+            "roomId": "room-14",
+            "room": "Balcony"
+          },
+          {
+            "id": "room-14-facade",
+            "category": "",
+            "description": "Facade wall works to Balcony area.",
+            "unit": "sqft",
+            "qty": 723,
+            "rate": 60,
+            "amount": 43380,
+            "header": "",
+            "level3": "",
+            "section": "",
+            "groupTitle": "",
+            "groupKey": "",
+            "masterPath": "BALCONY / Facade Wall",
+            "roomId": "room-14",
+            "room": "Balcony"
+          },
+          {
+            "id": "room-14-walllight",
+            "category": "",
+            "description": "Wall light to Balcony area.",
+            "unit": "No.",
+            "qty": 8,
+            "rate": 250,
+            "amount": 2000,
+            "header": "",
+            "level3": "",
+            "section": "",
+            "groupTitle": "",
+            "groupKey": "",
+            "masterPath": "BALCONY / Wall Light",
+            "roomId": "room-14",
+            "room": "Balcony"
+          },
+          {
+            "id": "room-15-floor",
+            "category": "",
+            "description": "Floor tiles to Balcony area.",
+            "unit": "sqft",
+            "qty": 654,
+            "rate": 25,
+            "amount": 16350,
+            "header": "",
+            "level3": "",
+            "section": "",
+            "groupTitle": "",
+            "groupKey": "",
+            "masterPath": "BALCONY / Floor Tiles",
+            "roomId": "room-15",
+            "room": "Balcony 2"
+          },
+          {
+            "id": "room-15-facade",
+            "category": "",
+            "description": "Facade wall works to Balcony area.",
+            "unit": "sqft",
+            "qty": 870,
+            "rate": 60,
+            "amount": 52200,
+            "header": "",
+            "level3": "",
+            "section": "",
+            "groupTitle": "",
+            "groupKey": "",
+            "masterPath": "BALCONY / Facade Wall",
+            "roomId": "room-15",
+            "room": "Balcony 2"
+          },
+          {
+            "id": "room-15-walllight",
+            "category": "",
+            "description": "Wall light to Balcony area.",
+            "unit": "No.",
+            "qty": 10,
+            "rate": 250,
+            "amount": 2500,
+            "header": "",
+            "level3": "",
+            "section": "",
+            "groupTitle": "",
+            "groupKey": "",
+            "masterPath": "BALCONY / Wall Light",
+            "roomId": "room-15",
+            "room": "Balcony 2"
           }
         ],
         "createdAt": "2026-09-29T17:51:43.690Z",
-        "updatedAt": "2026-09-29T17:52:51.798Z",
+        "updatedAt": "2026-09-29T17:53:13.871Z",
         "estimateNumber": "EST-REN-010"
       },
       {
@@ -12650,7 +12752,7 @@
     ]
   },
   "createdAt": "2026-09-23T08:33:53.459Z",
-  "updatedAt": "2026-09-29T17:52:51.798Z",
+  "updatedAt": "2026-09-29T17:53:13.871Z",
   "quotationRunningNumber": {
     "renovation": 11,
     "build": 14
