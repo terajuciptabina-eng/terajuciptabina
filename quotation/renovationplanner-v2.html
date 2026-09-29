@@ -1192,7 +1192,7 @@ function roomScheduleIsSaved() {
     renovationRoomScheduleSignature() === window.__TERAJU_RENOVATION_ROOM_SCHEDULE_SAVED_SIGNATURE;
 }
 
-window.saveRenovationRoomAreaState = function() {
+window.saveRenovationRoomAreaState = async function() {
   const rooms = renovationRoomScheduleSnapshot();
   const validRooms = rooms.filter(room => Number(room.area) > 0);
   if (!validRooms.length) {
@@ -1217,6 +1217,17 @@ window.saveRenovationRoomAreaState = function() {
     syncRenovationBuildingSpecification();
   }
   if (typeof saveContractorState === "function") saveContractorState();
+
+  // When revising an existing Cost Estimate, persist the new Room / Area
+  // schedule immediately, without generating or replacing the Budget snapshot.
+  if (window.tcQuotationRecords && typeof window.tcQuotationRecords.persistRenovationRoomSchedule === "function") {
+    const persisted = await window.tcQuotationRecords.persistRenovationRoomSchedule(rooms);
+    if (!persisted && new URLSearchParams(location.search).get("quotationId")) {
+      setRenovationRoomScheduleStatus("Room / Area saved locally, but Cost Estimate history was not updated.", "dirty");
+      return false;
+    }
+  }
+
   setRenovationBudgetGenerated(false);
   return true;
 };
