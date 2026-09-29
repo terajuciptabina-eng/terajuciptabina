@@ -923,7 +923,7 @@ function bindProjectOptionalWorks() {
 
 
 const DEFAULT_RATES = JSON.parse(JSON.stringify(RATES));
-const AUDIENCE = new URLSearchParams(window.location.search).get("audience") || "homeowner";
+const PARAMS = new URLSearchParams(window.location.search);\nconst AUDIENCE = PARAMS.get("audience") || PARAMS.get("role") || "homeowner";
 const IS_CONTRACTOR = AUDIENCE === "contractor";
 const PARAMS = new URLSearchParams(window.location.search);
 const CONTRACTOR_ID = PARAMS.get("contractorId")
