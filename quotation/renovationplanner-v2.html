@@ -1175,9 +1175,7 @@ function markRenovationRoomScheduleDirty() {
   window.__TERAJU_RENOVATION_ROOM_SCHEDULE_DIRTY = true;
   setRenovationBudgetGenerated(false);
   setRenovationRoomScheduleStatus("Room / Area changes not saved yet.", "dirty");
-  if (typeof window.showRenovationBudgetPending === "function") {
-    window.showRenovationBudgetPending();
-  }
+  showRenovationBudgetPending("Review the updated Room / Area, then click Save Room / Area before generating the budget.");
 }
 
 function markRenovationRoomScheduleSaved() {
@@ -1218,17 +1216,19 @@ window.saveRenovationRoomAreaState = async function() {
   }
   if (typeof saveContractorState === "function") saveContractorState();
 
-  // When revising an existing Cost Estimate, persist the new Room / Area
-  // schedule immediately, without generating or replacing the Budget snapshot.
-  if (window.tcQuotationRecords && typeof window.tcQuotationRecords.persistRenovationRoomSchedule === "function") {
-    const persisted = await window.tcQuotationRecords.persistRenovationRoomSchedule(rooms);
-    if (!persisted && new URLSearchParams(location.search).get("quotationId")) {
-      setRenovationRoomScheduleStatus("Room / Area saved locally, but Cost Estimate history was not updated.", "dirty");
+  // Existing Cost Estimates persist the planning state here.
+  // This does not calculate or generate the Renovation Budget.
+  const quotationId = new URLSearchParams(location.search).get("quotationId");
+  if (quotationId && window.tcQuotationRecords?.persistRoomSchedule) {
+    const persisted = await window.tcQuotationRecords.persistRoomSchedule(rooms);
+    if (!persisted) {
+      setRenovationRoomScheduleStatus("Room / Area could not be saved to Cost Estimate history.", "dirty");
       return false;
     }
   }
 
   setRenovationBudgetGenerated(false);
+  showRenovationBudgetPending("Room / Area is saved. Generate the Renovation Budget when you are ready.");
   return true;
 };
 
@@ -1249,6 +1249,7 @@ function setRenovationBudgetGenerated(generated) {
       : "Generate Renovation Budget";
   }
 }
+window.__TERAJU_RENOVATION_BUDGET_STATE_SET = setRenovationBudgetGenerated;
 
 window.showRenovationBudgetPending = function(message) {
   const container = document.getElementById("estimateContent");
@@ -1264,17 +1265,19 @@ window.showRenovationBudgetPending = function(message) {
 };
 
 window.generateRenovationBudget = function() {
-  if (typeof window.__TERAJU_RENOVATION_ROOM_SCHEDULE_IS_SAVED === "function" &&
-      !window.__TERAJU_RENOVATION_ROOM_SCHEDULE_IS_SAVED()) {
+  if (!roomScheduleIsSaved()) {
     alert("Please Save Room / Area before generating the Renovation Budget.");
     return false;
   }
+
+  setRenovationBudgetGenerated(true);
+
   if (typeof window.__TERAJU_RENOVATION_V2_UPDATE_ESTIMATE === "function") {
     window.__TERAJU_RENOVATION_V2_UPDATE_ESTIMATE();
   } else if (typeof updateEstimate === "function") {
     updateEstimate();
   }
-  setRenovationBudgetGenerated(true);
+
   document.getElementById("estimateContent")?.scrollIntoView({behavior:"smooth",block:"start"});
   return true;
 };
