@@ -637,11 +637,18 @@ main>section:not(:first-child){scroll-margin-top:92px} main>section>div:first-ch
       <p class="font-semibold text-sm">No rooms added yet.</p>
       <p class="text-xs text-gray-500 mt-1">Click the button above to add rooms/areas and start planning your renovation.</p>
     </div>
-    <div id="roomsAddButtonAnchor" class="no-print mt-2">
+    <div id="roomsAddButtonAnchor" class="no-print mt-2 flex flex-wrap gap-2">
       <button id="addRoomAreaBtn" type="button" onclick="return window.addRoom ? window.addRoom() : false;"
         class="bg-black text-white px-3 py-2 rounded-lg text-sm font-medium hover:bg-gray-800">
-        + Add Room / Area
+        Add Room Manually
       </button>
+      <button id="saveRoomAreaBtn" type="button" onclick="return window.saveRenovationRoomAreaState ? window.saveRenovationRoomAreaState() : false;"
+        class="border border-gray-300 bg-white text-gray-900 px-3 py-2 rounded-lg text-sm font-semibold hover:bg-gray-50">
+        Save Room / Area
+      </button>
+    </div>
+    <div id="roomScheduleStatus" class="no-print mt-2 text-xs text-gray-500" aria-live="polite">
+      Room / Area changes not saved yet.
     </div>
   </section>
 
@@ -1058,6 +1065,7 @@ function addRoomBase(defaultType = "other", defaultArea = "", forcedId = "", for
   }
 
   nameInput.addEventListener("change", e => {
+    markRenovationRoomScheduleDirty();
     const label = String(e.target.value || "").trim();
     const generated = e.target.dataset.generated === "true";
     if (generated) {
@@ -1069,6 +1077,7 @@ function addRoomBase(defaultType = "other", defaultArea = "", forcedId = "", for
   });
 
   div.querySelector(".room-type").addEventListener("change", () => {
+    markRenovationRoomScheduleDirty();
     const input = div.querySelector(".room-name");
     const type = div.querySelector(".room-type").value || "other";
     if (input && input.dataset.generated !== "false") {
@@ -1082,12 +1091,17 @@ function addRoomBase(defaultType = "other", defaultArea = "", forcedId = "", for
     updateEstimate();
   });
 
-  div.querySelector(".room-condition").addEventListener("change", updateEstimate);
+  div.querySelector(".room-condition").addEventListener("change", () => {
+    markRenovationRoomScheduleDirty();
+    updateEstimate();
+  });
   div.querySelector(".room-area").addEventListener("input", () => {
+    markRenovationRoomScheduleDirty();
     updateEstimate();
     saveContractorState();
   });
   div.querySelector(".room-name").addEventListener("input", () => {
+    markRenovationRoomScheduleDirty();
     if (IS_CONTRACTOR) saveContractorState();
   });
   div.querySelectorAll(".optional-check").forEach(el => el.addEventListener("change", () => {
@@ -1118,12 +1132,101 @@ function updateRoomsEmptyState() {
   empty.classList.toggle("hidden", hasRooms);
 }
 
+function renovationRoomScheduleSnapshot() {
+  return [...document.querySelectorAll("#roomsContainer .room-card")].map(room => ({
+    id: room.id,
+    type: room.querySelector(".room-type")?.value || "other",
+    condition: room.querySelector(".room-condition")?.value || "existing",
+    name: room.querySelector(".room-name")?.value || "",
+    area: room.querySelector(".room-area")?.value || ""
+  }));
+}
+
+function renovationRoomScheduleSignature(rooms = renovationRoomScheduleSnapshot()) {
+  return JSON.stringify((rooms || []).map(room => ({
+    id: String(room.id || ""),
+    type: String(room.type || "other"),
+    condition: String(room.condition || "existing"),
+    name: String(room.name || "").trim(),
+    area: String(room.area || "").trim()
+  })));
+}
+
+function setRenovationRoomScheduleStatus(text, kind = "neutral") {
+  const el = document.getElementById("roomScheduleStatus");
+  if (!el) return;
+  el.textContent = text;
+  el.className = "no-print mt-2 text-xs " + (
+    kind === "saved" ? "text-green-700" :
+    kind === "dirty" ? "text-amber-700" :
+    "text-gray-500"
+  );
+}
+
+function markRenovationRoomScheduleDirty() {
+  if (window.__TERAJU_QUOTATION_RESTORE_ACTIVE === true || restoringContractorState === true) return;
+  window.__TERAJU_RENOVATION_ROOM_SCHEDULE_DIRTY = true;
+  setRenovationRoomScheduleStatus("Room / Area changes not saved yet.", "dirty");
+}
+
+function markRenovationRoomScheduleSaved() {
+  const rooms = renovationRoomScheduleSnapshot();
+  window.__TERAJU_RENOVATION_ROOM_SCHEDULE_SAVED_SIGNATURE = renovationRoomScheduleSignature(rooms);
+  window.__TERAJU_RENOVATION_ROOM_SCHEDULE_DIRTY = false;
+  setRenovationRoomScheduleStatus("Room / Area saved.", "saved");
+}
+
+function roomScheduleIsSaved() {
+  return window.__TERAJU_RENOVATION_ROOM_SCHEDULE_DIRTY !== true &&
+    renovationRoomScheduleSignature() === window.__TERAJU_RENOVATION_ROOM_SCHEDULE_SAVED_SIGNATURE;
+}
+
+window.saveRenovationRoomAreaState = function() {
+  const rooms = renovationRoomScheduleSnapshot();
+  const validRooms = rooms.filter(room => Number(room.area) > 0);
+  if (!validRooms.length) {
+    alert("Please add at least one room / area with a valid sqft before saving.");
+    return false;
+  }
+
+  try {
+    const keyId = IS_CONTRACTOR ? CONTRACTOR_ID : HOMEOWNER_ID;
+    const storageKey = "teraju.renovation.room-schedule.v1." + (keyId || "anonymous");
+    localStorage.setItem(storageKey, JSON.stringify({
+      version: 1,
+      savedAt: new Date().toISOString(),
+      rooms
+    }));
+  } catch (error) {
+    console.warn("Unable to save renovation room / area state locally.", error);
+  }
+
+  markRenovationRoomScheduleSaved();
+  if (typeof syncRenovationBuildingSpecification === "function") {
+    syncRenovationBuildingSpecification();
+  }
+  if (typeof window.__TERAJU_RENOVATION_V2_UPDATE_ESTIMATE === "function") {
+    window.__TERAJU_RENOVATION_V2_UPDATE_ESTIMATE();
+  } else if (typeof updateEstimate === "function") {
+    updateEstimate();
+  }
+  if (typeof saveContractorState === "function") saveContractorState();
+  return true;
+};
+
+window.__TERAJU_RENOVATION_ROOM_SCHEDULE_IS_SAVED = roomScheduleIsSaved;
+window.__TERAJU_RENOVATION_ROOM_SCHEDULE_MARK_SAVED = markRenovationRoomScheduleSaved;
+
+window.__TERAJU_RENOVATION_ROOM_SCHEDULE_DIRTY = true;
+setRenovationRoomScheduleStatus("Room / Area changes not saved yet.", "dirty");
+
 function removeRoom(id) {
   const room = document.getElementById(id);
   if (!room) return;
 
   room.remove();
 
+  markRenovationRoomScheduleDirty();
   customRoomLabels.delete(id);
   manualItems.delete(id);
 
@@ -1142,6 +1245,7 @@ function moveRoom(id, direction) {
   const room = document.getElementById(id);
   const container = document.getElementById("roomsContainer");
   if (!room || !container) return;
+  markRenovationRoomScheduleDirty();
   if (direction < 0) {
     const prev = room.previousElementSibling;
     if (prev) container.insertBefore(room, prev);
@@ -1412,6 +1516,7 @@ function addRoom(...args){
       areaInput.placeholder = "e.g. 200";
     }
 
+    markRenovationRoomScheduleDirty();
     updateEstimate();
     if (typeof saveContractorState === "function") saveContractorState();
   } else {
@@ -2189,6 +2294,7 @@ function initContractorMode() {
   }
 
   updateRoomsEmptyState();
+  if (saved?.rooms?.length) markRenovationRoomScheduleSaved();
   updateEstimate();
   renderRateSchedule();
 
