@@ -744,7 +744,14 @@ main>section:not(:first-child){scroll-margin-top:92px} main>section>div:first-ch
     <div class="flex justify-between items-start mb-6 gap-4">
       <div class="min-w-0">
         <p class="text-xs uppercase tracking-wider text-gray-500">Preliminary Estimate</p>
-        <h3 class="text-2xl font-bold">Renovation Budget</h3>
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <h3 class="text-2xl font-bold">Renovation Budget</h3>
+          <button id="generateRenovationBudgetBtn" type="button"
+            onclick="return window.generateRenovationBudget ? window.generateRenovationBudget() : false;"
+            class="no-print bg-black text-white px-4 py-2 rounded-lg text-sm font-semibold">
+            Generate Renovation Budget
+          </button>
+        </div>
       </div>
       <div class="text-right flex-shrink-0">
         <p class="text-xs text-gray-500">Estimate No.</p>
@@ -1166,7 +1173,11 @@ function setRenovationRoomScheduleStatus(text, kind = "neutral") {
 function markRenovationRoomScheduleDirty() {
   if (window.__TERAJU_QUOTATION_RESTORE_ACTIVE === true || restoringContractorState === true) return;
   window.__TERAJU_RENOVATION_ROOM_SCHEDULE_DIRTY = true;
+  setRenovationBudgetGenerated(false);
   setRenovationRoomScheduleStatus("Room / Area changes not saved yet.", "dirty");
+  if (typeof window.showRenovationBudgetPending === "function") {
+    window.showRenovationBudgetPending();
+  }
 }
 
 function markRenovationRoomScheduleSaved() {
@@ -1205,12 +1216,8 @@ window.saveRenovationRoomAreaState = function() {
   if (typeof syncRenovationBuildingSpecification === "function") {
     syncRenovationBuildingSpecification();
   }
-  if (typeof window.__TERAJU_RENOVATION_V2_UPDATE_ESTIMATE === "function") {
-    window.__TERAJU_RENOVATION_V2_UPDATE_ESTIMATE();
-  } else if (typeof updateEstimate === "function") {
-    updateEstimate();
-  }
   if (typeof saveContractorState === "function") saveContractorState();
+  setRenovationBudgetGenerated(false);
   return true;
 };
 
@@ -1220,16 +1227,45 @@ window.__TERAJU_RENOVATION_ROOM_SCHEDULE_MARK_SAVED = markRenovationRoomSchedule
 window.__TERAJU_RENOVATION_ROOM_SCHEDULE_DIRTY = true;
 setRenovationRoomScheduleStatus("Room / Area changes not saved yet.", "dirty");
 
-window.showRenovationBudgetPending = function() {
+window.__TERAJU_RENOVATION_BUDGET_GENERATED = false;
+
+function setRenovationBudgetGenerated(generated) {
+  window.__TERAJU_RENOVATION_BUDGET_GENERATED = generated === true;
+  const button = document.getElementById("generateRenovationBudgetBtn");
+  if (button) {
+    button.textContent = window.__TERAJU_RENOVATION_BUDGET_GENERATED
+      ? "Regenerate Renovation Budget"
+      : "Generate Renovation Budget";
+  }
+}
+
+window.showRenovationBudgetPending = function(message) {
   const container = document.getElementById("estimateContent");
   if (!container) return;
+  const text = message || "Review the rooms, names, conditions and sqft, then click <strong>Save Room / Area</strong>. After saving, click <strong>Generate Renovation Budget</strong>.";
   container.innerHTML = `
     <div class="border border-dashed border-gray-300 rounded-xl bg-gray-50 p-6 text-center">
-      <p class="font-semibold text-gray-900">Renovation Budget is waiting for the Room / Area schedule.</p>
-      <p class="text-sm text-gray-500 mt-1">Review the rooms, names, conditions and sqft, then click <strong>Save Room / Area</strong>.</p>
+      <p class="font-semibold text-gray-900">Renovation Budget is waiting for your confirmation.</p>
+      <p class="text-sm text-gray-500 mt-1">${text}</p>
     </div>`;
   const total = document.getElementById("grandTotal");
   if (total) total.textContent = "RM 0";
+};
+
+window.generateRenovationBudget = function() {
+  if (typeof window.__TERAJU_RENOVATION_ROOM_SCHEDULE_IS_SAVED === "function" &&
+      !window.__TERAJU_RENOVATION_ROOM_SCHEDULE_IS_SAVED()) {
+    alert("Please Save Room / Area before generating the Renovation Budget.");
+    return false;
+  }
+  if (typeof window.__TERAJU_RENOVATION_V2_UPDATE_ESTIMATE === "function") {
+    window.__TERAJU_RENOVATION_V2_UPDATE_ESTIMATE();
+  } else if (typeof updateEstimate === "function") {
+    updateEstimate();
+  }
+  setRenovationBudgetGenerated(true);
+  document.getElementById("estimateContent")?.scrollIntoView({behavior:"smooth",block:"start"});
+  return true;
 };
 
 function removeRoom(id) {
