@@ -94,6 +94,7 @@ window.generateConstructionBudget=function(){
     if(typeof window.renderConstructionBudget==='function'){
       window.__TERAJU_BUILD_BUDGET_GENERATED=true;
       window.renderConstructionBudget();
+      document.getElementById('constructionBudgetSection')?.scrollIntoView({behavior:'smooth',block:'start'});
     }
   }catch(e){
     window.__TERAJU_BUILD_BUDGET_GENERATED=false;
