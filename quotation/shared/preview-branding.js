@@ -1,6 +1,6 @@
 (() => {
 'use strict';
-const params=new URLSearchParams(location.search),role=(params.get('audience')||document.body?.dataset?.role||'').toLowerCase();
+const params=new URLSearchParams(location.search),role=(params.get('audience')||params.get('role')||document.body?.dataset?.role||'').toLowerCase();
 if(role!=='contractor')return;
 const contractorId=String(params.get('contractorId')||params.get('id')||localStorage.getItem('teraju.contractor.local.v1.activeContractorId')||'').trim().toUpperCase();
 if(!contractorId)return;
