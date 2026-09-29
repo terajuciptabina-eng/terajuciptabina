@@ -395,18 +395,7 @@ applyAudienceUI();if(isHomeowner()){document.getElementById('roomsContainer').in
   };
   const nextFrame=()=>new Promise(resolve=>requestAnimationFrame(()=>resolve()));
   const enterReviewMode=()=>{
-    window.__TERAJU_FLOORPLAN_REVIEW_MODE=true;
-    const budget=document.getElementById('constructionBudgetContent');
-    if(!budget)return;
-    budget.innerHTML='<div id="tcFloorPlanBudgetPending" class="border rounded-xl bg-gray-50 p-5 text-center"><div class="text-sm font-semibold text-gray-800">Construction budget is waiting for your final room / area review.</div><div class="mt-1 text-xs text-gray-500">Review, add, edit or remove rooms first. Generate the construction budget when your room schedule is final.</div><button type="button" id="tcGenerateFloorPlanBudget" class="mt-4 inline-flex items-center justify-center rounded-xl bg-gray-900 px-5 py-3 text-sm font-bold text-white shadow-sm">Generate Construction Budget</button></div>';
-    const btn=document.getElementById('tcGenerateFloorPlanBudget');
-    if(btn)btn.onclick=()=>{
-      window.__TERAJU_FLOORPLAN_REVIEW_MODE=false;
-      try{if(typeof syncBuiltUpAreaFromRooms==='function')syncBuiltUpAreaFromRooms()}catch(e){console.error('[TERAJU FLOOR PLAN REVIEW] Built-up sync failed',e)}
-      try{if(typeof window.renderConstructionBudget==='function')window.renderConstructionBudget()}catch(e){console.error('[TERAJU FLOOR PLAN REVIEW] Budget render failed',e)}
-      btn.closest('#tcFloorPlanBudgetPending')?.remove();
-      document.getElementById('constructionBudgetSection')?.scrollIntoView({behavior:'smooth',block:'start'});
-    };
+    if(typeof window.showBuildBudgetPending==='function')window.showBuildBudgetPending();
   };
 
   const wait=async()=>{
