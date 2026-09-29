@@ -231,9 +231,9 @@ async function generateQuotation(typeOverride){
  const rooms=getRoomGroups();
  if(!rooms.some(r=>r.area>0)){alert('Please add at least one area with a valid area before generating the quotation.');return false}
  if(!roomScheduleIsSaved()){setRoomScheduleStatus('Save Room / Area before generating the Cost Estimate.','dirty');alert('Please save the Room / Area schedule before generating the Cost Estimate.');return false}
+ if(typeof window.__TERAJU_PREVIEW_BRANDING_ENSURE==='function') await window.__TERAJU_PREVIEW_BRANDING_ENSURE();
  showQuotationPreviewLoading();
  await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
- if(typeof window.__TERAJU_PREVIEW_BRANDING_ENSURE==='function') await window.__TERAJU_PREVIEW_BRANDING_ENSURE();
  const data=getCurrentQuotationData(),quotationNumber=generateQuotationNumber();
  const type=selectedType,customer=document.getElementById('customerName')?.value||'Not specified',location=document.getElementById('projectLocation')?.value||'Not specified',declared=rooms.reduce((s,r)=>s+(r.area||0),0),today=new Intl.DateTimeFormat('en-MY',{day:'2-digit',month:'long',year:'numeric'}).format(new Date()),content=document.getElementById('quotationContent');
  const brand=typeof window.__TERAJU_PREVIEW_BRANDING==='function'?window.__TERAJU_PREVIEW_BRANDING():null;
