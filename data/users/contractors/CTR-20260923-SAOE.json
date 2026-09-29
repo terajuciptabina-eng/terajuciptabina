@@ -8582,6 +8582,14 @@
             [
               "room-13",
               "Other 5"
+            ],
+            [
+              "room-14",
+              "Balcony"
+            ],
+            [
+              "room-15",
+              "Balcony 2"
             ]
           ],
           "excludedItems": [
@@ -8620,7 +8628,7 @@
           "projectState": "negeri-sembilan",
           "rateSetId": "default",
           "rateSetName": "Default Rate",
-          "rateSnapshotAt": "2026-09-29T17:53:26.856Z"
+          "rateSnapshotAt": "2026-09-29T18:00:22.481Z"
         },
         "itemListVersion": 1,
         "items": [
@@ -9102,7 +9110,7 @@
           }
         ],
         "createdAt": "2026-09-29T17:53:19.555Z",
-        "updatedAt": "2026-09-29T17:53:27.772Z",
+        "updatedAt": "2026-09-29T18:00:23.249Z",
         "estimateNumber": "EST-REN-010"
       },
       {
@@ -13584,7 +13592,7 @@
     ]
   },
   "createdAt": "2026-09-23T08:33:53.459Z",
-  "updatedAt": "2026-09-29T18:00:12.215Z",
+  "updatedAt": "2026-09-29T18:00:23.249Z",
   "quotationRunningNumber": {
     "renovation": 11,
     "build": 14
