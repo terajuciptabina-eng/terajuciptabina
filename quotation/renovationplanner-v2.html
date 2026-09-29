@@ -1220,6 +1220,18 @@ window.__TERAJU_RENOVATION_ROOM_SCHEDULE_MARK_SAVED = markRenovationRoomSchedule
 window.__TERAJU_RENOVATION_ROOM_SCHEDULE_DIRTY = true;
 setRenovationRoomScheduleStatus("Room / Area changes not saved yet.", "dirty");
 
+window.showRenovationBudgetPending = function() {
+  const container = document.getElementById("estimateContent");
+  if (!container) return;
+  container.innerHTML = `
+    <div class="border border-dashed border-gray-300 rounded-xl bg-gray-50 p-6 text-center">
+      <p class="font-semibold text-gray-900">Renovation Budget is waiting for the Room / Area schedule.</p>
+      <p class="text-sm text-gray-500 mt-1">Review the rooms, names, conditions and sqft, then click <strong>Save Room / Area</strong>.</p>
+    </div>`;
+  const total = document.getElementById("grandTotal");
+  if (total) total.textContent = "RM 0";
+};
+
 function removeRoom(id) {
   const room = document.getElementById(id);
   if (!room) return;
@@ -2769,7 +2781,7 @@ initContractorMode();
 <script src="location-autocomplete.js"></script>
 <script src="state-rate-gate.js?v=20260924-state-v1"></script>
 <script src="renovation-calculation-rules.js?v=20260924-rate-master-v1"></script>
-<script src="renovation-planner-v2-engine.js?v=20260924-rate-master-v1"></script>
+<script src="renovation-planner-v2-engine.js?v=20260930-room-save-v1"></script>
 <script src="contractor-master-bridge.js?v=20260924-renovation-rate-master-v2"></script>
 <script src="quotation-quantity-fix.js?v=20260930"></script>
 <script src="quotation-records.js?v=20260930-save-total-v1"></script>
