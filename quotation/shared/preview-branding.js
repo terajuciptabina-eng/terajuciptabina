@@ -20,7 +20,7 @@ document.getElementById('tcPreviewBrandingModal')?.remove();
 const c=branding||cache()||{},m=document.createElement('div');
 m.id='tcPreviewBrandingModal';
 m.style.cssText='position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;padding:18px;background:rgba(15,23,42,.64);backdrop-filter:blur(10px);font-family:inherit;';
-m.innerHTML=\`<style>
+m.innerHTML=`<style>
 #tcPreviewBrandingModal *{box-sizing:border-box}
 #tcPreviewBrandingModal .tc-bm-card{width:min(94vw,620px);max-height:92vh;overflow:auto;background:#fff;border:1px solid rgba(148,163,184,.24);border-radius:24px;box-shadow:0 30px 90px rgba(15,23,42,.30);padding:28px}
 #tcPreviewBrandingModal .tc-bm-kicker{font-size:10px;font-weight:800;letter-spacing:.16em;color:#64748b;text-transform:uppercase}
@@ -82,16 +82,16 @@ m.innerHTML=\`<style>
 <div class="tc-bm-section-title">Contractor Profile</div>
 <div class="tc-bm-section-copy">This information will be used in the Preview header and footer.</div>
 <div class="tc-bm-form">
-<div class="tc-bm-field"><label>Company / Contractor Name</label><input data-field="name" value="\${esc(c.name)}" placeholder="Company / Contractor Name"></div>
+<div class="tc-bm-field"><label>Company / Contractor Name</label><input data-field="name" value="${esc(c.name)}" placeholder="Company / Contractor Name"></div>
 <div class="tc-bm-grid">
-<div class="tc-bm-field"><label>Registration No. <span style="font-weight:500;color:#94a3b8">(optional)</span></label><input data-field="registrationNo" value="\${esc(c.registrationNo)}" placeholder="Registration number"></div>
-<div class="tc-bm-field"><label>Phone</label><input data-field="phone" value="\${esc(c.phone)}" placeholder="Phone number"></div>
+<div class="tc-bm-field"><label>Registration No. <span style="font-weight:500;color:#94a3b8">(optional)</span></label><input data-field="registrationNo" value="${esc(c.registrationNo)}" placeholder="Registration number"></div>
+<div class="tc-bm-field"><label>Phone</label><input data-field="phone" value="${esc(c.phone)}" placeholder="Phone number"></div>
 </div>
 <div class="tc-bm-grid">
-<div class="tc-bm-field"><label>Company Address</label><textarea data-field="address" placeholder="Company address">\${esc(c.address)}</textarea></div>
-<div class="tc-bm-field"><label>Email</label><input data-field="email" value="\${esc(c.email)}" placeholder="Email address" type="email"></div>
+<div class="tc-bm-field"><label>Company Address</label><textarea data-field="address" placeholder="Company address">${esc(c.address)}</textarea></div>
+<div class="tc-bm-field"><label>Email</label><input data-field="email" value="${esc(c.email)}" placeholder="Email address" type="email"></div>
 </div>
-<div class="tc-bm-field"><label>Website <span style="font-weight:500;color:#94a3b8">(optional)</span></label><input data-field="website" value="\${esc(c.website)}" placeholder="Website"></div>
+<div class="tc-bm-field"><label>Website <span style="font-weight:500;color:#94a3b8">(optional)</span></label><input data-field="website" value="${esc(c.website)}" placeholder="Website"></div>
 <label class="tc-bm-upload"><div class="tc-bm-upload-icon">▧</div><div style="flex:1"><strong>Company Logo <span style="font-weight:500;color:#94a3b8">(optional)</span></strong><span>PNG, JPG or WEBP · recommended 300 × 100 px</span></div><input data-logo type="file" accept="image/png,image/jpeg,image/webp" style="display:none"></label>
 <div data-logo-status style="font-size:10px;color:#64748b"></div>
 </div>
@@ -99,7 +99,7 @@ m.innerHTML=\`<style>
 <div data-error class="tc-bm-error"></div>
 <div class="tc-bm-actions"><button type="button" class="tc-bm-btn tc-bm-cancel" data-cancel>Cancel</button><button type="button" class="tc-bm-btn tc-bm-save" data-save>Save Company Profile</button></div>
 <p class="tc-bm-foot">“Powered by TerajuWorks” remains as platform attribution.</p>
-</div></div>\`;
+</div></div>`;
 document.body.appendChild(m);
 const form=m.querySelector('[data-custom-form]'),buttons=m.querySelectorAll('[data-mode]');let mode='custom',logo=c.logoDataUrl||'';
 const setMode=x=>{mode=x;form.style.display=x==='custom'?'block':'none';buttons.forEach(b=>{const on=b.dataset.mode===x;b.classList.toggle('tc-active',on)});m.querySelector('[data-save]').textContent=x==='custom'?'Save Company Profile':'Keep TERAJU Default'};
