@@ -17,7 +17,7 @@ async function persist(profile){const r=await fetch(API+'/api/auth',{method:'PAT
 function modal(){
 return new Promise(resolve=>{
 document.getElementById('tcPreviewBrandingModal')?.remove();const c=branding||cache()||{},m=document.createElement('div');m.id='tcPreviewBrandingModal';m.style.cssText='position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(15,23,42,.58);backdrop-filter:blur(5px);font-family:inherit;';
-m.innerHTML=\`<div style="width:min(94vw,560px);max-height:92vh;overflow:auto;background:#fff;border-radius:22px;box-shadow:0 25px 80px rgba(15,23,42,.24);padding:24px">
+m.innerHTML=`<div style="width:min(94vw,560px);max-height:92vh;overflow:auto;background:#fff;border-radius:22px;box-shadow:0 25px 80px rgba(15,23,42,.24);padding:24px">
 <div style="font-size:11px;font-weight:800;letter-spacing:.16em;color:#64748b;text-transform:uppercase">Preview Branding</div>
 <h2 style="margin:7px 0 6px;font-size:22px;font-weight:800;color:#111827">How should your Cost Estimate look?</h2>
 <p style="margin:0 0 18px;color:#6b7280;font-size:13px;line-height:1.55">Choose your company information for the Preview header and footer, or keep the standard TERAJU branding.</p>
@@ -36,7 +36,7 @@ m.innerHTML=\`<div style="width:min(94vw,560px);max-height:92vh;overflow:auto;ba
 <div data-logo-status style="font-size:11px;color:#6b7280"></div></div></div>
 <div data-error style="display:none;margin-top:12px;padding:10px 12px;border-radius:10px;background:#fef2f2;color:#b91c1c;font-size:12px"></div>
 <button type="button" data-save style="width:100%;margin-top:16px;padding:13px 16px;border:0;border-radius:12px;background:#111827;color:#fff;font-weight:700;cursor:pointer">Save Preview Branding</button>
-<p style="margin:10px 0 0;text-align:center;font-size:11px;color:#9ca3af">“Powered by TerajuWorks” remains as platform attribution.</p></div>\`;
+<p style="margin:10px 0 0;text-align:center;font-size:11px;color:#9ca3af">“Powered by TerajuWorks” remains as platform attribution.</p></div>`;
 document.body.appendChild(m);
 const form=m.querySelector('[data-custom-form]'),buttons=m.querySelectorAll('[data-mode]');let mode='custom',logo=c.logoDataUrl||'';
 const setMode=x=>{mode=x;form.style.display=x==='custom'?'block':'none';buttons.forEach(b=>{const on=b.dataset.mode===x;b.style.borderColor=on?'#111827':'#d1d5db';b.style.background=on?'#f8fafc':'#fff'});m.querySelector('[data-save]').textContent=x==='custom'?'Save Company Profile':'Keep TERAJU Default'};
