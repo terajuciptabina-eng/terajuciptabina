@@ -32,6 +32,11 @@ body{margin:0;background:#eef1f3;color:#111827;font-family:Inter,system-ui,-appl
 .panel .caption{font-size:10px;color:#6b7280;margin-bottom:7px}
 .chartbox{position:relative;height:225px}
 .chartbox.small{height:205px}
+.planner-split{display:grid;grid-template-columns:1fr 1fr;gap:10px;height:205px}
+.planner-card{min-width:0;border:1px solid #eef0f2;border-radius:11px;background:#fbfcfd;padding:7px 7px 4px;display:flex;flex-direction:column}
+.planner-card h3{font-size:10px;margin:0 0 2px;text-transform:uppercase;letter-spacing:.07em;color:#475569;text-align:center}
+.planner-card .planner-chart{position:relative;flex:1;min-height:0}
+@media(max-width:700px){.planner-split{height:225px}}
 .chartbox.tall{height:260px}
 .insight-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
 .list{display:grid;gap:9px}
@@ -100,8 +105,17 @@ th{font-size:10px;text-transform:uppercase;color:#6b7280;background:#f8fafc;lett
       <div class="chartbox"><canvas id="growthChart"></canvas></div>
     </div>
     <div class="panel">
-      <h2>Planner Usage</h2><div class="caption">Stored BuildPlanner vs RenovationPlanner records</div>
-      <div class="chartbox small"><canvas id="plannerChart"></canvas></div>
+      <h2>Planner Usage</h2><div class="caption">Planner records separated by workspace type</div>
+      <div class="planner-split">
+        <div class="planner-card">
+          <h3>Homeowner</h3>
+          <div class="planner-chart"><canvas id="plannerHomeownerChart"></canvas></div>
+        </div>
+        <div class="planner-card">
+          <h3>Contractor</h3>
+          <div class="planner-chart"><canvas id="plannerContractorChart"></canvas></div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -216,9 +230,14 @@ function render(){
   destroy('growthChart');charts.growthChart=new Chart(document.getElementById('growthChart'),{type:'line',data:{labels,datasets:[{label:'Registered users',data:cumulative,tension:.3,fill:true,borderColor:TERAJU_COLORS.emerald,backgroundColor:'rgba(16,185,129,.16)',pointBackgroundColor:TERAJU_COLORS.emerald,pointBorderColor:'#fff',borderWidth:2,pointRadius:3}]},options:cd});
   destroy('estimateChart');charts.estimateChart=new Chart(document.getElementById('estimateChart'),{type:'bar',data:{labels,datasets:[{label:'Estimates',data:keys.map(k=>estimateCounts[k]||0),backgroundColor:TERAJU_COLORS.navySoft,borderColor:TERAJU_COLORS.navy,borderWidth:1,borderRadius:5}]},options:cd});
   destroy('valueChart');charts.valueChart=new Chart(document.getElementById('valueChart'),{type:'bar',data:{labels,datasets:[{label:'Homeowner — Potential Project Value',data:keys.map(k=>Math.round(homeownerValues[k]||0)),backgroundColor:TERAJU_COLORS.emerald,borderColor:TERAJU_COLORS.emerald,borderWidth:1,borderRadius:4},{label:'Contractor — Estimate / Market Value',data:keys.map(k=>Math.round(contractorValues[k]||0)),backgroundColor:TERAJU_COLORS.navy,borderColor:TERAJU_COLORS.navy,borderWidth:1,borderRadius:4}]},options:{...cd,plugins:{...cd.plugins,legend:{position:'top',labels:{boxWidth:10,font:{size:10}}}},scales:{...cd.scales,x:{...cd.scales.x,stacked:false},y:{beginAtZero:true,ticks:{font:{size:10},callback:v=>'RM '+Number(v).toLocaleString()}}}}});
-  const build=selectedRecords.filter(r=>r.plannerType==='build').length;
-  const renovation=selectedRecords.filter(r=>r.plannerType==='renovation').length;
-  destroy('plannerChart');charts.plannerChart=new Chart(document.getElementById('plannerChart'),{type:'doughnut',data:{labels:['BuildPlanner','RenovationPlanner'],datasets:[{data:[build,renovation],backgroundColor:[TERAJU_COLORS.navy,TERAJU_COLORS.emerald],borderColor:'#fff',borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11},color:TERAJU_COLORS.navy}}}}});
+
+  const homeownerBuild=selectedEntries.filter(x=>x.role==='homeowner'&&x.record.plannerType==='build').length;
+  const homeownerRenovation=selectedEntries.filter(x=>x.role==='homeowner'&&x.record.plannerType==='renovation').length;
+  const contractorBuild=selectedEntries.filter(x=>x.role==='contractor'&&x.record.plannerType==='build').length;
+  const contractorRenovation=selectedEntries.filter(x=>x.role==='contractor'&&x.record.plannerType==='renovation').length;
+  const plannerOptions={responsive:true,maintainAspectRatio:false,cutout:'58%',plugins:{legend:{position:'bottom',labels:{boxWidth:9,padding:8,font:{size:9},color:TERAJU_COLORS.navy}}}};
+  destroy('plannerHomeownerChart');charts.plannerHomeownerChart=new Chart(document.getElementById('plannerHomeownerChart'),{type:'doughnut',data:{labels:['BuildPlanner','RenovationPlanner'],datasets:[{data:[homeownerBuild,homeownerRenovation],backgroundColor:[TERAJU_COLORS.navy,TERAJU_COLORS.emerald],borderColor:'#fff',borderWidth:2}]},options:plannerOptions});
+  destroy('plannerContractorChart');charts.plannerContractorChart=new Chart(document.getElementById('plannerContractorChart'),{type:'doughnut',data:{labels:['BuildPlanner','RenovationPlanner'],datasets:[{data:[contractorBuild,contractorRenovation],backgroundColor:[TERAJU_COLORS.navy,TERAJU_COLORS.emerald],borderColor:'#fff',borderWidth:2}]},options:plannerOptions});
   renderStates();
   renderRecent();
 }
