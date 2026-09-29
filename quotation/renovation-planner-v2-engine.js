@@ -330,12 +330,10 @@
     };
   }
 
-  function update(){
+  function calculateAndRenderBudget(){
     if(typeof window.syncRenovationBuildingSpecification==='function') {
       window.syncRenovationBuildingSpecification();
     }
-
-    if(window.__TERAJU_RENOVATION_BUDGET_GENERATED !== true) return;
 
     const rooms=roomGroups();
     const items=allItems();
@@ -348,14 +346,47 @@
       roomSubtotals[item.roomId]=(roomSubtotals[item.roomId]||0)+Number(item.amount||0);
     });
     const roomTotal=Object.values(roomSubtotals).reduce((s,v)=>s+Number(v||0),0);
+
     if(typeof renderEstimate==='function'){
-      renderEstimate(active,rooms,roomSubtotals,renovationPrelim.projectPreliminaries,renovationPrelim.projectPreliminaries+roomTotal);
+      renderEstimate(
+        active,
+        rooms,
+        roomSubtotals,
+        renovationPrelim.projectPreliminaries,
+        renovationPrelim.projectPreliminaries+roomTotal
+      );
     }
+
+    window.__TERAJU_RENOVATION_BUDGET_GENERATED=true;
+    return true;
+  }
+
+  function update(){
+    if(window.__TERAJU_RENOVATION_BUDGET_GENERATED !== true) return false;
+    return calculateAndRenderBudget();
+  }
+
+  function generateBudget(){
+    if(typeof window.__TERAJU_RENOVATION_ROOM_SCHEDULE_IS_SAVED==='function' &&
+       !window.__TERAJU_RENOVATION_ROOM_SCHEDULE_IS_SAVED()){
+      alert('Please Save Room / Area before generating the Renovation Budget.');
+      return false;
+    }
+
+    window.__TERAJU_RENOVATION_BUDGET_GENERATED=false;
+    const generated=calculateAndRenderBudget();
+    if(generated){
+      const button=document.getElementById('generateRenovationBudgetBtn');
+      if(button) button.textContent='Regenerate Renovation Budget';
+      document.getElementById('estimateContent')?.scrollIntoView({behavior:'smooth',block:'start'});
+    }
+    return generated;
   }
 
   window.__TERAJU_RENOVATION_V2_GET_ALL_ITEMS=allItems;
   window.__TERAJU_RENOVATION_V2_GET_QUOTATION_DATA=quotationData;
   window.__TERAJU_RENOVATION_V2_UPDATE_ESTIMATE=update;
+  window.__TERAJU_RENOVATION_V2_GENERATE_BUDGET=generateBudget;
   window.__TERAJU_RENOVATION_V2_BUILD_READY=update;
 
   window.getAllItems=allItems;
