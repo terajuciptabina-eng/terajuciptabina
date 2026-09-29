@@ -33,9 +33,9 @@
         "project": {
           "location": "Gambang",
           "builtUpArea": 1256,
-          "state": "pahang"
+          "state": "negeri-sembilan"
         },
-        "total": 388141.5,
+        "total": 389941.5,
         "plannerState": {
           "customerName": "Puan Diana Danile",
           "projectLocation": "Gambang",
@@ -296,10 +296,11 @@
           "standardRateItems": [],
           "quotationType": "detail",
           "projectId": "PRJ-BLD-MUD3T1SQ-S4JB9",
-          "projectState": "pahang",
-          "rateSetId": "pahang",
-          "rateSetName": "Pahang",
-          "rateSnapshotAt": "2026-09-26T17:18:10.148Z"
+          "constructionBudgetGenerated": true,
+          "projectState": "negeri-sembilan",
+          "rateSetId": "default",
+          "rateSetName": "Default Rate",
+          "rateSnapshotAt": "2026-09-29T18:03:33.818Z"
         },
         "itemListVersion": 1,
         "items": [
@@ -1005,9 +1006,9 @@
             "category": "doors-windows",
             "description": "Single-leaf moisture-resistant PVC/UPVC flush doors, complete with PVC/UPVC frames, hinges, locksets, handles, door stops, architraves and necessary ironmongery, including fixing and making good, installed complete. (Bathroom 1 / Bathroom 2 / applicable bathrooms)",
             "unit": "No.",
-            "qty": 1,
+            "qty": 2,
             "rate": 850,
-            "amount": 850,
+            "amount": 1700,
             "header": "",
             "level3": "",
             "section": "",
@@ -1073,9 +1074,9 @@
             "category": "doors-windows",
             "description": "Aluminium-framed glazed windows, size 900 × 600 mm, complete with aluminium frames, glazing, glazing beads, handles, locking mechanisms, sealant and necessary ironmongery, including fixing and making good, installed complete. (Bathroom 1 / Bathroom 2 / applicable bathrooms)",
             "unit": "No.",
-            "qty": 1,
+            "qty": 2,
             "rate": 950,
-            "amount": 950,
+            "amount": 1900,
             "header": "",
             "level3": "",
             "section": "",
@@ -1427,7 +1428,7 @@
           }
         ],
         "createdAt": "2026-09-22T20:15:37.108Z",
-        "updatedAt": "2026-09-26T17:18:10.670Z",
+        "updatedAt": "2026-09-29T18:03:35.187Z",
         "estimateNumber": "EST-BLD-001"
       },
       {
@@ -3266,7 +3267,7 @@
     ]
   },
   "createdAt": "2026-09-21T05:42:03.987Z",
-  "updatedAt": "2026-09-29T18:03:07.221Z",
+  "updatedAt": "2026-09-29T18:03:35.187Z",
   "quotationRunningNumber": {
     "renovation": 1,
     "build": 1
