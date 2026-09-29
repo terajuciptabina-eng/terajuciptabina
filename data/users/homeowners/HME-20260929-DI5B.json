@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "homeowner",
+  "homeownerId": "HME-20260929-DI5B",
+  "profile": {
+    "name": "Siddiq",
+    "email": "siddiqpakhrurrazi@gmail.com",
+    "phone": "+60182574098"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-09-29T13:09:13.953Z",
+  "updatedAt": "2026-09-29T13:09:13.953Z"
+}
