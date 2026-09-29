@@ -515,6 +515,48 @@ main>section:not(:first-child){scroll-margin-top:92px} main>section>div:first-ch
 .quotation-budget-snapshot table{width:100%!important;table-layout:fixed!important;border-collapse:collapse!important}
 .quotation-budget-snapshot .quotation-snapshot-value{display:inline-block;white-space:normal;overflow-wrap:anywhere;line-height:1.5}
 .quotation-budget-snapshot .hover\\:bg-gray-50:hover{background:inherit!important}
+
+    #quotationDocument .quotation-preview-loading{
+      width:min(794px,100%);
+      margin:0 auto;
+      box-sizing:border-box;
+      padding:36px;
+      background:#fff;
+      border:1px solid #e5e7eb;
+      border-radius:8px;
+      color:#6b7280;
+      text-align:center;
+    }
+    #quotationDocument .quotation-preview-stage .quotation-section-row td,
+    #quotationDocument .quotation-preview-stage .quotation-subsection-row td{
+      -webkit-print-color-adjust:exact;
+      print-color-adjust:exact;
+    }
+    @media(max-width:767px){
+      #quotationDocument .quotation-preview-stage{
+        padding:8px 0;
+        border-radius:14px;
+        background:#f3f4f6;
+      }
+      #quotationDocument .quotation-preview-stage > .quotation-preview-paper{
+        width:100%;
+        padding:20px 14px;
+        border-radius:8px;
+        box-shadow:0 8px 22px rgba(15,23,42,.08);
+      }
+      #quotationDocument .quotation-preview-stage table{font-size:10px!important;}
+      #quotationDocument .quotation-preview-stage th,
+      #quotationDocument .quotation-preview-stage td{padding:5px 3px!important;}
+    }
+    @media print{
+      #quotationDocument .quotation-preview-stage{background:#fff!important;border:0!important;padding:0!important}
+      #quotationDocument .quotation-preview-stage > .quotation-preview-paper{
+        width:100%!important;max-width:none!important;margin:0!important;padding:0!important;
+        border:0!important;box-shadow:none!important;filter:none!important;
+      }
+    }
+    .quotation-summary-row td{background:#f8fafc;border-top:1px solid #e5e7eb}.quotation-summary-row td:last-child{text-align:right;white-space:nowrap}
+    .quotation-preview-loading{min-height:240px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;color:#6b7280;padding:28px}.quotation-preview-loading strong{color:#111827;font-size:15px}.quotation-preview-spinner{width:34px;height:34px;border:3px solid #e5e7eb;border-top-color:#111827;border-radius:50%;animation:tcPreviewSpin .8s linear infinite}@keyframes tcPreviewSpin{to{transform:rotate(360deg)}}
 </style>
 </head>
 
