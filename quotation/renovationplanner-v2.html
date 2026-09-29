@@ -928,7 +928,7 @@ const DEFAULT_RATES = JSON.parse(JSON.stringify(RATES));
 const PARAMS = new URLSearchParams(window.location.search);
 const AUDIENCE = PARAMS.get("audience") || PARAMS.get("role") || "homeowner";
 const IS_CONTRACTOR = AUDIENCE === "contractor";
-const PARAMS = new URLSearchParams(window.location.search);
+
 const CONTRACTOR_ID = PARAMS.get("contractorId")
   || localStorage.getItem("teraju.contractor.local.v1.activeContractorId")
   || "";
