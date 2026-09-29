@@ -27,11 +27,11 @@ m.innerHTML=`<div style="width:min(94vw,560px);max-height:92vh;overflow:auto;bac
 </div>
 <div data-custom-form style="border-top:1px solid #e5e7eb;padding-top:18px"><div style="font-size:13px;font-weight:700;color:#111827;margin-bottom:10px">Contractor Profile</div>
 <div style="display:grid;gap:10px">
-<input data-field="name" value="\${esc(c.name)}" placeholder="Company / Contractor Name" style="width:100%;padding:11px 13px;border:1px solid #d1d5db;border-radius:11px">
-<input data-field="registrationNo" value="\${esc(c.registrationNo)}" placeholder="Registration No. (optional)" style="width:100%;padding:11px 13px;border:1px solid #d1d5db;border-radius:11px">
-<input data-field="address" value="\${esc(c.address)}" placeholder="Company Address" style="width:100%;padding:11px 13px;border:1px solid #d1d5db;border-radius:11px">
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><input data-field="phone" value="\${esc(c.phone)}" placeholder="Phone" style="width:100%;padding:11px 13px;border:1px solid #d1d5db;border-radius:11px"><input data-field="email" value="\${esc(c.email)}" placeholder="Email" type="email" style="width:100%;padding:11px 13px;border:1px solid #d1d5db;border-radius:11px"></div>
-<input data-field="website" value="\${esc(c.website)}" placeholder="Website (optional)" style="width:100%;padding:11px 13px;border:1px solid #d1d5db;border-radius:11px">
+<input data-field="name" value="${esc(c.name)}" placeholder="Company / Contractor Name" style="width:100%;padding:11px 13px;border:1px solid #d1d5db;border-radius:11px">
+<input data-field="registrationNo" value="${esc(c.registrationNo)}" placeholder="Registration No. (optional)" style="width:100%;padding:11px 13px;border:1px solid #d1d5db;border-radius:11px">
+<input data-field="address" value="${esc(c.address)}" placeholder="Company Address" style="width:100%;padding:11px 13px;border:1px solid #d1d5db;border-radius:11px">
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><input data-field="phone" value="${esc(c.phone)}" placeholder="Phone" style="width:100%;padding:11px 13px;border:1px solid #d1d5db;border-radius:11px"><input data-field="email" value="${esc(c.email)}" placeholder="Email" type="email" style="width:100%;padding:11px 13px;border:1px solid #d1d5db;border-radius:11px"></div>
+<input data-field="website" value="${esc(c.website)}" placeholder="Website (optional)" style="width:100%;padding:11px 13px;border:1px solid #d1d5db;border-radius:11px">
 <label style="display:flex;align-items:center;gap:10px;padding:12px;border:1px dashed #d1d5db;border-radius:11px;cursor:pointer"><input data-logo type="file" accept="image/png,image/jpeg,image/webp" style="width:20px;height:20px"><span style="font-size:12px;color:#6b7280">Upload company logo</span></label>
 <div data-logo-status style="font-size:11px;color:#6b7280"></div></div></div>
 <div data-error style="display:none;margin-top:12px;padding:10px 12px;border-radius:10px;background:#fef2f2;color:#b91c1c;font-size:12px"></div>
