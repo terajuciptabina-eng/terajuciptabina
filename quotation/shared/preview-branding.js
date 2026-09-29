@@ -1,6 +1,8 @@
 (() => {
 'use strict';
-const params=new URLSearchParams(location.search);\nconst storedContext=(()=>{try{return JSON.parse(sessionStorage.getItem('teraju.workspace.context.v1')||'null')}catch{return null}})();\nconst role=(params.get('audience')||params.get('role')||storedContext?.role||document.body?.dataset?.role||'').toLowerCase();
+const params=new URLSearchParams(location.search);
+const storedContext=(()=>{try{return JSON.parse(sessionStorage.getItem('teraju.workspace.context.v1')||'null')}catch{return null}})();
+const role=(params.get('audience')||params.get('role')||storedContext?.role||document.body?.dataset?.role||'').toLowerCase();
 if(role!=='contractor')return;
 const contractorId=String(params.get('contractorId')||params.get('id')||storedContext?.id||(()=>{try{return JSON.parse(localStorage.getItem('teraju.contractor.github.v1')||'null')?.contractorId||''}catch{return ''}})()||'').trim().toUpperCase();
 if(!contractorId)return;
