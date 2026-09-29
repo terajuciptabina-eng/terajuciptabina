@@ -333,6 +333,17 @@
   function update(){
     if(typeof window.syncRenovationBuildingSpecification==='function') window.syncRenovationBuildingSpecification();
 
+    const roomScheduleSaved = typeof window.__TERAJU_RENOVATION_ROOM_SCHEDULE_IS_SAVED === 'function'
+      ? window.__TERAJU_RENOVATION_ROOM_SCHEDULE_IS_SAVED()
+      : true;
+
+    if(!roomScheduleSaved){
+      if(typeof window.showRenovationBudgetPending === 'function') {
+        window.showRenovationBudgetPending();
+      }
+      return;
+    }
+
     const rooms=roomGroups();
     const items=allItems();
     const excluded=typeof excludedItems!=='undefined' ? excludedItems : new Set();
@@ -343,7 +354,7 @@
     active.forEach(item=>{
       roomSubtotals[item.roomId]=(roomSubtotals[item.roomId]||0)+Number(item.amount||0);
     });
-    const roomTotal=Object.values(roomSubtotals).reduce((s,v)=>s+v,0);
+    const roomTotal=Object.values(roomSubtotals).reduce((s,v)=>s+Number(v||0),0);
     if(typeof renderEstimate==='function'){
       renderEstimate(
         active,
