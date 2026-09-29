@@ -371,6 +371,90 @@
             [
               "ai-floorplan-1790668050974-16",
               "Bedroom 4"
+            ],
+            [
+              "ai-floorplan-1790668050974-1",
+              "KITCHEN 1"
+            ],
+            [
+              "ai-floorplan-1790668050974-2",
+              "KITCHEN 2"
+            ],
+            [
+              "ai-floorplan-1790668050974-3",
+              "KITCHEN 3"
+            ],
+            [
+              "ai-floorplan-1790668050974-4",
+              "KITCHEN 4"
+            ],
+            [
+              "ai-floorplan-1790668050974-5",
+              "OPEN AREA 1"
+            ],
+            [
+              "ai-floorplan-1790668050974-6",
+              "OPEN AREA 2"
+            ],
+            [
+              "ai-floorplan-1790668050974-7",
+              "OPEN AREA 3"
+            ],
+            [
+              "ai-floorplan-1790668050974-8",
+              "OPEN AREA 4"
+            ],
+            [
+              "ai-floorplan-1790668050974-9",
+              "VARANDAH 1"
+            ],
+            [
+              "ai-floorplan-1790668050974-12",
+              "VARANDAH 2"
+            ],
+            [
+              "ai-floorplan-1790668050974-11",
+              "VARANDAH 3"
+            ],
+            [
+              "ai-floorplan-1790668050974-10",
+              "VARANDAH 4"
+            ],
+            [
+              "ai-floorplan-1790668050974-13",
+              "Bedroom 1"
+            ],
+            [
+              "ai-floorplan-1790668050974-17",
+              "BATH 1"
+            ],
+            [
+              "ai-floorplan-1790668050974-18",
+              "BATH 2"
+            ],
+            [
+              "ai-floorplan-1790668050974-19",
+              "BATH 3"
+            ],
+            [
+              "ai-floorplan-1790668050974-20",
+              "BATH 4"
+            ],
+            [
+              "ai-floorplan-1790668050974-21",
+              "TOILET 1"
+            ],
+            [
+              "ai-floorplan-1790668050974-22",
+              "TOILET 2"
+            ],
+            [
+              "ai-floorplan-1790668050974-23",
+              "TOILET 3"
+            ],
+            [
+              "ai-floorplan-1790668050974-24",
+              "TOILET 4"
             ]
           ],
           "excludedItems": [],
@@ -382,7 +466,7 @@
           "projectState": "negeri-sembilan",
           "rateSetId": "default",
           "rateSetName": "Default Rate",
-          "rateSnapshotAt": "2026-09-29T10:21:59.342Z"
+          "rateSnapshotAt": "2026-09-29T10:26:53.571Z"
         },
         "itemListVersion": 1,
         "items": [
@@ -1608,7 +1692,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-17",
             "masterPath": "BATHROOM / Wall Tiles",
             "roomId": "ai-floorplan-1790668050974-17",
-            "room": "Bathroom"
+            "room": "BATH 1"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-17-floor-tiles",
@@ -1625,7 +1709,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-17",
             "masterPath": "BATHROOM / Floor Tiles",
             "roomId": "ai-floorplan-1790668050974-17",
-            "room": "Bathroom"
+            "room": "BATH 1"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-17-ceiling",
@@ -1642,7 +1726,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-17",
             "masterPath": "BATHROOM / Ceiling",
             "roomId": "ai-floorplan-1790668050974-17",
-            "room": "Bathroom"
+            "room": "BATH 1"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-17-piping",
@@ -1659,7 +1743,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-17",
             "masterPath": "BATHROOM / Piping",
             "roomId": "ai-floorplan-1790668050974-17",
-            "room": "Bathroom"
+            "room": "BATH 1"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-17-wc",
@@ -1676,7 +1760,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-17",
             "masterPath": "BATHROOM / WC",
             "roomId": "ai-floorplan-1790668050974-17",
-            "room": "Bathroom"
+            "room": "BATH 1"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-17-basin",
@@ -1693,7 +1777,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-17",
             "masterPath": "BATHROOM / Basin",
             "roomId": "ai-floorplan-1790668050974-17",
-            "room": "Bathroom"
+            "room": "BATH 1"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-17-shower",
@@ -1710,7 +1794,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-17",
             "masterPath": "BATHROOM / Shower",
             "roomId": "ai-floorplan-1790668050974-17",
-            "room": "Bathroom"
+            "room": "BATH 1"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-17-tap",
@@ -1727,7 +1811,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-17",
             "masterPath": "BATHROOM / Tap",
             "roomId": "ai-floorplan-1790668050974-17",
-            "room": "Bathroom"
+            "room": "BATH 1"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-18-wall-tiles",
@@ -1744,7 +1828,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-18",
             "masterPath": "BATHROOM / Wall Tiles",
             "roomId": "ai-floorplan-1790668050974-18",
-            "room": "Bathroom 2"
+            "room": "BATH 2"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-18-floor-tiles",
@@ -1761,7 +1845,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-18",
             "masterPath": "BATHROOM / Floor Tiles",
             "roomId": "ai-floorplan-1790668050974-18",
-            "room": "Bathroom 2"
+            "room": "BATH 2"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-18-ceiling",
@@ -1778,7 +1862,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-18",
             "masterPath": "BATHROOM / Ceiling",
             "roomId": "ai-floorplan-1790668050974-18",
-            "room": "Bathroom 2"
+            "room": "BATH 2"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-18-piping",
@@ -1795,7 +1879,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-18",
             "masterPath": "BATHROOM / Piping",
             "roomId": "ai-floorplan-1790668050974-18",
-            "room": "Bathroom 2"
+            "room": "BATH 2"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-18-wc",
@@ -1812,7 +1896,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-18",
             "masterPath": "BATHROOM / WC",
             "roomId": "ai-floorplan-1790668050974-18",
-            "room": "Bathroom 2"
+            "room": "BATH 2"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-18-basin",
@@ -1829,7 +1913,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-18",
             "masterPath": "BATHROOM / Basin",
             "roomId": "ai-floorplan-1790668050974-18",
-            "room": "Bathroom 2"
+            "room": "BATH 2"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-18-shower",
@@ -1846,7 +1930,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-18",
             "masterPath": "BATHROOM / Shower",
             "roomId": "ai-floorplan-1790668050974-18",
-            "room": "Bathroom 2"
+            "room": "BATH 2"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-18-tap",
@@ -1863,7 +1947,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-18",
             "masterPath": "BATHROOM / Tap",
             "roomId": "ai-floorplan-1790668050974-18",
-            "room": "Bathroom 2"
+            "room": "BATH 2"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-19-wall-tiles",
@@ -1880,7 +1964,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-19",
             "masterPath": "BATHROOM / Wall Tiles",
             "roomId": "ai-floorplan-1790668050974-19",
-            "room": "Bathroom 3"
+            "room": "BATH 3"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-19-floor-tiles",
@@ -1897,7 +1981,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-19",
             "masterPath": "BATHROOM / Floor Tiles",
             "roomId": "ai-floorplan-1790668050974-19",
-            "room": "Bathroom 3"
+            "room": "BATH 3"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-19-ceiling",
@@ -1914,7 +1998,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-19",
             "masterPath": "BATHROOM / Ceiling",
             "roomId": "ai-floorplan-1790668050974-19",
-            "room": "Bathroom 3"
+            "room": "BATH 3"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-19-piping",
@@ -1931,7 +2015,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-19",
             "masterPath": "BATHROOM / Piping",
             "roomId": "ai-floorplan-1790668050974-19",
-            "room": "Bathroom 3"
+            "room": "BATH 3"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-19-wc",
@@ -1948,7 +2032,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-19",
             "masterPath": "BATHROOM / WC",
             "roomId": "ai-floorplan-1790668050974-19",
-            "room": "Bathroom 3"
+            "room": "BATH 3"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-19-basin",
@@ -1965,7 +2049,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-19",
             "masterPath": "BATHROOM / Basin",
             "roomId": "ai-floorplan-1790668050974-19",
-            "room": "Bathroom 3"
+            "room": "BATH 3"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-19-shower",
@@ -1982,7 +2066,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-19",
             "masterPath": "BATHROOM / Shower",
             "roomId": "ai-floorplan-1790668050974-19",
-            "room": "Bathroom 3"
+            "room": "BATH 3"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-19-tap",
@@ -1999,7 +2083,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-19",
             "masterPath": "BATHROOM / Tap",
             "roomId": "ai-floorplan-1790668050974-19",
-            "room": "Bathroom 3"
+            "room": "BATH 3"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-20-wall-tiles",
@@ -2016,7 +2100,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-20",
             "masterPath": "BATHROOM / Wall Tiles",
             "roomId": "ai-floorplan-1790668050974-20",
-            "room": "Bathroom 4"
+            "room": "BATH 4"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-20-floor-tiles",
@@ -2033,7 +2117,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-20",
             "masterPath": "BATHROOM / Floor Tiles",
             "roomId": "ai-floorplan-1790668050974-20",
-            "room": "Bathroom 4"
+            "room": "BATH 4"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-20-ceiling",
@@ -2050,7 +2134,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-20",
             "masterPath": "BATHROOM / Ceiling",
             "roomId": "ai-floorplan-1790668050974-20",
-            "room": "Bathroom 4"
+            "room": "BATH 4"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-20-piping",
@@ -2067,7 +2151,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-20",
             "masterPath": "BATHROOM / Piping",
             "roomId": "ai-floorplan-1790668050974-20",
-            "room": "Bathroom 4"
+            "room": "BATH 4"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-20-wc",
@@ -2084,7 +2168,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-20",
             "masterPath": "BATHROOM / WC",
             "roomId": "ai-floorplan-1790668050974-20",
-            "room": "Bathroom 4"
+            "room": "BATH 4"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-20-basin",
@@ -2101,7 +2185,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-20",
             "masterPath": "BATHROOM / Basin",
             "roomId": "ai-floorplan-1790668050974-20",
-            "room": "Bathroom 4"
+            "room": "BATH 4"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-20-shower",
@@ -2118,7 +2202,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-20",
             "masterPath": "BATHROOM / Shower",
             "roomId": "ai-floorplan-1790668050974-20",
-            "room": "Bathroom 4"
+            "room": "BATH 4"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-20-tap",
@@ -2135,7 +2219,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-20",
             "masterPath": "BATHROOM / Tap",
             "roomId": "ai-floorplan-1790668050974-20",
-            "room": "Bathroom 4"
+            "room": "BATH 4"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-21-wall-tiles",
@@ -2152,7 +2236,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-21",
             "masterPath": "BATHROOM / Wall Tiles",
             "roomId": "ai-floorplan-1790668050974-21",
-            "room": "Bathroom 5"
+            "room": "TOILET 1"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-21-floor-tiles",
@@ -2169,7 +2253,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-21",
             "masterPath": "BATHROOM / Floor Tiles",
             "roomId": "ai-floorplan-1790668050974-21",
-            "room": "Bathroom 5"
+            "room": "TOILET 1"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-21-ceiling",
@@ -2186,7 +2270,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-21",
             "masterPath": "BATHROOM / Ceiling",
             "roomId": "ai-floorplan-1790668050974-21",
-            "room": "Bathroom 5"
+            "room": "TOILET 1"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-21-piping",
@@ -2203,7 +2287,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-21",
             "masterPath": "BATHROOM / Piping",
             "roomId": "ai-floorplan-1790668050974-21",
-            "room": "Bathroom 5"
+            "room": "TOILET 1"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-21-wc",
@@ -2220,7 +2304,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-21",
             "masterPath": "BATHROOM / WC",
             "roomId": "ai-floorplan-1790668050974-21",
-            "room": "Bathroom 5"
+            "room": "TOILET 1"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-21-basin",
@@ -2237,7 +2321,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-21",
             "masterPath": "BATHROOM / Basin",
             "roomId": "ai-floorplan-1790668050974-21",
-            "room": "Bathroom 5"
+            "room": "TOILET 1"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-21-shower",
@@ -2254,7 +2338,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-21",
             "masterPath": "BATHROOM / Shower",
             "roomId": "ai-floorplan-1790668050974-21",
-            "room": "Bathroom 5"
+            "room": "TOILET 1"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-21-tap",
@@ -2271,7 +2355,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-21",
             "masterPath": "BATHROOM / Tap",
             "roomId": "ai-floorplan-1790668050974-21",
-            "room": "Bathroom 5"
+            "room": "TOILET 1"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-22-wall-tiles",
@@ -2288,7 +2372,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-22",
             "masterPath": "BATHROOM / Wall Tiles",
             "roomId": "ai-floorplan-1790668050974-22",
-            "room": "Bathroom 6"
+            "room": "TOILET 2"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-22-floor-tiles",
@@ -2305,7 +2389,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-22",
             "masterPath": "BATHROOM / Floor Tiles",
             "roomId": "ai-floorplan-1790668050974-22",
-            "room": "Bathroom 6"
+            "room": "TOILET 2"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-22-ceiling",
@@ -2322,7 +2406,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-22",
             "masterPath": "BATHROOM / Ceiling",
             "roomId": "ai-floorplan-1790668050974-22",
-            "room": "Bathroom 6"
+            "room": "TOILET 2"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-22-piping",
@@ -2339,7 +2423,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-22",
             "masterPath": "BATHROOM / Piping",
             "roomId": "ai-floorplan-1790668050974-22",
-            "room": "Bathroom 6"
+            "room": "TOILET 2"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-22-wc",
@@ -2356,7 +2440,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-22",
             "masterPath": "BATHROOM / WC",
             "roomId": "ai-floorplan-1790668050974-22",
-            "room": "Bathroom 6"
+            "room": "TOILET 2"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-22-basin",
@@ -2373,7 +2457,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-22",
             "masterPath": "BATHROOM / Basin",
             "roomId": "ai-floorplan-1790668050974-22",
-            "room": "Bathroom 6"
+            "room": "TOILET 2"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-22-shower",
@@ -2390,7 +2474,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-22",
             "masterPath": "BATHROOM / Shower",
             "roomId": "ai-floorplan-1790668050974-22",
-            "room": "Bathroom 6"
+            "room": "TOILET 2"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-22-tap",
@@ -2407,7 +2491,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-22",
             "masterPath": "BATHROOM / Tap",
             "roomId": "ai-floorplan-1790668050974-22",
-            "room": "Bathroom 6"
+            "room": "TOILET 2"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-23-wall-tiles",
@@ -2424,7 +2508,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-23",
             "masterPath": "BATHROOM / Wall Tiles",
             "roomId": "ai-floorplan-1790668050974-23",
-            "room": "Bathroom 7"
+            "room": "TOILET 3"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-23-floor-tiles",
@@ -2441,7 +2525,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-23",
             "masterPath": "BATHROOM / Floor Tiles",
             "roomId": "ai-floorplan-1790668050974-23",
-            "room": "Bathroom 7"
+            "room": "TOILET 3"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-23-ceiling",
@@ -2458,7 +2542,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-23",
             "masterPath": "BATHROOM / Ceiling",
             "roomId": "ai-floorplan-1790668050974-23",
-            "room": "Bathroom 7"
+            "room": "TOILET 3"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-23-piping",
@@ -2475,7 +2559,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-23",
             "masterPath": "BATHROOM / Piping",
             "roomId": "ai-floorplan-1790668050974-23",
-            "room": "Bathroom 7"
+            "room": "TOILET 3"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-23-wc",
@@ -2492,7 +2576,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-23",
             "masterPath": "BATHROOM / WC",
             "roomId": "ai-floorplan-1790668050974-23",
-            "room": "Bathroom 7"
+            "room": "TOILET 3"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-23-basin",
@@ -2509,7 +2593,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-23",
             "masterPath": "BATHROOM / Basin",
             "roomId": "ai-floorplan-1790668050974-23",
-            "room": "Bathroom 7"
+            "room": "TOILET 3"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-23-shower",
@@ -2526,7 +2610,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-23",
             "masterPath": "BATHROOM / Shower",
             "roomId": "ai-floorplan-1790668050974-23",
-            "room": "Bathroom 7"
+            "room": "TOILET 3"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-23-tap",
@@ -2543,7 +2627,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-23",
             "masterPath": "BATHROOM / Tap",
             "roomId": "ai-floorplan-1790668050974-23",
-            "room": "Bathroom 7"
+            "room": "TOILET 3"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-24-wall-tiles",
@@ -2560,7 +2644,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-24",
             "masterPath": "BATHROOM / Wall Tiles",
             "roomId": "ai-floorplan-1790668050974-24",
-            "room": "Bathroom 8"
+            "room": "TOILET 4"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-24-floor-tiles",
@@ -2577,7 +2661,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-24",
             "masterPath": "BATHROOM / Floor Tiles",
             "roomId": "ai-floorplan-1790668050974-24",
-            "room": "Bathroom 8"
+            "room": "TOILET 4"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-24-ceiling",
@@ -2594,7 +2678,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-24",
             "masterPath": "BATHROOM / Ceiling",
             "roomId": "ai-floorplan-1790668050974-24",
-            "room": "Bathroom 8"
+            "room": "TOILET 4"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-24-piping",
@@ -2611,7 +2695,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-24",
             "masterPath": "BATHROOM / Piping",
             "roomId": "ai-floorplan-1790668050974-24",
-            "room": "Bathroom 8"
+            "room": "TOILET 4"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-24-wc",
@@ -2628,7 +2712,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-24",
             "masterPath": "BATHROOM / WC",
             "roomId": "ai-floorplan-1790668050974-24",
-            "room": "Bathroom 8"
+            "room": "TOILET 4"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-24-basin",
@@ -2645,7 +2729,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-24",
             "masterPath": "BATHROOM / Basin",
             "roomId": "ai-floorplan-1790668050974-24",
-            "room": "Bathroom 8"
+            "room": "TOILET 4"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-24-shower",
@@ -2662,7 +2746,7 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-24",
             "masterPath": "BATHROOM / Shower",
             "roomId": "ai-floorplan-1790668050974-24",
-            "room": "Bathroom 8"
+            "room": "TOILET 4"
           },
           {
             "id": "bath-ai-floorplan-1790668050974-24-tap",
@@ -2679,11 +2763,11 @@
             "groupKey": "bathroom-ai-floorplan-1790668050974-24",
             "masterPath": "BATHROOM / Tap",
             "roomId": "ai-floorplan-1790668050974-24",
-            "room": "Bathroom 8"
+            "room": "TOILET 4"
           }
         ],
         "createdAt": "2026-09-29T08:41:46.764Z",
-        "updatedAt": "2026-09-29T10:22:02.085Z",
+        "updatedAt": "2026-09-29T10:26:55.059Z",
         "estimateNumber": "EST-BLD-011"
       },
       {
@@ -24057,7 +24141,7 @@
     ]
   },
   "createdAt": "2026-09-23T08:33:53.459Z",
-  "updatedAt": "2026-09-29T10:22:02.085Z",
+  "updatedAt": "2026-09-29T10:26:55.059Z",
   "quotationRunningNumber": {
     "renovation": 10,
     "build": 11
