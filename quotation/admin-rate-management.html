@@ -49,5 +49,6 @@ async function copyDefaultToAll(){try{adminSession()}catch{return}if(!rules.leng
 scopeEl.onchange=()=>{updateScopeNote();loadRate()};document.getElementById('load').onclick=loadRate;document.getElementById('save').onclick=saveRate;document.getElementById('copyAll').onclick=copyDefaultToAll;updateScopeNote();
 (async()=>{try{adminSession();await loadRate()}catch(e){status(e.message||'Admin session required.');}})();
 </script>
+<script src="shared/teraju-button-feedback.js?v=20260929-button-feedback-v1"></script>
 </body>
 </html>
