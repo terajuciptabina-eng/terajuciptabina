@@ -753,7 +753,7 @@ main>section:not(:first-child){scroll-margin-top:92px} main>section>div:first-ch
         <div class="flex flex-wrap items-center justify-between gap-3">
           <h3 class="text-2xl font-bold">Renovation Budget</h3>
           <button id="generateRenovationBudgetBtn" type="button"
-            onclick="return window.generateRenovationBudget ? window.generateRenovationBudget() : false;"
+            onclick="return window.__TERAJU_RENOVATION_V2_GENERATE_BUDGET ? window.__TERAJU_RENOVATION_V2_GENERATE_BUDGET() : false;"
             class="no-print bg-black text-white px-4 py-2 rounded-lg text-sm font-semibold">
             Generate Renovation Budget
           </button>
@@ -1270,23 +1270,7 @@ window.showRenovationBudgetPending = function(message) {
   if (total) total.textContent = "RM 0";
 };
 
-window.generateRenovationBudget = function() {
-  if (!roomScheduleIsSaved()) {
-    alert("Please Save Room / Area before generating the Renovation Budget.");
-    return false;
-  }
 
-  setRenovationBudgetGenerated(true);
-
-  if (typeof window.__TERAJU_RENOVATION_V2_UPDATE_ESTIMATE === "function") {
-    window.__TERAJU_RENOVATION_V2_UPDATE_ESTIMATE();
-  } else if (typeof updateEstimate === "function") {
-    updateEstimate();
-  }
-
-  document.getElementById("estimateContent")?.scrollIntoView({behavior:"smooth",block:"start"});
-  return true;
-};
 
 function removeRoom(id) {
   const room = document.getElementById(id);
@@ -2838,7 +2822,7 @@ initContractorMode();
 <script src="location-autocomplete.js"></script>
 <script src="state-rate-gate.js?v=20260924-state-v1"></script>
 <script src="renovation-calculation-rules.js?v=20260924-rate-master-v1"></script>
-<script src="renovation-planner-v2-engine.js?v=20260930-source-flow-v1"></script>
+<script src="renovation-planner-v2-engine.js?v=20260930-generate-source-v1"></script>
 <script src="contractor-master-bridge.js?v=20260924-renovation-rate-master-v2"></script>
 <script src="quotation-quantity-fix.js?v=20260930"></script>
 <script src="quotation-records.js?v=20260930-source-flow-v1"></script>
