@@ -65,6 +65,25 @@ function injectStyles(){ if(document.getElementById('tc-quotation-records-style'
     try { const list = quotationCache || await fetchQuotations(); const match = list.find(item => item && item.plannerType === plannerType && item.projectId === currentProjectId && (item.quotationType || item.plannerState?.quotationType || 'simple') === type); currentQuotationType = type; if (match) { currentQuotationId = match.quotationId || ''; currentQuotationNumber = match.quotationNumber || ''; try { if (typeof quotationNumber !== 'undefined' && currentQuotationNumber) quotationNumber = currentQuotationNumber; } catch {} toast(`${type === 'detail' ? 'Detail' : 'Simple'} cost estimate selected.`); } else { currentQuotationId = ''; currentQuotationNumber = ''; toast(`${type === 'detail' ? 'Detail' : 'Simple'} cost estimate will be saved as a separate version.`); } } catch(error) { currentQuotationType = type; currentQuotationId = ''; currentQuotationNumber = ''; console.error(error); }
   }
   function bindQuotationType(){ document.querySelectorAll('input[name="quotationType"]').forEach(input=>{if(input.__tcBound)return;input.__tcBound=true;input.addEventListener('change',()=>switchQuotationVersion(selectedQuotationType()))}); }
+  async function persistRenovationRoomSchedule(rooms){
+    if(plannerType!=='renovation' || !currentQuotationId || !Array.isArray(rooms)) return false;
+    try{
+      const list=quotationCache || await fetchQuotations();
+      const existing=list.find(item=>item?.quotationId===currentQuotationId);
+      if(!existing) return false;
+      const updated=JSON.parse(JSON.stringify(existing));
+      updated.plannerState={...(updated.plannerState||{}),rooms:rooms.map(room=>({...room})),builtUpArea:rooms.reduce((sum,room)=>sum+(Number(room.area)||0),0),constructionBudgetGenerated:false};
+      updated.project={...(updated.project||{}),builtUpArea:Number(updated.plannerState.builtUpArea)||0};
+      updated.updatedAt=new Date().toISOString();
+      const result=await request('PUT',{role,id:activeId,plannerType,quotation:updated});
+      quotationCache=Array.isArray(quotationCache)?quotationCache.map(item=>item?.quotationId===currentQuotationId?(result?.quotation||updated):item):null;
+      return true;
+    }catch(error){
+      console.error('[TERAJU QUOTATION SAVE] Room / Area persistence failed.',error);
+      return false;
+    }
+  }
+
   async function saveQuotation(showMessage=false){
     if(restoring||!document.getElementById('quotationDocument')||document.getElementById('quotationDocument').classList.contains('hidden'))return;
     const isNewQuotation = !currentQuotationId;
@@ -114,6 +133,6 @@ function injectStyles(){ if(document.getElementById('tc-quotation-records-style'
       }
       trackEvent('quotation_opened', {quotation_id:quotation.quotationId, quotation_number:currentQuotationNumber, quotation_type:currentQuotationType === 'detail' ? 'detailed' : 'simple'});toast(`Cost Estimate ${currentQuotationNumber||currentQuotationId} loaded.`)}catch(error){console.error(error);window.__TERAJU_QUOTATION_RESTORE_COMPLETE=true;window.dispatchEvent(new Event('teraju:quotation-restore-complete'));toast(error.message||'Unable to load cost estimate.',true)} }
   function init(){ if(!document.getElementById('quotationGenerator'))return; ensureProjectId();currentQuotationType=selectedQuotationType();injectStyles();addPlannerControls();bindQuotationType();if(!wrapGenerate())setTimeout(wrapGenerate,500);if(currentQuotationId)setTimeout(loadQuotationForEdit,900);const observer=new MutationObserver(()=>{addPlannerControls();bindQuotationType();wrapGenerate()});observer.observe(document.documentElement,{childList:true,subtree:true});setTimeout(()=>observer.disconnect(),20000); }
-  window.tcQuotationRecords={saveQuotation,loadQuotationForEdit};
+  window.tcQuotationRecords={saveQuotation,loadQuotationForEdit,persistRenovationRoomSchedule};
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
