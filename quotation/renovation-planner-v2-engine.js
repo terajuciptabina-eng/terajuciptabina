@@ -337,7 +337,16 @@
       ? window.__TERAJU_RENOVATION_ROOM_SCHEDULE_IS_SAVED()
       : true;
 
+    const budgetGenerationConfirmed = window.__TERAJU_RENOVATION_BUDGET_GENERATED === true;
+
     if(!roomScheduleSaved){
+      if(typeof window.showRenovationBudgetPending === 'function') {
+        window.showRenovationBudgetPending();
+      }
+      return;
+    }
+
+    if(!budgetGenerationConfirmed){
       if(typeof window.showRenovationBudgetPending === 'function') {
         window.showRenovationBudgetPending();
       }
