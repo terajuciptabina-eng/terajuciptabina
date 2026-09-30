@@ -196,7 +196,7 @@ export default async function handler(req, res) {
       const incoming = body.profile && typeof body.profile === 'object' ? body.profile : {};
       const existingProfile = record.profile && typeof record.profile === 'object' ? record.profile : {};
       const nextProfile = { ...existingProfile };
-      ['name','email','phone','registrationNo','address','website','logoDataUrl','previewBrandingMode','previewBrandingConfigured'].forEach(key => {
+      ['name','email','phone','registrationNo','address','website','logoDataUrl','previewBrandingMode','previewBrandingConfigured','contractorProfileConfigured'].forEach(key => {
         if (Object.prototype.hasOwnProperty.call(incoming, key)) nextProfile[key] = incoming[key];
       });
       if (String(nextProfile.name || '').trim() === '') return res.status(400).json({ message: 'Company / contractor name is required.' });
