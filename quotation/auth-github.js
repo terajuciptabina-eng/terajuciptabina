@@ -15,6 +15,8 @@
   const panel = document.getElementById('authPanel') || document.getElementById('loginPanel'), portal = document.getElementById('portal'), welcome = document.getElementById('welcome'), buildLink = document.getElementById('buildLink'), renoLink = document.getElementById('renoLink');
   const profileButton = document.getElementById('profileButton'), profileModal = document.getElementById('profileModal'), profileClose = document.getElementById('profileClose'), profileCancel = document.getElementById('profileCancel'), profileSave = document.getElementById('profileSave'), profileUseBranding = document.getElementById('profileUseBranding'), profileResetBranding = document.getElementById('profileResetBranding'), profileStatus = document.getElementById('profileStatus'), profileLogoInput = document.getElementById('profileLogoInput'), profileLogoWrap = document.getElementById('profileLogoWrap');
   const profileFields = { name: document.getElementById('profileName'), registrationNo: document.getElementById('profileRegistration'), phone: document.getElementById('profilePhone'), address: document.getElementById('profileAddress'), email: document.getElementById('profileEmail'), website: document.getElementById('profileWebsite') };
+  const homeProfileButton = document.getElementById('homeProfileButton'), homeProfileModal = document.getElementById('homeProfileModal'), homeProfileClose = document.getElementById('homeProfileClose'), homeProfileCancel = document.getElementById('homeProfileCancel'), homeProfileSave = document.getElementById('homeProfileSave'), homeProfileStatus = document.getElementById('homeProfileStatus');
+  const homeProfileFields = { name: document.getElementById('homeProfileName'), phone: document.getElementById('homeProfilePhone'), email: document.getElementById('homeProfileEmail'), propertyAddress: document.getElementById('homeProfileAddress'), propertyType: document.getElementById('homeProfilePropertyType'), projectNotes: document.getElementById('homeProfileNotes') };
   let currentRecord = null, profileLogoDataUrl = '';
   let mode = 'signup';
   const getLocal = () => { try { return JSON.parse(localStorage.getItem(storageKey) || 'null'); } catch { return null; } };
@@ -82,6 +84,58 @@
       profileLogoWrap.textContent = 'No logo uploaded';
     }
   }
+  function setHomeProfileStatus(message, type='error') {
+    if (!homeProfileStatus) return;
+    homeProfileStatus.textContent = message;
+    homeProfileStatus.style.display = message ? 'block' : 'none';
+    homeProfileStatus.style.background = type === 'success' ? '#f0fdf4' : '#fff1f2';
+    homeProfileStatus.style.color = type === 'success' ? '#166534' : '#be123c';
+  }
+  function openHomeProfile(record) {
+    if (!homeProfileModal || role !== 'homeowner') return;
+    const p = record?.profile || {};
+    Object.entries(homeProfileFields).forEach(([key, input]) => { if (input) input.value = p[key] || ''; });
+    setHomeProfileStatus('');
+    homeProfileModal.classList.add('open');
+    homeProfileModal.setAttribute('aria-hidden','false');
+  }
+  function closeHomeProfile() {
+    homeProfileModal?.classList.remove('open');
+    homeProfileModal?.setAttribute('aria-hidden','true');
+    setHomeProfileStatus('');
+  }
+  async function saveHomeProfile() {
+    if (!currentRecord || role !== 'homeowner') return;
+    const profile = {};
+    Object.entries(homeProfileFields).forEach(([key, input]) => { profile[key] = input?.value.trim() || ''; });
+    if (!profile.name) return setHomeProfileStatus('Name is required.');
+    if (!validEmail(profile.email)) return setHomeProfileStatus('Please enter a valid email address.');
+    if (!validPhone(profile.phone)) return setHomeProfileStatus('Please enter a valid Malaysian phone number.');
+    homeProfileSave.disabled = true;
+    homeProfileSave.textContent = 'Saving…';
+    setHomeProfileStatus('');
+    try {
+      const response = await fetch(API_BASE + '/api/auth', { method:'PATCH', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ role:'homeowner', id:currentRecord[idKey], profile }) });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(data.message || 'Unable to save homeowner profile.');
+      currentRecord = data.record || { ...currentRecord, profile:{ ...(currentRecord.profile||{}), ...profile } };
+      setLocal(currentRecord);
+      welcome.innerHTML = '<span class="block">Welcome, ' + escapeHtml(currentRecord.profile?.name || '') + '.</span>';
+      setHomeProfileStatus('Profile saved successfully.', 'success');
+      setTimeout(closeHomeProfile, 650);
+      trackEvent('homeowner_profile_saved');
+    } catch (err) {
+      setHomeProfileStatus(err.message || 'Unable to save homeowner profile.');
+    } finally {
+      homeProfileSave.disabled = false;
+      homeProfileSave.textContent = 'Save Profile';
+    }
+  }
+  homeProfileButton?.addEventListener('click', () => openHomeProfile(currentRecord), true);
+  homeProfileClose?.addEventListener('click', closeHomeProfile, true);
+  homeProfileCancel?.addEventListener('click', closeHomeProfile, true);
+  homeProfileModal?.addEventListener('click', event => { if (event.target === homeProfileModal) closeHomeProfile(); }, true);
+
   function openProfile(record) {
     if (!profileModal || role !== 'contractor') return;
     const p = record?.profile || {};
@@ -237,7 +291,8 @@
   }
   profileResetBranding?.addEventListener('click', resetPreviewBranding, true);
   profileSave?.addEventListener('click', saveProfile, true);
-  document.addEventListener('keydown', event => { if (event.key === 'Escape' && profileModal?.classList.contains('open')) closeProfile(); });
+  document.addEventListener('keydown', event => { if (event.key === 'Escape') { if (profileModal?.classList.contains('open')) closeProfile(); if (homeProfileModal?.classList.contains('open')) closeHomeProfile(); } });
+  homeProfileSave?.addEventListener('click', saveHomeProfile, true);
 
   async function getAccount(id) {
     const response = await fetch(`${API_BASE}/api/auth?role=${encodeURIComponent(role)}&id=${encodeURIComponent(id)}`).catch(() => null);
