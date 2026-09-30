@@ -69,7 +69,7 @@ m.innerHTML=`<style>
 </div>
 <div class="tc-bm-options">
 <button type="button" data-mode="teraju" class="tc-bm-option">
-<div class="tc-bm-mark"><img src="../images/logo.png" alt="TERAJU"></div><div class="tc-bm-radio"></div>
+<div class="tc-bm-mark"><img src="../images/terajuworks-contractor.svg" alt="TERAJUWORKS CONTRACTOR"></div><div class="tc-bm-radio"></div>
 <strong>Maintain TERAJU Default</strong><span class="tc-bm-desc">Keep the standard TERAJU logo and company details on your Preview.</span>
 </button>
 <button type="button" data-mode="custom" class="tc-bm-option">
@@ -112,6 +112,6 @@ m.querySelector('[data-logo]')?.addEventListener('change',e=>{const f=e.target.f
 m.querySelector('[data-save]')?.addEventListener('click',async()=>{const er=m.querySelector('[data-error]'),b=m.querySelector('[data-save]');er.style.display='none';b.disabled=true;b.textContent='Saving…';try{if(mode==='teraju'){const x=await persist({previewBrandingMode:'teraju',previewBrandingConfigured:true});m.remove();resolve(x);return}if(!c.profileConfigured)throw new Error('Please set up your Contractor Profile first.');const x=await persist({previewBrandingMode:'custom',previewBrandingConfigured:true});m.remove();resolve(x)}catch(e){er.textContent=e.message||'Unable to save Preview Branding.';er.style.display='block';b.disabled=false;b.textContent=mode==='custom'?'Save Company Profile':'Keep TERAJU Default'}});
 setMode('custom');
 })}async function ensure(){try{await load()}catch{branding=cache()||null}if(!branding?.profileConfigured||!branding?.configured)branding=await modal();return branding}
-function headerFooter(){const b=branding||{mode:'teraju'};if(b.mode!=='custom')return{logo:'../images/logo.png',alt:'Teraju Ciptabina Logo',name:'TERAJU CIPTABINA RESOURCES',registration:'',address:'No 10A, Jalan PP 2/1, Taman Putra Prima, 47100 Puchong, Selangor',phone:'014-5002652',email:'terajuciptabina@gmail.com',website:'terajuciptabina-eng.github.io/terajuciptabina/'};return{logo:b.logoDataUrl||'../images/logo.png',alt:b.name+' Logo',name:b.name||'Contractor',registration:b.registrationNo,address:b.address,phone:b.phone,email:b.email,website:b.website}}
+function headerFooter(){const b=branding||{mode:'teraju'};if(b.mode!=='custom')return{logo:'../images/terajuworks-contractor.svg',alt:'TERAJUWORKS CONTRACTOR',name:'TERAJUWORKS CONTRACTOR',registration:'',address:'No 10A, Jalan PP 2/1, Taman Putra Prima, 47100 Puchong, Selangor',phone:'014-5002652',email:'terajuciptabina@gmail.com',website:'terajuciptabina-eng.github.io/terajuciptabina/'};return{logo:b.logoDataUrl||'../images/terajuworks-contractor.svg',alt:b.name+' Logo',name:b.name||'Contractor',registration:b.registrationNo,address:b.address,phone:b.phone,email:b.email,website:b.website}}
 window.__TERAJU_PREVIEW_BRANDING_ENSURE=ensure;window.__TERAJU_PREVIEW_BRANDING=headerFooter;
 })();
