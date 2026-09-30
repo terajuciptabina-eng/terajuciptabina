@@ -60,7 +60,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const rulesResult = await gh(`https://api.github.com/repos/${repo}/contents/quotation/admin-calculation-rules.html?ref=main`);
+    const rulesResult = await gh(`https://api.github.com/repos/${repo}/contents/TerajuWorks/admin-calculation-rules.html?ref=main`);
     if (!rulesResult.r.ok) return res.status(502).json({ message: 'Unable to load Global Calculation Rules.' });
     const rulesSource = Buffer.from(rulesResult.data?.content || '', 'base64').toString('utf8');
     const rules = extractRules(rulesSource)
