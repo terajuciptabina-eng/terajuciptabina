@@ -1451,7 +1451,7 @@
         "project": {
           "location": "Gambang",
           "builtUpArea": 1256,
-          "state": "negeri-sembilan"
+          "state": "selangor"
         },
         "total": 389941.5,
         "plannerState": {
@@ -1715,10 +1715,10 @@
           "quotationType": "simple",
           "projectId": "PRJ-BLD-MUD3T1SQ-S4JB9",
           "constructionBudgetGenerated": true,
-          "projectState": "negeri-sembilan",
+          "projectState": "selangor",
           "rateSetId": "default",
           "rateSetName": "Default Rate",
-          "rateSnapshotAt": "2026-09-29T18:03:06.241Z"
+          "rateSnapshotAt": "2026-09-30T18:47:57.356Z"
         },
         "itemListVersion": 1,
         "items": [
@@ -2846,7 +2846,7 @@
           }
         ],
         "createdAt": "2026-09-22T20:05:33.659Z",
-        "updatedAt": "2026-09-29T18:03:07.221Z",
+        "updatedAt": "2026-09-30T18:47:58.375Z",
         "estimateNumber": "EST-BLD-001"
       }
     ],
@@ -3270,7 +3270,7 @@
     ]
   },
   "createdAt": "2026-09-21T05:42:03.987Z",
-  "updatedAt": "2026-09-30T08:29:08.226Z",
+  "updatedAt": "2026-09-30T18:47:58.375Z",
   "quotationRunningNumber": {
     "renovation": 1,
     "build": 1
