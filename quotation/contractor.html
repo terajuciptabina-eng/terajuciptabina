@@ -25,7 +25,7 @@
 .profile-logo-empty{width:150px;height:58px;display:flex;align-items:center;justify-content:center;background:#fff;border:1px solid #e2e8f0;border-radius:9px;color:#94a3b8;font-size:11px}
 .profile-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:20px}
 .profile-actions button{min-height:44px;border-radius:12px;padding:0 18px;font:inherit;font-size:13px;font-weight:800;cursor:pointer}
-.profile-cancel{border:1px solid #e2e8f0;background:#f8fafc;color:#475569}.profile-save{border:0;background:#0f172a;color:#fff}.profile-save:disabled{opacity:.55;cursor:wait}
+.profile-use{border:0;background:#2563eb;color:#fff}.profile-reset{border:1px solid #e2e8f0;background:#f8fafc;color:#475569}.profile-use:disabled,.profile-reset:disabled{opacity:.55;cursor:wait}.profile-cancel{border:1px solid #e2e8f0;background:#f8fafc;color:#475569}.profile-save{border:0;background:#0f172a;color:#fff}.profile-save:disabled{opacity:.55;cursor:wait}
 .profile-status{display:none;margin-top:12px;padding:10px 12px;border-radius:10px;font-size:12px}
 @media(max-width:620px){.profile-grid{grid-template-columns:1fr}.profile-field.full{grid-column:auto}.profile-card{border-radius:22px}.profile-logo{align-items:flex-start;flex-direction:column}.profile-actions{display:grid;grid-template-columns:1fr 1.4fr}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}@keyframes cardIn{from{opacity:0;transform:translateY(28px) scale(.985)}to{opacity:1;transform:none}}
@@ -55,7 +55,7 @@
         <div class="profile-field"><label for="profileWebsite">Website <span style="font-weight:500;color:#94a3b8">(optional)</span></label><input id="profileWebsite"></div>
       </div>
       <div id="profileStatus" class="profile-status"></div>
-      <div class="profile-actions"><button id="profileResetBranding" type="button" class="profile-reset">Reset Preview to TERAJU Default</button><button id="profileCancel" type="button" class="profile-cancel">Cancel</button><button id="profileSave" type="button" class="profile-save">Save Profile</button></div>
+      <div class="profile-actions"><button id="profileUseBranding" type="button" class="profile-use">Use My Company Profile for Preview</button><button id="profileResetBranding" type="button" class="profile-reset">Reset Preview to TERAJU Default</button><button id="profileCancel" type="button" class="profile-cancel">Cancel</button><button id="profileSave" type="button" class="profile-save">Save Profile</button></div>
     </div>
   </div>
 </div>
