@@ -9,8 +9,8 @@ export default async function handler(req,res){
   if(!['GET','POST','PUT','DELETE'].includes(req.method))return res.status(405).json({message:'Method not allowed.'});
 
   const repo=process.env.GITHUB_REPO||'terajuciptabina-eng/terajuciptabina';
-  const rulesPath='quotation/admin-calculation-rules.html';
-  const uiPath='quotation/shared/calculation-rules-ui.css';
+  const rulesPath='TerajuWorks/admin-calculation-rules.html';
+  const uiPath='TerajuWorks/shared/calculation-rules-ui.css';
   const token=process.env.GITHUB_TOKEN;
   const expectedUser=String(process.env.ADMIN_USERNAME||'admin').trim();
   const expectedPass=String(process.env.ADMIN_PASSWORD||process.env.ADMIN_KEY||'').trim();
