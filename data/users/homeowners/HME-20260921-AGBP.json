@@ -5,9 +5,12 @@
   "role": "homeowner",
   "homeownerId": "HME-20260921-AGBP",
   "profile": {
-    "name": "Sue test whatsapp",
+    "name": "Teraju Homeowner Test Account",
     "email": "asyraf.reeza@gmail.com",
-    "phone": "+601125476214"
+    "phone": "+601125476214",
+    "propertyAddress": "",
+    "propertyType": "",
+    "projectNotes": ""
   },
   "auth": {
     "mode": "temporary-id",
@@ -3267,7 +3270,7 @@
     ]
   },
   "createdAt": "2026-09-21T05:42:03.987Z",
-  "updatedAt": "2026-09-29T18:03:45.027Z",
+  "updatedAt": "2026-09-30T08:29:08.226Z",
   "quotationRunningNumber": {
     "renovation": 1,
     "build": 1
