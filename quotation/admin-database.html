@@ -130,6 +130,13 @@ async function del(b){
 }
 
 const profileModal=document.getElementById('profileModal'),profileForm=document.getElementById('profileForm'),profileGrid=document.getElementById('profileGrid'),profileTitle=document.getElementById('profileTitle'),profileMeta=document.getElementById('profileMeta'),profileStatus=document.getElementById('profileStatus');let activeProfile={id:'',role:''};
+async function compressAdminLogo(file){
+  const bitmap=await createImageBitmap(file);
+  const maxW=1200,maxH=500,scale=Math.min(1,maxW/bitmap.width,maxH/bitmap.height);
+  const canvas=document.createElement('canvas'); canvas.width=Math.max(1,Math.round(bitmap.width*scale)); canvas.height=Math.max(1,Math.round(bitmap.height*scale));
+  const ctx=canvas.getContext('2d'); ctx.drawImage(bitmap,0,0,canvas.width,canvas.height);
+  return canvas.toDataURL('image/webp',.82);
+}
 function profileField(label,key,value,full=false,type='text'){return '<div class="profile-field'+(full?' full':'')+'"><label>'+esc(label)+'</label><input name="'+esc(key)+'" type="'+type+'" value="'+esc(value||'')+'"></div>'}
 function renderProfile(account){
   const p=account.profile||{}, isContractor=account.role==='contractor';
@@ -138,7 +145,7 @@ function renderProfile(account){
   let html=profileField('Account ID','__accountId',account.id)+profileField('Role','__role',account.role)+profileField('Name','name',p.name)+profileField('Email','email',p.email,'', 'email')+profileField('Phone','phone',p.phone);
   if(isContractor){
     html+=profileField('Registration No.','registrationNo',p.registrationNo)+profileField('Website','website',p.website,'', 'url')+profileField('Company Address','address',p.address,true);
-    if(p.logoDataUrl)html+='<div class="profile-field full"><label>Company Logo</label><div class="profile-logo"><img src="'+esc(p.logoDataUrl)+'"><div class="profile-meta">Logo currently stored in Contractor Profile.</div></div></div>';
+    html+='<div class="profile-field full"><label>Company Logo</label><div class="profile-logo">'+(p.logoDataUrl?'<img src="'+esc(p.logoDataUrl)+'" alt="Company logo">':'<div style="width:150px;height:58px;display:flex;align-items:center;justify-content:center;border:1px dashed #cbd5e1;border-radius:8px;color:#94a3b8;font-size:11px">No logo uploaded</div>')+'<div style="flex:1"><input id="adminLogoInput" type="file" accept="image/png,image/jpeg,image/webp"><div class="profile-meta">PNG, JPG or WEBP. Uploading a new logo replaces the current logo.</div></div></div></div>';
   }else{
     html+=profileField('Property Address','propertyAddress',p.propertyAddress,true)+profileField('Property Type','propertyType',p.propertyType)+profileField('Project Notes','projectNotes',p.projectNotes,true);
   }
@@ -156,6 +163,12 @@ function closeProfile(){profileModal.classList.remove('open');profileForm.reset(
 profileForm.onsubmit=async e=>{
   e.preventDefault();if(!activeProfile.id)return;
   const data=Object.fromEntries(new FormData(profileForm).entries()); delete data.__accountId; delete data.__role;
+  const logoInput=document.getElementById('adminLogoInput');
+  if(logoInput?.files?.[0]){
+    const file=logoInput.files[0];
+    if(file.size>5*1024*1024) { profileStatus.textContent='Logo must be 5MB or smaller.'; profileStatus.style.color='#b91c1c'; return; }
+    data.logoDataUrl=await compressAdminLogo(file);
+  }
   profileStatus.textContent='Saving…';profileStatus.style.color='#6b7280';
   try{
     const r=await fetch(API,{method:'PUT',headers:{...adminHeaders(),'Content-Type':'application/json'},body:JSON.stringify({id:activeProfile.id,role:activeProfile.role,profile:data})});
