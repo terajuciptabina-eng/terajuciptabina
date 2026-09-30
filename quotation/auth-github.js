@@ -140,8 +140,12 @@
   homeProfileCancel?.addEventListener('click', closeHomeProfile, true);
   homeProfileModal?.addEventListener('click', event => { if (event.target === homeProfileModal) closeHomeProfile(); }, true);
 
-  function openProfile(record) {
+  function openProfile(record, options = {}) {
     if (!profileModal || role !== 'contractor') return;
+    const onboarding = options.onboarding === true;
+    const onboardingNote = document.getElementById('profileOnboardingNote');
+    if (onboardingNote) onboardingNote.style.display = onboarding ? 'block' : 'none';
+    if (profileCancel) profileCancel.textContent = onboarding ? 'Skip for now' : 'Cancel';
     if (profileAccountId) profileAccountId.value = record?.[idKey] || '';
     const p = record?.profile || {};
     Object.entries(profileFields).forEach(([key, input]) => { if (input) input.value = p[key] || ''; });
@@ -153,6 +157,9 @@
     profileModal.setAttribute('aria-hidden','false');
   }
   function closeProfile() {
+    const onboardingNote = document.getElementById('profileOnboardingNote');
+    if (onboardingNote) onboardingNote.style.display = 'none';
+    if (profileCancel) profileCancel.textContent = 'Cancel';
     profileModal?.classList.remove('open');
     profileModal?.setAttribute('aria-hidden','true');
     setProfileStatus('');
@@ -331,6 +338,7 @@
         generated.classList.remove('hidden');
         showPortal(data.record);
         showSignupPopup(data.record, data.emailSent === true, email);
+        if (role === 'contractor') setTimeout(() => openProfile(data.record, { onboarding: true }), 550);
       } else {
         const id = idInput.value.trim().toUpperCase();
         if (!id) throw new Error(`Please enter your ${isHomeowner ? 'Homeowner' : 'Contractor'} ID.`);
