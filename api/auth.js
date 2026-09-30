@@ -26,14 +26,30 @@ export default async function handler(req, res) {
   const validPhone = value => /^(?:01\d{8,9}|\+601\d{8,9}|601\d{8,9})$/.test(normalizePhone(value));
 
   async function github(path, options = {}) {
-    const response = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
+    const url = `https://api.github.com/repos/${repo}/contents/${path}`;
+    const response = await fetch(url, {
       ...options,
       headers: { ...ghHeaders, ...(options.headers || {}) }
     });
     const text = await response.text();
     let data = null;
     try { data = text ? JSON.parse(text) : null; } catch { data = text; }
+    if (response.ok && data && typeof data === 'object' && !Array.isArray(data) && data.content === '' && data.encoding === 'none') {
+      const rawResponse = await fetch(url, {
+        headers: { ...ghHeaders, Accept: 'application/vnd.github.raw+json' }
+      });
+      const rawText = await rawResponse.text();
+      if (rawResponse.ok) data = { ...data, rawContent: rawText };
+    }
     return { response, data };
+  }
+
+  function decodeGithubContent(data) {
+    if (typeof data?.content === 'string' && data.content) {
+      return Buffer.from(data.content, 'base64').toString('utf8');
+    }
+    if (typeof data?.rawContent === 'string') return data.rawContent;
+    return '';
   }
 
   async function sendWelcomeEmail({ role, id, name, email }) {
@@ -162,7 +178,7 @@ export default async function handler(req, res) {
       const result = await github(pathFor(role, id));
       if (result.response.status === 404) return res.status(404).json({ message: 'Account not found.' });
       if (!result.response.ok) return res.status(502).json({ message: 'Unable to read account record.' });
-      const content = result.data?.content ? Buffer.from(result.data.content, 'base64').toString('utf8') : '';
+      const content = decodeGithubContent(result.data);
       return res.status(200).json(JSON.parse(content));
     }
 
@@ -174,7 +190,7 @@ export default async function handler(req, res) {
       const current = await github(pathFor(role, id));
       if (current.response.status === 404) return res.status(404).json({ message: 'Account not found.' });
       if (!current.response.ok) return res.status(502).json({ message: 'Unable to read account record.' });
-      const content = current.data?.content ? Buffer.from(current.data.content, 'base64').toString('utf8') : '';
+      const content = decodeGithubContent(current.data);
       let record;
       try { record = JSON.parse(content); } catch { return res.status(502).json({ message: 'Account record is invalid.' }); }
       const incoming = body.profile && typeof body.profile === 'object' ? body.profile : {};
@@ -186,7 +202,7 @@ export default async function handler(req, res) {
       if (String(nextProfile.name || '').trim() === '') return res.status(400).json({ message: 'Company / contractor name is required.' });
       if (nextProfile.email && !validEmail(nextProfile.email)) return res.status(400).json({ message: 'Please enter a valid email address.' });
       if (nextProfile.phone && !validPhone(nextProfile.phone)) return res.status(400).json({ message: 'Please enter a valid Malaysian phone number.' });
-      if (String(nextProfile.logoDataUrl || '').length > 900000) return res.status(413).json({ message: 'Logo image is too large. Please use a smaller image.' });
+      if (String(nextProfile.logoDataUrl || '').length > 350000) return res.status(413).json({ message: 'Logo image is too large. Please use a smaller image.' });
       record.profile = nextProfile;
       record.updatedAt = new Date().toISOString();
       const updated = await github(pathFor(role, id), {
