@@ -1,28 +1,12 @@
-/* Shared TERAJUWORKS Admin brand system. Keep logo treatment consistent across every Admin tool. */
+/* Shared TERAJUWORKS Admin brand system. The official SVG already contains the wordmark. */
 .admin-global-brand{
   display:block;
-  width:min(210px,62vw);
+  width:min(250px,72vw);
   height:auto;
-  margin:0 0 12px;
-}
-.admin-global-brand-surface{
-  display:inline-flex;
-  align-items:center;
-  padding:7px 11px;
-  border:1px solid rgba(148,163,184,.28);
-  border-radius:12px;
-  background:#fff;
-  box-shadow:0 5px 18px rgba(15,23,42,.10);
-}
-.admin-global-brand-surface .admin-global-brand{
-  width:min(190px,58vw);
-  margin:0;
+  margin:0 0 14px;
 }
 .header .admin-global-brand,
-.header-inner .admin-global-brand{
-  margin-bottom:10px;
-}
+.header-inner .admin-global-brand{margin-bottom:12px}
 @media(max-width:650px){
-  .admin-global-brand{width:min(195px,72vw);margin-bottom:10px}
-  .admin-global-brand-surface .admin-global-brand{width:min(180px,66vw)}
+  .admin-global-brand{width:min(235px,78vw);margin-bottom:12px}
 }
