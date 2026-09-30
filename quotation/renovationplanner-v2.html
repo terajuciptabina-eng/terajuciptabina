@@ -2785,6 +2785,13 @@ function generateQuotationConfirmed(type) {
 
   quotationNumber = generateQuotationNumber();
 
+  // Preview branding is sourced from the shared contractor branding layer.
+  // Keep this local to the generation source so the preview cannot depend on
+  // a variable declared inside renderEstimate().
+  const brand = typeof window.__TERAJU_PREVIEW_BRANDING === "function"
+    ? window.__TERAJU_PREVIEW_BRANDING()
+    : null;
+
   const customer = document.getElementById("customerName")?.value || "Not specified";
   const location = document.getElementById("projectLocation")?.value || "Not specified";
   const totalBuiltArea = data.roomGroups.reduce((sum, room) => sum + (Number(room.area) || 0), 0);
