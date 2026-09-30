@@ -47,7 +47,7 @@ export default async function handler(req, res) {
     return [];
   };
   const canonicalRules = async () => {
-    const url = `https://api.github.com/repos/${repo}/contents/quotation/admin-calculation-rules.html?ref=main`;
+    const url = `https://api.github.com/repos/${repo}/contents/TerajuWorks/admin-calculation-rules.html?ref=main`;
     const response = await fetch(url, { headers });
     if (!response.ok) return [];
     const data = await response.json();
