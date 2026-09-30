@@ -98,11 +98,34 @@
     profileModal?.setAttribute('aria-hidden','true');
     setProfileStatus('');
   }
+  function compressLogoDataUrl(dataUrl) {
+    return new Promise(resolve => {
+      if (!dataUrl || dataUrl.length <= 300000) return resolve(dataUrl || '');
+      const img = new Image();
+      img.onload = () => {
+        const maxSide = 800;
+        const scale = Math.min(1, maxSide / Math.max(img.naturalWidth || 1, img.naturalHeight || 1));
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.max(1, Math.round((img.naturalWidth || 1) * scale));
+        canvas.height = Math.max(1, Math.round((img.naturalHeight || 1) * scale));
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        let out = canvas.toDataURL('image/webp', 0.78);
+        if (out.length > 350000) out = canvas.toDataURL('image/jpeg', 0.72);
+        resolve(out);
+      };
+      img.onerror = () => resolve(dataUrl);
+      img.src = dataUrl;
+    });
+  }
+
   async function saveProfile() {
     if (!currentRecord || role !== 'contractor') return;
     const profile = {};
     Object.entries(profileFields).forEach(([key, input]) => { profile[key] = input?.value.trim() || ''; });
-    profile.logoDataUrl = profileLogoDataUrl || '';
+    profile.logoDataUrl = await compressLogoDataUrl(profileLogoDataUrl || '');
+    profileLogoDataUrl = profile.logoDataUrl;
+    renderProfileLogo(profileLogoDataUrl);
     if (!profile.name) return setProfileStatus('Company / Contractor Name is required.');
     if (!validEmail(profile.email)) return setProfileStatus('Please enter a valid email address.');
     if (!validPhone(profile.phone)) return setProfileStatus('Please enter a valid Malaysian phone number.');
@@ -132,9 +155,9 @@
     const file = profileLogoInput.files?.[0];
     if (!file) return;
     if (!/^image\/(png|jpeg|webp)$/.test(file.type)) return setProfileStatus('Please choose a PNG, JPG or WEBP image.');
-    if (file.size > 700000) return setProfileStatus('Logo image is too large. Please choose a smaller file.');
+    if (file.size > 5000000) return setProfileStatus('Logo image is too large. Please choose a smaller file.');
     const reader = new FileReader();
-    reader.onload = () => { profileLogoDataUrl = String(reader.result || ''); renderProfileLogo(profileLogoDataUrl); setProfileStatus(''); };
+    reader.onload = async () => { profileLogoDataUrl = await compressLogoDataUrl(String(reader.result || '')); renderProfileLogo(profileLogoDataUrl); setProfileStatus(''); };
     reader.readAsDataURL(file);
   });
   profileSave?.addEventListener('click', saveProfile, true);
