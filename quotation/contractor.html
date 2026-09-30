@@ -18,10 +18,10 @@ body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,
 .login-panel,.portal-head,.portal-grid,.site-footer{animation:fadeUp .7s cubic-bezier(.22,1,.36,1) both}
 .portal-grid{animation-delay:.12s}
 .site-footer{animation-delay:.45s}
-.project-card{position:relative;display:flex;flex-direction:column;min-height:388px;overflow:hidden;border:1px solid rgba(255,255,255,.95)!important;border-radius:30px!important;background-position:center;background-size:cover;box-shadow:0 28px 65px rgba(15,23,42,.10),0 0 42px rgba(181,138,58,.08)!important;transition:transform .3s cubic-bezier(.22,1,.36,1),box-shadow .3s ease,border-color .25s ease;animation:cardIn .75s cubic-bezier(.22,1,.36,1) both}
+.project-card{position:relative;top:0;display:flex;flex-direction:column;min-height:388px;overflow:hidden;border:1px solid rgba(255,255,255,.95)!important;border-radius:30px!important;background-position:center;background-size:cover;box-shadow:0 28px 65px rgba(15,23,42,.10),0 0 42px rgba(181,138,58,.08)!important;transition:top .3s cubic-bezier(.22,1,.36,1),transform .3s cubic-bezier(.22,1,.36,1),box-shadow .3s ease,border-color .25s ease;animation:cardIn .75s cubic-bezier(.22,1,.36,1) both}
 .project-card:after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background:linear-gradient(135deg,rgba(255,255,255,.82),rgba(255,255,255,.54) 48%,rgba(255,255,255,.72))}
 .project-card:before{content:"";position:absolute;top:-120%;left:-65%;z-index:2;width:45%;height:320%;pointer-events:none;transform:rotate(24deg);background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent);transition:left .8s ease}
-.project-card:hover{transform:translateY(-10px) scale(1.012);border-color:#cbd5e1;box-shadow:0 34px 78px rgba(15,23,42,.18),0 0 55px rgba(181,138,58,.16)!important}
+.project-card:hover{top:-10px;transform:scale(1.012);border-color:#cbd5e1;box-shadow:0 34px 78px rgba(15,23,42,.18),0 0 55px rgba(181,138,58,.16)!important}
 .project-card:hover:before{left:125%}
 .project-card>*{position:relative;z-index:3}
 .project-card .mt-7 h2{min-height:76px}
@@ -78,7 +78,7 @@ main{padding:25px 14px 28px!important}
 .portal-actions button{min-height:46px}
 .portal-grid{margin-top:28px!important;gap:13px!important}
 .project-card{min-height:388px!important;padding:28px!important;border-radius:30px!important}
-.project-card:hover{transform:none;box-shadow:0 16px 42px rgba(15,23,42,.1)}
+.project-card:hover{top:0;transform:none;box-shadow:0 16px 42px rgba(15,23,42,.1)}
 .project-card h2{font-size:23px!important;line-height:1.12}
 .project-card p{font-size:12.5px!important;line-height:1.55}
 .project-card .icon{width:56px!important;height:56px!important}
