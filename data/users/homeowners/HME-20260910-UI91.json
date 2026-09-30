@@ -5,9 +5,12 @@
   "role": "homeowner",
   "homeownerId": "HME-20260910-UI91",
   "profile": {
-    "name": "a",
+    "name": "moyachomel",
     "email": "moyachomel@gmail.com",
-    "phone": "0124956795"
+    "phone": "0124956795",
+    "propertyAddress": "",
+    "propertyType": "",
+    "projectNotes": ""
   },
   "auth": {
     "mode": "temporary-id",
@@ -19,5 +22,5 @@
     "renovation": []
   },
   "createdAt": "2026-09-10T15:26:33.473Z",
-  "updatedAt": "2026-09-10T15:26:33.473Z"
+  "updatedAt": "2026-09-30T08:37:35.614Z"
 }
