@@ -13,6 +13,7 @@
   const idField = document.getElementById(isHomeowner ? 'homeownerIdField' : 'contractorIdField'), nameField = document.getElementById(isHomeowner ? 'homeownerNameField' : 'contractorNameField');
   const button = document.getElementById('authButton'), title = document.getElementById('authTitle'), description = document.getElementById('authDescription'), error = document.getElementById('authError'), generated = document.getElementById('authGeneratedId');
   const panel = document.getElementById('authPanel') || document.getElementById('loginPanel'), portal = document.getElementById('portal'), welcome = document.getElementById('welcome'), buildLink = document.getElementById('buildLink'), renoLink = document.getElementById('renoLink');
+  const workspaceAccountIdValue = document.getElementById('workspaceAccountIdValue');
   const profileButton = document.getElementById('profileButton'), profileModal = document.getElementById('profileModal'), profileClose = document.getElementById('profileClose'), profileCancel = document.getElementById('profileCancel'), profileSave = document.getElementById('profileSave'), profileUseBranding = document.getElementById('profileUseBranding'), profileResetBranding = document.getElementById('profileResetBranding'), profileStatus = document.getElementById('profileStatus'), profileLogoInput = document.getElementById('profileLogoInput'), profileLogoWrap = document.getElementById('profileLogoWrap');
   const profileAccountId = document.getElementById('profileAccountId'), homeProfileAccountId = document.getElementById('homeProfileAccountId');
   const profileFields = { name: document.getElementById('profileName'), registrationNo: document.getElementById('profileRegistration'), phone: document.getElementById('profilePhone'), address: document.getElementById('profileAddress'), email: document.getElementById('profileEmail'), website: document.getElementById('profileWebsite') };
@@ -65,6 +66,7 @@
   function showPortal(record) {
     currentRecord = record; setLocal(record); panel.classList.add('hidden'); portal.classList.remove('hidden'); const id = record[idKey];
     welcome.innerHTML = `<span class=\"block\">Welcome, ${escapeHtml(record.profile?.name || '')}.</span>`;
+    if (workspaceAccountIdValue) workspaceAccountIdValue.textContent = id;
     if (buildLink) buildLink.href = `quotations.html?audience=${role}&role=${role}&${idKey}=${encodeURIComponent(id)}&id=${encodeURIComponent(id)}&plannerType=build`;
     if (renoLink) renoLink.href = `quotations.html?audience=${role}&role=${role}&${idKey}=${encodeURIComponent(id)}&id=${encodeURIComponent(id)}&plannerType=renovation`;
   }
