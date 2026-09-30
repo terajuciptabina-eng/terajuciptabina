@@ -246,7 +246,7 @@ async function generateQuotation(typeOverride){
  const nodeItems=node=>[...(node?.noLevel3||[]),...[...(node?.levels?.values?.()||[])].flatMap(list=>list)];
  const groupItems=g=>[...(g?.items||[]),...nodeItems(g)];
  const summaryGroups=[['preliminaries','PRELIMINARIES'],['structures','STRUCTURAL WORKS'],['architecture','ARCHITECTURAL WORKS'],['electrical','ELECTRICAL WORKS'],['doors-windows','DOORS & WINDOWS'],['external-work','EXTERNAL WORKS']].map(([category,title])=>({category,title,items:active.filter(i=>i.category===category)})).filter(g=>g.items.length);
- const brandLogo=escQ(brand?.logo||"../images/terajuworks-contractor.svg");
+ const brandLogo=escQ(brand?.logo||"../images/logo.png");
  const brandAlt=escQ(brand?.alt||"Company Logo");
  const brandName=escQ(brand?.name||"TERAJU CIPTABINA RESOURCES");
  const brandRegistration=brand?.registration?'<p class="text-xs text-gray-500">'+escQ(brand.registration)+'</p>':'';
