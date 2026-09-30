@@ -124,6 +124,7 @@
     const profile = {};
     Object.entries(profileFields).forEach(([key, input]) => { profile[key] = input?.value.trim() || ''; });
     profile.logoDataUrl = await compressLogoDataUrl(profileLogoDataUrl || '');
+    profile.contractorProfileConfigured = true;
     profileLogoDataUrl = profile.logoDataUrl;
     renderProfileLogo(profileLogoDataUrl);
     if (!profile.name) return setProfileStatus('Company / Contractor Name is required.');
