@@ -13,7 +13,7 @@
   const idField = document.getElementById(isHomeowner ? 'homeownerIdField' : 'contractorIdField'), nameField = document.getElementById(isHomeowner ? 'homeownerNameField' : 'contractorNameField');
   const button = document.getElementById('authButton'), title = document.getElementById('authTitle'), description = document.getElementById('authDescription'), error = document.getElementById('authError'), generated = document.getElementById('authGeneratedId');
   const panel = document.getElementById('authPanel') || document.getElementById('loginPanel'), portal = document.getElementById('portal'), welcome = document.getElementById('welcome'), buildLink = document.getElementById('buildLink'), renoLink = document.getElementById('renoLink');
-  const profileButton = document.getElementById('profileButton'), profileModal = document.getElementById('profileModal'), profileClose = document.getElementById('profileClose'), profileCancel = document.getElementById('profileCancel'), profileSave = document.getElementById('profileSave'), profileStatus = document.getElementById('profileStatus'), profileLogoInput = document.getElementById('profileLogoInput'), profileLogoWrap = document.getElementById('profileLogoWrap');
+  const profileButton = document.getElementById('profileButton'), profileModal = document.getElementById('profileModal'), profileClose = document.getElementById('profileClose'), profileCancel = document.getElementById('profileCancel'), profileSave = document.getElementById('profileSave'), profileResetBranding = document.getElementById('profileResetBranding'), profileStatus = document.getElementById('profileStatus'), profileLogoInput = document.getElementById('profileLogoInput'), profileLogoWrap = document.getElementById('profileLogoWrap');
   const profileFields = { name: document.getElementById('profileName'), registrationNo: document.getElementById('profileRegistration'), phone: document.getElementById('profilePhone'), address: document.getElementById('profileAddress'), email: document.getElementById('profileEmail'), website: document.getElementById('profileWebsite') };
   let currentRecord = null, profileLogoDataUrl = '';
   let mode = 'signup';
@@ -160,6 +160,39 @@
     reader.onload = async () => { profileLogoDataUrl = await compressLogoDataUrl(String(reader.result || '')); renderProfileLogo(profileLogoDataUrl); setProfileStatus(''); };
     reader.readAsDataURL(file);
   });
+  async function resetPreviewBranding() {
+    if (!currentRecord || role !== 'contractor') return;
+    if (!confirm('Reset Cost Estimate Preview to TERAJU Default? Your Contractor Profile will be kept.')) return;
+    profileResetBranding.disabled = true;
+    profileResetBranding.textContent = 'Resetting…';
+    setProfileStatus('');
+    try {
+      const response = await fetch(API_BASE + '/api/auth', {
+        method:'PATCH',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({
+          role:'contractor',
+          id:currentRecord[idKey],
+          profile:{
+            previewBrandingMode:'teraju',
+            previewBrandingConfigured:true
+          }
+        })
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(data.message || 'Unable to reset Preview branding.');
+      currentRecord = data.record || currentRecord;
+      setLocal(currentRecord);
+      setProfileStatus('Preview reset to TERAJU Default. Contractor Profile is kept.', 'success');
+      trackEvent('contractor_preview_branding_reset');
+    } catch (err) {
+      setProfileStatus(err.message || 'Unable to reset Preview branding.');
+    } finally {
+      profileResetBranding.disabled = false;
+      profileResetBranding.textContent = 'Reset Preview to TERAJU Default';
+    }
+  }
+  profileResetBranding?.addEventListener('click', resetPreviewBranding, true);
   profileSave?.addEventListener('click', saveProfile, true);
   document.addEventListener('keydown', event => { if (event.key === 'Escape' && profileModal?.classList.contains('open')) closeProfile(); });
 
