@@ -135,7 +135,7 @@ function renderProfile(account){
   const p=account.profile||{}, isContractor=account.role==='contractor';
   profileTitle.textContent=(isContractor?'Contractor':'Homeowner')+' Profile';
   profileMeta.textContent=account.id+' · '+account.role+' · Updated '+(account.updatedAt||'-');
-  let html=profileField('Name','name',p.name)+profileField('Email','email',p.email,'', 'email')+profileField('Phone','phone',p.phone);
+  let html=profileField('Account ID','__accountId',account.id)+profileField('Role','__role',account.role)+profileField('Name','name',p.name)+profileField('Email','email',p.email,'', 'email')+profileField('Phone','phone',p.phone);
   if(isContractor){
     html+=profileField('Registration No.','registrationNo',p.registrationNo)+profileField('Website','website',p.website,'', 'url')+profileField('Company Address','address',p.address,true);
     if(p.logoDataUrl)html+='<div class="profile-field full"><label>Company Logo</label><div class="profile-logo"><img src="'+esc(p.logoDataUrl)+'"><div class="profile-meta">Logo currently stored in Contractor Profile.</div></div></div>';
@@ -155,7 +155,7 @@ async function openProfile(id,accountRole){
 function closeProfile(){profileModal.classList.remove('open');profileForm.reset();activeProfile={id:'',role:''}}
 profileForm.onsubmit=async e=>{
   e.preventDefault();if(!activeProfile.id)return;
-  const data=Object.fromEntries(new FormData(profileForm).entries());
+  const data=Object.fromEntries(new FormData(profileForm).entries()); delete data.__accountId; delete data.__role;
   profileStatus.textContent='Saving…';profileStatus.style.color='#6b7280';
   try{
     const r=await fetch(API,{method:'PUT',headers:{...adminHeaders(),'Content-Type':'application/json'},body:JSON.stringify({id:activeProfile.id,role:activeProfile.role,profile:data})});
