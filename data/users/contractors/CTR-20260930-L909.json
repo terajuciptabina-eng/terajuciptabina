@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "contractor",
+  "contractorId": "CTR-20260930-L909",
+  "profile": {
+    "name": "Teraju Ciptabina Resources",
+    "email": "terajuciptabina@gmail.com",
+    "phone": "601160927175"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-09-30T06:38:35.153Z",
+  "updatedAt": "2026-09-30T06:38:35.153Z"
+}
