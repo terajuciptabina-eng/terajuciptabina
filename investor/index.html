@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TERAJU WORKS | Investor Overview</title>
-  <meta name="description" content="TERAJU WORKS — a digital construction costing and intelligence platform built around automated SMM-based detailed cost estimation and structured construction data.">
+  <title>TERAJU WORKS | Investor Overview — Construction Planning & Project Control</title>
+  <meta name="description" content="TERAJU WORKS — construction planning and project-control platform connecting cost estimation, quotation, work programming, progress, S-curve and construction intelligence.">
   <script src="https://cdn.tailwindcss.com"></script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-50XR3XER7B"></script>
   <script>
@@ -22,7 +22,24 @@
     .card{transition:transform .25s ease,box-shadow .25s ease}
     .card:hover{transform:translateY(-4px);box-shadow:0 24px 60px rgba(15,23,42,.10)}
     @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.card{transition:none}}
-  </style>
+  
+/* Investor v2 — compact premium UI */
+body{letter-spacing:-.01em}
+section{scroll-margin-top:76px}
+section.py-20,section.py-16{padding-top:3.25rem!important;padding-bottom:3.25rem!important}
+@media(min-width:640px){section.sm\\:py-24,section.sm\\:py-20{padding-top:4rem!important;padding-bottom:4rem!important}}
+header .max-w-7xl{padding-top:.65rem!important;padding-bottom:.65rem!important}
+.hero-glow .max-w-7xl{padding-top:4.5rem!important;padding-bottom:4.5rem!important}
+.hero-glow h1{font-size:clamp(2.65rem,5.1vw,4.65rem)!important;line-height:.98!important}
+.hero-glow .glass{border-radius:24px!important;padding:.8rem!important}.hero-glow .glass>div{border-radius:18px!important;padding:1.25rem!important}
+.card{transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}.card:hover{transform:translateY(-2px);box-shadow:0 14px 34px rgba(15,23,42,.08);border-color:#cbd5df}
+h2{line-height:1.06!important}.rounded-3xl{border-radius:20px!important}.rounded-[30px],.rounded-[32px]{border-radius:22px!important}.rounded-[25px]{border-radius:18px!important}
+[class*="gap-12"]{gap:2rem!important}[class*="gap-10"]{gap:1.75rem!important}[class*="gap-8"]{gap:1.25rem!important}
+[class*="mt-12"]{margin-top:2rem!important}[class*="mt-10"]{margin-top:1.5rem!important}[class*="mt-8"]{margin-top:1.25rem!important}
+[class*="p-8"]{padding:1.5rem!important}[class*="p-7"]{padding:1.25rem!important}[class*="p-6"]{padding:1.1rem!important}
+.grid-bg{background-size:28px 28px}.inv-snapshot{background:linear-gradient(135deg,#0b1118,#121b24);color:white}.inv-kpi{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.055);border-radius:16px;padding:1rem}.inv-kpi .num{font-size:2rem;font-weight:900;line-height:1}.inv-kpi .lab{margin-top:.35rem;font-size:.58rem;font-weight:800;letter-spacing:.16em;color:#9eabb8}
+.inv-swot{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.inv-swot>div{border:1px solid #dce2e8;border-radius:18px;padding:1.1rem;background:#fff}.inv-swot ul{margin-top:.65rem;padding-left:1rem;color:#647180;font-size:.78rem;line-height:1.55}.inv-swot li{margin:.2rem 0}.inv-swot .s{color:#0b8065}.inv-swot .w{color:#a34e4e}.inv-swot .o{color:#147a72}.inv-swot .t{color:#41678f}@media(max-width:900px){.inv-swot{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:560px){.inv-swot{grid-template-columns:1fr}}
+</style>
 </head>
 <body class="bg-slate-50 text-slate-900 antialiased">
 
@@ -35,10 +52,10 @@
         <div class="mt-0.5 text-[9px] font-bold tracking-[.2em] text-slate-400">INVESTOR OVERVIEW</div>
       </div>
     </a>
-    <nav class="hidden items-center gap-6 md:flex">
+    <nav class="hidden items-center gap-4 lg:flex">
       <a href="#opportunity" class="text-sm font-medium text-slate-600 hover:text-emerald-700">Opportunity</a>
-      <a href="#product" class="text-sm font-medium text-slate-600 hover:text-emerald-700">Product</a>
-      <a href="#investment-case" class="text-sm font-medium text-slate-600 hover:text-emerald-700">Investment Case</a>
+      <a href="#product" class="text-sm font-medium text-slate-600 hover:text-emerald-700" >Platform</a>
+      <a href="#investment-case" class="text-sm font-medium text-slate-600 hover:text-emerald-700" >Investment</a>
       <a href="investment-memo.html" class="text-sm font-medium text-slate-600 hover:text-emerald-700">Investment Memorandum</a>
       <a href="investor-deck.html" class="text-sm font-medium text-slate-600 hover:text-emerald-700">Investor Deck</a>
       <a href="financial-model.html" class="text-sm font-medium text-slate-600 hover:text-emerald-700">Financial Model</a>
@@ -57,10 +74,10 @@
         EARLY-STAGE CONSTRUCTION TECHNOLOGY · MALAYSIA
       </div>
       <h1 class="mt-7 max-w-4xl text-5xl font-black leading-[.98] tracking-[-.055em] text-slate-950 sm:text-6xl lg:text-7xl">
-        Building the technology layer for a more structured construction industry.
+        Construction planning & project control, built around cost intelligence.
       </h1>
       <p class="mt-6 max-w-2xl text-lg leading-8 text-slate-600">
-        <strong class="text-slate-900">TERAJU CIPTABINA</strong> is the parent company and core business is Design & Build. <strong class="text-slate-900">TERAJU WORKS</strong> is the technology platform being developed to structure construction costing, generate qualified project opportunities and build a scalable construction data layer.
+        <strong class="text-slate-900">TERAJU CIPTABINA</strong> is the parent company behind the core Design & Build business. <strong class="text-slate-900">TERAJU WORKS</strong> is the technology platform being developed to connect construction planning, costing, quotation, work programming, progress monitoring and project insight.
       </p>
       <div class="mt-8 flex flex-wrap gap-3">
         <a href="investment-memo.html" data-investor-cta="memo" class="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-5 py-3.5 text-sm font-bold text-slate-800 hover:border-slate-400">Read Investment Memorandum <span>↗</span></a>
@@ -79,12 +96,12 @@
             <div class="text-[9px] font-black tracking-[.22em] text-emerald-300">TERAJU WORKS</div>
             <div class="rounded-full border border-white/15 px-3 py-1 text-[8px] font-bold tracking-[.16em] text-slate-300">PLATFORM</div>
           </div>
-          <div class="mt-10 text-3xl font-black tracking-tight sm:text-4xl">INPUT · COST · DATA · INTELLIGENCE</div>
+          <div class="mt-10 text-3xl font-black tracking-tight sm:text-4xl">PLAN · COST · WORK · CONTROL</div>
           <div class="mt-8 grid grid-cols-2 gap-3">
-            <div class="rounded-2xl border border-white/10 bg-white/5 p-4"><div class="text-2xl font-black">01</div><div class="mt-1 text-xs text-slate-400">Basic project input</div></div>
-            <div class="rounded-2xl border border-white/10 bg-white/5 p-4"><div class="text-2xl font-black">02</div><div class="mt-1 text-xs text-slate-400">SMM-based estimate</div></div>
-            <div class="rounded-2xl border border-white/10 bg-white/5 p-4"><div class="text-2xl font-black">03</div><div class="mt-1 text-xs text-slate-400">Structured cost data</div></div>
-            <div class="rounded-2xl border border-white/10 bg-white/5 p-4"><div class="text-2xl font-black">04</div><div class="mt-1 text-xs text-slate-400">Rate intelligence</div></div>
+            <div class="rounded-2xl border border-white/10 bg-white/5 p-4"><div class="text-2xl font-black">01</div><div class="mt-1 text-xs text-slate-400">Project planning</div></div>
+            <div class="rounded-2xl border border-white/10 bg-white/5 p-4"><div class="text-2xl font-black">02</div><div class="mt-1 text-xs text-slate-400">Cost estimate</div></div>
+            <div class="rounded-2xl border border-white/10 bg-white/5 p-4"><div class="text-2xl font-black">03</div><div class="mt-1 text-xs text-slate-400">Work programme</div></div>
+            <div class="rounded-2xl border border-white/10 bg-white/5 p-4"><div class="text-2xl font-black">04</div><div class="mt-1 text-xs text-slate-400">Project insight</div></div>
           </div>
         </div>
       </div>
@@ -257,75 +274,6 @@
   </div>
 </section>
 
-
-<section class="bg-slate-950 py-16 text-white"><div class="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8"><div class="grid gap-8 lg:grid-cols-[.9fr_1.1fr] items-start"><div><div class="text-[10px] font-black tracking-[.22em] text-emerald-300">EARLY ORGANIC MARKET ATTRACTION</div><h2 class="mt-3 text-3xl font-black sm:text-5xl">The live product is already attracting attention before paid acquisition.</h2><p class="mt-5 text-base leading-7 text-slate-300">During the current early-stage, free promotional phase, construction/renovation content has generated measurable organic attention without paid advertising.</p></div><div class="grid grid-cols-2 gap-4 sm:grid-cols-4"><div class="rounded-3xl border border-white/10 bg-white/5 p-5"><div class="text-3xl font-black">34,377</div><div class="mt-2 text-[10px] font-black tracking-wide text-emerald-200">VIEWS</div></div><div class="rounded-3xl border border-white/10 bg-white/5 p-5"><div class="text-3xl font-black">25,847</div><div class="mt-2 text-[10px] font-black tracking-wide text-emerald-200">VIEWERS</div></div><div class="rounded-3xl border border-white/10 bg-white/5 p-5"><div class="text-3xl font-black">447</div><div class="mt-2 text-[10px] font-black tracking-wide text-emerald-200">PROFILE VISITS</div></div><div class="rounded-3xl border border-white/10 bg-white/5 p-5"><div class="text-3xl font-black">84</div><div class="mt-2 text-[10px] font-black tracking-wide text-emerald-200">REGISTERED ACCOUNTS</div></div></div><div class="mt-5 rounded-3xl border border-white/10 bg-white/5 p-6 text-sm leading-6 text-slate-300"><b class="text-white">Engagement:</b> 684 likes · 48 comments · 190 reposts · 366 sends. The supplied Meta insight reports approximately 44× more views than recent posts. <span class="text-slate-400">This is an organic acquisition signal, not proof of paid conversion or product-market fit.</span></div></div></div></section>
-
-<section class="bg-white py-16 sm:py-20"><div class="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8"><div class="max-w-4xl"><div class="text-[10px] font-black tracking-[.22em] text-emerald-700">TERAJU CIPTABINA · GROUP STRUCTURE</div><h2 class="mt-3 text-3xl font-black tracking-tight text-slate-950 sm:text-5xl">One parent company. Multiple value and revenue layers.</h2><p class="mt-5 text-base leading-7 text-slate-600">TERAJU CIPTABINA is built around a core Design & Build business, with technology products and future network capabilities designed to support and expand the construction ecosystem.</p></div><div class="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-4"><div class="rounded-3xl border border-slate-200 bg-slate-50 p-6"><div class="text-[9px] font-black tracking-[.2em] text-emerald-700">CORE BUSINESS</div><h3 class="mt-3 text-lg font-black">TERAJU Design & Build</h3><p class="mt-2 text-sm leading-6 text-slate-600">Design, renovation and new-build project execution.</p></div><div class="rounded-3xl border border-slate-200 bg-slate-50 p-6"><div class="text-[9px] font-black tracking-[.2em] text-emerald-700">TECHNOLOGY</div><h3 class="mt-3 text-lg font-black">TERAJU WORKS</h3><p class="mt-2 text-sm leading-6 text-slate-600">Construction costing, planning, progress and structured data.</p></div><div class="rounded-3xl border border-slate-200 bg-slate-50 p-6"><div class="text-[9px] font-black tracking-[.2em] text-emerald-700">FUTURE PRODUCT</div><h3 class="mt-3 text-lg font-black">IDPlanner</h3><p class="mt-2 text-sm leading-6 text-slate-600">Interior planning and design technology.</p></div><div class="rounded-3xl border border-slate-200 bg-slate-50 p-6"><div class="text-[9px] font-black tracking-[.2em] text-emerald-700">FUTURE NETWORK</div><h3 class="mt-3 text-lg font-black">Contractor & Vendor Network</h3><p class="mt-2 text-sm leading-6 text-slate-600">Qualified contractor participation and future project-matching / transaction mechanisms.</p></div></div></div></section>
-
-<section class="bg-white py-20 sm:py-24"><div class="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8"><div class="max-w-4xl"><div class="text-[10px] font-black tracking-[.22em] text-emerald-700">TERAJU VENDOR NETWORK</div><h2 class="mt-3 text-3xl font-black tracking-tight text-slate-950 sm:text-5xl">Professional standards can make construction technology useful for contractors of every size.</h2><p class="mt-5 text-base leading-7 text-slate-600">The long-term vendor model is designed not only to distribute project opportunities, but to help smaller contractors adopt a more structured way of working without needing enterprise project-control software of their own.</p></div><div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4"><div class="rounded-3xl border border-slate-200 bg-slate-50 p-6"><b>Eligibility</b><p class="mt-2 text-sm leading-6 text-slate-600">Proposed baseline checks can include CIDB registration, applicable licences and permits, company documentation and other relevant credentials.</p></div><div class="rounded-3xl border border-slate-200 bg-slate-50 p-6"><b>TERAJU Project Standard</b><p class="mt-2 text-sm leading-6 text-slate-600">A proposed operating standard covering cost structure, planning, Work Programme, Actual Progress, S-Curve and project records.</p></div><div class="rounded-3xl border border-slate-200 bg-slate-50 p-6"><b>Qualified opportunities</b><p class="mt-2 text-sm leading-6 text-slate-600">Homeowner demand captured through TERAJU WORKS can become a future source of structured project opportunities for eligible vendors.</p></div><div class="rounded-3xl border border-slate-200 bg-slate-50 p-6"><b>Future project administration</b><p class="mt-2 text-sm leading-6 text-slate-600">A future service layer could support claim, payment administration and project-control workflows where appropriate and subject to the required agreements and regulatory framework.</p></div></div><div class="mt-8 rounded-3xl border border-emerald-200 bg-emerald-50 p-6 text-sm leading-7 text-emerald-950"><strong>Long-term direction:</strong> TERAJU may explore institutional alignment or integration opportunities with CIDB, JKR and relevant government agencies. No partnership, endorsement or integration is claimed at this stage.</div></div></section>
-
-<section id="investment-case" class="bg-slate-50 py-20 sm:py-24">
-  <div class="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
-    <div class="max-w-3xl">
-      <div class="text-[10px] font-black tracking-[.22em] text-emerald-700">INVESTMENT CASE</div>
-      <h2 class="mt-3 text-3xl font-black tracking-tight text-slate-950 sm:text-5xl">A working product that needs commercial validation before scale.</h2>
-      <p class="mt-5 text-base leading-7 text-slate-600">TERAJU is an early-stage technology company. The product foundation is being built, while commercial validation is the next major milestone. The current free promotional phase is being used to onboard users and observe real product behaviour before paid commercialisation. Current paying TERAJU WORKS users: 0. The investment case is broader than software subscription: technology can support qualified project acquisition for the core Design & Build business and, later, a managed contractor/vendor network. These are proposed monetisation paths for testing, not claimed revenue streams or forecasts.</p>
-    </div>
-
-    <div class="mt-12 grid gap-5 lg:grid-cols-3">
-      <article class="card rounded-3xl border border-slate-200 bg-white p-7">
-        <div class="text-[9px] font-black tracking-[.2em] text-emerald-700">01 · B2B</div>
-        <h3 class="mt-4 text-xl font-bold">Contractor / Company Software</h3>
-        <p class="mt-3 text-sm leading-6 text-slate-600">Potential subscription or software-service model for contractors that need structured estimating, costing, quotation and project workflows.</p>
-      </article>
-      <article class="card rounded-3xl border border-slate-200 bg-white p-7">
-        <div class="text-[9px] font-black tracking-[.2em] text-emerald-700">02 · B2C</div>
-        <h3 class="mt-4 text-xl font-bold">Homeowner Planning</h3>
-        <p class="mt-3 text-sm leading-6 text-slate-600">Potential paid planning, estimation or premium workflow features for homeowners preparing a new-build or renovation project.</p>
-      </article>
-      <article class="card rounded-3xl border border-slate-200 bg-white p-7">
-        <div class="text-[9px] font-black tracking-[.2em] text-emerald-700">03 · ECOSYSTEM</div>
-        <h3 class="mt-4 text-xl font-bold">Construction Services & Partners</h3>
-        <p class="mt-3 text-sm leading-6 text-slate-600">Potential lead-generation, partner, service or transaction layers connecting planning activity with qualified construction opportunities.</p>
-      </article>
-    </div>
-
-<div class="mt-10 rounded-[30px] bg-slate-950 p-8 text-white"><div class="text-[10px] font-black tracking-[.22em] text-emerald-300">INVESTOR VALUE & ROI</div><h3 class="mt-3 text-2xl font-black">Capital → Technology → Commercial Activity → Company Value</h3><p class="mt-3 text-sm leading-6 text-slate-300">The investor is investing in TERAJU CIPTABINA as the parent company. TERAJU Design & Build is the core construction business, while TERAJU WORKS is the technology engine designed to structure construction demand and project workflows. Current development now spans AI floor-plan extraction, detailed SMM costing, contract-linked work programming, actual progress, S-Curve and Project Insight, with rate intelligence being developed as a data layer.</p><div class="mt-6 grid gap-3 sm:grid-cols-4 text-sm"><div class="rounded-2xl bg-white/10 p-4"><b>01 · Technology</b><p class="mt-1 text-slate-300">Build the engine.</p></div><div class="rounded-2xl bg-white/10 p-4"><b>02 · Demand</b><p class="mt-1 text-slate-300">Generate qualified opportunities.</p></div><div class="rounded-2xl bg-white/10 p-4"><b>03 · Revenue</b><p class="mt-1 text-slate-300">Software + Design & Build + future network.</p></div><div class="rounded-2xl bg-white/10 p-4"><b>04 · Company value</b><p class="mt-1 text-slate-300">Potential investor value creation.</p></div></div><p class="mt-5 text-xs leading-5 text-slate-400">Investor return is not a guaranteed percentage. The actual return mechanism depends on the agreed investment instrument, valuation, equity ownership, dividend policy and/or exit or liquidity terms. These terms are not yet fixed on this landing page.</p></div>
-    <div class="mt-12 grid gap-5 lg:grid-cols-2">
-      <div class="rounded-[30px] border border-slate-200 bg-white p-8">
-        <div class="text-[10px] font-black tracking-[.22em] text-emerald-700">TARGET USERS</div>
-        <h3 class="mt-3 text-2xl font-black">Two sides of the residential construction workflow.</h3>
-        <div class="mt-7 space-y-5">
-          <div class="rounded-2xl bg-slate-50 p-5">
-            <div class="font-bold">Homeowners</div>
-            <p class="mt-2 text-sm leading-6 text-slate-600">People planning a new house or renovating an existing home who need clearer scope, quantities and budget visibility.</p>
-          </div>
-          <div class="rounded-2xl bg-slate-50 p-5">
-            <div class="font-bold">Contractors</div>
-            <p class="mt-2 text-sm leading-6 text-slate-600">Small and growing construction businesses that need a more structured digital workflow for estimating and quotations.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="rounded-[30px] border border-slate-200 bg-slate-950 p-8 text-white">
-        <div class="text-[10px] font-black tracking-[.22em] text-emerald-300">WHAT CAPITAL UNLOCKS</div>
-        <h3 class="mt-3 text-2xl font-black">From founder-led development to a scalable product operation.</h3>
-        <div class="mt-7 space-y-4">
-          <div class="flex gap-4"><span class="mt-1 text-emerald-300">01</span><p class="text-sm leading-6 text-slate-300">Increase engineering capacity and reduce dependence on one-person development.</p></div>
-          <div class="flex gap-4"><span class="mt-1 text-emerald-300">02</span><p class="text-sm leading-6 text-slate-300">Turn validated workflows into polished, repeatable commercial products.</p></div>
-          <div class="flex gap-4"><span class="mt-1 text-emerald-300">03</span><p class="text-sm leading-6 text-slate-300">Run structured market validation with homeowners, contractors and industry partners.</p></div>
-          <div class="flex gap-4"><span class="mt-1 text-emerald-300">04</span><p class="text-sm leading-6 text-slate-300">Build the infrastructure, analytics and operating systems required for growth.</p></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="mt-10 rounded-3xl border border-dashed border-slate-300 bg-white p-6 text-sm leading-6 text-slate-600">
-      <strong class="text-slate-900">Investment terms:</strong> valuation, amount sought, equity structure, financial projections and return assumptions are not published on this landing page. They should be prepared as a separate investor memorandum based on verified company financials, product metrics and the agreed fundraising structure.
-    </div>
-  </div>
-</section>
-
-<section class="bg-slate-950 py-16 text-white"><div class="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8"><div class="grid gap-6 lg:grid-cols-2"><div class="rounded-3xl border border-white/10 bg-white/5 p-7"><div class="text-[10px] font-black tracking-[.22em] text-emerald-300">WHAT RM1M IS INTENDED TO PROVE</div><h2 class="mt-3 text-3xl font-black">Technology → Market → Revenue → Repeatability</h2><p class="mt-4 text-sm leading-7 text-slate-300">Production infrastructure, product engineering, customer acquisition and commercial validation, measured through activation, paid conversion, retention, cost-to-serve and qualified project opportunities.</p></div><div class="rounded-3xl border border-white/10 bg-white/5 p-7"><div class="text-[10px] font-black tracking-[.22em] text-emerald-300">INVESTOR PROFILE</div><h2 class="mt-3 text-3xl font-black">Strategic technology investor</h2><p class="mt-4 text-sm leading-7 text-slate-300">Capital plus technology expertise, construction-industry access, commercial networks and strategic relationships that can accelerate market validation.</p></div></div></div></section>
 
 <section id="roadmap" class="bg-white py-20 sm:py-24">
   <div class="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
