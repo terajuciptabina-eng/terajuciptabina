@@ -13,6 +13,9 @@
   const idField = document.getElementById(isHomeowner ? 'homeownerIdField' : 'contractorIdField'), nameField = document.getElementById(isHomeowner ? 'homeownerNameField' : 'contractorNameField');
   const button = document.getElementById('authButton'), title = document.getElementById('authTitle'), description = document.getElementById('authDescription'), error = document.getElementById('authError'), generated = document.getElementById('authGeneratedId');
   const panel = document.getElementById('authPanel') || document.getElementById('loginPanel'), portal = document.getElementById('portal'), welcome = document.getElementById('welcome'), buildLink = document.getElementById('buildLink'), renoLink = document.getElementById('renoLink');
+  const profileButton = document.getElementById('profileButton'), profileModal = document.getElementById('profileModal'), profileClose = document.getElementById('profileClose'), profileCancel = document.getElementById('profileCancel'), profileSave = document.getElementById('profileSave'), profileStatus = document.getElementById('profileStatus'), profileLogoInput = document.getElementById('profileLogoInput'), profileLogoWrap = document.getElementById('profileLogoWrap');
+  const profileFields = { name: document.getElementById('profileName'), registrationNo: document.getElementById('profileRegistration'), phone: document.getElementById('profilePhone'), address: document.getElementById('profileAddress'), email: document.getElementById('profileEmail'), website: document.getElementById('profileWebsite') };
+  let currentRecord = null, profileLogoDataUrl = '';
   let mode = 'signup';
   const getLocal = () => { try { return JSON.parse(localStorage.getItem(storageKey) || 'null'); } catch { return null; } };
   const setLocal = record => localStorage.setItem(storageKey, JSON.stringify(record));
@@ -57,11 +60,86 @@
     }, 5000);
   }
   function showPortal(record) {
-    setLocal(record); panel.classList.add('hidden'); portal.classList.remove('hidden'); const id = record[idKey];
+    currentRecord = record; setLocal(record); panel.classList.add('hidden'); portal.classList.remove('hidden'); const id = record[idKey];
     welcome.innerHTML = `<span class=\"block\">Welcome, ${escapeHtml(record.profile?.name || '')}.</span>`;
     if (buildLink) buildLink.href = `quotations.html?audience=${role}&role=${role}&${idKey}=${encodeURIComponent(id)}&id=${encodeURIComponent(id)}&plannerType=build`;
     if (renoLink) renoLink.href = `quotations.html?audience=${role}&role=${role}&${idKey}=${encodeURIComponent(id)}&id=${encodeURIComponent(id)}&plannerType=renovation`;
   }
+  function setProfileStatus(message, type='error') {
+    if (!profileStatus) return;
+    profileStatus.textContent = message;
+    profileStatus.style.display = message ? 'block' : 'none';
+    profileStatus.style.background = type === 'success' ? '#f0fdf4' : '#fff1f2';
+    profileStatus.style.color = type === 'success' ? '#166534' : '#be123c';
+  }
+  function renderProfileLogo(dataUrl) {
+    if (!profileLogoWrap) return;
+    if (dataUrl) {
+      profileLogoWrap.className = '';
+      profileLogoWrap.innerHTML = '<img src="' + escapeHtml(dataUrl) + '" alt="Company logo">';
+    } else {
+      profileLogoWrap.className = 'profile-logo-empty';
+      profileLogoWrap.textContent = 'No logo uploaded';
+    }
+  }
+  function openProfile(record) {
+    if (!profileModal || role !== 'contractor') return;
+    const p = record?.profile || {};
+    Object.entries(profileFields).forEach(([key, input]) => { if (input) input.value = p[key] || ''; });
+    profileLogoDataUrl = p.logoDataUrl || '';
+    renderProfileLogo(profileLogoDataUrl);
+    if (profileLogoInput) profileLogoInput.value = '';
+    setProfileStatus('');
+    profileModal.classList.add('open');
+    profileModal.setAttribute('aria-hidden','false');
+  }
+  function closeProfile() {
+    profileModal?.classList.remove('open');
+    profileModal?.setAttribute('aria-hidden','true');
+    setProfileStatus('');
+  }
+  async function saveProfile() {
+    if (!currentRecord || role !== 'contractor') return;
+    const profile = {};
+    Object.entries(profileFields).forEach(([key, input]) => { profile[key] = input?.value.trim() || ''; });
+    profile.logoDataUrl = profileLogoDataUrl || '';
+    if (!profile.name) return setProfileStatus('Company / Contractor Name is required.');
+    if (!validEmail(profile.email)) return setProfileStatus('Please enter a valid email address.');
+    if (!validPhone(profile.phone)) return setProfileStatus('Please enter a valid Malaysian phone number.');
+    if (profile.logoDataUrl.length > 900000) return setProfileStatus('Logo image is too large. Please use a smaller image.');
+    profileSave.disabled = true; profileSave.textContent = 'Saving…'; setProfileStatus('');
+    try {
+      const response = await fetch(API_BASE + '/api/auth', { method:'PATCH', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ role:'contractor', id:currentRecord[idKey], profile }) });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(data.message || 'Unable to save contractor profile.');
+      currentRecord = data.record || { ...currentRecord, profile:{ ...(currentRecord.profile||{}), ...profile } };
+      setLocal(currentRecord);
+      welcome.innerHTML = '<span class="block">Welcome, ' + escapeHtml(currentRecord.profile?.name || '') + '.</span>';
+      setProfileStatus('Profile saved successfully.', 'success');
+      setTimeout(closeProfile, 650);
+      trackEvent('contractor_profile_saved');
+    } catch (err) {
+      setProfileStatus(err.message || 'Unable to save contractor profile.');
+    } finally {
+      profileSave.disabled = false; profileSave.textContent = 'Save Profile';
+    }
+  }
+  profileButton?.addEventListener('click', () => openProfile(currentRecord), true);
+  profileClose?.addEventListener('click', closeProfile, true);
+  profileCancel?.addEventListener('click', closeProfile, true);
+  profileModal?.addEventListener('click', event => { if (event.target === profileModal) closeProfile(); }, true);
+  profileLogoInput?.addEventListener('change', () => {
+    const file = profileLogoInput.files?.[0];
+    if (!file) return;
+    if (!/^image\/(png|jpeg|webp)$/.test(file.type)) return setProfileStatus('Please choose a PNG, JPG or WEBP image.');
+    if (file.size > 700000) return setProfileStatus('Logo image is too large. Please choose a smaller file.');
+    const reader = new FileReader();
+    reader.onload = () => { profileLogoDataUrl = String(reader.result || ''); renderProfileLogo(profileLogoDataUrl); setProfileStatus(''); };
+    reader.readAsDataURL(file);
+  });
+  profileSave?.addEventListener('click', saveProfile, true);
+  document.addEventListener('keydown', event => { if (event.key === 'Escape' && profileModal?.classList.contains('open')) closeProfile(); });
+
   async function getAccount(id) {
     const response = await fetch(`${API_BASE}/api/auth?role=${encodeURIComponent(role)}&id=${encodeURIComponent(id)}`).catch(() => null);
     if (!response) throw new Error('Unable to reach the account service.'); const data = await response.json().catch(() => ({})); if (!response.ok) throw new Error(data.message || 'Account not found.'); return data;
