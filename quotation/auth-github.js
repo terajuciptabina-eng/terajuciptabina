@@ -14,6 +14,7 @@
   const button = document.getElementById('authButton'), title = document.getElementById('authTitle'), description = document.getElementById('authDescription'), error = document.getElementById('authError'), generated = document.getElementById('authGeneratedId');
   const panel = document.getElementById('authPanel') || document.getElementById('loginPanel'), portal = document.getElementById('portal'), welcome = document.getElementById('welcome'), buildLink = document.getElementById('buildLink'), renoLink = document.getElementById('renoLink');
   const profileButton = document.getElementById('profileButton'), profileModal = document.getElementById('profileModal'), profileClose = document.getElementById('profileClose'), profileCancel = document.getElementById('profileCancel'), profileSave = document.getElementById('profileSave'), profileUseBranding = document.getElementById('profileUseBranding'), profileResetBranding = document.getElementById('profileResetBranding'), profileStatus = document.getElementById('profileStatus'), profileLogoInput = document.getElementById('profileLogoInput'), profileLogoWrap = document.getElementById('profileLogoWrap');
+  const profileAccountId = document.getElementById('profileAccountId'), homeProfileAccountId = document.getElementById('homeProfileAccountId');
   const profileFields = { name: document.getElementById('profileName'), registrationNo: document.getElementById('profileRegistration'), phone: document.getElementById('profilePhone'), address: document.getElementById('profileAddress'), email: document.getElementById('profileEmail'), website: document.getElementById('profileWebsite') };
   const homeProfileButton = document.getElementById('homeProfileButton'), homeProfileModal = document.getElementById('homeProfileModal'), homeProfileClose = document.getElementById('homeProfileClose'), homeProfileCancel = document.getElementById('homeProfileCancel'), homeProfileSave = document.getElementById('homeProfileSave'), homeProfileStatus = document.getElementById('homeProfileStatus');
   const homeProfileFields = { name: document.getElementById('homeProfileName'), phone: document.getElementById('homeProfilePhone'), email: document.getElementById('homeProfileEmail'), propertyAddress: document.getElementById('homeProfileAddress'), propertyType: document.getElementById('homeProfilePropertyType'), projectNotes: document.getElementById('homeProfileNotes') };
@@ -93,6 +94,7 @@
   }
   function openHomeProfile(record) {
     if (!homeProfileModal || role !== 'homeowner') return;
+    if (homeProfileAccountId) homeProfileAccountId.value = record?.[idKey] || '';
     const p = record?.profile || {};
     Object.entries(homeProfileFields).forEach(([key, input]) => { if (input) input.value = p[key] || ''; });
     setHomeProfileStatus('');
@@ -138,6 +140,7 @@
 
   function openProfile(record) {
     if (!profileModal || role !== 'contractor') return;
+    if (profileAccountId) profileAccountId.value = record?.[idKey] || '';
     const p = record?.profile || {};
     Object.entries(profileFields).forEach(([key, input]) => { if (input) input.value = p[key] || ''; });
     profileLogoDataUrl = p.logoDataUrl || '';
