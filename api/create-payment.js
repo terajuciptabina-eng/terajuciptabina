@@ -24,9 +24,9 @@ export default async function handler(req, res) {
     let returnPath = "";
 
     if (projectType === "new house") {
-      returnPath = "/terajuciptabina/quotation/buildplanner.html";
+      returnPath = "/terajuciptabina/TerajuWorks/buildplanner.html";
     } else if (projectType === "renovation") {
-      returnPath = "/terajuciptabina/quotation/renovationplanner.html";
+      returnPath = "/terajuciptabina/TerajuWorks/renovationplanner.html";
     } else {
       return res.status(400).json({ message: "Invalid project type." });
     }
