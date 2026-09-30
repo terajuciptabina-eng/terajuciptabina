@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "homeowner",
+  "homeownerId": "HME-20260930-07RC",
+  "profile": {
+    "name": "Amirul",
+    "email": "amirulsoziale@gmail.com",
+    "phone": "0176262261"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-09-30T15:58:32.939Z",
+  "updatedAt": "2026-09-30T15:58:32.939Z"
+}
