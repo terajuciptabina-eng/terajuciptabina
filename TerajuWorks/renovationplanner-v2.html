@@ -1313,12 +1313,24 @@ window.showRenovationBudgetPending = function(message) {
   results.classList.add("hidden");
   pending.classList.remove("hidden");
 
+  // Pending/results are two states of the same budget component.
+  // Keep both DOM nodes mounted so the budget can transition back to
+  // pending state when rooms are removed or cleared after generation.
+  const content = document.getElementById("renovationBudgetContent");
+  const summary = document.getElementById("customerSummary");
+  const removed = document.getElementById("removedItemsContainer");
+  if (content) content.innerHTML = "";
+  if (summary) summary.innerHTML = "";
+  if (removed) removed.innerHTML = "";
+
+  const area = document.getElementById("totalBuiltArea");
+  const total = document.getElementById("grandTotal");
+  if (area) area.textContent = "0 sqft";
+  if (total) total.textContent = "RM 0";
+
   if (messageEl) {
     messageEl.innerHTML = message || "Review the rooms, names, conditions and sqft, then click <strong>Save Room / Area</strong>. After saving, click <strong>Generate Renovation Budget</strong>.";
   }
-
-  const total = document.getElementById("grandTotal");
-  if (total) total.textContent = "RM 0";
 };
 
 
@@ -1798,7 +1810,7 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
   const totalBuiltArea = roomGroups.reduce((sum, room) => sum + (Number(room.area) || 0), 0);
 
   document.getElementById("renovationBudgetResults")?.classList.remove("hidden");
-  document.getElementById("renovationBudgetPending")?.remove();
+  document.getElementById("renovationBudgetPending")?.classList.add("hidden");
 
   document.getElementById("customerSummary").innerHTML = `
     <div><p class="text-gray-500">Customer</p><p class="font-medium">${escapeHtml(customer)}</p></div>
