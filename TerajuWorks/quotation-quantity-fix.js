@@ -77,7 +77,7 @@ tree.forEach(g=>{
 const total=active.reduce((sum,i)=>sum+N(i.amount),0);
 h+=`</tbody><tfoot><tr class="border-t-2"><td colspan="5" class="py-4 px-2 text-right font-bold">TOTAL PRELIMINARY ESTIMATE</td><td data-budget-grand-total class="py-4 px-2 text-right font-bold text-lg">RM ${money(total,2)}</td></tr></tfoot></table>`;
 c.innerHTML=h;
-c.querySelectorAll('[data-budget-new-action]').forEach(btn=>{btn.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();window.addNewBudgetItem(btn.dataset.budgetNewTarget||'',btn.dataset.budgetNewTitle||'',btn.dataset.budgetNewCategory||'',btn.dataset.budgetNewRoom||'project')})});
+
 c.querySelectorAll('textarea').forEach(t=>{t.style.overflow='hidden';t.style.resize='none';t.style.height='0px';t.style.height=t.scrollHeight+'px'});
 }
 function qData(){const all=getMasterItems().filter(i=>typeof excludedItems==='undefined'||!excludedItems.has(i.id)),rs=rooms(),d={allItems:all,rooms:rs,prelim:all.filter(i=>i.category==='preliminaries'),structures:all.filter(i=>i.category==='structures'),electrical:all.filter(i=>i.category==='electrical'),doorsWindows:all.filter(i=>i.category==='doors-windows'),externalWork:all.filter(i=>i.category==='external-work'),architecture:all.filter(i=>i.category==='architecture'),archByRoom:{},roomSubtotals:{},total:all.reduce((s,i)=>s+N(i.amount),0)};rs.forEach(r=>{d.archByRoom[r.roomId]=d.architecture.filter(i=>i.roomId===r.roomId);d.roomSubtotals[r.roomId]=d.archByRoom[r.roomId].reduce((s,i)=>s+N(i.amount),0)});return d}
@@ -182,21 +182,18 @@ function refreshRenderedBudgetAmounts(){
 }
 function syncRateInput(id,el){
   if(!document.body.classList.contains('contractor-mode')||!el)return;
-  const sid=String(id||el.getAttribute('data-budget-rate-id')||'');
+  const sid=String(id||el.getAttribute('data-budget-rate-id')||'').trim();
   if(!sid)return;
   const contractorRate=normRate(el.value);
   const manual=findManualItem(sid);
   if(manual){
     manual.item.rate=contractorRate;
-  }else if(typeof customRates!=='undefined')customRates.set(sid,contractorRate);
-  refreshRenderedBudgetAmounts();
-  const item=(typeof window.getAllItems==='function'?window.getAllItems():[]).find(x=>String(x.id)===sid);
-  if(item){
-    item.rate=contractorRate;
-    item.qty=qty;
-    item.amount=amount;
+    manual.item.amount=R2(N(manual.item.qty)*contractorRate);
+  }else if(typeof customRates!=='undefined'){
+    customRates.set(sid,contractorRate);
   }
-  if(typeof updateRenderedBudgetTotals==='function')updateRenderedBudgetTotals(document.getElementById('constructionBudgetContent'));
+  refreshRenderedBudgetAmounts();
+  updateRenderedBudgetTotals(document.getElementById('constructionBudgetContent'));
 }
 window.TERAJU_V2_RATE_INPUT=syncRateInput;
 window.TERAJU_V2_SAVE_ITEM=function(id){const item=(typeof getAllItems==='function'?getAllItems():[]).find(x=>String(x.id)===String(id));if(item)saveExisting(item);else{const rateEl=document.getElementById(`budget-rate-${targetId(id)}`);if(rateEl){if(typeof customRates!=='undefined')customRates.set(id,normRate(rateEl.value));saveState()}}};
@@ -213,15 +210,29 @@ document.addEventListener("click",function(event){
 const budgetRoot=document.getElementById('constructionBudgetContent');
 if(budgetRoot&&!budgetRoot.__terajuBudgetInputBound){
   budgetRoot.__terajuBudgetInputBound=true;
-  budgetRoot.addEventListener('input',event=>{
+  budgetRoot.addEventListener('click',event=>{
+    const btn=event.target?.closest?.('[data-budget-new-action]');
+    if(!btn||!budgetRoot.contains(btn))return;
+    event.preventDefault();
+    event.stopPropagation();
+    window.addNewBudgetItem(
+      btn.dataset.budgetNewTarget||'',
+      btn.dataset.budgetNewTitle||'',
+      btn.dataset.budgetNewCategory||'',
+      btn.dataset.budgetNewRoom||'project'
+    );
+  });
+  budgetRoot.addEventListener('change',event=>{
     const rateEl=event.target?.closest?.('[data-budget-rate-id]');
     if(rateEl&&budgetRoot.contains(rateEl)){
       syncRateInput(rateEl.getAttribute('data-budget-rate-id'),rateEl);
+      if(typeof saveState==='function')saveState();
       return;
     }
     const qtyEl=event.target?.closest?.('[id^="budget-qty-"]');
     if(qtyEl&&budgetRoot.contains(qtyEl)){
       syncQuantityInput(qtyEl.id.replace(/^budget-qty-/,'').replace(/-+$/,''),qtyEl);
+      if(typeof saveState==='function')saveState();
     }
   });
 }
