@@ -4018,14 +4018,14 @@
         },
         "project": {
           "location": "Eka Height Sendayan (New Kitchen & New Bathroom Only)",
-          "builtUpArea": 200,
+          "builtUpArea": 400,
           "state": "negeri-sembilan"
         },
         "total": 68106,
         "plannerState": {
           "customerName": "Tuan Iman",
           "projectLocation": "Eka Height Sendayan (New Kitchen & New Bathroom Only)",
-          "builtUpArea": "200",
+          "builtUpArea": 400,
           "rooms": [
             {
               "id": "room-1",
@@ -4040,6 +4040,13 @@
               "condition": "new",
               "name": "Bathroom",
               "area": "50"
+            },
+            {
+              "id": "room-11",
+              "type": "balcony",
+              "condition": "existing",
+              "name": "Balcony",
+              "area": "200"
             }
           ],
           "rates": {
@@ -4162,11 +4169,11 @@
           "standardRateItems": [],
           "quotationType": "simple",
           "projectId": "PRJ-REN-MUPBQHP8-74M0A",
-          "constructionBudgetGenerated": true,
+          "constructionBudgetGenerated": false,
           "projectState": "negeri-sembilan",
           "rateSetId": "negeri-sembilan",
           "rateSetName": "Negeri Sembilan",
-          "rateSnapshotAt": "2026-10-01T09:25:30.480Z"
+          "rateSnapshotAt": "2026-10-01T10:55:27.375Z"
         },
         "itemListVersion": 1,
         "items": [
@@ -5022,7 +5029,7 @@
           }
         ],
         "createdAt": "2026-10-01T09:22:58.738Z",
-        "updatedAt": "2026-10-01T09:25:31.440Z",
+        "updatedAt": "2026-10-01T10:55:29.050Z",
         "estimateNumber": "EST-REN-014"
       },
       {
@@ -7284,7 +7291,7 @@
     ]
   },
   "createdAt": "2026-09-23T08:33:53.459Z",
-  "updatedAt": "2026-10-01T10:48:22.254Z",
+  "updatedAt": "2026-10-01T10:55:29.050Z",
   "quotationRunningNumber": {
     "renovation": 17,
     "build": 14
