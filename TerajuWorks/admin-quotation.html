@@ -11,7 +11,7 @@
 <section class="panel"><div class="toolbar"><input id="q" placeholder="Search account, customer, project or estimate ID"><select id="planner"><option value="all">All planners</option><option value="build">BuildPlanner</option><option value="renovation">RenovationPlanner</option></select></div><div id="status" class="sub" style="margin-top:8px">Loading…</div></section>
 <section class="panel table-wrap"><table><thead><tr><th>Account</th><th>Planner</th><th>Estimate</th><th>Customer / Project</th><th>Location</th><th>Total</th><th>Updated</th><th></th></tr></thead><tbody id="tbody"></tbody></table></section>
 </main>
-<script>
+<script src="shared/admin-loading.js"></script><script>
 const API='https://terajuciptabina.vercel.app/api/admin',key=()=>sessionStorage.getItem('teraju.admin.key')||localStorage.getItem('teraju.admin.key')||'';
 const $=id=>document.getElementById(id),esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function money(v){const n=Number(v);return Number.isFinite(n)?'RM '+n.toLocaleString('en-MY',{minimumFractionDigits:2,maximumFractionDigits:2}):'-'}
