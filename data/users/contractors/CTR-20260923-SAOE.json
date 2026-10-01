@@ -2761,14 +2761,14 @@
         },
         "project": {
           "location": "Eka Height Sendayan",
-          "builtUpArea": 200,
+          "builtUpArea": 190,
           "state": "negeri-sembilan"
         },
         "total": 71606,
         "plannerState": {
           "customerName": "Tuan Iman",
           "projectLocation": "Eka Height Sendayan",
-          "builtUpArea": "200",
+          "builtUpArea": 190,
           "rooms": [
             {
               "id": "room-3",
@@ -2782,7 +2782,7 @@
               "type": "bathroom",
               "condition": "new",
               "name": "Bathroom",
-              "area": "50"
+              "area": "40"
             }
           ],
           "rates": {
@@ -2927,11 +2927,11 @@
           ],
           "quotationType": "simple",
           "projectId": "PRJ-REN-MUPB7355-2MHKS",
-          "constructionBudgetGenerated": true,
+          "constructionBudgetGenerated": false,
           "projectState": "negeri-sembilan",
           "rateSetId": "negeri-sembilan",
           "rateSetName": "Negeri Sembilan",
-          "rateSnapshotAt": "2026-10-01T09:10:35.226Z"
+          "rateSnapshotAt": "2026-10-01T09:18:19.161Z"
         },
         "itemListVersion": 1,
         "items": [
@@ -3787,7 +3787,7 @@
           }
         ],
         "createdAt": "2026-10-01T09:08:33.330Z",
-        "updatedAt": "2026-10-01T09:10:36.257Z",
+        "updatedAt": "2026-10-01T09:18:20.416Z",
         "estimateNumber": "EST-REN-013"
       },
       {
@@ -6049,7 +6049,7 @@
     ]
   },
   "createdAt": "2026-09-23T08:33:53.459Z",
-  "updatedAt": "2026-10-01T09:10:36.257Z",
+  "updatedAt": "2026-10-01T09:18:20.416Z",
   "quotationRunningNumber": {
     "renovation": 14,
     "build": 14
