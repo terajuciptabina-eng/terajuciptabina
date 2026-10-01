@@ -378,7 +378,7 @@
     if(generated){
       const button=document.getElementById('generateRenovationBudgetBtn');
       if(button) button.textContent='Regenerate Renovation Budget';
-      document.getElementById('estimateContent')?.scrollIntoView({behavior:'smooth',block:'start'});
+      document.getElementById('renovationBudgetSection')?.scrollIntoView({behavior:'smooth',block:'start'});
     }
     return generated;
   }
