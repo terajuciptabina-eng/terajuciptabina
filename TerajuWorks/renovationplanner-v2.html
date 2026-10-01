@@ -1995,113 +1995,113 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
     // A group is always the top header. Everything before the final item
     // name becomes the visible hierarchy, preserving 1, 2, 3... levels.
     // If masterPath repeats the group name, remove that duplicate first.
-    let currentGroup = "";
-    let currentHierarchyKey = "";
-    let currentHierarchyLabel = "";
-    let currentHierarchyTotal = 0;
+    // Build Planner group rendering is independent of whether a group currently
+    // has standard calculated items. Every available New Construction group
+    // remains actionable so contractors can add a manual item at any time.
+    const buildGroups = ["STRUCTURES", "ARCHITECTURES", "ELECTRICAL", "DOORS & WINDOWS"];
+    buildGroups.forEach(group => {
+      const groupItems = projectBuildItems.filter(item =>
+        String(item.group || "").trim().toUpperCase() === group
+      );
 
-    const flushHierarchySubtotal = () => {
-      if (!currentHierarchyLabel) return;
+      const buildManualKey = '__build__:' + group;
       html += `
-        <tr class="border-b bg-gray-50">
-          <td class="py-1 px-2"></td>
-          <td class="py-1 px-2"></td>
-          <td class="py-1 px-2"></td>
-          <td class="py-1 px-2 text-right font-semibold">${escapeHtml(currentHierarchyLabel)} Subtotal</td>
-          <td class="estimate-amount-cell py-1 px-2 text-right font-bold tabular-nums">${money(currentHierarchyTotal, 2)}</td>
-          <td class="no-print"></td>
-        </tr>`;
-      currentHierarchyKey = "";
-      currentHierarchyLabel = "";
-      currentHierarchyTotal = 0;
-    };
-
-    projectBuildItems.forEach(item => {
-      const group = String(item.group || "").trim().toUpperCase();
-
-      if (group !== currentGroup) {
-        flushHierarchySubtotal();
-        currentGroup = group;
-        currentHierarchyKey = "";
-
-        const buildManualKey = '__build__:' + group;
-        html += `
-          <tr class="bg-gray-100 border-b">
-            <td colspan="6" class="py-1 px-2">
-              <div class="flex flex-wrap items-center justify-between gap-2">
-                <span class="font-bold">${escapeHtml(group)}</span>
-                <div class="contractor-only" data-build-manual-anchor="${escapeHtml(buildManualKey)}">
-                  <button type="button" onclick="addBuildGroupManualItemPrompt('${escapeHtml(group)}')" class="border rounded-lg px-2 py-1 text-xs font-semibold hover:bg-white">＋ Add New Item</button>
-                </div>
+        <tr class="bg-gray-100 border-b">
+          <td colspan="6" class="py-1 px-2">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <span class="font-bold">${escapeHtml(group)}</span>
+              <div class="contractor-only" data-build-manual-anchor="${escapeHtml(buildManualKey)}">
+                <button type="button" onclick="addBuildGroupManualItemPrompt('${escapeHtml(group)}')" class="border rounded-lg px-2 py-1 text-xs font-semibold hover:bg-white">＋ Add New Item</button>
               </div>
+            </div>
+          </td>
+        </tr>`;
+
+      if (!groupItems.length) return;
+
+      let currentHierarchyKey = "";
+      let currentHierarchyLabel = "";
+      let currentHierarchyTotal = 0;
+
+      const flushHierarchySubtotal = () => {
+        if (!currentHierarchyLabel) return;
+        html += `
+          <tr class="border-b bg-gray-50">
+            <td class="py-1 px-2"></td>
+            <td class="py-1 px-2"></td>
+            <td class="py-1 px-2"></td>
+            <td class="py-1 px-2 text-right font-semibold">${escapeHtml(currentHierarchyLabel)} Subtotal</td>
+            <td class="estimate-amount-cell py-1 px-2 text-right font-bold tabular-nums">${money(currentHierarchyTotal, 2)}</td>
+            <td class="no-print"></td>
+          </tr>`;
+        currentHierarchyKey = "";
+        currentHierarchyLabel = "";
+        currentHierarchyTotal = 0;
+      };
+
+      groupItems.forEach(item => {
+        let path = String(item.masterPath || "")
+          .split("/")
+          .map(value => value.trim())
+          .filter(Boolean);
+
+        if (path.length && path[0].toUpperCase() === group) {
+          path = path.slice(1);
+        }
+
+        const levels = path.length > 1 ? path.slice(0, -1) : [];
+        const hierarchyKey = levels.join(" / ");
+
+        if (hierarchyKey !== currentHierarchyKey) {
+          flushHierarchySubtotal();
+
+          levels.forEach((level, index) => {
+            html += `
+              <tr class="border-b">
+                <td colspan="6" class="py-1 px-2 ${hierarchyClass(index)}">${escapeHtml(level)}</td>
+              </tr>`;
+          });
+
+          currentHierarchyKey = hierarchyKey;
+          currentHierarchyLabel = levels[levels.length - 1] || "";
+          currentHierarchyTotal = 0;
+        }
+
+        html += `
+          <tr class="border-b hover:bg-gray-50">
+            <td class="py-1 px-2 align-top">
+              <textarea rows="2" onchange="editItemDescription('${item.id}', this.value)"
+                class="contractor-only no-print w-full min-w-[280px] border rounded-none px-2 py-1 bg-white leading-4 resize-none">${escapeHtml(item.description)}</textarea>
+              <div class="homeowner-locked no-print p-1 rounded-none">${escapeHtml(item.description)}</div>
+              <div class="hidden print:block leading-6">${escapeHtml(item.description)}</div>
+            </td>
+            <td class="py-1 px-2">${escapeHtml(item.unit)}</td>
+            <td class="py-1 px-2 text-right">
+              ${IS_CONTRACTOR
+                ? `<input type="number" min="0" step="1" value="${formatQty(item.qty)}" onchange="editItemQuantity('${item.id}', this.value)"
+                    class="contractor-only no-print w-24 border rounded-none px-1 py-1 text-right bg-white">`
+                : `<span class="homeowner-locked no-print inline-block px-1 py-1 rounded-none text-sm">${formatQty(item.qty)}</span>`}
+              <span class="hidden print:inline">${formatQty(item.qty)}</span>
+            </td>
+            <td class="py-1 px-2 text-right">
+              ${IS_CONTRACTOR
+                ? `<input type="number" min="0" step="0.01" value="${normalizeRate(item.rate).toFixed(2)}" onchange="editItemRate('${item.id}', this.value)"
+                    class="contractor-only no-print w-28 border rounded-none px-1 py-1 text-right bg-white">`
+                : `<span class="homeowner-rate-blurred no-print inline-block px-1 py-1 rounded-none text-sm">${money(item.rate, 2)}</span>`}
+              <span class="hidden print:inline">${money(item.rate, 2)}</span>
+            </td>
+            <td class="estimate-amount-cell py-1 px-2 text-right font-medium tabular-nums">${money(item.amount, 2)}</td>
+            <td class="no-print py-1 px-2 text-center">
+              <button type="button" onclick="${String(item.id).startsWith('manual-') ? 'removeManualItem(\\'' + (item.manualKey || item.roomId) + '\\',\\'' + item.id + '\\')' : 'excludeItem(\\'' + item.id + '\\')'}"
+                class="no-print text-red-600 text-xs border border-red-200 rounded px-2 py-1 hover:bg-red-50">Delete</button>
             </td>
           </tr>`;
-      }
 
-      let path = String(item.masterPath || "")
-        .split("/")
-        .map(value => value.trim())
-        .filter(Boolean);
+        currentHierarchyTotal += Number(item.amount) || 0;
+      });
 
-      const normalizedGroup = group.toUpperCase();
-      if (path.length && path[0].toUpperCase() === normalizedGroup) {
-        path = path.slice(1);
-      }
-
-      // The final path segment is the item itself; only its parents are
-      // rendered as hierarchy headers. This supports variable depth.
-      const levels = path.length > 1 ? path.slice(0, -1) : [];
-      const hierarchyKey = levels.join(" / ");
-
-      if (hierarchyKey !== currentHierarchyKey) {
-        flushHierarchySubtotal();
-
-        levels.forEach((level, index) => {
-          html += `
-            <tr class="border-b">
-              <td colspan="6" class="py-1 px-2 ${hierarchyClass(index)}">${escapeHtml(level)}</td>
-            </tr>`;
-        });
-
-        currentHierarchyKey = hierarchyKey;
-        currentHierarchyLabel = levels[levels.length - 1] || "";
-        currentHierarchyTotal = 0;
-      }
-
-      html += `
-        <tr class="border-b hover:bg-gray-50">
-          <td class="py-1 px-2 align-top">
-            <textarea rows="2" onchange="editItemDescription('${item.id}', this.value)"
-              class="contractor-only no-print w-full min-w-[280px] border rounded-none px-2 py-1 bg-white leading-4 resize-none">${escapeHtml(item.description)}</textarea>
-            <div class="homeowner-locked no-print p-1 rounded-none">${escapeHtml(item.description)}</div>
-            <div class="hidden print:block leading-6">${escapeHtml(item.description)}</div>
-          </td>
-          <td class="py-1 px-2">${escapeHtml(item.unit)}</td>
-          <td class="py-1 px-2 text-right">
-            ${IS_CONTRACTOR
-              ? `<input type="number" min="0" step="1" value="${formatQty(item.qty)}" onchange="editItemQuantity('${item.id}', this.value)"
-                  class="contractor-only no-print w-24 border rounded-none px-1 py-1 text-right bg-white">`
-              : `<span class="homeowner-locked no-print inline-block px-1 py-1 rounded-none text-sm">${formatQty(item.qty)}</span>`}
-            <span class="hidden print:inline">${formatQty(item.qty)}</span>
-          </td>
-          <td class="py-1 px-2 text-right">
-            ${IS_CONTRACTOR
-              ? `<input type="number" min="0" step="0.01" value="${normalizeRate(item.rate).toFixed(2)}" onchange="editItemRate('${item.id}', this.value)"
-                  class="contractor-only no-print w-28 border rounded-none px-1 py-1 text-right bg-white">`
-              : `<span class="homeowner-rate-blurred no-print inline-block px-1 py-1 rounded-none text-sm">${money(item.rate, 2)}</span>`}
-            <span class="hidden print:inline">${money(item.rate, 2)}</span>
-          </td>
-          <td class="estimate-amount-cell py-1 px-2 text-right font-medium tabular-nums">${money(item.amount, 2)}</td>
-          <td class="no-print py-1 px-2 text-center">
-            <button type="button" onclick="${String(item.id).startsWith('manual-') ? 'removeManualItem(\'' + (item.manualKey || item.roomId) + '\',\'' + item.id + '\')' : 'excludeItem(\'' + item.id + '\')'}"
-              class="no-print text-red-600 text-xs border border-red-200 rounded px-2 py-1 hover:bg-red-50">Delete</button>
-          </td>
-        </tr>`;
-
-      currentHierarchyTotal += Number(item.amount) || 0;
+      flushHierarchySubtotal();
     });
-
-    flushHierarchySubtotal();
 
   }
 
