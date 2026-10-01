@@ -38,16 +38,19 @@
 .tw-theme .admin-page-logo{display:block;width:min(340px,62vw);height:auto;margin:0 0 18px;flex:0 0 auto}
 @media(max-width:767px){.tw-theme .admin-page-logo{width:min(285px,82vw);margin-bottom:16px}}
 
-/* Canonical light Admin header: preserves logo contrast and standardizes every Admin tool. */
-.tw-theme.admin-workspace .header,
-.tw-theme.admin-workspace .planner-header{background:#f8faf9!important;color:var(--tw-navy)!important;border-bottom:1px solid #dfe7e5!important;box-shadow:0 6px 20px rgba(15,23,42,.06)!important}
-.tw-theme.admin-workspace .eyebrow{color:#059669!important}
-.tw-theme.admin-workspace .title,
-.tw-theme.admin-workspace .brand h1{color:var(--tw-navy)!important}
-.tw-theme.admin-workspace .muted,
-.tw-theme.admin-workspace .brand p,
-.tw-theme.admin-workspace .sub{color:#64748b!important}
-.tw-theme.admin-workspace .header .nav a,
-.tw-theme.admin-workspace .planner-header .nav a{color:var(--tw-navy)!important;background:#fff!important;border-color:#cbd5e1!important}
-.tw-theme.admin-workspace .header .nav a:hover,
-.tw-theme.admin-workspace .planner-header .nav a:hover{color:#047857!important;background:#f0fdf9!important;border-color:#10b981!important}
+
+/* TERAJUWORKS ADMIN HEADER SYSTEM — single source of truth */
+.tw-theme.admin-workspace .admin-header{background:linear-gradient(135deg,#e7f2ef 0%,#f3f7f6 52%,#e2eeeb 100%)!important;color:#172033!important;border-bottom:1px solid #d5e2df!important;box-shadow:0 8px 24px rgba(15,23,42,.07)!important;position:relative}
+.tw-theme.admin-workspace .admin-header::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 82% 18%,rgba(25,198,168,.12),transparent 34%),radial-gradient(circle at 12% 90%,rgba(8,118,109,.06),transparent 30%)}
+.tw-theme.admin-workspace .admin-header-main{position:relative;z-index:1;display:flex;align-items:flex-start;justify-content:space-between;gap:24px;padding:22px 24px 16px}
+.tw-theme.admin-workspace .admin-header-heading{min-width:0}
+.tw-theme.admin-workspace .admin-page-logo{display:block;width:min(340px,62vw);height:auto;margin:0 0 16px;flex:0 0 auto}
+.tw-theme.admin-workspace .admin-header-title{margin:0;color:#172033!important;font-size:27px;font-weight:850;letter-spacing:-.03em;line-height:1.08}
+.tw-theme.admin-workspace .admin-header-sub{margin:7px 0 0;color:#64748b!important;font-size:12px;line-height:1.5}
+.tw-theme.admin-workspace .admin-header-status{display:inline-flex;align-items:center;min-height:30px;padding:0 11px;border:1px solid #b9d8d1;border-radius:999px;background:rgba(255,255,255,.62);color:#08766d;font-size:10px;font-weight:800;white-space:nowrap;backdrop-filter:blur(8px)}
+.tw-theme.admin-workspace .admin-nav{position:relative;z-index:1;display:flex;gap:7px;flex-wrap:nowrap;padding:0 24px 16px;overflow-x:auto;scrollbar-width:none}
+.tw-theme.admin-workspace .admin-nav a{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:0 12px;border:1px solid #cbdcd8;border-radius:10px;background:rgba(255,255,255,.82);color:#172033!important;text-decoration:none;font-size:11px;font-weight:800;white-space:nowrap;box-shadow:0 3px 10px rgba(15,23,42,.045);transition:.18s ease}
+.tw-theme.admin-workspace .admin-nav a:hover{background:#fff;color:#047857!important;border-color:#10b981;transform:translateY(-1px)}
+.tw-theme.admin-workspace .admin-nav .back-nav{background:#172033;color:#fff!important;border-color:#172033}
+.tw-theme.admin-workspace .admin-nav .back-nav:hover{background:#243047;color:#fff!important;border-color:#243047}
+@media(max-width:767px){.tw-theme.admin-workspace .admin-header-main{display:block;padding:18px 14px 14px}.tw-theme.admin-workspace .admin-page-logo{width:min(285px,82vw);margin-bottom:14px}.tw-theme.admin-workspace .admin-header-title{font-size:23px}.tw-theme.admin-workspace .admin-header-sub{font-size:12px}.tw-theme.admin-workspace .admin-header-status{margin-top:10px}.tw-theme.admin-workspace .admin-nav{padding:0 14px 14px}}
