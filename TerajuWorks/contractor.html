@@ -35,9 +35,11 @@ body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,
 .auth-icon{background:#b58a3a;box-shadow:0 12px 30px rgba(181,138,58,.24)}
 .tab-active{background:#fff;box-shadow:0 5px 18px rgba(15,23,42,.08)}
 
-.profile-modal{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;padding:12px;background:rgba(15,23,42,.52);backdrop-filter:blur(8px);overflow:auto}
+.profile-modal{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;padding:12px;overflow:auto;background:rgba(15,23,42,.52);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
 .profile-modal.open{display:flex}
-.profile-card{width:min(820px,calc(100vw - 24px));max-height:calc(100svh - 24px);overflow:auto;box-sizing:border-box;border-radius:28px;background:#fff;box-shadow:0 30px 90px rgba(15,23,42,.25)}
+.profile-card{width:min(820px,calc(100vw - 24px));max-height:calc(100svh - 24px);overflow:auto;border-radius:28px;background:#fff;box-shadow:0 30px 90px rgba(15,23,42,.25)}
+.profile-modal-head{flex:0 0 auto}
+.profile-modal-body{min-width:0}
 .profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px 18px}
 .profile-field{display:grid;gap:7px}
 .profile-field.full{grid-column:1/-1}
@@ -56,6 +58,33 @@ body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,
 .profile-use:disabled,.profile-reset:disabled,.profile-save:disabled{opacity:.55;cursor:wait}
 .profile-status{display:none;margin-top:12px;padding:10px 12px;border-radius:10px;font-size:12px}
 
+@media(max-height:850px) and (min-width:768px){
+.profile-modal{padding:10px}
+.profile-card{width:min(800px,calc(100vw - 20px));max-height:calc(100svh - 20px);border-radius:22px}
+.profile-modal-head{padding:16px 22px}
+.profile-modal-body{padding:18px 22px}
+.profile-grid{gap:11px 14px}
+.profile-field{gap:5px}
+.profile-field input,.profile-field textarea{padding:9px 11px}
+.profile-field textarea{min-height:64px}
+.profile-logo{padding:10px}
+.profile-actions{margin-top:14px;gap:8px}
+.profile-actions button{min-height:40px;padding:0 10px}
+}
+@media(max-height:720px) and (min-width:768px){
+.profile-modal{align-items:flex-start;padding:8px}
+.profile-card{width:min(760px,calc(100vw - 16px));max-height:calc(100svh - 16px);border-radius:18px}
+.profile-modal-head{padding:12px 18px}
+.profile-modal-body{padding:14px 18px}
+.profile-grid{gap:8px 12px}
+.profile-field{gap:4px}
+.profile-field input,.profile-field textarea{padding:8px 10px}
+.profile-field textarea{min-height:54px}
+.profile-logo{gap:10px;padding:8px}
+.profile-logo img,.profile-logo-empty{width:120px;height:46px}
+.profile-actions{grid-template-columns:1fr 1fr;margin-top:10px;gap:7px}
+.profile-actions button{min-height:38px}
+}
 @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
 @keyframes cardIn{from{opacity:0;transform:translateY(28px) scale(.985)}to{opacity:1;transform:none}}
 
@@ -125,11 +154,11 @@ html{scroll-behavior:auto}
 </article></div></div></div>
 <div id="profileModal" class="profile-modal" aria-hidden="true">
   <div class="profile-card">
-    <div class="flex items-start justify-between gap-5 border-b border-slate-100 px-6 py-5 sm:px-8">
+    <div class="profile-modal-head flex items-start justify-between gap-5 border-b border-slate-100 px-6 py-5 sm:px-8">
       <div><div class="text-[10px] font-black tracking-[.2em] text-slate-500">CONTRACTOR PROFILE</div><h2 class="mt-1 text-2xl font-bold text-slate-950">Company Profile</h2><p class="mt-1 text-xs leading-5 text-slate-500">This is the shared profile used by BuildPlanner and RenovationPlanner Preview.</p></div>
       <button id="profileClose" type="button" class="text-2xl leading-none text-slate-400 hover:text-slate-900" aria-label="Close">×</button>
     </div>
-    <div class="px-6 py-6 sm:px-8">
+    <div class="profile-modal-body px-6 py-6 sm:px-8">
       <div id="profileOnboardingNote" style="display:none;margin-bottom:18px;padding:13px 15px;border:1px solid #dbe3ec;border-radius:14px;background:#f8fafc">
         <div style="font-size:11px;font-weight:800;letter-spacing:.08em;color:#334155">COMPLETE YOUR CONTRACTOR PROFILE</div>
         <div style="margin-top:5px;font-size:12px;line-height:1.55;color:#64748b">Add your company details and logo now, or skip for now and complete it later from Contractor Profile.</div>
