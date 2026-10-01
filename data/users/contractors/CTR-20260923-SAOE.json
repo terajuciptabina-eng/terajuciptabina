@@ -4021,11 +4021,11 @@
           "builtUpArea": 400,
           "state": "negeri-sembilan"
         },
-        "total": 68106,
+        "total": 100932,
         "plannerState": {
           "customerName": "Tuan Iman",
           "projectLocation": "Eka Height Sendayan (New Kitchen & New Bathroom Only)",
-          "builtUpArea": 400,
+          "builtUpArea": "400",
           "rooms": [
             {
               "id": "room-1",
@@ -4163,17 +4163,55 @@
               "Preliminaries, site mobilisation, temporary facilities, site protection, project coordination, supervision and general project management, complete."
             ]
           ],
-          "customRoomLabels": [],
+          "customRoomLabels": [
+            [
+              "room-1",
+              "Wet Kitchen"
+            ],
+            [
+              "room-2",
+              "Bathroom"
+            ],
+            [
+              "room-11",
+              "Balcony"
+            ]
+          ],
           "excludedItems": [],
-          "manualItems": [],
-          "standardRateItems": [],
+          "manualItems": [
+            [
+              "room-11",
+              [
+                {
+                  "id": "manual-1790859655433-8t51wa",
+                  "roomId": "room-11",
+                  "roomType": "balcony",
+                  "description": "Waterproofing",
+                  "unit": "ls",
+                  "qty": 1,
+                  "rate": 1200,
+                  "amount": 1200
+                }
+              ]
+            ]
+          ],
+          "standardRateItems": [
+            {
+              "id": "custom-1790859655433-vmb0ew",
+              "description": "Waterproofing",
+              "unit": "ls",
+              "rate": 1200,
+              "roomType": "balcony",
+              "custom": true
+            }
+          ],
           "quotationType": "simple",
           "projectId": "PRJ-REN-MUPBQHP8-74M0A",
-          "constructionBudgetGenerated": false,
+          "constructionBudgetGenerated": true,
           "projectState": "negeri-sembilan",
-          "rateSetId": "negeri-sembilan",
-          "rateSetName": "Negeri Sembilan",
-          "rateSnapshotAt": "2026-10-01T13:00:23.937Z"
+          "rateSetId": "default",
+          "rateSetName": "Default Rate",
+          "rateSnapshotAt": "2026-10-01T13:01:30.284Z"
         },
         "itemListVersion": 1,
         "items": [
@@ -4193,6 +4231,74 @@
             "masterPath": "PROJECT / PRELIMINARIES",
             "roomId": "project",
             "room": "Project"
+          },
+          {
+            "id": "room-11-floor",
+            "category": "",
+            "description": "Floor tiles to Balcony area.",
+            "unit": "sqft",
+            "qty": 200,
+            "rate": 22,
+            "amount": 4400,
+            "header": "",
+            "level3": "",
+            "section": "",
+            "groupTitle": "",
+            "groupKey": "",
+            "masterPath": "BALCONY / Floor Tiles",
+            "roomId": "room-11",
+            "room": "Balcony"
+          },
+          {
+            "id": "room-11-facade",
+            "category": "",
+            "description": "Facade wall works to Balcony area.",
+            "unit": "sqft",
+            "qty": 266,
+            "rate": 60,
+            "amount": 15960,
+            "header": "",
+            "level3": "",
+            "section": "",
+            "groupTitle": "",
+            "groupKey": "",
+            "masterPath": "BALCONY / Facade Wall",
+            "roomId": "room-11",
+            "room": "Balcony"
+          },
+          {
+            "id": "room-11-walllight",
+            "category": "",
+            "description": "Wall light to Balcony area.",
+            "unit": "No.",
+            "qty": 3,
+            "rate": 250,
+            "amount": 750,
+            "header": "",
+            "level3": "",
+            "section": "",
+            "groupTitle": "",
+            "groupKey": "",
+            "masterPath": "BALCONY / Wall Light",
+            "roomId": "room-11",
+            "room": "Balcony"
+          },
+          {
+            "id": "manual-1790859655433-8t51wa",
+            "category": "",
+            "description": "Waterproofing",
+            "unit": "ls",
+            "qty": 1,
+            "rate": 1200,
+            "amount": 1200,
+            "header": "",
+            "level3": "",
+            "section": "",
+            "groupTitle": "",
+            "groupKey": "",
+            "masterPath": "",
+            "roomId": "room-11",
+            "room": "Balcony"
           },
           {
             "id": "master-main-building-/-footing-/-concrete",
@@ -4433,53 +4539,19 @@
             "room": "Project"
           },
           {
-            "id": "master-main-building-/-flat-roof-/-concrete",
+            "id": "master-main-building-/-roof-/-metal-roofing-sheet",
             "category": "structures",
-            "description": "Supply and construct 100mm thick Grade 25 concrete flat roof slab including waterproofing.",
-            "unit": "m³",
-            "qty": 2,
-            "rate": 550,
-            "amount": 1100,
-            "header": "",
-            "level3": "",
-            "section": "",
-            "groupTitle": " Flat Roof ",
-            "groupKey": "structure",
-            "masterPath": "MAIN BUILDING / Flat Roof / Concrete",
-            "roomId": "project",
-            "room": "Project"
-          },
-          {
-            "id": "master-main-building-/-flat-roof-/-formwork",
-            "category": "structures",
-            "description": "Provide underside formwork to concrete flat roof slab.",
+            "description": "Supply and install metal roofing sheet to selected roof, 25° pitch with 3ft overhang.",
             "unit": "m²",
-            "qty": 19,
-            "rate": 55,
-            "amount": 1045,
+            "qty": 32,
+            "rate": 420,
+            "amount": 13440,
             "header": "",
             "level3": "",
             "section": "",
-            "groupTitle": " Flat Roof ",
+            "groupTitle": " Roof ",
             "groupKey": "structure",
-            "masterPath": "MAIN BUILDING / Flat Roof / Formwork",
-            "roomId": "project",
-            "room": "Project"
-          },
-          {
-            "id": "master-main-building-/-flat-roof-/-brc",
-            "category": "structures",
-            "description": "Supply and install BRC A7 reinforcement to flat roof slab, double layer.",
-            "unit": "m²",
-            "qty": 38,
-            "rate": 20.5,
-            "amount": 779,
-            "header": "",
-            "level3": "",
-            "section": "",
-            "groupTitle": " Flat Roof ",
-            "groupKey": "structure",
-            "masterPath": "MAIN BUILDING / Flat Roof / BRC",
+            "masterPath": "MAIN BUILDING / Roof / Metal Roofing Sheet",
             "roomId": "project",
             "room": "Project"
           },
@@ -5029,7 +5101,7 @@
           }
         ],
         "createdAt": "2026-10-01T09:22:58.738Z",
-        "updatedAt": "2026-10-01T13:00:25.421Z",
+        "updatedAt": "2026-10-01T13:01:31.609Z",
         "estimateNumber": "EST-REN-014"
       },
       {
@@ -7291,7 +7363,7 @@
     ]
   },
   "createdAt": "2026-09-23T08:33:53.459Z",
-  "updatedAt": "2026-10-01T13:00:25.421Z",
+  "updatedAt": "2026-10-01T13:01:31.609Z",
   "quotationRunningNumber": {
     "renovation": 17,
     "build": 14
