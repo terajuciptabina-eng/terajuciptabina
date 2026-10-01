@@ -341,6 +341,7 @@ async function loadAll(){const stopLoading=window.__twAdminLoading.bind(['#state
   }
   await loadReviewQueue();
   await loadMarketSignal();
+  stopLoading();
 }
 $('load').onclick=loadAll;loadAll();
 </script>
