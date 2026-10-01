@@ -1910,7 +1910,8 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
     !excludedItems.has(item.id) &&
     (item.roomId === "project" || newRoomIds.has(item.roomId)) &&
     String(item.category || "").toLowerCase() !== "external-work" &&
-    String(item.category || "").toLowerCase() !== "preliminaries"
+    String(item.category || "").toLowerCase() !== "preliminaries" &&
+    Number(item.amount || 0) !== 0
   );
 
   const groupTotals = {};
@@ -1930,25 +1931,9 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
         <td colspan="6" class="py-1 px-2 font-bold">New Construction / Build Planner</td>
       </tr>`;
 
-    if (IS_CONTRACTOR) {
-      const buildGroupOrder = ["STRUCTURES", "ARCHITECTURES", "ELECTRICAL", "DOORS & WINDOWS"];
-      const existingBuildGroups = new Set(projectBuildItems.map(item => String(item.group || "").trim().toUpperCase()));
-      buildGroupOrder.filter(group => !existingBuildGroups.has(group)).forEach(group => {
-        const buildManualKey = '__build__:' + group;
-        html += `
-          <tr class="bg-gray-100 border-b">
-            <td colspan="6" class="py-1 px-2">
-              <div class="flex flex-wrap items-center justify-between gap-2">
-                <span class="font-bold">${escapeHtml(group)}</span>
-                <div class="contractor-only" data-build-manual-anchor="${escapeHtml(buildManualKey)}">
-                  <button type="button" onclick="addBuildGroupManualItemPrompt('${escapeHtml(group)}')" class="border rounded-lg px-2 py-1 text-xs font-semibold hover:bg-white">＋ Add New Item</button>
-                </div>
-              </div>
-            </td>
-          </tr>`;
-      });
-    }
-
+    // Only render groups that already contain a real Build Planner item/value.
+    // Empty groups are intentionally omitted; the Add New Item control appears
+    // only on an existing populated group below.
     let currentGroup = "";
     let currentHierarchyKey = "";
     let currentHierarchyLabel = "";
