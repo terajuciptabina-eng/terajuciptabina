@@ -1269,8 +1269,8 @@ window.saveRenovationRoomAreaState = async function() {
   }
   if (typeof saveContractorState === "function") saveContractorState();
 
-  // Existing Cost Estimates persist the planning state here.
-  // This does not calculate or generate the Renovation Budget.
+  // Existing Cost Estimates persist the revised Room / Area source here.
+  // The budget is regenerated only after this source-of-truth save succeeds.
   const quotationId = new URLSearchParams(location.search).get("quotationId");
   if (quotationId && window.tcQuotationRecords?.persistRoomSchedule) {
     const persisted = await window.tcQuotationRecords.persistRoomSchedule(rooms);
@@ -1280,8 +1280,17 @@ window.saveRenovationRoomAreaState = async function() {
     }
   }
 
+  // A saved Room / Area revision is now the new source of truth.
+  // Rebuild the Renovation Budget immediately so an existing Cost Estimate
+  // never continues displaying a budget generated from the previous room schedule.
   setRenovationBudgetGenerated(false);
-  showRenovationBudgetPending("Room / Area is saved. Generate the Renovation Budget when you are ready.");
+  const regenerated = typeof window.__TERAJU_RENOVATION_V2_GENERATE_BUDGET === "function"
+    ? window.__TERAJU_RENOVATION_V2_GENERATE_BUDGET()
+    : false;
+
+  if (!regenerated) {
+    showRenovationBudgetPending("Room / Area is saved. Generate the Renovation Budget when you are ready.");
+  }
   return true;
 };
 
