@@ -1606,7 +1606,42 @@ function saveManualItem(roomId) {
   if (!manualItems.has(roomId)) manualItems.set(roomId, []);
   manualItems.get(roomId).push({ id, roomId, roomType, description, unit, qty, rate, amount: Math.round((qty * rate + Number.EPSILON) * 100) / 100 });
   saveContractorState();
-  refreshRenovationItemMutation();
+
+  // Manual room items are a direct V2 mutation. Recalculate from the
+  // canonical V2 quotation source and repaint after the mutation commits.
+  const repaint = () => {
+    try {
+      const getData = window.__TERAJU_RENOVATION_V2_GET_QUOTATION_DATA;
+      if (typeof getData !== "function" || typeof renderEstimate !== "function") {
+        console.error("[TERAJU RENOVATION V2] Canonical quotation renderer unavailable.");
+        return false;
+      }
+      const data = getData();
+      const room = (data.roomGroups || []).find(x => String(x.roomId) === String(roomId));
+      const roomItems = (data.allItems || []).filter(x => String(x.roomId) === String(roomId));
+      const newItem = roomItems.find(x => String(x.id) === String(id));
+      if (!room || !newItem) {
+        console.error("[TERAJU RENOVATION V2] Manual item was saved but not present in canonical quotation data.", { roomId, id });
+        return false;
+      }
+      renderEstimate(
+        data.allItems,
+        data.roomGroups,
+        data.roomSubtotals,
+        Number(data.projectPreliminaries || 0),
+        Number(data.total || 0)
+      );
+      window.__TERAJU_RENOVATION_BUDGET_GENERATED = true;
+      return true;
+    } catch (error) {
+      console.error("[TERAJU RENOVATION V2] Immediate manual-item repaint failed.", error);
+      return false;
+    }
+  };
+
+  if (!repaint()) {
+    refreshRenovationItemMutation();
+  }
 }
 window.saveManualItem = saveManualItem;
 
@@ -2934,7 +2969,7 @@ initContractorMode();
 <script src="location-autocomplete.js"></script>
 <script src="state-rate-gate.js?v=20260924-state-v1"></script>
 <script src="renovation-calculation-rules.js?v=20260924-rate-master-v1"></script>
-<script src="renovation-planner-v2-engine.js?v=20261001-item-mutation-source-v6"></script>
+<script src="renovation-planner-v2-engine.js?v=20261001-item-mutation-source-v7"></script>
 <script src="contractor-master-bridge.js?v=20260924-renovation-rate-master-v2"></script>
 <script src="quotation-quantity-fix.js?v=20261001-manual-hierarchy-v1"></script>
 <script src="quotation-records.js?v=20260930-source-flow-v1"></script>
