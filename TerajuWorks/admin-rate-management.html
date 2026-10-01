@@ -16,7 +16,7 @@
 <section id="metaPanel" class="panel hidden"><div class="meta"><span><b>Rate Set:</b> <span id="rateSetId">default</span></span><span><b>Currency:</b> <span id="currency">MYR</span></span><span><b>Effective:</b> <span id="effectiveDate">—</span></span><span><b>Updated:</b> <span id="updatedAt">—</span></span></div></section>
 <section id="tablePanel" class="panel hidden"><div class="table-wrap"><table><thead><tr><th>Item</th><th>Standard Description</th><th>Unit</th><th>Rate (MYR)</th><th>Status</th></tr></thead><tbody id="rows"></tbody></table></div></section>
 </main>
-<script src="shared/calculation-rules-ui.js"></script><script src="renovation-calculation-rules.js?v=20260924-rate-master-v1"></script><script>
+<script src="shared/admin-loading.js"></script><script src="shared/calculation-rules-ui.js"></script><script src="renovation-calculation-rules.js?v=20260924-rate-master-v1"></script><script>
 const CRUI=window.TerajuCalculationRulesUI;
 const API='https://terajuciptabina.vercel.app/api/rates',RULES_API='https://terajuciptabina.vercel.app/api/calculation-rules',DEFAULT_META_URL='../data/rates/default.json';
 const STATES=['johor','kedah','kelantan','melaka','negeri-sembilan','pahang','perak','perlis','pulau-pinang','sabah','sarawak','selangor','terengganu','kuala-lumpur','putrajaya','labuan'];
