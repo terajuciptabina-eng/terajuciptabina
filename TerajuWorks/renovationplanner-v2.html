@@ -1789,7 +1789,7 @@ function renderBudgetSummaryAtBottom(items, roomGroups, roomSubtotals, projectPr
 }
 
 function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, total) {
-  const container = document.getElementById("estimateContent");
+  const container = document.getElementById("renovationBudgetTable");
   const brand = typeof window.__TERAJU_PREVIEW_BRANDING === "function" ? window.__TERAJU_PREVIEW_BRANDING() : null;
   const customer = document.getElementById("customerName")?.value || "Not specified";
   const location = document.getElementById("projectLocation")?.value || "Not specified";
