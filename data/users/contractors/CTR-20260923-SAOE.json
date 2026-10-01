@@ -2764,11 +2764,11 @@
           "builtUpArea": 200,
           "state": "negeri-sembilan"
         },
-        "total": 82122,
+        "total": 71606,
         "plannerState": {
           "customerName": "Tuan Iman",
           "projectLocation": "Eka Height Sendayan",
-          "builtUpArea": 200,
+          "builtUpArea": "200",
           "rooms": [
             {
               "id": "room-3",
@@ -2926,12 +2926,12 @@
             }
           ],
           "quotationType": "simple",
-          "projectId": "PRJ-REN-MUPBATDW-94RSU",
-          "constructionBudgetGenerated": false,
+          "projectId": "PRJ-REN-MUPB7355-2MHKS",
+          "constructionBudgetGenerated": true,
           "projectState": "negeri-sembilan",
           "rateSetId": "negeri-sembilan",
           "rateSetName": "Negeri Sembilan",
-          "rateSnapshotAt": "2026-10-01T09:10:04.059Z"
+          "rateSnapshotAt": "2026-10-01T09:10:35.226Z"
         },
         "itemListVersion": 1,
         "items": [
@@ -3191,19 +3191,53 @@
             "room": "Project"
           },
           {
-            "id": "master-main-building-/-roof-/-metal-roofing-sheet",
+            "id": "master-main-building-/-flat-roof-/-concrete",
             "category": "structures",
-            "description": "Supply and install metal roofing sheet to selected roof, 25° pitch with 3ft overhang.",
-            "unit": "m²",
-            "qty": 32,
-            "rate": 420,
-            "amount": 13440,
+            "description": "Supply and construct 100mm thick Grade 25 concrete flat roof slab including waterproofing.",
+            "unit": "m³",
+            "qty": 2,
+            "rate": 550,
+            "amount": 1100,
             "header": "",
             "level3": "",
             "section": "",
-            "groupTitle": " Roof ",
+            "groupTitle": " Flat Roof ",
             "groupKey": "structure",
-            "masterPath": "MAIN BUILDING / Roof / Metal Roofing Sheet",
+            "masterPath": "MAIN BUILDING / Flat Roof / Concrete",
+            "roomId": "project",
+            "room": "Project"
+          },
+          {
+            "id": "master-main-building-/-flat-roof-/-formwork",
+            "category": "structures",
+            "description": "Provide underside formwork to concrete flat roof slab.",
+            "unit": "m²",
+            "qty": 19,
+            "rate": 55,
+            "amount": 1045,
+            "header": "",
+            "level3": "",
+            "section": "",
+            "groupTitle": " Flat Roof ",
+            "groupKey": "structure",
+            "masterPath": "MAIN BUILDING / Flat Roof / Formwork",
+            "roomId": "project",
+            "room": "Project"
+          },
+          {
+            "id": "master-main-building-/-flat-roof-/-brc",
+            "category": "structures",
+            "description": "Supply and install BRC A7 reinforcement to flat roof slab, double layer.",
+            "unit": "m²",
+            "qty": 38,
+            "rate": 20.5,
+            "amount": 779,
+            "header": "",
+            "level3": "",
+            "section": "",
+            "groupTitle": " Flat Roof ",
+            "groupKey": "structure",
+            "masterPath": "MAIN BUILDING / Flat Roof / BRC",
             "roomId": "project",
             "room": "Project"
           },
@@ -3616,7 +3650,7 @@
             "room": "Project"
           },
           {
-            "id": "bath-room-2-wall-tiles",
+            "id": "bath-room-4-wall-tiles",
             "category": "architecture",
             "description": "Supply and install bathroom wall tiles to 10ft wall height.",
             "unit": "m²",
@@ -3627,13 +3661,13 @@
             "level3": "",
             "section": "",
             "groupTitle": "Bathroom",
-            "groupKey": "bathroom-room-2",
+            "groupKey": "bathroom-room-4",
             "masterPath": "BATHROOM / Wall Tiles",
-            "roomId": "room-2",
+            "roomId": "room-4",
             "room": "Bathroom"
           },
           {
-            "id": "bath-room-2-floor-tiles",
+            "id": "bath-room-4-floor-tiles",
             "category": "architecture",
             "description": "Supply and install bathroom floor tiles.",
             "unit": "m²",
@@ -3644,13 +3678,13 @@
             "level3": "",
             "section": "",
             "groupTitle": "Bathroom",
-            "groupKey": "bathroom-room-2",
+            "groupKey": "bathroom-room-4",
             "masterPath": "BATHROOM / Floor Tiles",
-            "roomId": "room-2",
+            "roomId": "room-4",
             "room": "Bathroom"
           },
           {
-            "id": "bath-room-2-ceiling",
+            "id": "bath-room-4-ceiling",
             "category": "architecture",
             "description": "Supply and install bathroom ceiling finish.",
             "unit": "m²",
@@ -3661,13 +3695,13 @@
             "level3": "",
             "section": "",
             "groupTitle": "Bathroom",
-            "groupKey": "bathroom-room-2",
+            "groupKey": "bathroom-room-4",
             "masterPath": "BATHROOM / Ceiling",
-            "roomId": "room-2",
+            "roomId": "room-4",
             "room": "Bathroom"
           },
           {
-            "id": "bath-room-2-piping",
+            "id": "bath-room-4-piping",
             "category": "architecture",
             "description": "Provide plumbing piping installation to each bathroom.",
             "unit": "LS",
@@ -3678,13 +3712,13 @@
             "level3": "",
             "section": "",
             "groupTitle": "Bathroom",
-            "groupKey": "bathroom-room-2",
+            "groupKey": "bathroom-room-4",
             "masterPath": "BATHROOM / Piping",
-            "roomId": "room-2",
+            "roomId": "room-4",
             "room": "Bathroom"
           },
           {
-            "id": "bath-room-2-wc",
+            "id": "bath-room-4-wc",
             "category": "architecture",
             "description": "Supply and install one WC sanitary fitting per bathroom.",
             "unit": "No.",
@@ -3695,13 +3729,13 @@
             "level3": "",
             "section": "",
             "groupTitle": "Bathroom",
-            "groupKey": "bathroom-room-2",
+            "groupKey": "bathroom-room-4",
             "masterPath": "BATHROOM / WC",
-            "roomId": "room-2",
+            "roomId": "room-4",
             "room": "Bathroom"
           },
           {
-            "id": "bath-room-2-basin",
+            "id": "bath-room-4-basin",
             "category": "architecture",
             "description": "Supply and install one basin sanitary fitting per bathroom.",
             "unit": "No.",
@@ -3712,13 +3746,13 @@
             "level3": "",
             "section": "",
             "groupTitle": "Bathroom",
-            "groupKey": "bathroom-room-2",
+            "groupKey": "bathroom-room-4",
             "masterPath": "BATHROOM / Basin",
-            "roomId": "room-2",
+            "roomId": "room-4",
             "room": "Bathroom"
           },
           {
-            "id": "bath-room-2-shower",
+            "id": "bath-room-4-shower",
             "category": "architecture",
             "description": "Supply and install one shower fitting per bathroom.",
             "unit": "No.",
@@ -3729,13 +3763,13 @@
             "level3": "",
             "section": "",
             "groupTitle": "Bathroom",
-            "groupKey": "bathroom-room-2",
+            "groupKey": "bathroom-room-4",
             "masterPath": "BATHROOM / Shower",
-            "roomId": "room-2",
+            "roomId": "room-4",
             "room": "Bathroom"
           },
           {
-            "id": "bath-room-2-tap",
+            "id": "bath-room-4-tap",
             "category": "architecture",
             "description": "Supply and install one tap fitting per bathroom.",
             "unit": "No.",
@@ -3746,14 +3780,14 @@
             "level3": "",
             "section": "",
             "groupTitle": "Bathroom",
-            "groupKey": "bathroom-room-2",
+            "groupKey": "bathroom-room-4",
             "masterPath": "BATHROOM / Tap",
-            "roomId": "room-2",
+            "roomId": "room-4",
             "room": "Bathroom"
           }
         ],
         "createdAt": "2026-10-01T09:08:33.330Z",
-        "updatedAt": "2026-10-01T09:10:05.627Z",
+        "updatedAt": "2026-10-01T09:10:36.257Z",
         "estimateNumber": "EST-REN-013"
       },
       {
@@ -6015,7 +6049,7 @@
     ]
   },
   "createdAt": "2026-09-23T08:33:53.459Z",
-  "updatedAt": "2026-10-01T09:10:05.627Z",
+  "updatedAt": "2026-10-01T09:10:36.257Z",
   "quotationRunningNumber": {
     "renovation": 14,
     "build": 14
