@@ -298,6 +298,7 @@ function renderRecent(){
   }).join('');
 }
 async function load(){
+  const stopLoading=window.__twAdminLoading.bind(['.kpis','.grid','.insight-grid'],'Loading analytics…');
   const status=document.getElementById('status');status.className='status';status.textContent='Loading database…';
   try{
     const r=await fetch(API+'?records=1',{headers:headers(),cache:'no-store'});
@@ -307,7 +308,7 @@ async function load(){
     document.getElementById('updated').textContent='Updated '+new Date().toLocaleString('en-MY');
     status.textContent=num(accounts.length)+' accounts loaded from GitHub database.';
     render();
-  }catch(e){status.className='status error';status.textContent=e.message||'Unable to load insights.'}
+  }catch(e){status.className='status error';status.textContent=e.message||'Unable to load insights.'}finally{stopLoading();}
 }
 document.getElementById('range').onchange=render;
 document.getElementById('refresh').onclick=load;
