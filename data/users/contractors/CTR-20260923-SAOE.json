@@ -2771,14 +2771,14 @@
           "builtUpArea": 200,
           "rooms": [
             {
-              "id": "room-1",
+              "id": "room-3",
               "type": "wetKitchen",
               "condition": "new",
               "name": "Wet Kitchen",
               "area": "150"
             },
             {
-              "id": "room-2",
+              "id": "room-4",
               "type": "bathroom",
               "condition": "new",
               "name": "Bathroom",
@@ -2931,7 +2931,7 @@
           "projectState": "negeri-sembilan",
           "rateSetId": "negeri-sembilan",
           "rateSetName": "Negeri Sembilan",
-          "rateSnapshotAt": "2026-10-01T09:09:25.978Z"
+          "rateSnapshotAt": "2026-10-01T09:10:04.059Z"
         },
         "itemListVersion": 1,
         "items": [
@@ -3753,7 +3753,7 @@
           }
         ],
         "createdAt": "2026-10-01T09:08:33.330Z",
-        "updatedAt": "2026-10-01T09:09:26.938Z",
+        "updatedAt": "2026-10-01T09:10:05.627Z",
         "estimateNumber": "EST-REN-013"
       },
       {
@@ -6015,7 +6015,7 @@
     ]
   },
   "createdAt": "2026-09-23T08:33:53.459Z",
-  "updatedAt": "2026-10-01T09:09:26.938Z",
+  "updatedAt": "2026-10-01T09:10:05.627Z",
   "quotationRunningNumber": {
     "renovation": 14,
     "build": 14
