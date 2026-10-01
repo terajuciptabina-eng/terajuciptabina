@@ -14,7 +14,7 @@
 <section class="panel"><div class="controls"><input id="q" placeholder="Search contractor, description or global ID"><select id="planner"><option value="all">All planners</option><option value="build">Build</option><option value="renovation">Renovation</option></select><button id="load">Load Market Database</button></div><div class="notice">Admin authentication is inherited from Admin Control. No second Admin Key login is required here.</div><div id="loading" class="loading hidden">Loading contractor market database…</div></section>
 <div id="error" class="error hidden"></div><section id="stats" class="stats panel hidden"></section><section id="result" class="panel table-panel hidden"><div class="table-wrap"><div class="table-scroll"><table><thead><tr><th>Contractor</th><th>Type</th><th>Global Item</th><th>Description</th><th>Unit</th><th>Global Rate</th><th>Contractor Rate</th><th>Variance</th><th>Last Updated</th><th>History</th></tr></thead><tbody id="tbody"></tbody></table></div></div></section>
 </main>
-<script>
+<script src="shared/admin-loading.js"></script><script>
 const API='https://terajuciptabina.vercel.app/api/contractor-market',KEY='teraju.admin.key',USER='teraju.admin.username';
 const $=id=>document.getElementById(id),esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function money(v){const n=Number(v);return Number.isFinite(n)?'RM '+n.toLocaleString('en-MY',{minimumFractionDigits:2,maximumFractionDigits:2}):'-'}
