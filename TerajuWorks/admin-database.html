@@ -100,6 +100,7 @@ function adminSession(){
 }
 function adminHeaders(){const s=adminSession();return {'X-Admin-Username':s.username,'X-Admin-Password':s.password};}
 async function load(){
+  const stopLoading=window.__twAdminLoading.start(result,'Loading database…');
   status.textContent='Loading…';
   try{
     const p=new URLSearchParams({role:role.value,q:q.value,records:'1'});
@@ -112,7 +113,7 @@ async function load(){
     result.querySelectorAll('.actions button').forEach(b=>b.onclick=()=>del(b));
     result.querySelectorAll('[data-view-id]').forEach(a=>a.onclick=e=>{e.preventDefault();openProfile(a.dataset.viewId,a.dataset.viewRole)});
     status.textContent='Database loaded.';
-  }catch(e){status.textContent=e.message||'Unable to load database.';}
+  }catch(e){status.textContent=e.message||'Unable to load database.';}finally{stopLoading();}
 }
 async function del(b){
   const s=adminSession();
