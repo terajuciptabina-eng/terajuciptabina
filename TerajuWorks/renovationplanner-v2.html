@@ -1280,17 +1280,10 @@ window.saveRenovationRoomAreaState = async function() {
     }
   }
 
-  // A saved Room / Area revision is now the new source of truth.
-  // Rebuild the Renovation Budget immediately so an existing Cost Estimate
-  // never continues displaying a budget generated from the previous room schedule.
+  // Saving a revised Room / Area invalidates the previous budget snapshot.
+  // Keep the budget in pending state until the user explicitly regenerates it.
   setRenovationBudgetGenerated(false);
-  const regenerated = typeof window.__TERAJU_RENOVATION_V2_GENERATE_BUDGET === "function"
-    ? window.__TERAJU_RENOVATION_V2_GENERATE_BUDGET()
-    : false;
-
-  if (!regenerated) {
-    showRenovationBudgetPending("Room / Area is saved. Generate the Renovation Budget when you are ready.");
-  }
+  showRenovationBudgetPending("Room / Area is saved. Click Generate Renovation Budget to rebuild the estimate.");
   return true;
 };
 
