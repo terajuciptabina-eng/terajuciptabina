@@ -1565,10 +1565,10 @@ function saveManualItem(roomId) {
   const id = `manual-${Date.now()}-${Math.random().toString(36).slice(2,8)}`;
   if (!manualItems.has(roomId)) manualItems.set(roomId, []);
   manualItems.get(roomId).push({ id, roomId, roomType, description, unit, qty, rate, amount: Math.round((qty * rate + Number.EPSILON) * 100) / 100 });
-  updateEstimate({ reason: "item-mutation" });
+  window.__TERAJU_RENOVATION_V2_UPDATE_ESTIMATE?.({ reason: "item-mutation" });
   saveContractorState();
 }
-function removeManualItem(roomId, itemId) { const list = manualItems.get(roomId) || []; manualItems.set(roomId, list.filter(item => item.id !== itemId)); updateEstimate({ reason: "item-mutation" }); saveContractorState(); }
+function removeManualItem(roomId, itemId) { const list = manualItems.get(roomId) || []; manualItems.set(roomId, list.filter(item => item.id !== itemId)); window.__TERAJU_RENOVATION_V2_UPDATE_ESTIMATE?.({ reason: "item-mutation" }); saveContractorState(); }
 
 function addBuildGroupManualItemPrompt(group) {
   if (!IS_CONTRACTOR) return;
@@ -1599,7 +1599,7 @@ function saveBuildGroupManualItem(group, formId) {
   const item = { id, manualKey:key, roomId:'project', room:'Project / New Construction', group:groupName, category, description:desc, unit, qty, rate, amount:Math.round((qty * rate + Number.EPSILON) * 100) / 100 };
   if (!manualItems.has(key)) manualItems.set(key, []);
   manualItems.get(key).push(item);
-  updateEstimate({ reason: "item-mutation" });
+  window.__TERAJU_RENOVATION_V2_UPDATE_ESTIMATE?.({ reason: "item-mutation" });
   saveContractorState();
 }
 function getAllItems() { const rooms = [...document.querySelectorAll("#roomsContainer .room-card")], typeIndexes = {}, allItems = []; rooms.forEach(room => { const roomId = room.id, roomType = room.querySelector(".room-type")?.value || "living", area = parseFloat(room.querySelector(".room-area")?.value) || 0; if(area<=0)return; typeIndexes[roomType] = (typeIndexes[roomType] || 0) + 1; const base = ROOM_TYPES[roomType] || "Area", autoLabel = typeIndexes[roomType] > 1 ? `${base} ${typeIndexes[roomType]}` : base, roomLabel = customRoomLabels.has(roomId) ? customRoomLabels.get(roomId) : autoLabel, standard = generateStandardRoomItems(roomType, area, roomId, roomLabel), optional = generateOptionalRoomItems(room, roomLabel), manual = (manualItems.get(roomId) || []).map(item => ({ ...item })); [...standard, ...optional, ...manual].forEach(item => { if (customRates.has(item.id)) item.rate = customRates.get(item.id); if (customQuantities.has(item.id)) item.qty = customQuantities.get(item.id); if (customDescriptions.has(item.id)) item.description = customDescriptions.get(item.id); item.qty = normalizeQuantity(item.qty); item.rate = normalizeRate(item.rate); item.amount = Math.round((item.qty * item.rate + Number.EPSILON) * 100) / 100; }); allItems.push(...standard, ...optional, ...manual); }); const prelimManual = (manualItems.get("__prelim__") || []).map(item => ({ ...item, roomId: "__prelim__", room: "Project / Preliminaries" })); prelimManual.forEach(item => { if (customRates.has(item.id)) item.rate = customRates.get(item.id); if (customQuantities.has(item.id)) item.qty = customQuantities.get(item.id); if (customDescriptions.has(item.id)) item.description = customDescriptions.get(item.id); item.qty = normalizeQuantity(item.qty); item.rate = normalizeRate(item.rate); item.amount = Math.round((item.qty * item.rate + Number.EPSILON) * 100) / 100; }); allItems.push(...prelimManual); allItems.push(...generateOptionalProjectItems()); return allItems; }
@@ -2119,23 +2119,23 @@ function editRoomLabel(roomId, value) {
 function editItemDescription(itemId, value) {
   if (!IS_CONTRACTOR) return;
   const description = String(value || "").trim();
-  if (!description) { alert("Please enter a description."); updateEstimate({ reason: "item-mutation" }); return; }
+  if (!description) { alert("Please enter a description."); window.__TERAJU_RENOVATION_V2_UPDATE_ESTIMATE?.({ reason: "item-mutation" }); return; }
   customDescriptions.set(itemId, description);
-  updateEstimate({ reason: "item-mutation" });
+  window.__TERAJU_RENOVATION_V2_UPDATE_ESTIMATE?.({ reason: "item-mutation" });
   saveContractorState();
 }
 function editItemQuantity(itemId, value) {
   if (!IS_CONTRACTOR) return;
   const qty = parseFloat(value);
-  if (!Number.isFinite(qty) || qty < 0) { alert("Please enter a valid quantity."); updateEstimate({ reason: "item-mutation" }); return; }
+  if (!Number.isFinite(qty) || qty < 0) { alert("Please enter a valid quantity."); window.__TERAJU_RENOVATION_V2_UPDATE_ESTIMATE?.({ reason: "item-mutation" }); return; }
   customQuantities.set(itemId, normalizeQuantity(qty));
-  updateEstimate({ reason: "item-mutation" });
+  window.__TERAJU_RENOVATION_V2_UPDATE_ESTIMATE?.({ reason: "item-mutation" });
   saveContractorState();
 }
 function editItemRate(itemId, value) {
   if (!IS_CONTRACTOR) return;
   const rate = parseFloat(value);
-  if (!Number.isFinite(rate) || rate < 0) { alert("Please enter a valid rate."); updateEstimate({ reason: "item-mutation" }); return; }
+  if (!Number.isFinite(rate) || rate < 0) { alert("Please enter a valid rate."); window.__TERAJU_RENOVATION_V2_UPDATE_ESTIMATE?.({ reason: "item-mutation" }); return; }
   const normalizedRate = normalizeRate(rate);
   customRates.set(itemId, normalizedRate);
   const item = (typeof getAllItems === "function" ? getAllItems() : []).find(x => String(x.id) === String(itemId));
@@ -2146,24 +2146,24 @@ function editItemRate(itemId, value) {
       window.__tcCaptureDirectRateOverride(item, normalizedRate);
     }
   }
-  updateEstimate({ reason: "item-mutation" });
+  window.__TERAJU_RENOVATION_V2_UPDATE_ESTIMATE?.({ reason: "item-mutation" });
   saveContractorState();
 }
 function excludeItem(itemId) {
   excludedItems.add(itemId);
-  updateEstimate({ reason: "item-mutation" });
+  window.__TERAJU_RENOVATION_V2_UPDATE_ESTIMATE?.({ reason: "item-mutation" });
   saveContractorState();
 }
 function restoreItem(itemId) {
   if (!IS_CONTRACTOR) return;
   excludedItems.delete(itemId);
-  updateEstimate({ reason: "item-mutation" });
+  window.__TERAJU_RENOVATION_V2_UPDATE_ESTIMATE?.({ reason: "item-mutation" });
   saveContractorState();
 }
 function restoreAllItems() {
   if (!IS_CONTRACTOR) return;
   excludedItems.clear();
-  updateEstimate({ reason: "item-mutation" });
+  window.__TERAJU_RENOVATION_V2_UPDATE_ESTIMATE?.({ reason: "item-mutation" });
   saveContractorState();
 }
 
