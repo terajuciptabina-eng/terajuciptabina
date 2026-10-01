@@ -383,7 +383,7 @@
     return calculateAndRenderBudget();
   }
 
-  function generateBudget(){
+  async function generateBudget(){
     if(!roomGroups().some(room => Number(room.area) > 0)){
       if(typeof window.showRenovationBudgetPending==='function'){
         window.showRenovationBudgetPending("Add and save at least one Room / Area with a valid sqft before generating the Renovation Budget.");
@@ -396,14 +396,38 @@
       return false;
     }
 
-    window.__TERAJU_RENOVATION_BUDGET_GENERATED=false;
-    const generated=calculateAndRenderBudget();
-    if(generated){
-      const button=document.getElementById('generateRenovationBudgetBtn');
-      if(button) button.textContent='Regenerate Renovation Budget';
-      document.getElementById('renovationBudgetSection')?.scrollIntoView({behavior:'smooth',block:'start'});
+    const button=document.getElementById('generateRenovationBudgetBtn');
+    const originalLabel='Regenerate Renovation Budget';
+    if(button){
+      button.disabled=true;
+      button.setAttribute('aria-busy','true');
+      button.innerHTML='<span class="inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" aria-hidden="true"></span><span>Generating Renovation Budget…</span>';
+      button.classList.add('opacity-70','cursor-wait');
     }
-    return generated;
+
+    try{
+      window.__TERAJU_RENOVATION_BUDGET_GENERATED=false;
+      await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+      const generated=calculateAndRenderBudget();
+      if(generated){
+        if(button){
+          button.textContent=originalLabel;
+        }
+        document.getElementById('renovationBudgetSection')?.scrollIntoView({behavior:'smooth',block:'start'});
+      }
+      return generated;
+    } finally {
+      if(button){
+        button.disabled=false;
+        button.removeAttribute('aria-busy');
+        button.classList.remove('opacity-70','cursor-wait');
+        if(window.__TERAJU_RENOVATION_BUDGET_GENERATED===true){
+          button.textContent=originalLabel;
+        }else{
+          button.textContent='Generate Renovation Budget';
+        }
+      }
+    }
   }
 
   window.__TERAJU_RENOVATION_V2_GET_ALL_ITEMS=allItems;
