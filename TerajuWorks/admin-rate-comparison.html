@@ -318,7 +318,7 @@ async function loadMarketSignal(){
     if(changedTbody)changedTbody.innerHTML='<tr><td colspan="7" class="error" style="display:table-cell">'+esc(e.message||'Unable to load changed contractor rates.')+'</td></tr>';
   }
 }
-async function loadAll(){
+async function loadAll(){const stopLoading=window.__twAdminLoading.bind(['#stateResult','#result','#reviewResult','#marketResult'],'Loading rate comparison…');
   $('error').classList.add('hidden');
   try{
     if(!rules.length)await loadRules();
