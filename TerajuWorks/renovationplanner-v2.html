@@ -1931,9 +1931,10 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
         <td colspan="6" class="py-1 px-2 font-bold">New Construction / Build Planner</td>
       </tr>`;
 
-    // Only render groups that already contain a real Build Planner item/value.
-    // Empty groups are intentionally omitted; the Add New Item control appears
-    // only on an existing populated group below.
+    // Build Planner hierarchy is driven by the item's real masterPath.
+    // A group is always the top header. Everything before the final item
+    // name becomes the visible hierarchy, preserving 1, 2, 3... levels.
+    // If masterPath repeats the group name, remove that duplicate first.
     let currentGroup = "";
     let currentHierarchyKey = "";
     let currentHierarchyLabel = "";
@@ -1977,10 +1978,18 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
           </tr>`;
       }
 
-      const path = String(item.masterPath || "")
+      let path = String(item.masterPath || "")
         .split("/")
         .map(value => value.trim())
         .filter(Boolean);
+
+      const normalizedGroup = group.toUpperCase();
+      if (path.length && path[0].toUpperCase() === normalizedGroup) {
+        path = path.slice(1);
+      }
+
+      // The final path segment is the item itself; only its parents are
+      // rendered as hierarchy headers. This supports variable depth.
       const levels = path.length > 1 ? path.slice(0, -1) : [];
       const hierarchyKey = levels.join(" / ");
 
