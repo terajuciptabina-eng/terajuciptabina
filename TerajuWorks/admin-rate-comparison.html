@@ -319,6 +319,7 @@ async function loadMarketSignal(){
   }
 }
 async function loadAll(){const stopLoading=window.__twAdminLoading.bind(['#stateResult','#result','#reviewResult','#marketResult'],'Loading rate comparison…');
+  try{
   $('error').classList.add('hidden');
   try{
     if(!rules.length)await loadRules();
@@ -341,7 +342,7 @@ async function loadAll(){const stopLoading=window.__twAdminLoading.bind(['#state
   }
   await loadReviewQueue();
   await loadMarketSignal();
-  stopLoading();
+  }finally{stopLoading()}
 }
 $('load').onclick=loadAll;loadAll();
 </script>
