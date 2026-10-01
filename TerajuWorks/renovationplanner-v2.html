@@ -1975,7 +1975,8 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
   );
 
   const groupTotals = {};
-  if (projectBuildItems.length) {
+  const hasBuildContext = newRoomIds.size > 0 || projectBuildItems.length > 0 || Array.from(manualItems.keys()).some(key => String(key).startsWith("__build__:"));
+  if (hasBuildContext) {
     projectBuildItems.forEach(item => {
       const group = String(item.group || "").trim().toUpperCase();
       groupTotals[group] = (groupTotals[group] || 0) + (Number(item.amount) || 0);
