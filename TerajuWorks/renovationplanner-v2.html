@@ -1542,15 +1542,15 @@ function prepareManualItem(roomId) {
   newBox?.classList.add("hidden"); qtyWrap?.classList.remove("hidden"); if (item && rate) rate.value = normalizeRate(item.rate).toFixed(2);
 }
 function refreshRenovationItemMutation() {
-  const renderV2 = window.__TERAJU_RENOVATION_V2_RENDER_CURRENT_BUDGET;
-  if (typeof renderV2 !== "function") {
-    console.error("[TERAJU RENOVATION V2] V2 render API is not available.");
+  const updateV2 = window.__TERAJU_RENOVATION_V2_UPDATE_ESTIMATE;
+  if (typeof updateV2 !== "function") {
+    console.error("[TERAJU RENOVATION V2] V2 calculation engine is not available.");
     return false;
   }
   try {
-    return renderV2() !== false;
+    return updateV2({ reason: "item-mutation" }) !== false;
   } catch (error) {
-    console.error("[TERAJU RENOVATION V2] Item mutation render failed.", error);
+    console.error("[TERAJU RENOVATION V2] Item mutation refresh failed.", error);
     return false;
   }
 }
@@ -1580,8 +1580,8 @@ function saveManualItem(roomId) {
   const id = `manual-${Date.now()}-${Math.random().toString(36).slice(2,8)}`;
   if (!manualItems.has(roomId)) manualItems.set(roomId, []);
   manualItems.get(roomId).push({ id, roomId, roomType, description, unit, qty, rate, amount: Math.round((qty * rate + Number.EPSILON) * 100) / 100 });
-  refreshRenovationItemMutation();
   saveContractorState();
+  refreshRenovationItemMutation();
 }
 window.saveManualItem = saveManualItem;
 
@@ -2909,7 +2909,7 @@ initContractorMode();
 <script src="location-autocomplete.js"></script>
 <script src="state-rate-gate.js?v=20260924-state-v1"></script>
 <script src="renovation-calculation-rules.js?v=20260924-rate-master-v1"></script>
-<script src="renovation-planner-v2-engine.js?v=20261001-item-mutation-render-v4"></script>
+<script src="renovation-planner-v2-engine.js?v=20261001-item-mutation-source-v5"></script>
 <script src="contractor-master-bridge.js?v=20260924-renovation-rate-master-v2"></script>
 <script src="quotation-quantity-fix.js?v=20261001-manual-hierarchy-v1"></script>
 <script src="quotation-records.js?v=20260930-source-flow-v1"></script>
