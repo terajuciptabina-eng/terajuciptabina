@@ -56,7 +56,7 @@
       .optional-scope label { display: block; line-height: 1.45; }
       .optional-scope .optional-rate { width: 90px !important; min-width: 90px !important; flex: 0 0 90px; }
       #customerSummary { grid-template-columns: minmax(0, 1fr) !important; gap: 12px !important; }
-      #estimateContent input[type="number"], #estimateContent input[type="text"] { min-height: 42px; }
+      #renovationBudgetContent input[type="number"], #renovationBudgetContent input[type="text"] { min-height: 42px; }
       input[name="quotationType"] { min-height: 20px; width: 20px; flex-shrink: 0; }
       .quotation-option { width: 100%; }
       #quotationDocument { width: 100%; max-width: 100%; padding: 16px !important; }
@@ -123,7 +123,7 @@
 
     /* Keep contractor editable estimate rows visually identical to homeowner rows.
        Only editability differs; row height/spacing must not change by audience. */
-    #estimateContent table textarea {
+    #renovationBudgetContent table textarea {
       min-height: 40px !important;
       height: auto !important;
       field-sizing: content;
@@ -131,15 +131,15 @@
       overflow: hidden !important;
       white-space: pre-wrap !important;
     }
-    #estimateContent table .homeowner-locked {
+    #renovationBudgetContent table .homeowner-locked {
       min-height: 40px !important;
       box-sizing: border-box !important;
     }
     /* Estimate item controls use the same flat visual shape in both modes.
        Contractor remains editable; Homeowner remains read-only. */
-    #estimateContent table input,
-    #estimateContent table textarea,
-    #estimateContent table .homeowner-locked {
+    #renovationBudgetContent table input,
+    #renovationBudgetContent table textarea,
+    #renovationBudgetContent table .homeowner-locked {
       border-radius: 0 !important;
     }
 
@@ -164,9 +164,9 @@
 
     body.contractor-mode .homeowner-locked { display: none !important; }
     body.contractor-mode .homeowner-rate-blurred { display: none !important; }
-    body.contractor-mode #estimateContent .homeowner-locked { display: none !important; }
-    body.contractor-mode #estimateContent textarea.contractor-only { display: block !important; }
-    body.homeowner-mode #estimateContent textarea.contractor-only { display: none !important; }
+    body.contractor-mode #renovationBudgetContent .homeowner-locked { display: none !important; }
+    body.contractor-mode #renovationBudgetContent textarea.contractor-only { display: block !important; }
+    body.homeowner-mode #renovationBudgetContent textarea.contractor-only { display: none !important; }
 
 
     /* =========================================================
@@ -271,14 +271,14 @@
 
 /* Mobile quotation — same table structure as desktop, responsive shrink */
 @media (max-width: 767px) {
-  #estimateContent,
-  #estimateContent > .overflow-x-auto {
+  #renovationBudgetContent,
+  #renovationBudgetContent > .overflow-x-auto {
     width:100% !important;
     max-width:100% !important;
     overflow-x:hidden !important;
     overflow-y:visible !important;
   }
-  #estimateContent table {
+  #renovationBudgetContent table {
     width:100% !important;
     min-width:0 !important;
     max-width:100% !important;
@@ -286,40 +286,40 @@
     border-collapse:collapse !important;
     font-size:8px !important;
   }
-  .homeowner-mode #estimateContent table th,
-  .homeowner-mode #estimateContent table td,
-  .homeowner-mode #estimateContent table .homeowner-locked { font-size:8px !important; }
-  #estimateContent table thead { display:table-header-group !important; }
-  #estimateContent table tbody,
-  #estimateContent table tfoot { display:table-row-group !important; }
-  #estimateContent table tr { display:table-row !important; }
-  #estimateContent table th,
-  #estimateContent table td {
+  .homeowner-mode #renovationBudgetContent table th,
+  .homeowner-mode #renovationBudgetContent table td,
+  .homeowner-mode #renovationBudgetContent table .homeowner-locked { font-size:8px !important; }
+  #renovationBudgetContent table thead { display:table-header-group !important; }
+  #renovationBudgetContent table tbody,
+  #renovationBudgetContent table tfoot { display:table-row-group !important; }
+  #renovationBudgetContent table tr { display:table-row !important; }
+  #renovationBudgetContent table th,
+  #renovationBudgetContent table td {
     display:table-cell !important;
     padding:5px 2px !important;
     vertical-align:top !important;
   }
-  #estimateContent table th:nth-child(1),#estimateContent table td:nth-child(1){width:31% !important}
-  #estimateContent table th:nth-child(2),#estimateContent table td:nth-child(2){width:7% !important}
-  #estimateContent table th:nth-child(3),#estimateContent table td:nth-child(3){width:12% !important}
-  #estimateContent table th:nth-child(4),#estimateContent table td:nth-child(4){width:15% !important}
-  #estimateContent table th:nth-child(5),#estimateContent table td:nth-child(5){width:20% !important}
-  #estimateContent table th:nth-child(6),#estimateContent table td:nth-child(6){width:15% !important}
-  #estimateContent table th,
-  #estimateContent table td { overflow-wrap:normal !important; word-break:normal !important; }
-  #estimateContent table th:first-child,
-  #estimateContent table td:first-child { overflow-wrap:anywhere !important; word-break:break-word !important; }
-  #estimateContent table th:nth-child(n+2),
-  #estimateContent table td:nth-child(n+2) { white-space:nowrap !important; }
-  #estimateContent table td:nth-child(2),
-  #estimateContent table td:nth-child(3),
-  #estimateContent table td:nth-child(4),
-  #estimateContent table td:nth-child(6) { text-align:center !important; }
-  #estimateContent table th:nth-child(5),
-  #estimateContent table td:nth-child(5) { text-align:right !important; }
-  #estimateContent table input,
-  #estimateContent table select,
-  #estimateContent table textarea {
+  #renovationBudgetContent table th:nth-child(1),#renovationBudgetContent table td:nth-child(1){width:31% !important}
+  #renovationBudgetContent table th:nth-child(2),#renovationBudgetContent table td:nth-child(2){width:7% !important}
+  #renovationBudgetContent table th:nth-child(3),#renovationBudgetContent table td:nth-child(3){width:12% !important}
+  #renovationBudgetContent table th:nth-child(4),#renovationBudgetContent table td:nth-child(4){width:15% !important}
+  #renovationBudgetContent table th:nth-child(5),#renovationBudgetContent table td:nth-child(5){width:20% !important}
+  #renovationBudgetContent table th:nth-child(6),#renovationBudgetContent table td:nth-child(6){width:15% !important}
+  #renovationBudgetContent table th,
+  #renovationBudgetContent table td { overflow-wrap:normal !important; word-break:normal !important; }
+  #renovationBudgetContent table th:first-child,
+  #renovationBudgetContent table td:first-child { overflow-wrap:anywhere !important; word-break:break-word !important; }
+  #renovationBudgetContent table th:nth-child(n+2),
+  #renovationBudgetContent table td:nth-child(n+2) { white-space:nowrap !important; }
+  #renovationBudgetContent table td:nth-child(2),
+  #renovationBudgetContent table td:nth-child(3),
+  #renovationBudgetContent table td:nth-child(4),
+  #renovationBudgetContent table td:nth-child(6) { text-align:center !important; }
+  #renovationBudgetContent table th:nth-child(5),
+  #renovationBudgetContent table td:nth-child(5) { text-align:right !important; }
+  #renovationBudgetContent table input,
+  #renovationBudgetContent table select,
+  #renovationBudgetContent table textarea {
     width:100% !important;
     min-width:0 !important;
     max-width:100% !important;
@@ -328,25 +328,25 @@
     font-size:8px !important;
     box-sizing:border-box !important;
   }
-  #estimateContent table textarea { min-height:40px !important; height:40px !important; }
-  #estimateContent table .homeowner-locked { min-height:40px !important; box-sizing:border-box !important; }
-  #estimateContent table tr > td { padding-top:2px !important; padding-bottom:2px !important; }
-  #estimateContent table input,
-  #estimateContent table select {
+  #renovationBudgetContent table textarea { min-height:40px !important; height:40px !important; }
+  #renovationBudgetContent table .homeowner-locked { min-height:40px !important; box-sizing:border-box !important; }
+  #renovationBudgetContent table tr > td { padding-top:2px !important; padding-bottom:2px !important; }
+  #renovationBudgetContent table input,
+  #renovationBudgetContent table select {
     min-height:30px !important;
     height:30px !important;
     padding-top:2px !important;
     padding-bottom:2px !important;
     line-height:1.15 !important;
   }
-  #estimateContent table textarea {
+  #renovationBudgetContent table textarea {
     min-height:40px !important;
     height:40px !important;
     padding:4px 6px !important;
     line-height:16px !important;
     resize:none !important;
   }
-  #estimateContent table .homeowner-locked {
+  #renovationBudgetContent table .homeowner-locked {
     min-height:40px !important;
     height:40px !important;
     padding:4px 6px !important;
@@ -354,15 +354,15 @@
     box-sizing:border-box !important;
     overflow:hidden !important;
   }
-  #estimateContent table td:nth-child(6) button {
+  #renovationBudgetContent table td:nth-child(6) button {
     min-height:30px !important;
     height:30px !important;
     padding-top:2px !important;
     padding-bottom:2px !important;
   }
-  #estimateContent table td:nth-child(n+2) { vertical-align:middle !important; }
+  #renovationBudgetContent table td:nth-child(n+2) { vertical-align:middle !important; }
   .estimate-total-value { padding-right:2px !important; }
-  #estimateContent table td:nth-child(6) button {
+  #renovationBudgetContent table td:nth-child(6) button {
     width:100% !important;
     min-width:0 !important;
     min-height:30px !important;
@@ -371,7 +371,7 @@
     line-height:1.1 !important;
     white-space:nowrap !important;
   }
-  #estimateContent table .homeowner-locked {
+  #renovationBudgetContent table .homeowner-locked {
     width:100% !important;
     min-width:0 !important;
     max-width:100% !important;
@@ -379,8 +379,8 @@
     overflow-wrap:anywhere !important;
     word-break:break-word !important;
   }
-  #estimateContent table .quotation-section-row td,
-  #estimateContent table .quotation-subsection-row td {
+  #renovationBudgetContent table .quotation-section-row td,
+  #renovationBudgetContent table .quotation-subsection-row td {
     text-align:left !important;
     padding:7px 5px !important;
     font-size:10px !important;
@@ -388,13 +388,13 @@
     overflow-wrap:normal !important;
     word-break:normal !important;
   }
-  #estimateContent table tr.border-b:has(td[colspan="4"]) td:nth-child(5) {
+  #renovationBudgetContent table tr.border-b:has(td[colspan="4"]) td:nth-child(5) {
     text-align:left !important;
     white-space:nowrap !important;
     overflow-wrap:normal !important;
     word-break:normal !important;
   }
-  #estimateContent table tr.border-b:has(td[colspan="4"]) td:nth-child(6) {
+  #renovationBudgetContent table tr.border-b:has(td[colspan="4"]) td:nth-child(6) {
     text-align:right !important;
     white-space:nowrap !important;
     overflow-wrap:normal !important;
@@ -798,21 +798,19 @@ main>section:not(:first-child){scroll-margin-top:92px} main>section>div:first-ch
       </div>
     </div>
 
-    <div id="estimateContent" class="mt-6">
-      <div id="renovationBudgetPending" class="border rounded-xl bg-gray-50 p-5 text-center">
-        <div class="text-sm font-semibold text-gray-800">Renovation budget is waiting for your final room / area review.</div>
-        <div class="mt-1 text-xs text-gray-500">Review, add, edit or remove rooms first. Generate the renovation budget when your room schedule is final.</div>
-        <button type="button" id="generateRenovationBudgetBtn"
-          onclick="return window.__TERAJU_RENOVATION_V2_GENERATE_BUDGET ? window.__TERAJU_RENOVATION_V2_GENERATE_BUDGET() : false;"
-          class="mt-4 inline-flex items-center justify-center rounded-xl bg-gray-900 px-5 py-3 text-sm font-bold text-white shadow-sm">
-          Generate Renovation Budget
-        </button>
-      </div>
+    <div id="renovationBudgetPending" class="mt-6 border rounded-xl bg-gray-50 p-5 text-center">
+      <div class="text-sm font-semibold text-gray-800">Renovation budget is waiting for your final room / area review.</div>
+      <div class="mt-1 text-xs text-gray-500">Review, add, edit or remove rooms first. Generate the renovation budget when your room schedule is final.</div>
+      <button type="button" id="generateRenovationBudgetBtn"
+        onclick="return window.__TERAJU_RENOVATION_V2_GENERATE_BUDGET ? window.__TERAJU_RENOVATION_V2_GENERATE_BUDGET() : false;"
+        class="mt-4 inline-flex items-center justify-center rounded-xl bg-gray-900 px-5 py-3 text-sm font-bold text-white shadow-sm">
+        Generate Renovation Budget
+      </button>
     </div>
 
     <div id="renovationBudgetResults" class="hidden">
       <div id="customerSummary" class="grid md:grid-cols-4 gap-5 mb-6 text-sm"></div>
-      <div id="renovationBudgetTable" class="overflow-x-auto"></div>
+      <div id="renovationBudgetContent" class="overflow-x-auto"></div>
       <div class="contractor-only no-print mt-5 flex justify-end">
         <button type="button" onclick="restoreAllItems()" class="border px-4 py-2 rounded-lg text-sm hover:bg-gray-50">
           Restore All Items
@@ -1307,7 +1305,7 @@ function setRenovationBudgetGenerated(generated) {
 window.__TERAJU_RENOVATION_BUDGET_STATE_SET = setRenovationBudgetGenerated;
 
 window.showRenovationBudgetPending = function(message) {
-  const container = document.getElementById("renovationBudgetTable");
+  const container = document.getElementById("renovationBudgetContent");
   if (!container) return;
   const text = message || "Review the rooms, names, conditions and sqft, then click <strong>Save Room / Area</strong>. After saving, click <strong>Generate Renovation Budget</strong>.";
   container.innerHTML = `
@@ -1666,7 +1664,7 @@ function updateEstimate() {
 }
 
 function renderBudgetSummaryAtBottom(items, roomGroups, roomSubtotals, projectPreliminaries) {
-  const container = document.getElementById("estimateContent");
+  const container = document.getElementById("renovationBudgetContent");
   const table = container?.querySelector("table");
   const tbody = table?.querySelector("tbody");
   if (!table || !tbody) return;
@@ -1789,7 +1787,7 @@ function renderBudgetSummaryAtBottom(items, roomGroups, roomSubtotals, projectPr
 }
 
 function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, total) {
-  const container = document.getElementById("renovationBudgetTable");
+  const container = document.getElementById("renovationBudgetContent");
   const brand = typeof window.__TERAJU_PREVIEW_BRANDING === "function" ? window.__TERAJU_PREVIEW_BRANDING() : null;
   const customer = document.getElementById("customerName")?.value || "Not specified";
   const location = document.getElementById("projectLocation")?.value || "Not specified";
@@ -2777,7 +2775,7 @@ function generateQuotationConfirmed(type) {
   // Do not calculate, refresh, or rebuild Renovation Budget here.
   // Preview must take a static snapshot of the Budget that is already on screen,
   // then place that snapshot between the existing quotation header and footer.
-  const budget = document.getElementById("estimateContent");
+  const budget = document.getElementById("renovationBudgetContent");
   const content = document.getElementById("quotationContent");
   if (!budget || !content) {
     alert("Renovation Budget is not ready. Please try again.");
