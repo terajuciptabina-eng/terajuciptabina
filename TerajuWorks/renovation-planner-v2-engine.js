@@ -294,6 +294,7 @@
   }
 
   function allItems(){
+    if(!roomGroups().some(room => Number(room.area) > 0)) return [];
     return [...renovationItems(),...buildItems()].map(item=>{
       item.qty=typeof normalizeQuantity==='function'?normalizeQuantity(item.qty):Math.max(0,Math.ceil(Number(item.qty)||0));
       item.rate=typeof normalizeRate==='function'?normalizeRate(item.rate):Math.round((Number(item.rate)||0)*100)/100;
@@ -305,7 +306,7 @@
   function quotationData(){
     const rooms=roomGroups();
     const excluded=typeof excludedItems!=='undefined' ? excludedItems : new Set();
-    const active=allItems().filter(item=>!excluded.has(item.id));
+    const active=rooms.length ? allItems().filter(item=>!excluded.has(item.id)) : [];
     const renovationPrelim=renovationProjectData();
     const itemsByRoom={},roomSubtotals={};
     rooms.forEach(room=>{
@@ -336,6 +337,13 @@
     }
 
     const rooms=roomGroups();
+    if(!rooms.some(room => Number(room.area) > 0)){
+      if(typeof window.showRenovationBudgetPending==='function'){
+        window.showRenovationBudgetPending("Add and save at least one Room / Area with a valid sqft before generating the Renovation Budget.");
+      }
+      window.__TERAJU_RENOVATION_BUDGET_GENERATED=false;
+      return false;
+    }
     const items=allItems();
     const excluded=typeof excludedItems!=='undefined' ? excludedItems : new Set();
     const active=items.filter(item=>!excluded.has(item.id));
@@ -367,6 +375,12 @@
   }
 
   function generateBudget(){
+    if(!roomGroups().some(room => Number(room.area) > 0)){
+      if(typeof window.showRenovationBudgetPending==='function'){
+        window.showRenovationBudgetPending("Add and save at least one Room / Area with a valid sqft before generating the Renovation Budget.");
+      }
+      return false;
+    }
     if(typeof window.__TERAJU_RENOVATION_ROOM_SCHEDULE_IS_SAVED==='function' &&
        !window.__TERAJU_RENOVATION_ROOM_SCHEDULE_IS_SAVED()){
       alert('Please Save Room / Area before generating the Renovation Budget.');
