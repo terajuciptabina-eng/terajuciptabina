@@ -53,6 +53,30 @@
           "groupKey": null,
           "groupTitle": "Construction Budget",
           "updatedAt": "2026-09-23T19:37:02.601Z"
+        },
+        {
+          "customItemId": "ITEM-master-main-building-/-footing-/-concrete",
+          "sourceType": "override",
+          "sourceGlobalId": "master-MAIN BUILDING / Footing / Concrete",
+          "plannerType": "renovation",
+          "description": "Supply and construct Grade 15 concrete footing.",
+          "unit": "m³",
+          "rate": 440,
+          "globalRate": 550,
+          "rateDelta": -110,
+          "rateDeltaPercent": -20,
+          "overrideActive": true,
+          "state": "negeri-sembilan",
+          "rateSetId": "negeri-sembilan",
+          "approvalStatus": "pending",
+          "reviewedAt": null,
+          "reviewedBy": null,
+          "reviewNote": null,
+          "capturedAt": "2026-10-01T09:20:02.733Z",
+          "category": "direct-rate-override",
+          "groupKey": "structure",
+          "groupTitle": "Footing",
+          "updatedAt": "2026-10-01T09:20:02.733Z"
         }
       ],
       "marketHistory": [
@@ -208,9 +232,34 @@
           "updatedAt": "2026-09-23T20:08:12.035Z",
           "eventType": "rate-approved",
           "previousApprovalStatus": "pending"
+        },
+        {
+          "customItemId": "ITEM-master-main-building-/-footing-/-concrete",
+          "sourceType": "override",
+          "sourceGlobalId": "master-MAIN BUILDING / Footing / Concrete",
+          "plannerType": "renovation",
+          "description": "Supply and construct Grade 15 concrete footing.",
+          "unit": "m³",
+          "rate": 440,
+          "globalRate": 550,
+          "rateDelta": -110,
+          "rateDeltaPercent": -20,
+          "overrideActive": true,
+          "state": "negeri-sembilan",
+          "rateSetId": "negeri-sembilan",
+          "approvalStatus": "pending",
+          "reviewedAt": null,
+          "reviewedBy": null,
+          "reviewNote": null,
+          "capturedAt": "2026-10-01T09:20:02.733Z",
+          "category": "direct-rate-override",
+          "groupKey": "structure",
+          "groupTitle": "Footing",
+          "updatedAt": "2026-10-01T09:20:02.733Z",
+          "eventType": "override-update"
         }
       ]
     }
   ],
-  "updatedAt": "2026-09-23T20:10:16.634Z"
+  "updatedAt": "2026-10-01T09:20:02.733Z"
 }
