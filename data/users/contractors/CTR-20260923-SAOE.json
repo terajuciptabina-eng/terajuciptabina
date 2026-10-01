@@ -4017,15 +4017,15 @@
           "name": "Tuan Iman"
         },
         "project": {
-          "location": "Eka Height Sendayan (New Kitchen & New Bathroom Only)",
+          "location": "Not specified",
           "builtUpArea": 400,
           "state": "selangor"
         },
-        "total": 79822,
+        "total": 69306,
         "plannerState": {
           "customerName": "Tuan Iman",
-          "projectLocation": "Eka Height Sendayan (New Kitchen & New Bathroom Only)",
-          "builtUpArea": 400,
+          "projectLocation": "",
+          "builtUpArea": "400",
           "rooms": [
             {
               "id": "room-1",
@@ -4211,11 +4211,11 @@
           ],
           "quotationType": "simple",
           "projectId": "PRJ-REN-MUPBQHP8-74M0A",
-          "constructionBudgetGenerated": false,
+          "constructionBudgetGenerated": true,
           "projectState": "selangor",
           "rateSetId": "default",
           "rateSetName": "Default Rate",
-          "rateSnapshotAt": "2026-10-01T13:13:47.556Z"
+          "rateSnapshotAt": "2026-10-01T13:18:44.519Z"
         },
         "itemListVersion": 1,
         "items": [
@@ -4492,19 +4492,53 @@
             "room": "Project"
           },
           {
-            "id": "master-main-building-/-roof-/-metal-roofing-sheet",
+            "id": "master-main-building-/-flat-roof-/-concrete",
             "category": "structures",
-            "description": "Supply and install metal roofing sheet to selected roof, 25° pitch with 3ft overhang.",
-            "unit": "m²",
-            "qty": 32,
-            "rate": 420,
-            "amount": 13440,
+            "description": "Supply and construct 100mm thick Grade 25 concrete flat roof slab including waterproofing.",
+            "unit": "m³",
+            "qty": 2,
+            "rate": 550,
+            "amount": 1100,
             "header": "",
             "level3": "",
             "section": "",
-            "groupTitle": " Roof ",
+            "groupTitle": " Flat Roof ",
             "groupKey": "structure",
-            "masterPath": "MAIN BUILDING / Roof / Metal Roofing Sheet",
+            "masterPath": "MAIN BUILDING / Flat Roof / Concrete",
+            "roomId": "project",
+            "room": "Project"
+          },
+          {
+            "id": "master-main-building-/-flat-roof-/-formwork",
+            "category": "structures",
+            "description": "Provide underside formwork to concrete flat roof slab.",
+            "unit": "m²",
+            "qty": 19,
+            "rate": 55,
+            "amount": 1045,
+            "header": "",
+            "level3": "",
+            "section": "",
+            "groupTitle": " Flat Roof ",
+            "groupKey": "structure",
+            "masterPath": "MAIN BUILDING / Flat Roof / Formwork",
+            "roomId": "project",
+            "room": "Project"
+          },
+          {
+            "id": "master-main-building-/-flat-roof-/-brc",
+            "category": "structures",
+            "description": "Supply and install BRC A7 reinforcement to flat roof slab, double layer.",
+            "unit": "m²",
+            "qty": 38,
+            "rate": 20.5,
+            "amount": 779,
+            "header": "",
+            "level3": "",
+            "section": "",
+            "groupTitle": " Flat Roof ",
+            "groupKey": "structure",
+            "masterPath": "MAIN BUILDING / Flat Roof / BRC",
             "roomId": "project",
             "room": "Project"
           },
@@ -5054,7 +5088,7 @@
           }
         ],
         "createdAt": "2026-10-01T09:22:58.738Z",
-        "updatedAt": "2026-10-01T13:13:48.613Z",
+        "updatedAt": "2026-10-01T13:18:46.189Z",
         "estimateNumber": "EST-REN-014"
       },
       {
@@ -7316,7 +7350,7 @@
     ]
   },
   "createdAt": "2026-09-23T08:33:53.459Z",
-  "updatedAt": "2026-10-01T13:13:48.613Z",
+  "updatedAt": "2026-10-01T13:18:46.189Z",
   "quotationRunningNumber": {
     "renovation": 17,
     "build": 14
