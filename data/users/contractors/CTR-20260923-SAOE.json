@@ -5481,14 +5481,14 @@
         },
         "project": {
           "location": "Eka Height Sendayan",
-          "builtUpArea": 600,
+          "builtUpArea": 400,
           "state": "selangor"
         },
         "total": 0,
         "plannerState": {
           "customerName": "Tuan Iman",
           "projectLocation": "Eka Height Sendayan",
-          "builtUpArea": "600",
+          "builtUpArea": 400,
           "rooms": [
             {
               "id": "room-1",
@@ -5502,13 +5502,6 @@
               "type": "balcony",
               "condition": "existing",
               "name": "Balcony",
-              "area": "200"
-            },
-            {
-              "id": "room-3",
-              "type": "porch",
-              "condition": "existing",
-              "name": "Porch",
               "area": "200"
             }
           ],
@@ -5752,13 +5745,13 @@
           "projectState": "selangor",
           "rateSetId": "default",
           "rateSetName": "Default Rate",
-          "rateSnapshotAt": "2026-10-01T07:39:47.131Z",
+          "rateSnapshotAt": "2026-10-01T07:53:41.868Z",
           "quotationId": "QT-REN-MUP8LSHB-89GJ2"
         },
         "itemListVersion": 1,
         "items": [],
         "createdAt": "2026-10-01T07:53:08.197Z",
-        "updatedAt": "2026-10-01T07:53:08.197Z",
+        "updatedAt": "2026-10-01T07:53:43.259Z",
         "estimateNumber": "EST-REN-012",
         "sourceItems": []
       },
@@ -7161,12 +7154,12 @@
         ],
         "createdAt": "2026-10-01T07:38:56.553Z",
         "updatedAt": "2026-10-01T07:39:48.051Z",
-        "estimateNumber": "EST-REN-011"
+        "estimateNumber": "EST-REN-012"
       }
     ]
   },
   "createdAt": "2026-09-23T08:33:53.459Z",
-  "updatedAt": "2026-10-01T07:53:08.197Z",
+  "updatedAt": "2026-10-01T07:53:43.259Z",
   "quotationRunningNumber": {
     "renovation": 13,
     "build": 14
