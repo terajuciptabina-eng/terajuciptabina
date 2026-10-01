@@ -1,4 +1,4 @@
-/* TERAJU RENOVATION PLANNER V2
+/* TERAJU RENOVATION PLANNER V2\n   Source-level item mutation refresh: Add/Edit/Delete/Restore reuse calculateAndRenderBudget().
    Single calculation source:
    Existing room -> Renovation Planner rules source
    New room      -> Build Planner V2 rules/items
@@ -369,8 +369,17 @@
     return true;
   }
 
-  function update(){
-    if(window.__TERAJU_RENOVATION_BUDGET_GENERATED !== true) return false;
+  function update(options = {}){
+    const reason = String(options?.reason || "");
+    const isItemMutation = reason === "item-mutation";
+
+    // Room / Area changes still obey the explicit Save Room / Area ->
+    // Generate Renovation Budget flow. Item mutations are different:
+    // once the Budget is already on screen, Add/Edit/Delete/Restore must
+    // refresh that same V2 calculation source even if the generated-state
+    // flag was temporarily invalidated by another UI operation.
+    if(window.__TERAJU_RENOVATION_BUDGET_GENERATED !== true && !isItemMutation) return false;
+
     return calculateAndRenderBudget();
   }
 
