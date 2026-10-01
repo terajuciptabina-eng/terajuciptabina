@@ -1547,10 +1547,35 @@ function refreshRenovationItemMutation() {
     console.error("[TERAJU RENOVATION V2] V2 calculation engine is not available.");
     return false;
   }
+
+  // Item mutations must repaint the existing budget immediately.
+  // The V2 engine remains the single calculation source. If the normal
+  // V2 update returns false or throws before replacing the DOM, reuse the
+  // same V2 quotation data for the final render instead of leaving the
+  // Add Item form visible until the next page load.
   try {
-    return updateV2({ reason: "item-mutation" }) !== false;
+    const rendered = updateV2({ reason: "item-mutation" });
+    if (rendered !== false) return true;
   } catch (error) {
     console.error("[TERAJU RENOVATION V2] Item mutation refresh failed.", error);
+  }
+
+  try {
+    const getData = window.__TERAJU_RENOVATION_V2_GET_QUOTATION_DATA;
+    if (typeof getData !== "function" || typeof renderEstimate !== "function") return false;
+    const data = getData();
+    if (!data || !Array.isArray(data.allItems)) return false;
+    renderEstimate(
+      data.allItems,
+      data.roomGroups || [],
+      data.roomSubtotals || {},
+      Number(data.projectPreliminaries || 0),
+      Number(data.total || 0)
+    );
+    window.__TERAJU_RENOVATION_BUDGET_GENERATED = true;
+    return true;
+  } catch (error) {
+    console.error("[TERAJU RENOVATION V2] Canonical quotation repaint failed.", error);
     return false;
   }
 }
@@ -2909,7 +2934,7 @@ initContractorMode();
 <script src="location-autocomplete.js"></script>
 <script src="state-rate-gate.js?v=20260924-state-v1"></script>
 <script src="renovation-calculation-rules.js?v=20260924-rate-master-v1"></script>
-<script src="renovation-planner-v2-engine.js?v=20261001-item-mutation-source-v5"></script>
+<script src="renovation-planner-v2-engine.js?v=20261001-item-mutation-source-v6"></script>
 <script src="contractor-master-bridge.js?v=20260924-renovation-rate-master-v2"></script>
 <script src="quotation-quantity-fix.js?v=20261001-manual-hierarchy-v1"></script>
 <script src="quotation-records.js?v=20260930-source-flow-v1"></script>
