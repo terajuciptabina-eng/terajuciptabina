@@ -2764,11 +2764,11 @@
           "builtUpArea": 200,
           "state": "negeri-sembilan"
         },
-        "total": 49031,
+        "total": 59547,
         "plannerState": {
           "customerName": "Tuan Iman",
           "projectLocation": "Eka Height Sendayan",
-          "builtUpArea": 200,
+          "builtUpArea": "200",
           "rooms": [
             {
               "id": "room-2",
@@ -2925,12 +2925,7 @@
             ]
           ],
           "customDescriptions": [],
-          "customRoomLabels": [
-            [
-              "room-1",
-              "Wet Kitchen"
-            ]
-          ],
+          "customRoomLabels": [],
           "excludedItems": [
             "project-preliminaries"
           ],
@@ -2963,11 +2958,11 @@
           ],
           "quotationType": "simple",
           "projectId": "PRJ-REN-MUP83KZ0-BWDBB",
-          "constructionBudgetGenerated": false,
+          "constructionBudgetGenerated": true,
           "projectState": "negeri-sembilan",
           "rateSetId": "default",
           "rateSetName": "Default Rate",
-          "rateSnapshotAt": "2026-10-01T08:56:05.560Z"
+          "rateSnapshotAt": "2026-10-01T08:56:19.077Z"
         },
         "itemListVersion": 1,
         "items": [
@@ -3210,53 +3205,19 @@
             "room": "Project"
           },
           {
-            "id": "master-main-building-/-flat-roof-/-concrete",
+            "id": "master-main-building-/-roof-/-metal-roofing-sheet",
             "category": "structures",
-            "description": "Supply and construct 100mm thick Grade 25 concrete flat roof slab including waterproofing.",
-            "unit": "m³",
-            "qty": 2,
-            "rate": 550,
-            "amount": 1100,
-            "header": "",
-            "level3": "",
-            "section": "",
-            "groupTitle": " Flat Roof ",
-            "groupKey": "structure",
-            "masterPath": "MAIN BUILDING / Flat Roof / Concrete",
-            "roomId": "project",
-            "room": "Project"
-          },
-          {
-            "id": "master-main-building-/-flat-roof-/-formwork",
-            "category": "structures",
-            "description": "Provide underside formwork to concrete flat roof slab.",
+            "description": "Supply and install metal roofing sheet to selected roof, 25° pitch with 3ft overhang.",
             "unit": "m²",
-            "qty": 19,
-            "rate": 55,
-            "amount": 1045,
+            "qty": 32,
+            "rate": 420,
+            "amount": 13440,
             "header": "",
             "level3": "",
             "section": "",
-            "groupTitle": " Flat Roof ",
+            "groupTitle": " Roof ",
             "groupKey": "structure",
-            "masterPath": "MAIN BUILDING / Flat Roof / Formwork",
-            "roomId": "project",
-            "room": "Project"
-          },
-          {
-            "id": "master-main-building-/-flat-roof-/-brc",
-            "category": "structures",
-            "description": "Supply and install BRC A7 reinforcement to flat roof slab, double layer.",
-            "unit": "m²",
-            "qty": 38,
-            "rate": 20.5,
-            "amount": 779,
-            "header": "",
-            "level3": "",
-            "section": "",
-            "groupTitle": " Flat Roof ",
-            "groupKey": "structure",
-            "masterPath": "MAIN BUILDING / Flat Roof / BRC",
+            "masterPath": "MAIN BUILDING / Roof / Metal Roofing Sheet",
             "roomId": "project",
             "room": "Project"
           },
@@ -3636,7 +3597,7 @@
           }
         ],
         "createdAt": "2026-10-01T07:53:08.197Z",
-        "updatedAt": "2026-10-01T08:56:06.894Z",
+        "updatedAt": "2026-10-01T08:56:19.912Z",
         "estimateNumber": "EST-REN-012"
       },
       {
@@ -5043,7 +5004,7 @@
     ]
   },
   "createdAt": "2026-09-23T08:33:53.459Z",
-  "updatedAt": "2026-10-01T08:56:06.894Z",
+  "updatedAt": "2026-10-01T08:56:19.912Z",
   "quotationRunningNumber": {
     "renovation": 13,
     "build": 14
