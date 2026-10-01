@@ -35,5 +35,5 @@
 .tw-theme .card>.flex.items-center.justify-between>.flex.items-center{margin-left:auto}
 
 /* Canonical Admin page branding: one official TERAJUWORKS logo per Admin tool. */
-.tw-theme .admin-page-logo{display:block;width:min(220px,58vw);height:auto;margin:0 0 14px;flex:0 0 auto}
-@media(max-width:767px){.tw-theme .admin-page-logo{width:min(205px,72vw);margin-bottom:12px}}
+.tw-theme .admin-page-logo{display:block;width:min(340px,62vw);height:auto;margin:0 0 18px;flex:0 0 auto}
+@media(max-width:767px){.tw-theme .admin-page-logo{width:min(285px,82vw);margin-bottom:16px}}
