@@ -2093,7 +2093,9 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
             </td>
             <td class="estimate-amount-cell py-1 px-2 text-right font-medium tabular-nums">${money(item.amount, 2)}</td>
             <td class="no-print py-1 px-2 text-center">
-              <button type="button" onclick="${String(item.id).startsWith('manual-') ? 'removeManualItem(\\'' + (item.manualKey || item.roomId) + '\\',\\'' + item.id + '\\')' : 'excludeItem(\\'' + item.id + '\\')'}"
+              <button type="button" onclick="${escapeHtml(String(item.id).startsWith("manual-")
+                ? `removeManualItem(${JSON.stringify(item.manualKey || item.roomId)},${JSON.stringify(item.id)})`
+                : `excludeItem(${JSON.stringify(item.id)})`)}"
                 class="no-print text-red-600 text-xs border border-red-200 rounded px-2 py-1 hover:bg-red-50">Delete</button>
             </td>
           </tr>`;
