@@ -800,7 +800,7 @@ main>section:not(:first-child){scroll-margin-top:92px} main>section>div:first-ch
 
     <div id="renovationBudgetPending" class="mt-6 border rounded-xl bg-gray-50 p-5 text-center">
       <div class="text-sm font-semibold text-gray-800">Renovation budget is waiting for your final room / area review.</div>
-      <div class="mt-1 text-xs text-gray-500">Review, add, edit or remove rooms first. Generate the renovation budget when your room schedule is final.</div>
+      <div id="renovationBudgetPendingMessage" class="mt-1 text-xs text-gray-500">Review, add, edit or remove rooms first. Generate the renovation budget when your room schedule is final.</div>
       <button type="button" id="generateRenovationBudgetBtn"
         onclick="return window.__TERAJU_RENOVATION_V2_GENERATE_BUDGET ? window.__TERAJU_RENOVATION_V2_GENERATE_BUDGET() : false;"
         class="mt-4 inline-flex items-center justify-center rounded-xl bg-gray-900 px-5 py-3 text-sm font-bold text-white shadow-sm">
@@ -1305,14 +1305,18 @@ function setRenovationBudgetGenerated(generated) {
 window.__TERAJU_RENOVATION_BUDGET_STATE_SET = setRenovationBudgetGenerated;
 
 window.showRenovationBudgetPending = function(message) {
-  const container = document.getElementById("renovationBudgetContent");
-  if (!container) return;
-  const text = message || "Review the rooms, names, conditions and sqft, then click <strong>Save Room / Area</strong>. After saving, click <strong>Generate Renovation Budget</strong>.";
-  container.innerHTML = `
-    <div class="border border-dashed border-gray-300 rounded-xl bg-gray-50 p-6 text-center">
-      <p class="font-semibold text-gray-900">Renovation Budget is waiting for your confirmation.</p>
-      <p class="text-sm text-gray-500 mt-1">${text}</p>
-    </div>`;
+  const pending = document.getElementById("renovationBudgetPending");
+  const results = document.getElementById("renovationBudgetResults");
+  const messageEl = document.getElementById("renovationBudgetPendingMessage");
+  if (!pending || !results) return;
+
+  results.classList.add("hidden");
+  pending.classList.remove("hidden");
+
+  if (messageEl) {
+    messageEl.innerHTML = message || "Review the rooms, names, conditions and sqft, then click <strong>Save Room / Area</strong>. After saving, click <strong>Generate Renovation Budget</strong>.";
+  }
+
   const total = document.getElementById("grandTotal");
   if (total) total.textContent = "RM 0";
 };
