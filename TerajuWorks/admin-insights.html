@@ -73,7 +73,7 @@ th{font-size:10px;text-transform:uppercase;color:#6b7280;background:#f8fafc;lett
       <div class="admin-header-title">Insights Dashboard</div>
       <div class="admin-header-sub">Live analytics from the Admin database, separated by TERAJUWORKS business model.</div>
     </div>
-    <div class="admin-header-status" id="updated">Loading…</div>
+    <div class="admin-header-status" id="updated">Updated —</div>
   </div>
   <nav class="admin-nav">
     <a class="back-nav" href="admin.html">← Back</a>
@@ -88,7 +88,7 @@ th{font-size:10px;text-transform:uppercase;color:#6b7280;background:#f8fafc;lett
 
 <main class="wrap">
   <div class="toolbar">
-    <div class="status" id="status">Loading database…</div>
+    <div class="status" id="status"></div>
     <div>
       <select id="range"><option value="30">Last 30 days</option><option value="90">Last 90 days</option><option value="365">Last 12 months</option><option value="all">All time</option></select>
       <button id="refresh">Refresh</button>
@@ -299,7 +299,7 @@ function renderRecent(){
 }
 async function load(){
   const stopLoading=window.__twAdminLoading.bind(['.kpis','.grid','.insight-grid'],'Loading analytics…');
-  const status=document.getElementById('status');status.className='status';status.textContent='Loading database…';
+  const status=document.getElementById('status');status.className='status';status.textContent='';
   try{
     const r=await fetch(API+'?records=1',{headers:headers(),cache:'no-store'});
     let d={};try{d=await r.json()}catch{}
