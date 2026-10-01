@@ -24,9 +24,9 @@ th{font-size:10px;text-transform:uppercase;color:#6b7280;background:#fafafa}
 .actions button{width:30px;min-height:30px;padding:0;background:#fff;color:#b91c1c;border:0;font-size:18px}
 .actions a{font-size:12px;font-weight:800;color:#111827;text-decoration:none}
 .hidden{display:none!important}
-.profile-modal{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(15,23,42,.52);backdrop-filter:blur(8px)}
+.profile-modal{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;padding:12px;background:rgba(15,23,42,.52);backdrop-filter:blur(8px);overflow:auto}
 .profile-modal.open{display:flex}
-.profile-card{width:min(94vw,760px);max-height:92vh;overflow:auto;background:#fff;border:1px solid #e5e7eb;border-radius:20px;box-shadow:0 30px 90px rgba(0,0,0,.25);padding:22px}
+.profile-card{width:min(760px,calc(100vw - 24px));max-height:calc(100svh - 24px);overflow:auto;box-sizing:border-box;background:#fff;border:1px solid #e5e7eb;border-radius:20px;box-shadow:0 30px 90px rgba(0,0,0,.25);padding:22px}
 .profile-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:18px}
 .profile-head h2{margin:4px 0 0;font-size:22px}
 .profile-close{width:38px;min-height:38px;padding:0;background:#f8fafc;color:#374151;border-color:#e5e7eb}
@@ -42,8 +42,8 @@ th{font-size:10px;text-transform:uppercase;color:#6b7280;background:#fafafa}
 .profile-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:20px}
 .profile-actions button{min-width:110px}
 .profile-save{background:#111827;color:#fff}
-.profile-status{font-size:12px;margin-top:10px}
-@media(max-width:650px){.profile-grid{grid-template-columns:1fr}.profile-field.full{grid-column:auto}.profile-actions{display:grid;grid-template-columns:1fr 1fr}.profile-actions button{width:100%}}
+.profile-status{display:flex;align-items:center;gap:9px;min-height:22px;font-size:12px;margin-top:10px;color:#64748b}.profile-status.is-loading::before{content:'';width:14px;height:14px;flex:0 0 14px;border:2px solid #cfe2dd;border-top-color:#08766d;border-radius:50%;animation:profileSpin .7s linear infinite}@keyframes profileSpin{to{transform:rotate(360deg)}}
+@media(max-width:760px){.profile-card{width:calc(100vw - 20px);max-height:calc(100svh - 20px);padding:18px;border-radius:16px}.profile-head{margin-bottom:14px}.profile-head h2{font-size:20px}}@media(max-width:650px){.profile-grid{grid-template-columns:1fr}.profile-field.full{grid-column:auto}.profile-actions{display:grid;grid-template-columns:1fr 1fr}.profile-actions button{width:100%}}
 @media(max-width:760px){.tag{margin-top:10px}.wrap{padding:16px 12px}.controls{grid-template-columns:1fr}.title{font-size:22px}}
 </style>
 <link rel="stylesheet" href="shared/teraju-workspace-theme.css">
@@ -149,14 +149,14 @@ function renderProfile(account){
   profileGrid.innerHTML=html;
 }
 async function openProfile(id,accountRole){
-  profileStatus.textContent='Loading profile…';profileStatus.style.color='#6b7280';profileModal.classList.add('open');
+  profileStatus.textContent='Loading profile…';profileStatus.classList.add('is-loading');profileStatus.style.color='#64748b';profileModal.classList.add('open');
   try{
     const r=await fetch(API+'?id='+encodeURIComponent(id)+'&role='+encodeURIComponent(accountRole),{headers:adminHeaders(),cache:'no-store'});let d={};try{d=await r.json()}catch{}
     if(!r.ok)throw new Error(d.message||'Unable to load profile.');
-    activeProfile={id,role:accountRole};renderProfile(d.account);profileStatus.textContent='';
-  }catch(e){profileStatus.textContent=e.message||'Unable to load profile.';profileStatus.style.color='#b91c1c'}
+    activeProfile={id,role:accountRole};renderProfile(d.account);profileStatus.textContent='Profile loaded.';profileStatus.classList.remove('is-loading');
+  }catch(e){profileStatus.classList.remove('is-loading');profileStatus.textContent=e.message||'Unable to load profile.';profileStatus.style.color='#b91c1c'}
 }
-function closeProfile(){profileModal.classList.remove('open');profileForm.reset();activeProfile={id:'',role:''}}
+function closeProfile(){profileModal.classList.remove('open');profileForm.reset();profileStatus.classList.remove('is-loading');profileStatus.textContent='';activeProfile={id:'',role:''}}
 profileForm.onsubmit=async e=>{
   e.preventDefault();if(!activeProfile.id)return;
   const data=Object.fromEntries(new FormData(profileForm).entries()); delete data.__accountId; delete data.__role;
