@@ -8,15 +8,15 @@
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#eef1f3;color:#111827;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-.header{background:linear-gradient(135deg,#111827 0%,#1f2937 58%,#0f172a 100%);color:#fff;border-bottom:1px solid #0b1220;box-shadow:0 8px 28px rgba(15,23,42,.14)}
-.header .top{padding:18px 24px;display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+.legacy-header{background:linear-gradient(135deg,#111827 0%,#1f2937 58%,#0f172a 100%);color:#fff;border-bottom:1px solid #0b1220;box-shadow:0 8px 28px rgba(15,23,42,.14)}
+.legacy-header .top{padding:18px 24px;display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
 .eyebrow{font-size:10px;font-weight:850;letter-spacing:.14em;color:#a7f3d0;text-transform:uppercase}
 .title{font-size:28px;font-weight:850;margin:5px 0;letter-spacing:-.03em}
 .muted{color:#9ca3af;font-size:12px;line-height:1.5}
 .tag{display:inline-flex;align-items:center;min-height:30px;padding:0 11px;border:1px solid rgba(167,243,208,.25);border-radius:999px;background:rgba(255,255,255,.08);font-size:10px;font-weight:800;white-space:nowrap;color:#d1fae5;backdrop-filter:blur(8px)}
-.nav{display:flex;gap:6px;flex-wrap:nowrap;padding:0 18px 10px;overflow-x:auto;scrollbar-width:none}
-.nav a{color:#e5e7eb;text-decoration:none;font-size:11px;font-weight:750;padding:6px 9px;border:1px solid rgba(255,255,255,.14);border-radius:8px;background:rgba(255,255,255,.07);white-space:nowrap;transition:.18s ease}
-.nav a:hover{background:rgba(255,255,255,.14);border-color:rgba(167,243,208,.4);color:#fff}.nav .back-nav{font-weight:850;background:#fff;color:#111827}
+.legacy-nav{display:flex;gap:6px;flex-wrap:nowrap;padding:0 18px 10px;overflow-x:auto;scrollbar-width:none}
+.legacy-nav a{color:#e5e7eb;text-decoration:none;font-size:11px;font-weight:750;padding:6px 9px;border:1px solid rgba(255,255,255,.14);border-radius:8px;background:rgba(255,255,255,.07);white-space:nowrap;transition:.18s ease}
+.legacy-nav a:hover{background:rgba(255,255,255,.14);border-color:rgba(167,243,208,.4);color:#fff}.legacy-nav .back-nav{font-weight:850;background:#fff;color:#111827}
 .wrap{padding:14px 18px 24px;max-width:none;margin:auto}
 .toolbar{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px;padding:2px 2px}
 .toolbar select,.toolbar button{min-height:34px;border:1px solid #d1d5db;border-radius:9px;padding:0 10px;font:inherit;background:#fff;font-weight:750;box-shadow:0 2px 7px rgba(15,23,42,.05)}
@@ -62,25 +62,25 @@ th{font-size:10px;text-transform:uppercase;color:#6b7280;background:#f8fafc;lett
 .status{font-size:12px;color:#6b7280}
 .error{color:#b91c1c}
 .hidden{display:none!important}
-@media(min-width:1200px){.header .top{padding:12px 18px}.title{font-size:24px}.kpis .kpi:nth-child(n+6){padding-top:9px;padding-bottom:9px}.insight-grid .panel{min-height:220px}}
+@media(min-width:1200px){.legacy-header .top{padding:12px 18px}.title{font-size:24px}.kpis .kpi:nth-child(n+6){padding-top:9px;padding-bottom:9px}.insight-grid .panel{min-height:220px}}
 @media(max-width:1050px){.kpis{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}}
-@media(max-width:700px){.header .top{display:block;padding:14px}.nav{padding:0 14px 14px}.wrap{padding:16px 12px}.kpis{grid-template-columns:1fr 1fr}.insight-grid{grid-template-columns:1fr}.toolbar{display:block}.toolbar select,.toolbar button{margin-top:8px;width:100%}.title{font-size:23px}.chartbox{height:250px}}
+@media(max-width:700px){.legacy-header .top{display:block;padding:14px}.legacy-nav{padding:0 14px 14px}.wrap{padding:16px 12px}.kpis{grid-template-columns:1fr 1fr}.insight-grid{grid-template-columns:1fr}.toolbar{display:block}.toolbar select,.toolbar button{margin-top:8px;width:100%}.title{font-size:23px}.chartbox{height:250px}}
 
-@media(min-width:1200px){.header .top{padding-top:13px;padding-bottom:13px}.wrap{padding-top:12px}.panel,.kpi{backdrop-filter:blur(4px)}}
+@media(min-width:1200px){.legacy-header .top{padding-top:13px;padding-bottom:13px}.wrap{padding-top:12px}.panel,.kpi{backdrop-filter:blur(4px)}}
 </style>
 <link rel="stylesheet" href="shared/teraju-workspace-theme.css">
 </head>
 <body class="tw-theme admin-workspace">
-<header class="header">
-  <div class="top">
+<header class="admin-header">
+  <div class="admin-header-main">
     <div>
       <img class="admin-page-logo" src="../images/terajuworks.svg" alt="TERAJUWORKS">
-      <div class="title">Insights Dashboard</div>
-      <div class="muted">Live analytics from the Admin database, separated by TERAJUWORKS business model.</div>
+      <div class="admin-header-title">Insights Dashboard</div>
+      <div class="admin-header-sub">Live analytics from the Admin database, separated by TERAJUWORKS business model.</div>
     </div>
-    <div class="tag" id="updated">Loading…</div>
+    <div class="admin-header-status" id="updated">Loading…</div>
   </div>
-  <nav class="nav">
+  <nav class="admin-nav">
     <a class="back-nav" href="admin.html">← Back</a>
     <a href="admin.html">Home</a>
     <a href="admin-database.html">Database</a>
