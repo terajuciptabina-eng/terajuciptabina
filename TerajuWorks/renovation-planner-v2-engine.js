@@ -371,11 +371,15 @@
 
   function renderCurrentBudget(){
     const data=quotationData();
-    if(typeof window.renderEstimate!=="function"){
-      console.error("[TERAJU RENOVATION V2] renderEstimate is not available.");
+
+    // Use the V2 renderer in this source directly. Do not depend on a
+    // mutable window.renderEstimate reference for item mutations.
+    if(typeof renderEstimate!=="function"){
+      console.error("[TERAJU RENOVATION V2] V2 renderEstimate source is not available.");
       return false;
     }
-    window.renderEstimate(
+
+    renderEstimate(
       data.allItems,
       data.roomGroups,
       data.roomSubtotals,
