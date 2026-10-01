@@ -369,27 +369,6 @@
     return true;
   }
 
-  function renderCurrentBudget(){
-    const data=quotationData();
-
-    // Use the V2 renderer in this source directly. Do not depend on a
-    // mutable window.renderEstimate reference for item mutations.
-    if(typeof renderEstimate!=="function"){
-      console.error("[TERAJU RENOVATION V2] V2 renderEstimate source is not available.");
-      return false;
-    }
-
-    renderEstimate(
-      data.allItems,
-      data.roomGroups,
-      data.roomSubtotals,
-      data.projectPreliminaries,
-      data.total
-    );
-    window.__TERAJU_RENOVATION_BUDGET_GENERATED=true;
-    return true;
-  }
-
   function update(options = {}){
     const reason = String(options?.reason || "");
     const isItemMutation = reason === "item-mutation";
@@ -430,7 +409,6 @@
   window.__TERAJU_RENOVATION_V2_GET_ALL_ITEMS=allItems;
   window.__TERAJU_RENOVATION_V2_GET_QUOTATION_DATA=quotationData;
   window.__TERAJU_RENOVATION_V2_UPDATE_ESTIMATE=update;
-  window.__TERAJU_RENOVATION_V2_RENDER_CURRENT_BUDGET=renderCurrentBudget;
   window.__TERAJU_RENOVATION_V2_GENERATE_BUDGET=generateBudget;
   window.__TERAJU_RENOVATION_V2_BUILD_READY=update;
 
