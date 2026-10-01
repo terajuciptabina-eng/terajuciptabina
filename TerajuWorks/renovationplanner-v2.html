@@ -798,14 +798,17 @@ main>section:not(:first-child){scroll-margin-top:92px} main>section>div:first-ch
       </div>
     </div>
 
-    <div id="renovationBudgetPending" class="mt-6 border rounded-xl bg-gray-50 p-5 text-center">
-      <div class="text-sm font-semibold text-gray-800">Renovation budget is waiting for your final room / area review.</div>
-      <div id="renovationBudgetPendingMessage" class="mt-1 text-xs text-gray-500">Review, add, edit or remove rooms first. Generate the renovation budget when your room schedule is final.</div>
+    <div class="mt-6 flex justify-end no-print">
       <button type="button" id="generateRenovationBudgetBtn"
         onclick="return window.__TERAJU_RENOVATION_V2_GENERATE_BUDGET ? window.__TERAJU_RENOVATION_V2_GENERATE_BUDGET() : false;"
-        class="mt-4 inline-flex items-center justify-center rounded-xl bg-gray-900 px-5 py-3 text-sm font-bold text-white shadow-sm">
+        class="inline-flex items-center justify-center gap-2 rounded-xl bg-gray-900 px-5 py-3 text-sm font-bold text-white shadow-sm">
         Generate Renovation Budget
       </button>
+    </div>
+
+    <div id="renovationBudgetPending" class="mt-4 border rounded-xl bg-gray-50 p-5 text-center">
+      <div class="text-sm font-semibold text-gray-800">Renovation budget is waiting for your final room / area review.</div>
+      <div id="renovationBudgetPendingMessage" class="mt-1 text-xs text-gray-500">Review, add, edit or remove rooms first. Generate the renovation budget when your room schedule is final.</div>
     </div>
 
     <div id="renovationBudgetResults" class="hidden">
@@ -2972,7 +2975,7 @@ initContractorMode();
 <script src="location-autocomplete.js"></script>
 <script src="state-rate-gate.js?v=20260924-state-v1"></script>
 <script src="renovation-calculation-rules.js?v=20260924-rate-master-v1"></script>
-<script src="renovation-planner-v2-engine.js?v=20261001-item-mutation-source-v7"></script>
+<script src="renovation-planner-v2-engine.js?v=20261002-budget-loading-v1"></script>
 <script src="contractor-master-bridge.js?v=20260924-renovation-rate-master-v2"></script>
 <script src="quotation-quantity-fix.js?v=20261001-shared-helper-fix-v1"></script>
 <script src="quotation-records.js?v=20261001-room-restore-v4"></script>
