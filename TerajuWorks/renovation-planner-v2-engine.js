@@ -369,6 +369,23 @@
     return true;
   }
 
+  function renderCurrentBudget(){
+    const data=quotationData();
+    if(typeof window.renderEstimate!=="function"){
+      console.error("[TERAJU RENOVATION V2] renderEstimate is not available.");
+      return false;
+    }
+    window.renderEstimate(
+      data.allItems,
+      data.roomGroups,
+      data.roomSubtotals,
+      data.projectPreliminaries,
+      data.total
+    );
+    window.__TERAJU_RENOVATION_BUDGET_GENERATED=true;
+    return true;
+  }
+
   function update(options = {}){
     const reason = String(options?.reason || "");
     const isItemMutation = reason === "item-mutation";
@@ -409,6 +426,7 @@
   window.__TERAJU_RENOVATION_V2_GET_ALL_ITEMS=allItems;
   window.__TERAJU_RENOVATION_V2_GET_QUOTATION_DATA=quotationData;
   window.__TERAJU_RENOVATION_V2_UPDATE_ESTIMATE=update;
+  window.__TERAJU_RENOVATION_V2_RENDER_CURRENT_BUDGET=renderCurrentBudget;
   window.__TERAJU_RENOVATION_V2_GENERATE_BUDGET=generateBudget;
   window.__TERAJU_RENOVATION_V2_BUILD_READY=update;
 
