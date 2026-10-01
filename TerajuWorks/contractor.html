@@ -35,9 +35,9 @@ body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,
 .auth-icon{background:#b58a3a;box-shadow:0 12px 30px rgba(181,138,58,.24)}
 .tab-active{background:#fff;box-shadow:0 5px 18px rgba(15,23,42,.08)}
 
-.profile-modal{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(15,23,42,.52);backdrop-filter:blur(8px)}
+.profile-modal{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;padding:12px;background:rgba(15,23,42,.52);backdrop-filter:blur(8px);overflow:auto}
 .profile-modal.open{display:flex}
-.profile-card{width:min(94vw,820px);max-height:92vh;overflow:auto;border-radius:28px;background:#fff;box-shadow:0 30px 90px rgba(15,23,42,.25)}
+.profile-card{width:min(820px,calc(100vw - 24px));max-height:calc(100svh - 24px);overflow:auto;box-sizing:border-box;border-radius:28px;background:#fff;box-shadow:0 30px 90px rgba(15,23,42,.25)}
 .profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px 18px}
 .profile-field{display:grid;gap:7px}
 .profile-field.full{grid-column:1/-1}
@@ -59,6 +59,8 @@ body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,
 @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
 @keyframes cardIn{from{opacity:0;transform:translateY(28px) scale(.985)}to{opacity:1;transform:none}}
 
+@media(max-height:850px) and (min-width:768px){.profile-card{max-height:calc(100svh - 20px);border-radius:22px}.profile-card>.px-6.py-6{padding:18px 22px!important}.profile-card .profile-grid{gap:11px 14px}.profile-card .profile-field input,.profile-card .profile-field textarea{padding:9px 11px}.profile-card .profile-actions{margin-top:14px;gap:8px}.profile-card .profile-actions button{min-height:40px;padding:0 10px}}
+@media(max-height:720px) and (min-width:768px){.profile-card{width:min(760px,calc(100vw - 20px));border-radius:18px}.profile-card>.px-6.py-6{padding:14px 18px!important}.profile-card>.flex{padding-top:14px!important;padding-bottom:14px!important}.profile-card .profile-actions{grid-template-columns:1fr 1fr;margin-top:10px}.profile-card .profile-grid{gap:8px 12px}}
 @media(max-width:767px){
 header .inner{padding:14px 16px!important}
 header img{height:40px!important}
