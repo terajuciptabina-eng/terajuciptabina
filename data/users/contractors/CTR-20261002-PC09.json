@@ -12,7 +12,9 @@
     "address": "Lot 653 Jalan Seremban Jelebu\nSeremban  N Sembilan",
     "website": "",
     "logoDataUrl": "",
-    "contractorProfileConfigured": true
+    "contractorProfileConfigured": true,
+    "previewBrandingMode": "teraju",
+    "previewBrandingConfigured": true
   },
   "auth": {
     "mode": "temporary-id",
@@ -24,5 +26,5 @@
     "renovation": []
   },
   "createdAt": "2026-10-02T07:24:39.845Z",
-  "updatedAt": "2026-10-02T07:27:52.223Z"
+  "updatedAt": "2026-10-02T07:54:19.832Z"
 }
