@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "contractor",
+  "contractorId": "CTR-20261002-PA2Z",
+  "profile": {
+    "name": "prymax technologies sdn bhd",
+    "email": "fazuan@prymax.com.my",
+    "phone": "0177465807"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-10-02T16:54:31.143Z",
+  "updatedAt": "2026-10-02T16:54:31.143Z"
+}
