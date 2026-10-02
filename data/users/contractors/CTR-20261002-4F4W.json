@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "contractor",
+  "contractorId": "CTR-20261002-4F4W",
+  "profile": {
+    "name": "MFahiz Enterprise",
+    "email": "fahizfern96@gmail.com",
+    "phone": "01111341819"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-10-02T11:15:58.809Z",
+  "updatedAt": "2026-10-02T11:15:58.809Z"
+}
