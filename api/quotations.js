@@ -58,7 +58,7 @@ export default async function handler(req, res) {
     const source = req.method === 'GET' ? req.query : (req.body || {}); const role = String(source?.role || '').toLowerCase(); const id = String(source?.id || '').trim().toUpperCase(); const plannerType = String(source?.plannerType || 'build').toLowerCase();
     if (!validRole(role) || !id || !validPlanner(plannerType)) return res.status(400).json({ message: 'Invalid role, id or planner type.' });
     const current = await readRecord(role, id); if (!current.record) return res.status(current.status === 404 ? 404 : 502).json({ message: current.status === 404 ? 'Account not found.' : 'Unable to read account record.' });
-    if (req.method === 'GET') return res.status(200).json({ role, id, plannerType, quotations: plannerList(current.record, plannerType) });
+    if (req.method === 'GET') { const quotations = plannerList(current.record, plannerType).map(q => { const copy = JSON.parse(JSON.stringify(q || {})); const type = quotationType(copy.quotationType || copy.plannerState?.quotationType); if (copy.estimateNumber) copy.estimateNumber = canonicalEstimateNumber(copy.estimateNumber, plannerType, type); if (copy.plannerState && typeof copy.plannerState === 'object' && copy.plannerState.estimateNumber) copy.plannerState.estimateNumber = canonicalEstimateNumber(copy.plannerState.estimateNumber, plannerType, type); return copy; }); return res.status(200).json({ role, id, plannerType, quotations }); }
     if (req.method === 'POST') {
       const action = String(source?.action || '').toLowerCase();
       if (action !== 'duplicate') return res.status(400).json({ message: 'Invalid quotation action.' });
