@@ -5493,7 +5493,7 @@
           "projectState": "negeri-sembilan",
           "rateSetId": "default",
           "rateSetName": "Default Rate",
-          "rateSnapshotAt": "2026-10-02T11:21:59.442Z"
+          "rateSnapshotAt": "2026-10-02T12:41:17.204Z"
         },
         "itemListVersion": 1,
         "items": [
@@ -5618,7 +5618,7 @@
           },
           {
             "id": "manual-1790928959831-02fgk7",
-            "category": "",
+            "category": "preliminaries",
             "description": "Preliminaries, site mobilisation, temporary facilities, site protection, project coordination, supervision and general project management, complete.",
             "unit": "ls",
             "qty": 1,
@@ -5627,9 +5627,9 @@
             "header": "",
             "level3": "",
             "section": "",
-            "groupTitle": "",
-            "groupKey": "",
-            "masterPath": "",
+            "groupTitle": "Preliminaries",
+            "groupKey": "preliminaries",
+            "masterPath": "PROJECT / PRELIMINARIES",
             "roomId": "__prelim__",
             "room": "Project / Preliminaries"
           },
@@ -6485,7 +6485,7 @@
           }
         ],
         "createdAt": "2026-10-02T11:21:58.709Z",
-        "updatedAt": "2026-10-02T11:22:01.169Z",
+        "updatedAt": "2026-10-02T12:41:18.758Z",
         "estimateNumber": "EST-REN-018"
       },
       {
@@ -10558,7 +10558,7 @@
     ]
   },
   "createdAt": "2026-09-23T08:33:53.459Z",
-  "updatedAt": "2026-10-02T11:22:01.169Z",
+  "updatedAt": "2026-10-02T12:41:18.758Z",
   "quotationRunningNumber": {
     "renovation": 19,
     "build": 15
