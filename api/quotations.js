@@ -30,6 +30,7 @@ export default async function handler(req, res) {
     const copy = JSON.parse(JSON.stringify(value || {}));
     delete copy.updatedAt;
     delete copy.createdAt;
+    delete copy.quotationId;
     delete copy.revision;
     delete copy.revisionHistory;
     const type = quotationType(copy.quotationType || copy.plannerState?.quotationType);
