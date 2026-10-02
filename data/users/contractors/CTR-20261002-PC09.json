@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "contractor",
+  "contractorId": "CTR-20261002-PC09",
+  "profile": {
+    "name": "Tok Mart Niaga",
+    "email": "tokmartniaga@gmail.com",
+    "phone": "0189191590"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-10-02T07:24:39.845Z",
+  "updatedAt": "2026-10-02T07:24:39.845Z"
+}
