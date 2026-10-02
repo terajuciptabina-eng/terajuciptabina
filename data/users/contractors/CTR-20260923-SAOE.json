@@ -5105,7 +5105,7 @@
           "builtUpArea": 700,
           "state": "negeri-sembilan"
         },
-        "total": 120997,
+        "total": 108431,
         "plannerState": {
           "customerName": "Tuan Iman",
           "projectLocation": "Eka Height Sendayan (New Kitchen, New Balcony with ACP Roofing and walling, Porch area ACP Roofing, Front Balcony Glass Railing)",
@@ -5256,15 +5256,19 @@
           "customRates": [
             [
               "master-doors-/-type-1-single-leaf",
-              1800
+              2500
             ],
             [
               "master-doors-/-type-3-bathroom",
-              950
+              1200
             ],
             [
               "manual-1790928959831-02fgk7",
               9000
+            ],
+            [
+              "master-windows-/-type-3-900*600",
+              1200
             ]
           ],
           "customQuantities": [
@@ -5353,7 +5357,11 @@
             "master-porch-/-column-/-rebar",
             "master-porch-/-flat-roof-/-concrete",
             "master-porch-/-flat-roof-/-formwork",
-            "master-porch-/-flat-roof-/-brc"
+            "master-porch-/-flat-roof-/-brc",
+            "master-porch-/-lighting",
+            "master-porch-/-fan",
+            "master-porch-/-power-point",
+            "master-earthing"
           ],
           "manualItems": [
             [
@@ -5493,7 +5501,7 @@
           "projectState": "negeri-sembilan",
           "rateSetId": "default",
           "rateSetName": "Default Rate",
-          "rateSnapshotAt": "2026-10-02T10:47:18.333Z"
+          "rateSnapshotAt": "2026-10-02T13:11:35.188Z"
         },
         "itemListVersion": 1,
         "items": [
@@ -5618,7 +5626,7 @@
           },
           {
             "id": "manual-1790928959831-02fgk7",
-            "category": "",
+            "category": "preliminaries",
             "description": "Preliminaries, site mobilisation, temporary facilities, site protection, project coordination, supervision and general project management, complete.",
             "unit": "ls",
             "qty": 1,
@@ -5627,9 +5635,9 @@
             "header": "",
             "level3": "",
             "section": "",
-            "groupTitle": "",
-            "groupKey": "",
-            "masterPath": "",
+            "groupTitle": "Preliminaries",
+            "groupKey": "preliminaries",
+            "masterPath": "PROJECT / PRELIMINARIES",
             "roomId": "__prelim__",
             "room": "Project / Preliminaries"
           },
@@ -5872,19 +5880,53 @@
             "room": "Project"
           },
           {
-            "id": "master-main-building-/-roof-/-metal-roofing-sheet",
+            "id": "master-main-building-/-flat-roof-/-concrete",
             "category": "structures",
-            "description": "Supply and install metal roofing sheet to selected roof, 25° pitch with 3ft overhang.",
-            "unit": "m²",
-            "qty": 32,
-            "rate": 420,
-            "amount": 13440,
+            "description": "Supply and construct 100mm thick Grade 25 concrete flat roof slab including waterproofing.",
+            "unit": "m³",
+            "qty": 2,
+            "rate": 550,
+            "amount": 1100,
             "header": "",
             "level3": "",
             "section": "",
-            "groupTitle": " Roof ",
+            "groupTitle": " Flat Roof ",
             "groupKey": "structure",
-            "masterPath": "MAIN BUILDING / Roof / Metal Roofing Sheet",
+            "masterPath": "MAIN BUILDING / Flat Roof / Concrete",
+            "roomId": "project",
+            "room": "Project"
+          },
+          {
+            "id": "master-main-building-/-flat-roof-/-formwork",
+            "category": "structures",
+            "description": "Provide underside formwork to concrete flat roof slab.",
+            "unit": "m²",
+            "qty": 19,
+            "rate": 55,
+            "amount": 1045,
+            "header": "",
+            "level3": "",
+            "section": "",
+            "groupTitle": " Flat Roof ",
+            "groupKey": "structure",
+            "masterPath": "MAIN BUILDING / Flat Roof / Formwork",
+            "roomId": "project",
+            "room": "Project"
+          },
+          {
+            "id": "master-main-building-/-flat-roof-/-brc",
+            "category": "structures",
+            "description": "Supply and install BRC A7 reinforcement to flat roof slab, double layer.",
+            "unit": "m²",
+            "qty": 38,
+            "rate": 20.5,
+            "amount": 779,
+            "header": "",
+            "level3": "",
+            "section": "",
+            "groupTitle": " Flat Roof ",
+            "groupKey": "structure",
+            "masterPath": "MAIN BUILDING / Flat Roof / BRC",
             "roomId": "project",
             "room": "Project"
           },
@@ -6178,74 +6220,6 @@
             "room": "Project"
           },
           {
-            "id": "master-porch-/-lighting",
-            "category": "electrical",
-            "description": "LED outdoor/porch light fittings, suitable for 230V, 50Hz installation and appropriate for covered external areas, complete with lamp/module, driver, mounting, wiring connection and all necessary accessories, installed complete. (Porch)",
-            "unit": "No.",
-            "qty": 2,
-            "rate": 200,
-            "amount": 400,
-            "header": "",
-            "level3": "",
-            "section": "",
-            "groupTitle": "Electrical Works",
-            "groupKey": "electrical",
-            "masterPath": "PORCH / LIGHTING",
-            "roomId": "project",
-            "room": "Project"
-          },
-          {
-            "id": "master-porch-/-fan",
-            "category": "electrical",
-            "description": "Ceiling-mounted electric fan suitable for covered external porch areas, 230V, 50Hz, complete with fan regulator/controller, mounting accessories, wiring connection and all necessary accessories, installed complete. (Porch)",
-            "unit": "No.",
-            "qty": 1,
-            "rate": 200,
-            "amount": 200,
-            "header": "",
-            "level3": "",
-            "section": "",
-            "groupTitle": "Electrical Works",
-            "groupKey": "electrical",
-            "masterPath": "PORCH / FAN",
-            "roomId": "project",
-            "room": "Project"
-          },
-          {
-            "id": "master-porch-/-power-point",
-            "category": "electrical",
-            "description": "13A switched socket-outlet, weather-resistant type suitable for covered external porch areas, BS 1363 / MS-compliant, complete with socket-outlet plate, enclosure/box, wiring connection and all necessary accessories, installed complete. (Porch)",
-            "unit": "No.",
-            "qty": 1,
-            "rate": 150,
-            "amount": 150,
-            "header": "",
-            "level3": "",
-            "section": "",
-            "groupTitle": "Electrical Works",
-            "groupKey": "electrical",
-            "masterPath": "PORCH / POWER POINT",
-            "roomId": "project",
-            "room": "Project"
-          },
-          {
-            "id": "master-earthing",
-            "category": "electrical",
-            "description": "Complete earthing system comprising earth electrode(s), earth conductor, earth clamp/connection, earth pit and all associated accessories, including excavation, installation, testing and connection to the electrical installation, complete.",
-            "unit": "Set",
-            "qty": 1,
-            "rate": 2500,
-            "amount": 2500,
-            "header": "",
-            "level3": "",
-            "section": "",
-            "groupTitle": "Electrical Works",
-            "groupKey": "electrical",
-            "masterPath": "EARTHING",
-            "roomId": "project",
-            "room": "Project"
-          },
-          {
             "id": "master-db-box",
             "category": "electrical",
             "description": "Distribution board complete with suitable enclosure, main switch, circuit protective devices, neutral and earth bars, circuit identification and all necessary internal accessories, including mounting, wiring connections and testing, installed complete.",
@@ -6285,8 +6259,8 @@
             "description": "Single-leaf timber flush door, complete with timber frame, hinges, lockset, handles, door stops, architraves and necessary ironmongery, including fixing and making good, installed complete. (Living / Dining / Kitchen / Master Bedroom / Bedroom)",
             "unit": "No.",
             "qty": 1,
-            "rate": 1800,
-            "amount": 1800,
+            "rate": 2500,
+            "amount": 2500,
             "header": "",
             "level3": "",
             "section": "",
@@ -6302,8 +6276,8 @@
             "description": "Single-leaf moisture-resistant PVC/UPVC flush doors, complete with PVC/UPVC frames, hinges, locksets, handles, door stops, architraves and necessary ironmongery, including fixing and making good, installed complete. (Bathroom 1 / Bathroom 2 / applicable bathrooms)",
             "unit": "No.",
             "qty": 1,
-            "rate": 950,
-            "amount": 950,
+            "rate": 1200,
+            "amount": 1200,
             "header": "",
             "level3": "",
             "section": "",
@@ -6336,8 +6310,8 @@
             "description": "Aluminium-framed glazed windows, size 900 × 600 mm, complete with aluminium frames, glazing, glazing beads, handles, locking mechanisms, sealant and necessary ironmongery, including fixing and making good, installed complete. (Bathroom 1 / Bathroom 2 / applicable bathrooms)",
             "unit": "No.",
             "qty": 1,
-            "rate": 950,
-            "amount": 950,
+            "rate": 1200,
+            "amount": 1200,
             "header": "",
             "level3": "",
             "section": "",
@@ -6485,7 +6459,7 @@
           }
         ],
         "createdAt": "2026-10-02T08:32:45.377Z",
-        "updatedAt": "2026-10-02T10:47:19.552Z",
+        "updatedAt": "2026-10-02T13:11:35.790Z",
         "estimateNumber": "EST-REN-017"
       },
       {
@@ -9156,7 +9130,7 @@
     ]
   },
   "createdAt": "2026-09-23T08:33:53.459Z",
-  "updatedAt": "2026-10-02T12:52:58.718Z",
+  "updatedAt": "2026-10-02T13:11:35.790Z",
   "quotationRunningNumber": {
     "renovation": 19,
     "build": 15
