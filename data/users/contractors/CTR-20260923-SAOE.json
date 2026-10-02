@@ -5102,28 +5102,28 @@
         },
         "project": {
           "location": "Seremban, Negeri Sembilan",
-          "builtUpArea": 1740,
-          "state": "negeri-sembilan"
+          "builtUpArea": 2040,
+          "state": "selangor"
         },
         "total": 0,
         "plannerState": {
           "customerName": "Tengku Jalil",
           "projectLocation": "Seremban, Negeri Sembilan",
-          "builtUpArea": "1740",
+          "builtUpArea": 2040,
           "rooms": [
             {
               "id": "room-1",
               "type": "bedroom",
               "condition": "existing",
               "name": "Master Bedroom ",
-              "area": "200"
+              "area": "300"
             },
             {
               "id": "room-2",
               "type": "bedroom",
               "condition": "existing",
               "name": "Bedroom 2",
-              "area": "150"
+              "area": "250"
             },
             {
               "id": "room-3",
@@ -5144,7 +5144,7 @@
               "type": "living",
               "condition": "existing",
               "name": "Dining ",
-              "area": "150"
+              "area": "250"
             },
             {
               "id": "room-6",
@@ -5311,16 +5311,16 @@
           "quotationType": "simple",
           "projectId": "PRJ-REN-MUPD3ALM-8N5J3",
           "constructionBudgetGenerated": false,
-          "projectState": "negeri-sembilan",
-          "rateSetId": "negeri-sembilan",
-          "rateSetName": "Negeri Sembilan",
-          "rateSnapshotAt": "2026-10-01T09:59:37.295Z",
+          "projectState": "selangor",
+          "rateSetId": "selangor",
+          "rateSetName": "Selangor",
+          "rateSnapshotAt": "2026-10-02T13:38:05.642Z",
           "quotationId": "QT-REN-MUR0833E-AJBTK"
         },
         "itemListVersion": 1,
         "items": [],
         "createdAt": "2026-10-02T13:34:04.201Z",
-        "updatedAt": "2026-10-02T13:34:04.201Z",
+        "updatedAt": "2026-10-02T13:38:05.783Z",
         "estimateNumber": "EST-REN-020",
         "sourceItems": []
       },
@@ -9100,12 +9100,12 @@
         ],
         "createdAt": "2026-10-01T09:58:41.158Z",
         "updatedAt": "2026-10-01T09:59:39.553Z",
-        "estimateNumber": "EST-REN-016"
+        "estimateNumber": "EST-REN-020"
       }
     ]
   },
   "createdAt": "2026-09-23T08:33:53.459Z",
-  "updatedAt": "2026-10-02T13:34:04.201Z",
+  "updatedAt": "2026-10-02T13:38:05.783Z",
   "quotationRunningNumber": {
     "renovation": 21,
     "build": 15
