@@ -1,3 +1,4 @@
+// Vercel deployment trigger: keep source behavior unchanged.
 export default async function handler(req, res) {
   const origin = 'https://terajuciptabina-eng.github.io';
   res.setHeader('Access-Control-Allow-Origin', origin);
