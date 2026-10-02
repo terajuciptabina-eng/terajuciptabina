@@ -1960,14 +1960,7 @@ function renderEstimate(items, roomGroups, roomSubtotals, total) {
       const buildManualKey = '__build__:' + group;
       html += `
         <tr class="bg-gray-100 border-b">
-          <td colspan="6" class="py-1 px-2">
-            <div class="flex flex-wrap items-center justify-between gap-2">
-              <span class="font-bold">${escapeHtml(group)}</span>
-              <div class="contractor-only" data-build-manual-anchor="${escapeHtml(buildManualKey)}">
-                <button type="button" onclick="addBuildGroupManualItemPrompt('${escapeHtml(group)}')" class="border rounded-lg px-2 py-1 text-xs font-semibold hover:bg-white">＋ Add New Item</button>
-              </div>
-            </div>
-          </td>
+          <td colspan="6" class="py-1 px-2 font-bold">${escapeHtml(group)}</td>
         </tr>`;
 
       if (!groupItems.length) return;
@@ -1978,7 +1971,19 @@ function renderEstimate(items, roomGroups, roomSubtotals, total) {
 
       const flushHierarchySubtotal = () => {
         if (!currentHierarchyLabel) return;
+        const hierarchy = currentHierarchyKey
+          .split(" / ")
+          .map(value => value.trim())
+          .filter(Boolean);
+        const targetKey = "__build__:" + group + (hierarchy.length ? ":" + hierarchy.join(":") : "");
         html += `
+          <tr class="no-print">
+            <td colspan="6" class="py-1 px-2">
+              <div class="contractor-only" data-build-manual-anchor="${escapeHtml(targetKey)}">
+                <button type="button" onclick="addBuildHierarchyManualItemPrompt(${escapeHtml(JSON.stringify(targetKey))}, ${escapeHtml(JSON.stringify(group))}, ${escapeHtml(JSON.stringify(currentHierarchyKey))})" class="border rounded-lg px-2 py-1 text-xs font-semibold hover:bg-gray-50">＋ Add New Item</button>
+              </div>
+            </td>
+          </tr>
           <tr class="border-b bg-gray-50">
             <td class="py-1 px-2"></td>
             <td class="py-1 px-2"></td>
@@ -2009,18 +2014,9 @@ function renderEstimate(items, roomGroups, roomSubtotals, total) {
           flushHierarchySubtotal();
 
           levels.forEach((level, index) => {
-            const prefix = levels.slice(0, index + 1).join(" / ");
-            const targetKey = '__build__:' + group + ':' + levels.slice(0, index + 1).join(':');
             html += `
               <tr class="border-b">
-                <td colspan="6" class="py-1 px-2 ${hierarchyClass(index)}">
-                  <div class="flex flex-wrap items-center justify-between gap-2">
-                    <span>${escapeHtml(level)}</span>
-                    <div class="contractor-only" data-build-manual-anchor="${escapeHtml(targetKey)}">
-                      <button type="button" onclick="addBuildHierarchyManualItemPrompt(${escapeHtml(JSON.stringify(targetKey))}, ${escapeHtml(JSON.stringify(group))}, ${escapeHtml(JSON.stringify(prefix))})" class="border rounded-lg px-2 py-1 text-xs font-semibold hover:bg-white">＋ Add New Item</button>
-                    </div>
-                  </div>
-                </td>
+                <td colspan="6" class="py-1 px-2 ${hierarchyClass(index)}">${escapeHtml(level)}</td>
               </tr>`;
           });
 
