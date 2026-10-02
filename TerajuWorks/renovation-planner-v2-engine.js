@@ -379,7 +379,6 @@
         data.allItems,
         data.roomGroups,
         data.roomSubtotals,
-        data.projectPreliminaries,
         data.total
       );
     }
