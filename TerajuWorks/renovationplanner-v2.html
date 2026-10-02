@@ -1782,7 +1782,12 @@ function renderBudgetSummaryAtBottom(items, roomGroups, roomSubtotals, total) {
   if (renovationExistingRooms.length) {
     fragment.appendChild(headingRow("RENOVATION EXISTING AREA"));
     renovationExistingRooms.forEach(room => {
-      fragment.appendChild(row(room.label, roomSubtotals[room.roomId] || 0));
+      const roomName = String(
+        document.getElementById(room.roomId)?.querySelector(".room-name")?.value ||
+        room.label ||
+        ""
+      ).trim().toUpperCase();
+      fragment.appendChild(row(roomName, roomSubtotals[room.roomId] || 0));
     });
   }
 
