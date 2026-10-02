@@ -40,14 +40,14 @@
         },
         "project": {
           "location": "SEREMBAN",
-          "builtUpArea": 800,
+          "builtUpArea": 1000,
           "state": "negeri-sembilan"
         },
         "total": 42850,
         "plannerState": {
           "customerName": "PN SHYM",
           "projectLocation": "SEREMBAN",
-          "builtUpArea": "800",
+          "builtUpArea": 1000,
           "rooms": [
             {
               "id": "room-1",
@@ -55,6 +55,13 @@
               "condition": "existing",
               "name": "Living / Dining",
               "area": "800"
+            },
+            {
+              "id": "room-2",
+              "type": "wetKitchen",
+              "condition": "existing",
+              "name": "Wet Kitchen",
+              "area": "200"
             }
           ],
           "rates": {
@@ -172,11 +179,11 @@
           "standardRateItems": [],
           "quotationType": "detail",
           "projectId": "PRJ-REN-MUQOEA3H-LGDRN",
-          "constructionBudgetGenerated": true,
+          "constructionBudgetGenerated": false,
           "projectState": "negeri-sembilan",
           "rateSetId": "negeri-sembilan",
           "rateSetName": "Negeri Sembilan",
-          "rateSnapshotAt": "2026-10-02T08:02:56.806Z"
+          "rateSnapshotAt": "2026-10-02T08:05:36.107Z"
         },
         "itemListVersion": 1,
         "items": [
@@ -335,7 +342,7 @@
           }
         ],
         "createdAt": "2026-10-02T08:02:56.805Z",
-        "updatedAt": "2026-10-02T08:02:57.820Z",
+        "updatedAt": "2026-10-02T08:05:37.212Z",
         "estimateNumber": "EST-REN-002"
       },
       {
@@ -655,7 +662,7 @@
     ]
   },
   "createdAt": "2026-10-02T07:24:39.845Z",
-  "updatedAt": "2026-10-02T08:02:57.820Z",
+  "updatedAt": "2026-10-02T08:05:37.212Z",
   "quotationRunningNumber": {
     "renovation": 2
   },
