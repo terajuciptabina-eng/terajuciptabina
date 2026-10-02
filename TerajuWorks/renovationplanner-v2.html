@@ -1765,6 +1765,13 @@ function renderBudgetSummaryAtBottom(items, roomGroups, roomSubtotals, total) {
   };
 
   const fragment = document.createDocumentFragment();
+  const summarySpacer = document.createElement("tr");
+  summarySpacer.className = "no-print";
+  const summarySpacerCell = document.createElement("td");
+  summarySpacerCell.colSpan = 6;
+  summarySpacerCell.className = "py-2";
+  summarySpacer.appendChild(summarySpacerCell);
+  fragment.appendChild(summarySpacer);
   fragment.appendChild(headingRow("SUMMARY"));
 
   if (preliminariesTotal !== 0) {
