@@ -7,7 +7,12 @@
   "profile": {
     "name": "EV3 enterprise",
     "email": "mahathirjaliloffical@gmail.com",
-    "phone": "0127050101"
+    "phone": "0127050101",
+    "registrationNo": "",
+    "address": "",
+    "website": "",
+    "logoDataUrl": "",
+    "contractorProfileConfigured": true
   },
   "auth": {
     "mode": "temporary-id",
@@ -19,5 +24,5 @@
     "renovation": []
   },
   "createdAt": "2026-10-02T12:01:16.459Z",
-  "updatedAt": "2026-10-02T12:01:16.459Z"
+  "updatedAt": "2026-10-02T12:01:42.863Z"
 }
