@@ -1740,7 +1740,7 @@ function getRoomGroups() {
 
 
 
-function renderBudgetSummaryAtBottom(items, roomGroups, roomSubtotals, projectPreliminaries, total) {
+function renderBudgetSummaryAtBottom(items, roomGroups, roomSubtotals, total) {
   const container = document.getElementById("renovationBudgetContent");
   const table = container?.querySelector("table");
   const tbody = table?.querySelector("tbody");
@@ -1850,7 +1850,7 @@ function renderBudgetSummaryAtBottom(items, roomGroups, roomSubtotals, projectPr
   tbody.appendChild(fragment);
 }
 
-function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, total) {
+function renderEstimate(items, roomGroups, roomSubtotals, total) {
   const container = document.getElementById("renovationBudgetContent");
   const brand = typeof window.__TERAJU_PREVIEW_BRANDING === "function" ? window.__TERAJU_PREVIEW_BRANDING() : null;
   const customer = document.getElementById("customerName")?.value || "Not specified";
@@ -2153,7 +2153,7 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
       </table>
     </div>`;
   container.innerHTML = html;
-  renderBudgetSummaryAtBottom(items, roomGroups, roomSubtotals, projectPreliminaries, total);
+  renderBudgetSummaryAtBottom(items, roomGroups, roomSubtotals, total);
   renderRemovedItems();
   document.getElementById("grandTotal").textContent = money(total, 2);
   const totalBuiltAreaEl = document.getElementById("totalBuiltArea");
