@@ -267,8 +267,10 @@
 
     return window.__TERAJU_GET_BUILD_ITEMS().filter(item=>{
       const path=String(item.masterPath||'');
+      const isManual=Boolean(item.manual)||/^manual-/i.test(String(item.id||''));
       const isExistingMainDoor=/DOORS\s*\/\s*Type 4\s+Double Leaf Main Door/i.test(path);
-      return (ids.has(item.roomId) || String(item.roomId||'project')==='project') &&
+      return !isManual &&
+        (ids.has(item.roomId) || String(item.roomId||'project')==='project') &&
         String(item.category||'').toLowerCase()!=='external-work' &&
         String(item.category||'').toLowerCase()!=='preliminaries' &&
         !isExistingMainDoor;
