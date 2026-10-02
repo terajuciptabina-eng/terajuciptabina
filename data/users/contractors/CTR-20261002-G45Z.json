@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "contractor",
+  "contractorId": "CTR-20261002-G45Z",
+  "profile": {
+    "name": "Rizqi Maintenance Services",
+    "email": "rizqimaintenance@gmail.com",
+    "phone": "01135836355"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-10-02T08:19:21.359Z",
+  "updatedAt": "2026-10-02T08:19:21.359Z"
+}
