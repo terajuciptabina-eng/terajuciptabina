@@ -1682,7 +1682,7 @@ function saveBuildGroupManualItem(group, formId) {
   refreshRenovationItemMutation();
   saveContractorState();
 }
-function getAllItems() { const rooms = [...document.querySelectorAll("#roomsContainer .room-card")], typeIndexes = {}, allItems = []; rooms.forEach(room => { const roomId = room.id, roomType = room.querySelector(".room-type")?.value || "living", area = parseFloat(room.querySelector(".room-area")?.value) || 0; if(area<=0)return; typeIndexes[roomType] = (typeIndexes[roomType] || 0) + 1; const base = ROOM_TYPES[roomType] || "Area", autoLabel = typeIndexes[roomType] > 1 ? `${base} ${typeIndexes[roomType]}` : base, roomLabel = customRoomLabels.has(roomId) ? customRoomLabels.get(roomId) : autoLabel, standard = generateStandardRoomItems(roomType, area, roomId, roomLabel), optional = generateOptionalRoomItems(room, roomLabel), manual = (manualItems.get(roomId) || []).map(item => ({ ...item })); [...standard, ...optional, ...manual].forEach(item => { if (customRates.has(item.id)) item.rate = customRates.get(item.id); if (customQuantities.has(item.id)) item.qty = customQuantities.get(item.id); if (customDescriptions.has(item.id)) item.description = customDescriptions.get(item.id); item.qty = normalizeQuantity(item.qty); item.rate = normalizeRate(item.rate); item.amount = Math.round((item.qty * item.rate + Number.EPSILON) * 100) / 100; }); allItems.push(...standard, ...optional, ...manual); }); const prelimManual = (manualItems.get("__prelim__") || []).map(item => ({ ...item, roomId: "__prelim__", room: "Project / Preliminaries" })); prelimManual.forEach(item => { if (customRates.has(item.id)) item.rate = customRates.get(item.id); if (customQuantities.has(item.id)) item.qty = customQuantities.get(item.id); if (customDescriptions.has(item.id)) item.description = customDescriptions.get(item.id); item.qty = normalizeQuantity(item.qty); item.rate = normalizeRate(item.rate); item.amount = Math.round((item.qty * item.rate + Number.EPSILON) * 100) / 100; }); allItems.push(...prelimManual); allItems.push(...generateOptionalProjectItems()); return allItems; }
+
 
 
 function addRoom(...args){
@@ -1738,28 +1738,7 @@ function getRoomGroups() {
   return getRoomGroupsBase().filter(room => Number(room.area) > 0);
 }
 
-function updateEstimate() {
-  if (typeof syncBuildingSpecification === "function") syncBuildingSpecification();
-  const allItems = getAllItems();
-  const roomGroups = getRoomGroups();
-  allItems.forEach(item => {
-    item.qty = normalizeQuantity(item.qty);
-    item.rate = normalizeRate(item.rate);
-    item.amount = Math.round((item.qty * item.rate + Number.EPSILON) * 100) / 100;
-  });
-  const activeItems = allItems.filter(item => !excludedItems.has(item.id));
-  const hasAnyArea = roomGroups.some(room => room.area > 0);
-  const prelimQty = hasAnyArea && !excludedItems.has("project-preliminaries")
-    ? normalizeQuantity(customQuantities.has("project-preliminaries") ? customQuantities.get("project-preliminaries") : 1) : 0;
-  const prelimRate = hasAnyArea && !excludedItems.has("project-preliminaries")
-    ? normalizeRate(customRates.has("project-preliminaries") ? customRates.get("project-preliminaries") : RATES.preliminaries) : 0;
-  const projectPreliminaries = Math.round((prelimQty * prelimRate + Number.EPSILON) * 100) / 100;
-  const roomSubtotals = {};
-  roomGroups.forEach(room => roomSubtotals[room.roomId] = 0);
-  activeItems.forEach(item => roomSubtotals[item.roomId] = (roomSubtotals[item.roomId] || 0) + item.amount);
-  const roomTotal = Object.values(roomSubtotals).reduce((s, v) => s + v, 0);
-  renderEstimate(activeItems, roomGroups, roomSubtotals, projectPreliminaries, projectPreliminaries + roomTotal);
-}
+
 
 function renderBudgetSummaryAtBottom(items, roomGroups, roomSubtotals, projectPreliminaries, total) {
   const container = document.getElementById("renovationBudgetContent");
@@ -1912,45 +1891,51 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
         </thead>
         <tbody>`;
 
-  const prelimManual = manualItems.get("__prelim__") || [];
-  if (projectPreliminaries > 0 || prelimManual.length > 0) {
-    const prelimQty = customQuantities.has("project-preliminaries") ? normalizeQuantity(customQuantities.get("project-preliminaries")) : 1;
-    const prelimRate = customRates.has("project-preliminaries") ? normalizeRate(customRates.get("project-preliminaries")) : RATES.preliminaries;
+  const prelimItems = items.filter(item =>
+    String(item.category || "").toLowerCase() === "preliminaries" ||
+    String(item.id || "") === "project-preliminaries"
+  );
+
+  if (prelimItems.length) {
     html += `
-      <tr class="bg-gray-100 border-b"><td colspan="6" class="py-1 px-2 font-bold">Project / Preliminaries</td></tr>
-      <tr class="border-b">
-        <td class="py-1 px-2 align-top">
-          <textarea rows="2" onchange="editItemDescription('project-preliminaries', this.value)"
-            class="contractor-only no-print w-full min-w-[280px] border rounded-none px-2 py-1 bg-white leading-4 resize-none">${escapeHtml(customDescriptions.has("project-preliminaries") ? customDescriptions.get("project-preliminaries") : "Submission of Renovation Permit Application and Engineer's Drawings to the Local Authority")}</textarea>
-          <div class="homeowner-locked no-print p-1 rounded-none leading-4">${escapeHtml(customDescriptions.has("project-preliminaries") ? customDescriptions.get("project-preliminaries") : "Submission of Renovation Permit Application and Engineer's Drawings to the Local Authority")}</div>
-          <div class="hidden print:block leading-6">${escapeHtml(customDescriptions.has("project-preliminaries") ? customDescriptions.get("project-preliminaries") : "Submission of Renovation Permit Application and Engineer's Drawings to the Local Authority")}</div>
-        </td>
-        <td class="py-1 px-2">ls</td>
-        <td class="py-1 px-2 text-right">
-          <input type="number" min="0" step="1" value="${formatQty(prelimQty)}"
-            onchange="editItemQuantity('project-preliminaries', this.value)"
-            class="contractor-only no-print w-24 border rounded-none px-1 py-1 text-right bg-white">
-          <span class="homeowner-locked no-print inline-block px-1 py-1 rounded-none text-sm">${formatQty(prelimQty)}</span>
-          <span class="hidden print:inline">${formatQty(prelimQty)}</span>
-        </td>
-        <td class="py-1 px-2 text-right">
-          <input type="number" min="0" step="0.01" value="${Number(prelimRate).toFixed(2)}"
-            onchange="editItemRate('project-preliminaries', this.value)"
-            class="contractor-only no-print w-28 border rounded-none px-1 py-1 text-right bg-white">
-          <span class="homeowner-rate-blurred no-print inline-block px-1 py-1 rounded-none text-sm">${money(prelimRate, 2)}</span>
-          <span class="hidden print:inline">${money(prelimRate, 2)}</span>
-        </td>
-        <td class="py-1 px-2 text-right font-medium">${money(prelimQty * prelimRate, 2)}</td>
-        <td class="no-print py-1 px-2 text-center">
-          <button type="button" onclick="excludeItem('project-preliminaries')"
-            class="no-print text-red-600 text-xs border border-red-200 rounded px-2 py-1 hover:bg-red-50">Delete</button>
-        </td>
-      </tr>`;
-  }
+      <tr class="bg-gray-100 border-b"><td colspan="6" class="py-1 px-2 font-bold">Project / Preliminaries</td></tr>`;
 
-  prelimManual.forEach(item => { html += `<tr class="border-b"><td class="py-1 px-2 align-top">${IS_CONTRACTOR ? `<textarea rows="2" onchange="editItemDescription(\'${item.id}\', this.value)" class="w-full border rounded-lg px-2 py-1 bg-white leading-4 resize-none">${escapeHtml(item.description)}</textarea>` : `<div class="homeowner-locked p-1 rounded leading-4">${escapeHtml(item.description)}</div>`}</td><td class="py-1 px-2">${escapeHtml(item.unit)}</td><td class="py-1 px-2 text-right"><input type="number" min="0" step="1" value="${formatQty(item.qty)}" onchange="editItemQuantity('${item.id}', this.value)" class="contractor-only no-print w-24 border rounded-none px-1 py-1 text-right bg-white"><span class="homeowner-locked no-print inline-block px-1 py-1 rounded-none text-sm">${formatQty(item.qty)}</span></td><td class="py-1 px-2 text-right"><input type="number" min="0" step="0.01" value="${normalizeRate(item.rate).toFixed(2)}" onchange="editItemRate('${item.id}', this.value)" class="contractor-only no-print w-28 border rounded-none px-1 py-1 text-right bg-white"><span class="homeowner-rate-blurred no-print inline-block px-1 py-1 rounded-none text-sm">${money(item.rate, 2)}</span></td><td class="estimate-amount-cell py-1 px-2 text-right font-medium tabular-nums">${money(item.amount, 2)}</td><td class="no-print py-1 px-2 text-center"><button type="button" onclick="removeManualItem('__prelim__','${item.id}')" class="no-print text-red-600 text-xs border border-red-200 rounded px-3 py-1.5">Delete</button></td></tr>`; });
+    prelimItems.forEach(item => {
+      const isManual = String(item.id || "").startsWith("manual-");
+      const description = String(item.description || "");
+      html += `
+        <tr class="border-b">
+          <td class="py-1 px-2 align-top">
+            ${IS_CONTRACTOR
+              ? `<textarea rows="2" onchange="editItemDescription('${escapeHtml(String(item.id))}', this.value)" class="w-full border rounded-lg px-2 py-1 bg-white leading-4 resize-none">${escapeHtml(description)}</textarea>`
+              : `<div class="homeowner-locked p-1 rounded leading-4">${escapeHtml(description)}</div>`}
+          </td>
+          <td class="py-1 px-2">${escapeHtml(item.unit)}</td>
+          <td class="py-1 px-2 text-right">
+            <input type="number" min="0" step="1" value="${formatQty(item.qty)}"
+              onchange="editItemQuantity('${escapeHtml(String(item.id))}', this.value)"
+              class="contractor-only no-print w-24 border rounded-none px-1 py-1 text-right bg-white">
+            <span class="homeowner-locked no-print inline-block px-1 py-1 rounded-none text-sm">${formatQty(item.qty)}</span>
+            <span class="hidden print:inline">${formatQty(item.qty)}</span>
+          </td>
+          <td class="py-1 px-2 text-right">
+            <input type="number" min="0" step="0.01" value="${Number(item.rate).toFixed(2)}"
+              onchange="editItemRate('${escapeHtml(String(item.id))}', this.value)"
+              class="contractor-only no-print w-28 border rounded-none px-1 py-1 text-right bg-white">
+            <span class="homeowner-rate-blurred no-print inline-block px-1 py-1 rounded-none text-sm">${money(item.rate, 2)}</span>
+            <span class="hidden print:inline">${money(item.rate, 2)}</span>
+          </td>
+          <td class="estimate-amount-cell py-1 px-2 text-right font-medium tabular-nums">${money(item.amount, 2)}</td>
+          <td class="no-print py-1 px-2 text-center">
+            <button type="button"
+              onclick="${isManual
+                ? `removeManualItem('${escapeHtml(String(item.manualKey || "__prelim__"))}','${escapeHtml(String(item.id))}')`
+                : `excludeItem('${escapeHtml(String(item.id))}')`}"
+              class="no-print text-red-600 text-xs border border-red-200 rounded px-3 py-1.5">Delete</button>
+          </td>
+        </tr>`;
+    });
 
-  if (projectPreliminaries > 0 || prelimManual.length > 0) {
     html += `<tr class="no-print"><td colspan="6" class="py-1 px-2"><div class="contractor-only" data-manual-anchor="__prelim__"><button type="button" onclick="addManualItemPrompt('__prelim__')" class="border rounded-lg px-2 py-1 text-xs font-semibold hover:bg-gray-50">＋ Add Item</button></div></td></tr>`;
   }
 
