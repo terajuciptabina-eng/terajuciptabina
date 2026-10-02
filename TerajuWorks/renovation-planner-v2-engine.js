@@ -214,7 +214,17 @@
     }
 
     (manualItems.get('__prelim__')||[]).forEach(source => {
-      const item={...source,roomId:'__prelim__',room:'Project / Preliminaries'};
+      const item={
+        ...source,
+        roomId:'__prelim__',
+        room:'Project / Preliminaries',
+        roomType:'project',
+        category:'preliminaries',
+        group:'PRELIMINARIES',
+        groupTitle:'Preliminaries',
+        groupKey:'preliminaries',
+        masterPath:'PROJECT / PRELIMINARIES'
+      };
       result.push(applyOverrides(item));
     });
 
