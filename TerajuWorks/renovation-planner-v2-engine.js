@@ -293,9 +293,37 @@
     return {prelimQty,prelimRate,projectPreliminaries};
   }
 
+  function projectPreliminariesItem(){
+    const prelim=renovationProjectData();
+    if(prelim.prelimQty<=0 || prelim.prelimRate<=0) return null;
+    return {
+      id:'project-preliminaries',
+      manual:false,
+      roomId:'__prelim__',
+      room:'Project / Preliminaries',
+      roomType:'project',
+      category:'preliminaries',
+      group:'PRELIMINARIES',
+      groupTitle:'Preliminaries',
+      groupKey:'preliminaries',
+      masterPath:'PROJECT / PRELIMINARIES',
+      description:(typeof customDescriptions!=='undefined' && customDescriptions.has('project-preliminaries'))
+        ? customDescriptions.get('project-preliminaries')
+        : "Submission of Renovation Permit Application and Engineer's Drawings to the Local Authority",
+      unit:'ls',
+      qty:prelim.prelimQty,
+      rate:prelim.prelimRate,
+      amount:Math.round((prelim.prelimQty*prelim.prelimRate+Number.EPSILON)*100)/100
+    };
+  }
+
   function allItems(){
     if(!roomGroups().some(room => Number(room.area) > 0)) return [];
-    return [...renovationItems(),...buildItems()].map(item=>{
+    const items=[];
+    const prelim=projectPreliminariesItem();
+    if(prelim) items.push(prelim);
+    items.push(...renovationItems(),...buildItems());
+    return items.map(item=>{
       item.qty=typeof normalizeQuantity==='function'?normalizeQuantity(item.qty):Math.max(0,Math.ceil(Number(item.qty)||0));
       item.rate=typeof normalizeRate==='function'?normalizeRate(item.rate):Math.round((Number(item.rate)||0)*100)/100;
       item.amount=Math.round((item.qty*item.rate+Number.EPSILON)*100)/100;
@@ -307,7 +335,6 @@
     const rooms=roomGroups();
     const excluded=typeof excludedItems!=='undefined' ? excludedItems : new Set();
     const active=rooms.length ? allItems().filter(item=>!excluded.has(item.id)) : [];
-    const renovationPrelim=renovationProjectData();
     const itemsByRoom={},roomSubtotals={};
     rooms.forEach(room=>{
       itemsByRoom[room.roomId]=[];
@@ -318,16 +345,17 @@
       itemsByRoom[item.roomId].push(item);
       roomSubtotals[item.roomId]=(roomSubtotals[item.roomId]||0)+Number(item.amount||0);
     });
-    const roomTotal=Object.values(roomSubtotals).reduce((s,v)=>s+v,0);
+    const total=active.reduce((sum,item)=>sum+Number(item.amount||0),0);
+    const prelimItem=active.find(item=>item.id==='project-preliminaries');
     return {
       allItems:active,
       roomGroups:rooms,
       itemsByRoom,
       roomSubtotals,
-      prelimQty:renovationPrelim.prelimQty,
-      prelimRate:renovationPrelim.prelimRate,
-      projectPreliminaries:renovationPrelim.projectPreliminaries,
-      total:renovationPrelim.projectPreliminaries+roomTotal
+      prelimQty:Number(prelimItem?.qty)||0,
+      prelimRate:Number(prelimItem?.rate)||0,
+      projectPreliminaries:Number(prelimItem?.amount)||0,
+      total
     };
   }
 
@@ -344,24 +372,15 @@
       window.__TERAJU_RENOVATION_BUDGET_GENERATED=false;
       return false;
     }
-    const items=allItems();
-    const excluded=typeof excludedItems!=='undefined' ? excludedItems : new Set();
-    const active=items.filter(item=>!excluded.has(item.id));
-    const renovationPrelim=renovationProjectData();
-    const roomSubtotals={};
-    rooms.forEach(room=>roomSubtotals[room.roomId]=0);
-    active.forEach(item=>{
-      roomSubtotals[item.roomId]=(roomSubtotals[item.roomId]||0)+Number(item.amount||0);
-    });
-    const roomTotal=Object.values(roomSubtotals).reduce((s,v)=>s+Number(v||0),0);
+    const data=quotationData();
 
     if(typeof renderEstimate==='function'){
       renderEstimate(
-        active,
-        rooms,
-        roomSubtotals,
-        renovationPrelim.projectPreliminaries,
-        renovationPrelim.projectPreliminaries+roomTotal
+        data.allItems,
+        data.roomGroups,
+        data.roomSubtotals,
+        data.projectPreliminaries,
+        data.total
       );
     }
 
