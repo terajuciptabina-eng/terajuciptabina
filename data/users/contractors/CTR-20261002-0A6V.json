@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "contractor",
+  "contractorId": "CTR-20261002-0A6V",
+  "profile": {
+    "name": "MYM MAJUJAYA ENTERPRISE",
+    "email": "mym_majujaya@yahoo.com",
+    "phone": "0197795128"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-10-02T16:01:54.832Z",
+  "updatedAt": "2026-10-02T16:01:54.832Z"
+}
