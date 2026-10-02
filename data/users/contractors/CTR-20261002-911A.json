@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "contractor",
+  "contractorId": "CTR-20261002-911A",
+  "profile": {
+    "name": "TSB PAINTING AND RENOVATION",
+    "email": "tsbpaintingandrenovation@gmail.com",
+    "phone": "0195171946"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-10-02T15:12:33.599Z",
+  "updatedAt": "2026-10-02T15:12:33.599Z"
+}
