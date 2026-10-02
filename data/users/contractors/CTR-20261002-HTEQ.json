@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "contractor",
+  "contractorId": "CTR-20261002-HTEQ",
+  "profile": {
+    "name": "Ombak",
+    "email": "syahiran.salhadi@gmail.com",
+    "phone": "01158685369"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-10-02T15:42:10.918Z",
+  "updatedAt": "2026-10-02T15:42:10.918Z"
+}
