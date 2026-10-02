@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "contractor",
+  "contractorId": "CTR-20261002-BRFD",
+  "profile": {
+    "name": "Pembinaan ROSCB",
+    "email": "alfatehroslan@gmail.com",
+    "phone": "0126712025"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-10-02T23:50:27.394Z",
+  "updatedAt": "2026-10-02T23:50:27.394Z"
+}
