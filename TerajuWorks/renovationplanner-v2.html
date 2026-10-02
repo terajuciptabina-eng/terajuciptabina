@@ -2084,7 +2084,7 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
                   <div class="flex flex-wrap items-center justify-between gap-2">
                     <span>${escapeHtml(level)}</span>
                     <div class="contractor-only" data-build-manual-anchor="${escapeHtml(targetKey)}">
-                      <button type="button" onclick="addBuildHierarchyManualItemPrompt(${JSON.stringify(targetKey)}, ${JSON.stringify(group)}, ${JSON.stringify(prefix)})" class="border rounded-lg px-2 py-1 text-xs font-semibold hover:bg-white">＋ Add New Item</button>
+                      <button type="button" onclick="addBuildHierarchyManualItemPrompt(${escapeHtml(JSON.stringify(targetKey))}, ${escapeHtml(JSON.stringify(group))}, ${escapeHtml(JSON.stringify(prefix))})" class="border rounded-lg px-2 py-1 text-xs font-semibold hover:bg-white">＋ Add New Item</button>
                     </div>
                   </div>
                 </td>
