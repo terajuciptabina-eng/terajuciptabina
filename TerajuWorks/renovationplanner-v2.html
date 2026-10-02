@@ -1593,39 +1593,58 @@ window.saveManualItem = saveManualItem;
 
 function removeManualItem(roomId, itemId) { const list = manualItems.get(roomId) || []; manualItems.set(roomId, list.filter(item => item.id !== itemId)); refreshRenovationItemMutation(); saveContractorState(); }
 
-function addBuildGroupManualItemPrompt(group) {
+function addBuildHierarchyManualItemPrompt(targetKey, group, hierarchyPath) {
   if (!IS_CONTRACTOR) return;
-  const key = '__build__:' + String(group || '').trim().toUpperCase();
+  const key = String(targetKey || '').trim();
+  if (!key) return;
   const id = 'manual-build-' + targetId(key);
   const existing = document.getElementById(id);
   if (existing) { existing.remove(); return; }
   const anchor = document.querySelector('[data-build-manual-anchor="' + CSS.escape(key) + '"]');
   if (!anchor) return;
+
   const wrap = document.createElement('div');
   wrap.id = id;
   wrap.className = 'no-print mt-2 border rounded-xl bg-gray-50 p-4';
-  wrap.innerHTML = '<div class="flex flex-wrap items-center justify-between gap-3 mb-3"><p class="font-semibold text-sm">Add New Item</p><button type="button" onclick="document.getElementById(\'' + id + '\')?.remove()" class="text-xs text-gray-500">Cancel</button></div><div class="grid md:grid-cols-[2fr_1fr_1fr_1fr_auto] gap-3 items-end"><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Description</span><input id="' + id + '-desc" type="text" class="w-full border rounded-lg px-3 py-2 bg-white" placeholder="Item description"></label><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Unit</span><input id="' + id + '-unit" type="text" value="ls" class="w-full border rounded-lg px-3 py-2 bg-white"></label><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Quantity</span><input id="' + id + '-qty" type="number" min="0" step="1" value="1" class="w-full border rounded-lg px-3 py-2 bg-white"></label><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Rate (RM)</span><input id="' + id + '-rate" type="number" min="0" step="0.01" value="0.00" class="w-full border rounded-lg px-3 py-2 bg-white"></label><button type="button" class="bg-black text-white px-4 py-2 rounded-lg text-sm font-semibold" onclick="saveBuildGroupManualItem(\'' + group + '\',\'' + id + '\')">Add Item</button></div>';
+  wrap.innerHTML = '<div class="flex flex-wrap items-center justify-between gap-3 mb-3"><p class="font-semibold text-sm">Add New Item</p><button type="button" class="text-xs text-gray-500" data-build-cancel>Cancel</button></div><div class="grid md:grid-cols-[2fr_1fr_1fr_1fr_auto] gap-3 items-end"><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Description</span><input data-build-desc type="text" class="w-full border rounded-lg px-3 py-2 bg-white" placeholder="Item description"></label><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Unit</span><input data-build-unit type="text" value="ls" class="w-full border rounded-lg px-3 py-2 bg-white"></label><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Quantity</span><input data-build-qty type="number" min="0" step="1" value="1" class="w-full border rounded-lg px-3 py-2 bg-white"></label><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Rate (RM)</span><input data-build-rate type="number" min="0" step="0.01" value="0.00" class="w-full border rounded-lg px-3 py-2 bg-white"></label><button type="button" class="bg-black text-white px-4 py-2 rounded-lg text-sm font-semibold" data-build-save>Add Item</button></div>';
+  wrap.querySelector('[data-build-cancel]')?.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); wrap.remove(); });
+  wrap.querySelector('[data-build-save]')?.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); saveBuildHierarchyManualItem(key, id); });
   anchor.appendChild(wrap);
 }
 
-function saveBuildGroupManualItem(group, formId) {
+function addBuildGroupManualItemPrompt(group) {
+  const groupName = String(group || '').trim().toUpperCase();
+  addBuildHierarchyManualItemPrompt('__build__:' + groupName, groupName, '');
+}
+
+function saveBuildHierarchyManualItem(targetKey, formId) {
   if (!IS_CONTRACTOR) return;
-  const key = '__build__:' + String(group || '').trim().toUpperCase();
+  const key = String(targetKey || '').trim();
   const desc = String(document.getElementById(formId + '-desc')?.value || '').trim();
   const unit = String(document.getElementById(formId + '-unit')?.value || 'ls').trim() || 'ls';
   const qty = normalizeQuantity(document.getElementById(formId + '-qty')?.value);
   const rate = normalizeRate(document.getElementById(formId + '-rate')?.value);
   if (!desc) { alert('Please enter the item description.'); return; }
-  const id = 'manual-' + Date.now() + '-' + Math.random().toString(36).slice(2,8);
-  const groupName = String(group || '').trim().toUpperCase();
+
+  const parts = key.split(':').filter(Boolean);
+  const groupName = String(parts[1] || '').trim().toUpperCase();
   const category = groupName === 'ARCHITECTURES' ? 'architecture' : groupName === 'DOORS & WINDOWS' ? 'doors-windows' : groupName === 'ELECTRICAL' ? 'electrical' : 'structures';
-  const item = { id, manualKey:key, roomId:'project', room:'Project / New Construction', group:groupName, category, description:desc, unit, qty, rate, amount:Math.round((qty * rate + Number.EPSILON) * 100) / 100 };
+  const hierarchy = parts.slice(2);
+  const groupTitle = hierarchy.length ? hierarchy[hierarchy.length - 1] : groupName;
+  const masterPath = hierarchy.join(' / ');
+  const id = 'manual-' + Date.now() + '-' + Math.random().toString(36).slice(2,8);
+  const item = { id, manualKey:key, groupKey:key, groupTitle, masterPath, roomId:'project', room:'Project / New Construction', group:groupName, category, description:desc, unit, qty, rate, amount:Math.round((qty * rate + Number.EPSILON) * 100) / 100 };
   if (!manualItems.has(key)) manualItems.set(key, []);
   manualItems.get(key).push(item);
   refreshRenovationItemMutation();
   saveContractorState();
 }
 
+function saveBuildGroupManualItem(group, formId) {
+  saveBuildHierarchyManualItem('__build__:' + String(group || '').trim().toUpperCase(), formId);
+}
+
+function getAllItems() { const rooms = [...document.querySelectorAll("#roomsContainer .room-card")], typeIndexes = {}, allItems = []; rooms.forEach(room => { const roomId = room.id, roomType = room.querySelector(".room-type")?.value || "living", area = parseFloat(room.querySelector(".room-area")?.value) || 0; if(area<=0)return; typeIndexes[roomType] = (typeIndexes[roomType] || 0) + 1; const base = ROOM_TYPES[roomType] || "Area", autoLabel = typeIndexes[roomType] > 1 ? `${base} ${typeIndexes[roomType]}` : base, roomLabel = customRoomLabels.has(roomId) ? customRoomLabels.get(roomId) : autoLabel, standard = generateStandardRoomItems(roomType, area, roomId, roomLabel), optional = generateOptionalRoomItems(room, roomLabel), manual = (manualItems.get(roomId) || []).map(item => ({ ...item })); [...standard, ...optional, ...manual].forEach(item => { if (customRates.has(item.id)) item.rate = customRates.get(item.id); if (customQuantities.has(item.id)) item.qty = customQuantities.get(item.id); if (customDescriptions.has(item.id)) item.description = customDescriptions.get(item.id); item.qty = normalizeQuantity(item.qty); item.rate = normalizeRate(item.rate); item.amount = Math.round((item.qty * item.rate + Number.EPSILON) * 100) / 100; }); allItems.push(...standard, ...optional, ...manual); }); const prelimManual = (manualItems.get("__prelim__") || []).map(item => ({ ...item, roomId: "__prelim__", room: "Project / Preliminaries" })); prelimManual.forEach(item => { if (customRates.has(item.id)) item.rate = customRates.get(item.id); if (customQuantities.has(item.id)) item.qty = customQuantities.get(item.id); if (customDescriptions.has(item.id)) item.description = customDescriptions.get(item.id); item.qty = normalizeQuantity(item.qty); item.rate = normalizeRate(item.rate); item.amount = Math.round((item.qty * item.rate + Number.EPSILON) * 100) / 100; }); allItems.push(...prelimManual); allItems.push(...generateOptionalProjectItems()); return allItems; }
 
 
 function addRoom(...args){
@@ -1990,9 +2009,18 @@ function renderEstimate(items, roomGroups, roomSubtotals, total) {
           flushHierarchySubtotal();
 
           levels.forEach((level, index) => {
+            const prefix = levels.slice(0, index + 1).join(" / ");
+            const targetKey = '__build__:' + group + ':' + levels.slice(0, index + 1).join(':');
             html += `
               <tr class="border-b">
-                <td colspan="6" class="py-1 px-2 ${hierarchyClass(index)}">${escapeHtml(level)}</td>
+                <td colspan="6" class="py-1 px-2 ${hierarchyClass(index)}">
+                  <div class="flex flex-wrap items-center justify-between gap-2">
+                    <span>${escapeHtml(level)}</span>
+                    <div class="contractor-only" data-build-manual-anchor="${escapeHtml(targetKey)}">
+                      <button type="button" onclick="addBuildHierarchyManualItemPrompt(${escapeHtml(JSON.stringify(targetKey))}, ${escapeHtml(JSON.stringify(group))}, ${escapeHtml(JSON.stringify(prefix))})" class="border rounded-lg px-2 py-1 text-xs font-semibold hover:bg-white">＋ Add New Item</button>
+                    </div>
+                  </div>
+                </td>
               </tr>`;
           });
 
