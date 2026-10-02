@@ -54,7 +54,7 @@
              <div class="flex items-baseline gap-3">
                <h2 class="text-xl font-bold tracking-[-.02em] text-slate-950">${esc(q.quotationNumber||q.quotationId)}</h2>
              </div>
-             <p class="mt-1 whitespace-normal break-words text-sm font-medium leading-5 text-slate-600">${esc(q.client?.name||"Not specified")} · ${esc(q.project?.location||"Location not specified")}</p>
+             <p class="mt-1 whitespace-normal break-words text-justify text-sm font-medium leading-5 text-slate-600">${esc(q.client?.name||"Not specified")} · ${esc(q.project?.location||"Location not specified")}</p>
            </div>
            <div class="history-card-meta">
              <p class="text-xs text-slate-400">Updated ${date(q.updatedAt)}</p>
