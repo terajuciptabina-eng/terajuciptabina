@@ -1761,7 +1761,7 @@ function updateEstimate() {
   renderEstimate(activeItems, roomGroups, roomSubtotals, projectPreliminaries, projectPreliminaries + roomTotal);
 }
 
-function renderBudgetSummaryAtBottom(items, roomGroups, roomSubtotals, projectPreliminaries) {
+function renderBudgetSummaryAtBottom(items, roomGroups, roomSubtotals, projectPreliminaries, total) {
   const container = document.getElementById("renovationBudgetContent");
   const table = container?.querySelector("table");
   const tbody = table?.querySelector("tbody");
@@ -1810,7 +1810,7 @@ function renderBudgetSummaryAtBottom(items, roomGroups, roomSubtotals, projectPr
     preliminariesTotal +
     newConstructionGroups.reduce((sum, group) => sum + (Number(groupTotals[group]) || 0), 0);
 
-  const summaryTotal = newConstructionTotal + renovationExistingTotal;
+  // Summary TOTAL is display-only. The V2 calculation engine is the single source of truth.
 
   const row = (label, amount, className = "border-b", heading = false) => {
     const tr = document.createElement("tr");
@@ -1878,8 +1878,9 @@ function renderBudgetSummaryAtBottom(items, roomGroups, roomSubtotals, projectPr
     });
   }
 
-  if (summaryTotal !== 0) {
-    fragment.appendChild(row("TOTAL", summaryTotal, "border-t-2 bg-gray-50", true));
+  const canonicalTotal = Number(total) || 0;
+  if (canonicalTotal !== 0) {
+    fragment.appendChild(row("TOTAL", canonicalTotal, "border-t-2 bg-gray-50", true));
   }
   tbody.appendChild(fragment);
 }
@@ -2181,7 +2182,7 @@ function renderEstimate(items, roomGroups, roomSubtotals, projectPreliminaries, 
       </table>
     </div>`;
   container.innerHTML = html;
-  renderBudgetSummaryAtBottom(items, roomGroups, roomSubtotals, projectPreliminaries);
+  renderBudgetSummaryAtBottom(items, roomGroups, roomSubtotals, projectPreliminaries, total);
   renderRemovedItems();
   document.getElementById("grandTotal").textContent = money(total, 2);
   const totalBuiltAreaEl = document.getElementById("totalBuiltArea");
