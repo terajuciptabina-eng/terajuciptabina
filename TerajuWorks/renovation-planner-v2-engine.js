@@ -294,8 +294,8 @@
   }
 
   function projectPreliminariesItem(){
+    if(!roomGroups().some(room => Number(room.area) > 0)) return null;
     const prelim=renovationProjectData();
-    if(prelim.prelimQty<=0 || prelim.prelimRate<=0) return null;
     return {
       id:'project-preliminaries',
       manual:false,
