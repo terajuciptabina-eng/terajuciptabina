@@ -1597,7 +1597,7 @@ function addBuildHierarchyManualItemPrompt(targetKey, group, hierarchyPath) {
   if (!IS_CONTRACTOR) return;
   const key = String(targetKey || '').trim();
   if (!key) return;
-  const id = 'manual-build-' + targetId(key);
+  const id = 'manual-build-' + key.replace(/[^a-zA-Z0-9_-]+/g, '-');
   const existing = document.getElementById(id);
   if (existing) { existing.remove(); return; }
   const anchor = document.querySelector('[data-build-manual-anchor="' + CSS.escape(key) + '"]');
