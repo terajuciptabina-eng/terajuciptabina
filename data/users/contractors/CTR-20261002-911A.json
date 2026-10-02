@@ -7,7 +7,12 @@
   "profile": {
     "name": "TSB PAINTING AND RENOVATION",
     "email": "tsbpaintingandrenovation@gmail.com",
-    "phone": "0195171946"
+    "phone": "0195171946",
+    "registrationNo": "",
+    "address": "",
+    "website": "",
+    "logoDataUrl": "",
+    "contractorProfileConfigured": true
   },
   "auth": {
     "mode": "temporary-id",
@@ -19,5 +24,5 @@
     "renovation": []
   },
   "createdAt": "2026-10-02T15:12:33.599Z",
-  "updatedAt": "2026-10-02T15:12:33.599Z"
+  "updatedAt": "2026-10-02T15:13:03.564Z"
 }
