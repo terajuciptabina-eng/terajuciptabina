@@ -101,6 +101,30 @@
           "groupKey": null,
           "groupTitle": "Construction Budget",
           "updatedAt": "2026-10-02T07:58:24.831Z"
+        },
+        {
+          "customItemId": "ITEM-master-windows-/-type-2-1800*1200",
+          "sourceType": "override",
+          "sourceGlobalId": "master-WINDOWS / Type 2 1800×1200",
+          "plannerType": "renovation",
+          "description": "Aluminium-framed glazed windows, size 1800 × 1200 mm, complete with aluminium frames, glazing, glazing beads, handles, locking mechanisms, sealant and necessary ironmongery, including fixing and making good, installed complete. (Kitchen)",
+          "unit": "No.",
+          "rate": 2500,
+          "globalRate": 1400,
+          "rateDelta": 1100,
+          "rateDeltaPercent": 78.57,
+          "overrideActive": true,
+          "state": "negeri-sembilan",
+          "rateSetId": "negeri-sembilan",
+          "approvalStatus": "pending",
+          "reviewedAt": null,
+          "reviewedBy": null,
+          "reviewNote": null,
+          "capturedAt": "2026-10-02T08:03:30.344Z",
+          "category": "direct-rate-override",
+          "groupKey": "doors-windows",
+          "groupTitle": "Doors & Windows",
+          "updatedAt": "2026-10-02T08:03:30.344Z"
         }
       ],
       "marketHistory": [
@@ -306,9 +330,34 @@
           "groupTitle": "Construction Budget",
           "updatedAt": "2026-10-02T07:58:24.831Z",
           "eventType": "override-update"
+        },
+        {
+          "customItemId": "ITEM-master-windows-/-type-2-1800*1200",
+          "sourceType": "override",
+          "sourceGlobalId": "master-WINDOWS / Type 2 1800×1200",
+          "plannerType": "renovation",
+          "description": "Aluminium-framed glazed windows, size 1800 × 1200 mm, complete with aluminium frames, glazing, glazing beads, handles, locking mechanisms, sealant and necessary ironmongery, including fixing and making good, installed complete. (Kitchen)",
+          "unit": "No.",
+          "rate": 2500,
+          "globalRate": 1400,
+          "rateDelta": 1100,
+          "rateDeltaPercent": 78.57,
+          "overrideActive": true,
+          "state": "negeri-sembilan",
+          "rateSetId": "negeri-sembilan",
+          "approvalStatus": "pending",
+          "reviewedAt": null,
+          "reviewedBy": null,
+          "reviewNote": null,
+          "capturedAt": "2026-10-02T08:03:30.344Z",
+          "category": "direct-rate-override",
+          "groupKey": "doors-windows",
+          "groupTitle": "Doors & Windows",
+          "updatedAt": "2026-10-02T08:03:30.344Z",
+          "eventType": "override-update"
         }
       ]
     }
   ],
-  "updatedAt": "2026-10-02T07:58:24.831Z"
+  "updatedAt": "2026-10-02T08:03:30.344Z"
 }
