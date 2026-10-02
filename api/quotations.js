@@ -19,14 +19,40 @@ export default async function handler(req, res) {
   function quotationType(value) { return String(value || '').toLowerCase() === 'detail' ? 'detail' : 'simple'; }
   function plannerList(record, type) { return Array.isArray(record?.plannerRecords?.[type]) ? record.plannerRecords[type] : []; }
   function baseSequence(value) { const match = String(value || '').trim().match(/^Q(\d+)(?:S|D)?$/i); return match ? Number(match[1]) || 0 : 0; }
-  function estimateSequence(value) { const match = String(value || '').trim().match(/^EST-(?:BLD|REN)-(\d+)$/i); return match ? Number(match[1]) || 0 : 0; }
+  function estimateSequence(value) { const match = String(value || '').trim().match(/^EST-(?:BLD|REN)-(\d+)(?:-[SD])?$/i); return match ? Number(match[1]) || 0 : 0; }
+  function estimateBase(value) { return estimateSequence(value); }
+  function revisionCode(value) { const n = Number(value); return `R${String(Number.isFinite(n) && n >= 0 ? n : 0).padStart(2, '0')}`; }
+  function canonicalEstimateNumber(value, plannerType, type) {
+    const base = estimateBase(value);
+    return base ? displayEstimateNumber(base, plannerType, type) : '';
+  }
+  function revisionComparable(value, plannerType) {
+    const copy = JSON.parse(JSON.stringify(value || {}));
+    delete copy.updatedAt;
+    delete copy.createdAt;
+    delete copy.revision;
+    delete copy.revisionHistory;
+    const type = quotationType(copy.quotationType || copy.plannerState?.quotationType);
+    if (copy.estimateNumber) copy.estimateNumber = canonicalEstimateNumber(copy.estimateNumber, plannerType, type);
+    if (copy.plannerState && typeof copy.plannerState === 'object') {
+      delete copy.plannerState.quotationId;
+      if (copy.plannerState.estimateNumber) copy.plannerState.estimateNumber = canonicalEstimateNumber(copy.plannerState.estimateNumber, plannerType, type);
+    }
+    return JSON.stringify(copy);
+  }
+  function buildRevisionSnapshot(value, revision) {
+    const snapshot = JSON.parse(JSON.stringify(value || {}));
+    delete snapshot.revisionHistory;
+    snapshot.revision = { current: revision, history: [] };
+    return snapshot;
+  }
   function nextBaseNumber(record, plannerType) { const all = plannerList(record, plannerType); const stored = Number(record?.quotationRunningNumber?.[plannerType]); const highest = all.reduce((max, q) => Math.max(max, baseSequence(q?.quotationNumber)), 0); const plannerStored = Number.isFinite(stored) && stored > 0 ? stored : 0; const baseline = Math.max(highest, plannerStored, highest === 0 ? all.length : 0); return Math.max(1, baseline + 1); }
   function nextEstimateNumber(record, plannerType) { const all = plannerList(record, plannerType); const stored = Number(record?.estimateRunningNumber?.[plannerType]); const highest = all.reduce((max, q) => Math.max(max, estimateSequence(q?.estimateNumber)), 0); return Math.max(1, Math.max(highest, Number.isFinite(stored) && stored > 0 ? stored : 0) + 1); }
   function findProjectQuotations(record, plannerType, projectId) { if (!projectId) return []; return plannerList(record, plannerType).filter(q => String(q?.projectId || q?.plannerState?.projectId || '') === String(projectId)); }
   function projectIdentity(record) { const state = record?.plannerState || {}; return { customer: String(record?.client?.name || state.customerName || '').trim().toLowerCase(), location: String(record?.project?.location || state.projectLocation || '').trim().toLowerCase(), area: Number(record?.project?.builtUpArea ?? state.builtUpArea ?? 0) || 0 }; }
   function sameProjectIdentity(a, b) { const x = projectIdentity(a), y = projectIdentity(b); return (!x.customer || !y.customer || x.customer === y.customer) && (!x.location || !y.location || x.location === y.location) && (!x.area || !y.area || x.area === y.area); }
   function displayQuotationNumber(baseNumber, type) { return `Q${String(baseNumber).padStart(3, '0')}${quotationType(type) === 'detail' ? 'D' : 'S'}`; }
-  function displayEstimateNumber(number, plannerType) { return `EST-${plannerType === 'renovation' ? 'REN' : 'BLD'}-${String(Math.max(1, number)).padStart(3, '0')}`; }
+  function displayEstimateNumber(number, plannerType, type) { return `EST-${plannerType === 'renovation' ? 'REN' : 'BLD'}-${String(Math.max(1, number)).padStart(3, '0')}-${quotationType(type) === 'detail' ? 'D' : 'S'}`; }
   try {
     const source = req.method === 'GET' ? req.query : (req.body || {}); const role = String(source?.role || '').toLowerCase(); const id = String(source?.id || '').trim().toUpperCase(); const plannerType = String(source?.plannerType || 'build').toLowerCase();
     if (!validRole(role) || !id || !validPlanner(plannerType)) return res.status(400).json({ message: 'Invalid role, id or planner type.' });
@@ -43,7 +69,9 @@ export default async function handler(req, res) {
       const now = new Date().toISOString();
       const type = quotationType(sourceQuotation.quotationType);
       const baseNumber = nextBaseNumber(current.record, plannerType);
-      const estimateNumber = displayEstimateNumber(nextEstimateNumber(current.record, plannerType), plannerType);
+      const newProjectId = `${plannerType === 'renovation' ? 'PRJ-REN' : 'PRJ-BLD'}-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).slice(2, 7).toUpperCase()}`;
+      const estimateBaseNumber = nextEstimateNumber(current.record, plannerType);
+      const estimateNumber = displayEstimateNumber(estimateBaseNumber, plannerType, type);
       const newQuotationId = `QT-${plannerType === 'renovation' ? 'REN' : 'BLD'}-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).slice(2,7).toUpperCase()}`;
       const duplicate = JSON.parse(JSON.stringify(sourceQuotation));
       duplicate.quotationId = newQuotationId;
@@ -60,17 +88,20 @@ export default async function handler(req, res) {
       duplicate.total = 0;
       duplicate.plannerState = {
         ...(duplicate.plannerState || {}),
-        projectId: duplicate.projectId || duplicate.plannerState?.projectId || '',
+        projectId: newProjectId,
         quotationId: newQuotationId,
+        quotationType: type,
         constructionBudgetGenerated: false
       };
+      duplicate.revision = { current: 'R00', history: [] };
+      delete duplicate.revisionHistory;
       list.unshift(duplicate);
       current.record.plannerRecords = current.record.plannerRecords || { build: [], renovation: [] };
       current.record.plannerRecords[plannerType] = list;
       current.record.quotationRunningNumber = current.record.quotationRunningNumber || {};
       current.record.quotationRunningNumber[plannerType] = baseNumber;
       current.record.estimateRunningNumber = current.record.estimateRunningNumber || {};
-      current.record.estimateRunningNumber[plannerType] = estimateSequence(estimateNumber);
+      current.record.estimateRunningNumber[plannerType] = estimateBaseNumber;
       current.record.updatedAt = now;
       const updated = await github(pathFor(role, id), { method: 'PUT', body: JSON.stringify({ message: `Duplicate ${plannerType} quotation ${sourceQuotation.quotationNumber} as ${duplicate.quotationNumber}`, content: Buffer.from(JSON.stringify(current.record, null, 2) + '\n').toString('base64'), sha: current.sha }) });
       if (!updated.response.ok) return res.status(502).json({ message: 'Unable to duplicate cost estimate.' });
@@ -83,10 +114,47 @@ export default async function handler(req, res) {
     const list = current.record.plannerRecords[plannerType]; let index = list.findIndex(q => q?.quotationId === quotationId);
     if (index >= 0) {
       const old = list[index];
-      normalized.quotationNumber = old?.quotationNumber || normalized.quotationNumber || displayQuotationNumber(Math.max(1, nextBaseNumber(current.record, plannerType) - 1), normalized.quotationType);
-      normalized.estimateNumber = old?.estimateNumber || normalized.estimateNumber;
+      const type = quotationType(normalized.quotationType || old?.quotationType || old?.plannerState?.quotationType);
+      normalized.quotationNumber = old?.quotationNumber || normalized.quotationNumber || displayQuotationNumber(Math.max(1, nextBaseNumber(current.record, plannerType) - 1), type);
+      const oldEstimateBase = estimateBase(old?.estimateNumber);
+      normalized.estimateNumber = old?.estimateNumber
+        ? displayEstimateNumber(oldEstimateBase || nextEstimateNumber(current.record, plannerType), plannerType, type)
+        : (normalized.estimateNumber ? displayEstimateNumber(estimateBase(normalized.estimateNumber), plannerType, type) : displayEstimateNumber(nextEstimateNumber(current.record, plannerType), plannerType, type));
       normalized.projectId = old?.projectId || old?.plannerState?.projectId || normalized.projectId;
+      normalized.plannerState = { ...(normalized.plannerState || {}), projectId: normalized.projectId, quotationType: type };
       normalized.createdAt = old?.createdAt || normalized.createdAt;
+
+      const oldRevision = old?.revision || {};
+      const currentRevisionNumber = Number(String(oldRevision.current || '').replace(/^R/i, ''));
+      const safeCurrentRevision = Number.isFinite(currentRevisionNumber) && currentRevisionNumber >= 0 ? currentRevisionNumber : 0;
+      const oldComparable = revisionComparable(old, plannerType);
+      const nextComparable = revisionComparable(normalized, plannerType);
+      const changed = oldComparable !== nextComparable;
+
+      if (old?.revision?.current) {
+        normalized.revision = {
+          current: changed ? revisionCode(safeCurrentRevision + 1) : old.revision.current,
+          history: Array.isArray(old.revision.history) ? old.revision.history.map(entry => JSON.parse(JSON.stringify(entry))) : []
+        };
+      } else {
+        normalized.revision = { current: changed ? 'R01' : 'R00', history: [] };
+        if (changed) {
+          normalized.revision.history.push({
+            revision: 'R00',
+            createdAt: old?.updatedAt || old?.createdAt || normalized.createdAt,
+            snapshot: buildRevisionSnapshot(old, 'R00')
+          });
+        }
+      }
+
+      if (changed && old?.revision?.current) {
+        normalized.revision.history.push({
+          revision: old.revision.current,
+          createdAt: old?.updatedAt || old?.createdAt || normalized.createdAt,
+          snapshot: buildRevisionSnapshot(old, old.revision.current)
+        });
+      }
+
       list[index] = normalized;
     } else {
       const incomingProjectId = String(normalized.projectId || normalized.plannerState?.projectId || '').trim();
@@ -102,21 +170,25 @@ export default async function handler(req, res) {
         index = list.findIndex(q => q?.quotationId === typeMatch.quotationId);
         list[index] = normalized;
       } else if (compatibleMatches.length) {
-        const match = compatibleMatches[0]; const base = baseSequence(match.quotationNumber); normalized.projectId = match.projectId || incomingProjectId; normalized.estimateNumber = match.estimateNumber || displayEstimateNumber(nextEstimateNumber(current.record, plannerType), plannerType); normalized.quotationNumber = displayQuotationNumber(base || Math.max(1, nextBaseNumber(current.record, plannerType) - 1), normalized.quotationType); normalized.plannerState = { ...(normalized.plannerState || {}), projectId: normalized.projectId }; list.unshift(normalized);
+        const match = compatibleMatches[0];
+        const base = baseSequence(match.quotationNumber);
+        const sharedEstimateBase = estimateBase(match.estimateNumber) || estimateBase(match?.plannerState?.estimateNumber);
+        const estimateBaseNumber = sharedEstimateBase || nextEstimateNumber(current.record, plannerType);
+        normalized.projectId = match.projectId || incomingProjectId;
+        normalized.estimateNumber = displayEstimateNumber(estimateBaseNumber, plannerType, normalized.quotationType);
+        normalized.quotationNumber = displayQuotationNumber(base || Math.max(1, nextBaseNumber(current.record, plannerType) - 1), normalized.quotationType);
+        normalized.plannerState = { ...(normalized.plannerState || {}), projectId: normalized.projectId, quotationType: quotationType(normalized.quotationType) };
+        normalized.revision = { current: 'R00', history: [] };
+        list.unshift(normalized);
       } else {
-        const baseNumber = nextBaseNumber(current.record, plannerType); const estimateNumber = nextEstimateNumber(current.record, plannerType); normalized.quotationNumber = displayQuotationNumber(baseNumber, normalized.quotationType); normalized.estimateNumber = displayEstimateNumber(estimateNumber, plannerType); normalized.projectId = `${plannerType === 'renovation' ? 'PRJ-REN' : 'PRJ-BLD'}-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).slice(2, 7).toUpperCase()}`; normalized.plannerState = { ...(normalized.plannerState || {}), projectId: normalized.projectId };
+        const baseNumber = nextBaseNumber(current.record, plannerType);
+        const estimateNumber = nextEstimateNumber(current.record, plannerType);
+        normalized.quotationNumber = displayQuotationNumber(baseNumber, normalized.quotationType);
+        normalized.estimateNumber = displayEstimateNumber(estimateNumber, plannerType, normalized.quotationType); normalized.projectId = `${plannerType === 'renovation' ? 'PRJ-REN' : 'PRJ-BLD'}-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).slice(2, 7).toUpperCase()}`; normalized.plannerState = { ...(normalized.plannerState || {}), projectId: normalized.projectId };
         if (!current.record.quotationRunningNumber || typeof current.record.quotationRunningNumber !== 'object') current.record.quotationRunningNumber = {}; current.record.quotationRunningNumber[plannerType] = baseNumber;
         if (!current.record.estimateRunningNumber || typeof current.record.estimateRunningNumber !== 'object') current.record.estimateRunningNumber = {}; current.record.estimateRunningNumber[plannerType] = estimateNumber;
         list.unshift(normalized);
       }
-    }
-    const projectId = String(normalized.projectId || normalized.plannerState?.projectId || '').trim();
-    if (projectId) {
-      const projectVersions = findProjectQuotations(current.record, plannerType, projectId);
-      let projectEstimate = projectVersions.map(q => q?.estimateNumber).find(Boolean);
-      if (!projectEstimate) projectEstimate = displayEstimateNumber(nextEstimateNumber(current.record, plannerType), plannerType);
-      for (const q of projectVersions) q.estimateNumber = projectEstimate;
-      normalized.estimateNumber = projectEstimate;
     }
     current.record.updatedAt = now;
     const updated = await github(pathFor(role, id), { method: 'PUT', body: JSON.stringify({ message: `${index >= 0 ? 'Update' : 'Save'} ${plannerType} quotation ${normalized.quotationNumber} (${normalized.estimateNumber})`, content: Buffer.from(JSON.stringify(current.record, null, 2) + '\n').toString('base64'), sha: current.sha }) }); if (!updated.response.ok) { console.error('Quotation write failed:', updated.data); return res.status(502).json({ message: 'Unable to save quotation record.' }); }
