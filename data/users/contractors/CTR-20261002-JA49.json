@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "contractor",
+  "contractorId": "CTR-20261002-JA49",
+  "profile": {
+    "name": "ANZ",
+    "email": "anzworksnservices@gmail.com",
+    "phone": "0133107764"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-10-02T13:34:41.199Z",
+  "updatedAt": "2026-10-02T13:34:41.199Z"
+}
