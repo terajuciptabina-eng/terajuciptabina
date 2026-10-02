@@ -1739,7 +1739,7 @@ function renderBudgetSummaryAtBottom(items, roomGroups, roomSubtotals, total) {
     });
 
     const tdLabel = document.createElement("td");
-    tdLabel.className = "py-1 px-2 text-right " + (heading ? "font-bold" : "font-semibold");
+    tdLabel.className = "py-1 px-2 text-left " + (heading ? "font-bold" : "font-semibold");
     tdLabel.textContent = label;
 
     const tdAmount = document.createElement("td");
@@ -1749,7 +1749,7 @@ function renderBudgetSummaryAtBottom(items, roomGroups, roomSubtotals, total) {
     const tdAction = document.createElement("td");
     tdAction.className = "no-print";
 
-    tr.append(tdBlank1, tdBlank2, tdBlank3, tdLabel, tdAmount, tdAction);
+    tr.append(tdLabel, tdBlank1, tdBlank2, tdBlank3, tdAmount, tdAction);
     return tr;
   };
 
