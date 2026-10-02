@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "contractor",
+  "contractorId": "CTR-20261002-HEDZ",
+  "profile": {
+    "name": "Ariffarhan abd murad",
+    "email": "arif.farhan13@gmail.com",
+    "phone": "0179524452"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-10-02T23:31:58.307Z",
+  "updatedAt": "2026-10-02T23:31:58.307Z"
+}
