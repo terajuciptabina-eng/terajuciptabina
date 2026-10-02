@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "contractor",
+  "contractorId": "CTR-20261002-5RX5",
+  "profile": {
+    "name": "Idereka",
+    "email": "selymir@gmail.com",
+    "phone": "01153514571"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-10-02T14:49:43.372Z",
+  "updatedAt": "2026-10-02T14:49:43.372Z"
+}
