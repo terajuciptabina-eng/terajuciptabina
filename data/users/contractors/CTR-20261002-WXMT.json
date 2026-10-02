@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "contractor",
+  "contractorId": "CTR-20261002-WXMT",
+  "profile": {
+    "name": "EV3 enterprise",
+    "email": "mahathirjaliloffical@gmail.com",
+    "phone": "0127050101"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-10-02T12:01:16.459Z",
+  "updatedAt": "2026-10-02T12:01:16.459Z"
+}
