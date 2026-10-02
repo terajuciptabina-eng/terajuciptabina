@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "contractor",
+  "contractorId": "CTR-20261002-NYM4",
+  "profile": {
+    "name": "Zehra Resources",
+    "email": "zehraresources@gmail.com",
+    "phone": "01111296566"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-10-02T16:05:11.316Z",
+  "updatedAt": "2026-10-02T16:05:11.316Z"
+}
