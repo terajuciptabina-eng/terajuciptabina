@@ -173,6 +173,30 @@
           "groupKey": "doors-windows",
           "groupTitle": "Doors & Windows",
           "updatedAt": "2026-10-02T13:09:53.073Z"
+        },
+        {
+          "customItemId": "ITEM-master-windows-/-type-3-900*600",
+          "sourceType": "override",
+          "sourceGlobalId": "master-WINDOWS / Type 3 900×600",
+          "plannerType": "renovation",
+          "description": "Aluminium-framed glazed windows, size 900 × 600 mm, complete with aluminium frames, glazing, glazing beads, handles, locking mechanisms, sealant and necessary ironmongery, including fixing and making good, installed complete. (Bathroom 1 / Bathroom 2 / applicable bathrooms)",
+          "unit": "No.",
+          "rate": 1200,
+          "globalRate": 950,
+          "rateDelta": 250,
+          "rateDeltaPercent": 26.32,
+          "overrideActive": true,
+          "state": "negeri-sembilan",
+          "rateSetId": "negeri-sembilan",
+          "approvalStatus": "pending",
+          "reviewedAt": null,
+          "reviewedBy": null,
+          "reviewNote": null,
+          "capturedAt": "2026-10-02T13:10:43.020Z",
+          "category": "direct-rate-override",
+          "groupKey": "doors-windows",
+          "groupTitle": "Doors & Windows",
+          "updatedAt": "2026-10-02T13:10:43.020Z"
         }
       ],
       "marketHistory": [
@@ -528,9 +552,34 @@
           "groupTitle": "Doors & Windows",
           "updatedAt": "2026-10-02T13:10:18.790Z",
           "eventType": "override-update"
+        },
+        {
+          "customItemId": "ITEM-master-windows-/-type-3-900*600",
+          "sourceType": "override",
+          "sourceGlobalId": "master-WINDOWS / Type 3 900×600",
+          "plannerType": "renovation",
+          "description": "Aluminium-framed glazed windows, size 900 × 600 mm, complete with aluminium frames, glazing, glazing beads, handles, locking mechanisms, sealant and necessary ironmongery, including fixing and making good, installed complete. (Bathroom 1 / Bathroom 2 / applicable bathrooms)",
+          "unit": "No.",
+          "rate": 1200,
+          "globalRate": 950,
+          "rateDelta": 250,
+          "rateDeltaPercent": 26.32,
+          "overrideActive": true,
+          "state": "negeri-sembilan",
+          "rateSetId": "negeri-sembilan",
+          "approvalStatus": "pending",
+          "reviewedAt": null,
+          "reviewedBy": null,
+          "reviewNote": null,
+          "capturedAt": "2026-10-02T13:10:43.020Z",
+          "category": "direct-rate-override",
+          "groupKey": "doors-windows",
+          "groupTitle": "Doors & Windows",
+          "updatedAt": "2026-10-02T13:10:43.020Z",
+          "eventType": "override-update"
         }
       ]
     }
   ],
-  "updatedAt": "2026-10-02T13:10:18.790Z"
+  "updatedAt": "2026-10-02T13:10:43.020Z"
 }
