@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "contractor",
+  "contractorId": "CTR-20261002-NDNQ",
+  "profile": {
+    "name": "Rpmc 7200",
+    "email": "pmc.ritz@gmail.com",
+    "phone": "0194000250"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-10-02T09:44:22.205Z",
+  "updatedAt": "2026-10-02T09:44:22.205Z"
+}
