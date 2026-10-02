@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "contractor",
+  "contractorId": "CTR-20261002-8X3T",
+  "profile": {
+    "name": "eabb",
+    "email": "mounds-staunch60@icloud.com",
+    "phone": "014 2546186"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-10-02T14:52:09.402Z",
+  "updatedAt": "2026-10-02T14:52:09.402Z"
+}
