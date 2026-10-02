@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "contractor",
+  "contractorId": "CTR-20261002-721D",
+  "profile": {
+    "name": "Shahidan Construction",
+    "email": "shahidanconst@yahoo.com",
+    "phone": "0126115069"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-10-02T20:47:24.234Z",
+  "updatedAt": "2026-10-02T20:47:24.235Z"
+}
