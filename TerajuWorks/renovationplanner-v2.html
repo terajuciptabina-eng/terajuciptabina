@@ -1765,12 +1765,9 @@ function renderBudgetSummaryAtBottom(items, roomGroups, roomSubtotals, projectPr
     if (group) groupTotals[group] = (groupTotals[group] || 0) + (Number(item.amount) || 0);
   });
 
-  const prelimManualItems = (manualItems.get("__prelim__") || [])
-    .filter(item => !excludedItems.has(item.id) && (Number(item.amount) || 0) !== 0);
-
-  const preliminariesAmount = Number(projectPreliminaries) || 0;
-  const preliminariesTotal = preliminariesAmount +
-    prelimManualItems.reduce((sum, item) => sum + (Number(item.amount) || 0), 0);
+  const preliminariesTotal = items
+    .filter(item => String(item.category || "").toLowerCase() === "preliminaries")
+    .reduce((sum, item) => sum + (Number(item.amount) || 0), 0);
 
   const newConstructionGroups = ["STRUCTURES", "ARCHITECTURES", "ELECTRICAL", "DOORS & WINDOWS"]
     .filter(group => (Number(groupTotals[group]) || 0) !== 0);
