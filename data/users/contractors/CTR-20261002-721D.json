@@ -7,7 +7,12 @@
   "profile": {
     "name": "Shahidan Construction",
     "email": "shahidanconst@yahoo.com",
-    "phone": "0126115069"
+    "phone": "0126115069",
+    "registrationNo": "",
+    "address": "",
+    "website": "",
+    "logoDataUrl": "",
+    "contractorProfileConfigured": true
   },
   "auth": {
     "mode": "temporary-id",
@@ -19,5 +24,5 @@
     "renovation": []
   },
   "createdAt": "2026-10-02T20:47:24.234Z",
-  "updatedAt": "2026-10-02T20:47:24.235Z"
+  "updatedAt": "2026-10-02T20:48:11.047Z"
 }
