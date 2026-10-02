@@ -77,6 +77,30 @@
           "groupKey": "structure",
           "groupTitle": "Footing",
           "updatedAt": "2026-10-01T09:20:02.733Z"
+        },
+        {
+          "customItemId": "ITEM-room-2-facade",
+          "sourceType": "override",
+          "sourceGlobalId": "master-BALCONY / Facade Wall",
+          "plannerType": "renovation",
+          "description": "New 1000mm high brick railing to rear Balcony area including plaster both side and paintng",
+          "unit": "sqft",
+          "rate": 75,
+          "globalRate": 60,
+          "rateDelta": 15,
+          "rateDeltaPercent": 25,
+          "overrideActive": true,
+          "state": "negeri-sembilan",
+          "rateSetId": "negeri-sembilan",
+          "approvalStatus": "pending",
+          "reviewedAt": null,
+          "reviewedBy": null,
+          "reviewNote": null,
+          "capturedAt": "2026-10-02T07:58:24.831Z",
+          "category": "direct-rate-override",
+          "groupKey": null,
+          "groupTitle": "Construction Budget",
+          "updatedAt": "2026-10-02T07:58:24.831Z"
         }
       ],
       "marketHistory": [
@@ -257,9 +281,34 @@
           "groupTitle": "Footing",
           "updatedAt": "2026-10-01T09:20:02.733Z",
           "eventType": "override-update"
+        },
+        {
+          "customItemId": "ITEM-room-2-facade",
+          "sourceType": "override",
+          "sourceGlobalId": "master-BALCONY / Facade Wall",
+          "plannerType": "renovation",
+          "description": "New 1000mm high brick railing to rear Balcony area including plaster both side and paintng",
+          "unit": "sqft",
+          "rate": 75,
+          "globalRate": 60,
+          "rateDelta": 15,
+          "rateDeltaPercent": 25,
+          "overrideActive": true,
+          "state": "negeri-sembilan",
+          "rateSetId": "negeri-sembilan",
+          "approvalStatus": "pending",
+          "reviewedAt": null,
+          "reviewedBy": null,
+          "reviewNote": null,
+          "capturedAt": "2026-10-02T07:58:24.831Z",
+          "category": "direct-rate-override",
+          "groupKey": null,
+          "groupTitle": "Construction Budget",
+          "updatedAt": "2026-10-02T07:58:24.831Z",
+          "eventType": "override-update"
         }
       ]
     }
   ],
-  "updatedAt": "2026-10-01T09:20:02.733Z"
+  "updatedAt": "2026-10-02T07:58:24.831Z"
 }
