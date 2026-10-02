@@ -157,10 +157,10 @@
           "plannerType": "renovation",
           "description": "Single-leaf moisture-resistant PVC/UPVC flush doors, complete with PVC/UPVC frames, hinges, locksets, handles, door stops, architraves and necessary ironmongery, including fixing and making good, installed complete. (Bathroom 1 / Bathroom 2 / applicable bathrooms)",
           "unit": "No.",
-          "rate": 950,
+          "rate": 1200,
           "globalRate": 850,
-          "rateDelta": 100,
-          "rateDeltaPercent": 11.76,
+          "rateDelta": 350,
+          "rateDeltaPercent": 41.18,
           "overrideActive": true,
           "state": "negeri-sembilan",
           "rateSetId": "negeri-sembilan",
@@ -168,11 +168,11 @@
           "reviewedAt": null,
           "reviewedBy": null,
           "reviewNote": null,
-          "capturedAt": "2026-10-02T08:30:32.557Z",
+          "capturedAt": "2026-10-02T13:09:53.073Z",
           "category": "direct-rate-override",
           "groupKey": "doors-windows",
           "groupTitle": "Doors & Windows",
-          "updatedAt": "2026-10-02T08:30:32.557Z"
+          "updatedAt": "2026-10-02T13:09:53.073Z"
         }
       ],
       "marketHistory": [
@@ -478,9 +478,34 @@
           "groupTitle": "Doors & Windows",
           "updatedAt": "2026-10-02T08:30:32.557Z",
           "eventType": "override-update"
+        },
+        {
+          "customItemId": "ITEM-master-doors-/-type-3-bathroom",
+          "sourceType": "override",
+          "sourceGlobalId": "master-DOORS / Type 3 Bathroom",
+          "plannerType": "renovation",
+          "description": "Single-leaf moisture-resistant PVC/UPVC flush doors, complete with PVC/UPVC frames, hinges, locksets, handles, door stops, architraves and necessary ironmongery, including fixing and making good, installed complete. (Bathroom 1 / Bathroom 2 / applicable bathrooms)",
+          "unit": "No.",
+          "rate": 1200,
+          "globalRate": 850,
+          "rateDelta": 350,
+          "rateDeltaPercent": 41.18,
+          "overrideActive": true,
+          "state": "negeri-sembilan",
+          "rateSetId": "negeri-sembilan",
+          "approvalStatus": "pending",
+          "reviewedAt": null,
+          "reviewedBy": null,
+          "reviewNote": null,
+          "capturedAt": "2026-10-02T13:09:53.073Z",
+          "category": "direct-rate-override",
+          "groupKey": "doors-windows",
+          "groupTitle": "Doors & Windows",
+          "updatedAt": "2026-10-02T13:09:53.073Z",
+          "eventType": "override-update"
         }
       ]
     }
   ],
-  "updatedAt": "2026-10-02T08:30:32.557Z"
+  "updatedAt": "2026-10-02T13:09:53.073Z"
 }
