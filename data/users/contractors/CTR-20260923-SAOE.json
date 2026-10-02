@@ -6391,7 +6391,7 @@
             },
             {
               "id": "room-4",
-              "type": "porch",
+              "type": "balcony",
               "condition": "existing",
               "name": "Front Balcony",
               "area": "100"
@@ -6637,7 +6637,7 @@
           "projectState": "negeri-sembilan",
           "rateSetId": "default",
           "rateSetName": "Default Rate",
-          "rateSnapshotAt": "2026-10-02T07:49:40.801Z"
+          "rateSnapshotAt": "2026-10-02T07:50:47.185Z"
         },
         "itemListVersion": 1,
         "items": [
@@ -7748,13 +7748,13 @@
           }
         ],
         "createdAt": "2026-10-01T07:38:56.553Z",
-        "updatedAt": "2026-10-02T07:49:43.015Z",
+        "updatedAt": "2026-10-02T07:50:49.327Z",
         "estimateNumber": "EST-REN-012"
       }
     ]
   },
   "createdAt": "2026-09-23T08:33:53.459Z",
-  "updatedAt": "2026-10-02T07:49:43.015Z",
+  "updatedAt": "2026-10-02T07:50:49.327Z",
   "quotationRunningNumber": {
     "renovation": 17,
     "build": 15
