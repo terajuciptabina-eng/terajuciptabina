@@ -2532,29 +2532,18 @@ function generateQuotationNumber() {
   localStorage.setItem("terajuQuotationNumber", number);
   return "QO" + String(number).padStart(3, "0");
 }
+function updateEstimate(options) {
+  if (typeof window.__TERAJU_RENOVATION_V2_UPDATE_ESTIMATE === "function") {
+    return window.__TERAJU_RENOVATION_V2_UPDATE_ESTIMATE(options || {});
+  }
+  return false;
+}
+
 function getSelectedQuotationType() {
   return document.querySelector('input[name="quotationType"]:checked')?.value || "simple";
 }
 
-function getCurrentQuotationData() {
-  const allItems = getAllItems().filter(item => !excludedItems.has(item.id));
-  const roomGroups = getRoomGroups();
-  const hasAnyArea = roomGroups.some(room => room.area > 0);
-  const prelimQty = hasAnyArea && !excludedItems.has("project-preliminaries")
-    ? normalizeQuantity(customQuantities.has("project-preliminaries") ? customQuantities.get("project-preliminaries") : 1) : 0;
-  const prelimRate = hasAnyArea && !excludedItems.has("project-preliminaries")
-    ? normalizeRate(customRates.has("project-preliminaries") ? customRates.get("project-preliminaries") : RATES.preliminaries) : 0;
-  const projectPreliminaries = Math.round((prelimQty * prelimRate + Number.EPSILON) * 100) / 100;
-  const itemsByRoom = {}, roomSubtotals = {};
-  roomGroups.forEach(room => { itemsByRoom[room.roomId] = []; roomSubtotals[room.roomId] = 0; });
-  allItems.forEach(item => {
-    if (!itemsByRoom[item.roomId]) itemsByRoom[item.roomId] = [];
-    itemsByRoom[item.roomId].push(item);
-    roomSubtotals[item.roomId] = (roomSubtotals[item.roomId] || 0) + item.amount;
-  });
-  const roomTotal = Object.values(roomSubtotals).reduce((s, v) => s + v, 0);
-  return { allItems, roomGroups, itemsByRoom, roomSubtotals, prelimQty, prelimRate, projectPreliminaries, total: projectPreliminaries + roomTotal };
-}
+
 
 function quotationDescriptionList(items) {
   if (!items.length) return "No selected works";
