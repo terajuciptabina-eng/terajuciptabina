@@ -125,6 +125,30 @@
           "groupKey": "doors-windows",
           "groupTitle": "Doors & Windows",
           "updatedAt": "2026-10-02T08:03:30.344Z"
+        },
+        {
+          "customItemId": "ITEM-master-doors-/-type-1-single-leaf",
+          "sourceType": "override",
+          "sourceGlobalId": "master-DOORS / Type 1 Single Leaf",
+          "plannerType": "renovation",
+          "description": "Single-leaf timber flush door, complete with timber frame, hinges, lockset, handles, door stops, architraves and necessary ironmongery, including fixing and making good, installed complete. (Living / Dining / Kitchen / Master Bedroom / Bedroom)",
+          "unit": "No.",
+          "rate": 1650,
+          "globalRate": 1200,
+          "rateDelta": 450,
+          "rateDeltaPercent": 37.5,
+          "overrideActive": true,
+          "state": "negeri-sembilan",
+          "rateSetId": "negeri-sembilan",
+          "approvalStatus": "pending",
+          "reviewedAt": null,
+          "reviewedBy": null,
+          "reviewNote": null,
+          "capturedAt": "2026-10-02T08:03:47.651Z",
+          "category": "direct-rate-override",
+          "groupKey": "doors-windows",
+          "groupTitle": "Doors & Windows",
+          "updatedAt": "2026-10-02T08:03:47.651Z"
         }
       ],
       "marketHistory": [
@@ -355,9 +379,34 @@
           "groupTitle": "Doors & Windows",
           "updatedAt": "2026-10-02T08:03:30.344Z",
           "eventType": "override-update"
+        },
+        {
+          "customItemId": "ITEM-master-doors-/-type-1-single-leaf",
+          "sourceType": "override",
+          "sourceGlobalId": "master-DOORS / Type 1 Single Leaf",
+          "plannerType": "renovation",
+          "description": "Single-leaf timber flush door, complete with timber frame, hinges, lockset, handles, door stops, architraves and necessary ironmongery, including fixing and making good, installed complete. (Living / Dining / Kitchen / Master Bedroom / Bedroom)",
+          "unit": "No.",
+          "rate": 1650,
+          "globalRate": 1200,
+          "rateDelta": 450,
+          "rateDeltaPercent": 37.5,
+          "overrideActive": true,
+          "state": "negeri-sembilan",
+          "rateSetId": "negeri-sembilan",
+          "approvalStatus": "pending",
+          "reviewedAt": null,
+          "reviewedBy": null,
+          "reviewNote": null,
+          "capturedAt": "2026-10-02T08:03:47.651Z",
+          "category": "direct-rate-override",
+          "groupKey": "doors-windows",
+          "groupTitle": "Doors & Windows",
+          "updatedAt": "2026-10-02T08:03:47.651Z",
+          "eventType": "override-update"
         }
       ]
     }
   ],
-  "updatedAt": "2026-10-02T08:03:30.344Z"
+  "updatedAt": "2026-10-02T08:03:47.651Z"
 }
