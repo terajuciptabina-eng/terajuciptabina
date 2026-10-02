@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "contractor",
+  "contractorId": "CTR-20261002-8VVH",
+  "profile": {
+    "name": "TONGKAK RESOURCES",
+    "email": "tongkakresources@gmail.com",
+    "phone": "01111464326"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-10-02T18:14:20.781Z",
+  "updatedAt": "2026-10-02T18:14:20.781Z"
+}
