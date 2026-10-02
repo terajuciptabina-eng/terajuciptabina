@@ -1850,12 +1850,7 @@ function renderBudgetSummaryAtBottom(items, roomGroups, roomSubtotals, projectPr
 
   if (preliminariesTotal !== 0) {
     fragment.appendChild(headingRow("PRELIMINARIES"));
-    if (preliminariesAmount !== 0) {
-      fragment.appendChild(row("PROJECT PRELIMINARIES", preliminariesAmount));
-    }
-    prelimManualItems.forEach(item => {
-      fragment.appendChild(row(item.description, item.amount));
-    });
+    fragment.appendChild(row("PRELIMINARIES", preliminariesTotal, "border-b", true));
   }
 
   if (newConstructionGroups.length) {
