@@ -1593,22 +1593,144 @@ window.saveManualItem = saveManualItem;
 
 function removeManualItem(roomId, itemId) { const list = manualItems.get(roomId) || []; manualItems.set(roomId, list.filter(item => item.id !== itemId)); refreshRenovationItemMutation(); saveContractorState(); }
 
+function buildStandardItemsForHierarchy(targetKey) {
+  const key = String(targetKey || '').trim();
+  const source = typeof window.__TERAJU_GET_BUILD_ITEMS === 'function'
+    ? window.__TERAJU_GET_BUILD_ITEMS()
+    : [];
+  const canonical = Array.isArray(source) ? source : [];
+  const saved = Array.isArray(standardRateItems)
+    ? standardRateItems.filter(item =>
+        item?.plannerType === 'build' &&
+        String(item.groupKey || '') === key
+      )
+    : [];
+
+  const seen = new Set();
+  const items = [];
+
+  [...canonical, ...saved].forEach(item => {
+    const itemGroup = String(item.group || '').trim().toUpperCase();
+    const itemMasterPath = String(item.masterPath || '').trim();
+    const parts = key.split(':').filter(Boolean);
+    const groupName = String(parts[1] || '').trim().toUpperCase();
+    const hierarchy = parts.slice(2).join(' / ');
+    if (itemGroup !== groupName) return;
+
+    const path = itemMasterPath
+      .split('/')
+      .map(value => value.trim())
+      .filter(Boolean);
+    if (path.length && path[0].toUpperCase() === groupName) path.shift();
+
+    if (path.length > 1) path.pop();
+    const itemHierarchy = path.join(' / ');
+    if (itemHierarchy !== hierarchy) return;
+
+    const id = String(item.id || '');
+    const unique = id || String(item.description || '');
+    if (seen.has(unique)) return;
+    seen.add(unique);
+
+    items.push({
+      id,
+      description: String(item.description || '').trim(),
+      unit: String(item.unit || 'ls').trim() || 'ls',
+      rate: normalizeRate(item.rate),
+      plannerType: 'build',
+      groupKey: key
+    });
+  });
+
+  return items.filter(item => item.description);
+}
+
+function buildStandardItemOptions(targetKey) {
+  return buildStandardItemsForHierarchy(targetKey)
+    .map(item =>
+      '<option value="' + escapeHtml(item.id) + '">' +
+      escapeHtml(item.description) + ' — ' + money(item.rate, 2) +
+      '</option>'
+    )
+    .join('');
+}
+
+function prepareBuildManualItem(targetKey, formId) {
+  const select = document.getElementById(formId + '-select');
+  const rate = document.getElementById(formId + '-rate');
+  const qtyWrap = document.getElementById(formId + '-qty-wrap');
+  const newBox = document.getElementById(formId + '-new');
+  const item = buildStandardItemsForHierarchy(targetKey).find(x => x.id === select?.value);
+
+  if (select?.value === '__new__') {
+    newBox?.classList.remove('hidden');
+    qtyWrap?.classList.add('hidden');
+    if (rate) rate.value = '0.00';
+    return;
+  }
+
+  newBox?.classList.add('hidden');
+  qtyWrap?.classList.remove('hidden');
+  if (item && rate) rate.value = normalizeRate(item.rate).toFixed(2);
+}
+
 function addBuildHierarchyManualItemPrompt(targetKey, group, hierarchyPath) {
   if (!IS_CONTRACTOR) return;
   const key = String(targetKey || '').trim();
   if (!key) return;
+
   const id = 'manual-build-' + key.replace(/[^a-zA-Z0-9_-]+/g, '-');
   const existing = document.getElementById(id);
   if (existing) { existing.remove(); return; }
+
   const anchor = document.querySelector('[data-build-manual-anchor="' + CSS.escape(key) + '"]');
   if (!anchor) return;
 
+  const formId = id;
   const wrap = document.createElement('div');
   wrap.id = id;
-  wrap.className = 'no-print mt-2 border rounded-xl bg-gray-50 p-4';
-  wrap.innerHTML = '<div class="flex flex-wrap items-center justify-between gap-3 mb-3"><p class="font-semibold text-sm">Add New Item</p><button type="button" class="text-xs text-gray-500" data-build-cancel>Cancel</button></div><div class="grid md:grid-cols-[2fr_1fr_1fr_1fr_auto] gap-3 items-end"><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Description</span><input data-build-desc type="text" class="w-full border rounded-lg px-3 py-2 bg-white" placeholder="Item description"></label><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Unit</span><input data-build-unit type="text" value="ls" class="w-full border rounded-lg px-3 py-2 bg-white"></label><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Quantity</span><input data-build-qty type="number" min="0" step="1" value="1" class="w-full border rounded-lg px-3 py-2 bg-white"></label><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Rate (RM)</span><input data-build-rate type="number" min="0" step="0.01" value="0.00" class="w-full border rounded-lg px-3 py-2 bg-white"></label><button type="button" class="bg-black text-white px-4 py-2 rounded-lg text-sm font-semibold" data-build-save>Add Item</button></div>';
-  wrap.querySelector('[data-build-cancel]')?.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); wrap.remove(); });
-  wrap.querySelector('[data-build-save]')?.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); saveBuildHierarchyManualItem(key, id); });
+  wrap.className = 'no-print mt-3 border rounded-xl bg-gray-50 p-4';
+  wrap.innerHTML =
+    '<div class="flex flex-wrap items-center justify-between gap-3 mb-3">' +
+      '<p class="font-semibold text-sm">Add Item</p>' +
+      '<button type="button" class="text-xs text-gray-500" data-build-cancel>Cancel</button>' +
+    '</div>' +
+    '<div class="grid md:grid-cols-[2fr_1fr_1fr_auto] gap-3 items-end">' +
+      '<label class="block">' +
+        '<span class="block text-xs font-medium text-gray-500 mb-1">Standard Rate Item</span>' +
+        '<select id="' + formId + '-select" class="w-full border rounded-lg px-3 py-2 bg-white" onchange="prepareBuildManualItem(' + JSON.stringify(key) + ',' + JSON.stringify(formId) + ')">' +
+          '<option value="">Select an item…</option>' +
+          buildStandardItemOptions(key) +
+          '<option value="__new__">＋ Create New Standard Item</option>' +
+        '</select>' +
+      '</label>' +
+      '<label id="' + formId + '-qty-wrap" class="block">' +
+        '<span class="block text-xs font-medium text-gray-500 mb-1">Quantity</span>' +
+        '<input id="' + formId + '-qty" type="number" min="0" step="1" value="1" class="w-full border rounded-lg px-3 py-2 bg-white">' +
+      '</label>' +
+      '<label class="block">' +
+        '<span class="block text-xs font-medium text-gray-500 mb-1">Rate (RM)</span>' +
+        '<input id="' + formId + '-rate" type="number" min="0" step="0.01" value="0.00" class="w-full border rounded-lg px-3 py-2 bg-white">' +
+      '</label>' +
+      '<button type="button" class="bg-black text-white px-4 py-2 rounded-lg text-sm font-semibold" data-build-save>Add</button>' +
+    '</div>' +
+    '<div id="' + formId + '-new" class="hidden mt-3">' +
+      '<label class="block">' +
+        '<span class="block text-xs font-medium text-gray-500 mb-1">New Description</span>' +
+        '<input id="' + formId + '-desc" type="text" placeholder="e.g. Aluminium awning" class="w-full border rounded-lg px-3 py-2 bg-white">' +
+      '</label>' +
+    '</div>';
+
+  wrap.querySelector('[data-build-cancel]')?.addEventListener('click', e => {
+    e.preventDefault();
+    e.stopPropagation();
+    wrap.remove();
+  });
+  wrap.querySelector('[data-build-save]')?.addEventListener('click', e => {
+    e.preventDefault();
+    e.stopPropagation();
+    saveBuildHierarchyManualItem(key, formId);
+  });
   anchor.appendChild(wrap);
 }
 
@@ -1620,20 +1742,69 @@ function addBuildGroupManualItemPrompt(group) {
 function saveBuildHierarchyManualItem(targetKey, formId) {
   if (!IS_CONTRACTOR) return;
   const key = String(targetKey || '').trim();
-  const desc = String(document.getElementById(formId + '-desc')?.value || '').trim();
-  const unit = String(document.getElementById(formId + '-unit')?.value || 'ls').trim() || 'ls';
-  const qty = normalizeQuantity(document.getElementById(formId + '-qty')?.value);
-  const rate = normalizeRate(document.getElementById(formId + '-rate')?.value);
-  if (!desc) { alert('Please enter the item description.'); return; }
+  const select = document.getElementById(formId + '-select');
+  const selectedItems = buildStandardItemsForHierarchy(key);
+  const selected = selectedItems.find(item => item.id === select?.value);
+  const isNew = select?.value === '__new__';
+
+  let desc = selected?.description || '';
+  let unit = selected?.unit || 'ls';
+  let qty = normalizeQuantity(document.getElementById(formId + '-qty')?.value);
+  let rate = normalizeRate(document.getElementById(formId + '-rate')?.value);
+
+  if (isNew) {
+    desc = String(document.getElementById(formId + '-desc')?.value || '').trim();
+    unit = 'ls';
+    qty = 1;
+    if (!desc) {
+      alert('Please enter the new item description.');
+      return;
+    }
+
+    const standardId = 'build-standard-' + Date.now() + '-' + Math.random().toString(36).slice(2,8);
+    standardRateItems.push({
+      id: standardId,
+      description: desc,
+      unit,
+      rate,
+      plannerType: 'build',
+      groupKey: key
+    });
+  }
+
+  if (!desc) {
+    alert('Please select or create an item.');
+    return;
+  }
 
   const parts = key.split(':').filter(Boolean);
   const groupName = String(parts[1] || '').trim().toUpperCase();
-  const category = groupName === 'ARCHITECTURES' ? 'architecture' : groupName === 'DOORS & WINDOWS' ? 'doors-windows' : groupName === 'ELECTRICAL' ? 'electrical' : 'structures';
+  const category =
+    groupName === 'ARCHITECTURES' ? 'architecture' :
+    groupName === 'DOORS & WINDOWS' ? 'doors-windows' :
+    groupName === 'ELECTRICAL' ? 'electrical' :
+    'structures';
   const hierarchy = parts.slice(2);
   const groupTitle = hierarchy.length ? hierarchy[hierarchy.length - 1] : groupName;
   const masterPath = hierarchy.join(' / ');
   const id = 'manual-' + Date.now() + '-' + Math.random().toString(36).slice(2,8);
-  const item = { id, manualKey:key, groupKey:key, groupTitle, masterPath, roomId:'project', room:'Project / New Construction', group:groupName, category, description:desc, unit, qty, rate, amount:Math.round((qty * rate + Number.EPSILON) * 100) / 100 };
+  const item = {
+    id,
+    manualKey:key,
+    groupKey:key,
+    groupTitle,
+    masterPath,
+    roomId:'project',
+    room:'Project / New Construction',
+    group:groupName,
+    category,
+    description:desc,
+    unit,
+    qty,
+    rate,
+    amount:Math.round((qty * rate + Number.EPSILON) * 100) / 100
+  };
+
   if (!manualItems.has(key)) manualItems.set(key, []);
   manualItems.get(key).push(item);
   refreshRenovationItemMutation();
