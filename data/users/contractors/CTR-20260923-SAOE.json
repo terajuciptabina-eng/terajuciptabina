@@ -5089,6 +5089,431 @@
       {
         "schemaVersion": 2,
         "recordType": "quotation",
+        "quotationId": "QT-REN-MUQZPHMA-F4YPC",
+        "projectId": "PRJ-REN-MUQPGNA2-IQFG0",
+        "quotationNumber": "Q020S",
+        "plannerType": "renovation",
+        "role": "contractor",
+        "contractorId": "CTR-20260923-SAOE",
+        "state": "final",
+        "quotationType": "simple",
+        "client": {
+          "name": "Tuan Iman"
+        },
+        "project": {
+          "location": "Eka Height Sendayan (New Kitchen, New Balcony with ACP Roofing and walling, Porch area ACP Roofing, Front Balcony Glass Railing)",
+          "builtUpArea": 700,
+          "state": "negeri-sembilan"
+        },
+        "total": 0,
+        "plannerState": {
+          "customerName": "Tuan Iman",
+          "projectLocation": "Eka Height Sendayan (New Kitchen, New Balcony with ACP Roofing and walling, Porch area ACP Roofing, Front Balcony Glass Railing)",
+          "builtUpArea": "700",
+          "rooms": [
+            {
+              "id": "room-1",
+              "type": "wetKitchen",
+              "condition": "new",
+              "name": "Wet Kitchen",
+              "area": "150"
+            },
+            {
+              "id": "room-5",
+              "type": "bathroom",
+              "condition": "new",
+              "name": "Bathroom",
+              "area": "50"
+            },
+            {
+              "id": "room-2",
+              "type": "balcony",
+              "condition": "existing",
+              "name": "Rear Balcony",
+              "area": "200"
+            },
+            {
+              "id": "room-3",
+              "type": "balcony",
+              "condition": "existing",
+              "name": "Front Balcony ",
+              "area": "100"
+            },
+            {
+              "id": "room-4",
+              "type": "porch",
+              "condition": "existing",
+              "name": "Porch",
+              "area": "200"
+            }
+          ],
+          "rates": {
+            "ceiling": 12,
+            "spc": 14,
+            "floorTile": 22,
+            "wallTile": 22,
+            "facadeWall": 60,
+            "downlight": 200,
+            "wallLight": 250,
+            "ceilingFan": 550,
+            "exhaustFan": 200,
+            "curtainBoxLED": 300,
+            "barLamp": 500,
+            "diningLamp": 600,
+            "kitchenFrame": 1200,
+            "kitchenMakingGood": 1000,
+            "kitchenGlassDoor": 1200,
+            "bathroomSanitary": 3000,
+            "bathroomDoor": 1200,
+            "gateMotor": 6400,
+            "brickwallDivider": 2800,
+            "frontFence": 5500,
+            "preliminaries": 8500,
+            "rule_preliminaries_building_plan_submission_0": 8500,
+            "rule_preliminaries_site_mobilisation_project_management_1": 12000,
+            "rule_main_building_footing_concrete_2": 550,
+            "rule_main_building_footing_formwork_3": 55,
+            "rule_main_building_footing_rebar_4": 8,
+            "rule_main_building_ground_slab_concrete_5": 550,
+            "rule_main_building_ground_slab_brc_6": 20.5,
+            "rule_main_building_ground_beam_concrete_7": 350,
+            "rule_main_building_ground_beam_formwork_8": 55,
+            "rule_main_building_ground_beam_rebar_9": 8,
+            "rule_main_building_roof_beam_concrete_10": 350,
+            "rule_main_building_roof_beam_formwork_11": 55,
+            "rule_main_building_roof_beam_rebar_12": 8,
+            "rule_main_building_column_concrete_13": 550,
+            "rule_main_building_column_formwork_14": 55,
+            "rule_main_building_column_rebar_15": 8,
+            "rule_main_building_flat_roof_concrete_16": 550,
+            "rule_main_building_flat_roof_formwork_17": 55,
+            "rule_main_building_flat_roof_brc_18": 20.5,
+            "rule_main_building_roof_metal_roofing_sheet_19": 420,
+            "rule_main_building_apron_concrete_20": 350,
+            "rule_main_building_apron_formwork_21": 55,
+            "rule_main_building_apron_brc_22": 20.5,
+            "rule_main_building_drainage_23": 35,
+            "rule_porch_footing_concrete_24": 550,
+            "rule_porch_footing_formwork_25": 55,
+            "rule_porch_footing_rebar_26": 8,
+            "rule_porch_ground_slab_concrete_27": 550,
+            "rule_porch_ground_slab_brc_28": 20.5,
+            "rule_porch_ground_beam_concrete_29": 350,
+            "rule_porch_ground_beam_formwork_30": 55,
+            "rule_porch_ground_beam_rebar_31": 8,
+            "rule_porch_roof_beam_concrete_32": 350,
+            "rule_porch_roof_beam_formwork_33": 55,
+            "rule_porch_roof_beam_rebar_34": 8,
+            "rule_porch_column_concrete_35": 550,
+            "rule_porch_column_formwork_36": 55,
+            "rule_porch_column_rebar_37": 8,
+            "rule_porch_flat_roof_concrete_38": 550,
+            "rule_porch_flat_roof_formwork_39": 55,
+            "rule_porch_flat_roof_brc_40": 20.5,
+            "rule_porch_roof_metal_roofing_sheet_41": 450,
+            "rule_main_building_brickwall_internal_wall_42": 75,
+            "rule_main_building_brickwall_external_wall_43": 120,
+            "rule_main_building_floor_tiles_internal_44": 95,
+            "rule_main_building_floor_tiles_external_45": 150,
+            "rule_main_building_painting_internal_46": 30,
+            "rule_main_building_painting_external_47": 48,
+            "rule_main_building_ceiling_internal_48": 165,
+            "rule_main_building_ceiling_external_49": 165,
+            "rule_bathroom_wall_tiles_50": 150,
+            "rule_bathroom_floor_tiles_51": 150,
+            "rule_bathroom_ceiling_52": 165,
+            "rule_bathroom_piping_53": 1100,
+            "rule_bathroom_wc_54": 800,
+            "rule_bathroom_basin_55": 400,
+            "rule_bathroom_shower_56": 250,
+            "rule_bathroom_tap_57": 200,
+            "rule_main_building_water_tank_58": 600,
+            "rule_main_building_septic_tank_59": 2500,
+            "rule_main_building_power_point_60": 150,
+            "rule_main_building_switch_61": 200,
+            "rule_main_building_lighting_62": 200,
+            "rule_main_building_fan_63": 200,
+            "rule_main_building_aircond_point_64": 300,
+            "rule_porch_lighting_65": 200,
+            "rule_porch_fan_66": 200,
+            "rule_porch_power_point_67": 150,
+            "rule_earthing_68": 2500,
+            "rule_db_box_69": 2500,
+            "rule_wiring_70": 25,
+            "rule_doors_type_1_single_leaf_71": 1200,
+            "rule_doors_type_2_sliding_72": 2500,
+            "rule_doors_type_3_bathroom_73": 850,
+            "rule_doors_type_4_double_leaf_main_door_74": 2400,
+            "rule_windows_type_1_1200_1200_75": 1200,
+            "rule_windows_type_2_1800_1200_76": 1400,
+            "rule_windows_type_3_900_600_77": 950,
+            "rule_boundary_fencing_78": 43000,
+            "rule_gate_79": 6500,
+            "rule_driveway_80": 5000,
+            "rule_landscaping_81": 2000,
+            "renovation_rule_balcony_floor_tiles_37": 22
+          },
+          "customRates": [
+            [
+              "master-doors-/-type-1-single-leaf",
+              2500
+            ],
+            [
+              "master-doors-/-type-3-bathroom",
+              1200
+            ],
+            [
+              "manual-1790928959831-02fgk7",
+              9000
+            ],
+            [
+              "master-windows-/-type-3-900*600",
+              1200
+            ]
+          ],
+          "customQuantities": [
+            [
+              "manual-1790929091034-7w5m9r",
+              200
+            ],
+            [
+              "manual-1790929142551-xedvnp",
+              200
+            ],
+            [
+              "manual-1790929332273-e7k2qg",
+              40
+            ],
+            [
+              "manual-1790929461340-uk27jl",
+              130
+            ],
+            [
+              "room-2-walllight",
+              1
+            ]
+          ],
+          "customDescriptions": [
+            [
+              "manual-1790928959831-02fgk7",
+              "Preliminaries, site mobilisation, temporary facilities, site protection, project coordination, supervision and general project management, complete."
+            ],
+            [
+              "manual-1790929142551-xedvnp",
+              "Supply & install 10' x 20' New ACP Roof With Heat And Sound Roof Membrane"
+            ],
+            [
+              "manual-1790929091034-7w5m9r",
+              "Supply & install 10' x 20' New ACP Roof With Heat And Sound Roof Membrane"
+            ]
+          ],
+          "customRoomLabels": [
+            [
+              "room-2",
+              "Rear Balcony"
+            ],
+            [
+              "room-3",
+              "Front Balcony"
+            ],
+            [
+              "room-1",
+              "Wet Kitchen"
+            ],
+            [
+              "room-5",
+              "Bathroom"
+            ],
+            [
+              "room-4",
+              "Porch"
+            ]
+          ],
+          "excludedItems": [
+            "project-preliminaries",
+            "room-4-floor",
+            "room-4-ceiling",
+            "room-4-downlight",
+            "room-4-gate",
+            "room-4-divider",
+            "room-4-fence",
+            "room-3-floor",
+            "room-3-facade",
+            "room-3-walllight",
+            "room-2-facade",
+            "master-porch-/-footing-/-concrete",
+            "master-porch-/-footing-/-formwork",
+            "master-porch-/-footing-/-rebar",
+            "master-porch-/-ground-slab-/-concrete",
+            "master-porch-/-ground-slab-/-brc",
+            "master-porch-/-ground-beam-/-concrete",
+            "master-porch-/-ground-beam-/-formwork",
+            "master-porch-/-ground-beam-/-rebar",
+            "master-porch-/-roof-beam-/-concrete",
+            "master-porch-/-roof-beam-/-formwork",
+            "master-porch-/-roof-beam-/-rebar",
+            "master-porch-/-column-/-concrete",
+            "master-porch-/-column-/-formwork",
+            "master-porch-/-column-/-rebar",
+            "master-porch-/-flat-roof-/-concrete",
+            "master-porch-/-flat-roof-/-formwork",
+            "master-porch-/-flat-roof-/-brc",
+            "master-porch-/-lighting",
+            "master-porch-/-fan",
+            "master-porch-/-power-point",
+            "master-earthing"
+          ],
+          "manualItems": [
+            [
+              "__prelim__",
+              [
+                {
+                  "id": "manual-1790928959831-02fgk7",
+                  "roomId": "__prelim__",
+                  "roomType": "other",
+                  "description": "Preliminaries, site mobilisation, temporary facilities, site protection, insurance, project coordination, supervision and general project management, complete.",
+                  "unit": "ls",
+                  "qty": 1,
+                  "rate": 12000,
+                  "amount": 12000
+                }
+              ]
+            ],
+            [
+              "room-2",
+              [
+                {
+                  "id": "manual-1790929091034-7w5m9r",
+                  "roomId": "room-2",
+                  "roomType": "balcony",
+                  "description": "New ACP Roof With Heat And Sound Proof Membrane",
+                  "unit": "ls",
+                  "qty": 1,
+                  "rate": 30,
+                  "amount": 30
+                },
+                {
+                  "id": "manual-1790929461340-uk27jl",
+                  "roomId": "room-2",
+                  "roomType": "balcony",
+                  "description": "Supply & install 1000mm high brick railing including plaster & paint bothside",
+                  "unit": "ls",
+                  "qty": 1,
+                  "rate": 75,
+                  "amount": 75
+                },
+                {
+                  "id": "manual-1790929564608-oe3v9d",
+                  "roomId": "room-2",
+                  "roomType": "balcony",
+                  "description": "Drainage system",
+                  "unit": "ls",
+                  "qty": 1,
+                  "rate": 300,
+                  "amount": 300
+                }
+              ]
+            ],
+            [
+              "room-4",
+              [
+                {
+                  "id": "manual-1790929142551-xedvnp",
+                  "roomId": "room-4",
+                  "roomType": "porch",
+                  "description": "New ACP Roof With Heat And Sound Roof Membrane",
+                  "unit": "ls",
+                  "qty": 1,
+                  "rate": 30,
+                  "amount": 30
+                }
+              ]
+            ],
+            [
+              "room-3",
+              [
+                {
+                  "id": "manual-1790929332273-e7k2qg",
+                  "roomId": "room-3",
+                  "roomType": "balcony",
+                  "description": "Supply & install 1000mm High Glass Railing with accessories",
+                  "unit": "ls",
+                  "qty": 1,
+                  "rate": 260,
+                  "amount": 260
+                }
+              ]
+            ]
+          ],
+          "standardRateItems": [
+            {
+              "id": "custom-1790928959831-o6s07s",
+              "description": "Preliminaries, site mobilisation, temporary facilities, site protection, insurance, project coordination, supervision and general project management, complete.",
+              "unit": "ls",
+              "rate": 12000,
+              "roomType": "other",
+              "custom": true
+            },
+            {
+              "id": "custom-1790929091034-3f50ke",
+              "description": "New ACP Roof With Heat And Sound Proof Membrane",
+              "unit": "ls",
+              "rate": 30,
+              "roomType": "balcony",
+              "custom": true
+            },
+            {
+              "id": "custom-1790929142551-pjzfto",
+              "description": "New ACP Roof With Heat And Sound Roof Membrane",
+              "unit": "ls",
+              "rate": 30,
+              "roomType": "porch",
+              "custom": true
+            },
+            {
+              "id": "custom-1790929332273-xhxbkh",
+              "description": "Supply & install 1000mm High Glass Railing with accessories",
+              "unit": "ls",
+              "rate": 260,
+              "roomType": "balcony",
+              "custom": true
+            },
+            {
+              "id": "custom-1790929461340-dkrphv",
+              "description": "Supply & install 1000mm high brick railing including plaster & paint bothside",
+              "unit": "ls",
+              "rate": 75,
+              "roomType": "balcony",
+              "custom": true
+            },
+            {
+              "id": "custom-1790929564608-q6fd0n",
+              "description": "Drainage system",
+              "unit": "ls",
+              "rate": 300,
+              "roomType": "balcony",
+              "custom": true
+            }
+          ],
+          "quotationType": "simple",
+          "projectId": "PRJ-REN-MUQPGNA2-IQFG0",
+          "constructionBudgetGenerated": false,
+          "projectState": "negeri-sembilan",
+          "rateSetId": "default",
+          "rateSetName": "Default Rate",
+          "rateSnapshotAt": "2026-10-02T13:13:07.545Z",
+          "quotationId": "QT-REN-MUQZPHMA-F4YPC"
+        },
+        "itemListVersion": 1,
+        "items": [],
+        "createdAt": "2026-10-02T13:19:36.561Z",
+        "updatedAt": "2026-10-02T13:19:36.561Z",
+        "estimateNumber": "EST-REN-019",
+        "sourceItems": []
+      },
+      {
+        "schemaVersion": 2,
+        "recordType": "quotation",
         "quotationId": "QT-REN-MUQPGLDT-JWTHC",
         "projectId": "PRJ-REN-MUQPGNA2-IQFG0",
         "quotationNumber": "Q018S",
@@ -9130,13 +9555,13 @@
     ]
   },
   "createdAt": "2026-09-23T08:33:53.459Z",
-  "updatedAt": "2026-10-02T13:13:07.933Z",
+  "updatedAt": "2026-10-02T13:19:36.561Z",
   "quotationRunningNumber": {
-    "renovation": 19,
+    "renovation": 20,
     "build": 15
   },
   "estimateRunningNumber": {
-    "renovation": 18,
+    "renovation": 19,
     "build": 15
   }
 }
