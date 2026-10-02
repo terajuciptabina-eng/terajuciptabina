@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "contractor",
+  "contractorId": "CTR-20261002-M80B",
+  "profile": {
+    "name": "Zallam Enterprise",
+    "email": "zallamenterprise18@gmail.com",
+    "phone": "01110185952"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-10-02T23:28:28.223Z",
+  "updatedAt": "2026-10-02T23:28:28.223Z"
+}
