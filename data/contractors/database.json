@@ -149,6 +149,30 @@
           "groupKey": "doors-windows",
           "groupTitle": "Doors & Windows",
           "updatedAt": "2026-10-02T08:30:23.993Z"
+        },
+        {
+          "customItemId": "ITEM-master-doors-/-type-3-bathroom",
+          "sourceType": "override",
+          "sourceGlobalId": "master-DOORS / Type 3 Bathroom",
+          "plannerType": "renovation",
+          "description": "Single-leaf moisture-resistant PVC/UPVC flush doors, complete with PVC/UPVC frames, hinges, locksets, handles, door stops, architraves and necessary ironmongery, including fixing and making good, installed complete. (Bathroom 1 / Bathroom 2 / applicable bathrooms)",
+          "unit": "No.",
+          "rate": 950,
+          "globalRate": 850,
+          "rateDelta": 100,
+          "rateDeltaPercent": 11.76,
+          "overrideActive": true,
+          "state": "negeri-sembilan",
+          "rateSetId": "negeri-sembilan",
+          "approvalStatus": "pending",
+          "reviewedAt": null,
+          "reviewedBy": null,
+          "reviewNote": null,
+          "capturedAt": "2026-10-02T08:30:32.557Z",
+          "category": "direct-rate-override",
+          "groupKey": "doors-windows",
+          "groupTitle": "Doors & Windows",
+          "updatedAt": "2026-10-02T08:30:32.557Z"
         }
       ],
       "marketHistory": [
@@ -429,9 +453,34 @@
           "groupTitle": "Doors & Windows",
           "updatedAt": "2026-10-02T08:30:23.993Z",
           "eventType": "override-update"
+        },
+        {
+          "customItemId": "ITEM-master-doors-/-type-3-bathroom",
+          "sourceType": "override",
+          "sourceGlobalId": "master-DOORS / Type 3 Bathroom",
+          "plannerType": "renovation",
+          "description": "Single-leaf moisture-resistant PVC/UPVC flush doors, complete with PVC/UPVC frames, hinges, locksets, handles, door stops, architraves and necessary ironmongery, including fixing and making good, installed complete. (Bathroom 1 / Bathroom 2 / applicable bathrooms)",
+          "unit": "No.",
+          "rate": 950,
+          "globalRate": 850,
+          "rateDelta": 100,
+          "rateDeltaPercent": 11.76,
+          "overrideActive": true,
+          "state": "negeri-sembilan",
+          "rateSetId": "negeri-sembilan",
+          "approvalStatus": "pending",
+          "reviewedAt": null,
+          "reviewedBy": null,
+          "reviewNote": null,
+          "capturedAt": "2026-10-02T08:30:32.557Z",
+          "category": "direct-rate-override",
+          "groupKey": "doors-windows",
+          "groupTitle": "Doors & Windows",
+          "updatedAt": "2026-10-02T08:30:32.557Z",
+          "eventType": "override-update"
         }
       ]
     }
   ],
-  "updatedAt": "2026-10-02T08:30:23.993Z"
+  "updatedAt": "2026-10-02T08:30:32.557Z"
 }
