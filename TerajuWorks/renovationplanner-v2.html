@@ -1803,14 +1803,8 @@ function renderBudgetSummaryAtBottom(items, roomGroups, roomSubtotals, projectPr
     return !isNewRoom && Number(room.area) > 0 && amount !== 0;
   });
 
-  const renovationExistingTotal = renovationExistingRooms
-    .reduce((sum, room) => sum + (Number(roomSubtotals[room.roomId]) || 0), 0);
-
-  const newConstructionTotal =
-    preliminariesTotal +
-    newConstructionGroups.reduce((sum, group) => sum + (Number(groupTotals[group]) || 0), 0);
-
-  // Summary TOTAL is display-only. The V2 calculation engine is the single source of truth.
+  // Section rows are presentation-only. Do not derive the overall estimate from them.
+  // The V2 calculation engine remains the single source of truth for the total.
 
   const row = (label, amount, className = "border-b", heading = false) => {
     const tr = document.createElement("tr");
