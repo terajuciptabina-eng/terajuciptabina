@@ -164,9 +164,26 @@ export default async function handler(req, res) {
       if (typeMatch) {
         normalized.quotationId = typeMatch.quotationId;
         normalized.quotationNumber = typeMatch.quotationNumber;
-        normalized.estimateNumber = typeMatch.estimateNumber || displayEstimateNumber(nextEstimateNumber(current.record, plannerType), plannerType);
+        normalized.estimateNumber = typeMatch.estimateNumber
+          ? displayEstimateNumber(estimateBase(typeMatch.estimateNumber) || nextEstimateNumber(current.record, plannerType), plannerType, quotationType(normalized.quotationType))
+          : displayEstimateNumber(nextEstimateNumber(current.record, plannerType), plannerType, quotationType(normalized.quotationType));
         normalized.projectId = typeMatch.projectId || incomingProjectId;
         normalized.createdAt = typeMatch.createdAt || normalized.createdAt;
+        normalized.plannerState = { ...(normalized.plannerState || {}), projectId: normalized.projectId, quotationType: quotationType(normalized.quotationType) };
+        const old = typeMatch;
+        const oldRevision = old?.revision || {};
+        const currentRevisionNumber = Number(String(oldRevision.current || '').replace(/^R/i, ''));
+        const safeCurrentRevision = Number.isFinite(currentRevisionNumber) && currentRevisionNumber >= 0 ? currentRevisionNumber : 0;
+        const changed = revisionComparable(old, plannerType) !== revisionComparable(normalized, plannerType);
+        normalized.revision = {
+          current: changed ? revisionCode(safeCurrentRevision + 1) : (oldRevision.current || 'R00'),
+          history: Array.isArray(oldRevision.history) ? oldRevision.history.map(entry => JSON.parse(JSON.stringify(entry))) : []
+        };
+        if (changed) normalized.revision.history.push({
+          revision: oldRevision.current || 'R00',
+          createdAt: old?.updatedAt || old?.createdAt || normalized.createdAt,
+          snapshot: buildRevisionSnapshot(old, oldRevision.current || 'R00')
+        });
         index = list.findIndex(q => q?.quotationId === typeMatch.quotationId);
         list[index] = normalized;
       } else if (compatibleMatches.length) {
@@ -184,7 +201,8 @@ export default async function handler(req, res) {
         const baseNumber = nextBaseNumber(current.record, plannerType);
         const estimateNumber = nextEstimateNumber(current.record, plannerType);
         normalized.quotationNumber = displayQuotationNumber(baseNumber, normalized.quotationType);
-        normalized.estimateNumber = displayEstimateNumber(estimateNumber, plannerType, normalized.quotationType); normalized.projectId = `${plannerType === 'renovation' ? 'PRJ-REN' : 'PRJ-BLD'}-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).slice(2, 7).toUpperCase()}`; normalized.plannerState = { ...(normalized.plannerState || {}), projectId: normalized.projectId };
+        normalized.estimateNumber = displayEstimateNumber(estimateNumber, plannerType, normalized.quotationType); normalized.projectId = `${plannerType === 'renovation' ? 'PRJ-REN' : 'PRJ-BLD'}-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).slice(2, 7).toUpperCase()}`; normalized.plannerState = { ...(normalized.plannerState || {}), projectId: normalized.projectId, quotationType: quotationType(normalized.quotationType) };
+        normalized.revision = { current: 'R00', history: [] };
         if (!current.record.quotationRunningNumber || typeof current.record.quotationRunningNumber !== 'object') current.record.quotationRunningNumber = {}; current.record.quotationRunningNumber[plannerType] = baseNumber;
         if (!current.record.estimateRunningNumber || typeof current.record.estimateRunningNumber !== 'object') current.record.estimateRunningNumber = {}; current.record.estimateRunningNumber[plannerType] = estimateNumber;
         list.unshift(normalized);
