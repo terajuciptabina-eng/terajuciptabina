@@ -52,9 +52,14 @@
            </div>
            <div class="history-card-project">
              <div class="flex items-baseline gap-3">
-               <h2 class="text-xl font-bold tracking-[-.02em] text-slate-950">${esc(q.quotationNumber||q.quotationId)}</h2>
+               <h2 class="text-xl font-bold tracking-[-.02em] text-slate-950">${esc(q.estimateNumber||q.quotationNumber||q.quotationId)}</h2>
              </div>
              <p class="mt-1 whitespace-normal break-words text-justify text-sm font-medium leading-5 text-slate-600">${esc(q.client?.name||"Not specified")} · ${esc(q.project?.location||"Location not specified")}</p>
+             <div class="mt-2 flex flex-wrap items-center gap-2 text-[10px] font-bold tracking-wide">
+               <span class="rounded-full bg-slate-100 px-2.5 py-1 text-slate-600">${esc(q.quotationType==="detail"?"DETAIL":"SIMPLE")}</span>
+               <span class="rounded-full bg-blue-50 px-2.5 py-1 text-blue-700">${esc(q.revision?.current||"R00")}</span>
+               <span class="rounded-full bg-violet-50 px-2.5 py-1 text-violet-700">${esc(q.projectId||"PROJECT")}</span>
+             </div>
            </div>
            <div class="history-card-meta">
              <p class="text-xs text-slate-400">Updated ${date(q.updatedAt)}</p>
@@ -65,7 +70,7 @@
            <p class="mt-0.5 text-2xl font-black tracking-[-.03em] text-slate-950">RM ${money(q.total)}</p>
          </div>
          <div class="history-card-actions">
-           <a href="${edit}" data-ga-quotation-opened="1" data-ga-role="${esc(role)}" data-ga-planner-type="${esc(type)}" data-ga-quotation-id="${esc(q.quotationId)}" data-ga-quotation-number="${esc(q.quotationNumber||q.quotationId)}" data-ga-quotation-type="${esc(q.quotationType||"simple")}" class="history-action rounded-xl px-4 py-2.5 text-sm font-semibold">Open / Edit Estimate</a>
+           <a href="${edit}" data-ga-quotation-opened="1" data-ga-role="${esc(role)}" data-ga-planner-type="${esc(type)}" data-ga-quotation-id="${esc(q.quotationId)}" data-ga-quotation-number="${esc(q.estimateNumber||q.quotationNumber||q.quotationId)}" data-ga-quotation-type="${esc(q.quotationType||"simple")}" class="history-action rounded-xl px-4 py-2.5 text-sm font-semibold">Open / Edit Estimate</a>
            ${contract}
            <button type="button" data-duplicate-quotation="1" data-quotation-id="${esc(q.quotationId)}" data-quotation-number="${esc(q.quotationNumber||q.quotationId)}" class="icon-action" title="Duplicate cost estimate" aria-label="Duplicate cost estimate"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="11" height="11" rx="2"></rect><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"></path></svg></button>
            <button type="button" data-delete-quotation="1" data-quotation-id="${esc(q.quotationId)}" data-quotation-number="${esc(q.quotationNumber||q.quotationId)}" class="icon-action icon-danger" title="Delete cost estimate" aria-label="Delete cost estimate"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16"></path><path d="M10 11v6"></path><path d="M14 11v6"></path><path d="M6 7l1 14h10l1-14"></path><path d="M9 7V4h6v3"></path></svg></button>
