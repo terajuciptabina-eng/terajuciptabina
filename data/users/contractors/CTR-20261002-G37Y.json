@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "contractor",
+  "contractorId": "CTR-20261002-G37Y",
+  "profile": {
+    "name": "Naqiuddin",
+    "email": "nfglobal21@gmail.com",
+    "phone": "+60143698805"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-10-02T11:45:12.518Z",
+  "updatedAt": "2026-10-02T11:45:12.518Z"
+}
