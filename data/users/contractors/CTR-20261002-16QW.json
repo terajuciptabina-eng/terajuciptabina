@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "contractor",
+  "contractorId": "CTR-20261002-16QW",
+  "profile": {
+    "name": "JDI ARK Resources",
+    "email": "jdiark2025@gmail.com",
+    "phone": "0189464810"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-10-02T14:03:33.976Z",
+  "updatedAt": "2026-10-02T14:03:33.976Z"
+}
