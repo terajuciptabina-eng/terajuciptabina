@@ -170,12 +170,12 @@
           "manualItems": [],
           "standardRateItems": [],
           "quotationType": "simple",
-          "projectId": "PRJ-REN-MUR2KACL-BHU2V",
+          "projectId": "PRJ-REN-MUR1FZ3Z-1QDHA",
           "constructionBudgetGenerated": true,
           "projectState": "kuala-lumpur",
           "rateSetId": "kuala-lumpur",
           "rateSetName": "Kuala Lumpur",
-          "rateSnapshotAt": "2026-10-02T14:39:28.854Z"
+          "rateSnapshotAt": "2026-10-02T14:46:23.298Z"
         },
         "itemListVersion": 1,
         "items": [
@@ -793,13 +793,13 @@
           }
         ],
         "createdAt": "2026-10-02T14:39:28.627Z",
-        "updatedAt": "2026-10-02T14:39:32.709Z",
+        "updatedAt": "2026-10-02T14:46:27.654Z",
         "estimateNumber": "EST-REN-001"
       }
     ]
   },
   "createdAt": "2026-10-02T14:03:33.976Z",
-  "updatedAt": "2026-10-02T14:39:32.709Z",
+  "updatedAt": "2026-10-02T14:46:27.654Z",
   "quotationRunningNumber": {
     "renovation": 1
   },
