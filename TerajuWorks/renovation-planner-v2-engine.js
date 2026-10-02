@@ -187,28 +187,31 @@
       });
     });
 
-    // Contractor-added Build Planner items live in a dedicated manualItems bucket
-    // per top-level construction group. They are part of the same V2 item stream.
+    // Contractor-added Build Planner items are canonical renovation items,
+    // including dynamic hierarchy keys such as __build__:GROUP:SUB:LEVEL.
     const buildGroupMeta = {
       'STRUCTURES': { category:'structures', room:'Project / New Construction' },
       'ARCHITECTURES': { category:'architecture', room:'Project / New Construction' },
       'ELECTRICAL': { category:'electrical', room:'Project / New Construction' },
       'DOORS & WINDOWS': { category:'doors-windows', room:'Project / New Construction' }
     };
-    Object.entries(buildGroupMeta).forEach(([group, meta]) => {
-      const key = '__build__:' + group;
-      (manualItems.get(key)||[]).forEach(source => {
+    for (const [key, list] of manualItems.entries()) {
+      if (!String(key).startsWith('__build__:')) continue;
+      const group = String(list?.[0]?.group || String(key).split(':')[1] || '').trim().toUpperCase();
+      const meta = buildGroupMeta[group];
+      if (!meta) continue;
+      (list || []).forEach(source => {
         const item = {
           ...source,
           manualKey:key,
           roomId:'project',
           room:meta.room,
-          category:meta.category,
-          group
+          category:source.category || meta.category,
+          group:source.group || group
         };
         result.push(applyOverrides(item));
       });
-    });
+    }
 
     (manualItems.get('__prelim__')||[]).forEach(source => {
       const item={...source,roomId:'__prelim__',room:'Project / Preliminaries'};
