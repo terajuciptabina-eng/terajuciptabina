@@ -1551,34 +1551,11 @@ function refreshRenovationItemMutation() {
     return false;
   }
 
-  // Item mutations must repaint the existing budget immediately.
-  // The V2 engine remains the single calculation source. If the normal
-  // V2 update returns false or throws before replacing the DOM, reuse the
-  // same V2 quotation data for the final render instead of leaving the
-  // Add Item form visible until the next page load.
+  // All item mutations use the V2 engine as the single calculation and render source.
   try {
-    const rendered = updateV2({ reason: "item-mutation" });
-    if (rendered !== false) return true;
+    return updateV2({ reason: "item-mutation" }) !== false;
   } catch (error) {
     console.error("[TERAJU RENOVATION V2] Item mutation refresh failed.", error);
-  }
-
-  try {
-    const getData = window.__TERAJU_RENOVATION_V2_GET_QUOTATION_DATA;
-    if (typeof getData !== "function" || typeof renderEstimate !== "function") return false;
-    const data = getData();
-    if (!data || !Array.isArray(data.allItems)) return false;
-    renderEstimate(
-      data.allItems,
-      data.roomGroups || [],
-      data.roomSubtotals || {},
-      Number(data.projectPreliminaries || 0),
-      Number(data.total || 0)
-    );
-    window.__TERAJU_RENOVATION_BUDGET_GENERATED = true;
-    return true;
-  } catch (error) {
-    console.error("[TERAJU RENOVATION V2] Canonical quotation repaint failed.", error);
     return false;
   }
 }
@@ -1610,41 +1587,7 @@ function saveManualItem(roomId) {
   manualItems.get(roomId).push({ id, roomId, roomType, description, unit, qty, rate, amount: Math.round((qty * rate + Number.EPSILON) * 100) / 100 });
   saveContractorState();
 
-  // Manual room items are a direct V2 mutation. Recalculate from the
-  // canonical V2 quotation source and repaint after the mutation commits.
-  const repaint = () => {
-    try {
-      const getData = window.__TERAJU_RENOVATION_V2_GET_QUOTATION_DATA;
-      if (typeof getData !== "function" || typeof renderEstimate !== "function") {
-        console.error("[TERAJU RENOVATION V2] Canonical quotation renderer unavailable.");
-        return false;
-      }
-      const data = getData();
-      const room = (data.roomGroups || []).find(x => String(x.roomId) === String(roomId));
-      const roomItems = (data.allItems || []).filter(x => String(x.roomId) === String(roomId));
-      const newItem = roomItems.find(x => String(x.id) === String(id));
-      if (!room || !newItem) {
-        console.error("[TERAJU RENOVATION V2] Manual item was saved but not present in canonical quotation data.", { roomId, id });
-        return false;
-      }
-      renderEstimate(
-        data.allItems,
-        data.roomGroups,
-        data.roomSubtotals,
-        Number(data.projectPreliminaries || 0),
-        Number(data.total || 0)
-      );
-      window.__TERAJU_RENOVATION_BUDGET_GENERATED = true;
-      return true;
-    } catch (error) {
-      console.error("[TERAJU RENOVATION V2] Immediate manual-item repaint failed.", error);
-      return false;
-    }
-  };
-
-  if (!repaint()) {
-    refreshRenovationItemMutation();
-  }
+  refreshRenovationItemMutation();
 }
 window.saveManualItem = saveManualItem;
 
