@@ -2722,27 +2722,22 @@ function buildQuotationBody(data, revealDetails = false) {
     rows.push({ type: 'section', label, amount: value, items, ...meta });
   };
 
-  const prelimManual = (typeof manualItems !== 'undefined' ? (manualItems.get('__prelim__') || []) : [])
-    .filter(item => !excludedItems.has(item.id));
-  const prelimBase = Number(data.projectPreliminaries) || 0;
-  const prelimTotal = prelimBase + prelimManual.reduce((sum, item) => sum + (Number(item.amount) || 0), 0);
-  const prelimItems = [];
-  if (prelimBase !== 0) {
-    prelimItems.push({
-      description: 'Submission of Renovation Permit Application and Engineer\'s Drawings to the Local Authority',
-      unit: 'ls',
-      quantity: 1,
-      rate: prelimBase,
-      amount: prelimBase
-    });
-  }
-  prelimManual.forEach(item => prelimItems.push({
-    description: String(item.description || '').trim(),
-    unit: String(item.unit || '').trim(),
-    quantity: item.qty,
-    rate: item.rate,
-    amount: item.amount
-  }));
+  // Preview must consume the exact canonical V2 items already supplied by
+  // quotationData(). Never read manualItems or recalculate preliminaries here.
+  // This keeps Preview, Renovation Budget and TOTAL on one source of truth.
+  const prelimItems = activeItems
+    .filter(item =>
+      !excludedItems.has(item.id) &&
+      String(item.category || '').toLowerCase() === 'preliminaries'
+    )
+    .map(item => ({
+      description: String(item.description || '').trim(),
+      unit: String(item.unit || '').trim(),
+      quantity: item.qty,
+      rate: item.rate,
+      amount: item.amount
+    }));
+  const prelimTotal = prelimItems.reduce((sum, item) => sum + (Number(item.amount) || 0), 0);
   addSection('PROJECT / PRELIMINARIES', prelimTotal, prelimItems);
 
   // New construction: each lowest Build Planner hierarchy is a sub-group.
@@ -2932,8 +2927,7 @@ function buildQuotationBody(data, revealDetails = false) {
 
   if (prelimTotal !== 0) {
     appendSummaryHeading('PRELIMINARIES');
-    appendSummaryRow('PROJECT PRELIMINARIES', prelimBase);
-    prelimManual.forEach(item => appendSummaryRow(item.description, item.amount));
+    prelimItems.forEach(item => appendSummaryRow(item.description, item.amount));
   }
 
   const summaryGroups = ['STRUCTURES', 'ARCHITECTURES', 'ELECTRICAL', 'DOORS & WINDOWS']
