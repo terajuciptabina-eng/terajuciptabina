@@ -5114,70 +5114,70 @@
             {
               "id": "room-1",
               "type": "bedroom",
-              "condition": "existing",
+              "condition": "new",
               "name": "Master Bedroom ",
               "area": "300"
             },
             {
               "id": "room-2",
               "type": "bedroom",
-              "condition": "existing",
+              "condition": "new",
               "name": "Bedroom 2",
               "area": "250"
             },
             {
               "id": "room-3",
               "type": "bedroom",
-              "condition": "existing",
+              "condition": "new",
               "name": "Bedroom 3",
               "area": "150"
             },
             {
               "id": "room-4",
               "type": "living",
-              "condition": "existing",
+              "condition": "new",
               "name": "Living ",
               "area": "250"
             },
             {
               "id": "room-5",
               "type": "living",
-              "condition": "existing",
+              "condition": "new",
               "name": "Dining ",
               "area": "250"
             },
             {
               "id": "room-6",
               "type": "bathroom",
-              "condition": "existing",
+              "condition": "new",
               "name": "Master Bathroom",
               "area": "90"
             },
             {
               "id": "room-7",
               "type": "bathroom",
-              "condition": "existing",
+              "condition": "new",
               "name": "Bathroom 2",
               "area": "50"
             },
             {
               "id": "room-8",
               "type": "wetKitchen",
-              "condition": "existing",
+              "condition": "new",
               "name": "Wet Kitchen",
               "area": "250"
             },
             {
               "id": "room-9",
               "type": "dryKitchen",
-              "condition": "existing",
+              "condition": "new",
               "name": "Dry Kitchen",
               "area": "250"
             },
             {
               "id": "room-10",
               "type": "porch",
-              "condition": "existing",
+              "condition": "new",
               "name": "Porch",
               "area": "200"
             }
@@ -5314,13 +5314,13 @@
           "projectState": "selangor",
           "rateSetId": "selangor",
           "rateSetName": "Selangor",
-          "rateSnapshotAt": "2026-10-02T13:38:05.642Z",
+          "rateSnapshotAt": "2026-10-02T13:38:57.913Z",
           "quotationId": "QT-REN-MUR0833E-AJBTK"
         },
         "itemListVersion": 1,
         "items": [],
         "createdAt": "2026-10-02T13:34:04.201Z",
-        "updatedAt": "2026-10-02T13:38:05.783Z",
+        "updatedAt": "2026-10-02T13:38:58.278Z",
         "estimateNumber": "EST-REN-020",
         "sourceItems": []
       },
@@ -9105,7 +9105,7 @@
     ]
   },
   "createdAt": "2026-09-23T08:33:53.459Z",
-  "updatedAt": "2026-10-02T13:38:05.783Z",
+  "updatedAt": "2026-10-02T13:38:58.278Z",
   "quotationRunningNumber": {
     "renovation": 21,
     "build": 15
