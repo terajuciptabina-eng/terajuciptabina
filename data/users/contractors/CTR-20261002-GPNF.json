@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "contractor",
+  "contractorId": "CTR-20261002-GPNF",
+  "profile": {
+    "name": "ISE design",
+    "email": "isedesign.work@gmail.com",
+    "phone": "01119781916"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-10-02T14:48:58.592Z",
+  "updatedAt": "2026-10-02T14:48:58.592Z"
+}
