@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "contractor",
+  "contractorId": "CTR-20261003-8YYH",
+  "profile": {
+    "name": "TERKIS ENTERPRISE",
+    "email": "terkis57@gmail.com",
+    "phone": "+60199910525"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-10-03T01:10:17.777Z",
+  "updatedAt": "2026-10-03T01:10:17.777Z"
+}
