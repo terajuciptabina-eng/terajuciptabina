@@ -140,27 +140,88 @@ function refresh(){if(typeof updateEstimate==='function')updateEstimate();if(typ
 function targetId(v){return String(v||'').replace(/[^a-zA-Z0-9_-]+/g,'-')}
 
 window.deleteBudgetItem=function(id){if(!document.body.classList.contains('contractor-mode'))return;const sid=String(id||'');if(!sid)return;const item=(typeof window.getAllItems==='function'?window.getAllItems():[]).find(x=>String(x.id)===sid);const label=item?.description||'Item';if(!window.confirm(`Delete this item?\\n\\n${label}`))return;if(sid.startsWith('manual-')&&typeof manualItems!=='undefined'){for(const [k,list] of manualItems.entries()){const next=(list||[]).filter(x=>String(x.id)!==sid);if(next.length!==list.length)manualItems.set(k,next)}}else if(typeof excludedItems!=='undefined'){excludedItems.add(sid)}if(typeof window.updateEstimate==='function')window.updateEstimate();if(typeof window.generateConstructionBudget==='function')window.generateConstructionBudget();if(typeof saveContractorState==='function')saveContractorState()};
-window.addNewBudgetItem=function(targetKey,groupTitle,category,roomId){if(!document.body.classList.contains('contractor-mode'))return;const aid=`budget-new-${targetId(targetKey)}`,old=document.getElementById(aid);if(old){old.remove();return}const anchor=document.querySelector(`[data-budget-new-anchor="${CSS.escape(targetKey)}"]`);if(!anchor)return;const box=document.createElement('div');box.id=aid;box.dataset.newTarget=targetKey;box.dataset.newTitle=groupTitle;box.dataset.newCategory=category;box.dataset.newRoom=roomId||'project';box.className='no-print mt-3 rounded-xl border bg-gray-50 p-4';box.innerHTML=`<div class="flex items-center justify-between gap-3 mb-3"><strong class="text-sm">Add New Item</strong><button type="button" class="text-xs text-gray-500" data-budget-cancel-new>Cancel</button></div><div class="grid md:grid-cols-[2fr_1fr_1fr_1fr_auto] gap-3 items-end"><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Description</span><input id="${aid}-desc" type="text" class="w-full border rounded-lg px-3 py-2 bg-white" placeholder="Item description"></label><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Unit</span><input id="${aid}-unit" type="text" value="ls" class="w-full border rounded-lg px-3 py-2 bg-white" placeholder="no / sqft / m / ls"></label><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Quantity</span><input id="${aid}-qty" type="number" min="0" step="1" value="1" class="w-full border rounded-lg px-3 py-2 bg-white"></label><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Rate (RM)</span><input id="${aid}-rate" type="number" min="0" step="0.01" value="0.00" class="w-full border rounded-lg px-3 py-2 bg-white"></label><button type="button" class="bg-black text-white px-4 py-2 rounded-lg text-sm font-semibold" data-budget-save-new>Add Item</button></div>`;anchor.appendChild(box);box.querySelector('[data-budget-cancel-new]')?.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();box.remove()});box.querySelector('[data-budget-save-new]')?.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();window.saveNewBudgetItem(targetKey,groupTitle,category,roomId||'project',aid)});};
+function buildAvailableStandardItems(targetKey,category){
+ const cat=String(category||'').toLowerCase();
+ const targetParts=String(targetKey||'').split(':').map(v=>String(v||'').trim()).filter(Boolean);
+ const groupMap={preliminaries:'PRELIMINARIES',structures:'STRUCTURES',architecture:'ARCHITECTURES',electrical:'ELECTRICAL','doors-windows':'DOORS & WINDOWS','external-work':'EXTERNAL WORK'};
+ const group=groupMap[cat]||String(targetParts[0]||category||'').toUpperCase();
+ const hierarchy=targetParts.slice(1).map(v=>String(v).trim().toUpperCase());
+ const activePaths=new Set(),excludedPaths=new Map();
+ let all=[];
+ try{all=typeof getMasterItems==='function'?getMasterItems():[]}catch{}
+ all.filter(i=>!/^manual-/i.test(String(i.id||''))).forEach(i=>{
+   const p=String(i.masterPath||'').trim();
+   if(!p)return;
+   const id=String(i.id||'');
+   if(typeof excludedItems!=='undefined'&&excludedItems.has(id))excludedPaths.set(p,id);
+   else activePaths.add(p);
+ });
+ const rows=[];
+ if(typeof RULES!=='undefined'&&RULES instanceof Map){
+   for(const [path,r] of RULES){
+     const parts=String(path||'').split('/').map(v=>String(v||'').trim()).filter(Boolean);
+     const ruleGroup=String(r?.[0]||'').trim().toUpperCase();
+     if(ruleGroup!==group)continue;
+     if(hierarchy.length){
+       const matches=hierarchy.every((v,idx)=>String(parts[idx]||'').trim().toUpperCase()===v || String(parts[idx+1]||'').trim().toUpperCase()===v);
+       if(!matches)continue;
+     }
+     const cleanPath=String(path).trim();
+     if(activePaths.has(cleanPath))continue;
+     rows.push({id:'master-'+NOR(cleanPath).replace(/\\s+/g,'-'),masterPath:cleanPath,description:String(r?.[2]||path),unit:String(r?.[6]||'ls'),rate:rate(path),category:cat,groupKey:targetKey,groupTitle,excludedId:excludedPaths.get(cleanPath)||''});
+   }
+ }
+ return rows.sort((a,b)=>String(a.description).localeCompare(String(b.description)));
+}
+function buildStandardItemOptions(targetKey,category){
+ const items=buildAvailableStandardItems(targetKey,category);
+ return items.map(item=>`<option value="${esc(item.id)}">${esc(item.description)} — RM ${money2(item.rate,2)}${item.excludedId?' (restore)':''}</option>`).join('');
+}
+window.addNewBudgetItem=function(targetKey,groupTitle,category,roomId){
+ if(!document.body.classList.contains('contractor-mode'))return;
+ const aid=`budget-new-${targetId(targetKey)}`,old=document.getElementById(aid);
+ if(old){old.remove();return}
+ const anchor=document.querySelector(`[data-budget-new-anchor="${CSS.escape(targetKey)}"]`);
+ if(!anchor)return;
+ const box=document.createElement('div');
+ box.id=aid;box.dataset.newTarget=targetKey;box.dataset.newTitle=groupTitle;box.dataset.newCategory=category;box.dataset.newRoom=roomId||'project';
+ box.className='no-print mt-3 rounded-xl border bg-gray-50 p-4';
+ box.innerHTML=`<div class="flex items-center justify-between gap-3 mb-3"><strong class="text-sm">Add New Item</strong><button type="button" class="text-xs text-gray-500" data-budget-cancel-new>Cancel</button></div><div class="grid md:grid-cols-[2fr_1fr_1fr_auto] gap-3 items-end"><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Standard Rate Item</span><select id="${aid}-select" class="w-full border rounded-lg px-3 py-2 bg-white"><option value="">Select an item…</option>${buildStandardItemOptions(targetKey,category)}<option value="__new__">＋ Create New Standard Item</option></select></label><label id="${aid}-qty-wrap" class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Quantity</span><input id="${aid}-qty" type="number" min="0" step="1" value="1" class="w-full border rounded-lg px-3 py-2 bg-white"></label><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Rate (RM)</span><input id="${aid}-rate" type="number" min="0" step="0.01" value="0.00" class="w-full border rounded-lg px-3 py-2 bg-white"></label><button type="button" class="bg-black text-white px-4 py-2 rounded-lg text-sm font-semibold" data-budget-save-new>Add</button></div><div id="${aid}-new" class="hidden mt-3"><div class="grid md:grid-cols-[2fr_1fr] gap-3"><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">New Description</span><input id="${aid}-desc" type="text" placeholder="e.g. Aluminium awning" class="w-full border rounded-lg px-3 py-2 bg-white"></label><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Unit</span><input id="${aid}-unit" type="text" value="ls" class="w-full border rounded-lg px-3 py-2 bg-white"></label></div></div>`;
+ anchor.appendChild(box);
+ const select=box.querySelector(`#${aid}-select`),rateEl=box.querySelector(`#${aid}-rate`),qtyWrap=box.querySelector(`#${aid}-qty-wrap`),newBox=box.querySelector(`#${aid}-new`);
+ select?.addEventListener('change',()=>{
+   const selected=buildAvailableStandardItems(targetKey,category).find(x=>x.id===select.value);
+   if(select.value==='__new__'){newBox?.classList.remove('hidden');qtyWrap?.classList.add('hidden');if(rateEl)rateEl.value='0.00';return}
+   newBox?.classList.add('hidden');qtyWrap?.classList.remove('hidden');
+   if(selected&&rateEl)rateEl.value=normRate(selected.rate).toFixed(2);
+ });
+ box.querySelector('[data-budget-cancel-new]')?.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();box.remove()});
+ box.querySelector('[data-budget-save-new]')?.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();window.saveNewBudgetItem(targetKey,groupTitle,category,roomId||'project',aid)});
+};
 window.saveNewBudgetItem=function(targetKey,groupTitle,category,roomId,aid){
-if(!document.body.classList.contains('contractor-mode'))return;
-if(typeof manualItems==='undefined')return;
-const desc=String(document.getElementById(aid+'-desc')?.value||'').trim();
-const unit=String(document.getElementById(aid+'-unit')?.value||'ls').trim()||'ls';
-const qty=normQty(document.getElementById(aid+'-qty')?.value);
-const rate=normRate(document.getElementById(aid+'-rate')?.value);
-if(!desc){alert('Please enter the item description.');return}
-const keyParts=String(targetKey||'').split(':');
-const cat=String(category||'').toLowerCase();
-const groupMap={preliminaries:'PRELIMINARIES',structures:'STRUCTURES',architecture:'ARCHITECTURES',electrical:'ELECTRICAL','doors-windows':'DOORS & WINDOWS','external-work':'EXTERNAL WORK'};
-const group=groupMap[cat]||String(category||'').toUpperCase();
-const masterPath=canonicalManualMasterPath({targetKey,group,groupTitle});
-const actualRoomId=String(roomId||'project');
-const id='manual-'+Date.now()+'-'+Math.random().toString(36).slice(2,8);
-const item={id,description:desc,unit,qty,rate,category:cat,groupKey:targetKey,groupTitle,roomId:actualRoomId,masterPath,amount:R2(qty*rate)};
-if(!manualItems.has(targetKey))manualItems.set(targetKey,[]);
-manualItems.get(targetKey).push(item);
-refresh();
-saveState()
+ if(!document.body.classList.contains('contractor-mode'))return;
+ if(typeof manualItems==='undefined')return;
+ const select=document.getElementById(aid+'-select');
+ const selected=buildAvailableStandardItems(targetKey,category).find(x=>x.id===select?.value);
+ const isNew=select?.value==='__new__';
+ const cat=String(category||'').toLowerCase();
+ const groupMap={preliminaries:'PRELIMINARIES',structures:'STRUCTURES',architecture:'ARCHITECTURES',electrical:'ELECTRICAL','doors-windows':'DOORS & WINDOWS','external-work':'EXTERNAL WORK'};
+ const group=groupMap[cat]||String(category||'').toUpperCase();
+ if(selected?.excludedId&&typeof excludedItems!=='undefined'){excludedItems.delete(selected.excludedId);refresh();saveState();return}
+ let desc='',unit='ls',qty=1,rate=0,masterPath=canonicalManualMasterPath({targetKey,group,groupTitle});
+ if(isNew){
+   desc=String(document.getElementById(aid+'-desc')?.value||'').trim();
+   unit=String(document.getElementById(aid+'-unit')?.value||'ls').trim()||'ls';
+   qty=1;rate=normRate(document.getElementById(aid+'-rate')?.value);
+   if(!desc){alert('Please enter the new item description.');return}
+ }else{
+   if(!selected){alert('Please select an item.');return}
+   desc=selected.description;unit=selected.unit||'ls';qty=normQty(document.getElementById(aid+'-qty')?.value);rate=normRate(document.getElementById(aid+'-rate')?.value||selected.rate);masterPath=selected.masterPath;
+ }
+ const actualRoomId=String(roomId||'project'),id='manual-'+Date.now()+'-'+Math.random().toString(36).slice(2,8);
+ const item={id,description:desc,unit,qty,rate,category:cat,groupKey:targetKey,groupTitle,roomId:actualRoomId,masterPath,amount:R2(qty*rate)};
+ if(!manualItems.has(targetKey))manualItems.set(targetKey,[]);
+ manualItems.get(targetKey).push(item);refresh();saveState();
 };
 function editExisting(id){const row=document.querySelector(`[data-budget-item-id=\"${CSS.escape(String(id))}\"]`);if(!row)return;row.querySelector('[data-budget-view]')?.classList.add('hidden');row.querySelector('[data-budget-edit]')?.classList.remove('hidden')}
 function applyDirectRate(item,rateEl){if(!item||!rateEl)return;const contractorRate=normRate(rateEl.value);if(typeof customRates!=='undefined')customRates.set(item.id,contractorRate);item.rate=contractorRate;item.amount=R2(N(item.qty)*contractorRate);const amountEl=document.getElementById(`budget-amount-${targetId(item.id)}`);if(amountEl)amountEl.textContent=money2(item.amount);return contractorRate}
