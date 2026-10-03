@@ -448,21 +448,17 @@
           button.textContent=originalLabel;
         }
 
-        // Budget generation is followed by the existing Cost Estimate action.
-        // Select Simple Cost Estimate, then call the same canonical generateQuotation()
-        // action used by the visible Generate Cost Estimate button. This keeps the
-        // normal quotation-records save wrapper in the flow.
+        // Budget -> Simple Cost Estimate Preview uses the exact same canonical
+        // quotation source as the visible Cost Estimate action. It is preview-only:
+        // do not route this through quotation-records or create a second pipeline.
         const simpleType=document.querySelector('input[name="quotationType"][value="simple"]');
         if(simpleType && !simpleType.checked){
           simpleType.checked=true;
           simpleType.dispatchEvent(new Event('change',{bubbles:true}));
         }
-        const generatedQuotation=window.generateQuotation();
-        const quotationResult=generatedQuotation && typeof generatedQuotation.then==='function'
-          ? await generatedQuotation
-          : generatedQuotation;
+        const quotationResult=await __TERAJU_RENOVATION_GENERATE_QUOTATION_CORE('simple');
         if(quotationResult===false){
-          throw new Error('Simple Cost Estimate generation returned false.');
+          throw new Error('Simple Cost Estimate preview returned false.');
         }
         document.getElementById('quotationDocument')?.scrollIntoView({behavior:'smooth',block:'start'});
       }
