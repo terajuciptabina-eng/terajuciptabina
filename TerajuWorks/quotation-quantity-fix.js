@@ -160,51 +160,36 @@ window.showBuildBudgetPending=function(){
   window.__TERAJU_BUILD_BUDGET_GENERATED=false;
   c.innerHTML='<div id="tcBuildBudgetPending" class="border rounded-xl bg-gray-50 p-5 text-center"><div class="text-sm font-semibold text-gray-800">Construction budget is waiting for your final room / area review.</div><div class="mt-1 text-xs text-gray-500">Review, add, edit or remove rooms first. Generate the construction budget when your room schedule is final.</div><button type="button" id="tcGenerateBuildBudget" onclick="generateConstructionBudget({userInitiated:true})" class="mt-4 inline-flex items-center justify-center rounded-xl bg-gray-900 px-5 py-3 text-sm font-bold text-white shadow-sm">Generate Construction Budget</button></div>';
 };
-window.generateConstructionBudget=async function(options){
-  const autoRefresh=options && options.autoRefresh===true;
-  try{
-    if(typeof roomScheduleIsSaved==='function' && !roomScheduleIsSaved() && typeof saveRoomAreaState==='function'){
-      const saved=saveRoomAreaState();
-      if(saved===false)return false;
-    }
-  }catch(e){
-    console.error('[TERAJU BUILD BUDGET] Room / Area save failed',e);
-    return false;
-  }
+window.generateConstructionBudget=function(){
   try{if(typeof syncBuiltUpAreaFromRooms==='function')syncBuiltUpAreaFromRooms()}catch(e){console.error('[TERAJU BUILD BUDGET] Built-up sync failed',e)}
   try{
     if(typeof window.renderConstructionBudget==='function'){
       window.__TERAJU_BUILD_BUDGET_GENERATED=true;
       window.renderConstructionBudget();
 
-       // Generate Construction Budget also triggers the EXISTING
-       // Generate Cost Estimate action in the background.
-       // The normal Cost Estimate button remains visible and usable.
-       if(!autoRefresh){
-         // Use the exact same public generation action as the existing
-         // Generate Cost Estimate button. Do not create a second preview
-         // renderer or a separate Budget -> Preview pipeline.
-         window.__TERAJU_PREVIEW_ONLY=true;
-         try{
-           if(typeof window.generateQuotation!=='function')
-             throw new Error('Generate Cost Estimate action is not available.');
-           const result=window.generateQuotation('simple');
-           const completed=result && typeof result.then==='function'
-             ? await result
-             : result;
-           if(completed===false)
-             throw new Error('Generate Cost Estimate action returned false.');
-         }finally{
-           window.__TERAJU_PREVIEW_ONLY=false;
-         }
-       }else{
-         document.getElementById('constructionBudgetSection')?.scrollIntoView({behavior:'smooth',block:'start'});
-       }
+      // Canonical flow:
+      // Generate Construction Budget completes first, then triggers the
+      // SAME existing Generate Cost Estimate button for Simple Cost Estimate.
+      // No second preview renderer and no separate quotation generator.
+      const simple=document.querySelector('input[name="quotationType"][value="simple"]');
+      if(simple){
+        simple.checked=true;
+        simple.dispatchEvent(new Event('change',{bubbles:true}));
+      }
+      const button=document.querySelector('#quotationGenerator button.quotation-generate-btn');
+      if(!button)throw new Error('Existing Generate Cost Estimate button not found.');
+      requestAnimationFrame(()=>{
+        try{
+          button.click();
+        }catch(error){
+          console.error('[TERAJU BUILD BUDGET] Existing Cost Estimate action failed',error);
+        }
+      });
       return true;
     }
   }catch(e){
     window.__TERAJU_BUILD_BUDGET_GENERATED=false;
-    console.error('[TERAJU BUILD BUDGET] Budget generation / preview failed',e);
+    console.error('[TERAJU BUILD BUDGET] Budget generation failed',e);
   }
   return false;
 };
