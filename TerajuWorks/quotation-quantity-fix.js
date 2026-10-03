@@ -57,7 +57,42 @@ function canonicalManualMasterPath(source){
 function normalizeItem(i){const qty=Math.max(0,Math.ceil(N(i?.qty)));const rate=Math.max(0,R2(i?.rate));return{...i,qty,rate,amount:R2(qty*rate)}}
 function getMasterItems(){const s=scope();let items=makeMaster(s);items=applyQuantities(items,s);items=addManual(items,s);items=items.map(i=>{const isManual=Boolean(i.manual)||/^manual-/i.test(String(i.id||''));if(!isManual&&typeof customRates!=='undefined'&&customRates.has(i.id))i.rate=R2(customRates.get(i.id));const lockedPorchElectrical=/(?:^|\/)\s*PORCH\s*\/\s*(?:LIGHTING|FAN|POWER POINT)(?:\s*\/|$)/i.test(i.masterPath)&&s.B>0;const lockedDoorType3=/DOORS \/ Type 3/i.test(i.masterPath)||/TYPE 3\s*BATHROOM/i.test(i.masterPath);const lockedWindowType=/WINDOWS \/ Type [123]/i.test(i.masterPath);const lockedBathroom=/^(?:ARCHITECTURES\s*\/\s*)?BATHROOM\s*\//i.test(String(i.masterPath||''));if(!isManual&&typeof customQuantities!=='undefined'&&customQuantities.has(i.id)&&!lockedPorchElectrical&&!lockedDoorType3&&!lockedWindowType&&!lockedBathroom)i.qty=Math.ceil(N(customQuantities.get(i.id)));if(!isManual&&typeof customDescriptions!=='undefined'&&customDescriptions.has(i.id))i.description=customDescriptions.get(i.id);return normalizeItem(i)});return items}
 function esc(v){return typeof escapeHtml==='function'?escapeHtml(v):String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}function money(v,d=2){return typeof window.money==='function'?window.money(v,d):R2(v).toFixed(d)}
-const cats=['PRELIMINARIES','STRUCTURES','ARCHITECTURES','ELECTRICAL','DOORS & WINDOWS','EXTERNAL WORK'];const headerName=g=>({'PRELIMINARIES':'PRELIMINARIES','STRUCTURES':'STRUCTURAL WORKS','ARCHITECTURES':'ARCHITECTURAL WORKS','ELECTRICAL':'ELECTRICAL WORKS','DOORS & WINDOWS':'DOORS & WINDOWS','EXTERNAL WORK':'EXTERNAL WORKS'}[String(g||'').toUpperCase()]||String(g||''));const parts=p=>String(p||'').split('/').map(x=>String(x).trim()).filter(Boolean);function buildBudgetHierarchy(active){const tree=[];cats.forEach(g=>{const items=active.filter(i=>String(i.group||'').toUpperCase()===g);if(!items.length)return;const header=headerName(g),bySub=new Map;items.forEach(i=>{const p=parts(i.masterPath),roomScoped=Boolean(i.roomId&&i.roomId!=='project'&&i.room),z=roomScoped?{sub:i.room,subsub:null}:{sub:g==='EXTERNAL WORK'?'EXTERNAL WORK':p[0]||null,subsub:g==='EXTERNAL WORK'?p[0]||null:(p.length>1?p[1]:null)};const sk=z.sub||'';if(!bySub.has(sk))bySub.set(sk,{header,sub:z.sub,levels:new Map,noLevel3:[]});const node=bySub.get(sk);if(z.subsub){if(!node.levels.has(z.subsub))node.levels.set(z.subsub,[]);node.levels.get(z.subsub).push(i)}else node.noLevel3.push(i)});tree.push(...bySub.values())});return tree}window.__TERAJU_BUILD_BUDGET_HIERARCHY=buildBudgetHierarchy;function renderBudget(){
+const cats=['PRELIMINARIES','STRUCTURES','ARCHITECTURES','ELECTRICAL','DOORS & WINDOWS','EXTERNAL WORK'];const headerName=g=>({'PRELIMINARIES':'PRELIMINARIES','STRUCTURES':'STRUCTURAL WORKS','ARCHITECTURES':'ARCHITECTURAL WORKS','ELECTRICAL':'ELECTRICAL WORKS','DOORS & WINDOWS':'DOORS & WINDOWS','EXTERNAL WORK':'EXTERNAL WORKS'}[String(g||'').toUpperCase()]||String(g||''));const parts=p=>String(p||'').split('/').map(x=>String(x).trim()).filter(Boolean);function buildBudgetHierarchy(active){
+ const tree=[];
+ cats.forEach(g=>{
+   const items=active.filter(i=>String(i.group||'').toUpperCase()===g);
+   if(!items.length)return;
+   const header=headerName(g);
+   const byHierarchy=new Map();
+
+   items.forEach(i=>{
+     const roomScoped=Boolean(i.roomId&&i.roomId!=='project'&&i.room);
+     let levels=[];
+     if(roomScoped){
+       levels=[String(i.room).trim()].filter(Boolean);
+     }else{
+       let path=parts(i.masterPath);
+       if(path.length&&path[0].toUpperCase()===g)path=path.slice(1);
+       levels=path.length>1?path.slice(0,-1):[];
+     }
+
+     const hierarchyKey=levels.join(' / ');
+     if(!byHierarchy.has(hierarchyKey)){
+       byHierarchy.set(hierarchyKey,{
+         header,
+         hierarchy:levels,
+         items:[]
+       });
+     }
+     byHierarchy.get(hierarchyKey).items.push(i);
+   });
+
+   tree.push(...byHierarchy.values());
+ });
+ return tree;
+}
+window.__TERAJU_BUILD_BUDGET_HIERARCHY=buildBudgetHierarchy;
+function renderBudget(){
 const c=document.getElementById('constructionBudgetContent');if(!c)return;
 const active=getMasterItems().filter(i=>typeof excludedItems==='undefined'||!excludedItems.has(i.id));
 if(!active.length){c.innerHTML='<div class="border rounded-xl bg-gray-50 p-5 text-center text-sm text-gray-500">Add rooms / areas to calculate the preliminary construction budget.</div>';return}
@@ -80,18 +115,32 @@ const addButton=(key,title,cat,roomId='project')=>contractor?`<div data-budget-n
 const tree=buildBudgetHierarchy(active);
 let no=1,lastHeader='',h='<table class="w-full border-collapse text-sm cr-budget-table"><thead><tr class="border-b-2 text-left"><th class="py-3 px-2">Item</th><th class="py-3 px-2">Description</th><th class="py-3 px-2">Unit</th><th class="py-3 px-2 text-right">Quantity</th><th class="py-3 px-2 text-right">Rate (RM)</th><th class="py-3 px-2 text-right">Amount (RM)</th></tr></thead><tbody>';
 tree.forEach(g=>{
- if(g.header!==lastHeader){h+=`<tr class="cr-group-row"><td colspan="6">${esc(g.header)}</td></tr>`;lastHeader=g.header}
- if(g.sub)h+=`<tr class="cr-hierarchy-row cr-level-2"><td colspan="6">${esc(g.sub)}</td></tr>`;
+ if(g.header!==lastHeader){
+   h+=`<tr class="cr-group-row"><td colspan="6">${esc(g.header)}</td></tr>`;
+   lastHeader=g.header;
+ }
+
  const cat=groupCategory(g.header);
- g.levels.forEach((list,label)=>{
-   h+=`<tr class="cr-hierarchy-row cr-level-3"><td colspan="6">${esc(label)}</td></tr>`;
-   list.forEach(i=>{h+=itemRow(i,no++)});
-   if(list.length>1){const sub=R2(list.reduce((sum,i)=>sum+N(i.amount),0));h+=`<tr class="cr-hierarchy-total cr-level-3-total"><td colspan="5" class="py-2 px-2 text-right font-semibold">SUBTOTAL ${esc(label).toUpperCase()}</td><td class="py-2 px-2 text-right font-bold">RM ${money(sub,2)}</td></tr>`}
-   const key=`${cat}:${g.sub||'project'}:${label}`;
-   h+=`<tr class="no-print"><td colspan="6" class="py-1 px-2">${addButton(key,label,cat,list[0]?.roomId||'project')}</td></tr>`;
+ const hierarchy=[...(g.hierarchy||[])];
+ const hierarchyKey=hierarchy.join(' / ');
+ const hierarchyTitle=hierarchy[hierarchy.length-1]||g.header;
+ const key=`${cat}:${hierarchy.join(':')}`;
+
+ hierarchy.forEach((level,index)=>{
+   const levelClass=index===0?'cr-level-2':`cr-level-${Math.min(index+2,6)}`;
+   h+=`<tr class="cr-hierarchy-row ${levelClass}"><td colspan="6">${esc(level)}</td></tr>`;
  });
- g.noLevel3.forEach(i=>{h+=itemRow(i,no++)});
- if(g.noLevel3.length){const key=`${cat}:${g.sub||g.header}`;h+=`<tr class="no-print"><td colspan="6" class="py-1 px-2">${addButton(key,g.sub||g.header,cat,g.noLevel3[0]?.roomId||'project')}</td></tr>`}
+
+ g.items.forEach(i=>{h+=itemRow(i,no++)});
+
+ if(contractor){
+   h+=`<tr class="no-print"><td colspan="6" class="py-1 px-2"><div data-budget-new-anchor="${esc(key)}"><button type="button" class="mt-1 text-sm font-semibold text-gray-700 hover:text-black" data-budget-new-action data-budget-new-target="${esc(key)}" data-budget-new-title="${esc(hierarchyTitle)}" data-budget-new-category="${esc(cat)}" data-budget-new-room="${esc(g.items[0]?.roomId||'project')}">＋ New Item</button></div></td></tr>`;
+ }
+
+ if(g.items.length>1){
+   const sub=R2(g.items.reduce((sum,i)=>sum+N(i.amount),0));
+   h+=`<tr class="cr-hierarchy-total"><td colspan="5" class="py-2 px-2 text-right font-semibold">SUBTOTAL ${esc(hierarchyTitle).toUpperCase()}</td><td class="py-2 px-2 text-right font-bold">RM ${money(sub,2)}</td></tr>`;
+ }
 });
 const total=active.reduce((sum,i)=>sum+N(i.amount),0);
 h+=`</tbody><tfoot><tr class="border-t-2"><td colspan="5" class="py-4 px-2 text-right font-bold">TOTAL PRELIMINARY ESTIMATE</td><td data-budget-grand-total class="py-4 px-2 text-right font-bold text-lg">RM ${money(total,2)}</td></tr></tfoot></table>`;
@@ -159,51 +208,34 @@ function buildAvailableStandardItems(targetKey,groupTitle,category,roomId){
  const canonical=Array.isArray(source)?source:[];
  if(!key||!group)return[];
 
- /*
-  * The budget renderer and the Global Calculation Rules do not use one
-  * universal "last path segment = item" convention.  For example:
-  *   PRELIMINARIES / Building Plan / Submission -> Building Plan
-  *   ELECTRICAL / MAIN BUILDING / POWER POINT    -> MAIN BUILDING / POWER POINT
-  *   DOORS / Type 1 Single Leaf                 -> DOORS / Type 1 Single Leaf
-  *   EXTERNAL WORK / MAIN BUILDING / Water Tank -> MAIN BUILDING
-  *
-  * Build the same hierarchy signature from the canonical master path that
-  * renderBudget() exposes, then compare it with the rendered target key.
-  * This keeps every group on one source-of-truth path instead of applying
-  * a group-specific "pop the last segment" guess.
-  */
- const targetParts=key.split(':').map(v=>String(v||'').trim()).filter(Boolean).slice(1);
+ const rawTarget=key.split(':').map(v=>String(v||'').trim()).filter(Boolean).slice(1);
  const roomType=String(document.getElementById(String(roomId||''))?.querySelector('.room-type')?.value||'').trim().toLowerCase();
+ let targetHierarchy=rawTarget.map(v=>v.toUpperCase());
 
- const normalize=parts=>parts.map(v=>String(v||'').trim().toUpperCase()).filter(Boolean);
-
- let targetHierarchy=normalize(targetParts);
- if(group==='EXTERNAL WORK'&&targetHierarchy[0]==='EXTERNAL WORK')targetHierarchy=targetHierarchy.slice(1);
+ // Match the RenovationPlanner V2 hierarchy rule exactly:
+ // masterPath -> remove group duplicate -> remove final item leaf.
+ // Bathroom is room-scoped in BuildPlanner, so the rendered room label
+ // maps back to the canonical BATHROOM hierarchy.
  if(group==='ARCHITECTURES'&&roomType==='bathroom')targetHierarchy=['BATHROOM'];
 
- const canonicalHierarchy=(item)=>{
-   const path=normalize(String(item?.masterPath||'').split('/'));
-   if(!path.length)return[];
-   if(group==='EXTERNAL WORK')return path.slice(0,1);
-   if(group==='ARCHITECTURES'&&path[0]==='BATHROOM')return path.slice(0,1);
-   return path.slice(0,2);
+ const canonicalHierarchy=item=>{
+   let path=String(item?.masterPath||'').split('/').map(v=>String(v||'').trim()).filter(Boolean);
+   if(path.length&&path[0].toUpperCase()===group)path=path.slice(1);
+   return path.length>1?path.slice(0,-1):[];
  };
 
  const seen=new Set();
  const items=[];
  canonical.forEach(item=>{
    if(Boolean(item?.manual)||/^manual-/i.test(String(item?.id||'')))return;
-   const itemGroup=String(item?.group||'').trim().toUpperCase();
-   if(itemGroup!==group)return;
+   if(String(item?.group||'').trim().toUpperCase()!==group)return;
 
    const itemRoomId=String(item?.roomId||'project');
    if(roomId&&String(roomId)!=='project'&&itemRoomId!=='project'&&itemRoomId!==String(roomId))return;
 
-   const itemHierarchy=canonicalHierarchy(item);
-   if(targetHierarchy.length&&(
-     itemHierarchy.length!==targetHierarchy.length ||
-     itemHierarchy.some((value,index)=>value!==targetHierarchy[index])
-   ))return;
+   const itemHierarchy=canonicalHierarchy(item).map(v=>v.toUpperCase());
+   if(itemHierarchy.length!==targetHierarchy.length||
+      itemHierarchy.some((value,index)=>value!==targetHierarchy[index]))return;
 
    const id=String(item?.id||'');
    const masterPath=String(item?.masterPath||'').trim();
