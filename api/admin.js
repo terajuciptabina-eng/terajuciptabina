@@ -1,10 +1,10 @@
 export default async function handler(req,res){
   const origin='https://terajuciptabina-eng.github.io';
   res.setHeader('Access-Control-Allow-Origin',origin);
-  res.setHeader('Access-Control-Allow-Methods','GET,PUT,DELETE,OPTIONS');
+  res.setHeader('Access-Control-Allow-Methods','GET,POST,PUT,DELETE,OPTIONS');
   res.setHeader('Access-Control-Allow-Headers','Content-Type,X-Admin-Key,X-Admin-Username,X-Admin-Password');
   if(req.method==='OPTIONS')return res.status(200).end();
-  if(!['GET','PUT','DELETE'].includes(req.method))return res.status(405).json({message:'Method not allowed.'});
+  if(!['GET','POST','PUT','DELETE'].includes(req.method))return res.status(405).json({message:'Method not allowed.'});
   const username=String(process.env.ADMIN_USERNAME||'admin').trim();
   const password=String(process.env.ADMIN_PASSWORD||process.env.ADMIN_KEY||'').trim();
   const suppliedUser=String(req.headers['x-admin-username']||'').trim();
@@ -26,6 +26,71 @@ export default async function handler(req,res){
 }
   async function findUser(role,id){const folder=role==='homeowner'?'homeowners':'contractors';const listing=await github(`data/users/${folder}`);if(!listing.response.ok||!Array.isArray(listing.data))return{error:'Database folder not found.'};for(const item of listing.data.filter(x=>x.type==='file'&&x.name.endsWith('.json'))){const record=await readJson(`data/users/${folder}/${item.name}`);const recordId=String(record?.homeownerId||record?.contractorId||'').trim();if(recordId===id)return{folder,item,record}}return{error:'User not found.'}}
   try{
+    if(String(req.query?.['development-log']||'')==='1'){
+      const logPath='data/development-log.json';
+      async function readDevelopmentLog(){
+        const result=await github(logPath);
+        if(!result.response.ok)return{items:[],sha:null};
+        let content=result.data?.content?Buffer.from(result.data.content,'base64').toString('utf8'):'';
+        if(!content){
+          const raw=await github(logPath,{headers:{Accept:'application/vnd.github.raw+json'}});
+          if(raw.response.ok)content=typeof raw.data==='string'?raw.data:'';
+        }
+        try{
+          const parsed=JSON.parse(content);
+          return{items:Array.isArray(parsed)?parsed:[],sha:result.data?.sha||null};
+        }catch{return{items:[],sha:result.data?.sha||null}}
+      }
+      async function writeDevelopmentLog(items,sha,message){
+        const body={message,content:Buffer.from(JSON.stringify(items,null,2)+'\n','utf8').toString('base64')};
+        if(sha)body.sha=sha;
+        const result=await github(logPath,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+        if(!result.response.ok)throw new Error(result.data?.message||'Unable to save development log.');
+        return result.data;
+      }
+      const store=await readDevelopmentLog();
+      if(req.method==='GET'){
+        const status=String(req.query?.status||'').trim().toLowerCase();
+        const module=String(req.query?.module||'').trim().toLowerCase();
+        const search=String(req.query?.q||'').trim().toLowerCase();
+        const items=store.items
+          .filter(item=>(!status||String(item.status||'').toLowerCase()===status)
+            &&(!module||String(item.module||'').toLowerCase()===module)
+            &&(!search||JSON.stringify(item).toLowerCase().includes(search)))
+          .sort((a,b)=>String(b.updatedAt||b.date||'').localeCompare(String(a.updatedAt||a.date||'')));
+        return res.status(200).json({ok:true,items,generatedAt:new Date().toISOString()});
+      }
+      const body=typeof req.body==='string'?JSON.parse(req.body||'{}'):(req.body||{});
+      if(req.method==='POST'){
+        const title=String(body.title||'').trim();
+        const summary=String(body.summary||'').trim();
+        if(!title||!summary)return res.status(400).json({message:'Title and summary are required.'});
+        const now=new Date().toISOString();
+        const item={
+          id:String(body.id||`DEV-${Date.now().toString(36).toUpperCase()}`).trim(),
+          date:String(body.date||now.slice(0,10)).trim(),
+          title,
+          module:String(body.module||'General').trim(),
+          status:String(body.status||'In Progress').trim(),
+          summary,
+          details:String(body.details||'').trim(),
+          commit:String(body.commit||'').trim(),
+          updatedAt:now
+        };
+        const index=store.items.findIndex(x=>String(x.id)===item.id);
+        if(index>=0)store.items[index]=item;else store.items.unshift(item);
+        const saved=await writeDevelopmentLog(store.items,store.sha,`${index>=0?'Update':'Add'} development log: ${title}`);
+        return res.status(200).json({ok:true,item,commitSha:saved?.commit?.sha||null});
+      }
+      if(req.method==='DELETE'){
+        const id=String(body.id||'').trim();
+        if(!id)return res.status(400).json({message:'Development log ID is required.'});
+        const next=store.items.filter(x=>String(x.id)!==id);
+        if(next.length===store.items.length)return res.status(404).json({message:'Development log not found.'});
+        const saved=await writeDevelopmentLog(next,store.sha,`Delete development log ${id}`);
+        return res.status(200).json({ok:true,id,commitSha:saved?.commit?.sha||null});
+      }
+    }
     const roleFilter=String(req.query?.role||'').toLowerCase(),q=String(req.query?.q||'').trim().toLowerCase(),includeRecords=String(req.query?.records||'')==='1',detailId=String(req.query?.id||'').trim();
     const roles=roleFilter==='homeowner'||roleFilter==='contractor'?[roleFilter]:['homeowner','contractor'];
     if(detailId){
