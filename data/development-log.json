@@ -22,6 +22,17 @@
     "updatedAt": "2026-10-03T19:31:54.836Z"
   },
   {
+    "id": "DEV-20261004-87996d7",
+    "date": "2026-10-04",
+    "title": "investor: align overview with current product architecture",
+    "module": "Investor",
+    "status": "Completed",
+    "summary": "investor: align overview with current product architecture",
+    "details": "Automatic entry from commit 87996d7. Changed files: investor/index.html.",
+    "commit": "87996d70bdf28e622fec54d556f8c28ca19f8cff",
+    "updatedAt": "2026-10-03T20:40:44.014Z"
+  },
+  {
     "id": "DEV-20261004-351eacf",
     "date": "2026-10-04",
     "title": "ui: move development log to bottom of admin tools",
