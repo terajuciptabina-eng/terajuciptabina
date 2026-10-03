@@ -53,7 +53,9 @@
     document.querySelectorAll('[data-estimate-number]').forEach(el=>{el.textContent=estimateNumber||'—';});
     document.querySelectorAll('[data-estimate-revision]').forEach(el=>{el.textContent=revision;});
     try { if(estimateNumber && typeof quotationNumber!=='undefined') quotationNumber=estimateNumber; } catch {}
-    try { if(typeof renderQuotationPreview==='function' && document.getElementById('quotationContent')?.innerHTML) renderQuotationPreview(); } catch {}
+    // Identity refresh updates the estimate header only.
+    // It must not regenerate the visual preview. Preview generation is owned by
+    // the explicit Generate Cost Estimate flow, and PDF export reuses its cache.
   }
   window.TERAJU_REFRESH_ESTIMATE_IDENTITY=refreshEstimateIdentity;
   function snapshotPlanner() {
