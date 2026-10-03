@@ -334,10 +334,15 @@ window.generateQuotation=async function(typeOverride){
 // It bypasses quotation-records' generate wrapper, so Generate Budget does not
 // silently become Save Cost Estimate.
 window.TERAJU_BUDGET_QUOTATION_RENDER = async function(){
-  // Budget preview must call the original Cost Estimate renderer directly.
-  // Do not call window.generateQuotation here because quotation-records.js
-  // wraps that public function for explicit Save Cost Estimate persistence.
-  return await __TERAJU_BUILD_GENERATE_QUOTATION_CORE('simple');
+  // Budget -> Simple Preview must use the same public Cost Estimate
+  // generation pipeline as the user's manual Generate action.
+  // Preview-only mode prevents quotation-records from persisting the estimate.
+  window.__TERAJU_PREVIEW_ONLY=true;
+  try{
+    return await window.generateQuotation('simple');
+  }finally{
+    window.__TERAJU_PREVIEW_ONLY=false;
+  }
 };
 document.querySelectorAll('input[name="quotationType"]').forEach(r=>r.addEventListener('change',()=>{document.querySelectorAll('.quotation-type-card').forEach(c=>c.classList.toggle('is-selected',c.querySelector('input')?.checked));if(typeof saveContractorState==='function')saveContractorState()}));
 applyAudienceUI();window.__TERAJU_ROOM_SCHEDULE_DIRTY=true;setRoomScheduleStatus('Room / Area changes not saved yet.','dirty');if(isHomeowner()){document.getElementById('roomsContainer').innerHTML='';roomCounter=0;document.getElementById('builtUpArea').value='0'}else{const params=new URLSearchParams(location.search),isExistingBuild=!!params.get('quotationId'),isFloorPlanReturn=params.get('floorPlanImport')==='1';if(isExistingBuild||isFloorPlanReturn){loadContractorState();setTimeout(()=>{if(!restoreRoomScheduleState())markRoomScheduleDirty()},0)}else{document.getElementById('roomsContainer').innerHTML='';roomCounter=0;document.getElementById('builtUpArea').value='0';document.getElementById('mainBuildingArea').value='0';document.getElementById('porchArea').value='0';document.getElementById('customerName').value='';document.getElementById('projectLocation').value='';customQuantities.clear();customDescriptions.clear();customRoomLabels.clear();manualItems.clear();excludedItems.clear();saveContractorState();setRoomScheduleStatus('Room / Area changes not saved yet.','dirty')}const contractorIdDisplay=document.getElementById('contractorIdDisplay');if(contractorIdDisplay)contractorIdDisplay.textContent=CONTRACTOR_ID||'Not signed in'}
