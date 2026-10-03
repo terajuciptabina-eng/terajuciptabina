@@ -423,10 +423,9 @@
       }
       return false;
     }
-    if(typeof window.__TERAJU_RENOVATION_ROOM_SCHEDULE_IS_SAVED==='function' &&
-       !window.__TERAJU_RENOVATION_ROOM_SCHEDULE_IS_SAVED()){
-      alert('Please Save Room / Area before generating the Renovation Budget.');
-      return false;
+    if(typeof window.saveRenovationRoomAreaState==='function'){
+      const saved=await window.saveRenovationRoomAreaState();
+      if(saved===false)return false;
     }
 
     const button=document.getElementById('generateRenovationBudgetBtn');
