@@ -314,7 +314,7 @@ async function waitForBuildMasterQuotationData(timeoutMs=15000){
  }
  return window.__TERAJU_MASTER_QDATA;
 }
-const __TERAJU_BUILD_GENERATE_QUOTATION_CORE=window.generateQuotation;
+window.__TERAJU_BUILD_GENERATE_QUOTATION_CORE=window.generateQuotation;
 window.generateQuotation=async function(typeOverride){
  try{
   await waitForBuildMasterQuotationData();
