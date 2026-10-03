@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "contractor",
+  "contractorId": "CTR-20261003-OMRF",
+  "profile": {
+    "name": "syarikat aisy hafiy",
+    "email": "syarikataisyhafiy@gmail.com",
+    "phone": "0198347931"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-10-03T06:33:18.947Z",
+  "updatedAt": "2026-10-03T06:33:18.947Z"
+}
