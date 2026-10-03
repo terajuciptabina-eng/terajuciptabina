@@ -7,7 +7,12 @@
   "profile": {
     "name": "ANTZ Mutiara Resources",
     "email": "antzmutiararesources@gmail.com",
-    "phone": "0169539050"
+    "phone": "0169539050",
+    "registrationNo": "",
+    "address": "Lot CF26, Tingkat 1, Kompleks Dagangan Mahkota, 25200 Kuantan. Pahang Darul Makmur",
+    "website": "",
+    "logoDataUrl": "",
+    "contractorProfileConfigured": true
   },
   "auth": {
     "mode": "temporary-id",
@@ -19,5 +24,5 @@
     "renovation": []
   },
   "createdAt": "2026-10-03T06:18:07.691Z",
-  "updatedAt": "2026-10-03T06:18:07.691Z"
+  "updatedAt": "2026-10-03T06:19:16.436Z"
 }
