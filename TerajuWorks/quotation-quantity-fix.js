@@ -145,6 +145,8 @@ tree.forEach(g=>{
 });
 const total=active.reduce((sum,i)=>sum+N(i.amount),0);
 h+=`</tbody><tfoot><tr class="border-t-2"><td colspan="5" class="py-4 px-2 text-right font-bold">TOTAL PRELIMINARY ESTIMATE</td><td data-budget-grand-total class="py-4 px-2 text-right font-bold text-lg">RM ${money(total,2)}</td></tr></tfoot></table>`;
+const metric=typeof window.TERAJU_COST_METRIC==='object' ? window.TERAJU_COST_METRIC.summarize('build',active,scope().rs) : null;
+if(metric&&typeof window.TERAJU_COST_METRIC.html==='function')h+=window.TERAJU_COST_METRIC.html(metric,'budget');
 c.innerHTML=h;
 
 c.querySelectorAll('textarea').forEach(t=>{t.style.overflow='hidden';t.style.resize='none';t.style.height='0px';t.style.height=t.scrollHeight+'px'});
