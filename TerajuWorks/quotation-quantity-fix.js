@@ -278,7 +278,7 @@ window.addNewBudgetItem=function(targetKey,groupTitle,category,roomId){
  const box=document.createElement('div');
  box.id=aid;box.dataset.newTarget=targetKey;box.dataset.newTitle=groupTitle;box.dataset.newCategory=category;box.dataset.newRoom=roomId||'project';
  box.className='no-print mt-3 rounded-xl border bg-gray-50 p-4';
- box.innerHTML=`<div class="flex items-center justify-between gap-3 mb-3"><strong class="text-sm">Add New Item</strong><button type="button" class="text-xs text-gray-500" data-budget-cancel-new>Cancel</button></div><div class="grid md:grid-cols-[2fr_1fr_1fr_auto] gap-3 items-end"><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Standard Rate Item</span><select id="${aid}-select" class="w-full border rounded-lg px-3 py-2 bg-white"><option value="">Select an item…</option>${buildStandardItemOptions(targetKey,groupTitle,category,roomId)}<option value="__new__">＋ Create New Standard Item</option></select></label><label id="${aid}-qty-wrap" class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Quantity</span><input id="${aid}-qty" type="number" min="0" step="1" value="1" class="w-full border rounded-lg px-3 py-2 bg-white"></label><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Rate (RM)</span><input id="${aid}-rate" type="number" min="0" step="0.01" value="0.00" class="w-full border rounded-lg px-3 py-2 bg-white"></label><button type="button" class="bg-black text-white px-4 py-2 rounded-lg text-sm font-semibold" data-budget-save-new>Add</button></div><div id="${aid}-new" class="hidden mt-3"><div class="grid md:grid-cols-[2fr_1fr] gap-3"><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">New Description</span><input id="${aid}-desc" type="text" placeholder="e.g. Aluminium awning" class="w-full border rounded-lg px-3 py-2 bg-white"></label><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Unit</span><input id="${aid}-unit" type="text" value="ls" class="w-full border rounded-lg px-3 py-2 bg-white"></label></div></div>`;
+ box.innerHTML=`<div class="flex items-center justify-between gap-3 mb-3"><strong class="text-sm">Add New Item</strong><button type="button" class="text-xs text-gray-500" data-budget-cancel-new>Cancel</button></div><div class="grid md:grid-cols-[2fr_1fr_1fr_auto] gap-3 items-end"><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Standard Rate Item</span><select id="${aid}-select" class="w-full border rounded-lg px-3 py-2 bg-white"><option value="">Select an item…</option>${buildStandardItemOptions(targetKey,groupTitle,category,roomId)}<option value="__new__">＋ Create New Standard Item</option></select></label><label id="${aid}-qty-wrap" class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Quantity</span><input id="${aid}-qty" type="number" min="0" step="1" value="1" class="w-full border rounded-lg px-3 py-2 bg-white"></label><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Rate (RM)</span><input id="${aid}-rate" type="number" min="0" step="0.01" value="0.00" class="w-full border rounded-lg px-3 py-2 bg-white"></label><button type="button" class="bg-black text-white px-4 py-2 rounded-lg text-sm font-semibold" data-budget-save-new data-budget-save-target="${esc(targetKey)}" data-budget-save-title="${esc(groupTitle)}" data-budget-save-category="${esc(category)}" data-budget-save-room="${esc(roomId||'project')}" data-budget-save-aid="${esc(aid)}">Add</button></div><div id="${aid}-new" class="hidden mt-3"><div class="grid md:grid-cols-[2fr_1fr] gap-3"><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">New Description</span><input id="${aid}-desc" type="text" placeholder="e.g. Aluminium awning" class="w-full border rounded-lg px-3 py-2 bg-white"></label><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Unit</span><input id="${aid}-unit" type="text" value="ls" class="w-full border rounded-lg px-3 py-2 bg-white"></label></div></div>`;
  anchor.appendChild(box);
  const select=box.querySelector(`#${aid}-select`),rateEl=box.querySelector(`#${aid}-rate`),qtyWrap=box.querySelector(`#${aid}-qty-wrap`),newBox=box.querySelector(`#${aid}-new`);
  select?.addEventListener('change',()=>{
@@ -288,7 +288,7 @@ window.addNewBudgetItem=function(targetKey,groupTitle,category,roomId){
    if(selected&&rateEl)rateEl.value=normRate(selected.rate).toFixed(2);
  });
  box.querySelector('[data-budget-cancel-new]')?.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();box.remove()});
- box.querySelector('[data-budget-save-new]')?.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();window.saveNewBudgetItem(targetKey,groupTitle,category,roomId||'project',aid)});
+
 };
 window.saveNewBudgetItem=function(targetKey,groupTitle,category,roomId,aid){
  if(!document.body.classList.contains('contractor-mode'))return;
@@ -398,6 +398,19 @@ const budgetRoot=document.getElementById('constructionBudgetContent');
 if(budgetRoot&&!budgetRoot.__terajuBudgetInputBound){
   budgetRoot.__terajuBudgetInputBound=true;
   budgetRoot.addEventListener('click',event=>{
+    const saveBtn=event.target?.closest?.('[data-budget-save-new]');
+    if(saveBtn&&budgetRoot.contains(saveBtn)){
+      event.preventDefault();
+      event.stopPropagation();
+      window.saveNewBudgetItem(
+        saveBtn.dataset.budgetSaveTarget||'',
+        saveBtn.dataset.budgetSaveTitle||'',
+        saveBtn.dataset.budgetSaveCategory||'',
+        saveBtn.dataset.budgetSaveRoom||'project',
+        saveBtn.dataset.budgetSaveAid||''
+      );
+      return;
+    }
     const btn=event.target?.closest?.('[data-budget-new-action]');
     if(!btn||!budgetRoot.contains(btn))return;
     event.preventDefault();
