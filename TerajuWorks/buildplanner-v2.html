@@ -329,6 +329,13 @@ window.generateQuotation=async function(typeOverride){
   return false;
  }
 }
+
+// Budget -> Simple Preview is preview-only.
+// It bypasses quotation-records' generate wrapper, so Generate Budget does not
+// silently become Save Cost Estimate.
+window.TERAJU_BUDGET_QUOTATION_RENDER = function(){
+  return __TERAJU_BUILD_GENERATE_QUOTATION_CORE('simple');
+};
 document.querySelectorAll('input[name="quotationType"]').forEach(r=>r.addEventListener('change',()=>{document.querySelectorAll('.quotation-type-card').forEach(c=>c.classList.toggle('is-selected',c.querySelector('input')?.checked));if(typeof saveContractorState==='function')saveContractorState()}));
 applyAudienceUI();window.__TERAJU_ROOM_SCHEDULE_DIRTY=true;setRoomScheduleStatus('Room / Area changes not saved yet.','dirty');if(isHomeowner()){document.getElementById('roomsContainer').innerHTML='';roomCounter=0;document.getElementById('builtUpArea').value='0'}else{const params=new URLSearchParams(location.search),isExistingBuild=!!params.get('quotationId'),isFloorPlanReturn=params.get('floorPlanImport')==='1';if(isExistingBuild||isFloorPlanReturn){loadContractorState();setTimeout(()=>{if(!restoreRoomScheduleState())markRoomScheduleDirty()},0)}else{document.getElementById('roomsContainer').innerHTML='';roomCounter=0;document.getElementById('builtUpArea').value='0';document.getElementById('mainBuildingArea').value='0';document.getElementById('porchArea').value='0';document.getElementById('customerName').value='';document.getElementById('projectLocation').value='';customQuantities.clear();customDescriptions.clear();customRoomLabels.clear();manualItems.clear();excludedItems.clear();saveContractorState();setRoomScheduleStatus('Room / Area changes not saved yet.','dirty')}const contractorIdDisplay=document.getElementById('contractorIdDisplay');if(contractorIdDisplay)contractorIdDisplay.textContent=CONTRACTOR_ID||'Not signed in'}
 </script>
