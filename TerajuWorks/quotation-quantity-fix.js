@@ -140,41 +140,41 @@ function refresh(){if(typeof updateEstimate==='function')updateEstimate();if(typ
 function targetId(v){return String(v||'').replace(/[^a-zA-Z0-9_-]+/g,'-')}
 
 window.deleteBudgetItem=function(id){if(!document.body.classList.contains('contractor-mode'))return;const sid=String(id||'');if(!sid)return;const item=(typeof window.getAllItems==='function'?window.getAllItems():[]).find(x=>String(x.id)===sid);const label=item?.description||'Item';if(!window.confirm(`Delete this item?\\n\\n${label}`))return;if(sid.startsWith('manual-')&&typeof manualItems!=='undefined'){for(const [k,list] of manualItems.entries()){const next=(list||[]).filter(x=>String(x.id)!==sid);if(next.length!==list.length)manualItems.set(k,next)}}else if(typeof excludedItems!=='undefined'){excludedItems.add(sid)}if(typeof window.updateEstimate==='function')window.updateEstimate();if(typeof window.generateConstructionBudget==='function')window.generateConstructionBudget();if(typeof saveContractorState==='function')saveContractorState()};
-function buildAvailableStandardItems(targetKey,category){
+function buildAvailableStandardItems(targetKey,groupTitle,category){
  const cat=String(category||'').toLowerCase();
  const targetParts=String(targetKey||'').split(':').map(v=>String(v||'').trim()).filter(Boolean);
  const groupMap={preliminaries:'PRELIMINARIES',structures:'STRUCTURES',architecture:'ARCHITECTURES',electrical:'ELECTRICAL','doors-windows':'DOORS & WINDOWS','external-work':'EXTERNAL WORK'};
  const group=groupMap[cat]||String(targetParts[0]||category||'').toUpperCase();
- const hierarchy=targetParts.slice(1).map(v=>String(v).trim().toUpperCase());
- const activePaths=new Set(),excludedPaths=new Map();
- let all=[];
- try{all=typeof getMasterItems==='function'?getMasterItems():[]}catch{}
- all.filter(i=>!/^manual-/i.test(String(i.id||''))).forEach(i=>{
-   const p=String(i.masterPath||'').trim();
-   if(!p)return;
-   const id=String(i.id||'');
-   if(typeof excludedItems!=='undefined'&&excludedItems.has(id))excludedPaths.set(p,id);
-   else activePaths.add(p);
- });
+ const hierarchy=targetParts.slice(1).map(v=>String(v).trim().toUpperCase()).filter(Boolean);
  const rows=[];
  if(typeof RULES!=='undefined'&&RULES instanceof Map){
    for(const [path,r] of RULES){
-     const parts=String(path||'').split('/').map(v=>String(v||'').trim()).filter(Boolean);
+     const cleanPath=String(path||'').trim();
+     if(!cleanPath)continue;
+     const parts=cleanPath.split('/').map(v=>String(v||'').trim()).filter(Boolean);
      const ruleGroup=String(r?.[0]||'').trim().toUpperCase();
      if(ruleGroup!==group)continue;
-     if(cat!=='architecture'&&hierarchy.length){
-       const matches=hierarchy.every((v,idx)=>String(parts[idx]||'').trim().toUpperCase()===v || String(parts[idx+1]||'').trim().toUpperCase()===v);
+     if(hierarchy.length){
+       const matches=hierarchy.every(v=>parts.some(part=>part.toUpperCase()===v));
        if(!matches)continue;
      }
-     const cleanPath=String(path).trim();
-     if(activePaths.has(cleanPath))continue;
-     rows.push({id:'master-'+NOR(cleanPath).replace(/\\s+/g,'-'),masterPath:cleanPath,description:String(r?.[2]||path),unit:String(r?.[6]||'ls'),rate:rate(path),category:cat,groupKey:targetKey,groupTitle,excludedId:excludedPaths.get(cleanPath)||''});
+     rows.push({
+       id:'master-'+NOR(cleanPath).replace(/\\s+/g,'-'),
+       masterPath:cleanPath,
+       description:String(r?.[2]||cleanPath),
+       unit:String(r?.[6]||'ls'),
+       rate:rate(cleanPath),
+       category:cat,
+       groupKey:targetKey,
+       groupTitle:String(groupTitle||group),
+       excludedId:typeof excludedItems!=='undefined'&&excludedItems.has('master-'+NOR(cleanPath).replace(/\\s+/g,'-'))?'master-'+NOR(cleanPath).replace(/\\s+/g,'-'):''
+     });
    }
  }
  return rows.sort((a,b)=>String(a.description).localeCompare(String(b.description)));
 }
-function buildStandardItemOptions(targetKey,category){
- const items=buildAvailableStandardItems(targetKey,category);
+function buildStandardItemOptions(targetKey,groupTitle,category){
+ const items=buildAvailableStandardItems(targetKey,groupTitle,category);
  return items.map(item=>`<option value="${esc(item.id)}">${esc(item.description)} — RM ${money2(item.rate,2)}${item.excludedId?' (restore)':''}</option>`).join('');
 }
 window.addNewBudgetItem=function(targetKey,groupTitle,category,roomId){
