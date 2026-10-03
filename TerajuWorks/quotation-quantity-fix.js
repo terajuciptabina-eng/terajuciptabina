@@ -346,8 +346,8 @@ window.saveNewBudgetItem=function(targetKey,groupTitle,category,roomId,aid){
  const item={id,manual:true,description:desc,unit,qty,rate,category:cat,groupKey:targetKey,groupTitle,roomId:actualRoomId,room:actualRoom,group,masterPath,amount:R2(qty*rate)};
  if(!manualItems.has(targetKey))manualItems.set(targetKey,[]);
  manualItems.get(targetKey).push(item);
- saveState();
  refresh();
+ saveState();
 };
 function editExisting(id){const row=document.querySelector(`[data-budget-item-id=\"${CSS.escape(String(id))}\"]`);if(!row)return;row.querySelector('[data-budget-view]')?.classList.add('hidden');row.querySelector('[data-budget-edit]')?.classList.remove('hidden')}
 function applyDirectRate(item,rateEl){if(!item||!rateEl)return;const contractorRate=normRate(rateEl.value);if(typeof customRates!=='undefined')customRates.set(item.id,contractorRate);item.rate=contractorRate;item.amount=R2(N(item.qty)*contractorRate);const amountEl=document.getElementById(`budget-amount-${targetId(item.id)}`);if(amountEl)amountEl.textContent=money2(item.amount);return contractorRate}
