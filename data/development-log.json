@@ -33,6 +33,17 @@
     "updatedAt": "2026-10-03T20:40:44.014Z"
   },
   {
+    "id": "DEV-20261004-72f52aa",
+    "date": "2026-10-04",
+    "title": "investor: align investment memo with TerajuWorks product scope",
+    "module": "Investor",
+    "status": "Completed",
+    "summary": "investor: align investment memo with TerajuWorks product scope",
+    "details": "Automatic entry from commit 72f52aa. Changed files: investor/investment-memo.html.",
+    "commit": "72f52aa5b329520f84b426a39a9355ee643d0055",
+    "updatedAt": "2026-10-03T20:40:53.776Z"
+  },
+  {
     "id": "DEV-20261004-351eacf",
     "date": "2026-10-04",
     "title": "ui: move development log to bottom of admin tools",
