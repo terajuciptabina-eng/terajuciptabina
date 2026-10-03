@@ -22,6 +22,17 @@
     "updatedAt": "2026-10-03T19:31:54.836Z"
   },
   {
+    "id": "DEV-20261004-d5e069f",
+    "date": "2026-10-04",
+    "title": "investor: sync financial model with Admin account data",
+    "module": "Investor",
+    "status": "Completed",
+    "summary": "investor: sync financial model with Admin account data",
+    "details": "Automatic entry from commit d5e069f. Changed files: investor/financial-model.html.",
+    "commit": "d5e069f7f74d4b856df916e6b927eb7ea20bf449",
+    "updatedAt": "2026-10-03T20:44:45.719Z"
+  },
+  {
     "id": "DEV-20261004-be32f40",
     "date": "2026-10-04",
     "title": "investor: make admin snapshot factual and investor safe",
