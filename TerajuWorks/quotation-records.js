@@ -146,10 +146,16 @@ function injectStyles(){ if(document.getElementById('tc-quotation-records-style'
       if(ready){restoreSnapshot(savedState);setTimeout(()=>{if(/buildplanner-v2\\.html$/i.test(location.pathname)){if(savedBudgetWasGenerated&&typeof window.generateConstructionBudget==='function'){window.__TERAJU_BUILD_BUDGET_GENERATED=false;window.generateConstructionBudget()}else if(typeof window.showBuildBudgetPending==='function'){window.showBuildBudgetPending()}}},0);return true}return false};
       let readyAttempts=0;const waitForPlanner=()=>{if(restoreWhenReady())return;if(readyAttempts++<25)setTimeout(waitForPlanner,200);else {console.warn('[TERAJU QUOTATION RESTORE] planner was not ready', {savedRooms});restoreSnapshot(savedState)}};waitForPlanner();
       try{if(currentQuotationNumber&&typeof quotationNumber!=='undefined')quotationNumber=currentQuotationNumber}catch{}
-      const roomsMatch=()=>{const cards=[...(document.querySelectorAll('#roomsContainer .room-card')||[])];if(cards.length!==savedRooms.length)return false;return savedRooms.every((roomData,index)=>String(cards[index]?.querySelector('.room-area')?.value??'')===String(roomData.area??'')&&String(cards[index]?.querySelector('.room-type')?.value??'')===String(roomData.type||'other')&&String(cards[index]?.querySelector('.room-condition')?.value??'existing')===String(roomData.condition||'existing'))};
-      let verifyAttempts=0;
-      const verifyRestore=()=>{if(!savedRooms.length||roomsMatch())return;if(verifyAttempts++>=40){console.warn('[TERAJU QUOTATION RESTORE] room restore did not stick',savedRooms);return}restoreSnapshot(savedState);setTimeout(verifyRestore,250)};
-      setTimeout(verifyRestore,500);
+      // Floor Plan Import is an intentional Room / Area update flow.
+      // Its imported Room / Area state must not be overwritten by verification
+      // against the quotation snapshot that existed before the import.
+      const isFloorPlanImport = params.get('floorPlanImport') === '1';
+      if(!isFloorPlanImport){
+        const roomsMatch=()=>{const cards=[...(document.querySelectorAll('#roomsContainer .room-card')||[])];if(cards.length!==savedRooms.length)return false;return savedRooms.every((roomData,index)=>String(cards[index]?.querySelector('.room-area')?.value??'')===String(roomData.area??'')&&String(cards[index]?.querySelector('.room-type')?.value??'other')===String(roomData.type||'other')&&String(cards[index]?.querySelector('.room-condition')?.value??'existing')===String(roomData.condition||'existing'))};
+        let verifyAttempts=0;
+        const verifyRestore=()=>{if(!savedRooms.length||roomsMatch())return;if(verifyAttempts++>=40){console.warn('[TERAJU QUOTATION RESTORE] room restore did not stick',savedRooms);return}restoreSnapshot(savedState);setTimeout(verifyRestore,250)};
+        setTimeout(verifyRestore,500);
+      }
       trackEvent('quotation_opened', {quotation_id:quotation.quotationId, quotation_number:currentQuotationNumber, quotation_type:currentQuotationType === 'detail' ? 'detailed' : 'simple'});toast(`Cost Estimate ${currentEstimateNumber||currentQuotationNumber||currentQuotationId} · ${currentRevision} loaded.`)}catch(error){console.error(error);window.__TERAJU_QUOTATION_RESTORE_COMPLETE=true;window.dispatchEvent(new Event('teraju:quotation-restore-complete'));toast(error.message||'Unable to load cost estimate.',true)} }
   function init(){ if(!document.getElementById('quotationGenerator'))return; ensureProjectId();refreshEstimateIdentity();currentQuotationType=selectedQuotationType();injectStyles();addPlannerControls();bindQuotationType();if(!wrapGenerate())setTimeout(wrapGenerate,500);if(currentQuotationId)setTimeout(loadQuotationForEdit,900);const observer=new MutationObserver(()=>{addPlannerControls();bindQuotationType();wrapGenerate()});observer.observe(document.documentElement,{childList:true,subtree:true});setTimeout(()=>observer.disconnect(),20000); }
   window.tcQuotationRecords={saveQuotation,loadQuotationForEdit,persistRoomSchedule};
