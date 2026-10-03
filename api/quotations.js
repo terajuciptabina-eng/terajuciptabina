@@ -16,7 +16,24 @@ export default async function handler(req, res) {
   const idKey = role => role === 'homeowner' ? 'homeownerId' : 'contractorId';
   const pathFor = (role, id) => `data/users/${folder(role)}/${encodeURIComponent(id)}.json`;
   async function github(path, options = {}) { const response = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, { ...options, headers: { ...headers, ...(options.headers || {}) } }); const text = await response.text(); let data = null; try { data = text ? JSON.parse(text) : null; } catch { data = text; } return { response, data }; }
-  async function readRecord(role, id) { const result = await github(pathFor(role, id)); if (result.response.status === 404) return { record: null, sha: null, status: 404 }; if (!result.response.ok) return { record: null, sha: null, status: 502 }; const content = result.data?.content ? Buffer.from(result.data.content, 'base64').toString('utf8') : ''; return { record: JSON.parse(content), sha: result.data?.sha || null, status: 200 }; }
+  async function githubRaw(path) { const response = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, { headers: { ...headers, Accept: 'application/vnd.github.raw+json' } }); const text = await response.text(); return { response, text }; }
+  async function readRecord(role, id) {
+    const path = pathFor(role, id);
+    const result = await github(path);
+    if (result.response.status === 404) return { record: null, sha: null, status: 404 };
+    if (!result.response.ok) return { record: null, sha: null, status: 502 };
+    const sha = result.data?.sha || null;
+    if (result.data?.content && result.data?.encoding === 'base64') {
+      return { record: JSON.parse(Buffer.from(result.data.content, 'base64').toString('utf8')), sha, status: 200 };
+    }
+    // GitHub returns an empty content field with encoding `none` for files
+    // between 1 MB and 100 MB. Read the same blob through the raw media type
+    // instead of attempting JSON.parse(''), which previously produced the
+    // generic quotation-processing error.
+    const raw = await githubRaw(path);
+    if (!raw.response.ok || !raw.text.trim()) return { record: null, sha, status: 502 };
+    return { record: JSON.parse(raw.text), sha, status: 200 };
+  }
   function quotationType(value) { return String(value || '').toLowerCase() === 'detail' ? 'detail' : 'simple'; }
   function plannerList(record, type) { return Array.isArray(record?.plannerRecords?.[type]) ? record.plannerRecords[type] : []; }
   function baseSequence(value) { const match = String(value || '').trim().match(/^Q(\d+)(?:S|D)?$/i); return match ? Number(match[1]) || 0 : 0; }
