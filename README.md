@@ -254,3 +254,5 @@ The development log is intended to remain part of the product's engineering reco
 **TerajuWorks is an actively developed construction technology product.**
 
 Architecture, calculation rules, user workflows and project-control modules continue to evolve through source-level development and validated working baselines.
+
+<!-- Deployment source remains consolidated under api/admin.js for Vercel function-limit compliance. -->
