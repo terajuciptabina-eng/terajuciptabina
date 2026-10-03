@@ -448,20 +448,18 @@
           button.textContent=originalLabel;
         }
 
-        // Run the same Cost Estimate action the user would normally perform
-        // manually: select Simple, then click the existing Generate Cost Estimate
-        // button. This keeps the normal quotation-records auto-save flow intact.
-        const simpleInput=document.querySelector('input[name="quotationType"][value="simple"]');
-        if(simpleInput){
-          simpleInput.checked=true;
-          simpleInput.dispatchEvent(new Event('change',{bubbles:true}));
-        }
-        const generateButton=document.querySelector('#quotationGenerator .quotation-generate-btn');
-        if(generateButton){
-          await new Promise(resolve=>setTimeout(resolve,0));
-          generateButton.click();
+        // Generate the Simple Cost Estimate preview immediately from the
+        // freshly generated canonical Renovation Budget. Saving the Cost
+        // Estimate remains a separate explicit action.
+        if(typeof window.TERAJU_BUDGET_QUOTATION_RENDER==='function'){
+          try{
+            await window.TERAJU_BUDGET_QUOTATION_RENDER();
+            document.getElementById('quotationDocument')?.scrollIntoView({behavior:'smooth',block:'start'});
+          }catch(error){
+            console.error('[TERAJU RENOVATION PREVIEW] Auto simple preview failed',error);
+            document.getElementById('renovationBudgetSection')?.scrollIntoView({behavior:'smooth',block:'start'});
+          }
         }else{
-          console.error('[TERAJU RENOVATION PREVIEW] Generate Cost Estimate button not found');
           document.getElementById('renovationBudgetSection')?.scrollIntoView({behavior:'smooth',block:'start'});
         }
       }
