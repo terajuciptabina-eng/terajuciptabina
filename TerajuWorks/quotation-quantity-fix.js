@@ -197,6 +197,20 @@ const normQty=v=>Math.max(0,Math.ceil(Number(v)||0));
 const normRate=v=>Math.max(0,Math.round((Number(v)||0)*100)/100);
 function saveState(){if(typeof saveContractorState==='function')saveContractorState()}
 function refresh(){if(typeof updateEstimate==='function')updateEstimate();if(typeof window.generateConstructionBudget==='function')window.generateConstructionBudget()}
+function refreshBuildPlannerItemMutation(){
+  if(typeof window.updateEstimate!=='function'||typeof window.generateConstructionBudget!=='function'){
+    console.error('[TERAJU BUILD V2] Canonical item mutation refresh is not available.');
+    return false;
+  }
+  try{
+    window.updateEstimate();
+    window.generateConstructionBudget();
+    return true;
+  }catch(error){
+    console.error('[TERAJU BUILD V2] Item mutation refresh failed.',error);
+    return false;
+  }
+}
 function targetId(v){return String(v||'').replace(/[^a-zA-Z0-9_-]+/g,'-')}
 
 window.deleteBudgetItem=function(id){if(!document.body.classList.contains('contractor-mode'))return;const sid=String(id||'');if(!sid)return;const item=(typeof window.getAllItems==='function'?window.getAllItems():[]).find(x=>String(x.id)===sid);const label=item?.description||'Item';if(!window.confirm(`Delete this item?\\n\\n${label}`))return;if(sid.startsWith('manual-')&&typeof manualItems!=='undefined'){for(const [k,list] of manualItems.entries()){const next=(list||[]).filter(x=>String(x.id)!==sid);if(next.length!==list.length)manualItems.set(k,next)}}else if(typeof excludedItems!=='undefined'){excludedItems.add(sid)}if(typeof window.updateEstimate==='function')window.updateEstimate();if(typeof window.generateConstructionBudget==='function')window.generateConstructionBudget();if(typeof saveContractorState==='function')saveContractorState()};
@@ -347,8 +361,13 @@ window.saveNewBudgetItem=function(targetKey,groupTitle,category,roomId,aid){
  const item={id,manual:true,description:desc,unit,qty,rate,category:cat,groupKey:targetKey,groupTitle,roomId:actualRoomId,room:actualRoom,group,masterPath,amount:R2(qty*rate)};
  if(!manualItems.has(targetKey))manualItems.set(targetKey,[]);
  manualItems.get(targetKey).push(item);
- saveState();
- refresh();
+
+ // Follow the RenovationPlanner V2 mutation order exactly:
+ // mutate canonical state -> refresh/render from that state -> persist.
+ // Do not persist first, because persistence must never be allowed
+ // to interrupt the canonical budget render.
+ const refreshed=refreshBuildPlannerItemMutation();
+ if(refreshed&&typeof saveContractorState==='function')saveContractorState();
 };
 function editExisting(id){const row=document.querySelector(`[data-budget-item-id=\"${CSS.escape(String(id))}\"]`);if(!row)return;row.querySelector('[data-budget-view]')?.classList.add('hidden');row.querySelector('[data-budget-edit]')?.classList.remove('hidden')}
 function applyDirectRate(item,rateEl){if(!item||!rateEl)return;const contractorRate=normRate(rateEl.value);if(typeof customRates!=='undefined')customRates.set(item.id,contractorRate);item.rate=contractorRate;item.amount=R2(N(item.qty)*contractorRate);const amountEl=document.getElementById(`budget-amount-${targetId(item.id)}`);if(amountEl)amountEl.textContent=money2(item.amount);return contractorRate}
