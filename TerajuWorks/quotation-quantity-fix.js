@@ -158,9 +158,10 @@ window.showBuildBudgetPending=function(){
   const c=document.getElementById('constructionBudgetContent');
   if(!c)return;
   window.__TERAJU_BUILD_BUDGET_GENERATED=false;
-  c.innerHTML='<div id="tcBuildBudgetPending" class="border rounded-xl bg-gray-50 p-5 text-center"><div class="text-sm font-semibold text-gray-800">Construction budget is waiting for your final room / area review.</div><div class="mt-1 text-xs text-gray-500">Review, add, edit or remove rooms first. Generate the construction budget when your room schedule is final.</div><button type="button" id="tcGenerateBuildBudget" onclick="generateConstructionBudget()" class="mt-4 inline-flex items-center justify-center rounded-xl bg-gray-900 px-5 py-3 text-sm font-bold text-white shadow-sm">Generate Construction Budget</button></div>';
+  c.innerHTML='<div id="tcBuildBudgetPending" class="border rounded-xl bg-gray-50 p-5 text-center"><div class="text-sm font-semibold text-gray-800">Construction budget is waiting for your final room / area review.</div><div class="mt-1 text-xs text-gray-500">Review, add, edit or remove rooms first. Generate the construction budget when your room schedule is final.</div><button type="button" id="tcGenerateBuildBudget" onclick="generateConstructionBudget({userInitiated:true})" class="mt-4 inline-flex items-center justify-center rounded-xl bg-gray-900 px-5 py-3 text-sm font-bold text-white shadow-sm">Generate Construction Budget</button></div>';
 };
-window.generateConstructionBudget=function(){
+window.generateConstructionBudget=function(options){
+  const autoRefresh=options && options.autoRefresh===true;
   try{
     if(typeof roomScheduleIsSaved==='function' && !roomScheduleIsSaved() && typeof saveRoomAreaState==='function'){
       const saved=saveRoomAreaState();
@@ -178,14 +179,12 @@ window.generateConstructionBudget=function(){
 
 // Generate the Simple Cost Estimate preview immediately from the freshly
 // generated canonical budget. Saving the Cost Estimate remains separate.
-if(typeof window.TERAJU_BUDGET_QUOTATION_RENDER==='function'){
-  Promise.resolve(window.TERAJU_BUDGET_QUOTATION_RENDER())
-    .then(()=>document.getElementById('quotationDocument')?.scrollIntoView({behavior:'smooth',block:'start'}))
-    .catch(error=>console.error('[TERAJU BUILD PREVIEW] Auto simple preview failed',error));
-}else{
-  document.getElementById('constructionBudgetSection')?.scrollIntoView({behavior:'smooth',block:'start'});
-}
-      return true;
+if(!autoRefresh && typeof window.TERAJU_BUDGET_QUOTATION_RENDER==='function'){
+        Promise.resolve(window.TERAJU_BUDGET_QUOTATION_RENDER()).then(function(){document.getElementById('quotationDocument')?.scrollIntoView({behavior:'smooth',block:'start'});}).catch(function(error){console.error('[TERAJU BUILD PREVIEW] Auto simple preview failed',error);});
+      }else{
+        document.getElementById('constructionBudgetSection')?.scrollIntoView({behavior:'smooth',block:'start'});
+      }
+            return true;
     }
   }catch(e){
     window.__TERAJU_BUILD_BUDGET_GENERATED=false;
@@ -216,10 +215,10 @@ const money2=v=>typeof window.money==='function'?window.money(v,2):Number(v||0).
 const normQty=v=>Math.max(0,Math.ceil(Number(v)||0));
 const normRate=v=>Math.max(0,Math.round((Number(v)||0)*100)/100);
 function saveState(){if(typeof saveContractorState==='function')saveContractorState()}
-function refresh(){if(typeof updateEstimate==='function')updateEstimate();if(typeof window.generateConstructionBudget==='function')window.generateConstructionBudget()}
+function refresh(){if(typeof updateEstimate==='function')updateEstimate();if(typeof window.generateConstructionBudget==='function')window.generateConstructionBudget({autoRefresh:true})}
 function targetId(v){return String(v||'').replace(/[^a-zA-Z0-9_-]+/g,'-')}
 
-window.deleteBudgetItem=function(id){if(!document.body.classList.contains('contractor-mode'))return;const sid=String(id||'');if(!sid)return;const item=(typeof window.getAllItems==='function'?window.getAllItems():[]).find(x=>String(x.id)===sid);const label=item?.description||'Item';if(!window.confirm(`Delete this item?\\n\\n${label}`))return;if(sid.startsWith('manual-')&&typeof manualItems!=='undefined'){for(const [k,list] of manualItems.entries()){const next=(list||[]).filter(x=>String(x.id)!==sid);if(next.length!==list.length)manualItems.set(k,next)}}else if(typeof excludedItems!=='undefined'){excludedItems.add(sid)}if(typeof window.updateEstimate==='function')window.updateEstimate();if(typeof window.generateConstructionBudget==='function')window.generateConstructionBudget();if(typeof saveContractorState==='function')saveContractorState()};
+window.deleteBudgetItem=function(id){if(!document.body.classList.contains('contractor-mode'))return;const sid=String(id||'');if(!sid)return;const item=(typeof window.getAllItems==='function'?window.getAllItems():[]).find(x=>String(x.id)===sid);const label=item?.description||'Item';if(!window.confirm(`Delete this item?\\n\\n${label}`))return;if(sid.startsWith('manual-')&&typeof manualItems!=='undefined'){for(const [k,list] of manualItems.entries()){const next=(list||[]).filter(x=>String(x.id)!==sid);if(next.length!==list.length)manualItems.set(k,next)}}else if(typeof excludedItems!=='undefined'){excludedItems.add(sid)}if(typeof window.updateEstimate==='function')window.updateEstimate();if(typeof window.generateConstructionBudget==='function')window.generateConstructionBudget({autoRefresh:true});if(typeof saveContractorState==='function')saveContractorState()};
 function buildAvailableStandardItems(targetKey,groupTitle,category,roomId){
  const key=String(targetKey||'').trim();
  const cat=String(category||'').toLowerCase();
