@@ -162,7 +162,7 @@ function buildAvailableStandardItems(targetKey,category){
      const parts=String(path||'').split('/').map(v=>String(v||'').trim()).filter(Boolean);
      const ruleGroup=String(r?.[0]||'').trim().toUpperCase();
      if(ruleGroup!==group)continue;
-     if(hierarchy.length){
+     if(cat!=='architecture'&&hierarchy.length){
        const matches=hierarchy.every((v,idx)=>String(parts[idx]||'').trim().toUpperCase()===v || String(parts[idx+1]||'').trim().toUpperCase()===v);
        if(!matches)continue;
      }
