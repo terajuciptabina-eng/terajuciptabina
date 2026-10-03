@@ -827,7 +827,7 @@ main>section:not(:first-child){scroll-margin-top:92px} main>section>div:first-ch
         </div>
         <div class="estimate-total-row">
           <span class="font-semibold text-lg estimate-total-label">Estimated Total</span>
-          <span id="grandTotal" class="font-bold text-3xl estimate-total-value">RM 0</span>
+          <span id="grandTotal" class="font-bold text-3xl estimate-total-value">RM 0</span><div id="renovationCostSqftSummary" class="mt-4"></div>
         </div>
         <p class="text-xs text-gray-500 mt-3">
           * This is a preliminary renovation estimate only.
@@ -2308,6 +2308,9 @@ function renderEstimate(items, roomGroups, roomSubtotals, total) {
   document.getElementById("grandTotal").textContent = money(total, 2);
   const totalBuiltAreaEl = document.getElementById("totalBuiltArea");
   if (totalBuiltAreaEl) totalBuiltAreaEl.textContent = formatQty(totalBuiltArea) + " sqft";
+  const metricSummary = typeof window.TERAJU_COST_METRIC === "object" ? window.TERAJU_COST_METRIC.summarize("renovation", items, roomGroups) : null;
+  const metricEl = document.getElementById("renovationCostSqftSummary");
+  if (metricEl && metricSummary && typeof window.TERAJU_COST_METRIC.html === "function") metricEl.innerHTML = window.TERAJU_COST_METRIC.html(metricSummary, "budget");
 }
 
 function editRoomLabel(roomId, value) {
@@ -3018,6 +3021,7 @@ function generateQuotationConfirmed(type) {
   const customer = document.getElementById("customerName")?.value || "Not specified";
   const location = document.getElementById("projectLocation")?.value || "Not specified";
   const totalBuiltArea = data.roomGroups.reduce((sum, room) => sum + (Number(room.area) || 0), 0);
+  const metricSummary = typeof window.TERAJU_COST_METRIC === "object" ? window.TERAJU_COST_METRIC.summarize("renovation", data.allItems, data.roomGroups) : null;
   const today = new Intl.DateTimeFormat("en-MY", {
     day: "2-digit",
     month: "long",
@@ -3063,8 +3067,9 @@ function generateQuotationConfirmed(type) {
           <p class="font-semibold">${escapeHtml(location)}</p>
         </div>
         <div>
-          <p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Total Built Area</p>
-          <p class="font-semibold">${formatQty(totalBuiltArea)} sqft</p>
+          <p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Area & RM/sqft</p>
+          <p class="font-semibold">Existing: ${formatQty(metricSummary?.existingArea)} sqft · RM ${metricSummary?.existingRate==null?"—":money(metricSummary.existingRate,2)}/sqft</p>
+          <p class="font-semibold">New: ${formatQty(metricSummary?.newArea)} sqft · RM ${metricSummary?.newRate==null?"—":money(metricSummary.newRate,2)}/sqft</p>
         </div>
       </div>
     </div>
@@ -3187,5 +3192,6 @@ if (typeof window.__TERAJU_RENOVATION_V2_UPDATE_ESTIMATE === "function") {
 </script>
 <script src="shared/preview-branding.js?v=20260930-preview-branding-clean-v1"></script>
 <script src="shared/teraju-button-feedback.js?v=20260929-button-feedback-v1"></script>
+<script src="cost-per-sqft.js?v=20261004-rm-sqft-v1"></script>
 </body>
 </html>
