@@ -160,7 +160,7 @@ window.showBuildBudgetPending=function(){
   window.__TERAJU_BUILD_BUDGET_GENERATED=false;
   c.innerHTML='<div id="tcBuildBudgetPending" class="border rounded-xl bg-gray-50 p-5 text-center"><div class="text-sm font-semibold text-gray-800">Construction budget is waiting for your final room / area review.</div><div class="mt-1 text-xs text-gray-500">Review, add, edit or remove rooms first. Generate the construction budget when your room schedule is final.</div><button type="button" id="tcGenerateBuildBudget" onclick="generateConstructionBudget({userInitiated:true})" class="mt-4 inline-flex items-center justify-center rounded-xl bg-gray-900 px-5 py-3 text-sm font-bold text-white shadow-sm">Generate Construction Budget</button></div>';
 };
-window.generateConstructionBudget=function(options){
+window.generateConstructionBudget=async function(options){
   const autoRefresh=options && options.autoRefresh===true;
   try{
     if(typeof roomScheduleIsSaved==='function' && !roomScheduleIsSaved() && typeof saveRoomAreaState==='function'){
@@ -177,18 +177,24 @@ window.generateConstructionBudget=function(options){
       window.__TERAJU_BUILD_BUDGET_GENERATED=true;
       window.renderConstructionBudget();
 
-// Generate the Simple Cost Estimate preview immediately from the freshly
-// generated canonical budget. Saving the Cost Estimate remains separate.
-if(!autoRefresh && typeof window.TERAJU_BUDGET_QUOTATION_RENDER==='function'){
-        Promise.resolve(window.TERAJU_BUDGET_QUOTATION_RENDER()).then(function(){document.getElementById('quotationDocument')?.scrollIntoView({behavior:'smooth',block:'start'});}).catch(function(error){console.error('[TERAJU BUILD PREVIEW] Auto simple preview failed',error);});
+      // This is the canonical Budget -> Preview transition.
+      // The preview is generated from the freshly rendered canonical budget
+      // before this generation cycle is considered complete. Saving the Cost
+      // Estimate remains a separate explicit user action.
+      if(!autoRefresh && typeof window.TERAJU_BUDGET_QUOTATION_RENDER==='function'){
+        const previewGenerated=await window.TERAJU_BUDGET_QUOTATION_RENDER();
+        if(previewGenerated===false){
+          throw new Error('Simple Cost Estimate Preview renderer returned false.');
+        }
+        document.getElementById('quotationDocument')?.scrollIntoView({behavior:'smooth',block:'start'});
       }else{
         document.getElementById('constructionBudgetSection')?.scrollIntoView({behavior:'smooth',block:'start'});
       }
-            return true;
+      return true;
     }
   }catch(e){
     window.__TERAJU_BUILD_BUDGET_GENERATED=false;
-    console.error('[TERAJU BUILD BUDGET] Budget render failed',e);
+    console.error('[TERAJU BUILD BUDGET] Budget generation / preview failed',e);
   }
   return false;
 };
