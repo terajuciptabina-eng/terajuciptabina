@@ -8204,7 +8204,7 @@
         "role": "contractor",
         "contractorId": "CTR-20260923-SAOE",
         "state": "final",
-        "quotationType": "simple",
+        "quotationType": "detail",
         "client": {
           "name": "Tuan Razman"
         },
@@ -8478,13 +8478,13 @@
           "excludedItems": [],
           "manualItems": [],
           "standardRateItems": [],
-          "quotationType": "simple",
+          "quotationType": "detail",
           "projectId": "PRJ-BLD-MURY687X-B7S9X",
           "constructionBudgetGenerated": true,
           "projectState": "melaka",
           "rateSetId": "default",
           "rateSetName": "Default Rate",
-          "rateSnapshotAt": "2026-10-03T18:42:12.277Z"
+          "rateSnapshotAt": "2026-10-03T18:42:27.142Z"
         },
         "itemListVersion": 1,
         "items": [
@@ -9816,7 +9816,7 @@
           }
         ],
         "createdAt": "2026-10-03T17:42:45.242Z",
-        "updatedAt": "2026-10-03T18:42:13.300Z"
+        "updatedAt": "2026-10-03T18:42:28.500Z"
       },
       {
         "schemaVersion": 2,
@@ -44033,7 +44033,7 @@
     ]
   },
   "createdAt": "2026-09-23T08:33:53.459Z",
-  "updatedAt": "2026-10-03T18:42:13.300Z",
+  "updatedAt": "2026-10-03T18:42:28.500Z",
   "quotationRunningNumber": {
     "renovation": 21,
     "build": 17
