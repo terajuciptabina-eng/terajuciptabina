@@ -190,7 +190,7 @@ window.addNewBudgetItem=function(targetKey,groupTitle,category,roomId){
  anchor.appendChild(box);
  const select=box.querySelector(`#${aid}-select`),rateEl=box.querySelector(`#${aid}-rate`),qtyWrap=box.querySelector(`#${aid}-qty-wrap`),newBox=box.querySelector(`#${aid}-new`);
  select?.addEventListener('change',()=>{
-   const selected=buildAvailableStandardItems(targetKey,category).find(x=>x.id===select.value);
+   const selected=buildAvailableStandardItems(targetKey,groupTitle,category).find(x=>x.id===select.value);
    if(select.value==='__new__'){newBox?.classList.remove('hidden');qtyWrap?.classList.add('hidden');if(rateEl)rateEl.value='0.00';return}
    newBox?.classList.add('hidden');qtyWrap?.classList.remove('hidden');
    if(selected&&rateEl)rateEl.value=normRate(selected.rate).toFixed(2);
@@ -202,7 +202,7 @@ window.saveNewBudgetItem=function(targetKey,groupTitle,category,roomId,aid){
  if(!document.body.classList.contains('contractor-mode'))return;
  if(typeof manualItems==='undefined')return;
  const select=document.getElementById(aid+'-select');
- const selected=buildAvailableStandardItems(targetKey,category).find(x=>x.id===select?.value);
+ const selected=buildAvailableStandardItems(targetKey,groupTitle,category).find(x=>x.id===select?.value);
  const isNew=select?.value==='__new__';
  const cat=String(category||'').toLowerCase();
  const groupMap={preliminaries:'PRELIMINARIES',structures:'STRUCTURES',architecture:'ARCHITECTURES',electrical:'ELECTRICAL','doors-windows':'DOORS & WINDOWS','external-work':'EXTERNAL WORK'};
