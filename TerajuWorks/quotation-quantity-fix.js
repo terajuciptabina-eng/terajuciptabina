@@ -186,7 +186,9 @@ window.generateConstructionBudget=async function(options){
           simpleType.checked=true;
           simpleType.dispatchEvent(new Event('change',{bubbles:true}));
         }
-        const generated=await __TERAJU_BUILD_GENERATE_QUOTATION_CORE('simple');
+        const quotationCore=window.__TERAJU_BUILD_GENERATE_QUOTATION_CORE;
+        if(typeof quotationCore!=='function')throw new Error('Canonical Build Cost Estimate preview source is unavailable.');
+        const generated=await quotationCore('simple');
         if(generated===false){
           throw new Error('Simple Cost Estimate preview returned false.');
         }
