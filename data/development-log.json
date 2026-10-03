@@ -22,6 +22,17 @@
     "updatedAt": "2026-10-03T19:31:54.836Z"
   },
   {
+    "id": "DEV-20261004-be32f40",
+    "date": "2026-10-04",
+    "title": "investor: make admin snapshot factual and investor safe",
+    "module": "Admin / Rate Management",
+    "status": "Completed",
+    "summary": "investor: make admin snapshot factual and investor safe",
+    "details": "Automatic entry from commit be32f40. Changed files: investor/admin-insight-snapshot.html.",
+    "commit": "be32f40f9b2d11fb0831281c384408571e1736d2",
+    "updatedAt": "2026-10-03T20:41:23.310Z"
+  },
+  {
     "id": "DEV-20261004-87996d7",
     "date": "2026-10-04",
     "title": "investor: align overview with current product architecture",
