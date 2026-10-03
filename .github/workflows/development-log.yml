@@ -10,58 +10,84 @@ permissions:
 
 jobs:
   development-log:
+    # Log every normal development commit automatically.
+    # Skip only commits created by this workflow itself.
     if: >-
       github.event.head_commit != null &&
-      contains(github.event.head_commit.message, 'Development-Log: true')
+      !startsWith(github.event.head_commit.message, 'docs: auto-log development ')
     runs-on: ubuntu-latest
     steps:
-      - name: Append meaningful development update
+      - name: Append development update automatically
         uses: actions/github-script@v8
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const message = context.payload.head_commit.message || '';
-            const lines = message.split(/\r?\n/);
+            const title = (message.split(/\r?\n/)[0] || 'Development update').trim();
 
-            function trailer(name, fallback = '') {
-              const prefix = name.toLowerCase() + ':';
-              const line = lines.find(line => line.trim().toLowerCase().startsWith(prefix));
-              return line ? line.trim().slice(prefix.length).trim() : fallback;
-            }
-
-            const enabled = trailer('Development-Log').toLowerCase() === 'true';
-            if (!enabled) return;
-
-            const title = trailer('Dev-Title');
-            const module = trailer('Dev-Module', 'General');
-            const status = trailer('Dev-Status', 'Completed');
-            const summary = trailer('Dev-Summary');
-            const details = trailer('Dev-Details');
-
-            if (!title || !summary) {
-              core.setFailed('Meaningful development commit requires Dev-Title and Dev-Summary.');
+            // Avoid logging the workflow's own JSON update commit.
+            if (title.startsWith('docs: auto-log development ')) {
+              core.info('Skipping automatic development-log commit.');
               return;
             }
 
+            const commit = await github.rest.repos.getCommit({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: context.sha
+            });
+
+            const files = (commit.data.files || []).map(f => f.filename).filter(Boolean);
+
+            function moduleFor(files) {
+              const p = files.join('\n').toLowerCase();
+              if (/development-log|\.github\/workflows/.test(p)) return 'Development Control';
+              if (/renovationplanner|renovation-planner/.test(p)) return 'RenovationPlanner';
+              if (/buildplanner|build-planner/.test(p)) return 'BuildPlanner';
+              if (/cost|estimate|quotation|budget|preview/.test(p)) return 'Cost Estimate';
+              if (/project-control|work-program|s-curve|progress/.test(p)) return 'Project Control';
+              if (/admin|rate-management|rate-comparison/.test(p)) return 'Admin / Rate Management';
+              if (/investor/.test(p)) return 'Investor';
+              if (/readme|docs/.test(p)) return 'Documentation';
+              return 'General';
+            }
+
+            function statusFor(title) {
+              return /\b(wip|work in progress|draft|todo|planned)\b/i.test(title)
+                ? 'In Progress'
+                : 'Completed';
+            }
+
             const path = 'data/development-log.json';
+            const branch = context.ref.replace('refs/heads/', '');
+
             const { data: file } = await github.rest.repos.getContent({
               owner: context.repo.owner,
               repo: context.repo.repo,
               path,
-              ref: context.ref.replace('refs/heads/', '')
+              ref: branch
             });
 
             const raw = Buffer.from(file.content, 'base64').toString('utf8');
             const items = JSON.parse(raw);
+
             const date = context.payload.head_commit.timestamp
               ? context.payload.head_commit.timestamp.slice(0, 10)
               : new Date().toISOString().slice(0, 10);
 
             const id = `DEV-${date.replaceAll('-', '')}-${context.sha.slice(0, 7)}`;
+
             if (items.some(item => item.id === id || item.commit === context.sha)) {
               core.info('Development log already contains this commit.');
               return;
             }
+
+            const module = moduleFor(files);
+            const status = statusFor(title);
+            const summary = title;
+            const details = files.length
+              ? `Automatic entry from commit ${context.sha.slice(0, 7)}. Changed files: ${files.join(', ')}.`
+              : `Automatic entry from commit ${context.sha.slice(0, 7)}.`;
 
             items.push({
               id,
@@ -88,7 +114,7 @@ jobs:
               message: `docs: auto-log development ${title}`,
               content: Buffer.from(JSON.stringify(items, null, 2) + '\n').toString('base64'),
               sha: file.sha,
-              branch: context.ref.replace('refs/heads/', '')
+              branch
             });
 
-            core.info(`Development log created: ${id}`);
+            core.info(`Development log created automatically: ${id}`);
