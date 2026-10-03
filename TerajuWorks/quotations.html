@@ -47,7 +47,6 @@
          <div class="history-card-main">
            <div class="history-card-status">
              <span class="rounded-full bg-slate-100 px-2.5 py-1 text-[10px] font-bold tracking-wide text-slate-600">SAVED</span>
-             <span class="text-xs font-medium text-slate-400">${esc(q.quotationType||"simple")} cost estimate</span>
              ${q.contractSnapshot?'<span class="rounded-full bg-emerald-100 px-2.5 py-1 text-[10px] font-bold tracking-wide text-emerald-700">CONTRACT CONFIRMED</span>':'<span class="rounded-full bg-amber-100 px-2.5 py-1 text-[10px] font-bold tracking-wide text-amber-700">ESTIMATE · NOT CONFIRMED</span>'}
            </div>
            <div class="history-card-project">
@@ -56,7 +55,6 @@
              </div>
              <p class="mt-1 whitespace-normal break-words text-justify text-sm font-medium leading-5 text-slate-600">${esc(q.client?.name||"Not specified")} · ${esc(q.project?.location||"Location not specified")}</p>
              <div class="mt-2 flex flex-wrap items-center gap-2 text-[10px] font-bold tracking-wide">
-               <span class="rounded-full bg-slate-100 px-2.5 py-1 text-slate-600">${esc(q.quotationType==="detail"?"DETAIL":"SIMPLE")}</span>
                <span class="rounded-full bg-blue-50 px-2.5 py-1 text-blue-700">${esc(q.revision?.current||"R00")}</span>
                <span class="rounded-full bg-violet-50 px-2.5 py-1 text-violet-700">${esc(q.projectId||"PROJECT")}</span>
              </div>
