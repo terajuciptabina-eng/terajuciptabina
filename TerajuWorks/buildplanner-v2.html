@@ -460,10 +460,7 @@ applyAudienceUI();window.__TERAJU_ROOM_SCHEDULE_DIRTY=true;setRoomScheduleStatus
       if(typeof customRoomLabels!=='undefined'&&customRoomLabels instanceof Map)customRoomLabels.clear();
       if(typeof updateRoomsEmptyState==='function')updateRoomsEmptyState();
     }else if(existing&&!window.__TERAJU_FLOORPLAN_IMPORT_CONFIRMED){
-      const ok=confirm('Import '+payload.rooms.length+' reviewed room/area entries from the floor plan into the existing BuildPlanner list?
-
-OK = Add to existing rooms
-Cancel = Do not import');
+      const ok=confirm('Import '+payload.rooms.length+' reviewed room/area entries from the floor plan into the existing BuildPlanner list?\\n\\nOK = Add to existing rooms\\nCancel = Do not import');
       if(!ok){sessionStorage.removeItem('teraju.floorplan.import.pending.v1');sessionStorage.removeItem('teraju.floorplan.import.context.v1');return}
       window.__TERAJU_FLOORPLAN_IMPORT_CONFIRMED=true;
     }
