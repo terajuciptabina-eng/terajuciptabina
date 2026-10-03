@@ -2713,8 +2713,16 @@ async function generateQuotation(typeOverride){const type=typeOverride||getSelec
 const __TERAJU_RENOVATION_GENERATE_QUOTATION_CORE=window.generateQuotation;
 // Budget -> Simple Preview is preview-only; it bypasses quotation-records'
 // auto-save wrapper.
-window.TERAJU_BUDGET_QUOTATION_RENDER = function(){
-  return __TERAJU_RENOVATION_GENERATE_QUOTATION_CORE('simple');
+window.TERAJU_BUDGET_QUOTATION_RENDER = async function(){
+  // Use the public Generate Cost Estimate pipeline, but explicitly suppress
+  // quotation-records persistence. This keeps budget preview and manual
+  // Cost Estimate generation on the same rendering path.
+  window.__TERAJU_PREVIEW_ONLY=true;
+  try{
+    return await window.generateQuotation('simple');
+  }finally{
+    window.__TERAJU_PREVIEW_ONLY=false;
+  }
 };
 
 function buildQuotationBody(data, revealDetails = false) {
