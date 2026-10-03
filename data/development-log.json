@@ -33,6 +33,17 @@
     "updatedAt": "2026-10-03T19:37:27.561Z"
   },
   {
+    "id": "DEV-20261004-349d518",
+    "date": "2026-10-04",
+    "title": "investor: restructure deck around current TerajuWorks architecture",
+    "module": "Investor",
+    "status": "Completed",
+    "summary": "investor: restructure deck around current TerajuWorks architecture",
+    "details": "Automatic entry from commit 349d518. Changed files: investor/investor-deck.html.",
+    "commit": "349d5186016bba3749c606cf55ca856a220b3599",
+    "updatedAt": "2026-10-03T20:40:36.326Z"
+  },
+  {
     "id": "DEV-20261004-02",
     "date": "2026-10-04",
     "title": "RM/sqft source-level implementation",
