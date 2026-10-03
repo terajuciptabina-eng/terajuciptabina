@@ -33,7 +33,8 @@ function makeMaster(s){const out=[],seen=new Set,add=(p,t,k,uniqueKey=p)=>{if(!r
 function applyQuantities(items,s){const a=apron(s);for(let pass=0;pass<items.length+1;pass++){let changed=false;items.forEach(i=>{const q=qty(i.masterPath,s,items,a,i);if(q!==null){const nq=Math.ceil(q);if(Math.abs(N(i.qty)-nq)>1e-9)changed=true;i.qty=nq}});if(!changed)break}return items}
 window.__TERAJU_GET_BUILD_ITEMS=getMasterItems;
 function addManual(items,s){if(typeof manualItems==='undefined')return items;const groupMap={preliminaries:'PRELIMINARIES',structures:'STRUCTURES',architecture:'ARCHITECTURES',electrical:'ELECTRICAL','doors-windows':'DOORS & WINDOWS','external-work':'EXTERNAL WORK'};for(const [,list] of manualItems.entries())(list||[]).forEach(x=>{const category=String(x.category||'').toLowerCase(),group=x.group||groupMap[category]||'';
-const mp=canonicalManualMasterPath({targetKey:x.groupKey,group,groupTitle:x.groupTitle,masterPath:x.masterPath});
+const rawManualPath=String(x.masterPath||'').trim();
+const mp=rawManualPath || canonicalManualMasterPath({targetKey:x.groupKey,group,groupTitle:x.groupTitle,masterPath:x.masterPath});
 if(/^(?:ARCHITECTURES\s*\/\s*)?BATHROOM\s*\//i.test(mp))return;const qty=Math.max(0,Math.ceil(N(x.qty))),rate=R2(x.rate),roomId=x.roomId&&x.roomId!=='project'?String(x.roomId):'project',room=roomId!=='project'?(s.rs.find(r=>r.roomId===roomId)?.label||roomId):'Project';items.push(normalizeItem({...x,manual:true,category,group,roomId,room,qty,rate,masterPath:mp}));});return items}
 function canonicalManualMasterPath(source){
   const group=String(source?.group||'').trim().toUpperCase();
