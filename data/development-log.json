@@ -22,6 +22,17 @@
     "updatedAt": "2026-10-03T19:31:54.836Z"
   },
   {
+    "id": "DEV-20261004-351eacf",
+    "date": "2026-10-04",
+    "title": "ui: move development log to bottom of admin tools",
+    "module": "Admin / Rate Management",
+    "status": "Completed",
+    "summary": "ui: move development log to bottom of admin tools",
+    "details": "Automatic entry from commit 351eacf. Changed files: TerajuWorks/admin.html.",
+    "commit": "351eacf9a11c49bcd828e6d729b17b9e7eb742e5",
+    "updatedAt": "2026-10-03T19:37:27.561Z"
+  },
+  {
     "id": "DEV-20261004-02",
     "date": "2026-10-04",
     "title": "RM/sqft source-level implementation",
