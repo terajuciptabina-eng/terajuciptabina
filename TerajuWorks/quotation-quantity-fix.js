@@ -177,13 +177,20 @@ window.generateConstructionBudget=async function(options){
       window.__TERAJU_BUILD_BUDGET_GENERATED=true;
       window.renderConstructionBudget();
 
-      // Budget generation is complete only after the existing Simple Cost
-      // Estimate preview has finished rendering. Keep the preview on the same
-      // canonical renderer; do not create a second quotation pipeline.
-      if(!autoRefresh && typeof window.TERAJU_BUDGET_QUOTATION_RENDER==='function'){
-        const previewGenerated=await window.TERAJU_BUDGET_QUOTATION_RENDER();
-        if(previewGenerated===false){
-          throw new Error('Simple Cost Estimate Preview renderer returned false.');
+      // Budget generation is followed by the existing Cost Estimate action.
+      // Select Simple Cost Estimate, then call the same canonical generateQuotation()
+      // action used by the visible Generate Cost Estimate button. This keeps the
+      // normal quotation-records save wrapper in the flow.
+      if(!autoRefresh){
+        const simpleType=document.querySelector('input[name="quotationType"][value="simple"]');
+        if(simpleType && !simpleType.checked){
+          simpleType.checked=true;
+          simpleType.dispatchEvent(new Event('change',{bubbles:true}));
+        }
+        const generated=window.generateQuotation();
+        const result=generated && typeof generated.then==='function' ? await generated : generated;
+        if(result===false){
+          throw new Error('Simple Cost Estimate generation returned false.');
         }
         document.getElementById('quotationDocument')?.scrollIntoView({behavior:'smooth',block:'start'});
       }else{
