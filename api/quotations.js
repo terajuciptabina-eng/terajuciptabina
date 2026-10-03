@@ -46,17 +46,27 @@ export default async function handler(req, res) {
   }
   function revisionComparable(value, plannerType) {
     const copy = JSON.parse(JSON.stringify(value || {}));
+
+    // Revision tracks substantive Cost Estimate content, not workflow/presentation metadata.
+    // Simple vs Detail is only a presentation mode of the same estimate/project.
     delete copy.updatedAt;
     delete copy.createdAt;
     delete copy.quotationId;
     delete copy.revision;
     delete copy.revisionHistory;
-    const type = quotationType(copy.quotationType || copy.plannerState?.quotationType);
+    delete copy.quotationType;
+
+    const type = quotationType(copy.plannerState?.quotationType);
     if (copy.estimateNumber) copy.estimateNumber = canonicalEstimateNumber(copy.estimateNumber, plannerType, type);
+
     if (copy.plannerState && typeof copy.plannerState === 'object') {
       delete copy.plannerState.quotationId;
+      delete copy.plannerState.quotationType;
+      delete copy.plannerState.rateSnapshotAt;
+      delete copy.plannerState.constructionBudgetGenerated;
       if (copy.plannerState.estimateNumber) copy.plannerState.estimateNumber = canonicalEstimateNumber(copy.plannerState.estimateNumber, plannerType, type);
     }
+
     return JSON.stringify(copy);
   }
   function buildRevisionSnapshot(value, revision) {
