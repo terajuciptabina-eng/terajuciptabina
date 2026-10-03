@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "contractor",
+  "contractorId": "CTR-20261003-DJQB",
+  "profile": {
+    "name": "Irfan",
+    "email": "m.irfanhairuddin@gmail.com",
+    "phone": "0103447325"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-10-03T05:38:08.824Z",
+  "updatedAt": "2026-10-03T05:38:08.824Z"
+}
