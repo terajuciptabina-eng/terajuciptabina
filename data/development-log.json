@@ -55,6 +55,17 @@
     "updatedAt": "2026-10-03T20:40:44.014Z"
   },
   {
+    "id": "DEV-20261004-85c3e84",
+    "date": "2026-10-04",
+    "title": "investor: clarify technology venture ownership structure",
+    "module": "Investor",
+    "status": "Completed",
+    "summary": "investor: clarify technology venture ownership structure",
+    "details": "Automatic entry from commit 85c3e84. Changed files: investor/investment-memo.html.",
+    "commit": "85c3e84180392e0b2d606e3093c7625dc28c0f8b",
+    "updatedAt": "2026-10-03T20:42:05.884Z"
+  },
+  {
     "id": "DEV-20261004-7c93b43",
     "date": "2026-10-04",
     "title": "investor: refresh financial model product scope and metrics",
