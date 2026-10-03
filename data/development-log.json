@@ -33,6 +33,17 @@
     "updatedAt": "2026-10-03T20:40:44.014Z"
   },
   {
+    "id": "DEV-20261004-7c93b43",
+    "date": "2026-10-04",
+    "title": "investor: refresh financial model product scope and metrics",
+    "module": "Investor",
+    "status": "Completed",
+    "summary": "investor: refresh financial model product scope and metrics",
+    "details": "Automatic entry from commit 7c93b43. Changed files: investor/financial-model.html.",
+    "commit": "7c93b439ba32fd6bd5bcf2b24a51b51a67177984",
+    "updatedAt": "2026-10-03T20:41:00.676Z"
+  },
+  {
     "id": "DEV-20261004-72f52aa",
     "date": "2026-10-04",
     "title": "investor: align investment memo with TerajuWorks product scope",
