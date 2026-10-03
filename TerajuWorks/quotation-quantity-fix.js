@@ -224,11 +224,19 @@ function buildAvailableStandardItems(targetKey,groupTitle,category,roomId){
    return path.length>1?path.slice(0,-1):[];
  };
 
+ const saved=Array.isArray(standardRateItems)
+   ? standardRateItems.filter(item =>
+       item?.plannerType==='build' &&
+       String(item.groupKey||'').trim()===key
+     )
+   : [];
+
  const seen=new Set();
  const items=[];
- canonical.forEach(item=>{
+ [...canonical,...saved].forEach(item=>{
    if(Boolean(item?.manual)||/^manual-/i.test(String(item?.id||'')))return;
-   if(String(item?.group||'').trim().toUpperCase()!==group)return;
+   const itemGroup=String(item?.group||'').trim().toUpperCase();
+   if(itemGroup!==group)return;
 
    const itemRoomId=String(item?.roomId||'project');
    if(roomId&&String(roomId)!=='project'&&itemRoomId!=='project'&&itemRoomId!==String(roomId))return;
@@ -239,7 +247,7 @@ function buildAvailableStandardItems(targetKey,groupTitle,category,roomId){
 
    const id=String(item?.id||'');
    const masterPath=String(item?.masterPath||'').trim();
-   const unique=(itemRoomId!=='project'?itemRoomId+'|':'')+masterPath;
+   const unique=(itemRoomId!=='project'?itemRoomId+'|':'')+masterPath+'|'+String(item?.description||'').trim().toUpperCase();
    if(!masterPath||seen.has(unique))return;
    seen.add(unique);
 
@@ -299,14 +307,47 @@ window.saveNewBudgetItem=function(targetKey,groupTitle,category,roomId,aid){
    unit=String(document.getElementById(aid+'-unit')?.value||'ls').trim()||'ls';
    qty=1;rate=normRate(document.getElementById(aid+'-rate')?.value);
    if(!desc){alert('Please enter the new item description.');return}
+
+   // Match RenovationPlanner V2's working mutation flow:
+   // create the reusable standard item first, then create the
+   // project manual item from the same canonical hierarchy.
+   const standardId='build-standard-'+Date.now()+'-'+Math.random().toString(36).slice(2,8);
+   const newMasterPath=canonicalManualMasterPath({
+     targetKey,
+     group,
+     groupTitle,
+     roomId,
+     roomType
+   });
+   const standardMasterPath=newMasterPath && !newMasterPath.toUpperCase().endsWith(' / '+desc.toUpperCase())
+     ? newMasterPath+' / '+desc
+     : newMasterPath;
+   standardRateItems.push({
+     id:standardId,
+     description:desc,
+     unit,
+     rate,
+     plannerType:'build',
+     groupKey:targetKey,
+     group,
+     category:cat,
+     groupTitle,
+     masterPath:standardMasterPath
+   });
+   masterPath=standardMasterPath;
  }else{
    if(!selected){alert('Please select an item.');return}
    desc=selected.description;unit=selected.unit||'ls';qty=normQty(document.getElementById(aid+'-qty')?.value);rate=normRate(document.getElementById(aid+'-rate')?.value||selected.rate);masterPath=selected.masterPath;
  }
  const actualRoomId=String(roomId||'project'),id='manual-'+Date.now()+'-'+Math.random().toString(36).slice(2,8);
- const item={id,description:desc,unit,qty,rate,category:cat,groupKey:targetKey,groupTitle,roomId:actualRoomId,masterPath,amount:R2(qty*rate)};
+ const actualRoom=actualRoomId!=='project'
+   ? (document.getElementById(actualRoomId)?.querySelector('.room-name')?.value||document.getElementById(actualRoomId)?.querySelector('.room-type')?.value||actualRoomId)
+   : 'Project';
+ const item={id,manual:true,description:desc,unit,qty,rate,category:cat,groupKey:targetKey,groupTitle,roomId:actualRoomId,room:actualRoom,group,masterPath,amount:R2(qty*rate)};
  if(!manualItems.has(targetKey))manualItems.set(targetKey,[]);
- manualItems.get(targetKey).push(item);refresh();saveState();
+ manualItems.get(targetKey).push(item);
+ saveState();
+ refresh();
 };
 function editExisting(id){const row=document.querySelector(`[data-budget-item-id=\"${CSS.escape(String(id))}\"]`);if(!row)return;row.querySelector('[data-budget-view]')?.classList.add('hidden');row.querySelector('[data-budget-edit]')?.classList.remove('hidden')}
 function applyDirectRate(item,rateEl){if(!item||!rateEl)return;const contractorRate=normRate(rateEl.value);if(typeof customRates!=='undefined')customRates.set(item.id,contractorRate);item.rate=contractorRate;item.amount=R2(N(item.qty)*contractorRate);const amountEl=document.getElementById(`budget-amount-${targetId(item.id)}`);if(amountEl)amountEl.textContent=money2(item.amount);return contractorRate}
