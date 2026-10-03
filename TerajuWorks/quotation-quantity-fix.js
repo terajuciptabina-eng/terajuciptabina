@@ -93,23 +93,25 @@ c.querySelectorAll('textarea').forEach(t=>{t.style.overflow='hidden';t.style.res
 function qData(){const all=getMasterItems().filter(i=>typeof excludedItems==='undefined'||!excludedItems.has(i.id)),rs=rooms(),d={allItems:all,rooms:rs,prelim:all.filter(i=>i.category==='preliminaries'),structures:all.filter(i=>i.category==='structures'),electrical:all.filter(i=>i.category==='electrical'),doorsWindows:all.filter(i=>i.category==='doors-windows'),externalWork:all.filter(i=>i.category==='external-work'),architecture:all.filter(i=>i.category==='architecture'),archByRoom:{},roomSubtotals:{},total:all.reduce((s,i)=>s+N(i.amount),0)};rs.forEach(r=>{d.archByRoom[r.roomId]=d.architecture.filter(i=>i.roomId===r.roomId);d.roomSubtotals[r.roomId]=d.archByRoom[r.roomId].reduce((s,i)=>s+N(i.amount),0)});return d}
 
 async function main(){if(document.readyState==='loading')await new Promise(r=>document.addEventListener('DOMContentLoaded',r,{once:true}));let attempts=0;while(attempts<3){try{await load();break}catch(e){attempts++;console.error('[TERAJU MASTER LOAD]',e);if(attempts>=3)throw e;await new Promise(r=>setTimeout(r,700))}}const isBuild=/buildplanner-v2\.html$/i.test(location.pathname),isRenovation=/renovationplanner-v2\.html$/i.test(location.pathname);window.__TERAJU_MASTER_RULE_GATE_READY=true;
-window.__TERAJU_GET_BUILD_STANDARD_ITEMS=function(group){
+window.__TERAJU_GET_BUILD_STANDARD_ITEMS=function(group,hierarchy){
   const wanted=String(group||'').trim().toUpperCase();
+  const levels=(Array.isArray(hierarchy)?hierarchy:String(hierarchy||'').split('/')).map(v=>String(v||'').trim().toUpperCase()).filter(Boolean);
   const out=[];
   if(!(RULES instanceof Map))return out;
   for(const [path,r] of RULES){
     const cleanPath=String(path||'').trim();
-    if(!cleanPath)continue;
-    if(String(r?.[0]||'').trim().toUpperCase()!==wanted)continue;
+    if(!cleanPath||String(r?.[0]||'').trim().toUpperCase()!==wanted)continue;
+    const parts=cleanPath.split('/').map(v=>String(v||'').trim()).filter(Boolean);
+    if(levels.length&&!levels.every(v=>parts.some(part=>part.toUpperCase()===v)))continue;
     out.push({
-      id:'master-'+NOR(cleanPath).replace(/\s+/g,'-'),
+      id:'master-'+NOR(cleanPath).replace(/\\s+/g,'-'),
       masterPath:cleanPath,
       description:String(r?.[2]||cleanPath),
       unit:String(r?.[6]||'ls'),
       rate:rate(cleanPath)
     });
   }
-  return out;
+  return out.sort((x,y)=>String(x.description).localeCompare(String(y.description)));
 };window.__TERAJU_MASTER_QDATA=qData;if(isBuild){window.getAllItems=getMasterItems;window.__TERAJU_GET_BUILD_ITEMS=getMasterItems;window.getCurrentQuotationData=qData;window.renderConstructionBudget=renderBudget;
 window.__TERAJU_BUILD_BUDGET_GENERATED=false;
 window.showBuildBudgetPending=function(){
@@ -163,15 +165,13 @@ function buildAvailableStandardItems(targetKey,groupTitle,category){
  const targetParts=String(targetKey||'').split(':').map(v=>String(v||'').trim()).filter(Boolean);
  const groupMap={preliminaries:'PRELIMINARIES',structures:'STRUCTURES',architecture:'ARCHITECTURES',electrical:'ELECTRICAL','doors-windows':'DOORS & WINDOWS','external-work':'EXTERNAL WORK'};
  const group=groupMap[cat]||String(targetParts[0]||category||'').toUpperCase();
- const hierarchy=targetParts.slice(1).map(v=>String(v).trim().toUpperCase()).filter(Boolean);
- const source=typeof window.__TERAJU_GET_BUILD_STANDARD_ITEMS==='function'?window.__TERAJU_GET_BUILD_STANDARD_ITEMS(group):[];
- return source.filter(item=>{
-   const parts=String(item.masterPath||'').split('/').map(v=>String(v||'').trim()).filter(Boolean);
-   return !hierarchy.length || hierarchy.every(v=>parts.some(part=>part.toUpperCase()===v));
- }).map(item=>{
+ const hierarchy=targetParts.slice(1);
+ const source=typeof window.__TERAJU_GET_BUILD_STANDARD_ITEMS==='function'
+   ?window.__TERAJU_GET_BUILD_STANDARD_ITEMS(group,hierarchy):[];
+ return source.map(item=>{
    const id=String(item.id||'');
    return {...item,category:cat,groupKey:targetKey,groupTitle:String(groupTitle||group),excludedId:typeof excludedItems!=='undefined'&&excludedItems.has(id)?id:''};
- }).sort((x,y)=>String(x.description).localeCompare(String(y.description)));
+ });
 }
 function buildStandardItemOptions(targetKey,groupTitle,category){
  const items=buildAvailableStandardItems(targetKey,groupTitle,category);
@@ -186,7 +186,7 @@ window.addNewBudgetItem=function(targetKey,groupTitle,category,roomId){
  const box=document.createElement('div');
  box.id=aid;box.dataset.newTarget=targetKey;box.dataset.newTitle=groupTitle;box.dataset.newCategory=category;box.dataset.newRoom=roomId||'project';
  box.className='no-print mt-3 rounded-xl border bg-gray-50 p-4';
- box.innerHTML=`<div class="flex items-center justify-between gap-3 mb-3"><strong class="text-sm">Add New Item</strong><button type="button" class="text-xs text-gray-500" data-budget-cancel-new>Cancel</button></div><div class="grid md:grid-cols-[2fr_1fr_1fr_auto] gap-3 items-end"><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Standard Rate Item</span><select id="${aid}-select" class="w-full border rounded-lg px-3 py-2 bg-white"><option value="">Select an item…</option>${buildStandardItemOptions(targetKey,category)}<option value="__new__">＋ Create New Standard Item</option></select></label><label id="${aid}-qty-wrap" class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Quantity</span><input id="${aid}-qty" type="number" min="0" step="1" value="1" class="w-full border rounded-lg px-3 py-2 bg-white"></label><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Rate (RM)</span><input id="${aid}-rate" type="number" min="0" step="0.01" value="0.00" class="w-full border rounded-lg px-3 py-2 bg-white"></label><button type="button" class="bg-black text-white px-4 py-2 rounded-lg text-sm font-semibold" data-budget-save-new>Add</button></div><div id="${aid}-new" class="hidden mt-3"><div class="grid md:grid-cols-[2fr_1fr] gap-3"><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">New Description</span><input id="${aid}-desc" type="text" placeholder="e.g. Aluminium awning" class="w-full border rounded-lg px-3 py-2 bg-white"></label><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Unit</span><input id="${aid}-unit" type="text" value="ls" class="w-full border rounded-lg px-3 py-2 bg-white"></label></div></div>`;
+ box.innerHTML=`<div class="flex items-center justify-between gap-3 mb-3"><strong class="text-sm">Add New Item</strong><button type="button" class="text-xs text-gray-500" data-budget-cancel-new>Cancel</button></div><div class="grid md:grid-cols-[2fr_1fr_1fr_auto] gap-3 items-end"><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Standard Rate Item</span><select id="${aid}-select" class="w-full border rounded-lg px-3 py-2 bg-white"><option value="">Select an item…</option>${buildStandardItemOptions(targetKey,groupTitle,category)}<option value="__new__">＋ Create New Standard Item</option></select></label><label id="${aid}-qty-wrap" class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Quantity</span><input id="${aid}-qty" type="number" min="0" step="1" value="1" class="w-full border rounded-lg px-3 py-2 bg-white"></label><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Rate (RM)</span><input id="${aid}-rate" type="number" min="0" step="0.01" value="0.00" class="w-full border rounded-lg px-3 py-2 bg-white"></label><button type="button" class="bg-black text-white px-4 py-2 rounded-lg text-sm font-semibold" data-budget-save-new>Add</button></div><div id="${aid}-new" class="hidden mt-3"><div class="grid md:grid-cols-[2fr_1fr] gap-3"><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">New Description</span><input id="${aid}-desc" type="text" placeholder="e.g. Aluminium awning" class="w-full border rounded-lg px-3 py-2 bg-white"></label><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Unit</span><input id="${aid}-unit" type="text" value="ls" class="w-full border rounded-lg px-3 py-2 bg-white"></label></div></div>`;
  anchor.appendChild(box);
  const select=box.querySelector(`#${aid}-select`),rateEl=box.querySelector(`#${aid}-rate`),qtyWrap=box.querySelector(`#${aid}-qty-wrap`),newBox=box.querySelector(`#${aid}-new`);
  select?.addEventListener('change',()=>{
