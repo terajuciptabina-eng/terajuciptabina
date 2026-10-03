@@ -161,17 +161,28 @@ window.showBuildBudgetPending=function(){
   c.innerHTML='<div id="tcBuildBudgetPending" class="border rounded-xl bg-gray-50 p-5 text-center"><div class="text-sm font-semibold text-gray-800">Construction budget is waiting for your final room / area review.</div><div class="mt-1 text-xs text-gray-500">Review, add, edit or remove rooms first. Generate the construction budget when your room schedule is final.</div><button type="button" id="tcGenerateBuildBudget" onclick="generateConstructionBudget()" class="mt-4 inline-flex items-center justify-center rounded-xl bg-gray-900 px-5 py-3 text-sm font-bold text-white shadow-sm">Generate Construction Budget</button></div>';
 };
 window.generateConstructionBudget=function(){
+  try{
+    if(typeof saveRoomAreaState==='function'){
+      const saved=saveRoomAreaState();
+      if(saved===false)return false;
+    }
+  }catch(e){
+    console.error('[TERAJU BUILD BUDGET] Room / Area save failed',e);
+    return false;
+  }
   try{if(typeof syncBuiltUpAreaFromRooms==='function')syncBuiltUpAreaFromRooms()}catch(e){console.error('[TERAJU BUILD BUDGET] Built-up sync failed',e)}
   try{
     if(typeof window.renderConstructionBudget==='function'){
       window.__TERAJU_BUILD_BUDGET_GENERATED=true;
       window.renderConstructionBudget();
       document.getElementById('constructionBudgetSection')?.scrollIntoView({behavior:'smooth',block:'start'});
+      return true;
     }
   }catch(e){
     window.__TERAJU_BUILD_BUDGET_GENERATED=false;
     console.error('[TERAJU BUILD BUDGET] Budget render failed',e);
   }
+  return false;
 };
 window.invalidateConstructionBudget=function(){
   if(window.__TERAJU_BUILD_BUDGET_GENERATED===true)window.showBuildBudgetPending();
