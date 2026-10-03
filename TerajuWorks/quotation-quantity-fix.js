@@ -193,6 +193,11 @@ window.generateConstructionBudget=async function(options){
           throw new Error('Simple Cost Estimate preview returned false.');
         }
         document.getElementById('quotationDocument')?.scrollIntoView({behavior:'smooth',block:'start'});
+        // Budget auto-preview must persist through the same canonical quotation
+        // records pipeline as the visible Save Cost Estimate action.
+        if(typeof window.TERAJU_AUTO_SAVE_QUOTATION==='function'){
+          await window.TERAJU_AUTO_SAVE_QUOTATION();
+        }
       }else{
         document.getElementById('constructionBudgetSection')?.scrollIntoView({behavior:'smooth',block:'start'});
       }
