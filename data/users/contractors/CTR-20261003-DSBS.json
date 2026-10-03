@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "contractor",
+  "contractorId": "CTR-20261003-DSBS",
+  "profile": {
+    "name": "HMA SOLUTIONS ENTERPRISE",
+    "email": "hmasolutions.my@gmail.com",
+    "phone": "0123713129"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-10-03T07:23:44.351Z",
+  "updatedAt": "2026-10-03T07:23:44.351Z"
+}
