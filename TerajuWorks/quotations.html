@@ -42,6 +42,7 @@
    list.innerHTML=items.map(q=>{
      const edit=`${plannerFile}?audience=${role}&${idKey}=${encodeURIComponent(id)}&quotationId=${encodeURIComponent(q.quotationId)}`;
      const contract=role==='contractor'?'<a href="contract.html?role=contractor&id='+encodeURIComponent(id)+'&plannerType='+encodeURIComponent(type)+'&quotationId='+encodeURIComponent(q.quotationId)+'" class="secondary-action rounded-xl px-4 py-2.5 text-sm font-semibold">Contract</a>':'';
+     const metric=typeof window.TERAJU_COST_METRIC==='object' ? window.TERAJU_COST_METRIC.summarize(type,q.items||[],q.plannerState?.rooms||[]) : null;
      return `<article class="history-card rounded-2xl p-5 sm:p-6" data-quotation-id="${esc(q.quotationId)}">
        <div class="history-card-grid">
          <div class="history-card-main">
@@ -54,6 +55,7 @@
                <h2 class="text-xl font-bold tracking-[-.02em] text-slate-950">${esc(q.estimateNumber||q.quotationNumber||q.quotationId)}</h2>
              </div>
              <p class="mt-1 whitespace-normal break-words text-justify text-sm font-medium leading-5 text-slate-600">${esc(q.client?.name||"Not specified")} · ${esc(q.project?.location||"Location not specified")}</p>
+             ${metric&&typeof window.TERAJU_COST_METRIC.history==="function"?window.TERAJU_COST_METRIC.history(metric):""}
              <div class="mt-2 flex flex-wrap items-center gap-2 text-[10px] font-bold tracking-wide">
                <span class="rounded-full bg-blue-50 px-2.5 py-1 text-blue-700">${esc(q.revision?.current||"R00")}</span>
                <span class="rounded-full bg-violet-50 px-2.5 py-1 text-violet-700">${esc(q.projectId||"PROJECT")}</span>
@@ -157,5 +159,6 @@
 })();
 </script>
 <script src="shared/teraju-button-feedback.js?v=20260929-button-feedback-v1"></script>
+<script src="cost-per-sqft.js?v=20261004-rm-sqft-v1"></script>
 </body>
 </html>
