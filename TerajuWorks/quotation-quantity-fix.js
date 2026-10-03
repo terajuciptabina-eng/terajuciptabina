@@ -175,7 +175,16 @@ window.generateConstructionBudget=function(){
     if(typeof window.renderConstructionBudget==='function'){
       window.__TERAJU_BUILD_BUDGET_GENERATED=true;
       window.renderConstructionBudget();
-      document.getElementById('constructionBudgetSection')?.scrollIntoView({behavior:'smooth',block:'start'});
+
+// Generate the Simple Cost Estimate preview immediately from the freshly
+// generated canonical budget. Saving the Cost Estimate remains separate.
+if(typeof window.TERAJU_BUDGET_QUOTATION_RENDER==='function'){
+  Promise.resolve(window.TERAJU_BUDGET_QUOTATION_RENDER())
+    .then(()=>document.getElementById('quotationDocument')?.scrollIntoView({behavior:'smooth',block:'start'}))
+    .catch(error=>console.error('[TERAJU BUILD PREVIEW] Auto simple preview failed',error));
+}else{
+  document.getElementById('constructionBudgetSection')?.scrollIntoView({behavior:'smooth',block:'start'});
+}
       return true;
     }
   }catch(e){
