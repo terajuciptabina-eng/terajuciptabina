@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "contractor",
+  "contractorId": "CTR-20261003-OQFT",
+  "profile": {
+    "name": "Bina Jaya Utara Enterprise",
+    "email": "binajayautara@gmail.com",
+    "phone": "+601111471396"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-10-03T05:44:00.565Z",
+  "updatedAt": "2026-10-03T05:44:00.565Z"
+}
