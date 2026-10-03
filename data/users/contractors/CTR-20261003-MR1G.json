@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "contractor",
+  "contractorId": "CTR-20261003-MR1G",
+  "profile": {
+    "name": "TKH CONSTRUCTION WORKS SDN BHD",
+    "email": "tkhsdnbhd1@gmail.com",
+    "phone": "011-34758888"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-10-03T03:20:46.120Z",
+  "updatedAt": "2026-10-03T03:20:46.120Z"
+}
