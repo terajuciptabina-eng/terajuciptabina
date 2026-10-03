@@ -456,7 +456,9 @@
           simpleType.checked=true;
           simpleType.dispatchEvent(new Event('change',{bubbles:true}));
         }
-        const quotationResult=await __TERAJU_RENOVATION_GENERATE_QUOTATION_CORE('simple');
+        const quotationCore=window.__TERAJU_RENOVATION_GENERATE_QUOTATION_CORE;
+        if(typeof quotationCore!=='function')throw new Error('Canonical Renovation Cost Estimate preview source is unavailable.');
+        const quotationResult=await quotationCore('simple');
         if(quotationResult===false){
           throw new Error('Simple Cost Estimate preview returned false.');
         }
