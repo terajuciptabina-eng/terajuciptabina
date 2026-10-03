@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "contractor",
+  "contractorId": "CTR-20261003-H3I6",
+  "profile": {
+    "name": "NMH Engineering Services Sdn Bhd",
+    "email": "farhanasarbini@outlook.com",
+    "phone": "0168840361"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-10-03T00:01:27.008Z",
+  "updatedAt": "2026-10-03T00:01:27.008Z"
+}
