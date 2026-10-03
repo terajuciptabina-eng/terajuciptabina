@@ -54,6 +54,7 @@ function canonicalManualMasterPath(source){
   if(raw.length>=2&&group&&raw[0].toUpperCase()===group&&raw[1].toUpperCase()===group)raw.splice(1,1);
   return raw.join(' / ')||group;
 }
+window.__TERAJU_CANONICAL_MANUAL_MASTER_PATH=canonicalManualMasterPath;
 function normalizeItem(i){const qty=Math.max(0,Math.ceil(N(i?.qty)));const rate=Math.max(0,R2(i?.rate));return{...i,qty,rate,amount:R2(qty*rate)}}
 function getMasterItems(){const s=scope();let items=makeMaster(s);items=applyQuantities(items,s);items=addManual(items,s);items=items.map(i=>{const isManual=Boolean(i.manual)||/^manual-/i.test(String(i.id||''));if(!isManual&&typeof customRates!=='undefined'&&customRates.has(i.id))i.rate=R2(customRates.get(i.id));const lockedPorchElectrical=/(?:^|\/)\s*PORCH\s*\/\s*(?:LIGHTING|FAN|POWER POINT)(?:\s*\/|$)/i.test(i.masterPath)&&s.B>0;const lockedDoorType3=/DOORS \/ Type 3/i.test(i.masterPath)||/TYPE 3\s*BATHROOM/i.test(i.masterPath);const lockedWindowType=/WINDOWS \/ Type [123]/i.test(i.masterPath);const lockedBathroom=/^(?:ARCHITECTURES\s*\/\s*)?BATHROOM\s*\//i.test(String(i.masterPath||''));if(!isManual&&typeof customQuantities!=='undefined'&&customQuantities.has(i.id)&&!lockedPorchElectrical&&!lockedDoorType3&&!lockedWindowType&&!lockedBathroom)i.qty=Math.ceil(N(customQuantities.get(i.id)));if(!isManual&&typeof customDescriptions!=='undefined'&&customDescriptions.has(i.id))i.description=customDescriptions.get(i.id);return normalizeItem(i)});return items}
 function esc(v){return typeof escapeHtml==='function'?escapeHtml(v):String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}function money(v,d=2){return typeof window.money==='function'?window.money(v,d):R2(v).toFixed(d)}
@@ -301,7 +302,7 @@ window.saveNewBudgetItem=function(targetKey,groupTitle,category,roomId,aid){
  const group=groupMap[cat]||String(category||'').toUpperCase();
  if(selected?.excludedId&&typeof excludedItems!=='undefined'){excludedItems.delete(selected.excludedId);refresh();saveState();return}
  const roomType=String(document.getElementById(String(roomId||''))?.querySelector('.room-type')?.value||'').trim().toLowerCase();
- let desc='',unit='ls',qty=1,rate=0,masterPath=canonicalManualMasterPath({targetKey,group,groupTitle,roomId,roomType});
+ let desc='',unit='ls',qty=1,rate=0,masterPath=window.__TERAJU_CANONICAL_MANUAL_MASTER_PATH({targetKey,group,groupTitle,roomId,roomType});
  if(isNew){
    desc=String(document.getElementById(aid+'-desc')?.value||'').trim();
    unit=String(document.getElementById(aid+'-unit')?.value||'ls').trim()||'ls';
@@ -312,7 +313,7 @@ window.saveNewBudgetItem=function(targetKey,groupTitle,category,roomId,aid){
    // create the reusable standard item first, then create the
    // project manual item from the same canonical hierarchy.
    const standardId='build-standard-'+Date.now()+'-'+Math.random().toString(36).slice(2,8);
-   const newMasterPath=canonicalManualMasterPath({
+   const newMasterPath=window.__TERAJU_CANONICAL_MANUAL_MASTER_PATH({
      targetKey,
      group,
      groupTitle,
