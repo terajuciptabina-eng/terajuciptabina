@@ -181,16 +181,19 @@ window.generateConstructionBudget=async function(options){
        // Generate Cost Estimate action in the background.
        // The normal Cost Estimate button remains visible and usable.
        if(!autoRefresh){
-         const simpleRadio=document.querySelector('input[name="quotationType"][value="simple"]');
-         if(simpleRadio) simpleRadio.checked=true;
-         const generateButton=document.getElementById('generateCostEstimateBtn');
-         if(!generateButton) throw new Error('Generate Cost Estimate button not found.');
+         // Use the exact same public generation action as the existing
+         // Generate Cost Estimate button. Do not create a second preview
+         // renderer or a separate Budget -> Preview pipeline.
          window.__TERAJU_PREVIEW_ONLY=true;
          try{
-           const result=typeof generateButton.onclick==='function'
-             ? generateButton.onclick()
-             : window.generateQuotation('simple');
-           if(result && typeof result.then==='function') await result;
+           if(typeof window.generateQuotation!=='function')
+             throw new Error('Generate Cost Estimate action is not available.');
+           const result=window.generateQuotation('simple');
+           const completed=result && typeof result.then==='function'
+             ? await result
+             : result;
+           if(completed===false)
+             throw new Error('Generate Cost Estimate action returned false.');
          }finally{
            window.__TERAJU_PREVIEW_ONLY=false;
          }
