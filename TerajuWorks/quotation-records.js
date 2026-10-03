@@ -159,6 +159,10 @@ function injectStyles(){ if(document.getElementById('tc-quotation-records-style'
         setTimeout(verifyRestore,500);
       }
       trackEvent('quotation_opened', {quotation_id:quotation.quotationId, quotation_number:currentQuotationNumber, quotation_type:currentQuotationType === 'detail' ? 'detailed' : 'simple'});toast(`Cost Estimate ${currentEstimateNumber||currentQuotationNumber||currentQuotationId} · ${currentRevision} loaded.`)}catch(error){console.error(error);window.__TERAJU_QUOTATION_RESTORE_COMPLETE=true;window.dispatchEvent(new Event('teraju:quotation-restore-complete'));toast(error.message||'Unable to load cost estimate.',true)} }
+  // Canonical persistence bridge used by Budget -> Cost Estimate auto-preview.
+  // This reuses the same saveQuotation() pipeline as the visible Save Cost Estimate action.
+  window.TERAJU_AUTO_SAVE_QUOTATION = function(){ return saveQuotation(false); };
+
   function init(){ if(!document.getElementById('quotationGenerator'))return; ensureProjectId();refreshEstimateIdentity();currentQuotationType=selectedQuotationType();injectStyles();addPlannerControls();bindQuotationType();if(!wrapGenerate())setTimeout(wrapGenerate,500);if(currentQuotationId)setTimeout(loadQuotationForEdit,900);const observer=new MutationObserver(()=>{addPlannerControls();bindQuotationType();wrapGenerate()});observer.observe(document.documentElement,{childList:true,subtree:true});setTimeout(()=>observer.disconnect(),20000); }
   window.tcQuotationRecords={saveQuotation,loadQuotationForEdit,persistRoomSchedule};
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
