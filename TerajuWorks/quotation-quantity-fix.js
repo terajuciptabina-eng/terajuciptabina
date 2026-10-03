@@ -177,22 +177,10 @@ window.generateConstructionBudget=function(options){
       window.__TERAJU_BUILD_BUDGET_GENERATED=true;
       window.renderConstructionBudget();
 
-// After the Construction Budget is generated, run the same Cost Estimate
-// action the user would normally perform manually: select Simple, then click
-// the existing Generate Cost Estimate button. That keeps the normal
-// quotation-records save flow intact.
-if(!autoRefresh){
-        const simpleInput=document.querySelector('input[name="quotationType"][value="simple"]');
-        if(simpleInput){
-          simpleInput.checked=true;
-          simpleInput.dispatchEvent(new Event('change',{bubbles:true}));
-        }
-        const generateButton=document.querySelector('#quotationGenerator .quotation-generate-btn');
-        if(generateButton){
-          setTimeout(()=>generateButton.click(),0);
-        }else{
-          console.error('[TERAJU BUILD PREVIEW] Generate Cost Estimate button not found');
-        }
+// Generate the Simple Cost Estimate preview immediately from the freshly
+// generated canonical budget. Saving the Cost Estimate remains separate.
+if(!autoRefresh && typeof window.TERAJU_BUDGET_QUOTATION_RENDER==='function'){
+        Promise.resolve(window.TERAJU_BUDGET_QUOTATION_RENDER()).then(function(){document.getElementById('quotationDocument')?.scrollIntoView({behavior:'smooth',block:'start'});}).catch(function(error){console.error('[TERAJU BUILD PREVIEW] Auto simple preview failed',error);});
       }else{
         document.getElementById('constructionBudgetSection')?.scrollIntoView({behavior:'smooth',block:'start'});
       }
