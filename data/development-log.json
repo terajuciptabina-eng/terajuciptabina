@@ -121,6 +121,17 @@
     "updatedAt": "2026-10-03T20:40:36.326Z"
   },
   {
+    "id": "DEV-20261004-2edd241",
+    "date": "2026-10-04",
+    "title": "investor: sync deck with current Admin database",
+    "module": "Investor",
+    "status": "Completed",
+    "summary": "investor: sync deck with current Admin database",
+    "details": "Automatic entry from commit 2edd241. Changed files: investor/investor-deck.html.",
+    "commit": "2edd241bb450bc3ce429edbc12c37a7255c404c2",
+    "updatedAt": "2026-10-03T20:44:35.797Z"
+  },
+  {
     "id": "DEV-20261004-02",
     "date": "2026-10-04",
     "title": "RM/sqft source-level implementation",
