@@ -121,6 +121,17 @@
     "updatedAt": "2026-10-03T20:44:26.623Z"
   },
   {
+    "id": "DEV-20261004-3f5a290",
+    "date": "2026-10-04",
+    "title": "investor: correct Admin contractor account count",
+    "module": "Investor",
+    "status": "Completed",
+    "summary": "investor: correct Admin contractor account count",
+    "details": "Automatic entry from commit 3f5a290. Changed files: investor/index.html.",
+    "commit": "3f5a290ecb352519f3ef72bd58d62ed85356e115",
+    "updatedAt": "2026-10-03T20:45:11.249Z"
+  },
+  {
     "id": "DEV-20261004-351eacf",
     "date": "2026-10-04",
     "title": "ui: move development log to bottom of admin tools",
