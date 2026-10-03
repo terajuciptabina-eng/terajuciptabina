@@ -154,6 +154,18 @@ function qData(){const all=getMasterItems().filter(i=>typeof excludedItems==='un
 async function main(){if(document.readyState==='loading')await new Promise(r=>document.addEventListener('DOMContentLoaded',r,{once:true}));let attempts=0;while(attempts<3){try{await load();break}catch(e){attempts++;console.error('[TERAJU MASTER LOAD]',e);if(attempts>=3)throw e;await new Promise(r=>setTimeout(r,700))}}const isBuild=/buildplanner-v2\.html$/i.test(location.pathname),isRenovation=/renovationplanner-v2\.html$/i.test(location.pathname);window.__TERAJU_MASTER_RULE_GATE_READY=true;
 window.__TERAJU_MASTER_QDATA=qData;if(isBuild){window.getAllItems=getMasterItems;window.__TERAJU_GET_BUILD_ITEMS=getMasterItems;window.getCurrentQuotationData=qData;window.renderConstructionBudget=renderBudget;
 window.__TERAJU_BUILD_BUDGET_GENERATED=false;
+window.__TERAJU_BUILD_V2_UPDATE_ESTIMATE=function(options={}){
+  const reason=String(options?.reason||'');
+  if(window.__TERAJU_BUILD_BUDGET_GENERATED!==true && reason!=='item-mutation')return false;
+  try{
+    renderBudget();
+    window.__TERAJU_BUILD_BUDGET_GENERATED=true;
+    return true;
+  }catch(error){
+    console.error('[TERAJU BUILD V2] Canonical budget render failed.',error);
+    return false;
+  }
+};
 window.showBuildBudgetPending=function(){
   const c=document.getElementById('constructionBudgetContent');
   if(!c)return;
@@ -198,14 +210,13 @@ const normRate=v=>Math.max(0,Math.round((Number(v)||0)*100)/100);
 function saveState(){if(typeof saveContractorState==='function')saveContractorState()}
 function refresh(){if(typeof updateEstimate==='function')updateEstimate();if(typeof window.generateConstructionBudget==='function')window.generateConstructionBudget()}
 function refreshBuildPlannerItemMutation(){
-  if(typeof window.updateEstimate!=='function'||typeof window.generateConstructionBudget!=='function'){
-    console.error('[TERAJU BUILD V2] Canonical item mutation refresh is not available.');
+  const updateV2=window.__TERAJU_BUILD_V2_UPDATE_ESTIMATE;
+  if(typeof updateV2!=='function'){
+    console.error('[TERAJU BUILD V2] V2 calculation engine is not available.');
     return false;
   }
   try{
-    window.updateEstimate();
-    window.generateConstructionBudget();
-    return true;
+    return updateV2({reason:'item-mutation'})!==false;
   }catch(error){
     console.error('[TERAJU BUILD V2] Item mutation refresh failed.',error);
     return false;
@@ -362,12 +373,12 @@ window.saveNewBudgetItem=function(targetKey,groupTitle,category,roomId,aid){
  if(!manualItems.has(targetKey))manualItems.set(targetKey,[]);
  manualItems.get(targetKey).push(item);
 
- // Follow the RenovationPlanner V2 mutation order exactly:
- // mutate canonical state -> refresh/render from that state -> persist.
- // Do not persist first, because persistence must never be allowed
- // to interrupt the canonical budget render.
- const refreshed=refreshBuildPlannerItemMutation();
- if(refreshed&&typeof saveContractorState==='function')saveContractorState();
+ // Follow the RenovationPlanner V2 mutation source exactly:
+ // mutate canonical state -> persist -> canonical V2 refresh/render.
+ // The V2 source owns the budget repaint; do not route item mutations
+ // through the generic room/area update path.
+ if(typeof saveContractorState==='function')saveContractorState();
+ refreshBuildPlannerItemMutation();
 };
 function editExisting(id){const row=document.querySelector(`[data-budget-item-id=\"${CSS.escape(String(id))}\"]`);if(!row)return;row.querySelector('[data-budget-view]')?.classList.add('hidden');row.querySelector('[data-budget-edit]')?.classList.remove('hidden')}
 function applyDirectRate(item,rateEl){if(!item||!rateEl)return;const contractorRate=normRate(rateEl.value);if(typeof customRates!=='undefined')customRates.set(item.id,contractorRate);item.rate=contractorRate;item.amount=R2(N(item.qty)*contractorRate);const amountEl=document.getElementById(`budget-amount-${targetId(item.id)}`);if(amountEl)amountEl.textContent=money2(item.amount);return contractorRate}
