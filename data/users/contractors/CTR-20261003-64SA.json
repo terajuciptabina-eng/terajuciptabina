@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "contractor",
+  "contractorId": "CTR-20261003-64SA",
+  "profile": {
+    "name": "Bumi Putih Enterprise",
+    "email": "pacco372@gmail.com",
+    "phone": "0192277675"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-10-03T02:30:41.217Z",
+  "updatedAt": "2026-10-03T02:30:41.217Z"
+}
