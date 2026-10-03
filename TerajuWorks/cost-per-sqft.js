@@ -55,5 +55,6 @@
     }
     return '<div class="mt-3"><span class="rounded-full bg-slate-100 px-2.5 py-1 text-[10px] font-bold tracking-wide text-slate-700">'+money(summary.builtUpArea)+' sqft · RM '+(summary.costPerSqft==null?'—':money(summary.costPerSqft))+'/sqft</span></div>';
   }
+  if(!document.getElementById('teraju-cost-sqft-style')){const s=document.createElement('style');s.id='teraju-cost-sqft-style';s.textContent='.teraju-cost-sqft-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:16px;padding:14px;border:1px solid #e5e7eb;border-radius:14px;background:#f8fafc}.teraju-cost-sqft-grid.budget{grid-template-columns:repeat(2,minmax(0,1fr))}.teraju-cost-sqft-label{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:#6b7280;margin:0}.teraju-cost-sqft-value{font-size:14px;font-weight:700;color:#111827;margin:4px 0 0}.teraju-cost-sqft-grid>div{min-width:0}@media(max-width:640px){.teraju-cost-sqft-grid,.teraju-cost-sqft-grid.budget{grid-template-columns:repeat(2,minmax(0,1fr))}}';document.head.appendChild(s);}
   window.TERAJU_COST_METRIC={summarize,html,history,money};
 })();
