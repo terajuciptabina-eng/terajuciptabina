@@ -152,13 +152,7 @@ function injectStyles(){ if(document.getElementById('tc-quotation-records-style'
       // Its imported Room / Area state must not be overwritten by verification
       // against the quotation snapshot that existed before the import.
       const isFloorPlanImport = params.get('floorPlanImport') === '1';
-      // BuildPlanner V2 must not re-apply the entire quotation snapshot after
-      // the initial restore. restoreSnapshot() also restores manualItems and
-      // standardRateItems, so a delayed verification could silently erase a
-      // contractor's newly-added item. The initial restore already waits for
-      // the BuildPlanner master gate and room APIs to be ready.
-      // Keep the legacy room verification only for RenovationPlanner.
-      if(!isFloorPlanImport && plannerType==='renovation'){
+      if(!isFloorPlanImport){
         const roomsMatch=()=>{const cards=[...(document.querySelectorAll('#roomsContainer .room-card')||[])];if(cards.length!==savedRooms.length)return false;return savedRooms.every((roomData,index)=>String(cards[index]?.querySelector('.room-area')?.value??'')===String(roomData.area??'')&&String(cards[index]?.querySelector('.room-type')?.value??'other')===String(roomData.type||'other')&&String(cards[index]?.querySelector('.room-condition')?.value??'existing')===String(roomData.condition||'existing'))};
         let verifyAttempts=0;
         const verifyRestore=()=>{if(!savedRooms.length||roomsMatch())return;if(verifyAttempts++>=40){console.warn('[TERAJU QUOTATION RESTORE] room restore did not stick',savedRooms);return}restoreSnapshot(savedState);setTimeout(verifyRestore,250)};
