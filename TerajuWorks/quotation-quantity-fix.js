@@ -162,7 +162,7 @@ window.showBuildBudgetPending=function(){
 };
 window.generateConstructionBudget=function(){
   try{
-    if(typeof saveRoomAreaState==='function'){
+    if(typeof roomScheduleIsSaved==='function' && !roomScheduleIsSaved() && typeof saveRoomAreaState==='function'){
       const saved=saveRoomAreaState();
       if(saved===false)return false;
     }
