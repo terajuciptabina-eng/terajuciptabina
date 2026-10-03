@@ -423,7 +423,9 @@
       }
       return false;
     }
-    if(typeof window.saveRenovationRoomAreaState==='function'){
+    if(typeof window.__TERAJU_RENOVATION_ROOM_SCHEDULE_IS_SAVED==='function' &&
+       !window.__TERAJU_RENOVATION_ROOM_SCHEDULE_IS_SAVED() &&
+       typeof window.saveRenovationRoomAreaState==='function'){
       const saved=await window.saveRenovationRoomAreaState();
       if(saved===false)return false;
     }
