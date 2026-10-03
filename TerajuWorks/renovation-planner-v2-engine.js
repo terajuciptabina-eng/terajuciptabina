@@ -447,7 +447,21 @@
         if(button){
           button.textContent=originalLabel;
         }
-        document.getElementById('renovationBudgetSection')?.scrollIntoView({behavior:'smooth',block:'start'});
+
+        // Generate the Simple Cost Estimate preview immediately from the
+        // freshly generated canonical Renovation Budget. Saving the Cost
+        // Estimate remains a separate explicit action.
+        if(typeof window.TERAJU_BUDGET_QUOTATION_RENDER==='function'){
+          try{
+            await window.TERAJU_BUDGET_QUOTATION_RENDER();
+            document.getElementById('quotationDocument')?.scrollIntoView({behavior:'smooth',block:'start'});
+          }catch(error){
+            console.error('[TERAJU RENOVATION PREVIEW] Auto simple preview failed',error);
+            document.getElementById('renovationBudgetSection')?.scrollIntoView({behavior:'smooth',block:'start'});
+          }
+        }else{
+          document.getElementById('renovationBudgetSection')?.scrollIntoView({behavior:'smooth',block:'start'});
+        }
       }
       return generated;
     } finally {
