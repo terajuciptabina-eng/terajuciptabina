@@ -78,9 +78,16 @@ function injectStyles(){ if(document.getElementById('tc-quotation-records-style'
   function quotationsUrl(){return `quotations.html?role=${encodeURIComponent(role)}&id=${encodeURIComponent(activeId)}&plannerType=${encodeURIComponent(plannerType)}`;}
   function addPlannerControls(){ injectStyles(); const actions=document.getElementById('quotationPrintActions'); if(actions&&!document.getElementById('tcSaveQuotation')){const wrap=document.createElement('div');wrap.className='tc-quotation-tools';wrap.innerHTML=`<button id="tcSaveQuotation" type="button" class="tc-quotation-btn primary"><span class="tc-quotation-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3h11l3 3v15H5z"/><path d="M8 3v6h8V3M8 21v-6h8v6"/></svg></span><span>Save Cost Estimate</span></button><a class="tc-quotation-btn" href="${quotationsUrl()}"><span class="tc-quotation-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h9l3 3v15H6z"/><path d="M9 3v5h7M9 12h6M9 16h6"/></svg></span><span>My Cost Estimates</span></a><span id="tcQuotationStatus" class="tc-quotation-status"></span>`;actions.insertBefore(wrap,actions.firstChild);document.getElementById('tcSaveQuotation').addEventListener('click',()=>saveQuotation(true))} }
   async function fetchQuotations(){ const data=await request('GET'); quotationCache=Array.isArray(data.quotations)?data.quotations:[]; return quotationCache; }
-  async function switchQuotationVersion(type){
-    if(restoring || type === currentQuotationType) return; ensureProjectId();
-    try { const list = quotationCache || await fetchQuotations(); const match = list.find(item => item && item.plannerType === plannerType && item.projectId === currentProjectId && (item.quotationType || item.plannerState?.quotationType || 'simple') === type); currentQuotationType = type; if (match) { currentQuotationId = match.quotationId || ''; currentQuotationNumber = match.quotationNumber || ''; currentEstimateNumber = match.estimateNumber || ''; currentRevision = match.revision?.current || 'R00'; refreshEstimateIdentity(); try { if (typeof quotationNumber !== 'undefined' && currentQuotationNumber) quotationNumber = currentQuotationNumber; } catch {} toast(`${type === 'detail' ? 'Detail' : 'Simple'} cost estimate selected.`); } else { currentQuotationId = ''; currentQuotationNumber = ''; currentEstimateNumber = ''; currentRevision = 'R00'; refreshEstimateIdentity(); toast(`${type === 'detail' ? 'Detail' : 'Simple'} cost estimate will be saved as a separate version.`); } } catch(error) { currentQuotationType = type; currentQuotationId = ''; currentQuotationNumber = ''; console.error(error); }
+  function switchQuotationVersion(type){
+    if(restoring || type === currentQuotationType) return;
+    ensureProjectId();
+    // Simple and Detail are two presentation modes of the same Cost Estimate.
+    // Switching the radio must never switch quotationId/projectId or create another history record.
+    currentQuotationType = type;
+    if (currentQuotationId) {
+      try { if (typeof quotationNumber !== 'undefined' && currentQuotationNumber) quotationNumber = currentQuotationNumber; } catch {}
+      refreshEstimateIdentity();
+    }
   }
   function bindQuotationType(){ document.querySelectorAll('input[name="quotationType"]').forEach(input=>{if(input.__tcBound)return;input.__tcBound=true;input.addEventListener('change',()=>switchQuotationVersion(selectedQuotationType()))}); }
   async function persistRoomSchedule(rooms){
