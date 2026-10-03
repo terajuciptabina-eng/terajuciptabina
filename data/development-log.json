@@ -33,6 +33,17 @@
     "updatedAt": "2026-10-03T20:41:23.310Z"
   },
   {
+    "id": "DEV-20261004-b0c0bf6",
+    "date": "2026-10-04",
+    "title": "investor: clarify project insight architecture",
+    "module": "Investor",
+    "status": "Completed",
+    "summary": "investor: clarify project insight architecture",
+    "details": "Automatic entry from commit b0c0bf6. Changed files: investor/project-insight-snapshot.html.",
+    "commit": "b0c0bf637d40398765c756946f6734451fc2420f",
+    "updatedAt": "2026-10-03T20:41:40.286Z"
+  },
+  {
     "id": "DEV-20261004-87996d7",
     "date": "2026-10-04",
     "title": "investor: align overview with current product architecture",
