@@ -77,6 +77,17 @@
     "updatedAt": "2026-10-03T20:42:05.884Z"
   },
   {
+    "id": "DEV-20261004-7f71723",
+    "date": "2026-10-04",
+    "title": "investor: refresh Admin insight snapshot account data",
+    "module": "Admin / Rate Management",
+    "status": "Completed",
+    "summary": "investor: refresh Admin insight snapshot account data",
+    "details": "Automatic entry from commit 7f71723. Changed files: investor/admin-insight-snapshot.html.",
+    "commit": "7f71723a458bb8fc03317f083a5efd3e8bbd32fc",
+    "updatedAt": "2026-10-03T20:44:49.035Z"
+  },
+  {
     "id": "DEV-20261004-7c93b43",
     "date": "2026-10-04",
     "title": "investor: refresh financial model product scope and metrics",
