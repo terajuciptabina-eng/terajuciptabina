@@ -177,19 +177,23 @@ window.generateConstructionBudget=async function(options){
       window.__TERAJU_BUILD_BUDGET_GENERATED=true;
       window.renderConstructionBudget();
 
-      // This is the canonical Budget -> Preview transition.
-      // The preview is generated from the freshly rendered canonical budget
-      // before this generation cycle is considered complete. Saving the Cost
-      // Estimate remains a separate explicit user action.
-      if(!autoRefresh && typeof window.TERAJU_BUDGET_QUOTATION_RENDER==='function'){
-        const previewGenerated=await window.TERAJU_BUDGET_QUOTATION_RENDER();
-        if(previewGenerated===false){
-          throw new Error('Simple Cost Estimate Preview renderer returned false.');
-        }
-        document.getElementById('quotationDocument')?.scrollIntoView({behavior:'smooth',block:'start'});
-      }else{
-        document.getElementById('constructionBudgetSection')?.scrollIntoView({behavior:'smooth',block:'start'});
-      }
+       // Generate Construction Budget also triggers the EXISTING
+       // Generate Cost Estimate action in the background.
+       // The normal Cost Estimate button remains visible and usable.
+       if(!autoRefresh){
+         const simpleRadio=document.querySelector('input[name="quotationType"][value="simple"]');
+         if(simpleRadio) simpleRadio.checked=true;
+         const generateButton=document.getElementById('generateCostEstimateBtn');
+         if(!generateButton) throw new Error('Generate Cost Estimate button not found.');
+         window.__TERAJU_PREVIEW_ONLY=true;
+         try{
+           generateButton.click();
+         }finally{
+           window.__TERAJU_PREVIEW_ONLY=false;
+         }
+       }else{
+         document.getElementById('constructionBudgetSection')?.scrollIntoView({behavior:'smooth',block:'start'});
+       }
       return true;
     }
   }catch(e){
