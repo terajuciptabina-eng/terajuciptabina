@@ -448,20 +448,23 @@
           button.textContent=originalLabel;
         }
 
-        // Generate the Simple Cost Estimate preview immediately from the
-        // freshly generated canonical Renovation Budget. Saving the Cost
-        // Estimate remains a separate explicit action.
-        if(typeof window.TERAJU_BUDGET_QUOTATION_RENDER==='function'){
-          try{
-            await window.TERAJU_BUDGET_QUOTATION_RENDER();
-            document.getElementById('quotationDocument')?.scrollIntoView({behavior:'smooth',block:'start'});
-          }catch(error){
-            console.error('[TERAJU RENOVATION PREVIEW] Auto simple preview failed',error);
-            document.getElementById('renovationBudgetSection')?.scrollIntoView({behavior:'smooth',block:'start'});
-          }
-        }else{
-          document.getElementById('renovationBudgetSection')?.scrollIntoView({behavior:'smooth',block:'start'});
+        // Budget generation is followed by the existing Cost Estimate action.
+        // Select Simple Cost Estimate, then call the same canonical generateQuotation()
+        // action used by the visible Generate Cost Estimate button. This keeps the
+        // normal quotation-records save wrapper in the flow.
+        const simpleType=document.querySelector('input[name="quotationType"][value="simple"]');
+        if(simpleType && !simpleType.checked){
+          simpleType.checked=true;
+          simpleType.dispatchEvent(new Event('change',{bubbles:true}));
         }
+        const generatedQuotation=window.generateQuotation();
+        const quotationResult=generatedQuotation && typeof generatedQuotation.then==='function'
+          ? await generatedQuotation
+          : generatedQuotation;
+        if(quotationResult===false){
+          throw new Error('Simple Cost Estimate generation returned false.');
+        }
+        document.getElementById('quotationDocument')?.scrollIntoView({behavior:'smooth',block:'start'});
       }
       return generated;
     } finally {
