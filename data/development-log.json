@@ -1,0 +1,24 @@
+[
+  {
+    "id": "DEV-20261004-01",
+    "date": "2026-10-04",
+    "title": "RM/sqft source-level implementation",
+    "module": "Cost Estimate",
+    "status": "Planned",
+    "summary": "Define and implement RM/sqft from the same canonical calculation data used by Budget and Cost Estimate.",
+    "details": "BuildPlanner: one Built-up Area + one RM/sqft. RenovationPlanner: Existing Area/Existing RM/sqft and New Area/New RM/sqft must remain separate. Placement: Construction/Renovation Budget, Cost Estimate and Cost Estimate History. Test live before saving latest-working.",
+    "commit": "",
+    "updatedAt": "2026-10-04T03:00:00+08:00"
+  },
+  {
+    "id": "DEV-20261004-02",
+    "date": "2026-10-04",
+    "title": "Development Log",
+    "module": "Admin",
+    "status": "In Progress",
+    "summary": "Add a persistent Admin development log for current TerajuWorks product development.",
+    "details": "Records are stored in GitHub main rather than browser local storage, so the development history survives device and cache changes.",
+    "commit": "",
+    "updatedAt": "2026-10-04T03:00:00+08:00"
+  }
+]
