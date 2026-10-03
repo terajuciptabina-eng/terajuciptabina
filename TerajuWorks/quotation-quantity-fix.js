@@ -39,11 +39,20 @@ function canonicalManualMasterPath(source){
   const group=String(source?.group||'').trim().toUpperCase();
   const raw=String(source?.masterPath||'').split('/').map(v=>v.trim()).filter(Boolean);
   const keyParts=String(source?.targetKey||source?.groupKey||'').split(':').map(v=>v.trim()).filter(Boolean);
-  const sub=keyParts[1] && keyParts[1].toLowerCase()!=='project' ? keyParts[1] : '';
-  const level=keyParts.slice(2).join(' / ');
-  if(sub || level) return [sub,level].filter(Boolean).join(' / ');
-  if(raw.length>=2 && group && raw[0].toUpperCase()===group && raw[1].toUpperCase()===group) raw.splice(1,1);
-  return raw.join(' / ') || group;
+  const roomType=String(source?.roomType||'').trim().toLowerCase();
+  const hierarchy=keyParts.slice(1);
+
+  // EXTERNAL WORK is a renderer-only synthetic level. Never persist it
+  // into masterPath, otherwise the next render creates a false hierarchy.
+  if(group==='EXTERNAL WORK'&&String(hierarchy[0]||'').toUpperCase()==='EXTERNAL WORK')hierarchy.shift();
+
+  // Bathroom is room-scoped in BuildPlanner, but its canonical master
+  // hierarchy is BATHROOM, not the generated room label (Bathroom 1, 2, ...).
+  if(group==='ARCHITECTURES'&&roomType==='bathroom')return 'BATHROOM';
+
+  if(hierarchy.length)return hierarchy.join(' / ');
+  if(raw.length>=2&&group&&raw[0].toUpperCase()===group&&raw[1].toUpperCase()===group)raw.splice(1,1);
+  return raw.join(' / ')||group;
 }
 function normalizeItem(i){const qty=Math.max(0,Math.ceil(N(i?.qty)));const rate=Math.max(0,R2(i?.rate));return{...i,qty,rate,amount:R2(qty*rate)}}
 function getMasterItems(){const s=scope();let items=makeMaster(s);items=applyQuantities(items,s);items=addManual(items,s);items=items.map(i=>{const isManual=Boolean(i.manual)||/^manual-/i.test(String(i.id||''));if(!isManual&&typeof customRates!=='undefined'&&customRates.has(i.id))i.rate=R2(customRates.get(i.id));const lockedPorchElectrical=/(?:^|\/)\s*PORCH\s*\/\s*(?:LIGHTING|FAN|POWER POINT)(?:\s*\/|$)/i.test(i.masterPath)&&s.B>0;const lockedDoorType3=/DOORS \/ Type 3/i.test(i.masterPath)||/TYPE 3\s*BATHROOM/i.test(i.masterPath);const lockedWindowType=/WINDOWS \/ Type [123]/i.test(i.masterPath);const lockedBathroom=/^(?:ARCHITECTURES\s*\/\s*)?BATHROOM\s*\//i.test(String(i.masterPath||''));if(!isManual&&typeof customQuantities!=='undefined'&&customQuantities.has(i.id)&&!lockedPorchElectrical&&!lockedDoorType3&&!lockedWindowType&&!lockedBathroom)i.qty=Math.ceil(N(customQuantities.get(i.id)));if(!isManual&&typeof customDescriptions!=='undefined'&&customDescriptions.has(i.id))i.description=customDescriptions.get(i.id);return normalizeItem(i)});return items}
@@ -149,33 +158,62 @@ function buildAvailableStandardItems(targetKey,groupTitle,category,roomId){
  const source=typeof window.__TERAJU_GET_BUILD_ITEMS==='function'?window.__TERAJU_GET_BUILD_ITEMS():[];
  const canonical=Array.isArray(source)?source:[];
  if(!key||!group)return[];
- const parts=key.split(':').filter(Boolean);
- let hierarchy=parts.slice(1).join(' / ').trim().toUpperCase();
 
- // Bathroom items are room-scoped in BuildPlanner's canonical engine.
- // The rendered budget therefore uses the room label as its target key
- // (e.g. architecture:Bathroom 1), while the master hierarchy is BATHROOM.
+ /*
+  * The budget renderer and the Global Calculation Rules do not use one
+  * universal "last path segment = item" convention.  For example:
+  *   PRELIMINARIES / Building Plan / Submission -> Building Plan
+  *   ELECTRICAL / MAIN BUILDING / POWER POINT    -> MAIN BUILDING / POWER POINT
+  *   DOORS / Type 1 Single Leaf                 -> DOORS / Type 1 Single Leaf
+  *   EXTERNAL WORK / MAIN BUILDING / Water Tank -> MAIN BUILDING
+  *
+  * Build the same hierarchy signature from the canonical master path that
+  * renderBudget() exposes, then compare it with the rendered target key.
+  * This keeps every group on one source-of-truth path instead of applying
+  * a group-specific "pop the last segment" guess.
+  */
+ const targetParts=key.split(':').map(v=>String(v||'').trim()).filter(Boolean).slice(1);
  const roomType=String(document.getElementById(String(roomId||''))?.querySelector('.room-type')?.value||'').trim().toLowerCase();
- if(group==='ARCHITECTURES'&&roomType==='bathroom')hierarchy='BATHROOM';
+
+ const normalize=parts=>parts.map(v=>String(v||'').trim().toUpperCase()).filter(Boolean);
+
+ let targetHierarchy=normalize(targetParts);
+ if(group==='EXTERNAL WORK'&&targetHierarchy[0]==='EXTERNAL WORK')targetHierarchy=targetHierarchy.slice(1);
+ if(group==='ARCHITECTURES'&&roomType==='bathroom')targetHierarchy=['BATHROOM'];
+
+ const canonicalHierarchy=(item)=>{
+   const path=normalize(String(item?.masterPath||'').split('/'));
+   if(!path.length)return[];
+   if(group==='EXTERNAL WORK')return path.slice(0,1);
+   if(group==='ARCHITECTURES'&&path[0]==='BATHROOM')return path.slice(0,1);
+   return path.slice(0,2);
+ };
 
  const seen=new Set();
  const items=[];
  canonical.forEach(item=>{
+   if(Boolean(item?.manual)||/^manual-/i.test(String(item?.id||'')))return;
    const itemGroup=String(item?.group||'').trim().toUpperCase();
    if(itemGroup!==group)return;
-   const itemMasterPath=String(item?.masterPath||'').trim();
-   const path=itemMasterPath.split('/').map(value=>value.trim()).filter(Boolean);
-   if(path.length&&path[0].toUpperCase()===group)path.shift();
-   if(path.length>1)path.pop();
-   const itemHierarchy=path.join(' / ').trim().toUpperCase();
-   if(itemHierarchy!==hierarchy)return;
+
+   const itemRoomId=String(item?.roomId||'project');
+   if(roomId&&String(roomId)!=='project'&&itemRoomId!=='project'&&itemRoomId!==String(roomId))return;
+
+   const itemHierarchy=canonicalHierarchy(item);
+   if(targetHierarchy.length&&(
+     itemHierarchy.length!==targetHierarchy.length ||
+     itemHierarchy.some((value,index)=>value!==targetHierarchy[index])
+   ))return;
+
    const id=String(item?.id||'');
-   const unique=id||String(item?.description||'');
-   if(!unique||seen.has(unique))return;
+   const masterPath=String(item?.masterPath||'').trim();
+   const unique=(itemRoomId!=='project'?itemRoomId+'|':'')+masterPath;
+   if(!masterPath||seen.has(unique))return;
    seen.add(unique);
+
    items.push({
      id,
-     masterPath:itemMasterPath,
+     masterPath,
      description:String(item?.description||'').trim(),
      unit:String(item?.unit||'ls').trim()||'ls',
      rate:normRate(item?.rate),
@@ -222,7 +260,8 @@ window.saveNewBudgetItem=function(targetKey,groupTitle,category,roomId,aid){
  const groupMap={preliminaries:'PRELIMINARIES',structures:'STRUCTURES',architecture:'ARCHITECTURES',electrical:'ELECTRICAL','doors-windows':'DOORS & WINDOWS','external-work':'EXTERNAL WORK'};
  const group=groupMap[cat]||String(category||'').toUpperCase();
  if(selected?.excludedId&&typeof excludedItems!=='undefined'){excludedItems.delete(selected.excludedId);refresh();saveState();return}
- let desc='',unit='ls',qty=1,rate=0,masterPath=canonicalManualMasterPath({targetKey,group,groupTitle});
+ const roomType=String(document.getElementById(String(roomId||''))?.querySelector('.room-type')?.value||'').trim().toLowerCase();
+ let desc='',unit='ls',qty=1,rate=0,masterPath=canonicalManualMasterPath({targetKey,group,groupTitle,roomId,roomType});
  if(isNew){
    desc=String(document.getElementById(aid+'-desc')?.value||'').trim();
    unit=String(document.getElementById(aid+'-unit')?.value||'ls').trim()||'ls';
