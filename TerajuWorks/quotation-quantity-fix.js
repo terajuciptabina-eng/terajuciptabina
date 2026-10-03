@@ -187,7 +187,10 @@ window.generateConstructionBudget=async function(options){
          if(!generateButton) throw new Error('Generate Cost Estimate button not found.');
          window.__TERAJU_PREVIEW_ONLY=true;
          try{
-           generateButton.click();
+           const result=typeof generateButton.onclick==='function'
+             ? generateButton.onclick()
+             : window.generateQuotation('simple');
+           if(result && typeof result.then==='function') await result;
          }finally{
            window.__TERAJU_PREVIEW_ONLY=false;
          }
