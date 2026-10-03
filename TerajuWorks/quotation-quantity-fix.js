@@ -93,26 +93,7 @@ c.querySelectorAll('textarea').forEach(t=>{t.style.overflow='hidden';t.style.res
 function qData(){const all=getMasterItems().filter(i=>typeof excludedItems==='undefined'||!excludedItems.has(i.id)),rs=rooms(),d={allItems:all,rooms:rs,prelim:all.filter(i=>i.category==='preliminaries'),structures:all.filter(i=>i.category==='structures'),electrical:all.filter(i=>i.category==='electrical'),doorsWindows:all.filter(i=>i.category==='doors-windows'),externalWork:all.filter(i=>i.category==='external-work'),architecture:all.filter(i=>i.category==='architecture'),archByRoom:{},roomSubtotals:{},total:all.reduce((s,i)=>s+N(i.amount),0)};rs.forEach(r=>{d.archByRoom[r.roomId]=d.architecture.filter(i=>i.roomId===r.roomId);d.roomSubtotals[r.roomId]=d.archByRoom[r.roomId].reduce((s,i)=>s+N(i.amount),0)});return d}
 
 async function main(){if(document.readyState==='loading')await new Promise(r=>document.addEventListener('DOMContentLoaded',r,{once:true}));let attempts=0;while(attempts<3){try{await load();break}catch(e){attempts++;console.error('[TERAJU MASTER LOAD]',e);if(attempts>=3)throw e;await new Promise(r=>setTimeout(r,700))}}const isBuild=/buildplanner-v2\.html$/i.test(location.pathname),isRenovation=/renovationplanner-v2\.html$/i.test(location.pathname);window.__TERAJU_MASTER_RULE_GATE_READY=true;
-window.__TERAJU_GET_BUILD_STANDARD_ITEMS=function(group,hierarchy){
-  const wanted=String(group||'').trim().toUpperCase();
-  const levels=(Array.isArray(hierarchy)?hierarchy:String(hierarchy||'').split('/')).map(v=>String(v||'').trim().toUpperCase()).filter(Boolean);
-  const out=[];
-  if(!(RULES instanceof Map))return out;
-  for(const [path,r] of RULES){
-    const cleanPath=String(path||'').trim();
-    if(!cleanPath||String(r?.[0]||'').trim().toUpperCase()!==wanted)continue;
-    const parts=cleanPath.split('/').map(v=>String(v||'').trim()).filter(Boolean);
-    if(levels.length&&!levels.every(v=>parts.some(part=>part.toUpperCase()===v)))continue;
-    out.push({
-      id:'master-'+NOR(cleanPath).replace(/\\s+/g,'-'),
-      masterPath:cleanPath,
-      description:String(r?.[2]||cleanPath),
-      unit:String(r?.[6]||'ls'),
-      rate:rate(cleanPath)
-    });
-  }
-  return out.sort((x,y)=>String(x.description).localeCompare(String(y.description)));
-};window.__TERAJU_MASTER_QDATA=qData;if(isBuild){window.getAllItems=getMasterItems;window.__TERAJU_GET_BUILD_ITEMS=getMasterItems;window.getCurrentQuotationData=qData;window.renderConstructionBudget=renderBudget;
+window.__TERAJU_MASTER_QDATA=qData;if(isBuild){window.getAllItems=getMasterItems;window.__TERAJU_GET_BUILD_ITEMS=getMasterItems;window.getCurrentQuotationData=qData;window.renderConstructionBudget=renderBudget;
 window.__TERAJU_BUILD_BUDGET_GENERATED=false;
 window.showBuildBudgetPending=function(){
   const c=document.getElementById('constructionBudgetContent');
@@ -161,17 +142,43 @@ function targetId(v){return String(v||'').replace(/[^a-zA-Z0-9_-]+/g,'-')}
 
 window.deleteBudgetItem=function(id){if(!document.body.classList.contains('contractor-mode'))return;const sid=String(id||'');if(!sid)return;const item=(typeof window.getAllItems==='function'?window.getAllItems():[]).find(x=>String(x.id)===sid);const label=item?.description||'Item';if(!window.confirm(`Delete this item?\\n\\n${label}`))return;if(sid.startsWith('manual-')&&typeof manualItems!=='undefined'){for(const [k,list] of manualItems.entries()){const next=(list||[]).filter(x=>String(x.id)!==sid);if(next.length!==list.length)manualItems.set(k,next)}}else if(typeof excludedItems!=='undefined'){excludedItems.add(sid)}if(typeof window.updateEstimate==='function')window.updateEstimate();if(typeof window.generateConstructionBudget==='function')window.generateConstructionBudget();if(typeof saveContractorState==='function')saveContractorState()};
 function buildAvailableStandardItems(targetKey,groupTitle,category){
+ const key=String(targetKey||'').trim();
  const cat=String(category||'').toLowerCase();
- const targetParts=String(targetKey||'').split(':').map(v=>String(v||'').trim()).filter(Boolean);
  const groupMap={preliminaries:'PRELIMINARIES',structures:'STRUCTURES',architecture:'ARCHITECTURES',electrical:'ELECTRICAL','doors-windows':'DOORS & WINDOWS','external-work':'EXTERNAL WORK'};
- const group=groupMap[cat]||String(targetParts[0]||category||'').toUpperCase();
- const hierarchy=targetParts.slice(1);
- const source=typeof window.__TERAJU_GET_BUILD_STANDARD_ITEMS==='function'
-   ?window.__TERAJU_GET_BUILD_STANDARD_ITEMS(group,hierarchy):[];
- return source.map(item=>{
-   const id=String(item.id||'');
-   return {...item,category:cat,groupKey:targetKey,groupTitle:String(groupTitle||group),excludedId:typeof excludedItems!=='undefined'&&excludedItems.has(id)?id:''};
+ const group=groupMap[cat]||'';
+ const source=typeof window.__TERAJU_GET_BUILD_ITEMS==='function'?window.__TERAJU_GET_BUILD_ITEMS():[];
+ const canonical=Array.isArray(source)?source:[];
+ if(!key||!group)return[];
+ const parts=key.split(':').filter(Boolean);
+ const hierarchy=parts.slice(1).join(' / ').trim().toUpperCase();
+ const seen=new Set();
+ const items=[];
+ canonical.forEach(item=>{
+   const itemGroup=String(item?.group||'').trim().toUpperCase();
+   if(itemGroup!==group)return;
+   const itemMasterPath=String(item?.masterPath||'').trim();
+   const path=itemMasterPath.split('/').map(value=>value.trim()).filter(Boolean);
+   if(path.length&&path[0].toUpperCase()===group)path.shift();
+   if(path.length>1)path.pop();
+   const itemHierarchy=path.join(' / ').trim().toUpperCase();
+   if(itemHierarchy!==hierarchy)return;
+   const id=String(item?.id||'');
+   const unique=id||String(item?.description||'');
+   if(!unique||seen.has(unique))return;
+   seen.add(unique);
+   items.push({
+     id,
+     masterPath:itemMasterPath,
+     description:String(item?.description||'').trim(),
+     unit:String(item?.unit||'ls').trim()||'ls',
+     rate:normRate(item?.rate),
+     category:cat,
+     groupKey:key,
+     groupTitle:String(groupTitle||group),
+     excludedId:typeof excludedItems!=='undefined'&&excludedItems.has(id)?id:''
+   });
  });
+ return items.filter(item=>item.description);
 }
 function buildStandardItemOptions(targetKey,groupTitle,category){
  const items=buildAvailableStandardItems(targetKey,groupTitle,category);
