@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "contractor",
+  "contractorId": "CTR-20261003-32NT",
+  "profile": {
+    "name": "BRACS EMPIRE",
+    "email": "bracs_empire169@hotmail.com",
+    "phone": "01112114973"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-10-03T06:49:28.168Z",
+  "updatedAt": "2026-10-03T06:49:28.168Z"
+}
