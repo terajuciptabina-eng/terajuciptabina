@@ -1,0 +1,94 @@
+name: Automatic Development Log
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  development-log:
+    if: >-
+      github.event.head_commit != null &&
+      contains(github.event.head_commit.message, 'Development-Log: true')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Append meaningful development update
+        uses: actions/github-script@v8
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const message = context.payload.head_commit.message || '';
+            const lines = message.split(/\r?\n/);
+
+            function trailer(name, fallback = '') {
+              const prefix = name.toLowerCase() + ':';
+              const line = lines.find(line => line.trim().toLowerCase().startsWith(prefix));
+              return line ? line.trim().slice(prefix.length).trim() : fallback;
+            }
+
+            const enabled = trailer('Development-Log').toLowerCase() === 'true';
+            if (!enabled) return;
+
+            const title = trailer('Dev-Title');
+            const module = trailer('Dev-Module', 'General');
+            const status = trailer('Dev-Status', 'Completed');
+            const summary = trailer('Dev-Summary');
+            const details = trailer('Dev-Details');
+
+            if (!title || !summary) {
+              core.setFailed('Meaningful development commit requires Dev-Title and Dev-Summary.');
+              return;
+            }
+
+            const path = 'data/development-log.json';
+            const { data: file } = await github.rest.repos.getContent({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              path,
+              ref: context.ref.replace('refs/heads/', '')
+            });
+
+            const raw = Buffer.from(file.content, 'base64').toString('utf8');
+            const items = JSON.parse(raw);
+            const date = context.payload.head_commit.timestamp
+              ? context.payload.head_commit.timestamp.slice(0, 10)
+              : new Date().toISOString().slice(0, 10);
+
+            const id = `DEV-${date.replaceAll('-', '')}-${context.sha.slice(0, 7)}`;
+            if (items.some(item => item.id === id || item.commit === context.sha)) {
+              core.info('Development log already contains this commit.');
+              return;
+            }
+
+            items.push({
+              id,
+              date,
+              title,
+              module,
+              status,
+              summary,
+              details,
+              commit: context.sha,
+              updatedAt: new Date().toISOString()
+            });
+
+            items.sort((a, b) => {
+              const dateCompare = String(b.date || '').localeCompare(String(a.date || ''));
+              if (dateCompare !== 0) return dateCompare;
+              return String(b.id || '').localeCompare(String(a.id || ''));
+            });
+
+            await github.rest.repos.createOrUpdateFileContents({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              path,
+              message: `docs: auto-log development ${title}`,
+              content: Buffer.from(JSON.stringify(items, null, 2) + '\n').toString('base64'),
+              sha: file.sha,
+              branch: context.ref.replace('refs/heads/', '')
+            });
+
+            core.info(`Development log created: ${id}`);
