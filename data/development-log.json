@@ -88,6 +88,17 @@
     "updatedAt": "2026-10-03T20:40:53.776Z"
   },
   {
+    "id": "DEV-20261004-6d26e83",
+    "date": "2026-10-04",
+    "title": "investor: sync overview with current Admin account data",
+    "module": "Investor",
+    "status": "Completed",
+    "summary": "investor: sync overview with current Admin account data",
+    "details": "Automatic entry from commit 6d26e83. Changed files: investor/index.html.",
+    "commit": "6d26e83887cfe9a2fd601c5657f8faa46ae5c80e",
+    "updatedAt": "2026-10-03T20:44:26.623Z"
+  },
+  {
     "id": "DEV-20261004-351eacf",
     "date": "2026-10-04",
     "title": "ui: move development log to bottom of admin tools",
