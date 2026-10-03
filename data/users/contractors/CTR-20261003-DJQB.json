@@ -7,7 +7,12 @@
   "profile": {
     "name": "Irfan",
     "email": "m.irfanhairuddin@gmail.com",
-    "phone": "0103447325"
+    "phone": "0103447325",
+    "registrationNo": "",
+    "address": "",
+    "website": "",
+    "logoDataUrl": "",
+    "contractorProfileConfigured": true
   },
   "auth": {
     "mode": "temporary-id",
@@ -19,5 +24,5 @@
     "renovation": []
   },
   "createdAt": "2026-10-03T05:38:08.824Z",
-  "updatedAt": "2026-10-03T05:38:08.824Z"
+  "updatedAt": "2026-10-03T05:38:43.263Z"
 }
