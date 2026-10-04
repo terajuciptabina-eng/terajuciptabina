@@ -42,7 +42,7 @@ export default async function handler(req, res) {
   function revisionCode(value) { const n = Number(value); return `R${String(Number.isFinite(n) && n >= 0 ? n : 0).padStart(2, '0')}`; }
   function canonicalEstimateNumber(value, plannerType, type) {
     const base = estimateBase(value);
-    return base ? displayEstimateNumber(base, plannerType, type) : '';
+    return base ? displayEstimateNumber(base, plannerType) : '';
   }
   function revisionComparable(value, plannerType) {
     const copy = JSON.parse(JSON.stringify(value || {}));
@@ -81,7 +81,7 @@ export default async function handler(req, res) {
   function projectIdentity(record) { const state = record?.plannerState || {}; return { customer: String(record?.client?.name || state.customerName || '').trim().toLowerCase(), location: String(record?.project?.location || state.projectLocation || '').trim().toLowerCase(), area: Number(record?.project?.builtUpArea ?? state.builtUpArea ?? 0) || 0 }; }
   function sameProjectIdentity(a, b) { const x = projectIdentity(a), y = projectIdentity(b); return (!x.customer || !y.customer || x.customer === y.customer) && (!x.location || !y.location || x.location === y.location) && (!x.area || !y.area || x.area === y.area); }
   function displayQuotationNumber(baseNumber) { return `Q${String(baseNumber).padStart(3, '0')}`; }
-  function displayEstimateNumber(number, plannerType, type) { const suffix = quotationType(type) === 'detail' ? 'D' : 'S'; return `EST-${plannerType === 'renovation' ? 'REN' : 'BLD'}-${String(Math.max(1, number)).padStart(3, '0')}-${suffix}`; }
+  function displayEstimateNumber(number, plannerType) { return `EST-${plannerType === 'renovation' ? 'REN' : 'BLD'}-${String(Math.max(1, number)).padStart(3, '0')}`; }
   try {
     const source = req.method === 'GET' ? req.query : (req.body || {}); const role = String(source?.role || '').toLowerCase(); const id = String(source?.id || '').trim().toUpperCase(); const plannerType = String(source?.plannerType || 'build').toLowerCase();
     if (!validRole(role) || !id || !validPlanner(plannerType)) return res.status(400).json({ message: 'Invalid role, id or planner type.' });
@@ -100,7 +100,7 @@ export default async function handler(req, res) {
       const baseNumber = nextBaseNumber(current.record, plannerType);
       const newProjectId = `${plannerType === 'renovation' ? 'PRJ-REN' : 'PRJ-BLD'}-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).slice(2, 7).toUpperCase()}`;
       const estimateBaseNumber = nextEstimateNumber(current.record, plannerType);
-      const estimateNumber = displayEstimateNumber(estimateBaseNumber, plannerType, type);
+      const estimateNumber = displayEstimateNumber(estimateBaseNumber, plannerType);
       const newQuotationId = `QT-${plannerType === 'renovation' ? 'REN' : 'BLD'}-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).slice(2,7).toUpperCase()}`;
       const duplicate = JSON.parse(JSON.stringify(sourceQuotation));
       duplicate.quotationId = newQuotationId;
@@ -158,7 +158,7 @@ export default async function handler(req, res) {
       const oldEstimateBase = estimateBase(old?.estimateNumber);
       normalized.estimateNumber = old?.estimateNumber
         ? displayEstimateNumber(oldEstimateBase || nextEstimateNumber(current.record, plannerType), plannerType, type)
-        : (normalized.estimateNumber ? displayEstimateNumber(estimateBase(normalized.estimateNumber), plannerType, type) : displayEstimateNumber(nextEstimateNumber(current.record, plannerType), plannerType, type));
+        : (normalized.estimateNumber ? displayEstimateNumber(estimateBase(normalized.estimateNumber), plannerType) : displayEstimateNumber(nextEstimateNumber(current.record, plannerType), plannerType, type));
       normalized.projectId = old?.projectId || old?.plannerState?.projectId || normalized.projectId;
       normalized.plannerState = { ...(normalized.plannerState || {}), projectId: normalized.projectId, quotationType: type };
       normalized.createdAt = old?.createdAt || normalized.createdAt;
@@ -207,8 +207,8 @@ export default async function handler(req, res) {
         normalized.quotationId = projectMatch.quotationId;
         normalized.quotationNumber = projectMatch.quotationNumber || displayQuotationNumber(baseSequence(projectMatch.quotationNumber) || nextBaseNumber(current.record, plannerType));
         normalized.estimateNumber = projectMatch.estimateNumber
-          ? displayEstimateNumber(estimateBase(projectMatch.estimateNumber) || nextEstimateNumber(current.record, plannerType), plannerType, incomingType)
-          : displayEstimateNumber(nextEstimateNumber(current.record, plannerType), plannerType, incomingType);
+          ? displayEstimateNumber(estimateBase(projectMatch.estimateNumber) || nextEstimateNumber(current.record, plannerType), plannerType)
+          : displayEstimateNumber(nextEstimateNumber(current.record, plannerType), plannerType);
         normalized.projectId = projectMatch.projectId || incomingProjectId;
         normalized.createdAt = projectMatch.createdAt || normalized.createdAt;
         normalized.plannerState = { ...(normalized.plannerState || {}), projectId: normalized.projectId, quotationType: quotationType(normalized.quotationType) };
@@ -240,7 +240,7 @@ export default async function handler(req, res) {
           : nextEstimateNumber(current.record, plannerType);
         normalized.quotationId = `QT-${plannerType === 'renovation' ? 'REN' : 'BLD'}-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).slice(2, 7).toUpperCase()}`;
         normalized.quotationNumber = displayQuotationNumber(baseNumber);
-        normalized.estimateNumber = displayEstimateNumber(estimateNumber, plannerType, incomingType);
+        normalized.estimateNumber = displayEstimateNumber(estimateNumber, plannerType);
         normalized.projectId = incomingProjectId || (sameProject?.projectId || ((plannerType === 'renovation' ? 'PRJ-REN' : 'PRJ-BLD') + '-' + Date.now().toString(36).toUpperCase() + '-' + Math.random().toString(36).slice(2, 7).toUpperCase()));
         normalized.plannerState = { ...(normalized.plannerState || {}), projectId: normalized.projectId, quotationType: incomingType };
         normalized.revision = { current: 'R00', history: [] };
