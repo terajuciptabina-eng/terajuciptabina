@@ -74,7 +74,7 @@ th{font-size:10px;text-transform:uppercase;color:#6b7280;background:#fafafa}
       <input id="q" placeholder="Search ID, name, email or phone">
       <select id="role"><option value="">All accounts</option><option value="homeowner">Homeowner</option><option value="contractor">Contractor</option></select>
       <div></div>
-      <button id="load" type="button">Load database</button>
+      <div style="display:flex;gap:8px;flex-wrap:wrap"><button id="load" type="button">Load database</button><button id="exportExcel" type="button" style="background:#fff;color:#172033;border-color:#cbd5e1">Export Excel</button></div>
     </div>
     <div id="status" class="status"></div>
   </section>
@@ -88,10 +88,10 @@ th{font-size:10px;text-transform:uppercase;color:#6b7280;background:#fafafa}
     <div class="profile-actions"><button id="profileCancel" type="button" style="background:#f8fafc;color:#374151;border-color:#e5e7eb">Close</button><button id="profileSave" class="profile-save" type="submit">Save Changes</button></div>
   </form>
 </div></div>
-<script src="shared/admin-loading.js"></script><script>
+<script src="shared/admin-loading.js"></script><script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script><script>
 const API='https://terajuciptabina.vercel.app/api/admin';
 const KEY='teraju.admin.key',USER='teraju.admin.username';
-const q=document.getElementById('q'),role=document.getElementById('role'),status=document.getElementById('status'),result=document.getElementById('result');
+const q=document.getElementById('q'),role=document.getElementById('role'),status=document.getElementById('status'),result=document.getElementById('result');let currentAccounts=[];
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function adminSession(){
   const username=sessionStorage.getItem(USER)||'';
@@ -100,6 +100,28 @@ function adminSession(){
   return {username,password};
 }
 function adminHeaders(){const s=adminSession();return {'X-Admin-Username':s.username,'X-Admin-Password':s.password};}
+function exportExcel(){
+  if(!currentAccounts.length){status.textContent='No records available to export.';return;}
+  if(typeof XLSX==='undefined'){status.textContent='Excel export library is unavailable. Please refresh and try again.';return;}
+  const rows=currentAccounts.map(x=>{
+    const nums=Array.isArray(x.estimateNumbers)?x.estimateNumbers.filter(Boolean):[];
+    return {
+      'Account ID':x.id||'',
+      'Role':x.role||'',
+      'Name':x.name||'',
+      'Email':x.email||'',
+      'Phone':x.phone||'',
+      'Estimate Number':nums.join(', '),
+      'Sign Up':x.createdAt||''
+    };
+  });
+  const ws=XLSX.utils.json_to_sheet(rows);
+  ws['!cols']=[{wch:22},{wch:14},{wch:28},{wch:34},{wch:20},{wch:32},{wch:24}];
+  const wb=XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb,ws,'Records');
+  XLSX.writeFile(wb,'terajuworks-admin-records.xlsx');
+  status.textContent='Exported '+rows.length+' record(s) to Excel.';
+}
 async function load(){
   result.classList.remove('hidden');
   const stopLoading=window.__twAdminLoading.start(result,'Loading database…');
@@ -109,7 +131,7 @@ async function load(){
     const r=await fetch(API+'?'+p,{headers:adminHeaders(),cache:'no-store'});
     let d={};try{d=await r.json()}catch{}
     if(!r.ok)throw new Error(d.message||'Unable to load database.');
-    const a=(d.accounts||[]).sort((x,y)=>Date.parse(y.createdAt||'')-Date.parse(x.createdAt||''));
+    const a=(d.accounts||[]).sort((x,y)=>Date.parse(y.createdAt||'')-Date.parse(x.createdAt||''));currentAccounts=a;
     result.classList.remove('hidden');
     result.innerHTML='<div class="eyebrow">Records</div><h2>'+a.length+' account(s)</h2><div class="table"><table><thead><tr><th>Account</th><th>Profile</th><th>Estimate Number</th><th>Sign Up</th><th>Actions</th></tr></thead><tbody>'+a.map(x=>{const nums=Array.isArray(x.estimateNumbers)?x.estimateNumbers.filter(Boolean):[];return '<tr><td><b>'+esc(x.id||'-')+'</b><br><span class="muted">'+esc(x.role||'-')+'</span></td><td>'+esc(x.name||'-')+'<br>'+esc(x.email||'-')+'<br>'+esc(x.phone||'-')+'</td><td>'+(nums.length?nums.map(n=>'<span class="tag estimate-number">'+esc(n)+'</span>').join(' '):'—')+'</td><td>'+esc(x.createdAt||'-')+'</td><td class="actions"><a href="#" data-view-id="'+esc(x.id||'')+'" data-view-role="'+esc(x.role||'')+'">View / Edit</a> <button data-id="'+esc(x.id||'')+'" data-role="'+esc(x.role||'')+'" title="Delete account">×</button></td></tr>'}).join('')+'</tbody></table></div>';
     result.querySelectorAll('.actions button').forEach(b=>b.onclick=()=>del(b));
@@ -178,7 +200,7 @@ document.getElementById('profileClose').onclick=closeProfile;document.getElement
 profileModal.onclick=e=>{if(e.target===profileModal)closeProfile()};
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeProfile()});
 
-document.getElementById('load').onclick=load;
+document.getElementById('load').onclick=load;document.getElementById('exportExcel').onclick=exportExcel;
 q.addEventListener('keydown',e=>{if(e.key==='Enter')load()});
 role.addEventListener('change',load);
 load();
