@@ -143,6 +143,17 @@
     "updatedAt": "2026-10-04T17:09:41.720Z"
   },
   {
+    "id": "DEV-20261005-58f631b",
+    "date": "2026-10-05",
+    "title": "Restore estimate number source rule",
+    "module": "Admin / Rate Management",
+    "status": "Completed",
+    "summary": "Restore estimate number source rule",
+    "details": "Automatic entry from commit 58f631b. Changed files: TerajuWorks/admin-database.html.",
+    "commit": "58f631bdd99da2c1173e7aaa791bb0c10ffb4f14",
+    "updatedAt": "2026-10-04T18:14:56.242Z"
+  },
+  {
     "id": "DEV-20261005-56a3ed4",
     "date": "2026-10-05",
     "title": "Canonicalize Cost Estimate numbers by Simple Detail type",
