@@ -330,6 +330,17 @@
     "updatedAt": "2026-10-03T20:40:36.326Z"
   },
   {
+    "id": "DEV-20261004-32ff2a7",
+    "date": "2026-10-04",
+    "title": "Fix Admin Quotation customer name source",
+    "module": "Cost Estimate",
+    "status": "Completed",
+    "summary": "Fix Admin Quotation customer name source",
+    "details": "Automatic entry from commit 32ff2a7. Changed files: TerajuWorks/admin-quotation.html.",
+    "commit": "32ff2a7b0c952bb0dd669c9057af38b76924aac0",
+    "updatedAt": "2026-10-04T09:44:21.306Z"
+  },
+  {
     "id": "DEV-20261004-2edd241",
     "date": "2026-10-04",
     "title": "investor: sync deck with current Admin database",
