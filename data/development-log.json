@@ -286,6 +286,17 @@
     "updatedAt": "2026-10-04T11:08:53.413Z"
   },
   {
+    "id": "DEV-20261004-ad6f356",
+    "date": "2026-10-04",
+    "title": "Refactor Contractor brand asset to logo-only source",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Refactor Contractor brand asset to logo-only source",
+    "details": "Automatic entry from commit ad6f356. Changed files: images/terajuworks-contractor.svg.",
+    "commit": "ad6f356ddeb395c632939f0b98836b05d0477262",
+    "updatedAt": "2026-10-04T11:36:31.739Z"
+  },
+  {
     "id": "DEV-20261004-a98342e",
     "date": "2026-10-04",
     "title": "Save renovation quotation Q001 (EST-REN-001)",
