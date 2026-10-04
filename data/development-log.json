@@ -429,6 +429,17 @@
     "updatedAt": "2026-10-04T10:11:05.910Z"
   },
   {
+    "id": "DEV-20261004-805a2a5",
+    "date": "2026-10-04",
+    "title": "Use canonical brand lockup on workspace entry",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Use canonical brand lockup on workspace entry",
+    "details": "Automatic entry from commit 805a2a5. Changed files: TerajuWorks/homeowner.html.",
+    "commit": "805a2a567c5094d779538fd272abdad094766f85",
+    "updatedAt": "2026-10-04T11:31:43.797Z"
+  },
+  {
     "id": "DEV-20261004-7fc69ff",
     "date": "2026-10-04",
     "title": "Add TERAJUWORKS motto to Admin Quotation",
