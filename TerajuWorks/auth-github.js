@@ -64,7 +64,8 @@
     }, 5000);
   }
   function openSignupWhatsApp(record, name) {
-    const recipient = normalizePhone(phoneInput?.value || '').replace(/^0/, '60').replace(/^\+/, '');
+    const phone = record?.profile?.phone || phoneInput?.value || '';
+    const recipient = normalizePhone(phone).replace(/^0/, '60').replace(/^\+/, '');
     const id = record?.[idKey] || '';
     const label = isHomeowner ? 'HOMEOWNER' : 'CONTRACTOR';
     const workspaceUrl = isHomeowner
