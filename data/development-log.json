@@ -253,6 +253,17 @@
     "updatedAt": "2026-10-04T03:54:01.219Z"
   },
   {
+    "id": "DEV-20261004-13b4987",
+    "date": "2026-10-04",
+    "title": "Preserve project identity across Simple and Detail estimates",
+    "module": "Cost Estimate",
+    "status": "Completed",
+    "summary": "Preserve project identity across Simple and Detail estimates",
+    "details": "Automatic entry from commit 13b4987. Changed files: api/quotations.js.",
+    "commit": "13b4987030da52803ef314301550df54f0a3e5c4",
+    "updatedAt": "2026-10-04T08:26:12.912Z"
+  },
+  {
     "id": "DEV-20261004-02",
     "date": "2026-10-04",
     "title": "RM/sqft source-level implementation",
