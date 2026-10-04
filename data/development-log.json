@@ -88,6 +88,17 @@
     "updatedAt": "2026-10-04T03:53:30.275Z"
   },
   {
+    "id": "DEV-20261004-945964f",
+    "date": "2026-10-04",
+    "title": "Fix Cost Estimate Simple/Detail persistence separation",
+    "module": "Cost Estimate",
+    "status": "Completed",
+    "summary": "Fix Cost Estimate Simple/Detail persistence separation",
+    "details": "Automatic entry from commit 945964f. Changed files: api/quotations.js.",
+    "commit": "945964f62b8705d4566a3b008bb9adb5f9631d91",
+    "updatedAt": "2026-10-04T08:25:22.003Z"
+  },
+  {
     "id": "DEV-20261004-87996d7",
     "date": "2026-10-04",
     "title": "investor: align overview with current product architecture",
