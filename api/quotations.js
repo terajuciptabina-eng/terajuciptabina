@@ -86,7 +86,7 @@ export default async function handler(req, res) {
     const source = req.method === 'GET' ? req.query : (req.body || {}); const role = String(source?.role || '').toLowerCase(); const id = String(source?.id || '').trim().toUpperCase(); const plannerType = String(source?.plannerType || 'build').toLowerCase();
     if (!validRole(role) || !id || !validPlanner(plannerType)) return res.status(400).json({ message: 'Invalid role, id or planner type.' });
     const current = await readRecord(role, id); if (!current.record) return res.status(current.status === 404 ? 404 : 502).json({ message: current.status === 404 ? 'Account not found.' : 'Unable to read account record.' });
-    if (req.method === 'GET') { const seenProjects = new Set(); const quotations = plannerList(current.record, plannerType).map(q => { const copy = JSON.parse(JSON.stringify(q || {})); const type = quotationType(copy.quotationType || copy.plannerState?.quotationType); if (copy.estimateNumber) copy.estimateNumber = canonicalEstimateNumber(copy.estimateNumber, plannerType, type); if (copy.plannerState && typeof copy.plannerState === 'object' && copy.plannerState.estimateNumber) copy.plannerState.estimateNumber = canonicalEstimateNumber(copy.plannerState.estimateNumber, plannerType, type); return copy; }).filter(q => { const key = String(q?.projectId || q?.plannerState?.projectId || q?.quotationId || ''); if (!key || seenProjects.has(key)) return false; seenProjects.add(key); return true; }); return res.status(200).json({ role, id, plannerType, quotations }); }
+    if (req.method === 'GET') { const seenEstimateTypes = new Set(); const quotations = plannerList(current.record, plannerType).map(q => { const copy = JSON.parse(JSON.stringify(q || {})); const type = quotationType(copy.quotationType || copy.plannerState?.quotationType); if (copy.estimateNumber) copy.estimateNumber = canonicalEstimateNumber(copy.estimateNumber, plannerType, type); if (copy.plannerState && typeof copy.plannerState === 'object' && copy.plannerState.estimateNumber) copy.plannerState.estimateNumber = canonicalEstimateNumber(copy.plannerState.estimateNumber, plannerType, type); copy.quotationType = type; if (copy.plannerState && typeof copy.plannerState === 'object') copy.plannerState.quotationType = type; return copy; }).filter(q => { const projectId = String(q?.projectId || q?.plannerState?.projectId || '').trim(); const type = quotationType(q?.quotationType || q?.plannerState?.quotationType); const key = projectId ? projectId + '::' + type : String(q?.quotationId || ''); if (!key || seenEstimateTypes.has(key)) return false; seenEstimateTypes.add(key); return true; }); return res.status(200).json({ role, id, plannerType, quotations }); }
     if (req.method === 'POST') {
       const action = String(source?.action || '').toLowerCase();
       if (action !== 'duplicate') return res.status(400).json({ message: 'Invalid quotation action.' });
@@ -187,8 +187,12 @@ export default async function handler(req, res) {
       list[index] = normalized;
     } else {
       const incomingProjectId = String(normalized.projectId || normalized.plannerState?.projectId || '').trim();
+      const incomingType = quotationType(normalized.quotationType || normalized.plannerState?.quotationType);
       const projectMatches = findProjectQuotations(current.record, plannerType, incomingProjectId);
-      const compatibleMatches = projectMatches.filter(q => sameProjectIdentity(q, normalized));
+      // A project can intentionally have TWO Cost Estimate records: Simple and Detail.
+      // Only reuse an existing record when the estimate presentation type is also the same.
+      // Project identity alone must never collapse Simple into Detail (or vice versa).
+      const compatibleMatches = projectMatches.filter(q => quotationType(q?.quotationType || q?.plannerState?.quotationType) === incomingType && sameProjectIdentity(q, normalized));
       const projectMatch = compatibleMatches[0];
       if (projectMatch) {
         normalized.quotationId = projectMatch.quotationId;
