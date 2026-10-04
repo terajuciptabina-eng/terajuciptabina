@@ -33,6 +33,17 @@
     "updatedAt": "2026-10-04T16:45:29.025Z"
   },
   {
+    "id": "DEV-20261005-2d4ad05",
+    "date": "2026-10-05",
+    "title": "Align Admin navigation with Cost Estimate terminology",
+    "module": "Admin / Rate Management",
+    "status": "Completed",
+    "summary": "Align Admin navigation with Cost Estimate terminology",
+    "details": "Automatic entry from commit 2d4ad05. Changed files: TerajuWorks/admin.html.",
+    "commit": "2d4ad056f2dada3c24a9eb28b7dc626bd6f10c82",
+    "updatedAt": "2026-10-04T17:04:50.894Z"
+  },
+  {
     "id": "DEV-20261004-fc542f7",
     "date": "2026-10-04",
     "title": "Add TERAJUWORKS motto to RenovationPlanner",
