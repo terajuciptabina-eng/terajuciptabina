@@ -792,6 +792,17 @@
     "updatedAt": "2026-10-04T10:49:43.001Z"
   },
   {
+    "id": "DEV-20261004-2363f07",
+    "date": "2026-10-04",
+    "title": "Use tight Contractor brand asset in planner header",
+    "module": "BuildPlanner",
+    "status": "Completed",
+    "summary": "Use tight Contractor brand asset in planner header",
+    "details": "Automatic entry from commit 2363f07. Changed files: TerajuWorks/buildplanner-v2.html.",
+    "commit": "2363f078642ffa75f1eebbfb9127af363f6114f8",
+    "updatedAt": "2026-10-04T11:19:38.925Z"
+  },
+  {
     "id": "DEV-20261004-1fa7708",
     "date": "2026-10-04",
     "title": "Update renovation quotation Q001 (EST-REN-001)",
