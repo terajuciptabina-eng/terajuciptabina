@@ -550,6 +550,17 @@
     "updatedAt": "2026-10-04T03:54:01.219Z"
   },
   {
+    "id": "DEV-20261004-1488582",
+    "date": "2026-10-04",
+    "title": "Standardize BuildPlanner brand lockup",
+    "module": "BuildPlanner",
+    "status": "Completed",
+    "summary": "Standardize BuildPlanner brand lockup",
+    "details": "Automatic entry from commit 1488582. Changed files: TerajuWorks/buildplanner-v2.html.",
+    "commit": "1488582c3c29ad25030b3d2efa641591f99289f0",
+    "updatedAt": "2026-10-04T10:22:49.426Z"
+  },
+  {
     "id": "DEV-20261004-13b4987",
     "date": "2026-10-04",
     "title": "Preserve project identity across Simple and Detail estimates",
