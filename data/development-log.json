@@ -374,6 +374,17 @@
     "updatedAt": "2026-10-04T09:34:28.615Z"
   },
   {
+    "id": "DEV-20261004-1bd488f",
+    "date": "2026-10-04",
+    "title": "Fix Admin Quotation mobile table layout",
+    "module": "Cost Estimate",
+    "status": "Completed",
+    "summary": "Fix Admin Quotation mobile table layout",
+    "details": "Automatic entry from commit 1bd488f. Changed files: TerajuWorks/admin-quotation.html.",
+    "commit": "1bd488fbb00442b50cde47af560f48d911c9848f",
+    "updatedAt": "2026-10-04T09:38:44.161Z"
+  },
+  {
     "id": "DEV-20261004-155174a",
     "date": "2026-10-04",
     "title": "Update build quotation Q001 (EST-BLD-001)",
