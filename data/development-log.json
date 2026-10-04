@@ -803,6 +803,17 @@
     "updatedAt": "2026-10-04T10:10:49.253Z"
   },
   {
+    "id": "DEV-20261004-38c953e",
+    "date": "2026-10-04",
+    "title": "Fix audience brand lockup at source",
+    "module": "RenovationPlanner",
+    "status": "Completed",
+    "summary": "Fix audience brand lockup at source",
+    "details": "Automatic entry from commit 38c953e. Changed files: TerajuWorks/renovationplanner-v2.html.",
+    "commit": "38c953e8e18491edaa4bec2722c0b9dbb9c50ff1",
+    "updatedAt": "2026-10-04T11:37:13.547Z"
+  },
+  {
     "id": "DEV-20261004-3849a57",
     "date": "2026-10-04",
     "title": "Remove Admin brand layout hacks",
