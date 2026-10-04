@@ -242,6 +242,17 @@
     "updatedAt": "2026-10-03T20:40:44.014Z"
   },
   {
+    "id": "DEV-20261004-865c54d",
+    "date": "2026-10-04",
+    "title": "Standardize BuildPlanner Cost Estimate brand lockup",
+    "module": "BuildPlanner",
+    "status": "Completed",
+    "summary": "Standardize BuildPlanner Cost Estimate brand lockup",
+    "details": "Automatic entry from commit 865c54d. Changed files: TerajuWorks/buildplanner-v2.html.",
+    "commit": "865c54d858d9b9b1240d46238ea1a1dc58ffedf9",
+    "updatedAt": "2026-10-04T10:23:13.949Z"
+  },
+  {
     "id": "DEV-20261004-85c3e84",
     "date": "2026-10-04",
     "title": "investor: clarify technology venture ownership structure",
