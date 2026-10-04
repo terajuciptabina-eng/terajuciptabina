@@ -39,6 +39,10 @@
 @media(max-width:767px){.tw-theme .admin-page-logo{width:min(285px,82vw);margin-bottom:16px}}
 
 
+.tw-theme .admin-brand-motto,.tw-theme .admin-page-motto{margin:-9px 0 16px;color:#08766d;font-size:10px;font-weight:900;letter-spacing:.24em;line-height:1.2;text-transform:uppercase}
+.tw-theme.admin-workspace .admin-header-main .admin-page-motto{margin:-8px 0 15px}
+@media(max-width:767px){.tw-theme .admin-brand-motto,.tw-theme .admin-page-motto{font-size:9px;letter-spacing:.2em;margin:-7px 0 14px}.tw-theme.admin-workspace .admin-header-main .admin-page-motto{margin:-7px 0 13px}}
+
 /* TERAJUWORKS ADMIN HEADER SYSTEM — single source of truth */
 .tw-theme.admin-workspace .admin-header{background:linear-gradient(135deg,#e7f2ef 0%,#f3f7f6 52%,#e2eeeb 100%)!important;color:#172033!important;border-bottom:1px solid #d5e2df!important;box-shadow:0 8px 24px rgba(15,23,42,.07)!important;position:relative}
 .tw-theme.admin-workspace .admin-header::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 82% 18%,rgba(25,198,168,.12),transparent 34%),radial-gradient(circle at 12% 90%,rgba(8,118,109,.06),transparent 30%)}
