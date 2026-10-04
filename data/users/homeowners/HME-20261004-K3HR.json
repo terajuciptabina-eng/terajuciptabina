@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "homeowner",
+  "homeownerId": "HME-20261004-K3HR",
+  "profile": {
+    "name": "Ashwin",
+    "email": "akc_cash@yahoo.com",
+    "phone": "0105633299"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-10-04T10:39:49.829Z",
+  "updatedAt": "2026-10-04T10:39:49.830Z"
+}
