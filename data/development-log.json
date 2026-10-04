@@ -99,6 +99,17 @@
     "updatedAt": "2026-10-04T17:57:02.320Z"
   },
   {
+    "id": "DEV-20261005-b24a530",
+    "date": "2026-10-05",
+    "title": "Update Cost Estimate contact CTA — BuildPlanner",
+    "module": "BuildPlanner",
+    "status": "Completed",
+    "summary": "Update Cost Estimate contact CTA — BuildPlanner",
+    "details": "Automatic entry from commit b24a530. Changed files: TerajuWorks/buildplanner-v2.html.",
+    "commit": "b24a53067959833105fb363bfe42ece31b7c4633",
+    "updatedAt": "2026-10-04T20:27:41.769Z"
+  },
+  {
     "id": "DEV-20261005-aa082ab",
     "date": "2026-10-05",
     "title": "Show Cost Estimate preview numbers in Admin Database",
