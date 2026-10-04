@@ -49,6 +49,7 @@
          <div class="history-card-main">
            <div class="history-card-status">
              <span class="rounded-full bg-slate-100 px-2.5 py-1 text-[10px] font-bold tracking-wide text-slate-600">SAVED</span>
+             <span class="rounded-full bg-violet-50 px-2.5 py-1 text-[10px] font-bold tracking-wide text-violet-700">${String(q.quotationType||q.plannerState?.quotationType||'simple').toLowerCase()==='detail'?'DETAIL':'SIMPLE'} COST ESTIMATE</span>
              ${q.contractSnapshot?'<span class="rounded-full bg-emerald-100 px-2.5 py-1 text-[10px] font-bold tracking-wide text-emerald-700">CONTRACT CONFIRMED</span>':'<span class="rounded-full bg-amber-100 px-2.5 py-1 text-[10px] font-bold tracking-wide text-amber-700">ESTIMATE · NOT CONFIRMED</span>'}
            </div>
            <div class="history-card-project">
