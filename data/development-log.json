@@ -473,6 +473,17 @@
     "updatedAt": "2026-10-04T10:11:33.044Z"
   },
   {
+    "id": "DEV-20261004-56271f8",
+    "date": "2026-10-04",
+    "title": "Use canonical TERAJUWORKS brand display",
+    "module": "Cost Estimate",
+    "status": "Completed",
+    "summary": "Use canonical TERAJUWORKS brand display",
+    "details": "Automatic entry from commit 56271f8. Changed files: TerajuWorks/admin-quotation.html.",
+    "commit": "56271f85ca26e0dfa5dc1a543b06555eae8f1d3b",
+    "updatedAt": "2026-10-04T10:53:29.908Z"
+  },
+  {
     "id": "DEV-20261004-47db622",
     "date": "2026-10-04",
     "title": "Create temporary homeowner account HME-20261004-Z93S",
