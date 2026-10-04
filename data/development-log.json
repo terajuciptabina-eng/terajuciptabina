@@ -44,6 +44,17 @@
     "updatedAt": "2026-10-04T17:09:41.720Z"
   },
   {
+    "id": "DEV-20261005-4912b63",
+    "date": "2026-10-05",
+    "title": "Pass estimate type into canonical Cost Estimate number",
+    "module": "Cost Estimate",
+    "status": "Completed",
+    "summary": "Pass estimate type into canonical Cost Estimate number",
+    "details": "Automatic entry from commit 4912b63. Changed files: api/quotations.js.",
+    "commit": "4912b63a6fb4d0f4fc543cd86ee558e32a7d264b",
+    "updatedAt": "2026-10-04T17:24:54.131Z"
+  },
+  {
     "id": "DEV-20261005-4715206",
     "date": "2026-10-05",
     "title": "Create temporary homeowner account HME-20261004-1ZDA",
