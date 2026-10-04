@@ -198,6 +198,17 @@
     "updatedAt": "2026-10-04T17:54:08.231Z"
   },
   {
+    "id": "DEV-20261005-9625454",
+    "date": "2026-10-05",
+    "title": "Fix signup WhatsApp handoff from source",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Fix signup WhatsApp handoff from source",
+    "details": "Automatic entry from commit 9625454. Changed files: TerajuWorks/auth-github.js.",
+    "commit": "96254544741df4ae3437ad41b5fdf8df66ca0cf1",
+    "updatedAt": "2026-10-04T20:57:39.408Z"
+  },
+  {
     "id": "DEV-20261005-959ed27",
     "date": "2026-10-05",
     "title": "Update Cost Estimate contact CTA — RenovationPlanner",
