@@ -99,6 +99,17 @@
     "updatedAt": "2026-10-04T16:45:29.025Z"
   },
   {
+    "id": "DEV-20261005-4076694",
+    "date": "2026-10-05",
+    "title": "Expose canonical Cost Estimate preview numbers in Admin Database",
+    "module": "Admin / Rate Management",
+    "status": "Completed",
+    "summary": "Expose canonical Cost Estimate preview numbers in Admin Database",
+    "details": "Automatic entry from commit 4076694. Changed files: api/admin.js.",
+    "commit": "4076694de62751a4ffb6d8a6752c17bf9213e09d",
+    "updatedAt": "2026-10-04T17:29:38.937Z"
+  },
+  {
     "id": "DEV-20261005-3d001fd",
     "date": "2026-10-05",
     "title": "Assign separate estimate numbers to Simple and Detail previews",
