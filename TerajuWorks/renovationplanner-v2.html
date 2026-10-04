@@ -263,7 +263,7 @@
 .quotation-generator-tip strong{color:#1f2937}
 .quotation-generate-btn{margin-top:10px;width:100%;background:#111827;color:#fff;border:0;border-radius:11px;padding:11px 16px;font-weight:700;cursor:pointer;min-height:44px}
 .quotation-generate-btn:hover{background:#000}
-.quotation-preview-heading{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px}.quotation-brand-motto{display:block;font-size:8px;font-weight:900;letter-spacing:.2em;line-height:1;text-transform:uppercase;color:#08766d;white-space:nowrap}@media(max-width:767px){.quotation-brand-motto{font-size:7px;letter-spacing:.17em}}
+.quotation-preview-heading{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px}.quotation-brand-lockup{display:flex;flex-direction:column;align-items:stretch;gap:6px;width:220px;flex:0 0 220px}.quotation-brand-lockup img{display:block;width:100%;height:auto;max-width:100%;object-fit:contain}.quotation-brand-motto{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;font-size:8px;font-weight:850;letter-spacing:.18em;line-height:1;text-transform:uppercase;color:#08766d;white-space:nowrap;text-align:center}.quotation-brand-motto::before,.quotation-brand-motto::after{content:"";height:1px;flex:1 1 auto;background:linear-gradient(90deg,rgba(8,118,109,.18),rgba(8,118,109,.5))}.quotation-brand-motto::after{background:linear-gradient(90deg,rgba(8,118,109,.5),rgba(8,118,109,.18))}@media(max-width:767px){.quotation-brand-lockup{width:190px;flex-basis:190px;gap:5px}.quotation-brand-motto{font-size:7px;letter-spacing:.14em;gap:5px}}
 .quotation-render-source{position:fixed;left:-100000px;top:0;width:794px;background:#fff;visibility:visible;pointer-events:none;z-index:-1}
 @media(max-width:767px){.quotation-type-grid{grid-template-columns:1fr}
   .quotation-type-card{min-height:0;padding:12px}
@@ -3045,7 +3045,7 @@ function generateQuotationConfirmed(type) {
       <div class="flex justify-between items-start gap-6 border-b pb-5 mb-6">
         <div class="min-w-0">
           <div class="flex items-start gap-4 mb-4">
-            <div class="flex flex-col items-start gap-1 flex-shrink-0">
+            <div class="quotation-brand-lockup">
               <img src="${brand?.logo||"../images/logo.png"}" alt="${brand?.alt||"Company Logo"}" class="h-14 w-auto flex-shrink-0">
               <span class="quotation-brand-motto">PLAN. COST. BUILD.</span>
             </div>
