@@ -418,6 +418,17 @@
     "updatedAt": "2026-10-03T20:45:11.249Z"
   },
   {
+    "id": "DEV-20261004-3ebc911",
+    "date": "2026-10-04",
+    "title": "Standardize RenovationPlanner brand lockup",
+    "module": "RenovationPlanner",
+    "status": "Completed",
+    "summary": "Standardize RenovationPlanner brand lockup",
+    "details": "Automatic entry from commit 3ebc911. Changed files: TerajuWorks/renovationplanner-v2.html.",
+    "commit": "3ebc911d267da8b0f4fcfacd6bb55a9f68ef1a12",
+    "updatedAt": "2026-10-04T10:22:54.396Z"
+  },
+  {
     "id": "DEV-20261004-3e005a9",
     "date": "2026-10-04",
     "title": "Update build quotation Q001D (EST-BLD-001)",
