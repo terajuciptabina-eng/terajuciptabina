@@ -66,6 +66,17 @@
     "updatedAt": "2026-10-04T17:04:14.921Z"
   },
   {
+    "id": "DEV-20261005-d055437",
+    "date": "2026-10-05",
+    "title": "Preserve signup success flow with WhatsApp handoff",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Preserve signup success flow with WhatsApp handoff",
+    "details": "Automatic entry from commit d055437. Changed files: TerajuWorks/auth-github.js.",
+    "commit": "d055437df68e9892ba8f766f65e18208a66057cc",
+    "updatedAt": "2026-10-04T20:57:52.657Z"
+  },
+  {
     "id": "DEV-20261005-cc2d709",
     "date": "2026-10-05",
     "title": "Rename Admin Database quotations to cost estimates",
