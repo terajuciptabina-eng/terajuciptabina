@@ -517,6 +517,17 @@
     "updatedAt": "2026-10-03T20:41:00.676Z"
   },
   {
+    "id": "DEV-20261004-7b86778",
+    "date": "2026-10-04",
+    "title": "Refactor Homeowner brand asset to logo-only source",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Refactor Homeowner brand asset to logo-only source",
+    "details": "Automatic entry from commit 7b86778. Changed files: images/terajuworks-homeowner.svg.",
+    "commit": "7b867784aa426c2cebfdfb45e08fcd6fb96b12ab",
+    "updatedAt": "2026-10-04T11:36:29.532Z"
+  },
+  {
     "id": "DEV-20261004-7b6aa03",
     "date": "2026-10-04",
     "title": "Fix full TERAJUWORKS logo bounds",
