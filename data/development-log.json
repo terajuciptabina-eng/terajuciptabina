@@ -264,6 +264,17 @@
     "updatedAt": "2026-10-04T17:29:38.937Z"
   },
   {
+    "id": "DEV-20261005-3f0369d",
+    "date": "2026-10-05",
+    "title": "Restore original quotation CTA and add help CTA above it (BuildPlanner)",
+    "module": "BuildPlanner",
+    "status": "Completed",
+    "summary": "Restore original quotation CTA and add help CTA above it (BuildPlanner)",
+    "details": "Automatic entry from commit 3f0369d. Changed files: TerajuWorks/buildplanner-v2.html.",
+    "commit": "3f0369def6d048f84e1912955ca71920ee8cee2f",
+    "updatedAt": "2026-10-04T20:31:22.424Z"
+  },
+  {
     "id": "DEV-20261005-3d001fd",
     "date": "2026-10-05",
     "title": "Assign separate estimate numbers to Simple and Detail previews",
