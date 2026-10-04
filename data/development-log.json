@@ -704,6 +704,17 @@
     "updatedAt": "2026-10-04T10:11:33.044Z"
   },
   {
+    "id": "DEV-20261004-62f4b1b",
+    "date": "2026-10-04",
+    "title": "fix: restore Admin Calculation Rules data loading",
+    "module": "Admin / Rate Management",
+    "status": "Completed",
+    "summary": "fix: restore Admin Calculation Rules data loading",
+    "details": "Automatic entry from commit 62f4b1b. Changed files: TerajuWorks/admin-calculation-rules.html.",
+    "commit": "62f4b1bd441b7b00be65a38b405e225770551368",
+    "updatedAt": "2026-10-04T11:47:05.869Z"
+  },
+  {
     "id": "DEV-20261004-617a088",
     "date": "2026-10-04",
     "title": "Fix Contractor brand at source",
