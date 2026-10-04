@@ -44,6 +44,17 @@
     "updatedAt": "2026-10-04T17:29:18.050Z"
   },
   {
+    "id": "DEV-20261005-aa082ab",
+    "date": "2026-10-05",
+    "title": "Show Cost Estimate preview numbers in Admin Database",
+    "module": "Admin / Rate Management",
+    "status": "Completed",
+    "summary": "Show Cost Estimate preview numbers in Admin Database",
+    "details": "Automatic entry from commit aa082ab. Changed files: TerajuWorks/admin-database.html.",
+    "commit": "aa082ab0ec3fd773dd0188ca1d2253a6802c34c8",
+    "updatedAt": "2026-10-04T17:30:01.383Z"
+  },
+  {
     "id": "DEV-20261005-943f33b",
     "date": "2026-10-05",
     "title": "Restore source to latest-working baseline before root-cause fix",
