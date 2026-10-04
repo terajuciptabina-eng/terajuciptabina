@@ -99,6 +99,17 @@
     "updatedAt": "2026-10-04T17:30:01.383Z"
   },
   {
+    "id": "DEV-20261005-a311175",
+    "date": "2026-10-05",
+    "title": "Fix shared tag color specificity",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Fix shared tag color specificity",
+    "details": "Automatic entry from commit a311175. Changed files: TerajuWorks/shared/teraju-workspace-theme.css.",
+    "commit": "a311175d27856257d1adf8b7fec369750d63b3ef",
+    "updatedAt": "2026-10-04T18:15:07.733Z"
+  },
+  {
     "id": "DEV-20261005-9882282",
     "date": "2026-10-05",
     "title": "Use canonical estimate number source",
