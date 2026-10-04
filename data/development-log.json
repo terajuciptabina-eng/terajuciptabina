@@ -154,6 +154,17 @@
     "updatedAt": "2026-10-03T20:44:49.035Z"
   },
   {
+    "id": "DEV-20261004-7dd1b3e",
+    "date": "2026-10-04",
+    "title": "Fix RenovationPlanner mobile RM per sqft layout",
+    "module": "RenovationPlanner",
+    "status": "Completed",
+    "summary": "Fix RenovationPlanner mobile RM per sqft layout",
+    "details": "Automatic entry from commit 7dd1b3e. Changed files: TerajuWorks/renovationplanner-v2.html.",
+    "commit": "7dd1b3e3ad34512663174172947136288d16e8a1",
+    "updatedAt": "2026-10-04T08:32:43.548Z"
+  },
+  {
     "id": "DEV-20261004-7c93b43",
     "date": "2026-10-04",
     "title": "investor: refresh financial model product scope and metrics",
