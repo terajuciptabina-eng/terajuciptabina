@@ -506,6 +506,17 @@
     "updatedAt": "2026-10-03T20:40:53.776Z"
   },
   {
+    "id": "DEV-20261004-71032f8",
+    "date": "2026-10-04",
+    "title": "Use canonical brand lockup in RenovationPlanner",
+    "module": "RenovationPlanner",
+    "status": "Completed",
+    "summary": "Use canonical brand lockup in RenovationPlanner",
+    "details": "Automatic entry from commit 71032f8. Changed files: TerajuWorks/renovationplanner-v2.html.",
+    "commit": "71032f80e9f32c4b3d1e75417e1eb451238122a5",
+    "updatedAt": "2026-10-04T11:31:32.907Z"
+  },
+  {
     "id": "DEV-20261004-6db6436",
     "date": "2026-10-04",
     "title": "Save build quotation Q002 (EST-BLD-002)",
