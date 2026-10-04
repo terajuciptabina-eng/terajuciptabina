@@ -140,10 +140,20 @@ export default async function handler(req, res) {
     const quotation = source?.quotation; if (!quotation || typeof quotation !== 'object') return res.status(400).json({ message: 'Missing quotation record.' }); const quotationId = String(quotation.quotationId || '').trim(); if (!quotationId) return res.status(400).json({ message: 'Missing quotationId.' });
     const now = new Date().toISOString(); const normalized = { ...quotation, quotationId, role, [idKey(role)]: id, plannerType, updatedAt: now, createdAt: quotation.createdAt || now };
     current.record.plannerRecords = current.record.plannerRecords || { build: [], renovation: [] }; current.record.plannerRecords.build = plannerList(current.record, 'build'); current.record.plannerRecords.renovation = plannerList(current.record, 'renovation');
-    const list = current.record.plannerRecords[plannerType]; let index = list.findIndex(q => q?.quotationId === quotationId);
+    const list = current.record.plannerRecords[plannerType];
+    const incomingType = quotationType(normalized.quotationType || normalized.plannerState?.quotationType);
+    let index = list.findIndex(q => q?.quotationId === quotationId);
+
+    // A quotationId is immutable to its Cost Estimate type. Switching Simple/Detail
+    // must create or update the matching type record, never mutate the other type.
+    if (index >= 0) {
+      const existingType = quotationType(list[index]?.quotationType || list[index]?.plannerState?.quotationType);
+      if (existingType !== incomingType) index = -1;
+    }
+
     if (index >= 0) {
       const old = list[index];
-      const type = quotationType(normalized.quotationType || old?.quotationType || old?.plannerState?.quotationType);
+      const type = incomingType;
       normalized.quotationNumber = old?.quotationNumber || normalized.quotationNumber || displayQuotationNumber(Math.max(1, nextBaseNumber(current.record, plannerType) - 1), type);
       const oldEstimateBase = estimateBase(old?.estimateNumber);
       normalized.estimateNumber = old?.estimateNumber
@@ -187,7 +197,6 @@ export default async function handler(req, res) {
       list[index] = normalized;
     } else {
       const incomingProjectId = String(normalized.projectId || normalized.plannerState?.projectId || '').trim();
-      const incomingType = quotationType(normalized.quotationType || normalized.plannerState?.quotationType);
       const projectMatches = findProjectQuotations(current.record, plannerType, incomingProjectId);
       // A project can intentionally have TWO Cost Estimate records: Simple and Detail.
       // Only reuse an existing record when the estimate presentation type is also the same.
@@ -220,10 +229,19 @@ export default async function handler(req, res) {
         index = list.findIndex(q => q?.quotationId === projectMatch.quotationId);
         list[index] = normalized;
       } else {
-        const baseNumber = nextBaseNumber(current.record, plannerType);
-        const estimateNumber = nextEstimateNumber(current.record, plannerType);
+        // If the other Cost Estimate type already exists, this is the second type
+        // for the same project. Preserve project identity instead of creating a new project.
+        const sameProject = projectMatches.find(q => sameProjectIdentity(q, normalized));
+        const baseNumber = sameProject
+          ? (baseSequence(sameProject.quotationNumber) || nextBaseNumber(current.record, plannerType))
+          : nextBaseNumber(current.record, plannerType);
+        const estimateNumber = sameProject
+          ? (estimateBase(sameProject.estimateNumber) || nextEstimateNumber(current.record, plannerType))
+          : nextEstimateNumber(current.record, plannerType);
         normalized.quotationNumber = displayQuotationNumber(baseNumber);
-        normalized.estimateNumber = displayEstimateNumber(estimateNumber, plannerType); normalized.projectId = `${plannerType === 'renovation' ? 'PRJ-REN' : 'PRJ-BLD'}-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).slice(2, 7).toUpperCase()}`; normalized.plannerState = { ...(normalized.plannerState || {}), projectId: normalized.projectId, quotationType: quotationType(normalized.quotationType) };
+        normalized.estimateNumber = displayEstimateNumber(estimateNumber, plannerType);
+        normalized.projectId = incomingProjectId || (sameProject?.projectId || ((plannerType === 'renovation' ? 'PRJ-REN' : 'PRJ-BLD') + '-' + Date.now().toString(36).toUpperCase() + '-' + Math.random().toString(36).slice(2, 7).toUpperCase()));
+        normalized.plannerState = { ...(normalized.plannerState || {}), projectId: normalized.projectId, quotationType: incomingType };
         normalized.revision = { current: 'R00', history: [] };
         if (!current.record.quotationRunningNumber || typeof current.record.quotationRunningNumber !== 'object') current.record.quotationRunningNumber = {}; current.record.quotationRunningNumber[plannerType] = baseNumber;
         if (!current.record.estimateRunningNumber || typeof current.record.estimateRunningNumber !== 'object') current.record.estimateRunningNumber = {}; current.record.estimateRunningNumber[plannerType] = estimateNumber;
