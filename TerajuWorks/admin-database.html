@@ -10,7 +10,7 @@ body{margin:0;background:#f3f4f6;color:#111827;font-family:Inter,system-ui,-appl
 .eyebrow{font-size:11px;font-weight:800;letter-spacing:.08em;color:#6b7280;text-transform:uppercase}
 .title{font-size:26px;font-weight:850;margin:5px 0}
 .muted{color:#6b7280;font-size:12px;line-height:1.5}
-.tag{display:inline-flex;align-items:center;min-height:30px;padding:0 10px;border:1px solid #e5e7eb;border-radius:999px;background:#f8fafc;font-size:10px;font-weight:800;white-space:nowrap}
+.tag{display:inline-flex;align-items:center;min-height:30px;padding:0 10px;border:1px solid #e5e7eb;border-radius:999px;background:#f8fafc;font-size:10px;font-weight:800;white-space:nowrap}.estimate-number{color:#08766d;border-color:#b7e3db;background:#f4fbf9}
 .wrap{padding:24px}
 .panel{background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:16px;margin-bottom:16px;box-shadow:0 8px 28px rgba(0,0,0,.04)}
 .controls{display:grid;grid-template-columns:minmax(220px,1fr) .7fr 1fr auto;gap:10px}
@@ -55,7 +55,7 @@ th{font-size:10px;text-transform:uppercase;color:#6b7280;background:#fafafa}
       <img class="admin-page-logo" src="../images/terajuworks-brand.svg" alt="TERAJUWORKS">
       <div class="admin-page-motto">PLAN. COST. BUILD.</div>
       <div class="admin-header-title">Admin Database</div>
-      <div class="admin-header-sub">Accounts, quotation records and profile records.</div>
+      <div class="admin-header-sub">Accounts, cost estimate records and profile records.</div>
     </div>
     <div class="admin-header-status">AUTHENTICATED ADMIN</div>
   </div>
@@ -111,7 +111,7 @@ async function load(){
     if(!r.ok)throw new Error(d.message||'Unable to load database.');
     const a=(d.accounts||[]).sort((x,y)=>Date.parse(y.createdAt||'')-Date.parse(x.createdAt||''));
     result.classList.remove('hidden');
-    result.innerHTML='<div class="eyebrow">Records</div><h2>'+a.length+' account(s)</h2><div class="table"><table><thead><tr><th>Account</th><th>Profile</th><th>Quotations</th><th>Sign Up</th><th>Actions</th></tr></thead><tbody>'+a.map(x=>'<tr><td><b>'+esc(x.id||'-')+'</b><br><span class="muted">'+esc(x.role||'-')+'</span></td><td>'+esc(x.name||'-')+'<br>'+esc(x.email||'-')+'<br>'+esc(x.phone||'-')+'</td><td>'+((Number(x.buildCount)||0)+(Number(x.renovationCount)||0))+'</td><td>'+esc(x.createdAt||'-')+'</td><td class="actions"><a href="#" data-view-id="'+esc(x.id||'')+'" data-view-role="'+esc(x.role||'')+'">View / Edit</a> <button data-id="'+esc(x.id||'')+'" data-role="'+esc(x.role||'')+'" title="Delete account">×</button></td></tr>').join('')+'</tbody></table></div>';
+    result.innerHTML='<div class="eyebrow">Records</div><h2>'+a.length+' account(s)</h2><div class="table"><table><thead><tr><th>Account</th><th>Profile</th><th>Estimate Number</th><th>Sign Up</th><th>Actions</th></tr></thead><tbody>'+a.map(x=>{const nums=Array.isArray(x.estimateNumbers)?x.estimateNumbers.filter(Boolean):[];return '<tr><td><b>'+esc(x.id||'-')+'</b><br><span class="muted">'+esc(x.role||'-')+'</span></td><td>'+esc(x.name||'-')+'<br>'+esc(x.email||'-')+'<br>'+esc(x.phone||'-')+'</td><td>'+(nums.length?nums.map(n=>'<span class="tag estimate-number">'+esc(n)+'</span>').join(' '):'—')+'</td><td>'+esc(x.createdAt||'-')+'</td><td class="actions"><a href="#" data-view-id="'+esc(x.id||'')+'" data-view-role="'+esc(x.role||'')+'">View / Edit</a> <button data-id="'+esc(x.id||'')+'" data-role="'+esc(x.role||'')+'" title="Delete account">×</button></td></tr>'}).join('')+'</tbody></table></div>';
     result.querySelectorAll('.actions button').forEach(b=>b.onclick=()=>del(b));
     result.querySelectorAll('[data-view-id]').forEach(a=>a.onclick=e=>{e.preventDefault();openProfile(a.dataset.viewId,a.dataset.viewRole)});
     status.textContent='Database loaded.';
