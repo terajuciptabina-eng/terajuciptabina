@@ -462,6 +462,17 @@
     "updatedAt": "2026-10-04T09:27:52.580Z"
   },
   {
+    "id": "DEV-20261004-668a955",
+    "date": "2026-10-04",
+    "title": "Use canonical TERAJUWORKS brand display",
+    "module": "Development Control",
+    "status": "Completed",
+    "summary": "Use canonical TERAJUWORKS brand display",
+    "details": "Automatic entry from commit 668a955. Changed files: TerajuWorks/admin-development-log.html.",
+    "commit": "668a9554947361cabb7cd16c0aaa17f2e8545c88",
+    "updatedAt": "2026-10-04T10:53:48.901Z"
+  },
+  {
     "id": "DEV-20261004-63a97c6",
     "date": "2026-10-04",
     "title": "Add TERAJUWORKS motto to Contractor Market app",
