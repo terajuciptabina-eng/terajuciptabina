@@ -484,6 +484,17 @@
     "updatedAt": "2026-10-04T08:25:28.348Z"
   },
   {
+    "id": "DEV-20261004-420a3de",
+    "date": "2026-10-04",
+    "title": "Use canonical TERAJUWORKS brand display",
+    "module": "Admin / Rate Management",
+    "status": "Completed",
+    "summary": "Use canonical TERAJUWORKS brand display",
+    "details": "Automatic entry from commit 420a3de. Changed files: TerajuWorks/admin-rate-management.html.",
+    "commit": "420a3de15af1b81e074524ee2f73c8e51109bee1",
+    "updatedAt": "2026-10-04T10:53:23.273Z"
+  },
+  {
     "id": "DEV-20261004-3f5a290",
     "date": "2026-10-04",
     "title": "investor: correct Admin contractor account count",
