@@ -198,6 +198,17 @@
     "updatedAt": "2026-10-04T09:33:27.104Z"
   },
   {
+    "id": "DEV-20261004-a35566a",
+    "date": "2026-10-04",
+    "title": "Use canonical TERAJUWORKS brand display",
+    "module": "Admin / Rate Management",
+    "status": "Completed",
+    "summary": "Use canonical TERAJUWORKS brand display",
+    "details": "Automatic entry from commit a35566a. Changed files: TerajuWorks/admin-rate-comparison.html.",
+    "commit": "a35566ab93523e43daa89c28e6e376b2c33bf1dc",
+    "updatedAt": "2026-10-04T10:53:26.635Z"
+  },
+  {
     "id": "DEV-20261004-a019b67",
     "date": "2026-10-04",
     "title": "Create temporary homeowner account HME-20261004-944J",
