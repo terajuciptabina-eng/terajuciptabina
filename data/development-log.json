@@ -528,6 +528,17 @@
     "updatedAt": "2026-10-04T09:41:16.303Z"
   },
   {
+    "id": "DEV-20261004-0d19a54",
+    "date": "2026-10-04",
+    "title": "Add motto to BuildPlanner Cost Estimate preview",
+    "module": "BuildPlanner",
+    "status": "Completed",
+    "summary": "Add motto to BuildPlanner Cost Estimate preview",
+    "details": "Automatic entry from commit 0d19a54. Changed files: TerajuWorks/buildplanner-v2.html.",
+    "commit": "0d19a54ca8ed15ad721e876cb8fe32cabd964da1",
+    "updatedAt": "2026-10-04T10:16:37.711Z"
+  },
+  {
     "id": "DEV-20261004-0c144a3",
     "date": "2026-10-04",
     "title": "Add TERAJUWORKS motto to Calculation Rules",
