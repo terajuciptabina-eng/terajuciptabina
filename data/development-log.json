@@ -572,6 +572,17 @@
     "updatedAt": "2026-10-04T09:34:28.615Z"
   },
   {
+    "id": "DEV-20261004-1f48986",
+    "date": "2026-10-04",
+    "title": "Fix TERAJUWORKS logo viewBox",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Fix TERAJUWORKS logo viewBox",
+    "details": "Automatic entry from commit 1f48986. Changed files: images/terajuworks.svg.",
+    "commit": "1f48986818d62597c27e50c45d0e39882498b77a",
+    "updatedAt": "2026-10-04T10:37:13.306Z"
+  },
+  {
     "id": "DEV-20261004-1bd488f",
     "date": "2026-10-04",
     "title": "Fix Admin Quotation mobile table layout",
