@@ -616,6 +616,17 @@
     "updatedAt": "2026-10-04T10:53:29.908Z"
   },
   {
+    "id": "DEV-20261004-4f6dc5b",
+    "date": "2026-10-04",
+    "title": "Add canonical TerajuWorks brand lockup",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Add canonical TerajuWorks brand lockup",
+    "details": "Automatic entry from commit 4f6dc5b. Changed files: TerajuWorks/shared/teraju-brand-lockup.css.",
+    "commit": "4f6dc5ba14e55b489abd519db585887768aa93ad",
+    "updatedAt": "2026-10-04T11:31:09.826Z"
+  },
+  {
     "id": "DEV-20261004-47db622",
     "date": "2026-10-04",
     "title": "Create temporary homeowner account HME-20261004-Z93S",
