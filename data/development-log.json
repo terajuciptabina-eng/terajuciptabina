@@ -55,6 +55,17 @@
     "updatedAt": "2026-10-04T17:09:41.720Z"
   },
   {
+    "id": "DEV-20261005-56a3ed4",
+    "date": "2026-10-05",
+    "title": "Canonicalize Cost Estimate numbers by Simple Detail type",
+    "module": "Cost Estimate",
+    "status": "Completed",
+    "summary": "Canonicalize Cost Estimate numbers by Simple Detail type",
+    "details": "Automatic entry from commit 56a3ed4. Changed files: api/quotations.js.",
+    "commit": "56a3ed41d54d02b0811ace049b600db42e86fa2f",
+    "updatedAt": "2026-10-04T17:28:46.931Z"
+  },
+  {
     "id": "DEV-20261005-4912b63",
     "date": "2026-10-05",
     "title": "Pass estimate type into canonical Cost Estimate number",
