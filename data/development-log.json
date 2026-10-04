@@ -66,6 +66,17 @@
     "updatedAt": "2026-10-04T17:30:01.383Z"
   },
   {
+    "id": "DEV-20261005-9882282",
+    "date": "2026-10-05",
+    "title": "Use canonical estimate number source",
+    "module": "Cost Estimate",
+    "status": "Completed",
+    "summary": "Use canonical estimate number source",
+    "details": "Automatic entry from commit 9882282. Changed files: api/quotations.js.",
+    "commit": "9882282ed97e5916fdd64a50d1b7f4c1d0a5c866",
+    "updatedAt": "2026-10-04T17:53:55.063Z"
+  },
+  {
     "id": "DEV-20261005-943f33b",
     "date": "2026-10-05",
     "title": "Restore source to latest-working baseline before root-cause fix",
