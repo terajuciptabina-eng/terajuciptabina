@@ -42,7 +42,7 @@ export default async function handler(req, res) {
   function revisionCode(value) { const n = Number(value); return `R${String(Number.isFinite(n) && n >= 0 ? n : 0).padStart(2, '0')}`; }
   function canonicalEstimateNumber(value, plannerType, type) {
     const base = estimateBase(value);
-    return base ? displayEstimateNumber(base, plannerType) : '';
+    return base ? displayEstimateNumber(base, plannerType, type) : '';
   }
   function revisionComparable(value, plannerType) {
     const copy = JSON.parse(JSON.stringify(value || {}));
