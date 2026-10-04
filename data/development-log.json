@@ -550,6 +550,17 @@
     "updatedAt": "2026-10-04T10:41:48.035Z"
   },
   {
+    "id": "DEV-20261004-75a3555",
+    "date": "2026-10-04",
+    "title": "Fix audience brand lockup at source",
+    "module": "BuildPlanner",
+    "status": "Completed",
+    "summary": "Fix audience brand lockup at source",
+    "details": "Automatic entry from commit 75a3555. Changed files: TerajuWorks/buildplanner-v2.html.",
+    "commit": "75a3555ee81538204fc2d83c5c3eb0174de1bd52",
+    "updatedAt": "2026-10-04T11:37:06.908Z"
+  },
+  {
     "id": "DEV-20261004-72f52aa",
     "date": "2026-10-04",
     "title": "investor: align investment memo with TerajuWorks product scope",
