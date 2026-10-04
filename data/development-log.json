@@ -165,6 +165,17 @@
     "updatedAt": "2026-10-03T20:44:26.623Z"
   },
   {
+    "id": "DEV-20261004-459ed1f",
+    "date": "2026-10-04",
+    "title": "Prevent zero RM/sqft for incomplete estimate snapshots",
+    "module": "Cost Estimate",
+    "status": "Completed",
+    "summary": "Prevent zero RM/sqft for incomplete estimate snapshots",
+    "details": "Automatic entry from commit 459ed1f. Changed files: TerajuWorks/cost-per-sqft.js.",
+    "commit": "459ed1f8480c7a401f20cd6980b31a2a52d8f10d",
+    "updatedAt": "2026-10-04T08:25:28.348Z"
+  },
+  {
     "id": "DEV-20261004-3f5a290",
     "date": "2026-10-04",
     "title": "investor: correct Admin contractor account count",
