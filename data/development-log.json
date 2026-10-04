@@ -33,6 +33,17 @@
     "updatedAt": "2026-10-04T17:10:17.968Z"
   },
   {
+    "id": "DEV-20261005-943f33b",
+    "date": "2026-10-05",
+    "title": "Restore source to latest-working baseline before root-cause fix",
+    "module": "Admin / Rate Management",
+    "status": "Completed",
+    "summary": "Restore source to latest-working baseline before root-cause fix",
+    "details": "Automatic entry from commit 943f33b. Changed files: TerajuWorks/admin-database.html.",
+    "commit": "943f33bf0b33ccd56d753f485f43903d119db5fa",
+    "updatedAt": "2026-10-04T17:26:18.132Z"
+  },
+  {
     "id": "DEV-20261005-80c5363",
     "date": "2026-10-05",
     "title": "Show only Estimate Number in Admin Database",
