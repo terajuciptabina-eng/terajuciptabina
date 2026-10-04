@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "homeowner",
+  "homeownerId": "HME-20261004-C6YR",
+  "profile": {
+    "name": "Abu Zaid",
+    "email": "zulkiflee.salleh9@gmail.com",
+    "phone": "01115194900"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-10-04T09:30:13.020Z",
+  "updatedAt": "2026-10-04T09:30:13.020Z"
+}
