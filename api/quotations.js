@@ -238,6 +238,7 @@ export default async function handler(req, res) {
         const estimateNumber = sameProject
           ? (estimateBase(sameProject.estimateNumber) || nextEstimateNumber(current.record, plannerType))
           : nextEstimateNumber(current.record, plannerType);
+        normalized.quotationId = `QT-${plannerType === 'renovation' ? 'REN' : 'BLD'}-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).slice(2, 7).toUpperCase()}`;
         normalized.quotationNumber = displayQuotationNumber(baseNumber);
         normalized.estimateNumber = displayEstimateNumber(estimateNumber, plannerType);
         normalized.projectId = incomingProjectId || (sameProject?.projectId || ((plannerType === 'renovation' ? 'PRJ-REN' : 'PRJ-BLD') + '-' + Date.now().toString(36).toUpperCase() + '-' + Math.random().toString(36).slice(2, 7).toUpperCase()));
