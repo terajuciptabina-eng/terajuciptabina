@@ -88,6 +88,17 @@
     "updatedAt": "2026-10-04T17:28:46.931Z"
   },
   {
+    "id": "DEV-20261005-4e982d8",
+    "date": "2026-10-05",
+    "title": "Pass Cost Estimate type through canonical estimate identity",
+    "module": "Cost Estimate",
+    "status": "Completed",
+    "summary": "Pass Cost Estimate type through canonical estimate identity",
+    "details": "Automatic entry from commit 4e982d8. Changed files: api/quotations.js.",
+    "commit": "4e982d85812e0fddbb6dfa408d45a09106c789b3",
+    "updatedAt": "2026-10-04T17:30:17.425Z"
+  },
+  {
     "id": "DEV-20261005-4912b63",
     "date": "2026-10-05",
     "title": "Pass estimate type into canonical Cost Estimate number",
