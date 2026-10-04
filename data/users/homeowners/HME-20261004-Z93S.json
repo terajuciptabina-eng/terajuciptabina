@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "homeowner",
+  "homeownerId": "HME-20261004-Z93S",
+  "profile": {
+    "name": "Ira ikram",
+    "email": "fylamistsu@gmail.com",
+    "phone": "0103846170"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-10-04T08:33:33.128Z",
+  "updatedAt": "2026-10-04T08:33:33.128Z"
+}
