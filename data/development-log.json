@@ -209,6 +209,17 @@
     "updatedAt": "2026-10-04T20:31:26.957Z"
   },
   {
+    "id": "DEV-20261005-5c0ce03",
+    "date": "2026-10-05",
+    "title": "Restore a visible, useful Cost Estimate help CTA (BuildPlanner)",
+    "module": "BuildPlanner",
+    "status": "Completed",
+    "summary": "Restore a visible, useful Cost Estimate help CTA (BuildPlanner)",
+    "details": "Automatic entry from commit 5c0ce03. Changed files: TerajuWorks/buildplanner-v2.html.",
+    "commit": "5c0ce03a3bdb0afc6eed3d43fc7233a5ea4cd7f8",
+    "updatedAt": "2026-10-04T20:34:41.321Z"
+  },
+  {
     "id": "DEV-20261005-58f631b",
     "date": "2026-10-05",
     "title": "Restore estimate number source rule",
