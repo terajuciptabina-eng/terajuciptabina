@@ -572,6 +572,17 @@
     "updatedAt": "2026-10-04T10:41:48.035Z"
   },
   {
+    "id": "DEV-20261004-7977930",
+    "date": "2026-10-04",
+    "title": "brand: add TERAJUWORKS motto to workspace selection",
+    "module": "General",
+    "status": "Completed",
+    "summary": "brand: add TERAJUWORKS motto to workspace selection",
+    "details": "Automatic entry from commit 7977930. Changed files: TerajuWorks/index.html.",
+    "commit": "7977930319d919bb5f29326935c65f4864ffcb08",
+    "updatedAt": "2026-10-04T11:53:43.838Z"
+  },
+  {
     "id": "DEV-20261004-75a3555",
     "date": "2026-10-04",
     "title": "Fix audience brand lockup at source",
