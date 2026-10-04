@@ -583,6 +583,17 @@
     "updatedAt": "2026-10-04T10:11:33.044Z"
   },
   {
+    "id": "DEV-20261004-576ff4c",
+    "date": "2026-10-04",
+    "title": "Use tight Contractor brand asset in planner header",
+    "module": "RenovationPlanner",
+    "status": "Completed",
+    "summary": "Use tight Contractor brand asset in planner header",
+    "details": "Automatic entry from commit 576ff4c. Changed files: TerajuWorks/renovationplanner-v2.html.",
+    "commit": "576ff4c8b32ba5dc6febde703c454e1f9b2dd398",
+    "updatedAt": "2026-10-04T11:19:43.523Z"
+  },
+  {
     "id": "DEV-20261004-56271f8",
     "date": "2026-10-04",
     "title": "Use canonical TERAJUWORKS brand display",
