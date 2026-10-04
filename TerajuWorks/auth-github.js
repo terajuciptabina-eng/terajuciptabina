@@ -63,9 +63,10 @@
       setTimeout(() => popup.remove(), 300);
     }, 5000);
   }
-  function openSignupWhatsApp(record, name) {
-    const phone = record?.profile?.phone || phoneInput?.value || '';
-    const recipient = normalizePhone(phone).replace(/^0/, '60').replace(/^\+/, '');
+  function openSignupWhatsApp(record, name, phone) {
+    const normalizedPhone = normalizePhone(phone);
+    const recipient = normalizedPhone.replace(/^\+/, '').replace(/^0/, '60');
+    if (!recipient) throw new Error('A valid registered phone number is required to open WhatsApp.');
     const id = record?.[idKey] || '';
     const label = isHomeowner ? 'HOMEOWNER' : 'CONTRACTOR';
     const workspaceUrl = isHomeowner
@@ -81,7 +82,7 @@ ${id}.
 Please keep this reference number for your records. Happy log in 😇
 
 ${workspaceUrl}`;
-    window.location.assign(`https://wa.me/${recipient}?text=${encodeURIComponent(message)}`);
+    window.location.href = `https://wa.me/${recipient}?text=${encodeURIComponent(message)}`;
   }
   function showPortal(record) {
     currentRecord = record; setLocal(record); panel.classList.add('hidden'); portal.classList.remove('hidden'); const id = record[idKey];
@@ -356,10 +357,7 @@ ${workspaceUrl}`;
         trackEvent('sign_up', { signup_role: role, generated_id: data.id, method: 'github_account_store' });
         generated.innerHTML = `<strong>Your ${isHomeowner ? 'Homeowner' : 'Contractor'} ID:</strong><br><span class=\"mt-1 inline-block text-lg font-bold tracking-wide text-slate-950\">${escapeHtml(data.id)}</span><br><span class=\"text-xs text-slate-500\">Keep this ID. You will use it to sign in later.</span>`;
         generated.classList.remove('hidden');
-        showPortal(data.record);
-        showSignupPopup(data.record, data.emailSent === true, email);
-        openSignupWhatsApp(data.record, name);
-        if (role === 'contractor') setTimeout(() => openProfile(data.record, { onboarding: true }), 550);
+        openSignupWhatsApp(data.record, name, phone);
       } else {
         const id = idInput.value.trim().toUpperCase();
         if (!id) throw new Error(`Please enter your ${isHomeowner ? 'Homeowner' : 'Contractor'} ID.`);
