@@ -591,7 +591,7 @@ main>section:not(:first-child){scroll-margin-top:92px} main>section>div:first-ch
 <header class="planner-header">
   <div class="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between gap-4">
     <div class="flex items-center gap-4 min-w-0">
-      <div class="teraju-brand-lockup"><img id="workspaceBrandLogo" src="../images/terajuworks-brand.svg" alt="TERAJUWORKS" class="teraju-brand-logo"><span class="teraju-brand-motto">PLAN. COST. BUILD.</span><span id="workspaceAudienceLabel" class="teraju-brand-audience">HOMEOWNER</span></div>
+      <div class="teraju-brand-lockup"><img id="workspaceBrandLogo" src="../images/terajuworks-homeowner.svg" alt="TERAJUWORKS HOMEOWNER" class="teraju-brand-logo"><span class="teraju-brand-motto">PLAN. COST. BUILD.</span><span id="workspaceAudienceLabel" class="teraju-brand-audience">HOMEOWNER</span></div>
     </div>
     <nav class="flex items-center gap-2 flex-wrap justify-end no-print" aria-label="Planner navigation">
       <a id="myQuotationsLink" href="quotations.html" class="planner-nav-link">My Cost Estimates</a>
@@ -2613,6 +2613,11 @@ function initContractorMode() {
   document.body.classList.toggle("homeowner-mode", !IS_CONTRACTOR);
 
   const audienceLabel = document.getElementById("workspaceAudienceLabel");
+  const brandLogo = document.getElementById("workspaceBrandLogo");
+  if (brandLogo) {
+    brandLogo.src = IS_CONTRACTOR ? "../images/terajuworks-contractor.svg" : "../images/terajuworks-homeowner.svg";
+    brandLogo.alt = IS_CONTRACTOR ? "TERAJUWORKS CONTRACTOR" : "TERAJUWORKS HOMEOWNER";
+  }
   if (audienceLabel) audienceLabel.textContent = IS_CONTRACTOR ? "CONTRACTOR" : "HOMEOWNER";
 
   const badgeEl = document.getElementById("workspaceBadge");
