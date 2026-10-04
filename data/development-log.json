@@ -33,6 +33,17 @@
     "updatedAt": "2026-10-03T19:34:13.862Z"
   },
   {
+    "id": "DEV-20261004-eb55aa5",
+    "date": "2026-10-04",
+    "title": "Use canonical brand lockup in BuildPlanner",
+    "module": "BuildPlanner",
+    "status": "Completed",
+    "summary": "Use canonical brand lockup in BuildPlanner",
+    "details": "Automatic entry from commit eb55aa5. Changed files: TerajuWorks/buildplanner-v2.html.",
+    "commit": "eb55aa5029a442ef38e1b9da44b6bb1d99e96884",
+    "updatedAt": "2026-10-04T11:31:22.256Z"
+  },
+  {
     "id": "DEV-20261004-e174962",
     "date": "2026-10-04",
     "title": "Remove motto from Cost Estimate Preview",
