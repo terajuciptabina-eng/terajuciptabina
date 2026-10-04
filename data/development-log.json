@@ -11,6 +11,17 @@
     "updatedAt": "2026-10-04T10:16:19.320Z"
   },
   {
+    "id": "DEV-20261004-fa3204f",
+    "date": "2026-10-04",
+    "title": "Use canonical TERAJUWORKS brand display",
+    "module": "Admin / Rate Management",
+    "status": "Completed",
+    "summary": "Use canonical TERAJUWORKS brand display",
+    "details": "Automatic entry from commit fa3204f. Changed files: TerajuWorks/admin.html.",
+    "commit": "fa3204f774d7e41ac9c188439b781c1123b56018",
+    "updatedAt": "2026-10-04T10:53:07.488Z"
+  },
+  {
     "id": "DEV-20261004-f011904",
     "date": "2026-10-04",
     "title": "feat: make development log fully automatic",
