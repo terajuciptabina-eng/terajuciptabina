@@ -2684,10 +2684,7 @@ function initContractorMode() {
 
 let quotationNumber = null;
 function generateQuotationNumber() {
-  let number = localStorage.getItem("terajuQuotationNumber");
-  number = number ? parseInt(number, 10) + 1 : 1;
-  localStorage.setItem("terajuQuotationNumber", number);
-  return "QO" + String(number).padStart(3, "0");
+  return String(window.TERAJU_CURRENT_ESTIMATE_NUMBER || '').trim() || '—';
 }
 function updateEstimate(options) {
   if (typeof window.__TERAJU_RENOVATION_V2_UPDATE_ESTIMATE === "function") {
@@ -3063,7 +3060,7 @@ function generateQuotationConfirmed(type) {
           <h2 class="text-2xl font-bold uppercase">Cost Estimate</h2>
         </div>
         <div class="text-right text-sm flex-shrink-0">
-          <p><span class="text-gray-500">Estimate No.</span><br><strong>${escapeHtml(quotationNumber)}</strong></p>
+          <p><span class="text-gray-500">Estimate No.</span><br><strong data-estimate-number>${escapeHtml(quotationNumber)}</strong></p>
           <p class="mt-2"><span class="text-gray-500">Date</span><br><strong>${escapeHtml(today)}</strong></p>
         </div>
       </div>
