@@ -506,6 +506,17 @@
     "updatedAt": "2026-10-04T09:41:16.303Z"
   },
   {
+    "id": "DEV-20261004-0c144a3",
+    "date": "2026-10-04",
+    "title": "Add TERAJUWORKS motto to Calculation Rules",
+    "module": "Admin / Rate Management",
+    "status": "Completed",
+    "summary": "Add TERAJUWORKS motto to Calculation Rules",
+    "details": "Automatic entry from commit 0c144a3. Changed files: TerajuWorks/admin-calculation-rules.html.",
+    "commit": "0c144a3b6608e25e3d2ab6d86d892bd9cd43ab6a",
+    "updatedAt": "2026-10-04T10:11:41.062Z"
+  },
+  {
     "id": "DEV-20261004-09e28a1",
     "date": "2026-10-04",
     "title": "Add TERAJUWORKS motto to Rate Management",
