@@ -24,9 +24,16 @@
       const newArea=rs.filter(r=>r.condition==='new').reduce((s,r)=>s+r.area,0);
       const isPrelim=i=>String(i?.category||'').toLowerCase()==='preliminaries'||String(i?.id||'')==='project-preliminaries';
       const isExternal=i=>String(i?.category||'').toLowerCase()==='external-work';
-      const existingCost=list.filter(i=>existingIds.has(String(i?.roomId??''))).reduce((s,i)=>s+N(i?.amount),0);
-      const newCost=list.filter(i=>(String(i?.roomId??'')==='project'||newIds.has(String(i?.roomId??'')))&&!isPrelim(i)&&!isExternal(i)).reduce((s,i)=>s+N(i?.amount),0);
-      return {plannerType:'renovation',existingArea,newArea,existingCost,newCost,existingRate:rate(existingCost,existingArea),newRate:rate(newCost,newArea),totalArea:existingArea+newArea,totalCost:list.reduce((s,i)=>s+N(i?.amount),0)};
+      // RM/sqft is meaningful only when the saved estimate contains attributable
+      // cost items for that side of the renovation. Legacy/partial records may have
+      // an area snapshot but no item snapshot; never present that as RM 0.00/sqft.
+      const existingItems=list.filter(i=>existingIds.has(String(i?.roomId??'')));
+      const newItems=list.filter(i=>(String(i?.roomId??'')==='project'||newIds.has(String(i?.roomId??'')))&&!isPrelim(i)&&!isExternal(i));
+      const existingCost=existingItems.reduce((s,i)=>s+N(i?.amount),0);
+      const newCost=newItems.reduce((s,i)=>s+N(i?.amount),0);
+      const existingRate=existingItems.length?rate(existingCost,existingArea):null;
+      const newRate=newItems.length?rate(newCost,newArea):null;
+      return {plannerType:'renovation',existingArea,newArea,existingCost,newCost,existingRate,newRate,totalArea:existingArea+newArea,totalCost:list.reduce((s,i)=>s+N(i?.amount),0),hasItemSnapshot:list.length>0};
     }
     const builtUpArea=rs.reduce((s,r)=>s+r.area,0);
     const totalCost=list.reduce((s,i)=>s+N(i?.amount),0);
