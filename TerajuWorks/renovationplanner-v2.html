@@ -559,9 +559,9 @@ main>section:not(:first-child){scroll-margin-top:92px} main>section>div:first-ch
     }
     .quotation-summary-row td{background:#f8fafc;border-top:1px solid #e5e7eb}.quotation-summary-row td:last-child{text-align:right;white-space:nowrap}
     .quotation-preview-loading{min-height:240px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;color:#6b7280;padding:28px}.quotation-preview-loading strong{color:#111827;font-size:15px}.quotation-preview-spinner{width:34px;height:34px;border:3px solid #e5e7eb;border-top-color:#111827;border-radius:50%;animation:tcPreviewSpin .8s linear infinite}@keyframes tcPreviewSpin{to{transform:rotate(360deg)}}
-.planner-brand-lockup{display:flex;flex-direction:column;align-items:stretch;gap:6px;width:220px;flex:0 0 220px}.planner-brand-lockup #workspaceBrandLogo{display:block;width:100%;height:auto;max-width:100%;object-fit:contain}.planner-brand-motto{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;font-size:8px;font-weight:850;letter-spacing:.18em;line-height:1;text-transform:uppercase;color:#08766d;white-space:nowrap;text-align:center}.planner-brand-motto::before,.planner-brand-motto::after{content:"";height:1px;flex:1 1 auto;background:linear-gradient(90deg,rgba(8,118,109,.18),rgba(8,118,109,.5))}.planner-brand-motto::after{background:linear-gradient(90deg,rgba(8,118,109,.5),rgba(8,118,109,.18))}@media(max-width:767px){.planner-brand-lockup{width:180px;flex-basis:180px;gap:5px}.planner-brand-motto{font-size:7px;letter-spacing:.14em;gap:5px}}</style>
+</style>
 <script src="cost-per-sqft.js?v=20261004-rm-sqft-v1"></script>
-</head>
+<link rel="stylesheet" href="shared/teraju-brand-lockup.css"></head>
 
 <body class="renovation-planner-page bg-gray-100 text-gray-800">
 <div id="paymentModal" class="payment-modal-backdrop no-print" aria-hidden="true">
@@ -591,7 +591,7 @@ main>section:not(:first-child){scroll-margin-top:92px} main>section>div:first-ch
 <header class="planner-header">
   <div class="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between gap-4">
     <div class="flex items-center gap-4 min-w-0">
-      <div class="planner-brand-lockup"><img id="workspaceBrandLogo" src="../images/terajuworks-homeowner.svg" alt="TERAJUWORKS HOMEOWNER" class="h-12 w-auto flex-shrink-0"><span class="planner-brand-motto">PLAN. COST. BUILD.</span></div>
+      <div class="teraju-brand-lockup"><img id="workspaceBrandLogo" src="../images/terajuworks-brand.svg" alt="TERAJUWORKS" class="teraju-brand-logo"><span class="teraju-brand-motto">PLAN. COST. BUILD.</span><span id="workspaceAudienceLabel" class="teraju-brand-audience">HOMEOWNER</span></div>
     </div>
     <nav class="flex items-center gap-2 flex-wrap justify-end no-print" aria-label="Planner navigation">
       <a id="myQuotationsLink" href="quotations.html" class="planner-nav-link">My Cost Estimates</a>
@@ -2612,8 +2612,8 @@ function initContractorMode() {
   document.body.classList.toggle("contractor-mode", IS_CONTRACTOR);
   document.body.classList.toggle("homeowner-mode", !IS_CONTRACTOR);
 
-  const brandLogo = document.getElementById("workspaceBrandLogo");
-  if (brandLogo) { brandLogo.src = IS_CONTRACTOR ? "../images/terajuworks-contractor.svg" : "../images/terajuworks-homeowner.svg"; brandLogo.alt = IS_CONTRACTOR ? "TERAJUWORKS CONTRACTOR" : "TERAJUWORKS HOMEOWNER"; }
+  const audienceLabel = document.getElementById("workspaceAudienceLabel");
+  if (audienceLabel) audienceLabel.textContent = IS_CONTRACTOR ? "CONTRACTOR" : "HOMEOWNER";
 
   const badgeEl = document.getElementById("workspaceBadge");
   const idLabelEl = document.getElementById("workspaceIdLabel");
