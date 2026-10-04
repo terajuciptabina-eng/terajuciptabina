@@ -187,6 +187,17 @@
     "updatedAt": "2026-10-04T17:09:41.720Z"
   },
   {
+    "id": "DEV-20261005-5dd85c7",
+    "date": "2026-10-05",
+    "title": "Restore original quotation CTA and add help CTA above it (RenovationPlanner)",
+    "module": "RenovationPlanner",
+    "status": "Completed",
+    "summary": "Restore original quotation CTA and add help CTA above it (RenovationPlanner)",
+    "details": "Automatic entry from commit 5dd85c7. Changed files: TerajuWorks/renovationplanner-v2.html.",
+    "commit": "5dd85c7b9a82e538202b2e03a42abd0eef9d9885",
+    "updatedAt": "2026-10-04T20:31:26.957Z"
+  },
+  {
     "id": "DEV-20261005-58f631b",
     "date": "2026-10-05",
     "title": "Restore estimate number source rule",
