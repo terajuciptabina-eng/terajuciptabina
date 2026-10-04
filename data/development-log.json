@@ -1,5 +1,16 @@
 [
   {
+    "id": "DEV-20261005-d6e26e2",
+    "date": "2026-10-05",
+    "title": "Expose cost estimate numbers in Admin Database",
+    "module": "Admin / Rate Management",
+    "status": "Completed",
+    "summary": "Expose cost estimate numbers in Admin Database",
+    "details": "Automatic entry from commit d6e26e2. Changed files: api/admin.js.",
+    "commit": "d6e26e27d59e3fef1073e3505eeb8544167f25ff",
+    "updatedAt": "2026-10-04T17:04:14.921Z"
+  },
+  {
     "id": "DEV-20261005-4715206",
     "date": "2026-10-05",
     "title": "Create temporary homeowner account HME-20261004-1ZDA",
