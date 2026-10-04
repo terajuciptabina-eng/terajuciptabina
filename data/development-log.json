@@ -44,6 +44,17 @@
     "updatedAt": "2026-10-04T17:29:18.050Z"
   },
   {
+    "id": "DEV-20261005-c0f4757",
+    "date": "2026-10-05",
+    "title": "Use canonical Estimate Number in Renovation Cost Estimate Preview",
+    "module": "RenovationPlanner",
+    "status": "Completed",
+    "summary": "Use canonical Estimate Number in Renovation Cost Estimate Preview",
+    "details": "Automatic entry from commit c0f4757. Changed files: TerajuWorks/renovationplanner-v2.html.",
+    "commit": "c0f475752216c7a501e973c52617ae65f5a9cb2c",
+    "updatedAt": "2026-10-04T17:48:57.670Z"
+  },
+  {
     "id": "DEV-20261005-aa082ab",
     "date": "2026-10-05",
     "title": "Show Cost Estimate preview numbers in Admin Database",
