@@ -154,6 +154,17 @@
     "updatedAt": "2026-10-04T11:01:21.990Z"
   },
   {
+    "id": "DEV-20261004-bf7e74a",
+    "date": "2026-10-04",
+    "title": "Use canonical brand lockup on workspace entry",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Use canonical brand lockup on workspace entry",
+    "details": "Automatic entry from commit bf7e74a. Changed files: TerajuWorks/contractor.html.",
+    "commit": "bf7e74acd7cda11d28095eb10cdbb4948dc4d46f",
+    "updatedAt": "2026-10-04T11:31:45.924Z"
+  },
+  {
     "id": "DEV-20261004-be32f40",
     "date": "2026-10-04",
     "title": "investor: make admin snapshot factual and investor safe",
