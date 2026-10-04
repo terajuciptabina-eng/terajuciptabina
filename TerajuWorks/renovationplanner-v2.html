@@ -263,7 +263,7 @@
 .quotation-generator-tip strong{color:#1f2937}
 .quotation-generate-btn{margin-top:10px;width:100%;background:#111827;color:#fff;border:0;border-radius:11px;padding:11px 16px;font-weight:700;cursor:pointer;min-height:44px}
 .quotation-generate-btn:hover{background:#000}
-.quotation-preview-heading{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px}
+.quotation-preview-heading{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px}.quotation-brand-motto{display:block;font-size:8px;font-weight:900;letter-spacing:.2em;line-height:1;text-transform:uppercase;color:#08766d;white-space:nowrap}@media(max-width:767px){.quotation-brand-motto{font-size:7px;letter-spacing:.17em}}
 .quotation-render-source{position:fixed;left:-100000px;top:0;width:794px;background:#fff;visibility:visible;pointer-events:none;z-index:-1}
 @media(max-width:767px){.quotation-type-grid{grid-template-columns:1fr}
   .quotation-type-card{min-height:0;padding:12px}
@@ -3044,8 +3044,11 @@ function generateQuotationConfirmed(type) {
     <div class="quotation-preview-header">
       <div class="flex justify-between items-start gap-6 border-b pb-5 mb-6">
         <div class="min-w-0">
-          <div class="flex items-center gap-4 mb-4">
-            <img src="${brand?.logo||"../images/logo.png"}" alt="${brand?.alt||"Company Logo"}" class="h-14 w-auto flex-shrink-0">
+          <div class="flex items-start gap-4 mb-4">
+            <div class="flex flex-col items-start gap-1 flex-shrink-0">
+              <img src="${brand?.logo||"../images/logo.png"}" alt="${brand?.alt||"Company Logo"}" class="h-14 w-auto flex-shrink-0">
+              <span class="quotation-brand-motto">PLAN. COST. BUILD.</span>
+            </div>
             <div class="min-w-0">
               <h1 class="text-xl font-bold">${escapeHtml(brand?.name||"TERAJU CIPTABINA RESOURCES")}</h1>
               ${brand?.registration ? `<p class="text-xs text-gray-500">${escapeHtml(brand.registration)}</p>` : ""}
