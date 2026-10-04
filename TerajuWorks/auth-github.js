@@ -63,6 +63,25 @@
       setTimeout(() => popup.remove(), 300);
     }, 5000);
   }
+  function openSignupWhatsApp(record, name) {
+    const recipient = '60145002652';
+    const id = record?.[idKey] || '';
+    const label = isHomeowner ? 'HOMEOWNER' : 'CONTRACTOR';
+    const workspaceUrl = isHomeowner
+      ? 'https://terajuciptabina-eng.github.io/terajuciptabina/TerajuWorks/homeowner.html'
+      : 'https://terajuciptabina-eng.github.io/terajuciptabina/quotation/contractor.html';
+    const message = `Hello ${name},
+
+Thank you for registering with TERAJU WORKS ${label} WORKSPACE.
+Your registration has been received successfully. Your account has been assigned the following reference number for your log in:
+
+${id}.
+
+Please keep this reference number for your records. Happy log in 😇
+
+${workspaceUrl}`;
+    window.location.assign(`https://wa.me/${recipient}?text=${encodeURIComponent(message)}`);
+  }
   function showPortal(record) {
     currentRecord = record; setLocal(record); panel.classList.add('hidden'); portal.classList.remove('hidden'); const id = record[idKey];
     welcome.innerHTML = `<span class=\"block\">Welcome, ${escapeHtml(record.profile?.name || '')}.</span>`;
@@ -211,7 +230,7 @@
     } catch (err) {
       setProfileStatus(err.message || 'Unable to save contractor profile.');
     } finally {
-      profileSave.disabled = false; profileSave.textContent = 'Save Profile';
+      profileSave.disabled = false; profileSave.textContent = 'Save Profile'; 
     }
   }
   profileButton?.addEventListener('click', () => openProfile(currentRecord), true);
@@ -338,6 +357,7 @@
         generated.classList.remove('hidden');
         showPortal(data.record);
         showSignupPopup(data.record, data.emailSent === true, email);
+        openSignupWhatsApp(data.record, name);
         if (role === 'contractor') setTimeout(() => openProfile(data.record, { onboarding: true }), 550);
       } else {
         const id = idInput.value.trim().toUpperCase();
