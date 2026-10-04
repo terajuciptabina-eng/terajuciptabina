@@ -165,6 +165,17 @@
     "updatedAt": "2026-10-04T16:45:29.025Z"
   },
   {
+    "id": "DEV-20261005-4137794",
+    "date": "2026-10-05",
+    "title": "Revert premature estimate number refactor",
+    "module": "Cost Estimate",
+    "status": "Completed",
+    "summary": "Revert premature estimate number refactor",
+    "details": "Automatic entry from commit 4137794. Changed files: api/quotations.js.",
+    "commit": "4137794c77c515c060dbcd6fa328217f57e314f3",
+    "updatedAt": "2026-10-04T17:56:59.600Z"
+  },
+  {
     "id": "DEV-20261005-4076694",
     "date": "2026-10-05",
     "title": "Expose canonical Cost Estimate preview numbers in Admin Database",
