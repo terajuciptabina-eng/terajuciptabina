@@ -1,4 +1,6 @@
 // Vercel deployment trigger: keep source behavior unchanged.
+import { quotationType, estimateSequence, estimateBase, displayEstimateNumber, canonicalEstimateNumber } from './estimate-number.js';
+
 export default async function handler(req, res) {
   const origin = 'https://terajuciptabina-eng.github.io';
   res.setHeader('Access-Control-Allow-Origin', origin);
@@ -34,16 +36,9 @@ export default async function handler(req, res) {
     if (!raw.response.ok || !raw.text.trim()) return { record: null, sha, status: 502 };
     return { record: JSON.parse(raw.text), sha, status: 200 };
   }
-  function quotationType(value) { return String(value || '').toLowerCase() === 'detail' ? 'detail' : 'simple'; }
   function plannerList(record, type) { return Array.isArray(record?.plannerRecords?.[type]) ? record.plannerRecords[type] : []; }
   function baseSequence(value) { const match = String(value || '').trim().match(/^Q(\d+)(?:S|D)?$/i); return match ? Number(match[1]) || 0 : 0; }
-  function estimateSequence(value) { const match = String(value || '').trim().match(/^EST-(?:BLD|REN)-(\d+)(?:-[SD])?$/i); return match ? Number(match[1]) || 0 : 0; }
-  function estimateBase(value) { return estimateSequence(value); }
   function revisionCode(value) { const n = Number(value); return `R${String(Number.isFinite(n) && n >= 0 ? n : 0).padStart(2, '0')}`; }
-  function canonicalEstimateNumber(value, plannerType, type) {
-    const base = estimateBase(value);
-    return base ? displayEstimateNumber(base, plannerType, type) : '';
-  }
   function revisionComparable(value, plannerType) {
     const copy = JSON.parse(JSON.stringify(value || {}));
 
@@ -81,7 +76,6 @@ export default async function handler(req, res) {
   function projectIdentity(record) { const state = record?.plannerState || {}; return { customer: String(record?.client?.name || state.customerName || '').trim().toLowerCase(), location: String(record?.project?.location || state.projectLocation || '').trim().toLowerCase(), area: Number(record?.project?.builtUpArea ?? state.builtUpArea ?? 0) || 0 }; }
   function sameProjectIdentity(a, b) { const x = projectIdentity(a), y = projectIdentity(b); return (!x.customer || !y.customer || x.customer === y.customer) && (!x.location || !y.location || x.location === y.location) && (!x.area || !y.area || x.area === y.area); }
   function displayQuotationNumber(baseNumber) { return `Q${String(baseNumber).padStart(3, '0')}`; }
-  function displayEstimateNumber(number, plannerType, type) { const suffix = quotationType(type) === 'detail' ? 'D' : 'S'; return `EST-${plannerType === 'renovation' ? 'REN' : 'BLD'}-${String(Math.max(1, number)).padStart(3, '0')}-${suffix}`; }
   try {
     const source = req.method === 'GET' ? req.query : (req.body || {}); const role = String(source?.role || '').toLowerCase(); const id = String(source?.id || '').trim().toUpperCase(); const plannerType = String(source?.plannerType || 'build').toLowerCase();
     if (!validRole(role) || !id || !validPlanner(plannerType)) return res.status(400).json({ message: 'Invalid role, id or planner type.' });
