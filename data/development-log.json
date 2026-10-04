@@ -77,6 +77,17 @@
     "updatedAt": "2026-10-04T17:19:42.282Z"
   },
   {
+    "id": "DEV-20261005-33dea33",
+    "date": "2026-10-05",
+    "title": "Restore source to latest-working baseline before root-cause fix",
+    "module": "Cost Estimate",
+    "status": "Completed",
+    "summary": "Restore source to latest-working baseline before root-cause fix",
+    "details": "Automatic entry from commit 33dea33. Changed files: api/quotations.js.",
+    "commit": "33dea3366c017ceecda5d0d851bdc4e2ce59191b",
+    "updatedAt": "2026-10-04T17:26:11.436Z"
+  },
+  {
     "id": "DEV-20261005-2d4ad05",
     "date": "2026-10-05",
     "title": "Align Admin navigation with Cost Estimate terminology",
