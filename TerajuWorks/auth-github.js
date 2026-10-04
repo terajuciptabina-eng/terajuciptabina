@@ -357,7 +357,10 @@ ${workspaceUrl}`;
         trackEvent('sign_up', { signup_role: role, generated_id: data.id, method: 'github_account_store' });
         generated.innerHTML = `<strong>Your ${isHomeowner ? 'Homeowner' : 'Contractor'} ID:</strong><br><span class=\"mt-1 inline-block text-lg font-bold tracking-wide text-slate-950\">${escapeHtml(data.id)}</span><br><span class=\"text-xs text-slate-500\">Keep this ID. You will use it to sign in later.</span>`;
         generated.classList.remove('hidden');
+        showPortal(data.record);
+        showSignupPopup(data.record, data.emailSent === true, email);
         openSignupWhatsApp(data.record, name, phone);
+        if (role === 'contractor') setTimeout(() => openProfile(data.record, { onboarding: true }), 550);
       } else {
         const id = idInput.value.trim().toUpperCase();
         if (!id) throw new Error(`Please enter your ${isHomeowner ? 'Homeowner' : 'Contractor'} ID.`);
