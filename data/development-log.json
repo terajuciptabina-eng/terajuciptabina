@@ -33,6 +33,17 @@
     "updatedAt": "2026-10-04T17:10:17.968Z"
   },
   {
+    "id": "DEV-20261005-c3fb844",
+    "date": "2026-10-05",
+    "title": "Restore Admin API to latest-working baseline",
+    "module": "Admin / Rate Management",
+    "status": "Completed",
+    "summary": "Restore Admin API to latest-working baseline",
+    "details": "Automatic entry from commit c3fb844. Changed files: api/admin.js.",
+    "commit": "c3fb8448df154f4c04ee0271e415ee581142bf5a",
+    "updatedAt": "2026-10-04T17:29:18.050Z"
+  },
+  {
     "id": "DEV-20261005-943f33b",
     "date": "2026-10-05",
     "title": "Restore source to latest-working baseline before root-cause fix",
