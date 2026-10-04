@@ -55,6 +55,17 @@
     "updatedAt": "2026-10-04T16:45:29.025Z"
   },
   {
+    "id": "DEV-20261005-3d001fd",
+    "date": "2026-10-05",
+    "title": "Assign separate estimate numbers to Simple and Detail previews",
+    "module": "Cost Estimate",
+    "status": "Completed",
+    "summary": "Assign separate estimate numbers to Simple and Detail previews",
+    "details": "Automatic entry from commit 3d001fd. Changed files: api/quotations.js.",
+    "commit": "3d001fdcbedd7979f4478c5c5b97cbff1f47ab34",
+    "updatedAt": "2026-10-04T17:19:42.282Z"
+  },
+  {
     "id": "DEV-20261005-2d4ad05",
     "date": "2026-10-05",
     "title": "Align Admin navigation with Cost Estimate terminology",
