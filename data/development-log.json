@@ -616,6 +616,17 @@
     "updatedAt": "2026-10-04T10:16:37.711Z"
   },
   {
+    "id": "DEV-20261004-0ce321e",
+    "date": "2026-10-04",
+    "title": "Standardize RenovationPlanner Cost Estimate brand lockup",
+    "module": "RenovationPlanner",
+    "status": "Completed",
+    "summary": "Standardize RenovationPlanner Cost Estimate brand lockup",
+    "details": "Automatic entry from commit 0ce321e. Changed files: TerajuWorks/renovationplanner-v2.html.",
+    "commit": "0ce321e65a0fdcb6e5f0afc2bf9f6b29e1991c2b",
+    "updatedAt": "2026-10-04T10:23:18.623Z"
+  },
+  {
     "id": "DEV-20261004-0c144a3",
     "date": "2026-10-04",
     "title": "Add TERAJUWORKS motto to Calculation Rules",
