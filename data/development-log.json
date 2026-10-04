@@ -396,6 +396,17 @@
     "updatedAt": "2026-10-04T18:12:17.046Z"
   },
   {
+    "id": "DEV-20261005-15d3add",
+    "date": "2026-10-05",
+    "title": "Restore a visible, useful Cost Estimate help CTA (RenovationPlanner)",
+    "module": "RenovationPlanner",
+    "status": "Completed",
+    "summary": "Restore a visible, useful Cost Estimate help CTA (RenovationPlanner)",
+    "details": "Automatic entry from commit 15d3add. Changed files: TerajuWorks/renovationplanner-v2.html.",
+    "commit": "15d3add7f85f4f47c85901b69c161fb474eafa7d",
+    "updatedAt": "2026-10-04T20:34:45.332Z"
+  },
+  {
     "id": "DEV-20261005-11f1472",
     "date": "2026-10-05",
     "title": "Preserve Simple Detail estimate suffixes in Cost Estimate numbers",
