@@ -66,6 +66,17 @@
     "updatedAt": "2026-10-04T20:32:57.792Z"
   },
   {
+    "id": "DEV-20261005-ddc5e8c",
+    "date": "2026-10-05",
+    "title": "revert: restore RenovationPlanner floor plan baseline before source redesign",
+    "module": "RenovationPlanner",
+    "status": "Completed",
+    "summary": "revert: restore RenovationPlanner floor plan baseline before source redesign",
+    "details": "Automatic entry from commit ddc5e8c. Changed files: TerajuWorks/renovationplanner-v2.html.",
+    "commit": "ddc5e8cafbe1fc55d124a7643e2b251a5e50d438",
+    "updatedAt": "2026-10-05T06:00:42.868Z"
+  },
+  {
     "id": "DEV-20261005-d6e26e2",
     "date": "2026-10-05",
     "title": "Expose cost estimate numbers in Admin Database",
