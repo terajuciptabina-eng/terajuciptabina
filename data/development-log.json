@@ -363,6 +363,17 @@
     "updatedAt": "2026-10-05T06:06:13.569Z"
   },
   {
+    "id": "DEV-20261005-a350fd8",
+    "date": "2026-10-05",
+    "title": "fix: align footer logo and use estimate number for PDF filename",
+    "module": "Cost Estimate",
+    "status": "Completed",
+    "summary": "fix: align footer logo and use estimate number for PDF filename",
+    "details": "Automatic entry from commit a350fd8. Changed files: TerajuWorks/quotation-document-engine.js.",
+    "commit": "a350fd8ca9287f49fca154e53b357dc1f2c15811",
+    "updatedAt": "2026-10-05T06:33:14.872Z"
+  },
+  {
     "id": "DEV-20261005-a311175",
     "date": "2026-10-05",
     "title": "Fix shared tag color specificity",
