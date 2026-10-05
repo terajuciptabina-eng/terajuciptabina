@@ -1045,6 +1045,17 @@
     "updatedAt": "2026-10-04T17:29:38.937Z"
   },
   {
+    "id": "DEV-20261005-3fb2c8b",
+    "date": "2026-10-05",
+    "title": "Restore original TERAJUWORKS logo and fix SVG render overflow",
+    "module": "BuildPlanner",
+    "status": "Completed",
+    "summary": "Restore original TERAJUWORKS logo and fix SVG render overflow",
+    "details": "Automatic entry from commit 3fb2c8b. Changed files: TerajuWorks/buildplanner-v2.html.",
+    "commit": "3fb2c8b61ca8d074740d29eeaaa98a9791edaa79",
+    "updatedAt": "2026-10-05T07:09:42.653Z"
+  },
+  {
     "id": "DEV-20261005-3f0369d",
     "date": "2026-10-05",
     "title": "Restore original quotation CTA and add help CTA above it (BuildPlanner)",
