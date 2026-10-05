@@ -269,13 +269,19 @@ function appendContactFooter(page,contactFooter){
  clone.style.color='#6b7280';
  clone.style.textAlign='center';
  clone.style.overflow='visible';
- clone.querySelectorAll('.quotation-contact-line').forEach(line=>{
+ const contactLines=clone.querySelectorAll('.quotation-contact-line');
+ contactLines.forEach(line=>{
   line.style.margin='0';
   line.style.padding='0';
   line.style.whiteSpace='normal';
   line.style.overflow='visible';
   line.style.textOverflow='clip';
  });
+ const poweredByLine=contactLines[contactLines.length-1];
+ if(poweredByLine){
+  poweredByLine.style.position='relative';
+  poweredByLine.style.top='10px';
+ }
  page.root.appendChild(clone);
 }
 async function buildPaginatedPages(source){
