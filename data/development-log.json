@@ -374,6 +374,17 @@
     "updatedAt": "2026-10-04T18:15:07.733Z"
   },
   {
+    "id": "DEV-20261005-a2c05cc",
+    "date": "2026-10-05",
+    "title": "fix: align renovation preview location with project state",
+    "module": "RenovationPlanner",
+    "status": "Completed",
+    "summary": "fix: align renovation preview location with project state",
+    "details": "Automatic entry from commit a2c05cc. Changed files: TerajuWorks/renovationplanner-v2.html.",
+    "commit": "a2c05cce16deff2c512ce6bc8c16582d88e90cbc",
+    "updatedAt": "2026-10-05T06:28:52.205Z"
+  },
+  {
     "id": "DEV-20261005-9c8a839",
     "date": "2026-10-05",
     "title": "Update renovation quotation Q020S (EST-REN-019-S)",
