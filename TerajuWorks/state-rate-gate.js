@@ -11,11 +11,13 @@
     ['pulau-pinang','Pulau Pinang'],['sabah','Sabah'],['sarawak','Sarawak'],['selangor','Selangor'],
     ['terengganu','Terengganu'],['kuala-lumpur','Kuala Lumpur'],['putrajaya','Putrajaya'],['labuan','Labuan']
   ];
-  const STORAGE_KEY='teraju.planner.state.v1';
+  window.TERAJU_PROJECT_STATES=STATES.slice();
+  function stateLabel(value){const key=String(value||'').trim().toLowerCase();return STATES.find(s=>s[0]===key)?.[1]||'';}
+  window.TERAJU_STATE_LABEL=stateLabel;
+  window.TERAJU_GET_PROJECT_STATE=()=>String(document.getElementById('projectState')?.value||window.TERAJU_SELECTED_STATE||'').trim().toLowerCase();
 
   function esc(v){return String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
-  function selected(){try{return String(localStorage.getItem(STORAGE_KEY)||'').trim()}catch(e){return ''}}
-  function setSelected(v){try{localStorage.setItem(STORAGE_KEY,v)}catch(e){};window.TERAJU_SELECTED_STATE=v;}
+  function setSelected(v){window.TERAJU_SELECTED_STATE=String(v||'').trim().toLowerCase();}
 
   function loadResolver(){
     if(document.querySelector('script[data-teraju-state-rate-resolver]'))return;
@@ -45,8 +47,10 @@
     const select=document.getElementById('projectState');
     if(!select){loadResolver();return;}
 
-    const saved=selected();
-    if(saved && STATES.some(s=>s[0]===saved))select.value=saved;
+    // State belongs to the project, never to the browser. A new project must start blank.
+    // Existing projects are restored by quotation-records.js from their saved planner state.
+    const existingQuotationId=new URLSearchParams(location.search).get('quotationId');
+    if(!existingQuotationId)select.value='';
 
     const controls=[...document.querySelectorAll('main input, main select, main textarea, main button')].filter(el=>el!==select);
     const lock=document.createElement('div');
@@ -88,7 +92,7 @@
 
     select.addEventListener('change',function(){
       if(!select.value){apply();return}
-      const previousState=String(window.TERAJU_SELECTED_STATE || selected() || '').trim().toLowerCase();
+      const previousState=String(window.TERAJU_SELECTED_STATE || '').trim().toLowerCase();
       setSelected(select.value);
       window.TERAJU_SELECTED_STATE=select.value;
       apply();
