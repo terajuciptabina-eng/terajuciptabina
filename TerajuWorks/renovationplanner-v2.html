@@ -2025,7 +2025,9 @@ function renderEstimate(items, roomGroups, roomSubtotals, total) {
   const container = document.getElementById("renovationBudgetContent");
   const brand = typeof window.__TERAJU_PREVIEW_BRANDING === "function" ? window.__TERAJU_PREVIEW_BRANDING() : null;
   const customer = document.getElementById("customerName")?.value || "Not specified";
-  const location = document.getElementById("projectLocation")?.value || "Not specified";
+  const projectState = String(window.TERAJU_GET_PROJECT_STATE?.() || document.getElementById("projectState")?.value || window.TERAJU_SELECTED_STATE || "").trim().toLowerCase();
+  const projectStateLabel = String(window.TERAJU_STATE_LABEL?.(projectState) || projectState).trim();
+  const location = String(document.getElementById("projectLocation")?.value?.trim() || projectStateLabel || "Not specified").trim();
   const totalBuiltArea = roomGroups.reduce((sum, room) => sum + (Number(room.area) || 0), 0);
 
   document.getElementById("renovationBudgetResults")?.classList.remove("hidden");
@@ -3126,7 +3128,7 @@ function generateQuotationConfirmed(type) {
 initContractorMode();
 </script>
 
-<script src="quotation-document-engine.js?v=20260922-footer-v9"></script>
+<script src="quotation-document-engine.js?v=20261005-render-contract-v1"></script>
 <script src="detailed-quotation-promo-ui.js"></script>
 <script src="location-autocomplete.js"></script>
 <script src="state-rate-gate.js?v=20260924-state-v1"></script>
