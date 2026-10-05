@@ -27,9 +27,19 @@
   const setError = message => { error.textContent = message; error.classList.remove('hidden'); };
   const clearError = () => { error.textContent = ''; error.classList.add('hidden'); };
   const escapeHtml = value => String(value ?? '').replace(/[&<>\"']/g, char => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '\"':'&quot;', "'":'&#39;' }[char]));
-  const validEmail = value => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(value || '').trim());
+  const validEmail = value => {
+    const email = String(value || '').trim().toLowerCase();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return false;
+    return !new Set(['a@b.com', 'test@test.com', 'abc@abc.com', 'test@example.com', 'user@example.com']).has(email);
+  };
   const normalizePhone = value => String(value || '').replace(/[\s().-]/g, '');
-  const validPhone = value => /^(?:01\d{8,9}|\+601\d{8,9}|601\d{8,9})$/.test(normalizePhone(value));
+  const validPhone = value => {
+    const normalized = normalizePhone(value);
+    if (!/^(?:01\d{8,9}|\+601\d{8,9}|601\d{8,9})$/.test(normalized)) return false;
+    const local = normalized.replace(/^\+?60/, '0');
+    const subscriber = local.slice(3);
+    return local !== '0123456789' && !/^(\d)\1+$/.test(subscriber);
+  };
 
   if (emailInput) { emailInput.type = 'email'; emailInput.autocomplete = 'email'; }
   if (phoneInput) { phoneInput.type = 'tel'; phoneInput.autocomplete = 'tel'; phoneInput.inputMode = 'tel'; phoneInput.placeholder = '0123456789'; }
@@ -134,7 +144,7 @@ ${workspaceUrl}`;
     const profile = {};
     Object.entries(homeProfileFields).forEach(([key, input]) => { profile[key] = input?.value.trim() || ''; });
     if (!profile.name) return setHomeProfileStatus('Name is required.');
-    if (!validEmail(profile.email)) return setHomeProfileStatus('Please enter a valid email address.');
+    if (!validEmail(profile.email)) return setHomeProfileStatus('Please use a valid email address.');
     if (!validPhone(profile.phone)) return setHomeProfileStatus('Please enter a valid Malaysian phone number.');
     homeProfileSave.disabled = true;
     homeProfileSave.textContent = 'Saving…';
@@ -352,7 +362,7 @@ ${workspaceUrl}`;
         const name = nameInput.value.trim(), email = emailInput?.value.trim() || '', phone = phoneInput?.value.trim() || '';
         if (!name) throw new Error('Name is required.');
         if (!validEmail(email)) throw new Error('Please enter a valid email address.');
-        if (!validPhone(phone)) throw new Error('Please enter a valid Malaysian phone number, e.g. 0123456789 or +60123456789.');
+        if (!validPhone(phone)) throw new Error('Please use a valid phone number.');
         const data = await postAccount({role,name,email,phone});
         trackEvent('sign_up', { signup_role: role, generated_id: data.id, method: 'github_account_store' });
         generated.innerHTML = `<strong>Your ${isHomeowner ? 'Homeowner' : 'Contractor'} ID:</strong><br><span class=\"mt-1 inline-block text-lg font-bold tracking-wide text-slate-950\">${escapeHtml(data.id)}</span><br><span class=\"text-xs text-slate-500\">Keep this ID. You will use it to sign in later.</span>`;
