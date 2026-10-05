@@ -280,7 +280,7 @@ function appendContactFooter(page,contactFooter){
  const poweredByLine=contactLines[contactLines.length-1];
  if(poweredByLine){
   poweredByLine.style.position='relative';
-  poweredByLine.style.top='10px';
+  poweredByLine.style.top='13px';
  }
  page.root.appendChild(clone);
 }
