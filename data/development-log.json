@@ -484,6 +484,17 @@
     "updatedAt": "2026-10-04T17:30:17.425Z"
   },
   {
+    "id": "DEV-20261005-4c2b93f",
+    "date": "2026-10-05",
+    "title": "feat: connect RenovationPlanner to shared floor plan import",
+    "module": "RenovationPlanner",
+    "status": "Completed",
+    "summary": "feat: connect RenovationPlanner to shared floor plan import",
+    "details": "Automatic entry from commit 4c2b93f. Changed files: TerajuWorks/renovationplanner-v2.html.",
+    "commit": "4c2b93f11c7d85d004f48170e6c60a592e480f86",
+    "updatedAt": "2026-10-05T06:06:10.425Z"
+  },
+  {
     "id": "DEV-20261005-4912b63",
     "date": "2026-10-05",
     "title": "Pass estimate type into canonical Cost Estimate number",
