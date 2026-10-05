@@ -506,6 +506,17 @@
     "updatedAt": "2026-10-05T06:22:34.387Z"
   },
   {
+    "id": "DEV-20261005-9b216f9",
+    "date": "2026-10-05",
+    "title": "Correct TERAJUWORKS footer logo horizontal viewBox",
+    "module": "BuildPlanner",
+    "status": "Completed",
+    "summary": "Correct TERAJUWORKS footer logo horizontal viewBox",
+    "details": "Automatic entry from commit 9b216f9. Changed files: TerajuWorks/buildplanner-v2.html.",
+    "commit": "9b216f9d3c9694bd26f7869b26bfa457b1c073a7",
+    "updatedAt": "2026-10-05T06:54:27.658Z"
+  },
+  {
     "id": "DEV-20261005-9a71caa",
     "date": "2026-10-05",
     "title": "chore: refresh renovation quotation engine cache",
