@@ -1298,6 +1298,17 @@
     "updatedAt": "2026-10-05T07:00:59.909Z"
   },
   {
+    "id": "DEV-20261005-1dbd405",
+    "date": "2026-10-05",
+    "title": "Preserve original TERAJUWORKS SVG during render",
+    "module": "BuildPlanner",
+    "status": "Completed",
+    "summary": "Preserve original TERAJUWORKS SVG during render",
+    "details": "Automatic entry from commit 1dbd405. Changed files: TerajuWorks/buildplanner-v2.html.",
+    "commit": "1dbd405df6967dfa7cf705f7434c666558de93a7",
+    "updatedAt": "2026-10-05T07:12:37.482Z"
+  },
+  {
     "id": "DEV-20261005-15d3add",
     "date": "2026-10-05",
     "title": "Restore a visible, useful Cost Estimate help CTA (RenovationPlanner)",
