@@ -22,6 +22,17 @@
     "updatedAt": "2026-10-05T06:15:46.676Z"
   },
   {
+    "id": "DEV-20261005-f8996ad",
+    "date": "2026-10-05",
+    "title": "fix: reserve complete quotation footer within A4 capture",
+    "module": "Cost Estimate",
+    "status": "Completed",
+    "summary": "fix: reserve complete quotation footer within A4 capture",
+    "details": "Automatic entry from commit f8996ad. Changed files: TerajuWorks/quotation-document-engine.js.",
+    "commit": "f8996ad90662a9b64f3bf3ab85f510a9ff51c70f",
+    "updatedAt": "2026-10-05T06:41:40.446Z"
+  },
+  {
     "id": "DEV-20261005-f1a1852",
     "date": "2026-10-05",
     "title": "refactor: share floor plan import integration across planners",
