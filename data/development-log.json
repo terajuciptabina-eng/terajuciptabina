@@ -1661,6 +1661,17 @@
     "updatedAt": "2026-10-04T20:36:00.943Z"
   },
   {
+    "id": "DEV-20261005-396be57",
+    "date": "2026-10-05",
+    "title": "Fix footer logo horizontal clipping at render source",
+    "module": "Cost Estimate",
+    "status": "Completed",
+    "summary": "Fix footer logo horizontal clipping at render source",
+    "details": "Automatic entry from commit 396be57. Changed files: TerajuWorks/quotation-document-engine.js.",
+    "commit": "396be57531c46eb788d643e1251e3de5ed5507a6",
+    "updatedAt": "2026-10-05T08:01:42.923Z"
+  },
+  {
     "id": "DEV-20261005-393ea79",
     "date": "2026-10-05",
     "title": "Update renovation quotation Q002 (EST-REN-002-S)",
