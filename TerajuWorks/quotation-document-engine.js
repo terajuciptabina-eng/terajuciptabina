@@ -289,7 +289,7 @@ function appendContactFooter(page,contactFooter){
   }
   if(poweredByLogo){
    poweredByLogo.style.position='relative';
-   poweredByLogo.style.top='15px';
+   poweredByLogo.style.top='12px';
   }
  }
  page.root.appendChild(clone);
