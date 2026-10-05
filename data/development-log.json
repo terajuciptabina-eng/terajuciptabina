@@ -2112,6 +2112,17 @@
     "updatedAt": "2026-10-05T06:49:19.045Z"
   },
   {
+    "id": "DEV-20261005-29f0c00",
+    "date": "2026-10-05",
+    "title": "Clean footer logo child positioning; shared engine controls footer row",
+    "module": "BuildPlanner",
+    "status": "Completed",
+    "summary": "Clean footer logo child positioning; shared engine controls footer row",
+    "details": "Automatic entry from commit 29f0c00. Changed files: TerajuWorks/buildplanner-v2.html.",
+    "commit": "29f0c00cce0678f7a7ad4c084d484e3d3a5f5b1e",
+    "updatedAt": "2026-10-05T08:40:02.261Z"
+  },
+  {
     "id": "DEV-20261005-29e7093",
     "date": "2026-10-05",
     "title": "Restore Admin Database original column sizing",
