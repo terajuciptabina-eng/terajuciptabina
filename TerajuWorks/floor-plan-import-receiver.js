@@ -54,7 +54,7 @@
 
   const wait=async()=>{
     const hasQuotation=!!new URLSearchParams(location.search).get('quotationId');
-    const ready=typeof addRoom==='function'&&typeof updateEstimate==='function'&&document.getElementById('roomsContainer')&&(!hasQuotation||isRenovation?typeof window.tcQuotationRecords!=='undefined':(window.tcQuotationRecords&&typeof window.tcQuotationRecords.persistRoomSchedule==='function'));
+    const ready=typeof addRoom==='function'&&typeof updateEstimate==='function'&&document.getElementById('roomsContainer')&&(!hasQuotation||(isRenovation?typeof window.tcQuotationRecords!=='undefined':(window.tcQuotationRecords&&typeof window.tcQuotationRecords.persistRoomSchedule==='function')));
     if(!ready){setTimeout(wait,100);return}
     const existing=document.querySelectorAll('#roomsContainer .room-card').length;
     let importContext=null;
