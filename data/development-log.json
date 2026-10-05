@@ -440,6 +440,17 @@
     "updatedAt": "2026-10-05T07:23:50.395Z"
   },
   {
+    "id": "DEV-20261005-c44a7a7",
+    "date": "2026-10-05",
+    "title": "Use raster footer logo for html2canvas",
+    "module": "RenovationPlanner",
+    "status": "Completed",
+    "summary": "Use raster footer logo for html2canvas",
+    "details": "Automatic entry from commit c44a7a7. Changed files: TerajuWorks/renovationplanner-v2.html.",
+    "commit": "c44a7a756a6c0b85746f248c84becb5df3fc4666",
+    "updatedAt": "2026-10-05T08:08:12.493Z"
+  },
+  {
     "id": "DEV-20261005-c3fb844",
     "date": "2026-10-05",
     "title": "Restore Admin API to latest-working baseline",
