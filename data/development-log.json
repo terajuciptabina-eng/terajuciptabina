@@ -22,6 +22,17 @@
     "updatedAt": "2026-10-05T06:15:46.676Z"
   },
   {
+    "id": "DEV-20261005-f8ca058",
+    "date": "2026-10-05",
+    "title": "Restore quotation table render contract from latest working",
+    "module": "Cost Estimate",
+    "status": "Completed",
+    "summary": "Restore quotation table render contract from latest working",
+    "details": "Automatic entry from commit f8ca058. Changed files: TerajuWorks/quotation-document-engine.js.",
+    "commit": "f8ca058a9aba1327fb568cf4235c947b8c38dfc3",
+    "updatedAt": "2026-10-05T07:27:36.437Z"
+  },
+  {
     "id": "DEV-20261005-f8996ad",
     "date": "2026-10-05",
     "title": "fix: reserve complete quotation footer within A4 capture",
