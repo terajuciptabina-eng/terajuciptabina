@@ -176,6 +176,17 @@
     "updatedAt": "2026-10-05T05:31:10.010Z"
   },
   {
+    "id": "DEV-20261005-d1b2035",
+    "date": "2026-10-05",
+    "title": "fix: allocate full A4 footer space for TerajuWorks branding",
+    "module": "Cost Estimate",
+    "status": "Completed",
+    "summary": "fix: allocate full A4 footer space for TerajuWorks branding",
+    "details": "Automatic entry from commit d1b2035. Changed files: TerajuWorks/quotation-document-engine.js.",
+    "commit": "d1b2035d38d6c845ed77f123ca9605a709b9f29f",
+    "updatedAt": "2026-10-05T06:38:06.712Z"
+  },
+  {
     "id": "DEV-20261005-d055437",
     "date": "2026-10-05",
     "title": "Preserve signup success flow with WhatsApp handoff",
