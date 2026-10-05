@@ -660,6 +660,17 @@
     "updatedAt": "2026-10-05T08:08:12.493Z"
   },
   {
+    "id": "DEV-20261005-c41d239",
+    "date": "2026-10-05",
+    "title": "Revert preview timing patch; restore prior RenovationPlanner source",
+    "module": "RenovationPlanner",
+    "status": "Completed",
+    "summary": "Revert preview timing patch; restore prior RenovationPlanner source",
+    "details": "Automatic entry from commit c41d239. Changed files: TerajuWorks/renovationplanner-v2.html.",
+    "commit": "c41d2390dd8063e4fd3cce876be47bf2dd0f90da",
+    "updatedAt": "2026-10-05T09:34:53.638Z"
+  },
+  {
     "id": "DEV-20261005-c3fb844",
     "date": "2026-10-05",
     "title": "Restore Admin API to latest-working baseline",
