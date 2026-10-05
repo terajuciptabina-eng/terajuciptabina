@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "homeowner",
+  "homeownerId": "HME-20261005-ZIOZ",
+  "profile": {
+    "name": "Reeza",
+    "email": "a@b.com",
+    "phone": "01123456789"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-10-05T18:58:55.301Z",
+  "updatedAt": "2026-10-05T18:58:55.301Z"
+}
