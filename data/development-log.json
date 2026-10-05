@@ -660,6 +660,17 @@
     "updatedAt": "2026-10-05T06:11:28.365Z"
   },
   {
+    "id": "DEV-20261005-66c0a4e",
+    "date": "2026-10-05",
+    "title": "Fix RenovationPlanner powered-by footer layout at source",
+    "module": "RenovationPlanner",
+    "status": "Completed",
+    "summary": "Fix RenovationPlanner powered-by footer layout at source",
+    "details": "Automatic entry from commit 66c0a4e. Changed files: TerajuWorks/renovationplanner-v2.html.",
+    "commit": "66c0a4eb53f6ec52e31659a02b9a50183bc5c716",
+    "updatedAt": "2026-10-05T06:47:12.853Z"
+  },
+  {
     "id": "DEV-20261005-6549fc6",
     "date": "2026-10-05",
     "title": "chore: refresh quotation engine cache after footer fix",
