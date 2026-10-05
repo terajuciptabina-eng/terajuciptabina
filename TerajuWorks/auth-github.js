@@ -37,7 +37,7 @@
   function setMode(next) {
     mode = next; clearError(); generated.classList.add('hidden'); const signup = next === 'signup';
     title.textContent = signup ? `Create ${isHomeowner ? 'homeowner' : 'contractor'} account` : `${isHomeowner ? 'Homeowner' : 'Contractor'} sign in`;
-    description.textContent = signup ? `Create your ${isHomeowner ? 'home project' : 'contractor'} workspace. Your record will be saved to the temporary GitHub account store.` : `Enter the ${isHomeowner ? 'Homeowner' : 'Contractor'} ID generated during Sign Up.`;
+    description.textContent = signup ? `Create your ${isHomeowner ? 'home project' : 'contractor'} workspace.` : `Enter the ${isHomeowner ? 'Homeowner' : 'Contractor'} ID generated during Sign Up.`;
     idField.classList.toggle('hidden', signup); nameField.classList.toggle('hidden', !signup); emailInput?.parentElement.classList.toggle('hidden', !signup); phoneInput?.parentElement.classList.toggle('hidden', !signup);
     idInput.required = !signup; nameInput.required = signup; if (emailInput) emailInput.required = signup; if (phoneInput) phoneInput.required = signup; button.textContent = signup ? 'Create workspace' : 'Enter workspace';
     signInTab.className = signup ? 'rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-500' : 'tab-active rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-950';
