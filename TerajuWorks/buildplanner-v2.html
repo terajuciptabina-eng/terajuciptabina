@@ -230,9 +230,11 @@ function getRoomGroupsBase(){const rooms=[...document.querySelectorAll('#roomsCo
 function getRoomGroups(){return getRoomGroupsBase().filter(room=>Number(room.area)>0)}
 const BUILDING_ROOF_DEFAULTS={main:'metal',porch:'flat'};function getBuildingAreaSplit(){const rooms=getRoomGroupsBase();const isPorch=r=>/porch/i.test(String(r.roomType||'')+' '+String(r.label||''));return{main:rooms.filter(r=>!isPorch(r)).reduce((s,r)=>s+(Number(r.area)||0),0),porch:rooms.filter(isPorch).reduce((s,r)=>s+(Number(r.area)||0),0)}}function getBuildingRoofSystems(){const main=document.getElementById('mainBuildingRoofSystem')?.value;const porch=document.getElementById('porchRoofSystem')?.value;return{main:main==='flat'?'flat':'metal',porch:porch==='metal'?'metal':'flat'}}window.getBuildingRoofSystems=getBuildingRoofSystems;function syncBuildingSpecification(){const split=getBuildingAreaSplit();const main=document.getElementById('mainBuildingArea'),porch=document.getElementById('porchArea');if(main)main.value=String(Math.max(0,Math.ceil(split.main)));if(porch)porch.value=String(Math.max(0,Math.ceil(split.porch)));return split}function syncBuiltUpAreaFromRooms(){const split=syncBuildingSpecification(),total=split.main+split.porch,el=document.getElementById('builtUpArea');if(el){el.value=String(Math.max(0,Math.ceil(total)));el.readOnly=true;el.classList.add('bg-gray-100');el.title='Automatically calculated from the total area/room schedule.'}}
 
-function generateQuotationNumber(){
+function generateQuotationNumber(type){
  const estimateNumber=String(window.TERAJU_CURRENT_ESTIMATE_NUMBER||'').trim();
- return estimateNumber||'—';
+ if(!estimateNumber)return '—';
+ const base=estimateNumber.replace(/-[SD]$/i,'');
+ return `${base}-${type==='detail'?'D':'S'}`;
 }
 function getSelectedQuotationType(){return document.querySelector('input[name="quotationType"]:checked')?.value||'simple'}
 function getCurrentQuotationData(){return window.__TERAJU_MASTER_QDATA()}
@@ -257,7 +259,7 @@ async function generateQuotation(typeOverride){
  showQuotationPreviewLoading();
  await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
  const brand=typeof window.__TERAJU_PREVIEW_BRANDING==='function'?window.__TERAJU_PREVIEW_BRANDING():null;
- const data=getCurrentQuotationData(),quotationNumber=generateQuotationNumber(),revision=String(window.TERAJU_CURRENT_ESTIMATE_REVISION||'R00').trim()||'R00';
+ const data=getCurrentQuotationData(),quotationNumber=generateQuotationNumber(type),revision=String(window.TERAJU_CURRENT_ESTIMATE_REVISION||'R00').trim()||'R00';
  const type=selectedType,customer=document.getElementById('customerName')?.value||'Not specified',location=document.getElementById('projectLocation')?.value||'Not specified',declared=rooms.reduce((s,r)=>s+(r.area||0),0),today=new Intl.DateTimeFormat('en-MY',{day:'2-digit',month:'long',year:'numeric'}).format(new Date()),content=document.getElementById('quotationContent');
  const all=data.allItems||[],active=all.filter(i=>typeof excludedItems==='undefined'||!excludedItems.has(i.id));
  const tree=typeof window.__TERAJU_BUILD_BUDGET_HIERARCHY==='function'?window.__TERAJU_BUILD_BUDGET_HIERARCHY(active):[];
