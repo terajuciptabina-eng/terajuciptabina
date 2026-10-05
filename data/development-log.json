@@ -253,6 +253,17 @@
     "updatedAt": "2026-10-04T20:57:52.657Z"
   },
   {
+    "id": "DEV-20261005-ce8aa20",
+    "date": "2026-10-05",
+    "title": "Fix TERAJUWORKS SVG render bounds without changing logo scale",
+    "module": "BuildPlanner",
+    "status": "Completed",
+    "summary": "Fix TERAJUWORKS SVG render bounds without changing logo scale",
+    "details": "Automatic entry from commit ce8aa20. Changed files: TerajuWorks/buildplanner-v2.html.",
+    "commit": "ce8aa20a61e92d88b55fcc0c2445895988cde83e",
+    "updatedAt": "2026-10-05T07:15:34.219Z"
+  },
+  {
     "id": "DEV-20261005-ccdedf7",
     "date": "2026-10-05",
     "title": "Update build quotation Q017D (EST-BLD-017-S)",
