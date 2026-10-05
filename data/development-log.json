@@ -1,5 +1,16 @@
 [
   {
+    "id": "DEV-20261005-ffeb37b",
+    "date": "2026-10-05",
+    "title": "fix: stabilize quotation render table layout at source",
+    "module": "Cost Estimate",
+    "status": "Completed",
+    "summary": "fix: stabilize quotation render table layout at source",
+    "details": "Automatic entry from commit ffeb37b. Changed files: TerajuWorks/quotation-document-engine.js.",
+    "commit": "ffeb37b272cf282cb8eede81768b38ef0af452e0",
+    "updatedAt": "2026-10-05T06:28:45.863Z"
+  },
+  {
     "id": "DEV-20261005-f94c885",
     "date": "2026-10-05",
     "title": "Update renovation quotation Q001S (EST-REN-001-S)",
