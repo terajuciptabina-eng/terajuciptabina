@@ -280,16 +280,16 @@ function appendContactFooter(page,contactFooter){
  const poweredByLine=contactLines[contactLines.length-1];
  if(poweredByLine){
   poweredByLine.style.position='relative';
-  poweredByLine.style.top='7px';
+  poweredByLine.style.top='0';
   const poweredByLabel=poweredByLine.querySelector('span');
   const poweredByLogo=poweredByLine.querySelector('img');
   if(poweredByLabel){
    poweredByLabel.style.position='relative';
-   poweredByLabel.style.top='3px';
+   poweredByLabel.style.top='0';
   }
   if(poweredByLogo){
    poweredByLogo.style.position='relative';
-   poweredByLogo.style.top='6px';
+   poweredByLogo.style.top='3px';
   }
  }
  page.root.appendChild(clone);
