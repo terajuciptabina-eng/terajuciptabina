@@ -2783,6 +2783,17 @@
     "updatedAt": "2026-10-05T08:46:52.361Z"
   },
   {
+    "id": "DEV-20261005-0113149",
+    "date": "2026-10-05",
+    "title": "Use matching S/D suffix for BuildPlanner Cost Estimate preview",
+    "module": "BuildPlanner",
+    "status": "Completed",
+    "summary": "Use matching S/D suffix for BuildPlanner Cost Estimate preview",
+    "details": "Automatic entry from commit 0113149. Changed files: TerajuWorks/buildplanner-v2.html.",
+    "commit": "0113149e9d8cd2aa7aaae2cb2b533762b25640c6",
+    "updatedAt": "2026-10-05T09:13:56.149Z"
+  },
+  {
     "id": "DEV-20261005-00eeaf4",
     "date": "2026-10-05",
     "title": "Refresh shared signup auth script",
