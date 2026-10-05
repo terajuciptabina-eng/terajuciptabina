@@ -1980,6 +1980,17 @@
     "updatedAt": "2026-10-05T06:06:10.425Z"
   },
   {
+    "id": "DEV-20261005-497a04e",
+    "date": "2026-10-05",
+    "title": "Use matching S/D suffix for RenovationPlanner Cost Estimate preview",
+    "module": "RenovationPlanner",
+    "status": "Completed",
+    "summary": "Use matching S/D suffix for RenovationPlanner Cost Estimate preview",
+    "details": "Automatic entry from commit 497a04e. Changed files: TerajuWorks/renovationplanner-v2.html.",
+    "commit": "497a04e14581da56de86593474b3b6b8820b32f5",
+    "updatedAt": "2026-10-05T09:14:01.551Z"
+  },
+  {
     "id": "DEV-20261005-496969a",
     "date": "2026-10-05",
     "title": "Load clean footer-only quotation engine build",
