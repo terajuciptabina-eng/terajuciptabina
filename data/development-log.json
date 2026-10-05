@@ -374,6 +374,17 @@
     "updatedAt": "2026-10-04T17:56:59.600Z"
   },
   {
+    "id": "DEV-20261005-407ddfd",
+    "date": "2026-10-05",
+    "title": "Delete homeowner HME-20261004-LFXW from admin database",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Delete homeowner HME-20261004-LFXW from admin database",
+    "details": "Automatic entry from commit 407ddfd. Changed files: data/users/homeowners/HME-20261004-LFXW.json.",
+    "commit": "407ddfdc4d35b77ff0b8c2feaa24455bf2fe09a6",
+    "updatedAt": "2026-10-05T02:59:45.550Z"
+  },
+  {
     "id": "DEV-20261005-4076694",
     "date": "2026-10-05",
     "title": "Expose canonical Cost Estimate preview numbers in Admin Database",
