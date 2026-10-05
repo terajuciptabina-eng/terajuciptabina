@@ -280,16 +280,17 @@ function appendContactFooter(page,contactFooter){
  const poweredByLine=contactLines[contactLines.length-1];
  if(poweredByLine){
   poweredByLine.style.position='relative';
-  poweredByLine.style.top='10px';
-   poweredByLine.style.alignItems='flex-start';
-   const poweredByLabel=poweredByLine.querySelector('span');
-   const poweredByLogo=poweredByLine.querySelector('img');
-   if(poweredByLabel) poweredByLabel.style.marginTop='13px';
-   if(poweredByLogo) {
-    poweredByLogo.style.position='relative';
-    poweredByLogo.style.top='3px';
-    poweredByLogo.style.marginTop='0';
-   }
+  poweredByLine.style.top='7px';
+  const poweredByLabel=poweredByLine.querySelector('span');
+  const poweredByLogo=poweredByLine.querySelector('img');
+  if(poweredByLabel){
+   poweredByLabel.style.position='relative';
+   poweredByLabel.style.top='3px';
+  }
+  if(poweredByLogo){
+   poweredByLogo.style.position='relative';
+   poweredByLogo.style.top='6px';
+  }
  }
  page.root.appendChild(clone);
 }
