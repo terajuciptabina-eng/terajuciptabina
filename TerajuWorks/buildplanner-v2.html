@@ -259,7 +259,7 @@ async function generateQuotation(typeOverride){
  showQuotationPreviewLoading();
  await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
  const brand=typeof window.__TERAJU_PREVIEW_BRANDING==='function'?window.__TERAJU_PREVIEW_BRANDING():null;
- const data=getCurrentQuotationData(),quotationNumber=generateQuotationNumber(type),revision=String(window.TERAJU_CURRENT_ESTIMATE_REVISION||'R00').trim()||'R00';
+ const data=getCurrentQuotationData(),quotationNumber=generateQuotationNumber(selectedType),revision=String(window.TERAJU_CURRENT_ESTIMATE_REVISION||'R00').trim()||'R00';
  const type=selectedType,customer=document.getElementById('customerName')?.value||'Not specified',location=document.getElementById('projectLocation')?.value||'Not specified',declared=rooms.reduce((s,r)=>s+(r.area||0),0),today=new Intl.DateTimeFormat('en-MY',{day:'2-digit',month:'long',year:'numeric'}).format(new Date()),content=document.getElementById('quotationContent');
  const all=data.allItems||[],active=all.filter(i=>typeof excludedItems==='undefined'||!excludedItems.has(i.id));
  const tree=typeof window.__TERAJU_BUILD_BUDGET_HIERARCHY==='function'?window.__TERAJU_BUILD_BUDGET_HIERARCHY(active):[];
