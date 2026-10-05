@@ -133,6 +133,63 @@ body.renovation-planner-page .simple-quotation-table .quotation-amount-cell{
 /* Do not size the Amount cell itself. The table colgroup owns the
    column geometry so colspan subtotal/summary rows land in the same
    fifth column as item Amount cells. */
+/* Render-root document contract.
+   Preview/PDF pages are rasterized from a detached A4 render root. Keep the
+   document geometry deterministic here instead of relying on viewport-specific
+   planner CSS. This is the single source of truth for the rasterized quotation. */
+.tc-quotation-render-root .simple-quotation-table,
+.tc-quotation-render-root .detailed-quotation-table{
+  width:100%!important;
+  table-layout:fixed!important;
+  border-collapse:collapse!important;
+  margin:0!important;
+  font-size:12px!important;
+  line-height:1.35!important;
+}
+.tc-quotation-render-root .simple-quotation-table th,
+.tc-quotation-render-root .simple-quotation-table td,
+.tc-quotation-render-root .detailed-quotation-table th,
+.tc-quotation-render-root .detailed-quotation-table td{
+  box-sizing:border-box!important;
+  height:auto!important;
+  min-height:0!important;
+  vertical-align:top!important;
+  line-height:1.35!important;
+}
+.tc-quotation-render-root .simple-quotation-table td:nth-child(1),
+.tc-quotation-render-root .detailed-quotation-table td:nth-child(1){
+  white-space:normal!important;
+  overflow-wrap:break-word!important;
+  word-break:normal!important;
+}
+.tc-quotation-render-root .simple-quotation-table th:nth-child(n+2),
+.tc-quotation-render-root .simple-quotation-table td:nth-child(n+2),
+.tc-quotation-render-root .detailed-quotation-table th:nth-child(n+2),
+.tc-quotation-render-root .detailed-quotation-table td:nth-child(n+2){
+  white-space:nowrap!important;
+}
+.tc-quotation-render-root .simple-quotation-table col:nth-child(1),
+.tc-quotation-render-root .detailed-quotation-table col:nth-child(1){width:50%!important}
+.tc-quotation-render-root .simple-quotation-table col:nth-child(2),
+.tc-quotation-render-root .detailed-quotation-table col:nth-child(2){width:10%!important}
+.tc-quotation-render-root .simple-quotation-table col:nth-child(3),
+.tc-quotation-render-root .detailed-quotation-table col:nth-child(3){width:10%!important}
+.tc-quotation-render-root .simple-quotation-table col:nth-child(4),
+.tc-quotation-render-root .detailed-quotation-table col:nth-child(4){width:15%!important}
+.tc-quotation-render-root .simple-quotation-table col:nth-child(5),
+.tc-quotation-render-root .detailed-quotation-table col:nth-child(5){width:15%!important}
+.tc-quotation-render-root .simple-quotation-table .quotation-amount-cell,
+.tc-quotation-render-root .detailed-quotation-table .quotation-amount-cell{
+  text-align:right!important;
+  white-space:nowrap!important;
+  font-variant-numeric:tabular-nums!important;
+  font-feature-settings:"tnum" 1!important;
+}
+.tc-quotation-render-root .simple-quotation-table tbody tr,
+.tc-quotation-render-root .detailed-quotation-table tbody tr{
+  height:auto!important;
+}
+
 /* Standard planner estimate alignment — alignment/column sizing only; typography unchanged. */
 
 #estimateContent table th:nth-child(1),#estimateContent table td:nth-child(1){text-align:left!important}
@@ -198,7 +255,8 @@ function waitForImages(root){return Promise.all(Array.from(root.querySelectorAll
 
 function createRenderRoot(){
  const root=document.createElement('div');
- root.style.cssText=`position:relative;width:${RENDER_WIDTH_PX}px;box-sizing:border-box;background:#fff;padding:0 0 ${PAGE_BOTTOM_SAFETY_PX}px;margin:0;overflow:visible;font-family:Arial,Helvetica,sans-serif;`;
+ root.className='tc-quotation-render-root';
+ root.style.cssText=`position:relative;width:${RENDER_WIDTH_PX}px;box-sizing:border-box;background:#fff;padding:0 0 ${PAGE_BOTTOM_SAFETY_PX}px;margin:0;overflow:visible;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:1.35;color:#111827;`;
  return root;
 }
 function isHeadingRow(row){return row.classList.contains('quotation-section-row')||row.classList.contains('quotation-subsection-row');}
