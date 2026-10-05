@@ -352,6 +352,17 @@
     "updatedAt": "2026-10-04T20:57:52.657Z"
   },
   {
+    "id": "DEV-20261005-cf23e22",
+    "date": "2026-10-05",
+    "title": "Move footer logo down another 2px",
+    "module": "BuildPlanner",
+    "status": "Completed",
+    "summary": "Move footer logo down another 2px",
+    "details": "Automatic entry from commit cf23e22. Changed files: TerajuWorks/buildplanner-v2.html.",
+    "commit": "cf23e2244702a0bbcff2ebf28f21cf7b19b137d7",
+    "updatedAt": "2026-10-05T08:27:39.331Z"
+  },
+  {
     "id": "DEV-20261005-ce8aa20",
     "date": "2026-10-05",
     "title": "Fix TERAJUWORKS SVG render bounds without changing logo scale",
