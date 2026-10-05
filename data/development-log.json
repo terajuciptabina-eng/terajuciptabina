@@ -33,6 +33,17 @@
     "updatedAt": "2026-10-05T06:41:40.446Z"
   },
   {
+    "id": "DEV-20261005-f67341c",
+    "date": "2026-10-05",
+    "title": "Fix TERAJUWORKS SVG aspect ratio at source",
+    "module": "BuildPlanner",
+    "status": "Completed",
+    "summary": "Fix TERAJUWORKS SVG aspect ratio at source",
+    "details": "Automatic entry from commit f67341c. Changed files: TerajuWorks/buildplanner-v2.html.",
+    "commit": "f67341c8491454acec1557e8013077979bf493b1",
+    "updatedAt": "2026-10-05T07:01:45.305Z"
+  },
+  {
     "id": "DEV-20261005-f1a1852",
     "date": "2026-10-05",
     "title": "refactor: share floor plan import integration across planners",
