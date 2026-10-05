@@ -121,6 +121,17 @@
     "updatedAt": "2026-10-04T20:32:57.792Z"
   },
   {
+    "id": "DEV-20261005-ded7b8f",
+    "date": "2026-10-05",
+    "title": "fix: use exact estimate number for PDF filename",
+    "module": "Cost Estimate",
+    "status": "Completed",
+    "summary": "fix: use exact estimate number for PDF filename",
+    "details": "Automatic entry from commit ded7b8f. Changed files: TerajuWorks/quotation-document-engine.js.",
+    "commit": "ded7b8ff7cb376cf62c502f5fb3ac2f077545eeb",
+    "updatedAt": "2026-10-05T06:35:52.844Z"
+  },
+  {
     "id": "DEV-20261005-ddc5e8c",
     "date": "2026-10-05",
     "title": "revert: restore RenovationPlanner floor plan baseline before source redesign",
