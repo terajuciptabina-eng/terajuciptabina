@@ -209,6 +209,17 @@
     "updatedAt": "2026-10-04T17:57:02.320Z"
   },
   {
+    "id": "DEV-20261005-b3b115f",
+    "date": "2026-10-05",
+    "title": "Fix project state lifecycle at source",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Fix project state lifecycle at source",
+    "details": "Automatic entry from commit b3b115f. Changed files: TerajuWorks/state-rate-gate.js.",
+    "commit": "b3b115fb64e814563de3039fa240fef19a8f39db",
+    "updatedAt": "2026-10-05T05:44:40.804Z"
+  },
+  {
     "id": "DEV-20261005-b24a530",
     "date": "2026-10-05",
     "title": "Update Cost Estimate contact CTA — BuildPlanner",
