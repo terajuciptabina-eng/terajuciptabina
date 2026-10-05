@@ -1081,6 +1081,18 @@ function syncBuildingSpecification() {
 window.getBuildingRoofSystems = getBuildingRoofSystems;
 window.syncRenovationBuildingSpecification = syncBuildingSpecification;
 
+function openFloorPlanImport(){
+  const target=new URL('floor-plan-import.html',location.href);
+  const params=new URLSearchParams(location.search);
+  const roomCount=document.querySelectorAll('#roomsContainer .room-card').length;
+  try{sessionStorage.setItem('teraju.floorplan.import.context.v1',JSON.stringify({version:1,roomCount,startedAt:new Date().toISOString(),quotationId:params.get('quotationId')||'',plannerType:'renovation'}))}catch(e){console.warn('[TERAJU FLOOR PLAN IMPORT] Unable to save import context',e)}
+  params.forEach((v,k)=>{if(k!=='floorPlanImport')target.searchParams.set(k,v)});
+  target.searchParams.set('plannerType','renovation');
+  target.searchParams.set('returnTo','renovationplanner-v2.html');
+  location.href=target.toString();
+}
+window.openFloorPlanImport=openFloorPlanImport;
+
 function addRoomBase(defaultType = "other", defaultArea = "", forcedId = "", forcedName = "", forcedCondition = "existing") {
   roomCounter++;
   const id = forcedId || ("room-" + roomCounter);
@@ -3209,6 +3221,7 @@ if (typeof window.__TERAJU_RENOVATION_V2_UPDATE_ESTIMATE === "function") {
   }
 })();
 </script>
+<script src="floor-plan-import-receiver.js?v=20261005-floorplan-shared-v1"></script>
 <script src="shared/preview-branding.js?v=20260930-preview-branding-clean-v1"></script>
 <script src="shared/teraju-button-feedback.js?v=20260929-button-feedback-v1"></script>
 </body>
