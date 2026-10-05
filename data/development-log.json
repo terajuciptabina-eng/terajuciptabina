@@ -1320,6 +1320,17 @@
     "updatedAt": "2026-10-05T06:16:15.663Z"
   },
   {
+    "id": "DEV-20261005-2ef98aa",
+    "date": "2026-10-05",
+    "title": "Restore quotation engine baseline and retain footer-only fixes",
+    "module": "Cost Estimate",
+    "status": "Completed",
+    "summary": "Restore quotation engine baseline and retain footer-only fixes",
+    "details": "Automatic entry from commit 2ef98aa. Changed files: TerajuWorks/quotation-document-engine.js.",
+    "commit": "2ef98aad25d92eef33a3b28a5d5687d63f03c840",
+    "updatedAt": "2026-10-05T07:30:37.710Z"
+  },
+  {
     "id": "DEV-20261005-2d4ad05",
     "date": "2026-10-05",
     "title": "Align Admin navigation with Cost Estimate terminology",
