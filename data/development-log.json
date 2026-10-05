@@ -187,6 +187,17 @@
     "updatedAt": "2026-10-04T20:50:32.424Z"
   },
   {
+    "id": "DEV-20261005-bdabb45",
+    "date": "2026-10-05",
+    "title": "Make project state canonical in quotation source",
+    "module": "Cost Estimate",
+    "status": "Completed",
+    "summary": "Make project state canonical in quotation source",
+    "details": "Automatic entry from commit bdabb45. Changed files: TerajuWorks/quotation-records.js.",
+    "commit": "bdabb459b2143ec11c878cb5e38793e3189c43f3",
+    "updatedAt": "2026-10-05T05:44:45.103Z"
+  },
+  {
     "id": "DEV-20261005-b60da84",
     "date": "2026-10-05",
     "title": "Create temporary homeowner account HME-20261004-O4MU",
