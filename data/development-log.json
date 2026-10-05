@@ -22,6 +22,17 @@
     "updatedAt": "2026-10-05T18:49:48.465Z"
   },
   {
+    "id": "DEV-20261006-dc92cd3",
+    "date": "2026-10-06",
+    "title": "Create temporary homeowner account HME-20261005-ZIOZ",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Create temporary homeowner account HME-20261005-ZIOZ",
+    "details": "Automatic entry from commit dc92cd3. Changed files: data/users/homeowners/HME-20261005-ZIOZ.json.",
+    "commit": "dc92cd3e27ddab00ee48fafc1cd01480fdcfd78d",
+    "updatedAt": "2026-10-05T18:59:10.233Z"
+  },
+  {
     "id": "DEV-20261006-b53383a",
     "date": "2026-10-06",
     "title": "ui: simplify signup workspace description",
