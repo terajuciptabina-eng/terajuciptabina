@@ -2709,8 +2709,11 @@ function initContractorMode() {
 }
 
 let quotationNumber = null;
-function generateQuotationNumber() {
-  return String(window.TERAJU_CURRENT_ESTIMATE_NUMBER || '').trim() || '—';
+function generateQuotationNumber(type) {
+  const estimateNumber = String(window.TERAJU_CURRENT_ESTIMATE_NUMBER || '').trim();
+  if (!estimateNumber) return '—';
+  const base = estimateNumber.replace(/-[SD]$/i, '');
+  return `${base}-${type === 'detail' ? 'D' : 'S'}`;
 }
 function updateEstimate(options) {
   if (typeof window.__TERAJU_RENOVATION_V2_UPDATE_ESTIMATE === "function") {
@@ -3039,7 +3042,7 @@ function generateQuotationConfirmed(type) {
     return false;
   }
 
-  quotationNumber = generateQuotationNumber();
+  quotationNumber = generateQuotationNumber(type);
 
   // Preview branding is sourced from the shared contractor branding layer.
   // Keep this local to the generation source so the preview cannot depend on
