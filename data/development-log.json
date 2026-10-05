@@ -2321,6 +2321,17 @@
     "updatedAt": "2026-10-04T18:25:42.602Z"
   },
   {
+    "id": "DEV-20261005-1ffd2c8",
+    "date": "2026-10-05",
+    "title": "Move footer logo down 3px without moving Powered by or clipping",
+    "module": "Cost Estimate",
+    "status": "Completed",
+    "summary": "Move footer logo down 3px without moving Powered by or clipping",
+    "details": "Automatic entry from commit 1ffd2c8. Changed files: TerajuWorks/quotation-document-engine.js.",
+    "commit": "1ffd2c8cd976ef1ea9f7878e916c9b5aeb19e873",
+    "updatedAt": "2026-10-05T08:48:13.599Z"
+  },
+  {
     "id": "DEV-20261005-1f5e1f3",
     "date": "2026-10-05",
     "title": "Fix Admin estimate number theme specificity",
