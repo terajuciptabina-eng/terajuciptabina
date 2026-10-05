@@ -286,6 +286,17 @@
     "updatedAt": "2026-10-05T05:59:17.255Z"
   },
   {
+    "id": "DEV-20261005-a4cf2b0",
+    "date": "2026-10-05",
+    "title": "feat: make floor plan import UI planner-aware",
+    "module": "General",
+    "status": "Completed",
+    "summary": "feat: make floor plan import UI planner-aware",
+    "details": "Automatic entry from commit a4cf2b0. Changed files: TerajuWorks/floor-plan-import.html.",
+    "commit": "a4cf2b017dad2136d185fb4e6b8017423487d818",
+    "updatedAt": "2026-10-05T06:06:13.569Z"
+  },
+  {
     "id": "DEV-20261005-a311175",
     "date": "2026-10-05",
     "title": "Fix shared tag color specificity",
