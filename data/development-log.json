@@ -759,6 +759,17 @@
     "updatedAt": "2026-10-04T18:04:01.737Z"
   },
   {
+    "id": "DEV-20261005-099ee9a",
+    "date": "2026-10-05",
+    "title": "fix: preserve BuildPlanner floor plan readiness for new projects",
+    "module": "General",
+    "status": "Completed",
+    "summary": "fix: preserve BuildPlanner floor plan readiness for new projects",
+    "details": "Automatic entry from commit 099ee9a. Changed files: TerajuWorks/floor-plan-import-receiver.js.",
+    "commit": "099ee9a7632dbcfb152e0f479bdfa63197e32ea4",
+    "updatedAt": "2026-10-05T06:06:32.403Z"
+  },
+  {
     "id": "DEV-20261005-0646ff7",
     "date": "2026-10-05",
     "title": "refactor: route BuildPlanner through shared floor plan import",
