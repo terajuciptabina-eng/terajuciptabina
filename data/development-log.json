@@ -198,6 +198,17 @@
     "updatedAt": "2026-10-05T06:38:06.712Z"
   },
   {
+    "id": "DEV-20261005-d19c384",
+    "date": "2026-10-05",
+    "title": "Fix TERAJUWORKS footer logo source geometry",
+    "module": "RenovationPlanner",
+    "status": "Completed",
+    "summary": "Fix TERAJUWORKS footer logo source geometry",
+    "details": "Automatic entry from commit d19c384. Changed files: TerajuWorks/renovationplanner-v2.html.",
+    "commit": "d19c3844c09811479b1b43e6e9f7daee60afd2c6",
+    "updatedAt": "2026-10-05T06:52:06.034Z"
+  },
+  {
     "id": "DEV-20261005-d055437",
     "date": "2026-10-05",
     "title": "Preserve signup success flow with WhatsApp handoff",
