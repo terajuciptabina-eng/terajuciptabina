@@ -682,6 +682,17 @@
     "updatedAt": "2026-10-05T07:51:27.034Z"
   },
   {
+    "id": "DEV-20261005-bc00273",
+    "date": "2026-10-05",
+    "title": "Clean footer logo child positioning; shared engine controls footer row",
+    "module": "RenovationPlanner",
+    "status": "Completed",
+    "summary": "Clean footer logo child positioning; shared engine controls footer row",
+    "details": "Automatic entry from commit bc00273. Changed files: TerajuWorks/renovationplanner-v2.html.",
+    "commit": "bc00273adf3d7fe2eb01a045f5aa502104c77827",
+    "updatedAt": "2026-10-05T08:40:07.160Z"
+  },
+  {
     "id": "DEV-20261005-ba35099",
     "date": "2026-10-05",
     "title": "Rebuild quotation footer from latest working baseline",
