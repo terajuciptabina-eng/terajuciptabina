@@ -33,6 +33,17 @@
     "updatedAt": "2026-10-05T18:47:25.917Z"
   },
   {
+    "id": "DEV-20261006-86f5145",
+    "date": "2026-10-06",
+    "title": "ui: make homeowner phone required for ID delivery",
+    "module": "General",
+    "status": "Completed",
+    "summary": "ui: make homeowner phone required for ID delivery",
+    "details": "Automatic entry from commit 86f5145. Changed files: TerajuWorks/homeowner.html.",
+    "commit": "86f5145b6c1635fd5d52ac320f2cbd063a6445d3",
+    "updatedAt": "2026-10-05T18:49:51.450Z"
+  },
+  {
     "id": "DEV-20261006-3733ac6",
     "date": "2026-10-06",
     "title": "Update renovation quotation Q002 (EST-REN-002-S)",
