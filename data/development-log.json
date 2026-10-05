@@ -1364,6 +1364,17 @@
     "updatedAt": "2026-10-05T07:55:08.071Z"
   },
   {
+    "id": "DEV-20261005-5a63868",
+    "date": "2026-10-05",
+    "title": "Use raster footer logo for html2canvas",
+    "module": "BuildPlanner",
+    "status": "Completed",
+    "summary": "Use raster footer logo for html2canvas",
+    "details": "Automatic entry from commit 5a63868. Changed files: TerajuWorks/buildplanner-v2.html.",
+    "commit": "5a638685dfa55dc6000bf29481a280808af46f00",
+    "updatedAt": "2026-10-05T08:08:07.057Z"
+  },
+  {
     "id": "DEV-20261005-58f631b",
     "date": "2026-10-05",
     "title": "Restore estimate number source rule",
