@@ -2651,6 +2651,17 @@
     "updatedAt": "2026-10-04T20:34:45.332Z"
   },
   {
+    "id": "DEV-20261005-14b5b05",
+    "date": "2026-10-05",
+    "title": "Fix BuildPlanner Cost Estimate generation type argument",
+    "module": "BuildPlanner",
+    "status": "Completed",
+    "summary": "Fix BuildPlanner Cost Estimate generation type argument",
+    "details": "Automatic entry from commit 14b5b05. Changed files: TerajuWorks/buildplanner-v2.html.",
+    "commit": "14b5b05c44e4eb0babfdd2b24fc9e48580ca25f9",
+    "updatedAt": "2026-10-05T09:19:27.821Z"
+  },
+  {
     "id": "DEV-20261005-13a18bf",
     "date": "2026-10-05",
     "title": "Fine tune TERAJUWORKS footer vertical alignment",
