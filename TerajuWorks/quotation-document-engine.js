@@ -7,7 +7,7 @@ const RENDER_WIDTH_PX=794;
 const PX_PER_MM=RENDER_WIDTH_PX/CONTENT_MM.width;
 const CONTENT_HEIGHT_PX=Math.floor(CONTENT_MM.height*PX_PER_MM);
 const PAGE_NUMBER_RESERVE_PX=Math.ceil(4*PX_PER_MM);
-const FOOTER_HEIGHT_MM=17;
+const FOOTER_HEIGHT_MM=21;
 const FOOTER_BOTTOM_MM=1.5;
 const FOOTER_HEIGHT_PX=Math.ceil(FOOTER_HEIGHT_MM*PX_PER_MM);
 const FOOTER_BOTTOM_PX=Math.ceil(FOOTER_BOTTOM_MM*PX_PER_MM);
@@ -313,7 +313,7 @@ function appendContactFooter(page,contactFooter){
  clone.style.top=(CONTENT_HEIGHT_PX-FOOTER_HEIGHT_PX-FOOTER_BOTTOM_PX)+'px';
  clone.style.bottom='auto';
  clone.style.width='100%';
- clone.style.height='17mm';
+ clone.style.height=FOOTER_HEIGHT_MM+'mm';
  clone.style.boxSizing='border-box';
  clone.style.margin='0';
  clone.style.padding='1mm 4mm 0.5mm';
