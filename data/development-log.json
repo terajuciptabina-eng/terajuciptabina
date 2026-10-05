@@ -693,6 +693,17 @@
     "updatedAt": "2026-10-05T07:04:05.754Z"
   },
   {
+    "id": "DEV-20261005-88988fb",
+    "date": "2026-10-05",
+    "title": "Restore quotation footer source from latest working",
+    "module": "BuildPlanner",
+    "status": "Completed",
+    "summary": "Restore quotation footer source from latest working",
+    "details": "Automatic entry from commit 88988fb. Changed files: TerajuWorks/buildplanner-v2.html.",
+    "commit": "88988fb4107da9b61e66b8af7db2c99437395b4f",
+    "updatedAt": "2026-10-05T07:12:03.214Z"
+  },
+  {
     "id": "DEV-20261005-87f46e5",
     "date": "2026-10-05",
     "title": "chore: refresh quotation engine cache after footer fix",
