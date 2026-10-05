@@ -770,6 +770,17 @@
     "updatedAt": "2026-10-05T06:41:46.786Z"
   },
   {
+    "id": "DEV-20261005-7d7fb4f",
+    "date": "2026-10-05",
+    "title": "Restore original TERAJUWORKS logo and fix SVG render overflow",
+    "module": "RenovationPlanner",
+    "status": "Completed",
+    "summary": "Restore original TERAJUWORKS logo and fix SVG render overflow",
+    "details": "Automatic entry from commit 7d7fb4f. Changed files: TerajuWorks/renovationplanner-v2.html.",
+    "commit": "7d7fb4fa7cd8527dd1631681bf57092065e462c4",
+    "updatedAt": "2026-10-05T07:09:46.796Z"
+  },
+  {
     "id": "DEV-20261005-7d23c7f",
     "date": "2026-10-05",
     "title": "Route homeowner new build to BuildPlanner V2",
