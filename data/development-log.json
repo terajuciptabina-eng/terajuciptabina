@@ -1,5 +1,16 @@
 [
   {
+    "id": "DEV-20261005-f1a1852",
+    "date": "2026-10-05",
+    "title": "refactor: share floor plan import integration across planners",
+    "module": "General",
+    "status": "Completed",
+    "summary": "refactor: share floor plan import integration across planners",
+    "details": "Automatic entry from commit f1a1852. Changed files: TerajuWorks/floor-plan-import-receiver.js.",
+    "commit": "f1a1852c266be4e03a48aae0f2741c4e13921da0",
+    "updatedAt": "2026-10-05T06:05:55.928Z"
+  },
+  {
     "id": "DEV-20261005-eea7299",
     "date": "2026-10-05",
     "title": "Create temporary contractor account CTR-20261005-F8HV",
