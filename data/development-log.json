@@ -748,6 +748,17 @@
     "updatedAt": "2026-10-05T06:48:55.266Z"
   },
   {
+    "id": "DEV-20261005-a692b05",
+    "date": "2026-10-05",
+    "title": "Move footer logo down 3px visually",
+    "module": "RenovationPlanner",
+    "status": "Completed",
+    "summary": "Move footer logo down 3px visually",
+    "details": "Automatic entry from commit a692b05. Changed files: TerajuWorks/renovationplanner-v2.html.",
+    "commit": "a692b05746e843b4389f72615f83a730cdde61e0",
+    "updatedAt": "2026-10-05T08:22:59.213Z"
+  },
+  {
     "id": "DEV-20261005-a4cf2b0",
     "date": "2026-10-05",
     "title": "feat: make floor plan import UI planner-aware",
