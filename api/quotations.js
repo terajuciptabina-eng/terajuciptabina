@@ -120,8 +120,12 @@ export default async function handler(req, res) {
         projectId: newProjectId,
         quotationId: newQuotationId,
         quotationType: type,
-        constructionBudgetGenerated: false
+        constructionBudgetGenerated: false,
+        projectState: '',
+        rateSetId: '',
+        rateSetName: ''
       };
+      duplicate.project = { ...(duplicate.project || {}), location: '', state: '' };
       duplicate.revision = { current: 'R00', history: [] };
       delete duplicate.revisionHistory;
       list.unshift(duplicate);
@@ -138,6 +142,8 @@ export default async function handler(req, res) {
     }
     if (req.method === 'DELETE') { const quotationId = String(source?.quotationId || '').trim(); if (!quotationId) return res.status(400).json({ message: 'Missing quotationId.' }); const list = plannerList(current.record, plannerType); const existingIndex = list.findIndex(q => q?.quotationId === quotationId); if (existingIndex < 0) return res.status(404).json({ message: 'Cost estimate not found.' }); current.record.plannerRecords = current.record.plannerRecords || { build: [], renovation: [] }; current.record.plannerRecords[plannerType] = list.filter(q => q?.quotationId !== quotationId); current.record.updatedAt = new Date().toISOString(); const updated = await github(pathFor(role, id), { method: 'PUT', body: JSON.stringify({ message: `Delete ${plannerType} quotation ${quotationId}`, content: Buffer.from(JSON.stringify(current.record, null, 2) + '\n').toString('base64'), sha: current.sha }) }); if (!updated.response.ok) return res.status(502).json({ message: 'Unable to delete quotation.' }); return res.status(200).json({ success: true, quotationId }); }
     const quotation = source?.quotation; if (!quotation || typeof quotation !== 'object') return res.status(400).json({ message: 'Missing quotation record.' }); const quotationId = String(quotation.quotationId || '').trim(); if (!quotationId) return res.status(400).json({ message: 'Missing quotationId.' });
+    const incomingState = String(quotation?.plannerState?.projectState || quotation?.project?.state || '').trim().toLowerCase();
+    if (!incomingState) return res.status(400).json({ message: 'Project state / negeri is required.' });
     const now = new Date().toISOString(); const normalized = { ...quotation, quotationId, role, [idKey(role)]: id, plannerType, updatedAt: now, createdAt: quotation.createdAt || now };
     current.record.plannerRecords = current.record.plannerRecords || { build: [], renovation: [] }; current.record.plannerRecords.build = plannerList(current.record, 'build'); current.record.plannerRecords.renovation = plannerList(current.record, 'renovation');
     const list = current.record.plannerRecords[plannerType];
