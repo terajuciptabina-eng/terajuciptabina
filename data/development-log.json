@@ -132,6 +132,17 @@
     "updatedAt": "2026-10-05T06:55:54.221Z"
   },
   {
+    "id": "DEV-20261005-e75bb91",
+    "date": "2026-10-05",
+    "title": "Expand TERAJUWORKS SVG render canvas without changing logo scale",
+    "module": "BuildPlanner",
+    "status": "Completed",
+    "summary": "Expand TERAJUWORKS SVG render canvas without changing logo scale",
+    "details": "Automatic entry from commit e75bb91. Changed files: TerajuWorks/buildplanner-v2.html.",
+    "commit": "e75bb91bcf9c2c7a10bc75c48767b171bf54fb54",
+    "updatedAt": "2026-10-05T07:46:11.207Z"
+  },
+  {
     "id": "DEV-20261005-e49d5d2",
     "date": "2026-10-05",
     "title": "Correct TERAJUWORKS footer logo horizontal viewBox",
