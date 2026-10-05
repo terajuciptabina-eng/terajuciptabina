@@ -363,6 +363,17 @@
     "updatedAt": "2026-10-04T20:47:58.148Z"
   },
   {
+    "id": "DEV-20261005-7768e9c",
+    "date": "2026-10-05",
+    "title": "fix: connect RenovationPlanner floor plan import to shared BuildPlanner flow",
+    "module": "RenovationPlanner",
+    "status": "Completed",
+    "summary": "fix: connect RenovationPlanner floor plan import to shared BuildPlanner flow",
+    "details": "Automatic entry from commit 7768e9c. Changed files: TerajuWorks/renovationplanner-v2.html.",
+    "commit": "7768e9c9e3a54cb5f3b08fccac0e819ebcc773d1",
+    "updatedAt": "2026-10-05T05:54:54.606Z"
+  },
+  {
     "id": "DEV-20261005-627735b",
     "date": "2026-10-05",
     "title": "Update renovation quotation Q003 (EST-REN-003-S)",
