@@ -253,6 +253,17 @@
     "updatedAt": "2026-10-04T17:30:01.383Z"
   },
   {
+    "id": "DEV-20261005-a7abd60",
+    "date": "2026-10-05",
+    "title": "fix: make AI floor plan import planner-aware",
+    "module": "General",
+    "status": "Completed",
+    "summary": "fix: make AI floor plan import planner-aware",
+    "details": "Automatic entry from commit a7abd60. Changed files: TerajuWorks/floor-plan-import.html.",
+    "commit": "a7abd60eb0c8ad2a25548191a07747c4e61f77d3",
+    "updatedAt": "2026-10-05T05:59:17.255Z"
+  },
+  {
     "id": "DEV-20261005-a311175",
     "date": "2026-10-05",
     "title": "Fix shared tag color specificity",
