@@ -2046,6 +2046,17 @@
     "updatedAt": "2026-10-05T05:57:17.833Z"
   },
   {
+    "id": "DEV-20261005-0cdf349",
+    "date": "2026-10-05",
+    "title": "Restore footer logo source viewBox",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Restore footer logo source viewBox",
+    "details": "Automatic entry from commit 0cdf349. Changed files: TerajuWorks/assets/terajuworks-footer.svg.",
+    "commit": "0cdf3490d018bdc88851f8e08e8c80c1d2279f94",
+    "updatedAt": "2026-10-05T08:04:19.613Z"
+  },
+  {
     "id": "DEV-20261005-0b10f05",
     "date": "2026-10-05",
     "title": "Fix estimate number text color",
