@@ -231,6 +231,17 @@
     "updatedAt": "2026-10-05T06:35:52.844Z"
   },
   {
+    "id": "DEV-20261005-de7170b",
+    "date": "2026-10-05",
+    "title": "Fix footer logo vertical position",
+    "module": "BuildPlanner",
+    "status": "Completed",
+    "summary": "Fix footer logo vertical position",
+    "details": "Automatic entry from commit de7170b. Changed files: TerajuWorks/buildplanner-v2.html.",
+    "commit": "de7170bc78bec1483eff4dc1a89a1340d491cb67",
+    "updatedAt": "2026-10-05T07:56:20.514Z"
+  },
+  {
     "id": "DEV-20261005-ddc5e8c",
     "date": "2026-10-05",
     "title": "revert: restore RenovationPlanner floor plan baseline before source redesign",
