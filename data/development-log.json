@@ -110,6 +110,17 @@
     "updatedAt": "2026-10-05T18:49:51.450Z"
   },
   {
+    "id": "DEV-20261006-756b921",
+    "date": "2026-10-06",
+    "title": "Add 3D design and house plan promo to homepage carousel",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Add 3D design and house plan promo to homepage carousel",
+    "details": "Automatic entry from commit 756b921. Changed files: index.html.",
+    "commit": "756b9212d953113d26e5b61eb1f958ca23eaf193",
+    "updatedAt": "2026-10-06T08:11:58.498Z"
+  },
+  {
     "id": "DEV-20261006-521237d",
     "date": "2026-10-06",
     "title": "Save build quotation Q001 (EST-BLD-001-D)",
