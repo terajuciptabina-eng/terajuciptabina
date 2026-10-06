@@ -55,6 +55,17 @@
     "updatedAt": "2026-10-05T18:59:10.233Z"
   },
   {
+    "id": "DEV-20261006-d2489b6",
+    "date": "2026-10-06",
+    "title": "Set design flyer as first active promotion",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Set design flyer as first active promotion",
+    "details": "Automatic entry from commit d2489b6. Changed files: index.html.",
+    "commit": "d2489b6fba3747474b8be90044be364c4a31727e",
+    "updatedAt": "2026-10-06T08:14:55.592Z"
+  },
+  {
     "id": "DEV-20261006-b53383a",
     "date": "2026-10-06",
     "title": "ui: simplify signup workspace description",
