@@ -18,11 +18,16 @@ input,select,button{min-height:42px;border:1px solid #d1d5db;border-radius:11px;
 button{cursor:pointer;font-weight:800;background:#111827;color:#fff;border-color:#111827}
 .status{font-size:12px;margin-top:10px}
 .table{overflow:auto;border:1px solid #eef0f2;border-radius:12px}
-table{width:100%;border-collapse:collapse;min-width:900px}
+table{width:100%;border-collapse:collapse;table-layout:fixed;min-width:1100px}
 th,td{text-align:left;padding:10px;border-bottom:1px solid #eef0f2;font-size:13px;vertical-align:top}
 th{font-size:10px;text-transform:uppercase;color:#6b7280;background:#fafafa}
-.actions button{width:30px;min-height:30px;padding:0;background:#fff;color:#b91c1c;border:0;font-size:18px}
-.actions a{font-size:12px;font-weight:800;color:#111827;text-decoration:none}
+th:nth-child(1),td:nth-child(1){width:120px}
+th:nth-child(2),td:nth-child(2){width:300px}
+th:nth-child(4),td:nth-child(4){width:165px}
+th:nth-child(5),td:nth-child(5){width:125px}
+.actions{white-space:nowrap}
+.actions a{display:inline-block;font-size:12px;font-weight:800;color:#111827;text-decoration:none;white-space:nowrap;margin-right:8px}
+.actions button{display:inline-flex;align-items:center;justify-content:center;width:30px;min-height:30px;padding:0;background:#fff;color:#b91c1c;border:0;font-size:18px;vertical-align:middle}
 .hidden{display:none!important}
 .profile-modal{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;padding:12px;background:rgba(15,23,42,.52);backdrop-filter:blur(8px);overflow:auto}
 .profile-modal.open{display:flex}
