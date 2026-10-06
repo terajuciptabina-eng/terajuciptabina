@@ -386,18 +386,18 @@
       <div>
         <div class="pill text-emerald-300">EARLY USER TRACTION</div>
         <h2 class="mt-3 text-3xl font-black tracking-tight sm:text-5xl">Early adoption exists. Commercial validation is still ahead.</h2>
-        <p class="mt-5 text-base leading-7 text-emerald-50/80">The current Admin database contains 139 registered accounts across the two workspaces.</p>
+        <p class="mt-5 text-base leading-7 text-emerald-50/80">The current Admin database contains <span id="investor-registered-accounts">—</span> registered accounts across the two workspaces.</p>
       </div>
       <div class="grid grid-cols-2 gap-3 sm:grid-cols-3">
-        <div class="kpi"><div class="num">139</div><div class="lab">REGISTERED ACCOUNTS</div><div class="mt-2 text-[10px] text-slate-400">4 Oct 2026</div></div>
-        <div class="kpi"><div class="num">63</div><div class="lab">HOMEOWNERS</div></div>
-        <div class="kpi"><div class="num">76</div><div class="lab">CONTRACTORS</div></div>
+        <div class="kpi"><div class="num" id="investor-registered-accounts">—</div><div class="lab">REGISTERED ACCOUNTS</div><div class="mt-2 text-[10px] text-slate-400" id="investor-database-date">Loading live database…</div></div>
+        <div class="kpi"><div class="num" id="investor-homeowners">—</div><div class="lab">HOMEOWNERS</div></div>
+        <div class="kpi"><div class="num" id="investor-contractors">—</div><div class="lab">CONTRACTORS</div></div>
         <div class="kpi"><div class="num">0</div><div class="lab">PAYING CUSTOMERS</div></div>
         <div class="kpi"><div class="num">34.1K</div><div class="lab">POST VIEWS</div><div class="mt-2 text-[10px] text-slate-400">Threads</div></div>
         <div class="kpi"><div class="num">447</div><div class="lab">PROFILE VISITS</div><div class="mt-2 text-[10px] text-slate-400">Threads</div></div>
       </div>
     </div>
-    <p class="mt-7 text-xs leading-5 text-emerald-100/55">Point-in-time evidence from the Admin Database and Threads insights. These figures are not revenue, active-user, retention or conversion metrics. The Threads insight referenced is dated 9/10/26.</p>
+    <p class="mt-7 text-xs leading-5 text-emerald-100/55">Live account counts are read from the Admin Database. Social metrics below remain point-in-time Threads insights and are not revenue, active-user, retention or conversion metrics.</p>
   </div>
 </section>
 
@@ -548,6 +548,41 @@ document.querySelectorAll('[data-investor-cta]').forEach(function(link){
     }
   });
 });
+<script>
+(function(){
+  const endpoint = "https://terajuciptabina.vercel.app/api/investor-insights";
+  const accountEl = document.getElementById("investor-registered-accounts");
+  const homeownerEl = document.getElementById("investor-homeowners");
+  const contractorEl = document.getElementById("investor-contractors");
+  const dateEl = document.getElementById("investor-database-date");
+
+  function formatDate(iso){
+    const d = new Date(iso);
+    if (Number.isNaN(d.getTime())) return "Live Admin Database";
+    return d.toLocaleDateString("en-GB", {
+      day:"numeric", month:"short", year:"numeric",
+      timeZone:"Asia/Kuala_Lumpur"
+    });
+  }
+
+  fetch(endpoint, {cache:"no-store"})
+    .then(function(response){
+      if(!response.ok) throw new Error("Investor insight API unavailable");
+      return response.json();
+    })
+    .then(function(data){
+      accountEl.textContent = Number(data.registeredAccounts || 0).toLocaleString("en-US");
+      homeownerEl.textContent = Number(data.homeowners || 0).toLocaleString("en-US");
+      contractorEl.textContent = Number(data.contractors || 0).toLocaleString("en-US");
+      dateEl.textContent = "Admin Database · " + formatDate(data.generatedAt);
+    })
+    .catch(function(){
+      accountEl.textContent = "—";
+      homeownerEl.textContent = "—";
+      contractorEl.textContent = "—";
+      dateEl.textContent = "Database unavailable";
+    });
+})();
 </script>
 </body>
 </html>
