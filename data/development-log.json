@@ -99,6 +99,17 @@
     "updatedAt": "2026-10-05T18:47:25.917Z"
   },
   {
+    "id": "DEV-20261006-abf497b",
+    "date": "2026-10-06",
+    "title": "Fix promo logo image selector at source",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Fix promo logo image selector at source",
+    "details": "Automatic entry from commit abf497b. Changed files: index.html.",
+    "commit": "abf497be9a870aeee22c1d5d5616b33e9734d273",
+    "updatedAt": "2026-10-06T09:47:18.570Z"
+  },
+  {
     "id": "DEV-20261006-ab5f276",
     "date": "2026-10-06",
     "title": "ui: balance admin database table column widths",
