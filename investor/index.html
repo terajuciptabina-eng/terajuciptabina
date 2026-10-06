@@ -553,6 +553,7 @@ document.querySelectorAll('[data-investor-cta]').forEach(function(link){
 (function(){
   const endpoint = "https://terajuciptabina.vercel.app/api/admin?public=investor-insights";
   const accountEl = document.getElementById("investor-registered-accounts");
+  const summaryEl = document.getElementById("investor-registered-summary");
   const homeownerEl = document.getElementById("investor-homeowners");
   const contractorEl = document.getElementById("investor-contractors");
   const dateEl = document.getElementById("investor-database-date");
@@ -573,12 +574,14 @@ document.querySelectorAll('[data-investor-cta]').forEach(function(link){
     })
     .then(function(data){
       accountEl.textContent = Number(data.registeredAccounts || 0).toLocaleString("en-US");
+      summaryEl.textContent = Number(data.registeredAccounts || 0).toLocaleString("en-US");
       homeownerEl.textContent = Number(data.homeowners || 0).toLocaleString("en-US");
       contractorEl.textContent = Number(data.contractors || 0).toLocaleString("en-US");
       dateEl.textContent = "Admin Database · " + formatDate(data.generatedAt);
     })
     .catch(function(){
       accountEl.textContent = "—";
+      summaryEl.textContent = "—";
       homeownerEl.textContent = "—";
       contractorEl.textContent = "—";
       dateEl.textContent = "Database unavailable";
