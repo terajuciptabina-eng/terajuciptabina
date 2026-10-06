@@ -187,6 +187,17 @@
     "updatedAt": "2026-10-06T08:11:58.498Z"
   },
   {
+    "id": "DEV-20261006-7306b66",
+    "date": "2026-10-06",
+    "title": "Bring TerajuWorks logo to front on promo slides",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Bring TerajuWorks logo to front on promo slides",
+    "details": "Automatic entry from commit 7306b66. Changed files: index.html.",
+    "commit": "7306b66b67795becef9aac3c22b0114605f6cfde",
+    "updatedAt": "2026-10-06T09:37:57.949Z"
+  },
+  {
     "id": "DEV-20261006-5d75403",
     "date": "2026-10-06",
     "title": "Move design flyer to first promotion slide",
