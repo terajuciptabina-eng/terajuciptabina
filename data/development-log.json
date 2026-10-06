@@ -55,6 +55,17 @@
     "updatedAt": "2026-10-05T18:59:10.233Z"
   },
   {
+    "id": "DEV-20261006-d77a0b3",
+    "date": "2026-10-06",
+    "title": "Move design flyer to first promotion slide",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Move design flyer to first promotion slide",
+    "details": "Automatic entry from commit d77a0b3. Changed files: index.html.",
+    "commit": "d77a0b3e6adfee52bd67f420140d565f144079db",
+    "updatedAt": "2026-10-06T08:19:07.122Z"
+  },
+  {
     "id": "DEV-20261006-d2489b6",
     "date": "2026-10-06",
     "title": "Set design flyer as first active promotion",
