@@ -1,5 +1,16 @@
 [
   {
+    "id": "DEV-20261007-d6dc1ea",
+    "date": "2026-10-07",
+    "title": "fix: close investor tracking script before live traction script",
+    "module": "Investor",
+    "status": "Completed",
+    "summary": "fix: close investor tracking script before live traction script",
+    "details": "Automatic entry from commit d6dc1ea. Changed files: investor/index.html.",
+    "commit": "d6dc1ead304e3480d6730ce5ad0fb45277039759",
+    "updatedAt": "2026-10-06T17:55:38.655Z"
+  },
+  {
     "id": "DEV-20261007-81e166f",
     "date": "2026-10-07",
     "title": "Link investor traction counts to Admin Database",
