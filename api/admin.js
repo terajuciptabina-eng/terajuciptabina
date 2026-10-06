@@ -5,6 +5,39 @@ export default async function handler(req,res){
   res.setHeader('Access-Control-Allow-Headers','Content-Type,X-Admin-Key,X-Admin-Username,X-Admin-Password');
   if(req.method==='OPTIONS')return res.status(200).end();
   if(!['GET','POST','PUT','DELETE'].includes(req.method))return res.status(405).json({message:'Method not allowed.'});
+  if(String(req.query?.public||'')==='investor-insights'){
+    const token=process.env.GITHUB_TOKEN;
+    const repoName=process.env.GITHUB_REPO||'terajuciptabina-eng/terajuciptabina';
+    if(!token)return res.status(500).json({message:'GitHub data source is not configured.'});
+    const publicHeaders={Authorization:`Bearer ${token}`,Accept:'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'};
+    async function publicGithub(path){
+      const response=await fetch(`https://api.github.com/repos/${repoName}/contents/${path}`,{headers:publicHeaders});
+      const text=await response.text();
+      let data=null;try{data=text?JSON.parse(text):null}catch{data=null}
+      return{response,data};
+    }
+    try{
+      const [homeowners,contractors]=await Promise.all([
+        publicGithub('data/users/homeowners'),
+        publicGithub('data/users/contractors')
+      ]);
+      const countJsonFiles=result=>!result.response.ok||!Array.isArray(result.data)?0:result.data.filter(item=>item&&item.type==='file'&&String(item.name||'').endsWith('.json')).length;
+      const homeownerCount=countJsonFiles(homeowners);
+      const contractorCount=countJsonFiles(contractors);
+      return res.status(200).json({
+        ok:true,
+        source:'Admin Database',
+        registeredAccounts:homeownerCount+contractorCount,
+        homeowners:homeownerCount,
+        contractors:contractorCount,
+        generatedAt:new Date().toISOString()
+      });
+    }catch(error){
+      console.error('public investor insights error:',error);
+      return res.status(500).json({message:'Unable to load investor insights.'});
+    }
+  }
+
   const username=String(process.env.ADMIN_USERNAME||'admin').trim();
   const password=String(process.env.ADMIN_PASSWORD||process.env.ADMIN_KEY||'').trim();
   const suppliedUser=String(req.headers['x-admin-username']||'').trim();
