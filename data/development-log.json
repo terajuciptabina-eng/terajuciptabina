@@ -154,6 +154,17 @@
     "updatedAt": "2026-10-06T08:11:58.498Z"
   },
   {
+    "id": "DEV-20261006-5d75403",
+    "date": "2026-10-06",
+    "title": "Move design flyer to first promotion slide",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Move design flyer to first promotion slide",
+    "details": "Automatic entry from commit 5d75403.",
+    "commit": "5d75403f3c3a32ee0d947518716cad51e172ce5e",
+    "updatedAt": "2026-10-06T08:15:55.923Z"
+  },
+  {
     "id": "DEV-20261006-521237d",
     "date": "2026-10-06",
     "title": "Save build quotation Q001 (EST-BLD-001-D)",
