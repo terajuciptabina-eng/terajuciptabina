@@ -66,6 +66,17 @@
     "updatedAt": "2026-10-05T18:56:40.599Z"
   },
   {
+    "id": "DEV-20261006-8ae2b83",
+    "date": "2026-10-06",
+    "title": "Delete homeowner HME-20261004-5FDG from admin database",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Delete homeowner HME-20261004-5FDG from admin database",
+    "details": "Automatic entry from commit 8ae2b83. Changed files: data/users/homeowners/HME-20261004-5FDG.json.",
+    "commit": "8ae2b836c3d5a2ecff209db44f0fb88ef5bbf0aa",
+    "updatedAt": "2026-10-06T05:19:56.185Z"
+  },
+  {
     "id": "DEV-20261006-86f5145",
     "date": "2026-10-06",
     "title": "ui: make homeowner phone required for ID delivery",
