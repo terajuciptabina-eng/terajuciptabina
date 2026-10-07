@@ -11,6 +11,17 @@
     "updatedAt": "2026-10-07T07:06:19.488Z"
   },
   {
+    "id": "DEV-20261007-f6a80a0",
+    "date": "2026-10-07",
+    "title": "refactor: move BIM importer into TerajuWorks",
+    "module": "General",
+    "status": "Completed",
+    "summary": "refactor: move BIM importer into TerajuWorks",
+    "details": "Automatic entry from commit f6a80a0. Changed files: TerajuWorks/bim/room-area-import.html, bim-test/index.html, bim-test/room-area-bridge.html, bim-test/terajuworks_bim_test.ifc.",
+    "commit": "f6a80a04fd92a4820660bb5d5a580b463866d0a4",
+    "updatedAt": "2026-10-07T07:57:12.097Z"
+  },
+  {
     "id": "DEV-20261007-f2d681a",
     "date": "2026-10-07",
     "title": "Add hosted standalone BIM IFC import test",
