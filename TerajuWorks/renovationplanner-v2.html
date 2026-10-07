@@ -1095,13 +1095,13 @@ function openFloorPlanImport(){
 window.openFloorPlanImport=openFloorPlanImport;
 
 function openBimImport(){
-  const target=new URL('../bim-test/room-area-import.html',location.href);
+  const target=new URL('bim/room-area-import.html',location.href);
   const params=new URLSearchParams(location.search);
   const roomCount=document.querySelectorAll('#roomsContainer .room-card').length;
   try{sessionStorage.setItem('teraju.bim.import.context.v1',JSON.stringify({version:1,roomCount,startedAt:new Date().toISOString(),quotationId:params.get('quotationId')||'',plannerType:'renovation'}))}catch(e){console.warn('[TERAJU BIM IMPORT] Unable to save import context',e)}
   params.forEach((v,k)=>target.searchParams.set(k,v));
   target.searchParams.set('plannerType','renovation');
-  target.searchParams.set('returnTo','../TerajuWorks/renovationplanner-v2.html');
+  target.searchParams.set('returnTo','../renovationplanner-v2.html');
   location.href=target.toString();
 }
 window.openBimImport=openBimImport;
