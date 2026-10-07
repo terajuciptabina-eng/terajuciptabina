@@ -684,6 +684,7 @@ main>section:not(:first-child){scroll-margin-top:92px} main>section>div:first-ch
           class="bg-white border border-gray-300 text-gray-900 px-4 py-3 rounded-lg text-sm font-semibold">
           Scan Floor Plan
         </button>
+        <button id="bimImportBtn" type="button" onclick="return window.openBimImport ? window.openBimImport() : false;" class="bg-white border border-gray-300 text-gray-900 px-4 py-3 rounded-lg text-sm font-semibold">Import BIM / IFC</button>
         <button id="addRoomAreaBtn" type="button" onclick="return window.addRoom ? window.addRoom() : false;"
           class="bg-white border border-gray-300 text-gray-900 px-4 py-3 rounded-lg text-sm font-semibold">
           Add Room Manually
@@ -1085,7 +1086,8 @@ function openFloorPlanImport(){
   const target=new URL('floor-plan-import.html',location.href);
   const params=new URLSearchParams(location.search);
   const roomCount=document.querySelectorAll('#roomsContainer .room-card').length;
-  try{sessionStorage.setItem('teraju.floorplan.import.context.v1',JSON.stringify({version:1,roomCount,startedAt:new Date().toISOString(),quotationId:params.get('quotationId')||'',plannerType:'renovation'}))}catch(e){console.warn('[TERAJU FLOOR PLAN IMPORT] Unable to save import context',e)}
+  try{sessionStorage.setItem('teraju.floorplan.import.context.v1',JSON.stringify({version:1,roomCount,startedAt:new Date().toISOString(),quotationId:params.get('quotationId')||'',plannerType:'renovation'}
+function openBimImport(){const target=new URL('../bim-test/room-area-import.html',location.href),params=new URLSearchParams(location.search),roomCount=document.querySelectorAll('#roomsContainer .room-card').length;try{sessionStorage.setItem('teraju.bim.import.context.v1',JSON.stringify({version:1,roomCount,startedAt:new Date().toISOString(),quotationId:params.get('quotationId')||'',plannerType:'renovation'}))}catch(e){console.warn('[TERAJU BIM IMPORT] Unable to save import context',e)}params.forEach((v,k)=>{target.searchParams.set(k,v)});target.searchParams.set('plannerType','renovation');target.searchParams.set('returnTo','renovationplanner-v2.html');location.href=target.toString()}))}catch(e){console.warn('[TERAJU FLOOR PLAN IMPORT] Unable to save import context',e)}
   params.forEach((v,k)=>{if(k!=='floorPlanImport')target.searchParams.set(k,v)});
   target.searchParams.set('plannerType','renovation');
   target.searchParams.set('returnTo','renovationplanner-v2.html');
