@@ -1098,8 +1098,8 @@ function openBimImport(){
   const target=new URL('bim/room-area-import.html',location.href);
   const params=new URLSearchParams(location.search);
   const roomCount=document.querySelectorAll('#roomsContainer .room-card').length;
-  const projectState=String(window.TERAJU_GET_PROJECT_STATE?.()||document.getElementById('projectState')?.value||window.TERAJU_SELECTED_STATE||'').trim().toLowerCase();
-  try{sessionStorage.setItem('teraju.floorplan.import.context.v1',JSON.stringify({version:1,roomCount,startedAt:new Date().toISOString(),quotationId:params.get('quotationId')||'',plannerType:'renovation',source:'IFC',projectState}))}catch(e){console.warn('[TERAJU BIM IMPORT] Unable to save import context',e)}
+  const projectState=String(window.TERAJU_GET_PROJECT_STATE?.()||document.getElementById('projectState')?.value||window.TERAJU_SELECTED_STATE||'').trim().toLowerCase(),customerName=String(document.getElementById('customerName')?.value||'').trim(),projectLocation=String(document.getElementById('projectLocation')?.value||'').trim();
+  try{sessionStorage.setItem('teraju.floorplan.import.context.v1',JSON.stringify({version:1,roomCount,startedAt:new Date().toISOString(),quotationId:params.get('quotationId')||'',plannerType:'renovation',source:'IFC',projectState,customerName,projectLocation}))}catch(e){console.warn('[TERAJU BIM IMPORT] Unable to save import context',e)}
   params.forEach((v,k)=>{if(k!=='floorPlanImport')target.searchParams.set(k,v)});
   if(projectState)target.searchParams.set('projectState',projectState);
   target.searchParams.set('plannerType','renovation');
