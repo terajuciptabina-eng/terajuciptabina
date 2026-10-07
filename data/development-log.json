@@ -396,6 +396,17 @@
     "updatedAt": "2026-10-06T17:58:39.782Z"
   },
   {
+    "id": "DEV-20261007-47a6af1",
+    "date": "2026-10-07",
+    "title": "remove incomplete BIM hero staging data",
+    "module": "General",
+    "status": "Completed",
+    "summary": "remove incomplete BIM hero staging data",
+    "details": "Automatic entry from commit 47a6af1. Changed files: data/bim-hero-user.b64.",
+    "commit": "47a6af1be0ce575f5dc6e19d1e1128a392c29c87",
+    "updatedAt": "2026-10-07T08:59:06.819Z"
+  },
+  {
     "id": "DEV-20261007-384c70f",
     "date": "2026-10-07",
     "title": "Correct IFC sample area quantities",
