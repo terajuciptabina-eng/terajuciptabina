@@ -49,8 +49,15 @@
 
     // State belongs to the project, never to the browser. A new project must start blank.
     // Existing projects are restored by quotation-records.js from their saved planner state.
-    const existingQuotationId=new URLSearchParams(location.search).get('quotationId');
-    if(!existingQuotationId)select.value='';
+    const pageParams=new URLSearchParams(location.search);
+    const existingQuotationId=pageParams.get('quotationId');
+    const importReturn=pageParams.get('floorPlanImport')==='1';
+    const handoffState=importReturn?String(pageParams.get('projectState')||'').trim().toLowerCase():'';
+    if(handoffState && STATES.some(s=>s[0]===handoffState)){
+      select.value=handoffState;
+      setSelected(handoffState);
+      window.TERAJU_SELECTED_STATE=handoffState;
+    }else if(!existingQuotationId)select.value='';
 
     const controls=[...document.querySelectorAll('main input, main select, main textarea, main button')].filter(el=>el!==select);
     const lock=document.createElement('div');
