@@ -1,5 +1,16 @@
 [
   {
+    "id": "DEV-20261008-fbeaf83",
+    "date": "2026-10-08",
+    "title": "Add consistent action icons to room controls",
+    "module": "RenovationPlanner",
+    "status": "Completed",
+    "summary": "Add consistent action icons to room controls",
+    "details": "Automatic entry from commit fbeaf83. Changed files: TerajuWorks/renovationplanner-v2.html.",
+    "commit": "fbeaf83c3199ee6c498fb4ba084a52d21a421092",
+    "updatedAt": "2026-10-07T19:10:25.198Z"
+  },
+  {
     "id": "DEV-20261008-eaf99a3",
     "date": "2026-10-08",
     "title": "Preserve project state through BIM import return",
