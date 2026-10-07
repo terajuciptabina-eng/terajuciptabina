@@ -253,6 +253,17 @@
     "updatedAt": "2026-10-07T07:11:28.844Z"
   },
   {
+    "id": "DEV-20261007-6ea93fc",
+    "date": "2026-10-07",
+    "title": "ui: restore BIM hero image treatment",
+    "module": "General",
+    "status": "Completed",
+    "summary": "ui: restore BIM hero image treatment",
+    "details": "Automatic entry from commit 6ea93fc. Changed files: TerajuWorks/bim/room-area-import.html.",
+    "commit": "6ea93fca151ebcddb5889af6314d687929daa5d9",
+    "updatedAt": "2026-10-07T08:00:58.109Z"
+  },
+  {
     "id": "DEV-20261007-6e14f44",
     "date": "2026-10-07",
     "title": "Simplify BIM import content and remove decorative image layer",
