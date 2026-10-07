@@ -22,6 +22,17 @@
     "updatedAt": "2026-10-07T18:46:51.403Z"
   },
   {
+    "id": "DEV-20261008-d501b9e",
+    "date": "2026-10-08",
+    "title": "Refresh shared import receiver for BIM handoff",
+    "module": "RenovationPlanner",
+    "status": "Completed",
+    "summary": "Refresh shared import receiver for BIM handoff",
+    "details": "Automatic entry from commit d501b9e. Changed files: TerajuWorks/renovationplanner-v2.html.",
+    "commit": "d501b9e63fb70d0fcd1f2370a9a1a8cecbe3d6e8",
+    "updatedAt": "2026-10-07T18:47:12.728Z"
+  },
+  {
     "id": "DEV-20261008-b8bcbc7",
     "date": "2026-10-08",
     "title": "Carry project state in IFC planner handoff",
