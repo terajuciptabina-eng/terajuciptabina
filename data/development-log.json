@@ -66,6 +66,17 @@
     "updatedAt": "2026-10-07T18:38:04.225Z"
   },
   {
+    "id": "DEV-20261008-3fa57ff",
+    "date": "2026-10-08",
+    "title": "Refresh shared import receiver for BIM handoff",
+    "module": "BuildPlanner",
+    "status": "Completed",
+    "summary": "Refresh shared import receiver for BIM handoff",
+    "details": "Automatic entry from commit 3fa57ff. Changed files: TerajuWorks/buildplanner-v2.html.",
+    "commit": "3fa57ff435470f52043839fad12de033b62c5e6a",
+    "updatedAt": "2026-10-07T18:46:57.378Z"
+  },
+  {
     "id": "DEV-20261008-3b01550",
     "date": "2026-10-08",
     "title": "Restore project state after BIM return",
