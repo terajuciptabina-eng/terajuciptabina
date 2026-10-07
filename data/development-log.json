@@ -121,6 +121,17 @@
     "updatedAt": "2026-10-07T07:57:38.096Z"
   },
   {
+    "id": "DEV-20261007-cd90e1c",
+    "date": "2026-10-07",
+    "title": "Keep BIM hero image on valid hosted asset",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Keep BIM hero image on valid hosted asset",
+    "details": "Automatic entry from commit cd90e1c. Changed files: TerajuWorks/bim/room-area-import.html.",
+    "commit": "cd90e1cd133fc8e6199b47fbda991527b96008ed",
+    "updatedAt": "2026-10-07T08:15:50.380Z"
+  },
+  {
     "id": "DEV-20261007-c9a70ee",
     "date": "2026-10-07",
     "title": "ui: restore BIM render hero asset",
