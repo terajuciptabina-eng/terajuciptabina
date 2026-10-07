@@ -33,6 +33,17 @@
     "updatedAt": "2026-10-07T18:46:22.961Z"
   },
   {
+    "id": "DEV-20261008-a9ab8bd",
+    "date": "2026-10-08",
+    "title": "Preserve project details in IFC handoff context",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Preserve project details in IFC handoff context",
+    "details": "Automatic entry from commit a9ab8bd. Changed files: TerajuWorks/bim/room-area-import.html.",
+    "commit": "a9ab8bd8dd6ade08d2ac22a345ea80571bbc026d",
+    "updatedAt": "2026-10-07T18:46:31.012Z"
+  },
+  {
     "id": "DEV-20261008-9f3ec60",
     "date": "2026-10-08",
     "title": "Restore state before IFC room import",
