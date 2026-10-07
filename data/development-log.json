@@ -99,6 +99,17 @@
     "updatedAt": "2026-10-07T04:55:33.327Z"
   },
   {
+    "id": "DEV-20261007-8fc6e30",
+    "date": "2026-10-07",
+    "title": "Add BIM IFC import entry to RenovationPlanner",
+    "module": "RenovationPlanner",
+    "status": "Completed",
+    "summary": "Add BIM IFC import entry to RenovationPlanner",
+    "details": "Automatic entry from commit 8fc6e30. Changed files: TerajuWorks/renovationplanner-v2.html.",
+    "commit": "8fc6e30b8300d3479055690a68e1f2953b8a4e38",
+    "updatedAt": "2026-10-07T07:11:31.837Z"
+  },
+  {
     "id": "DEV-20261007-8c1d212",
     "date": "2026-10-07",
     "title": "feat: add local BIM architecture visual",
