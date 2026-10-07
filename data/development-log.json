@@ -1,5 +1,16 @@
 [
   {
+    "id": "DEV-20261008-eaf99a3",
+    "date": "2026-10-08",
+    "title": "Preserve project state through BIM import return",
+    "module": "BuildPlanner",
+    "status": "Completed",
+    "summary": "Preserve project state through BIM import return",
+    "details": "Automatic entry from commit eaf99a3. Changed files: TerajuWorks/buildplanner-v2.html.",
+    "commit": "eaf99a3c491c3bd284f8a6f446f7abd478fcefed",
+    "updatedAt": "2026-10-07T18:37:42.278Z"
+  },
+  {
     "id": "DEV-20261007-fd71608",
     "date": "2026-10-07",
     "title": "Align BIM import UX with AI Floor Plan flow",
