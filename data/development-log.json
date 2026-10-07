@@ -451,6 +451,17 @@
     "updatedAt": "2026-10-07T04:50:51.790Z"
   },
   {
+    "id": "DEV-20261007-370639b",
+    "date": "2026-10-07",
+    "title": "Fix iPhone IFC file selection",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Fix iPhone IFC file selection",
+    "details": "Automatic entry from commit 370639b. Changed files: TerajuWorks/bim/room-area-import.html.",
+    "commit": "370639b43330a1c68cc0a22340b252f39f455022",
+    "updatedAt": "2026-10-07T15:37:32.841Z"
+  },
+  {
     "id": "DEV-20261007-34a0718",
     "date": "2026-10-07",
     "title": "stage BIM hero image data",
