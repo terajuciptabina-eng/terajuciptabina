@@ -143,6 +143,17 @@
     "updatedAt": "2026-10-06T17:46:30.478Z"
   },
   {
+    "id": "DEV-20261007-71b59ac",
+    "date": "2026-10-07",
+    "title": "Add BIM IFC import entry to BuildPlanner",
+    "module": "BuildPlanner",
+    "status": "Completed",
+    "summary": "Add BIM IFC import entry to BuildPlanner",
+    "details": "Automatic entry from commit 71b59ac. Changed files: TerajuWorks/buildplanner-v2.html.",
+    "commit": "71b59ac49041a460b6ce0710a8fb9bc1bf16515b",
+    "updatedAt": "2026-10-07T07:11:28.844Z"
+  },
+  {
     "id": "DEV-20261007-686cd41",
     "date": "2026-10-07",
     "title": "Add read-only investor database insights API",
