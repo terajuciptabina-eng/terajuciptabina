@@ -44,6 +44,17 @@
     "updatedAt": "2026-10-07T04:38:33.588Z"
   },
   {
+    "id": "DEV-20261007-9958fee",
+    "date": "2026-10-07",
+    "title": "Fix IFC space area extraction via inverse property links",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Fix IFC space area extraction via inverse property links",
+    "details": "Automatic entry from commit 9958fee. Changed files: bim-test/index.html.",
+    "commit": "9958fee8411083523ed577e05d22daa01ff857ab",
+    "updatedAt": "2026-10-07T04:55:33.327Z"
+  },
+  {
     "id": "DEV-20261007-81e166f",
     "date": "2026-10-07",
     "title": "Link investor traction counts to Admin Database",
