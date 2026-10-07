@@ -275,6 +275,17 @@
     "updatedAt": "2026-10-07T07:09:57.301Z"
   },
   {
+    "id": "DEV-20261007-2816474",
+    "date": "2026-10-07",
+    "title": "Align BIM IFC workflow with AI Floor Plan flow",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Align BIM IFC workflow with AI Floor Plan flow",
+    "details": "Automatic entry from commit 2816474. Changed files: bim-test/room-area-import.html.",
+    "commit": "2816474afd14ccdbd9a7f6da9e0ada1caea38960",
+    "updatedAt": "2026-10-07T07:28:48.708Z"
+  },
+  {
     "id": "DEV-20261007-0ed90ef",
     "date": "2026-10-07",
     "title": "Add standalone IFC to Room Area bridge",
