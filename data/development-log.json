@@ -176,6 +176,17 @@
     "updatedAt": "2026-10-07T07:11:28.844Z"
   },
   {
+    "id": "DEV-20261007-6e14f44",
+    "date": "2026-10-07",
+    "title": "Simplify BIM import content and remove decorative image layer",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Simplify BIM import content and remove decorative image layer",
+    "details": "Automatic entry from commit 6e14f44. Changed files: bim-test/room-area-import.html.",
+    "commit": "6e14f44e5b1912c4f1258e030dc1aadc2334a971",
+    "updatedAt": "2026-10-07T07:25:49.164Z"
+  },
+  {
     "id": "DEV-20261007-686cd41",
     "date": "2026-10-07",
     "title": "Add read-only investor database insights API",
