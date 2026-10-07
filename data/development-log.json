@@ -11,6 +11,17 @@
     "updatedAt": "2026-10-07T18:37:42.278Z"
   },
   {
+    "id": "DEV-20261008-d9d4024",
+    "date": "2026-10-08",
+    "title": "Restore project details before IFC room import",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Restore project details before IFC room import",
+    "details": "Automatic entry from commit d9d4024. Changed files: TerajuWorks/floor-plan-import-receiver.js.",
+    "commit": "d9d4024bf6b021be951102631c7e4bc0eb14796a",
+    "updatedAt": "2026-10-07T18:46:51.403Z"
+  },
+  {
     "id": "DEV-20261008-b8bcbc7",
     "date": "2026-10-08",
     "title": "Carry project state in IFC planner handoff",
