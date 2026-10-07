@@ -44,6 +44,17 @@
     "updatedAt": "2026-10-07T18:55:11.125Z"
   },
   {
+    "id": "DEV-20261008-c65ae24",
+    "date": "2026-10-08",
+    "title": "Add consistent action icons to room controls",
+    "module": "BuildPlanner",
+    "status": "Completed",
+    "summary": "Add consistent action icons to room controls",
+    "details": "Automatic entry from commit c65ae24. Changed files: TerajuWorks/buildplanner-v2.html.",
+    "commit": "c65ae24d940d724267d5f3ba31fac98f45838664",
+    "updatedAt": "2026-10-07T19:10:20.660Z"
+  },
+  {
     "id": "DEV-20261008-b8bcbc7",
     "date": "2026-10-08",
     "title": "Carry project state in IFC planner handoff",
