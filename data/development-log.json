@@ -209,6 +209,17 @@
     "updatedAt": "2026-10-06T17:46:30.478Z"
   },
   {
+    "id": "DEV-20261007-72a2a78",
+    "date": "2026-10-07",
+    "title": "Fix BIM Back to Planner return path",
+    "module": "RenovationPlanner",
+    "status": "Completed",
+    "summary": "Fix BIM Back to Planner return path",
+    "details": "Automatic entry from commit 72a2a78. Changed files: TerajuWorks/renovationplanner-v2.html.",
+    "commit": "72a2a789f2389e878908089c81190f6eb69dd5e3",
+    "updatedAt": "2026-10-07T07:54:32.195Z"
+  },
+  {
     "id": "DEV-20261007-71b59ac",
     "date": "2026-10-07",
     "title": "Add BIM IFC import entry to BuildPlanner",
