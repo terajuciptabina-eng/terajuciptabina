@@ -264,6 +264,17 @@
     "updatedAt": "2026-10-07T06:15:04.334Z"
   },
   {
+    "id": "DEV-20261007-00a1c0d",
+    "date": "2026-10-07",
+    "title": "Preserve planner target for BIM import",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Preserve planner target for BIM import",
+    "details": "Automatic entry from commit 00a1c0d. Changed files: bim-test/room-area-import.html.",
+    "commit": "00a1c0db88c38df5f5645025a63655daf02b6b77",
+    "updatedAt": "2026-10-07T07:11:34.455Z"
+  },
+  {
     "id": "DEV-20261006-f539c27",
     "date": "2026-10-06",
     "title": "Create temporary homeowner account HME-20261005-TXH9",
