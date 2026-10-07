@@ -407,6 +407,17 @@
     "updatedAt": "2026-10-07T04:50:51.790Z"
   },
   {
+    "id": "DEV-20261007-34a0718",
+    "date": "2026-10-07",
+    "title": "stage BIM hero image data",
+    "module": "General",
+    "status": "Completed",
+    "summary": "stage BIM hero image data",
+    "details": "Automatic entry from commit 34a0718. Changed files: data/bim-hero-user.b64.",
+    "commit": "34a0718e1e22bd68855900845be00d450ab37f46",
+    "updatedAt": "2026-10-07T08:58:45.571Z"
+  },
+  {
     "id": "DEV-20261007-2ee3790",
     "date": "2026-10-07",
     "title": "feat: align BIM import with planner and AI floor plan flow",
