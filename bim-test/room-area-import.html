@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TerajuWorks BIM Import</title>
+<style>
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;margin:0;background:#f5f7f8;color:#172033}
+.wrap{max-width:1000px;margin:auto;padding:24px}.card{background:#fff;border:1px solid #dfe5e8;border-radius:18px;padding:20px;margin-bottom:16px;box-shadow:0 8px 30px rgba(0,0,0,.04)}
+h1{font-size:28px;margin:8px 0}.muted{color:#667085;line-height:1.5}.status{margin-top:16px;font-weight:700}.err{color:#b91c1c}.ok{color:#08766d}
+input{margin-top:16px;font-size:16px}button{margin:10px 8px 0 0;border:0;border-radius:10px;padding:11px 15px;font-weight:700;cursor:pointer}
+table{width:100%;border-collapse:collapse;margin-top:14px}th,td{padding:10px;border-bottom:1px solid #edf0f2;text-align:left;font-size:13px}.badge{display:inline-block;padding:6px 10px;border-radius:999px;background:#edf8f5;color:#08766d;font-size:11px;font-weight:800}
+pre{white-space:pre-wrap;word-break:break-word;background:#f8fafb;border:1px solid #edf0f2;border-radius:12px;padding:14px;font-size:12px;max-height:420px;overflow:auto}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="card">
+<div class="badge">EXPERIMENTAL · LOCAL-FIRST · NO PLANNER CHANGES</div>
+<h1>TerajuWorks BIM → Room / Area Import</h1>
+<p class="muted">Upload an IFC, review the extracted Room / Area data, then confirm it into this browser's local workspace. No IFC or room data is sent to the server or database.</p>
+<input id="file" type="file" accept="*/*">
+<div id="engine" class="muted" style="margin-top:12px">Starting IFC engine…</div>
+<div id="storage" class="muted" style="margin-top:8px">Checking local storage…</div>
+<div id="status" class="status">Waiting for IFC engine…</div>
+<div id="actions" hidden>
+<button id="confirm">Confirm Import to Local Workspace</button>
+<button id="download">Download Canonical JSON</button>
+<button id="clear" type="button">Clear Local BIM File</button>
+</div>
+</div>
+<div id="summary" class="card" hidden></div>
+<div id="rooms" class="card" hidden></div>
+<div id="jsonCard" class="card" hidden><h2>Canonical JSON</h2><pre id="json"></pre></div>
+</div>
+<script>
+const fileInput=document.getElementById("file");
+const engineEl=document.getElementById("engine");
+const storageEl=document.getElementById("storage");
+const statusEl=document.getElementById("status");
+const actionsEl=document.getElementById("actions");
+const confirmBtn=document.getElementById("confirm");
+const downloadBtn=document.getElementById("download");
+const clearBtn=document.getElementById("clear");
+const summaryEl=document.getElementById("summary");
+const roomsEl=document.getElementById("rooms");
+const jsonCard=document.getElementById("jsonCard");
+const jsonEl=document.getElementById("json");
+let api=null,ready=false,lastCanonical=null;
+
+const STORAGE_KEY="terajuworks.bim.local.v1";
+const CONFIRMED_KEY="terajuworks.room-area.confirmed.v1";
+const DB_NAME="terajuworks-bim-local";
+const DB_VERSION=1;
+const STORE_NAME="ifcFiles";
+
+const esc=v=>String(v??"").replace(/[&<>'"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;","\"":"&quot;"}[c]));
+const val=v=>v&&typeof v==="object"&&"value" in v?v.value:v;
+const ref=v=>typeof v==="number"?v:(v&&typeof v.value==="number"?v.value:(v&&typeof v.expressID==="number"?v.expressID:null));
+const listValues=v=>{
+ if(!v)return [];
+ if(Array.isArray(v))return v;
+ if(typeof v.size==="number"&&typeof v.get==="function"){const a=[];for(let i=0;i<v.size();i++)a.push(v.get(i));return a}
+ return [v];
+};
+function ids(model,type){const a=[];const s=api.GetLineIDsWithType(model,type);for(let i=0;i<s.size();i++)a.push(s.get(i));return a}
+function line(model,id,flatten=true,inverse=false){try{return api.GetLine(model,id,flatten,inverse)}catch{return null}}
+function typeId(types,name){return types.find(t=>String(t.typeName).toUpperCase()===name)?.typeID}
+function areaFromObject(x){
+ if(!x)return null;
+ for(const c of [x.AreaValue,x.Area]){const n=Number(val(c));if(Number.isFinite(n))return n}
+ return null;
+}
+function resolveAreaQuantity(model,id){
+ const q=line(model,id,true,false);if(!q)return null;
+ const direct=areaFromObject(q);if(direct!==null)return direct;
+ for(const item of listValues(q.Quantities)){
+  const qid=ref(item),resolved=qid?line(model,qid,true,false):item,a=areaFromObject(resolved);
+  if(a!==null)return a;
+ }
+ return null;
+}
+function extractSpaceArea(model,spaceId){
+ const space=line(model,spaceId,true,true);if(!space)return {value:null,source:null};
+ for(const relItem of listValues(space.IsDefinedBy)){
+  const rid=ref(relItem),rel=rid?line(model,rid,true,false):relItem;if(!rel)continue;
+  const did=ref(rel.RelatingPropertyDefinition),definition=did?line(model,did,true,false):rel.RelatingPropertyDefinition;if(!definition)continue;
+  const qArea=resolveAreaQuantity(model,definition.expressID);
+  if(qArea!==null)return {value:qArea,source:"IfcElementQuantity"};
+  for(const prop of listValues(definition.HasProperties)){
+   const a=areaFromObject(prop);if(a!==null)return {value:a,source:"PropertySet"};
+   const name=String(val(prop?.Name)||"").toLowerCase();
+   if(name.includes("area")){const n=Number(val(prop?.NominalValue));if(Number.isFinite(n))return {value:n,source:"Area Property"}}
+  }
+ }
+ return {value:null,source:null};
+}
+function buildStoreyMap(model,storeyType,relType){
+ const map=new Map();if(!storeyType||!relType)return map;
+ for(const sid of ids(model,storeyType)){
+  const storey=line(model,sid,true,false);if(!storey)continue;
+  for(const rid of ids(model,relType)){
+   const rel=line(model,rid,true,false);if(!rel)continue;
+   if(ref(rel.RelatingObject)!==sid)continue;
+   for(const item of listValues(rel.RelatedObjects)){const oid=ref(item);if(oid)map.set(oid,{id:sid,name:String(val(storey.Name)||"")})}
+  }
+ }
+ return map;
+}
+function openDB(){
+ return new Promise((resolve,reject)=>{
+  const req=indexedDB.open(DB_NAME,DB_VERSION);
+  req.onupgradeneeded=()=>{if(!req.result.objectStoreNames.contains(STORE_NAME))req.result.createObjectStore(STORE_NAME)};
+  req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error);
+ });
+}
+async function saveLocalFile(file,bytes){
+ const db=await openDB();
+ await new Promise((resolve,reject)=>{
+  const tx=db.transaction(STORE_NAME,"readwrite");
+  tx.objectStore(STORE_NAME).put({name:file.name,type:file.type||"application/octet-stream",size:file.size,updatedAt:new Date().toISOString(),bytes},"current");
+  tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error);
+ });
+ localStorage.setItem(STORAGE_KEY,JSON.stringify({fileName:file.name,size:file.size,updatedAt:new Date().toISOString(),storage:"IndexedDB"}));
+ db.close();
+ storageEl.textContent="IFC stored locally in this browser · "+file.name+" · "+Math.round(file.size/1024)+" KB";
+}
+async function loadLocalFile(){
+ const meta=JSON.parse(localStorage.getItem(STORAGE_KEY)||"null");if(!meta)return null;
+ try{
+  const db=await openDB();
+  const item=await new Promise((resolve,reject)=>{
+   const tx=db.transaction(STORE_NAME,"readonly"),req=tx.objectStore(STORE_NAME).get("current");
+   req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error);
+  });
+  db.close();
+  if(!item)return null;
+  storageEl.textContent="Local IFC available · "+item.name+" · "+Math.round(item.size/1024)+" KB";
+  return new File([item.bytes],item.name,{type:item.type,lastModified:new Date(item.updatedAt).getTime()});
+ }catch(e){console.warn(e);return null}
+}
+async function clearLocal(){
+ localStorage.removeItem(STORAGE_KEY);localStorage.removeItem(CONFIRMED_KEY);
+ try{
+  const db=await openDB();
+  await new Promise((resolve,reject)=>{const tx=db.transaction(STORE_NAME,"readwrite");tx.objectStore(STORE_NAME).delete("current");tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error)});
+  db.close();
+ }catch(e){console.warn(e)}
+ storageEl.textContent="No IFC file stored locally.";
+}
+async function start(){
+ try{
+  const WebIFC=await import("https://cdn.jsdelivr.net/npm/web-ifc@0.0.78/+esm");
+  api=new WebIFC.IfcAPI();api.SetWasmPath("https://cdn.jsdelivr.net/npm/web-ifc@0.0.78/");await api.Init();
+  ready=true;engineEl.textContent="web-ifc 0.0.78 loaded successfully.";
+  await loadLocalFile();
+  statusEl.textContent="Waiting for IFC file…";
+ }catch(e){console.error(e);engineEl.textContent="web-ifc engine failed to load.";statusEl.textContent="Engine error: "+(e?.message||e);statusEl.className="status err"}
+}
+async function readFile(file){
+ if(!ready)return;
+ if(!file||!file.name.toLowerCase().endsWith(".ifc")){statusEl.textContent="Please select a valid .ifc file.";statusEl.className="status err";return}
+ statusEl.textContent="Saving IFC locally and building canonical Room / Area data…";statusEl.className="status";
+ let model=null;
+ try{
+  const bytes=new Uint8Array(await file.arrayBuffer());
+  await saveLocalFile(file,bytes);
+  model=api.OpenModel(bytes,{COORDINATE_TO_ORIGIN:true});
+  const types=api.GetAllTypesOfModel(model);
+  const projectT=typeId(types,"IFCPROJECT"),buildingT=typeId(types,"IFCBUILDING"),storeyT=typeId(types,"IFCBUILDINGSTOREY"),spaceT=typeId(types,"IFCSPACE"),relAggT=typeId(types,"IFCRELAGGREGATES");
+  const projects=projectT?ids(model,projectT).map(id=>line(model,id)).filter(Boolean):[];
+  const buildings=buildingT?ids(model,buildingT).map(id=>line(model,id)).filter(Boolean):[];
+  const storeys=storeyT?ids(model,storeyT).map(id=>line(model,id)).filter(Boolean):[];
+  const storeyMap=buildStoreyMap(model,storeyT,relAggT);
+  const rooms=spaceT?ids(model,spaceT).map(id=>{
+   const x=line(model,id,true,true);if(!x)return null;
+   const area=extractSpaceArea(model,id),storey=storeyMap.get(id);
+   return {sourceType:"IFC",sourceExpressId:id,globalId:String(val(x.GlobalId)||""),name:String(val(x.Name)||("Space "+id)),longName:String(val(x.LongName)||""),storeyId:storey?.id??null,storeyName:storey?.name??"",areaM2:area.value,areaSqft:area.value==null?null:Number((area.value*10.7639104167).toFixed(1)),areaSource:area.source};
+  }).filter(Boolean):[];
+  lastCanonical={schemaVersion:"terajuworks.room-area.v1",source:{type:"IFC",fileName:file.name},project:{name:String(val(projects[0]?.Name)||"")},building:{name:String(val(buildings[0]?.Name)||"")},storeys:storeys.map((s,i)=>({sourceExpressId:s.expressID??null,name:String(val(s.Name)||("Storey "+(i+1)))})),rooms};
+  summaryEl.innerHTML="<h2>Import Review</h2><table><tbody><tr><th>Source</th><td>"+esc(file.name)+"</td></tr><tr><th>Project</th><td>"+esc(lastCanonical.project.name||"—")+"</td></tr><tr><th>Building</th><td>"+esc(lastCanonical.building.name||"—")+"</td></tr><tr><th>Storeys</th><td>"+lastCanonical.storeys.length+"</td></tr><tr><th>Rooms / Spaces</th><td>"+rooms.length+"</td></tr><tr><th>Areas mapped</th><td>"+rooms.filter(r=>r.areaM2!=null).length+"</td></tr></tbody></table>";
+  summaryEl.hidden=false;
+  roomsEl.innerHTML="<h2>Review Room / Area</h2>"+(rooms.length?"<table><thead><tr><th>Room / Space</th><th>Storey</th><th>m²</th><th>sqft</th><th>Source</th></tr></thead><tbody>"+rooms.map(r=>"<tr><td>"+esc(r.name)+"</td><td>"+esc(r.storeyName||"—")+"</td><td>"+(r.areaM2==null?"—":r.areaM2.toFixed(2))+"</td><td>"+(r.areaSqft==null?"—":r.areaSqft.toFixed(1))+"</td><td>"+esc(r.areaSource||"—")+"</td></tr>").join("")+"</tbody></table>":"<p class='muted'>No IfcSpace objects detected.</p>");
+  roomsEl.hidden=false;jsonEl.textContent=JSON.stringify(lastCanonical,null,2);jsonCard.hidden=false;actions.hidden=false;
+  statusEl.textContent="Review ready · "+rooms.length+" rooms/spaces · "+rooms.filter(r=>r.areaM2!=null).length+" areas mapped · IFC stored locally";
+ }catch(e){console.error(e);statusEl.textContent="IFC import failed: "+(e?.message||e);statusEl.className="status err"}
+ finally{if(model!==null)try{api.CloseModel(model)}catch{}}
+}
+confirmBtn.addEventListener("click",()=>{
+ if(!lastCanonical)return;
+ const payload={...lastCanonical,confirmedAt:new Date().toISOString(),status:"confirmed-local"};
+ localStorage.setItem(CONFIRMED_KEY,JSON.stringify(payload));
+ statusEl.textContent="Import confirmed · Room / Area data saved to this browser only. No server/database write.";
+ statusEl.className="status ok";
+});
+downloadBtn.addEventListener("click",()=>{
+ if(!lastCanonical)return;
+ const blob=new Blob([JSON.stringify(lastCanonical,null,2)],{type:"application/json"});
+ const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="terajuworks-room-area.json";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+});
+clearBtn.addEventListener("click",async()=>{await clearLocal();actions.hidden=true;summaryEl.hidden=true;roomsEl.hidden=true;jsonCard.hidden=true;statusEl.textContent="Local BIM file cleared. No server/database data was changed."});
+fileInput.addEventListener("change",e=>{const f=e.target.files?.[0];if(f)readFile(f)});
+start();
+</script>
+</body>
+</html>
