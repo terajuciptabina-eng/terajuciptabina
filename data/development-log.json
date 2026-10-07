@@ -11,6 +11,17 @@
     "updatedAt": "2026-10-07T18:37:42.278Z"
   },
   {
+    "id": "DEV-20261008-3b01550",
+    "date": "2026-10-08",
+    "title": "Restore project state after BIM return",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Restore project state after BIM return",
+    "details": "Automatic entry from commit 3b01550. Changed files: TerajuWorks/state-rate-gate.js.",
+    "commit": "3b015509d037951fcbd5e5d60fae492b2ea3fa79",
+    "updatedAt": "2026-10-07T18:37:47.777Z"
+  },
+  {
     "id": "DEV-20261007-fd71608",
     "date": "2026-10-07",
     "title": "Align BIM import UX with AI Floor Plan flow",
