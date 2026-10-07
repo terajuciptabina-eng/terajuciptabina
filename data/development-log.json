@@ -121,6 +121,17 @@
     "updatedAt": "2026-10-07T07:57:38.096Z"
   },
   {
+    "id": "DEV-20261007-c9a70ee",
+    "date": "2026-10-07",
+    "title": "ui: restore BIM render hero asset",
+    "module": "General",
+    "status": "Completed",
+    "summary": "ui: restore BIM render hero asset",
+    "details": "Automatic entry from commit c9a70ee. Changed files: TerajuWorks/bim/room-area-import.html.",
+    "commit": "c9a70eedd845a63660f126843c25a67355dc37e0",
+    "updatedAt": "2026-10-07T08:05:35.607Z"
+  },
+  {
     "id": "DEV-20261007-bd8507a",
     "date": "2026-10-07",
     "title": "Fix IFC area quantity reference resolution",
