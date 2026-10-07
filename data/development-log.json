@@ -44,6 +44,17 @@
     "updatedAt": "2026-10-07T18:37:47.777Z"
   },
   {
+    "id": "DEV-20261008-186196b",
+    "date": "2026-10-08",
+    "title": "Preserve project state through Renovation BIM return",
+    "module": "RenovationPlanner",
+    "status": "Completed",
+    "summary": "Preserve project state through Renovation BIM return",
+    "details": "Automatic entry from commit 186196b. Changed files: TerajuWorks/renovationplanner-v2.html.",
+    "commit": "186196b467f3ffe489af84e2cc0543cb57c61070",
+    "updatedAt": "2026-10-07T18:38:17.903Z"
+  },
+  {
     "id": "DEV-20261007-fd71608",
     "date": "2026-10-07",
     "title": "Align BIM import UX with AI Floor Plan flow",
