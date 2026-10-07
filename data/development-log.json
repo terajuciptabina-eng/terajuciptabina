@@ -275,6 +275,17 @@
     "updatedAt": "2026-10-07T06:15:04.334Z"
   },
   {
+    "id": "DEV-20261007-02f32bc",
+    "date": "2026-10-07",
+    "title": "Repair BIM import entry point in RenovationPlanner",
+    "module": "RenovationPlanner",
+    "status": "Completed",
+    "summary": "Repair BIM import entry point in RenovationPlanner",
+    "details": "Automatic entry from commit 02f32bc. Changed files: TerajuWorks/renovationplanner-v2.html.",
+    "commit": "02f32bc6206cb58df50a8b3c5aee9c9d922b2b34",
+    "updatedAt": "2026-10-07T07:11:57.389Z"
+  },
+  {
     "id": "DEV-20261007-00a1c0d",
     "date": "2026-10-07",
     "title": "Preserve planner target for BIM import",
