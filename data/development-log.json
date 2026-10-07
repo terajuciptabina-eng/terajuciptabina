@@ -187,6 +187,17 @@
     "updatedAt": "2026-10-07T04:50:51.790Z"
   },
   {
+    "id": "DEV-20261007-2ee3790",
+    "date": "2026-10-07",
+    "title": "feat: align BIM import with planner and AI floor plan flow",
+    "module": "General",
+    "status": "Completed",
+    "summary": "feat: align BIM import with planner and AI floor plan flow",
+    "details": "Automatic entry from commit 2ee3790. Changed files: bim-test/room-area-import.html.",
+    "commit": "2ee3790e7b90dc358858377350de51b5b1c0cddb",
+    "updatedAt": "2026-10-07T06:58:01.286Z"
+  },
+  {
     "id": "DEV-20261007-0ed90ef",
     "date": "2026-10-07",
     "title": "Add standalone IFC to Room Area bridge",
