@@ -22,6 +22,17 @@
     "updatedAt": "2026-10-07T04:38:26.932Z"
   },
   {
+    "id": "DEV-20261007-eaf9cd1",
+    "date": "2026-10-07",
+    "title": "Repair BIM import entry point in BuildPlanner",
+    "module": "BuildPlanner",
+    "status": "Completed",
+    "summary": "Repair BIM import entry point in BuildPlanner",
+    "details": "Automatic entry from commit eaf9cd1. Changed files: TerajuWorks/buildplanner-v2.html.",
+    "commit": "eaf9cd1950243c84fbe01d417c2f662595f28f96",
+    "updatedAt": "2026-10-07T07:11:52.997Z"
+  },
+  {
     "id": "DEV-20261007-dd918bb",
     "date": "2026-10-07",
     "title": "fix: use local BIM architecture visual and planner links",
