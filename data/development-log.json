@@ -22,6 +22,17 @@
     "updatedAt": "2026-10-07T18:37:53.160Z"
   },
   {
+    "id": "DEV-20261008-9f3ec60",
+    "date": "2026-10-08",
+    "title": "Restore state before IFC room import",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Restore state before IFC room import",
+    "details": "Automatic entry from commit 9f3ec60. Changed files: TerajuWorks/floor-plan-import-receiver.js.",
+    "commit": "9f3ec605244157f637c8b1cc57f78b48832070de",
+    "updatedAt": "2026-10-07T18:38:04.225Z"
+  },
+  {
     "id": "DEV-20261008-3b01550",
     "date": "2026-10-08",
     "title": "Restore project state after BIM return",
