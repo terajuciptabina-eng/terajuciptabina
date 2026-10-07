@@ -154,6 +154,17 @@
     "updatedAt": "2026-10-07T04:48:45.270Z"
   },
   {
+    "id": "DEV-20261007-af4b1b7",
+    "date": "2026-10-07",
+    "title": "Use approved BIM hero image",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Use approved BIM hero image",
+    "details": "Automatic entry from commit af4b1b7. Changed files: TerajuWorks/bim/room-area-import.html, images/bim-hero-user.png.",
+    "commit": "af4b1b7d6d6796d3b6e81b4c2d51ef6b422707b1",
+    "updatedAt": "2026-10-07T08:45:30.559Z"
+  },
+  {
     "id": "DEV-20261007-a533545",
     "date": "2026-10-07",
     "title": "feat: let shared room importer honor BIM renovation conditions",
