@@ -363,6 +363,17 @@
     "updatedAt": "2026-10-07T07:28:48.708Z"
   },
   {
+    "id": "DEV-20261007-17854aa",
+    "date": "2026-10-07",
+    "title": "refactor: update BuildPlanner BIM path",
+    "module": "BuildPlanner",
+    "status": "Completed",
+    "summary": "refactor: update BuildPlanner BIM path",
+    "details": "Automatic entry from commit 17854aa. Changed files: TerajuWorks/buildplanner-v2.html.",
+    "commit": "17854aa8393b770a7053c50ce85476d437663e5e",
+    "updatedAt": "2026-10-07T07:57:28.253Z"
+  },
+  {
     "id": "DEV-20261007-0ed90ef",
     "date": "2026-10-07",
     "title": "Add standalone IFC to Room Area bridge",
