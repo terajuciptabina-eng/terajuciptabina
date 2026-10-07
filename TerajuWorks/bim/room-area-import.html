@@ -32,8 +32,8 @@ h1{font-size:42px;line-height:1.08;letter-spacing:-.045em;margin:22px 0 14px;col
 <body>
 <div class="page">
 <div class="brandbar">
-  <a href="../TerajuWorks/index.html" aria-label="TerajuWorks">
-    <img src="../images/terajuworks-brand.svg" alt="TERAJUWORKS">
+  <a href="../index.html" aria-label="TerajuWorks">
+    <img src="../../images/terajuworks-brand.svg" alt="TERAJUWORKS">
   </a>
 </div>
 <main class="main">
@@ -45,7 +45,7 @@ h1{font-size:42px;line-height:1.08;letter-spacing:-.045em;margin:22px 0 14px;col
       <div class="bullet"><div class="bullet-icon">▦</div><div><strong>Review Before Import</strong><span>Check Room / Area data before sending it to the planner</span></div></div>
       <div class="bullet"><div class="bullet-icon">◇</div><div><strong>Planner Handoff</strong><span>Continue to BuildPlanner or RenovationPlanner after review</span></div></div>
     </div>
-    <div class="arch"><img src="../images/bim-hero.jpg" alt="House architectural BIM model"></div>
+    <div class="arch"><img src="../../images/bim-hero.jpg" alt="House architectural BIM model"></div>
   </section>
   <section class="right">
     <div class="card upload-card">
@@ -263,7 +263,7 @@ confirmBtn.addEventListener("click",()=>{
  if(!validRooms.length){statusEl.textContent="No valid reviewed rooms are ready for planner import.";statusEl.className="status err";return}
  const pending={version:1,source:"IFC",fileName:lastCanonical.source?.fileName||"",project:lastCanonical.project||{},building:lastCanonical.building||{},areas:(lastCanonical.storeys||[]).map(function(s){return {name:s.name,spaces:validRooms.filter(function(r){return r.storeyName===s.name}).length}}),rooms:validRooms,createdAt:new Date().toISOString()};
  try{localStorage.setItem(CONFIRMED_KEY,JSON.stringify({...lastCanonical,confirmedAt:new Date().toISOString(),status:"confirmed-local",plannerTarget:target}));sessionStorage.setItem("teraju.floorplan.import.pending.v1",JSON.stringify(pending));sessionStorage.setItem("teraju.floorplan.import.context.v1",JSON.stringify({version:1,roomCount:-1,startedAt:new Date().toISOString(),quotationId:"",plannerType:target,source:"IFC"}))}catch(e){statusEl.textContent="Unable to prepare the planner import in this browser.";statusEl.className="status err";return}
- const returnTo=target==="renovation"?"../TerajuWorks/renovationplanner-v2.html":"../TerajuWorks/buildplanner-v2.html";
+ const returnTo=target==="renovation"?"../renovationplanner-v2.html":"../buildplanner-v2.html";
  statusEl.textContent="Reviewed IFC rooms confirmed. Opening "+(target==="renovation"?"RenovationPlanner V2":"BuildPlanner V2")+"…";statusEl.className="status ok";
  setTimeout(function(){location.href=returnTo},180);
 });
@@ -275,7 +275,7 @@ downloadBtn.addEventListener("click",()=>{
 clearBtn.addEventListener("click",async()=>{await clearLocal();actionsEl.hidden=true;summaryEl.hidden=true;roomsEl.hidden=true;jsonCard.hidden=true;statusEl.textContent="Local BIM file cleared. No server/database data was changed."});
 fileInput.addEventListener("change",async e=>{const f=e.target.files?.[0];if(!f)return;if(!f.name.toLowerCase().endsWith(".ifc")){statusEl.textContent="Please select a valid .ifc file.";statusEl.className="status err";return}currentFile=f;try{const bytes=new Uint8Array(await f.arrayBuffer());await saveLocalFile(f,bytes);statusEl.textContent="IFC selected and stored locally. Ready to extract Room / Area data.";statusEl.className="status";extractBtn.disabled=false}catch(err){console.error(err);statusEl.textContent="Unable to store the IFC file locally.";statusEl.className="status err"}});
 extractBtn.addEventListener("click",()=>{if(currentFile)extractIfc(currentFile)});
-backToPlannerBtn.addEventListener("click",()=>{const p=new URLSearchParams(location.search);const returnTo=p.get("returnTo")||(plannerType==="renovation"?"../TerajuWorks/renovationplanner-v2.html":"../TerajuWorks/buildplanner-v2.html");location.href=new URL(returnTo,location.href).toString()});
+backToPlannerBtn.addEventListener("click",()=>{const p=new URLSearchParams(location.search);const returnTo=p.get("returnTo")||(plannerType==="renovation"?"../renovationplanner-v2.html":"../buildplanner-v2.html");location.href=new URL(returnTo,location.href).toString()});
 const dropZone=document.querySelector(".drop");
 ["dragenter","dragover"].forEach(evt=>dropZone.addEventListener(evt,e=>{e.preventDefault();dropZone.classList.add("dragover")}));
 ["dragleave","drop"].forEach(evt=>dropZone.addEventListener(evt,e=>{e.preventDefault();dropZone.classList.remove("dragover")}));
