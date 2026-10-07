@@ -33,6 +33,17 @@
     "updatedAt": "2026-10-07T07:11:52.997Z"
   },
   {
+    "id": "DEV-20261007-de3af3f",
+    "date": "2026-10-07",
+    "title": "Add BIM hero visual asset",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Add BIM hero visual asset",
+    "details": "Automatic entry from commit de3af3f. Changed files: images/bim-hero.jpg.",
+    "commit": "de3af3fd69a83a46f8d626f8af2b2bdc820bf5f8",
+    "updatedAt": "2026-10-07T07:48:15.451Z"
+  },
+  {
     "id": "DEV-20261007-dd918bb",
     "date": "2026-10-07",
     "title": "fix: use local BIM architecture visual and planner links",
