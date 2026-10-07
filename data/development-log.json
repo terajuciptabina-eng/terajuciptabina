@@ -55,6 +55,17 @@
     "updatedAt": "2026-10-07T04:48:45.270Z"
   },
   {
+    "id": "DEV-20261007-a533545",
+    "date": "2026-10-07",
+    "title": "feat: let shared room importer honor BIM renovation conditions",
+    "module": "General",
+    "status": "Completed",
+    "summary": "feat: let shared room importer honor BIM renovation conditions",
+    "details": "Automatic entry from commit a533545. Changed files: TerajuWorks/floor-plan-import-receiver.js.",
+    "commit": "a533545eb5caf297353a4f230f12dfed72403695",
+    "updatedAt": "2026-10-07T06:58:11.949Z"
+  },
+  {
     "id": "DEV-20261007-a3a7c6c",
     "date": "2026-10-07",
     "title": "Add sample IFC for hosted BIM test",
