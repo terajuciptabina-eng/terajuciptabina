@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "contractor",
+  "contractorId": "CTR-20261007-RXR9",
+  "profile": {
+    "name": "Enoxin development sdn bhd",
+    "email": "admin@enoxin.my",
+    "phone": "01158547313"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-10-07T12:21:11.979Z",
+  "updatedAt": "2026-10-07T12:21:11.979Z"
+}
