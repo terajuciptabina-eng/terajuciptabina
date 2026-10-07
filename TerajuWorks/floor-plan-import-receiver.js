@@ -93,7 +93,7 @@
       const originalIndex=payload.rooms.indexOf(r);
       const id='ai-floorplan-'+stamp+'-'+originalIndex;
       try{
-        if(isRenovation){ addRoom(type,area,id,name,'existing'); } else { addRoom(type,area,id,name); }
+        if(isRenovation){ const condition=String(r.condition||'existing').toLowerCase()==='new'?'new':'existing'; addRoom(type,area,id,name,condition); } else { addRoom(type,area,id,name); }
         const card=document.getElementById(id),nameInput=card?.querySelector('.room-name');
         if(nameInput){
           nameInput.value=name;
