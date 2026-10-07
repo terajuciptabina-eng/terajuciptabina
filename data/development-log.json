@@ -44,6 +44,17 @@
     "updatedAt": "2026-10-07T18:37:47.777Z"
   },
   {
+    "id": "DEV-20261008-328efe2",
+    "date": "2026-10-08",
+    "title": "Preserve project information through BIM handoff",
+    "module": "BuildPlanner",
+    "status": "Completed",
+    "summary": "Preserve project information through BIM handoff",
+    "details": "Automatic entry from commit 328efe2. Changed files: TerajuWorks/buildplanner-v2.html.",
+    "commit": "328efe2a7bfcb6146daf8894fb87b29b21da85b9",
+    "updatedAt": "2026-10-07T18:46:18.366Z"
+  },
+  {
     "id": "DEV-20261008-186196b",
     "date": "2026-10-08",
     "title": "Preserve project state through Renovation BIM return",
