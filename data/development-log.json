@@ -66,6 +66,17 @@
     "updatedAt": "2026-10-06T17:55:38.655Z"
   },
   {
+    "id": "DEV-20261007-d543fae",
+    "date": "2026-10-07",
+    "title": "Replace BIM hero image with relevant BIM model visual",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Replace BIM hero image with relevant BIM model visual",
+    "details": "Automatic entry from commit d543fae. Changed files: bim-test/room-area-import.html.",
+    "commit": "d543fae152c36bff4cb77be49accaaec74cb37d5",
+    "updatedAt": "2026-10-07T07:36:34.294Z"
+  },
+  {
     "id": "DEV-20261007-bd8507a",
     "date": "2026-10-07",
     "title": "Fix IFC area quantity reference resolution",
