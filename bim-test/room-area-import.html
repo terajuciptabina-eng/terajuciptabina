@@ -94,6 +94,8 @@ const jsonEl=document.getElementById("json");
 let api=null,ready=false,lastCanonical=null;
 
 const plannerTarget=document.getElementById("plannerTarget");
+const launchPlannerType=new URLSearchParams(location.search).get("plannerType");
+if(launchPlannerType==="renovation"||launchPlannerType==="build") plannerTarget.value=launchPlannerType;
 const PLANNER_ROOM_TYPES={living:"Living",dining:"Dining",bedroom:"Bedroom",masterBedroom:"Master Bedroom",family:"Family",kitchen:"Kitchen",store:"Store",utility:"Utility",bathroom:"Bathroom",porch:"Porch",other:"Other"};
 function mapBimRoomType(name){const n=String(name||"").trim().toLowerCase();if(/\bmaster\s+bed(room)?\b/.test(n))return "masterBedroom";if(/\bbed(room)?\b/.test(n))return "bedroom";if(/\bbath(room)?\b|\bbath\b|\btoilet\b|\bwashroom\b|\bwc\b|\bpowder\b/.test(n))return "bathroom";if(/\bliving\b|\blounge\b/.test(n))return "living";if(/\bdining\b/.test(n))return "dining";if(/\bkitchen\b|\bcook\b/.test(n))return "kitchen";if(/\bstore(room)?\b/.test(n))return "store";if(/\butility\b|\blaundry\b/.test(n))return "utility";if(/\bfamily\b/.test(n))return "family";if(/\bporch\b|\bveranda\b|\bterrace\b/.test(n))return "porch";return "other"}
 function roomTypeOptions(selected){return Object.entries(PLANNER_ROOM_TYPES).map(x=>"<option value=\""+x[0]+"\" "+(x[0]===selected?"selected":"")+">"+x[1]+"</option>").join("")}
