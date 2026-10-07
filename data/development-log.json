@@ -242,6 +242,17 @@
     "updatedAt": "2026-10-07T06:45:23.119Z"
   },
   {
+    "id": "DEV-20261007-4cd09cf",
+    "date": "2026-10-07",
+    "title": "Use BIM hero asset and wire IFC import controls",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Use BIM hero asset and wire IFC import controls",
+    "details": "Automatic entry from commit 4cd09cf. Changed files: bim-test/room-area-import.html.",
+    "commit": "4cd09cf3f60292a1c19a67036876e34853baae35",
+    "updatedAt": "2026-10-07T07:48:29.937Z"
+  },
+  {
     "id": "DEV-20261007-4b8b7a1",
     "date": "2026-10-07",
     "title": "Use original TerajuWorks brand lockup",
