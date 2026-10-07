@@ -6,146 +6,89 @@
 <title>TerajuWorks | BIM Room / Area Import</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-:root{
-  --navy:#0f172a;--navy2:#162238;--gold:#b58a3a;--gold2:#c9a65a;
-  --teal:#0d9488;--teal-soft:#e8f7f5;--bg:#f5f7fa;--line:#e5eaf0;
-  --text:#172033;--muted:#64748b;--white:#fff;
-}
-*{box-sizing:border-box}
-html,body{margin:0;min-height:100%;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--text);background:var(--bg)}
-body{overflow-x:hidden}
-.app{min-height:100vh;display:flex}
-.sidebar{position:fixed;inset:0 auto 0 0;width:248px;background:rgba(255,255,255,.96);color:#0f172a;display:flex;flex-direction:column;z-index:30;border-right:1px solid #e2e8f0;box-shadow:10px 0 40px rgba(15,23,42,.06);backdrop-filter:blur(18px)}
-.brand{padding:23px 18px 19px;border-bottom:1px solid #e6eaee;background:#fff}
-.brand img{display:block;width:190px;height:auto;max-height:52px;object-fit:contain;object-position:left center}
-.brand small{display:block;margin-top:7px;color:#08766d;font-size:8px;font-weight:600;letter-spacing:.13em;text-transform:uppercase}
-.nav{padding:18px 12px;display:flex;flex-direction:column;gap:5px}
-.nav-label{padding:8px 12px 7px;color:#94a3b8;font-size:9px;font-weight:800;letter-spacing:.18em;text-transform:uppercase}
-.nav a{display:flex;align-items:center;gap:11px;padding:11px 13px;border-radius:10px;color:#475569;text-decoration:none;font-size:12px;font-weight:600;transition:.2s}
-.nav a:hover{background:#f8fafc;color:#0f172a}
-.nav a.active{background:#faf7ef;color:#8c6a2e;border-left:2px solid var(--gold);padding-left:11px}
-.nav-icon{width:18px;text-align:center;color:#94a3b8;font-size:14px}.active .nav-icon{color:#b58a3a}
-.sidebar-footer{margin-top:auto;padding:15px 18px 19px;border-top:1px solid #e6eaee}
-.sidebar-footer .mini{padding:13px;border:1px solid #e8edf1;border-radius:12px;background:#f8fafc}
-.sidebar-footer strong{display:block;font-size:11px;color:#334155}.sidebar-footer span{display:block;margin-top:4px;color:#94a3b8;font-size:9px;line-height:1.4}
-.main{margin-left:248px;width:calc(100% - 248px);min-width:0}
-.topbar{height:72px;background:rgba(255,255,255,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 34px;position:sticky;top:0;z-index:20}
-.breadcrumb{font-size:11px;color:#94a3b8;font-weight:600}.breadcrumb b{color:#334155}.account{display:flex;align-items:center;gap:9px;font-size:11px;font-weight:700;color:#334155}.avatar{width:31px;height:31px;border-radius:50%;background:#eef2f7;display:grid;place-items:center;color:#475569;font-size:12px}
-.content{max-width:1380px;margin:0 auto;padding:36px 40px 54px}
-.hero{position:relative;overflow:hidden;border-radius:24px;background:linear-gradient(112deg,#fff 0%,#fff 52%,#edf4f5 100%);border:1px solid #e3e8ed;box-shadow:0 18px 55px rgba(15,23,42,.07);padding:38px 42px 31px}
-.hero:after{content:"";position:absolute;right:-120px;top:-160px;width:510px;height:510px;border-radius:50%;background:radial-gradient(circle,rgba(181,138,58,.13),transparent 68%);pointer-events:none}
-.hero-copy{position:relative;z-index:2;max-width:680px}
-.eyebrow{display:inline-flex;align-items:center;gap:8px;padding:7px 11px;border-radius:999px;background:#f7f2e8;color:#8c6a2e;font-size:9px;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
-.eyebrow-dot{width:6px;height:6px;border-radius:50%;background:var(--gold)}
-h1{margin:16px 0 11px;font-size:39px;line-height:1.05;letter-spacing:-.045em;color:#101a2d}
-h1 span{color:var(--gold)}
-.hero p{margin:0;color:#64748b;font-size:13px;line-height:1.7;max-width:630px}
-.features{position:relative;z-index:2;display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-top:27px}
-.feature{display:flex;gap:10px;align-items:flex-start;padding:12px 13px;border:1px solid #e8edf1;background:rgba(255,255,255,.72);border-radius:13px}
-.feature-icon{width:31px;height:31px;flex:0 0 31px;border-radius:9px;background:#f8f1e4;color:var(--gold);display:grid;place-items:center;font-size:13px}
-.feature strong{display:block;font-size:10px;line-height:1.3;color:#1e293b}.feature span{display:block;margin-top:3px;font-size:8.5px;line-height:1.35;color:#94a3b8}
-.hero-grid{position:absolute;right:0;top:0;width:47%;height:100%;opacity:.14;pointer-events:none;background-image:linear-gradient(rgba(13,148,136,.35) 1px,transparent 1px),linear-gradient(90deg,rgba(13,148,136,.35) 1px,transparent 1px);background-size:28px 28px;mask-image:linear-gradient(90deg,transparent,black 35%)}
-.workflow{margin-top:18px;background:#fff;border:1px solid #e2e8ee;border-radius:24px;box-shadow:0 16px 48px rgba(15,23,42,.06);overflow:hidden;display:grid;grid-template-columns:300px minmax(0,1fr)}
-.steps{padding:29px 25px;border-right:1px solid #e7ebef;background:linear-gradient(180deg,#fbfcfd,#f8fafb)}
-.steps h2{margin:0;font-size:14px;letter-spacing:-.02em}.steps>p{margin:6px 0 22px;color:#94a3b8;font-size:9px;line-height:1.5}
-.step{display:flex;gap:12px;position:relative;padding:10px 0}.step:not(:last-child):after{content:"";position:absolute;left:15px;top:41px;bottom:-5px;width:1px;background:#dce2e8}
-.step-no{width:31px;height:31px;flex:0 0 31px;border-radius:50%;display:grid;place-items:center;border:1px solid #d9e0e6;background:#fff;color:#64748b;font-size:11px;font-weight:800;z-index:1}
-.step.active .step-no{background:var(--gold);border-color:var(--gold);color:#fff;box-shadow:0 5px 14px rgba(181,138,58,.24)}
-.step strong{display:block;padding-top:2px;font-size:10px;color:#334155}.step span{display:block;margin-top:4px;font-size:8.5px;color:#94a3b8;line-height:1.35}
-.import-panel{padding:29px}
-.upload{min-height:220px;border:1.5px dashed #ccd7df;border-radius:18px;background:linear-gradient(145deg,#fff,#fbfdfd);display:flex;align-items:center;justify-content:center;text-align:center;cursor:pointer;transition:.2s}
-.upload:hover{border-color:#b9c7d1;background:#fcfdfd;box-shadow:inset 0 0 0 1px rgba(13,148,136,.04)}
-.upload-icon{width:48px;height:48px;margin:0 auto 12px;border-radius:14px;background:#f8f1e4;color:var(--gold);display:grid;place-items:center;font-size:20px}
-.upload h3{margin:0;font-size:16px;color:#172033}.upload p{margin:7px 0 0;color:#94a3b8;font-size:10px}.upload small{display:block;margin-top:8px;color:#a0acb9;font-size:8.5px}
-.file-btn{display:inline-flex;align-items:center;gap:8px;margin-top:16px;padding:11px 20px;border:0;border-radius:10px;background:var(--navy);color:#fff;font-size:10px;font-weight:700;cursor:pointer;box-shadow:0 8px 18px rgba(15,23,42,.12)}
-input[type=file]{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
-.statusbox{margin-top:13px;padding:14px 16px;border-radius:13px;background:#f5f8fa;border:1px solid #e8edf1}
-.statusbox .status-title{font-size:10px;font-weight:800;color:#334155}.statusbox .muted{margin-top:4px;font-size:9px;color:#94a3b8;line-height:1.45}.statusbox .status{margin-top:5px;font-size:10px}
-button{border:0;border-radius:10px;padding:10px 13px;font-size:9px;font-weight:800;cursor:pointer;background:var(--navy);color:#fff;margin:10px 7px 0 0}
-button:hover{transform:translateY(-1px)}.ok{color:#08766d!important}.err{color:#b91c1c!important}
-.review-grid{display:grid;grid-template-columns:1fr;gap:16px;margin-top:16px}.card{background:#fff;border:1px solid #e2e8ee;border-radius:20px;padding:24px;box-shadow:0 12px 35px rgba(15,23,42,.045)}
-.card h2{margin:0 0 15px;font-size:15px;letter-spacing:-.02em}table{width:100%;border-collapse:collapse}th,td{padding:11px 9px;border-bottom:1px solid #edf1f4;text-align:left;font-size:10px}th{color:#64748b;font-weight:700}td{color:#334155}pre{white-space:pre-wrap;word-break:break-word;background:#f8fafb;border:1px solid #edf0f2;border-radius:12px;padding:14px;font-size:10px;max-height:420px;overflow:auto}
-#summary,#rooms,#jsonCard{margin-top:16px}.actions{margin-top:8px}
-@media(max-width:1050px){.sidebar{width:215px}.main{margin-left:215px;width:calc(100% - 215px)}.features{grid-template-columns:repeat(2,1fr)}.workflow{grid-template-columns:250px minmax(0,1fr)}.content{padding:28px 24px 45px}}
-@media(max-width:760px){.sidebar{position:relative;width:100%;height:auto;min-height:0}.app{display:block}.brand{display:flex;align-items:center;justify-content:space-between;padding:14px 17px}.brand img{width:165px}.brand small{display:none}.nav{display:grid;grid-template-columns:repeat(4,1fr);padding:8px 9px;gap:4px}.nav-label,.sidebar-footer{display:none}.nav a{justify-content:center;flex-direction:column;gap:4px;padding:8px 4px;font-size:8px}.nav-icon{font-size:14px}.main{margin:0;width:100%}.topbar{height:55px;padding:0 15px}.content{padding:16px 12px 32px}.hero{padding:24px 19px 20px;border-radius:19px}h1{font-size:31px}.hero p{font-size:11px}.features{grid-template-columns:repeat(2,1fr);gap:7px;margin-top:20px}.feature{padding:9px}.feature strong{font-size:8.5px}.feature span{font-size:7.5px}.hero-grid{display:none}.workflow{display:block;border-radius:19px}.steps{border-right:0;border-bottom:1px solid #e7ebef;padding:20px 18px}.step{display:none}.step.active{display:flex}.import-panel{padding:17px}.upload{min-height:205px}.review-grid{margin-top:12px}.card{padding:18px;border-radius:17px}th,td{font-size:9px;padding:8px 5px}.breadcrumb{font-size:9px}}
+:root{--navy:#14233d;--navy2:#0f1b31;--teal:#138f86;--teal2:#0b776f;--teal-soft:#e3f6f3;--gold:#b58a3a;--text:#17253d;--muted:#71809a;--line:#e3e9ef;--bg:#f5f8fa}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--text);background:var(--bg)}body{overflow-x:hidden}
+.page{min-height:100vh;background:linear-gradient(135deg,#f8fafb 0%,#f2f7f8 100%);position:relative;overflow:hidden}.page:before{content:"";position:absolute;width:600px;height:600px;right:-250px;top:100px;border-radius:50%;background:radial-gradient(circle,rgba(19,143,134,.07),transparent 68%);pointer-events:none}
+.topnav{height:76px;background:rgba(255,255,255,.94);border-bottom:1px solid #e8edf1;display:flex;align-items:center;padding:0 5.8vw;gap:48px;position:relative;z-index:5;backdrop-filter:blur(18px)}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:#16233a;min-width:218px}.brand-mark{width:27px;height:27px;display:grid;place-items:center;font-size:25px;font-weight:900;line-height:1;color:#14233d;letter-spacing:-.15em}.brand-name{font-size:16px;font-weight:900;letter-spacing:.015em}.brand-sub{font-size:6px;font-weight:800;letter-spacing:.22em;color:#6c7b91;margin-top:2px}
+.navlinks{display:flex;align-items:center;gap:34px;flex:1}.navlinks a{font-size:11px;font-weight:600;color:#46556c;text-decoration:none;white-space:nowrap}.navlinks a:hover{color:#0d7d75}.nav-dd:after{content:"⌄";font-size:11px;margin-left:7px;color:#738198}
+.workspace{display:flex;align-items:center;gap:9px;color:#39475d;font-size:10px;font-weight:700;white-space:nowrap}.workspace .avatar{width:32px;height:32px;border-radius:50%;background:#e9edf2;display:grid;place-items:center;font-size:10px;font-weight:800;color:#657287}.workspace:after{content:"⌄";font-size:11px;color:#738198}
+.main{position:relative;z-index:1;max-width:1330px;margin:0 auto;padding:32px 36px 42px;display:grid;grid-template-columns:47% 53%;gap:38px}
+.left{padding:8px 0 0;position:relative;min-height:690px}.eyebrow{display:inline-flex;align-items:center;gap:8px;border-radius:999px;background:#e3f4f1;color:#4b827d;padding:8px 12px;font-size:9px;font-weight:900;letter-spacing:.08em;text-transform:uppercase}.eyebrow-dot{width:7px;height:7px;border-radius:50%;background:#58b8ad}
+h1{font-size:42px;line-height:1.08;letter-spacing:-.045em;margin:22px 0 14px;color:#14233d;max-width:590px}h1 .arrow{display:inline-block;font-weight:700;margin-left:3px} .intro{font-size:15px;line-height:1.62;color:#74829a;max-width:600px;margin:0}
+.bullets{margin-top:29px;display:grid;gap:13px}.bullet{display:flex;align-items:center;gap:15px}.bullet-icon{width:44px;height:44px;border-radius:13px;background:var(--teal-soft);color:#0e8179;display:grid;place-items:center;font-size:20px;flex:0 0 44px}.bullet strong{display:block;font-size:12px;color:#1d2b42}.bullet span{display:block;margin-top:4px;font-size:10px;color:#75839a}
+.arch{position:absolute;left:-35px;right:-65px;bottom:-18px;height:335px;overflow:hidden;pointer-events:none}.arch:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 5%,rgba(245,248,250,.08) 40%,#f5f8fa 94%);z-index:2}.arch img{width:100%;height:100%;object-fit:cover;object-position:center 56%;opacity:.86;filter:saturate(.78) contrast(.96)}.arch:before{content:"";position:absolute;z-index:3;right:8%;top:15%;width:210px;height:210px;border:1px solid rgba(47,128,160,.35);background:linear-gradient(135deg,rgba(78,164,196,.06),rgba(255,255,255,.03));clip-path:polygon(0 15%,70% 0,100% 18%,100% 83%,31% 100%,0 82%);box-shadow:inset 0 0 35px rgba(50,140,175,.12);transform:perspective(400px) rotateY(-14deg)}
+.right{display:flex;flex-direction:column;gap:22px}.card{background:rgba(255,255,255,.94);border:1px solid #e2e8ee;border-radius:19px;box-shadow:0 14px 40px rgba(25,45,70,.08);backdrop-filter:blur(10px)}
+.upload-card{padding:26px 27px 22px}.upload-head{display:flex;align-items:center;gap:14px}.upload-head-icon{width:58px;height:58px;border-radius:13px;background:#dff5f1;color:#117d75;display:grid;place-items:center;font-size:27px}.upload-head h2{margin:0;font-size:18px;letter-spacing:-.025em;color:#18283f}.upload-head p{margin:5px 0 0;color:#78869b;font-size:11px}
+.drop{margin-top:23px;min-height:265px;border:1.5px dashed #9edbd5;border-radius:16px;background:linear-gradient(145deg,#fbffff,#f5fcfb);display:flex;align-items:center;justify-content:center;text-align:center;cursor:pointer}.drop:hover{background:#f1fbf9;border-color:#6bc4bb}.drop-icon{font-size:47px;color:#0e857c;line-height:1;margin-bottom:13px}.drop h3{font-size:14px;margin:0;color:#1a2941}.drop p{font-size:12px;color:#77859b;margin:7px 0 0}.drop small{display:block;font-size:9px;color:#8290a3;margin-top:13px}.file-btn{display:inline-flex;align-items:center;justify-content:center;margin-top:18px;padding:14px 28px;border-radius:10px;background:#138f86;color:#fff;font-size:11px;font-weight:800;box-shadow:0 10px 22px rgba(19,143,134,.18)}input[type=file]{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.progress{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:24px 5px 0}.pstep{position:relative;text-align:center;color:#8a96a8;font-size:9px}.pstep:before{content:"";position:absolute;height:2px;background:#e2e7ed;top:16px;left:50%;width:100%;z-index:0}.pstep:last-child:before{display:none}.pnum{position:relative;z-index:1;margin:auto;width:34px;height:34px;border-radius:50%;background:#e9edf2;display:grid;place-items:center;color:#6d798c;font-size:11px;font-weight:800}.pstep.active{color:#27364d}.pstep.active .pnum{background:#138f86;color:#fff}.pstep strong{display:block;margin-top:10px;font-size:10px;color:#2d3b51}.pstep span{display:block;margin-top:4px;font-size:8px}
+.statusbox{margin-top:18px;padding:12px 14px;border-radius:11px;background:#f5f8fa;border:1px solid #e8edf1}.status-title{font-size:10px;font-weight:800;color:#34435a}.statusbox .muted{margin-top:3px;font-size:8.5px;color:#91a0b2}.statusbox .status{margin-top:4px;font-size:9px}.ok{color:#08766d!important}.err{color:#b91c1c!important}
+.info-card{padding:20px 22px}.info-head{display:flex;align-items:center;gap:12px}.info-icon{width:38px;height:38px;border-radius:10px;background:#e7f1ff;color:#2473d0;display:grid;place-items:center;font-weight:900}.info-head h2{margin:0;font-size:13px}.info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}.info-item{padding:14px 13px;border-radius:12px;background:#f8fbfc;display:flex;gap:9px}.info-item .mini-icon{width:29px;height:29px;flex:0 0 29px;border-radius:9px;background:#e3f6f3;color:#16847b;display:grid;place-items:center;font-size:13px}.info-item strong{display:block;font-size:9px;color:#34435a}.info-item span{display:block;margin-top:4px;font-size:8px;line-height:1.45;color:#8794a7}
+.actions{margin-top:8px}.actions button{border:0;border-radius:9px;padding:10px 12px;font-size:9px;font-weight:800;cursor:pointer;background:var(--navy);color:#fff;margin:8px 6px 0 0}.actions button:hover{transform:translateY(-1px)}
+.review{grid-column:1/-1}.review.card{padding:24px}.review h2{font-size:15px;margin:0 0 15px}table{width:100%;border-collapse:collapse}th,td{padding:10px;border-bottom:1px solid #edf1f4;text-align:left;font-size:10px}th{color:#64748b}td{color:#334155}pre{white-space:pre-wrap;word-break:break-word;background:#f8fafb;border:1px solid #edf0f2;border-radius:12px;padding:14px;font-size:10px;max-height:420px;overflow:auto}#summary,#rooms,#jsonCard{margin-top:0}
+@media(max-width:1050px){.topnav{padding:0 25px;gap:25px}.navlinks{gap:18px}.main{padding:28px 24px;grid-template-columns:1fr}.left{min-height:560px}.arch{height:270px}.right{max-width:760px;width:100%;margin:auto}.review{grid-column:auto}}
+@media(max-width:700px){.topnav{height:auto;min-height:70px;padding:13px 16px;flex-wrap:wrap;gap:12px}.brand{min-width:0}.navlinks{order:3;flex-basis:100%;overflow:auto;gap:22px;padding-bottom:2px}.workspace{margin-left:auto}.main{display:block;padding:20px 14px 30px}.left{min-height:610px;padding-top:3px}h1{font-size:34px}.intro{font-size:13px}.arch{left:-20px;right:-20px;height:245px;bottom:-8px}.upload-card{padding:19px}.drop{min-height:225px}.progress{margin-top:18px}.info-grid{grid-template-columns:1fr}.right{gap:14px}.info-card{padding:17px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
 </style>
 </head>
 <body>
-<div class="app">
-<aside class="sidebar">
-  <div class="brand">
-    <a href="../TerajuWorks/index.html" aria-label="TerajuWorks"><img src="../images/terajuworks-brand.svg" alt="TerajuWorks"></a>
-    <small>Plan · Cost · Build</small>
-  </div>
-  <nav class="nav">
-    <div class="nav-label">Workspace</div>
-    <a href="../TerajuWorks/index.html"><span class="nav-icon">⌂</span>Home</a>
-    <a href="../quotation/buildplanner-v2.html"><span class="nav-icon">▣</span>BuildPlanner</a>
-    <a href="../quotation/renovationplanner-v2.html"><span class="nav-icon">◫</span>RenovationPlanner</a>
-    <div class="nav-label">BIM Tools</div>
-    <a class="active" href="room-area-import.html"><span class="nav-icon">◇</span>BIM Import</a>
-    <a href="index.html"><span class="nav-icon">◈</span>IFC Tools</a>
+<div class="page">
+<header class="topnav">
+  <a class="brand" href="../TerajuWorks/index.html" aria-label="TerajuWorks">
+    <span class="brand-mark">T</span>
+    <span><span class="brand-name">TERAJUWORKS</span><span class="brand-sub">PLAN · COST · BUILD</span></span>
+  </a>
+  <nav class="navlinks">
+    <a href="../TerajuWorks/index.html">Home</a>
+    <a href="../quotation/buildplanner-v2.html">BuildPlanner</a>
+    <a href="../quotation/renovationplanner-v2.html">RenovationPlanner</a>
+    <a class="nav-dd" href="room-area-import.html">BIM Tools</a>
+    <a class="nav-dd" href="index.html">Resources</a>
+    <a href="../TerajuWorks/index.html">About</a>
   </nav>
-  <div class="sidebar-footer"><div class="mini"><strong>BIM Room / Area</strong><span>Import IFC data directly from your device and keep the source file local to your browser.</span></div></div>
-</aside>
+  <div class="workspace"><span class="avatar">TW</span><span>My Workspace</span></div>
+</header>
 <main class="main">
-  <header class="topbar">
-    <div class="breadcrumb">BIM Tools <span> / </span> <b>Room / Area Import</b></div>
-    <div class="account"><span class="avatar">TW</span> TerajuWorks Workspace</div>
-  </header>
-  <div class="content">
-    <section class="hero">
-      <div class="hero-grid"></div>
-      <div class="hero-copy">
-        <div class="eyebrow"><span class="eyebrow-dot"></span> IFC · Room / Area</div>
-        <h1>TerajuWorks BIM <span>Room / Area Import</span></h1>
-        <p>Import an IFC model, review the extracted Room / Area data, and save the confirmed information to your local TerajuWorks workspace. Your IFC file and extracted room data stay on this device.</p>
-        <div class="features">
-          <div class="feature"><div class="feature-icon">◇</div><div><strong>Open IFC Standard</strong><span>Works with IFC exports from Revit, Archicad and other BIM tools.</span></div></div>
-          <div class="feature"><div class="feature-icon">⌂</div><div><strong>Local Device Storage</strong><span>Your IFC file remains in this browser on this device.</span></div></div>
-          <div class="feature"><div class="feature-icon">▤</div><div><strong>Room / Area Extraction</strong><span>Read project, storey, room and area information.</span></div></div>
-          <div class="feature"><div class="feature-icon">⌑</div><div><strong>Private by Design</strong><span>No IFC or room data is sent to the server or database.</span></div></div>
-        </div>
+  <section class="left">
+    <div class="eyebrow"><span class="eyebrow-dot"></span> LOCAL-FIRST · IFC IMPORT</div>
+    <h1>TerajuWorks BIM <span class="arrow">→</span><br>Room / Area Import</h1>
+    <p class="intro">Upload an IFC file, review the extracted Room / Area data, then confirm it into this browser's local workspace. No IFC or room data is sent to the server or database.</p>
+    <div class="bullets">
+      <div class="bullet"><div class="bullet-icon">♧</div><div><strong>Open Standard (IFC)</strong><span>Works with Revit, Archicad and other BIM tools</span></div></div>
+      <div class="bullet"><div class="bullet-icon">♢</div><div><strong>100% Local Storage</strong><span>Your IFC file stays in this device's browser</span></div></div>
+      <div class="bullet"><div class="bullet-icon">▦</div><div><strong>Review &amp; Confirm</strong><span>Check and edit extracted rooms/areas before import</span></div></div>
+      <div class="bullet"><div class="bullet-icon">◇</div><div><strong>Ready for Planner</strong><span>Import to BuildPlanner or RenovationPlanner (next phase)</span></div></div>
+    </div>
+    <div class="arch"><img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1500&q=82" alt=""></div>
+  </section>
+  <section class="right">
+    <div class="card upload-card">
+      <div class="upload-head"><div class="upload-head-icon">♧</div><div><h2>Upload IFC File</h2><p>Select an IFC file from your device to start the import process.</p></div></div>
+      <label class="drop" for="file"><div><div class="drop-icon">♧</div><h3>Drag &amp; drop your IFC file here</h3><p>or click to browse</p><span class="file-btn">▱ &nbsp; Choose IFC File</span><small>Supported format: .ifc · Maximum recommended size: 500MB &nbsp;ⓘ</small></div></label>
+      <input id="file" type="file" accept="*/*">
+      <div class="progress">
+        <div class="pstep active"><div class="pnum">1</div><strong>Upload</strong><span>Select IFC file</span></div>
+        <div class="pstep"><div class="pnum">2</div><strong>Extract</strong><span>Read room/area data</span></div>
+        <div class="pstep"><div class="pnum">3</div><strong>Review</strong><span>Check and edit</span></div>
+        <div class="pstep"><div class="pnum">4</div><strong>Confirm</strong><span>Save to local workspace</span></div>
       </div>
-    </section>
-    <section class="workflow">
-      <div class="steps">
-        <h2>Import workflow</h2><p>Follow the steps to bring your IFC room and area information into your local workspace.</p>
-        <div class="step active"><div class="step-no">1</div><div><strong>Select IFC File</strong><span>Choose an IFC file from this device.</span></div></div>
-        <div class="step"><div class="step-no">2</div><div><strong>Extract & Analyse</strong><span>Read project, storey, room and area data.</span></div></div>
-        <div class="step"><div class="step-no">3</div><div><strong>Review & Confirm</strong><span>Check the extracted Room / Area information.</span></div></div>
-        <div class="step"><div class="step-no">4</div><div><strong>Save to Workspace</strong><span>Keep the confirmed data locally for later use.</span></div></div>
+      <div class="statusbox"><div class="status-title">Import status</div><div id="engine" class="muted">Starting IFC engine…</div><div id="storage" class="muted">Checking local storage…</div><div id="status" class="status">Waiting for IFC engine…</div></div>
+      <div id="actions" class="actions" hidden><button id="confirm">Confirm &amp; Save to Local Workspace</button><button id="download">Download Room / Area JSON</button><button id="clear" type="button">Clear Local IFC</button></div>
+    </div>
+    <div class="card info-card">
+      <div class="info-head"><div class="info-icon">ⓘ</div><h2>Import Information</h2></div>
+      <div class="info-grid">
+        <div class="info-item"><div class="mini-icon">▤</div><div><strong>Local Storage</strong><span>File is stored in your browser (IndexedDB). Not uploaded to server.</span></div></div>
+        <div class="info-item"><div class="mini-icon">♙</div><div><strong>Your Privacy</strong><span>No IFC or room data is sent to the server or database.</span></div></div>
+        <div class="info-item"><div class="mini-icon">◆</div><div><strong>Supported Sources</strong><span>Revit, Archicad and other BIM tools (IFC standard).</span></div></div>
       </div>
-      <div class="import-panel">
-        <label class="upload" for="file">
-          <div>
-            <div class="upload-icon">⇧</div>
-            <h3>Choose an IFC file</h3>
-            <p>Drag and drop your IFC file here, or click to browse</p>
-            <small>Supported format: .ifc · File remains stored locally in this browser</small>
-            <span class="file-btn">▱ &nbsp; Choose IFC File</span>
-          </div>
-        </label>
-        <input id="file" type="file" accept="*/*">
-        <div class="statusbox">
-          <div class="status-title">Import status</div>
-          <div id="engine" class="muted">Starting IFC engine…</div>
-          <div id="storage" class="muted">Checking local storage…</div>
-          <div id="status" class="status">Waiting for IFC engine…</div>
-        </div>
-        <div id="actions" class="actions" hidden>
-          <button id="confirm">Confirm & Save to Local Workspace</button>
-          <button id="download">Download Room / Area JSON</button>
-          <button id="clear" type="button">Clear Local IFC</button>
-        </div>
-      </div>
-    </section>
-    <div id="summary" class="card" hidden></div>
-    <div id="rooms" class="card" hidden></div>
-    <div id="jsonCard" class="card" hidden><h2>Room / Area Data</h2><pre id="json"></pre></div>
-  </div>
+    </div>
+    <div id="summary" class="card review" hidden></div>
+    <div id="rooms" class="card review" hidden></div>
+    <div id="jsonCard" class="card review" hidden><h2>Room / Area Data</h2><pre id="json"></pre></div>
+  </section>
 </main>
 </div>
 <script>
