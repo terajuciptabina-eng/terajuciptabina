@@ -66,6 +66,17 @@
     "updatedAt": "2026-10-07T04:55:33.327Z"
   },
   {
+    "id": "DEV-20261007-8c1d212",
+    "date": "2026-10-07",
+    "title": "feat: add local BIM architecture visual",
+    "module": "General",
+    "status": "Completed",
+    "summary": "feat: add local BIM architecture visual",
+    "details": "Automatic entry from commit 8c1d212. Changed files: images/bim-architecture.jpg.",
+    "commit": "8c1d212908305cb29b182c9f87b8161bcdde252e",
+    "updatedAt": "2026-10-07T06:54:21.757Z"
+  },
+  {
     "id": "DEV-20261007-8ba0b60",
     "date": "2026-10-07",
     "title": "Add local-first BIM Room Area import flow",
