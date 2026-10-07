@@ -11,11 +11,7 @@
 :root{--navy:#14233d;--navy2:#0f1b31;--teal:#138f86;--teal2:#0b776f;--teal-soft:#e3f6f3;--gold:#b58a3a;--text:#17253d;--muted:#71809a;--line:#e3e9ef;--bg:#f5f8fa}
 *{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--text);background:var(--bg)}body{overflow-x:hidden}
 .page{min-height:100vh;background:linear-gradient(135deg,#f8fafb 0%,#f2f7f8 100%);position:relative;overflow:hidden}.page:before{content:"";position:absolute;width:600px;height:600px;right:-250px;top:100px;border-radius:50%;background:radial-gradient(circle,rgba(19,143,134,.07),transparent 68%);pointer-events:none}
-.topnav{height:76px;background:rgba(255,255,255,.94);border-bottom:1px solid #e8edf1;display:flex;align-items:center;padding:0 5.8vw;gap:48px;position:relative;z-index:5;backdrop-filter:blur(18px)}
-.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:#16233a;min-width:218px}.brand-mark{width:27px;height:27px;display:grid;place-items:center;font-size:25px;font-weight:900;line-height:1;color:#14233d;letter-spacing:-.15em}.brand-name{font-size:16px;font-weight:900;letter-spacing:.015em}.brand-sub{font-size:6px;font-weight:800;letter-spacing:.22em;color:#6c7b91;margin-top:2px}
-.navlinks{display:flex;align-items:center;gap:34px;flex:1}.navlinks a{font-size:11px;font-weight:600;color:#46556c;text-decoration:none;white-space:nowrap}.navlinks a:hover{color:#0d7d75}.nav-dd:after{content:"⌄";font-size:11px;margin-left:7px;color:#738198}
-.workspace{display:flex;align-items:center;gap:9px;color:#39475d;font-size:10px;font-weight:700;white-space:nowrap}.workspace .avatar{width:32px;height:32px;border-radius:50%;background:#e9edf2;display:grid;place-items:center;font-size:10px;font-weight:800;color:#657287}.workspace:after{content:"⌄";font-size:11px;color:#738198}
-.main{position:relative;z-index:1;max-width:1330px;margin:0 auto;padding:32px 36px 42px;display:grid;grid-template-columns:47% 53%;gap:38px}
+.brandbar{display:flex;align-items:center;padding:22px 0 0}.brandbar a{display:inline-flex;align-items:center;text-decoration:none}.brandbar img{display:block;width:190px;height:auto;max-width:48vw}@media(max-width:700px){.brandbar{padding-top:16px}.brandbar img{width:165px;max-width:70vw}}\n.main{position:relative;z-index:1;max-width:1330px;margin:0 auto;padding:32px 36px 42px;display:grid;grid-template-columns:47% 53%;gap:38px}
 .left{padding:8px 0 0;position:relative;min-height:690px}.eyebrow{display:inline-flex;align-items:center;gap:8px;border-radius:999px;background:#e3f4f1;color:#4b827d;padding:8px 12px;font-size:9px;font-weight:900;letter-spacing:.08em;text-transform:uppercase}.eyebrow-dot{width:7px;height:7px;border-radius:50%;background:#58b8ad}
 h1{font-size:42px;line-height:1.08;letter-spacing:-.045em;margin:22px 0 14px;color:#14233d;max-width:590px}h1 .arrow{display:inline-block;font-weight:700;margin-left:3px} .intro{font-size:15px;line-height:1.62;color:#74829a;max-width:600px;margin:0}
 .bullets{margin-top:29px;display:grid;gap:13px}.bullet{display:flex;align-items:center;gap:15px}.bullet-icon{width:44px;height:44px;border-radius:13px;background:var(--teal-soft);color:#0e8179;display:grid;place-items:center;font-size:20px;flex:0 0 44px}.bullet strong{display:block;font-size:12px;color:#1d2b42}.bullet span{display:block;margin-top:4px;font-size:10px;color:#75839a}
@@ -28,28 +24,18 @@ h1{font-size:42px;line-height:1.08;letter-spacing:-.045em;margin:22px 0 14px;col
 .info-card{padding:20px 22px}.info-head{display:flex;align-items:center;gap:12px}.info-icon{width:38px;height:38px;border-radius:10px;background:#e7f1ff;color:#2473d0;display:grid;place-items:center;font-weight:900}.info-head h2{margin:0;font-size:13px}.info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}.info-item{padding:14px 13px;border-radius:12px;background:#f8fbfc;display:flex;gap:9px}.info-item .mini-icon{width:29px;height:29px;flex:0 0 29px;border-radius:9px;background:#e3f6f3;color:#16847b;display:grid;place-items:center;font-size:13px}.info-item strong{display:block;font-size:9px;color:#34435a}.info-item span{display:block;margin-top:4px;font-size:8px;line-height:1.45;color:#8794a7}
 .actions{margin-top:8px}.actions button{border:0;border-radius:9px;padding:10px 12px;font-size:9px;font-weight:800;cursor:pointer;background:var(--navy);color:#fff;margin:8px 6px 0 0}.actions button:hover{transform:translateY(-1px)}
 .review{grid-column:1/-1}.review.card{padding:24px}.review h2{font-size:15px;margin:0 0 15px}table{width:100%;border-collapse:collapse}th,td{padding:10px;border-bottom:1px solid #edf1f4;text-align:left;font-size:10px}th{color:#64748b}td{color:#334155}pre{white-space:pre-wrap;word-break:break-word;background:#f8fafb;border:1px solid #edf0f2;border-radius:12px;padding:14px;font-size:10px;max-height:420px;overflow:auto}#summary,#rooms,#jsonCard{margin-top:0}
-@media(max-width:1050px){.topnav{padding:0 25px;gap:25px}.navlinks{gap:18px}.main{padding:28px 24px;grid-template-columns:1fr}.left{min-height:560px}.arch{height:270px}.right{max-width:760px;width:100%;margin:auto}.review{grid-column:auto}}
-@media(max-width:700px){.topnav{height:auto;min-height:70px;padding:13px 16px;flex-wrap:wrap;gap:12px}.brand{min-width:0}.navlinks{order:3;flex-basis:100%;overflow:auto;gap:22px;padding-bottom:2px}.workspace{margin-left:auto}.main{display:block;padding:20px 14px 30px}.left{min-height:610px;padding-top:3px}h1{font-size:34px}.intro{font-size:13px}.arch{left:-20px;right:-20px;height:245px;bottom:-8px}.upload-card{padding:19px}.drop{min-height:225px}.progress{margin-top:18px}.info-grid{grid-template-columns:1fr}.right{gap:14px}.info-card{padding:17px}}
+@media(max-width:1050px){.main{padding:28px 24px;grid-template-columns:1fr}.left{min-height:560px}.arch{height:270px}.right{max-width:760px;width:100%;margin:auto}.review{grid-column:auto}}
+@media(max-width:700px){.main{display:block;padding:20px 14px 30px}.left{min-height:610px;padding-top:3px}h1{font-size:34px}.intro{font-size:13px}.arch{left:-20px;right:-20px;height:245px;bottom:-8px}.upload-card{padding:19px}.drop{min-height:225px}.progress{margin-top:18px}.info-grid{grid-template-columns:1fr}.right{gap:14px}.info-card{padding:17px}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
 </style>
 </head>
 <body>
 <div class="page">
-<header class="topnav">
-  <a class="brand" href="../TerajuWorks/index.html" aria-label="TerajuWorks">
-    <span class="brand-mark">T</span>
-    <span><span class="brand-name">TERAJUWORKS</span><span class="brand-sub">PLAN · COST · BUILD</span></span>
+<div class="brandbar">
+  <a href="../TerajuWorks/index.html" aria-label="TerajuWorks">
+    <img src="../images/terajuworks-brand.svg" alt="TERAJUWORKS">
   </a>
-  <nav class="navlinks">
-    <a href="../TerajuWorks/index.html">Home</a>
-    <a href="../TerajuWorks/buildplanner-v2.html">BuildPlanner</a>
-    <a href="../TerajuWorks/renovationplanner-v2.html">RenovationPlanner</a>
-    <a class="nav-dd" href="room-area-import.html">BIM Tools</a>
-    <a class="nav-dd" href="index.html">Resources</a>
-    <a href="../TerajuWorks/index.html">About</a>
-  </nav>
-  <div class="workspace"><span class="avatar">TW</span><span>My Workspace</span></div>
-</header>
+</div>
 <main class="main">
   <section class="left">
     <div class="eyebrow"><span class="eyebrow-dot"></span> LOCAL-FIRST · IFC IMPORT</div>
@@ -59,7 +45,7 @@ h1{font-size:42px;line-height:1.08;letter-spacing:-.045em;margin:22px 0 14px;col
       <div class="bullet"><div class="bullet-icon">♧</div><div><strong>Open Standard (IFC)</strong><span>Works with Revit, Archicad and other BIM tools</span></div></div>
       <div class="bullet"><div class="bullet-icon">♢</div><div><strong>100% Local Storage</strong><span>Your IFC file stays in this device's browser</span></div></div>
       <div class="bullet"><div class="bullet-icon">▦</div><div><strong>Review &amp; Confirm</strong><span>Check and edit extracted rooms/areas before import</span></div></div>
-      <div class="bullet"><div class="bullet-icon">◇</div><div><strong>Ready for Planner</strong><span>Import to BuildPlanner or RenovationPlanner (next phase)</span></div></div>
+      <div class="bullet"><div class="bullet-icon">◇</div><div><strong>Direct Planner Handoff</strong><span>Review once, then continue directly into BuildPlanner or RenovationPlanner</span></div></div>
     </div>
     <div class="arch"><img src="../images/bim-architecture.jpg" alt=""></div>
   </section>
@@ -72,7 +58,7 @@ h1{font-size:42px;line-height:1.08;letter-spacing:-.045em;margin:22px 0 14px;col
         <div class="pstep active"><div class="pnum">1</div><strong>Upload</strong><span>Select IFC file</span></div>
         <div class="pstep"><div class="pnum">2</div><strong>Extract</strong><span>Read room/area data</span></div>
         <div class="pstep"><div class="pnum">3</div><strong>Review</strong><span>Check and edit</span></div>
-        <div class="pstep"><div class="pnum">4</div><strong>Confirm</strong><span>Save to local workspace</span></div>
+        <div class="pstep"><div class="pnum">4</div><strong>Planner</strong><span>Continue to selected planner</span></div>
       </div>
       <div class="statusbox"><div class="status-title">Import status</div><div id="engine" class="muted">Starting IFC engine…</div><div id="storage" class="muted">Checking local storage…</div><div id="status" class="status">Waiting for IFC engine…</div><div class="planner-target"><label for="plannerTarget">Import to Planner</label><select id="plannerTarget"><option value="build">BuildPlanner V2</option><option value="renovation">RenovationPlanner V2</option></select></div></div>
       <div id="actions" class="actions" hidden><button id="confirm">Continue to Planner</button><button id="download">Download Room / Area JSON</button><button id="clear" type="button">Clear Local IFC</button></div>
