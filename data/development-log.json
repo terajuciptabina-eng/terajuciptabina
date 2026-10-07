@@ -110,6 +110,17 @@
     "updatedAt": "2026-10-07T07:53:54.594Z"
   },
   {
+    "id": "DEV-20261007-d14d8f7",
+    "date": "2026-10-07",
+    "title": "refactor: update RenovationPlanner BIM path",
+    "module": "RenovationPlanner",
+    "status": "Completed",
+    "summary": "refactor: update RenovationPlanner BIM path",
+    "details": "Automatic entry from commit d14d8f7. Changed files: TerajuWorks/renovationplanner-v2.html.",
+    "commit": "d14d8f74594c2c46679024c5e8c950b8d98b7dba",
+    "updatedAt": "2026-10-07T07:57:38.096Z"
+  },
+  {
     "id": "DEV-20261007-bd8507a",
     "date": "2026-10-07",
     "title": "Fix IFC area quantity reference resolution",
