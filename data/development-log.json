@@ -121,6 +121,17 @@
     "updatedAt": "2026-10-07T04:38:33.588Z"
   },
   {
+    "id": "DEV-20261007-9d4e05e",
+    "date": "2026-10-07",
+    "title": "Clean up BIM import button handlers",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Clean up BIM import button handlers",
+    "details": "Automatic entry from commit 9d4e05e. Changed files: bim-test/room-area-import.html.",
+    "commit": "9d4e05ee15cea9d8f3ddc2f3568f4515bc2442c4",
+    "updatedAt": "2026-10-07T07:48:43.454Z"
+  },
+  {
     "id": "DEV-20261007-9958fee",
     "date": "2026-10-07",
     "title": "Fix IFC space area extraction via inverse property links",
