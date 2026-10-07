@@ -53,12 +53,19 @@
   };
 
   const wait=async()=>{
-    const hasQuotation=!!new URLSearchParams(location.search).get('quotationId');
-    const ready=typeof addRoom==='function'&&typeof updateEstimate==='function'&&document.getElementById('roomsContainer')&&(!hasQuotation||(isRenovation?typeof window.tcQuotationRecords!=='undefined':(window.tcQuotationRecords&&typeof window.tcQuotationRecords.persistRoomSchedule==='function')));
+    const pageParams=new URLSearchParams(location.search);
+    const hasQuotation=!!pageParams.get('quotationId');
+    const handoffState=String(pageParams.get('projectState')||'').trim().toLowerCase();
+    const ready=typeof addRoom==='function'&&typeof updateEstimate==='function'&&document.getElementById('roomsContainer')&&(!hasQuotation||(isRenovation?typeof window.tcQuotationRecords!=='undefined':(window.tcQuotationRecords&&typeof window.tcQuotationRecords.persistRoomSchedule==='function')))&&(!handoffState||document.getElementById('projectState'));
     if(!ready){setTimeout(wait,100);return}
     const existing=document.querySelectorAll('#roomsContainer .room-card').length;
     let importContext=null;
     try{importContext=JSON.parse(sessionStorage.getItem('teraju.floorplan.import.context.v1')||'null')}catch(e){}
+    const importState=String(importContext?.projectState||handoffState||'').trim().toLowerCase();
+    if(importState&&document.getElementById('projectState')){
+      const stateSelect=document.getElementById('projectState');
+      if(stateSelect.value!==importState){stateSelect.value=importState;try{window.TERAJU_SELECTED_STATE=importState}catch(e){}stateSelect.dispatchEvent(new Event('change',{bubbles:true}))}
+    }
     const replaceBecauseStartedEmpty=importContext?.version===1&&Number(importContext.roomCount)===0;
     if(replaceBecauseStartedEmpty&&existing){
       document.getElementById('roomsContainer').innerHTML='';
