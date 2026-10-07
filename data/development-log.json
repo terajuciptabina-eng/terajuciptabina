@@ -110,6 +110,17 @@
     "updatedAt": "2026-10-06T17:58:48.401Z"
   },
   {
+    "id": "DEV-20261007-5362562",
+    "date": "2026-10-07",
+    "title": "Align BIM import sidebar with first TerajuWorks UI layout",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Align BIM import sidebar with first TerajuWorks UI layout",
+    "details": "Automatic entry from commit 5362562. Changed files: bim-test/room-area-import.html.",
+    "commit": "5362562029ffc41e2f5327353fdac0cd46300f6d",
+    "updatedAt": "2026-10-07T06:45:23.119Z"
+  },
+  {
     "id": "DEV-20261007-4b8b7a1",
     "date": "2026-10-07",
     "title": "Use original TerajuWorks brand lockup",
