@@ -121,6 +121,17 @@
     "updatedAt": "2026-10-07T18:38:17.903Z"
   },
   {
+    "id": "DEV-20261008-12691ce",
+    "date": "2026-10-08",
+    "title": "Refresh state handoff gate for BIM return",
+    "module": "RenovationPlanner",
+    "status": "Completed",
+    "summary": "Refresh state handoff gate for BIM return",
+    "details": "Automatic entry from commit 12691ce. Changed files: TerajuWorks/renovationplanner-v2.html.",
+    "commit": "12691ce778df35b8df9205fa992a6b6838552365",
+    "updatedAt": "2026-10-07T18:47:25.847Z"
+  },
+  {
     "id": "DEV-20261007-fd71608",
     "date": "2026-10-07",
     "title": "Align BIM import UX with AI Floor Plan flow",
