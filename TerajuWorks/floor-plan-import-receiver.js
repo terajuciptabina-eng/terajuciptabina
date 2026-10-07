@@ -1,15 +1,12 @@
-<style id="tc-floor-plan-import-loading">
-#tcFloorPlanImportLoading{position:fixed;inset:0;z-index:999999;display:flex;align-items:center;justify-content:center;background:rgba(2,6,23,.62);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);opacity:0;pointer-events:none;transition:opacity .18s ease}
-#tcFloorPlanImportLoading.is-visible{opacity:1;pointer-events:auto}
-#tcFloorPlanImportLoading .tc-fp-loader-card{width:min(420px,calc(100vw - 32px));padding:28px;border-radius:22px;background:#fff;box-shadow:0 24px 70px rgba(0,0,0,.28);text-align:center}
-#tcFloorPlanImportLoading .tc-fp-spinner{width:42px;height:42px;margin:0 auto 16px;border:4px solid #e5e7eb;border-top-color:#172033;border-radius:50%;animation:tcFpSpin .8s linear infinite}
-#tcFloorPlanImportLoading .tc-fp-title{font-size:18px;font-weight:900;color:#172033}
-#tcFloorPlanImportLoading .tc-fp-detail{margin-top:7px;font-size:13px;color:#64748b;line-height:1.5}
-#tcFloorPlanImportLoading .tc-fp-progress{height:6px;margin-top:18px;border-radius:999px;background:#e5e7eb;overflow:hidden}
-#tcFloorPlanImportLoading .tc-fp-progress>span{display:block;height:100%;width:0;background:#172033;border-radius:999px;transition:width .18s ease}
-@keyframes tcFpSpin{to{transform:rotate(360deg)}}
-</style>
-<script>
+/* TERAJUWORKS Floor Plan / BIM Room-Area import receiver.
+   External .js file: keep executable JavaScript only; inject its loader CSS at runtime. */
+(function(){
+  const style=document.createElement('style');
+  style.id='tc-floor-plan-import-loading-style';
+  style.textContent="#tcFloorPlanImportLoading{position:fixed;inset:0;z-index:999999;display:flex;align-items:center;justify-content:center;background:rgba(2,6,23,.62);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);opacity:0;pointer-events:none;transition:opacity .18s ease}\n#tcFloorPlanImportLoading.is-visible{opacity:1;pointer-events:auto}\n#tcFloorPlanImportLoading .tc-fp-loader-card{width:min(420px,calc(100vw - 32px));padding:28px;border-radius:22px;background:#fff;box-shadow:0 24px 70px rgba(0,0,0,.28);text-align:center}\n#tcFloorPlanImportLoading .tc-fp-spinner{width:42px;height:42px;margin:0 auto 16px;border:4px solid #e5e7eb;border-top-color:#172033;border-radius:50%;animation:tcFpSpin .8s linear infinite}\n#tcFloorPlanImportLoading .tc-fp-title{font-size:18px;font-weight:900;color:#172033}\n#tcFloorPlanImportLoading .tc-fp-detail{margin-top:7px;font-size:13px;color:#64748b;line-height:1.5}\n#tcFloorPlanImportLoading .tc-fp-progress{height:6px;margin-top:18px;border-radius:999px;background:#e5e7eb;overflow:hidden}\n#tcFloorPlanImportLoading .tc-fp-progress>span{display:block;height:100%;width:0;background:#172033;border-radius:999px;transition:width .18s ease}\n@keyframes tcFpSpin{to{transform:rotate(360deg)}}";
+  (document.head||document.documentElement).appendChild(style);
+})();
+
 (function(){
   const plannerType=(new URLSearchParams(location.search).get('plannerType')||(/renovationplanner-v2\.html$/i.test(location.pathname)?'renovation':'build')).toLowerCase()==='renovation'?'renovation':'build';
   const isRenovation=plannerType==='renovation';
@@ -166,4 +163,3 @@
     setTimeout(wait,150);
   }
 })();
-</script>
