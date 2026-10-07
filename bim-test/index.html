@@ -46,19 +46,35 @@ function areaFromObject(x){
   for(const c of candidates){const n=Number(val(c));if(Number.isFinite(n))return n}
   return null;
 }
+function listValues(v){
+  if(!v)return [];
+  if(Array.isArray(v))return v;
+  if(typeof v.size==="number"&&typeof v.get==="function"){
+    const out=[];for(let i=0;i<v.size();i++)out.push(v.get(i));return out;
+  }
+  return [v];
+}
+function resolveAreaQuantity(model,id){
+  const q=line(model,id);
+  if(!q)return null;
+  const direct=areaFromObject(q);
+  if(direct!==null)return direct;
+  for(const item of listValues(q.Quantities)){
+    const qid=ref(item);
+    const resolved=qid?line(model,qid):item;
+    const a=areaFromObject(resolved);
+    if(a!==null)return a;
+  }
+  return null;
+}
 function areaMap(model,relType){
   const m=new Map();
   for(const rid of ids(model,relType)){
     const r=line(model,rid);if(!r)continue;
     const qid=ref(r.RelatingPropertyDefinition);if(!qid)continue;
-    const q=line(model,qid);if(!q)continue;
-    let area=null;
-    for(const item of (Array.isArray(q.Quantities)?q.Quantities:[])){
-      const a=areaFromObject(item);
-      if(a!==null){area=a;break}
-    }
+    const area=resolveAreaQuantity(model,qid);
     if(area===null)continue;
-    for(const obj of (Array.isArray(r.RelatedObjects)?r.RelatedObjects:[])){
+    for(const obj of listValues(r.RelatedObjects)){
       const oid=ref(obj);if(oid)m.set(oid,area)
     }
   }
