@@ -275,6 +275,17 @@
     "updatedAt": "2026-10-06T17:40:57.391Z"
   },
   {
+    "id": "DEV-20261007-61ba7eb",
+    "date": "2026-10-07",
+    "title": "refactor: fix BIM production relative paths",
+    "module": "General",
+    "status": "Completed",
+    "summary": "refactor: fix BIM production relative paths",
+    "details": "Automatic entry from commit 61ba7eb. Changed files: TerajuWorks/bim/room-area-import.html.",
+    "commit": "61ba7eb6ffa8e14170bb6d6430b60e20a852aaf6",
+    "updatedAt": "2026-10-07T07:57:42.157Z"
+  },
+  {
     "id": "DEV-20261007-5a4d60a",
     "date": "2026-10-07",
     "title": "fix: update investor traction summary from live database",
