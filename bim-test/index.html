@@ -39,7 +39,7 @@ const val=v=>v&&typeof v==="object"&&"value" in v?v.value:v;
 const ref=v=>typeof v==="number"?v:(v&&typeof v.value==="number"?v.value:(v&&typeof v.expressID==="number"?v.expressID:null));
 
 function ids(model,type){const out=[];const s=api.GetLineIDsWithType(model,type);for(let i=0;i<s.size();i++)out.push(s.get(i));return out}
-function line(model,id){try{return api.GetLine(model,id,true)}catch{return null}}
+function line(model,id,flatten=true,inverse=false){try{return api.GetLine(model,id,flatten,inverse)}catch{return null}}
 function areaFromObject(x){
   if(!x)return null;
   const candidates=[x.AreaValue,x.Area];
@@ -55,30 +55,44 @@ function listValues(v){
   return [v];
 }
 function resolveAreaQuantity(model,id){
-  const q=line(model,id);
+  const q=line(model,id,true,false);
   if(!q)return null;
   const direct=areaFromObject(q);
   if(direct!==null)return direct;
   for(const item of listValues(q.Quantities)){
     const qid=ref(item);
-    const resolved=qid?line(model,qid):item;
+    const resolved=qid?line(model,qid,true,false):item;
     const a=areaFromObject(resolved);
     if(a!==null)return a;
   }
   return null;
 }
-function areaMap(model,relType){
-  const m=new Map();
-  for(const rid of ids(model,relType)){
-    const r=line(model,rid);if(!r)continue;
-    const qid=ref(r.RelatingPropertyDefinition);if(!qid)continue;
-    const area=resolveAreaQuantity(model,qid);
-    if(area===null)continue;
-    for(const obj of listValues(r.RelatedObjects)){
-      const oid=ref(obj);if(oid)m.set(oid,area)
+
+function spaceArea(model,spaceId){
+  const space=line(model,spaceId,true,true);
+  if(!space)return null;
+  for(const relItem of listValues(space.IsDefinedBy)){
+    const rid=ref(relItem);
+    const rel=rid?line(model,rid,true,false):relItem;
+    if(!rel)continue;
+    const did=ref(rel.RelatingPropertyDefinition);
+    const definition=did?line(model,did,true,false):rel.RelatingPropertyDefinition;
+    if(!definition)continue;
+
+    const direct=resolveAreaQuantity(model,definition.expressID);
+    if(direct!==null)return direct;
+
+    for(const prop of listValues(definition.HasProperties)){
+      const a=areaFromObject(prop);
+      if(a!==null)return a;
+      const name=String(val(prop?.Name)||"").toLowerCase();
+      if(name.includes("area")){
+        const n=Number(val(prop?.NominalValue));
+        if(Number.isFinite(n))return n;
+      }
     }
   }
-  return m;
+  return null;
 }
 
 async function start(){
@@ -110,8 +124,7 @@ async function readFile(file){
     const project=projectT?ids(model,projectT).map(id=>line(model,id)).filter(Boolean):[];
     const buildings=buildingT?ids(model,buildingT).map(id=>line(model,id)).filter(Boolean):[];
     const storeys=storeyT?ids(model,storeyT).map(id=>line(model,id)).filter(Boolean):[];
-    const areas=relT?areaMap(model,relT):new Map();
-    const spaces=spaceT?ids(model,spaceT).map(id=>({id,x:line(model,id)})).filter(s=>s.x).map(s=>({id:s.id,name:String(val(s.x.Name)||("Space "+s.id)),m2:areas.get(s.id)??null})):[];
+    const spaces=spaceT?ids(model,spaceT).map(id=>({id,x:line(model,id,true,true)})).filter(s=>s.x).map(s=>({id:s.id,name:String(val(s.x.Name)||("Space "+s.id)),m2:spaceArea(model,s.id)})):[];
 
     summaryEl.innerHTML="<h2>IFC Summary</h2><table><tbody>"+
       "<tr><th>File</th><td>"+esc(file.name)+"</td></tr>"+
