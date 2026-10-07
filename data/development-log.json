@@ -11,6 +11,17 @@
     "updatedAt": "2026-10-07T18:37:42.278Z"
   },
   {
+    "id": "DEV-20261008-b8bcbc7",
+    "date": "2026-10-08",
+    "title": "Carry project state in IFC planner handoff",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Carry project state in IFC planner handoff",
+    "details": "Automatic entry from commit b8bcbc7. Changed files: TerajuWorks/bim/room-area-import.html.",
+    "commit": "b8bcbc78cb42cd35c7696ea54444ae15ea6785fb",
+    "updatedAt": "2026-10-07T18:37:53.160Z"
+  },
+  {
     "id": "DEV-20261008-3b01550",
     "date": "2026-10-08",
     "title": "Restore project state after BIM return",
