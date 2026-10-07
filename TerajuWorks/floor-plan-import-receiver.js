@@ -62,6 +62,10 @@
     let importContext=null;
     try{importContext=JSON.parse(sessionStorage.getItem('teraju.floorplan.import.context.v1')||'null')}catch(e){}
     const importState=String(importContext?.projectState||handoffState||'').trim().toLowerCase();
+    const importCustomerName=String(importContext?.customerName||'').trim();
+    const importProjectLocation=String(importContext?.projectLocation||'').trim();
+    if(importCustomerName&&document.getElementById('customerName'))document.getElementById('customerName').value=importCustomerName;
+    if(importProjectLocation&&document.getElementById('projectLocation'))document.getElementById('projectLocation').value=importProjectLocation;
     if(importState&&document.getElementById('projectState')){
       const stateSelect=document.getElementById('projectState');
       if(stateSelect.value!==importState){stateSelect.value=importState;try{window.TERAJU_SELECTED_STATE=importState}catch(e){}stateSelect.dispatchEvent(new Event('change',{bubbles:true}))}
