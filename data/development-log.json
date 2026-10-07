@@ -220,6 +220,17 @@
     "updatedAt": "2026-10-07T06:58:01.286Z"
   },
   {
+    "id": "DEV-20261007-2c5060d",
+    "date": "2026-10-07",
+    "title": "Fix BIM import layout source CSS",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Fix BIM import layout source CSS",
+    "details": "Automatic entry from commit 2c5060d. Changed files: bim-test/room-area-import.html.",
+    "commit": "2c5060ddc4f33285567d9345bad69d7d19e4d4bc",
+    "updatedAt": "2026-10-07T07:09:57.301Z"
+  },
+  {
     "id": "DEV-20261007-0ed90ef",
     "date": "2026-10-07",
     "title": "Add standalone IFC to Room Area bridge",
