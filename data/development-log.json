@@ -11,6 +11,17 @@
     "updatedAt": "2026-10-07T04:38:26.932Z"
   },
   {
+    "id": "DEV-20261007-dd918bb",
+    "date": "2026-10-07",
+    "title": "fix: use local BIM architecture visual and planner links",
+    "module": "General",
+    "status": "Completed",
+    "summary": "fix: use local BIM architecture visual and planner links",
+    "details": "Automatic entry from commit dd918bb. Changed files: bim-test/room-area-import.html.",
+    "commit": "dd918bbb79ac0ce7b334b783532d4990e3625dfb",
+    "updatedAt": "2026-10-07T06:54:34.214Z"
+  },
+  {
     "id": "DEV-20261007-d6efd3e",
     "date": "2026-10-07",
     "title": "Redesign BIM Room Area Import to match approved TerajuWorks layout",
