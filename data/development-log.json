@@ -33,6 +33,17 @@
     "updatedAt": "2026-10-07T18:37:42.278Z"
   },
   {
+    "id": "DEV-20261008-db09dea",
+    "date": "2026-10-08",
+    "title": "Add Archicad class registration infrastructure: api/class-registration.js",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Add Archicad class registration infrastructure: api/class-registration.js",
+    "details": "Automatic entry from commit db09dea. Changed files: api/class-registration.js.",
+    "commit": "db09dea9e9d748ba0df31df95d984293f2b66be1",
+    "updatedAt": "2026-10-08T05:44:01.772Z"
+  },
+  {
     "id": "DEV-20261008-d9d4024",
     "date": "2026-10-08",
     "title": "Restore project details before IFC room import",
