@@ -781,6 +781,17 @@
     "updatedAt": "2026-10-08T07:13:48.308Z"
   },
   {
+    "id": "DEV-20261008-2889f58",
+    "date": "2026-10-08",
+    "title": "New Archicad class registration ARC-20261008092800-GOT3",
+    "module": "General",
+    "status": "Completed",
+    "summary": "New Archicad class registration ARC-20261008092800-GOT3",
+    "details": "Automatic entry from commit 2889f58. Changed files: data/class-registrations.json.",
+    "commit": "2889f58516ba60b9edc3e761d8e90d1468662653",
+    "updatedAt": "2026-10-08T09:28:11.139Z"
+  },
+  {
     "id": "DEV-20261008-27c1791",
     "date": "2026-10-08",
     "title": "Show remaining seats on class slot selector",
