@@ -242,6 +242,17 @@
     "updatedAt": "2026-10-07T18:58:33.391Z"
   },
   {
+    "id": "DEV-20261008-81fa026",
+    "date": "2026-10-08",
+    "title": "Allow admin to view all class slots",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Allow admin to view all class slots",
+    "details": "Automatic entry from commit 81fa026. Changed files: api/class-slots.js.",
+    "commit": "81fa026d7c5985b2950e73eca2685220e4be1631",
+    "updatedAt": "2026-10-08T06:00:23.171Z"
+  },
+  {
     "id": "DEV-20261008-818c27c",
     "date": "2026-10-08",
     "title": "Add class mode to Archicad registration admin",
