@@ -110,6 +110,17 @@
     "updatedAt": "2026-10-07T18:55:11.125Z"
   },
   {
+    "id": "DEV-20261008-cb53e28",
+    "date": "2026-10-08",
+    "title": "Add admin-managed class slot selection to registration",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Add admin-managed class slot selection to registration",
+    "details": "Automatic entry from commit cb53e28. Changed files: kelas-archicad/register.html.",
+    "commit": "cb53e2802fee1c72364de7081056aa3b73920934",
+    "updatedAt": "2026-10-08T05:59:43.158Z"
+  },
+  {
     "id": "DEV-20261008-c65ae24",
     "date": "2026-10-08",
     "title": "Add consistent action icons to room controls",
