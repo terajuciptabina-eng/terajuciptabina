@@ -946,6 +946,17 @@
     "updatedAt": "2026-10-08T08:51:36.100Z"
   },
   {
+    "id": "DEV-20261008-45550d7",
+    "date": "2026-10-08",
+    "title": "fix: retry project control writes on GitHub SHA conflicts",
+    "module": "Project Control",
+    "status": "Completed",
+    "summary": "fix: retry project control writes on GitHub SHA conflicts",
+    "details": "Automatic entry from commit 45550d7. Changed files: api/project-control.js.",
+    "commit": "45550d75e9cd6997f08da3fa80b158e5eb2fb085",
+    "updatedAt": "2026-10-08T14:24:50.794Z"
+  },
+  {
     "id": "DEV-20261008-447ede5",
     "date": "2026-10-08",
     "title": "Save project control build QT-BLD-MUZLGRWI-DCMM6",
