@@ -847,6 +847,17 @@
     "updatedAt": "2026-10-08T06:00:16.645Z"
   },
   {
+    "id": "DEV-20261008-3467809",
+    "date": "2026-10-08",
+    "title": "Require student verification document and enforce non-refundable booking fee",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Require student verification document and enforce non-refundable booking fee",
+    "details": "Automatic entry from commit 3467809. Changed files: api/class-management.js, kelas-archicad/register.html.",
+    "commit": "3467809c4332c68dbbc5145cb100e032b8d1f8cb",
+    "updatedAt": "2026-10-08T10:52:58.526Z"
+  },
+  {
     "id": "DEV-20261008-341f0e5",
     "date": "2026-10-08",
     "title": "Load corrected Room Area import receiver",
