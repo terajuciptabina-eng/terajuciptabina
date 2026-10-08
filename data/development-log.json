@@ -231,6 +231,17 @@
     "updatedAt": "2026-10-07T18:58:17.357Z"
   },
   {
+    "id": "DEV-20261008-747f3bf",
+    "date": "2026-10-08",
+    "title": "Add class mode to Archicad registration records",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Add class mode to Archicad registration records",
+    "details": "Automatic entry from commit 747f3bf. Changed files: api/class-registration.js.",
+    "commit": "747f3bf4436f33cfe1323351e1655c53ee70327f",
+    "updatedAt": "2026-10-08T05:56:41.723Z"
+  },
+  {
     "id": "DEV-20261008-74726b6",
     "date": "2026-10-08",
     "title": "Update contractor profile CTR-20261002-PC09",
