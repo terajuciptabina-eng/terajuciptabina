@@ -367,7 +367,8 @@ export default async function handler(req,res){
     }
 
     if(resource==='payment'){
-      const operation=String(req.query?.operation||'').trim().toLowerCase();
+      const paymentBody=bodyData();
+      const operation=String(req.query?.operation||paymentBody.operation||'').trim().toLowerCase();
       if(!['create','verify','callback','cash'].includes(operation)){
         return res.status(404).json({message:'Class payment operation not found.'});
       }
@@ -416,7 +417,7 @@ export default async function handler(req,res){
 
       if(operation==='cash'){
         if(req.method!=='POST'||!isAdmin)return res.status(401).json({message:'Admin authorization required for cash payment.'});
-        const body=bodyData();
+        const body=paymentBody;
         const id=String(body.registrationId||'').trim();
         const type=String(body.paymentType||'').trim().toLowerCase();
         if(!id||!['booking','balance','full'].includes(type))return res.status(400).json({message:'Registration and cash payment type are required.'});
@@ -478,7 +479,7 @@ export default async function handler(req,res){
       }
 
       if(req.method!=='POST')return res.status(405).json({message:'Method not allowed.'});
-      const body=bodyData();
+      const body=paymentBody;
       const id=String(body.registrationId||'').trim();
       const tokenValue=String(body.token||'').trim();
       const type=String(body.paymentType||'').trim().toLowerCase();
