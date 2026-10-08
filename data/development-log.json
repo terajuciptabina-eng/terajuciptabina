@@ -77,6 +77,17 @@
     "updatedAt": "2026-10-07T19:10:20.660Z"
   },
   {
+    "id": "DEV-20261008-bb7a8ef",
+    "date": "2026-10-08",
+    "title": "Add Archicad class participant registration and booking page",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Add Archicad class participant registration and booking page",
+    "details": "Automatic entry from commit bb7a8ef. Changed files: kelas-archicad/register.html.",
+    "commit": "bb7a8ef0b8da57693e4b7c2ceb009f4b35abc455",
+    "updatedAt": "2026-10-08T05:39:47.928Z"
+  },
+  {
     "id": "DEV-20261008-b8bcbc7",
     "date": "2026-10-08",
     "title": "Carry project state in IFC planner handoff",
