@@ -319,6 +319,17 @@
     "updatedAt": "2026-10-08T05:10:45.468Z"
   },
   {
+    "id": "DEV-20261008-adbb54f",
+    "date": "2026-10-08",
+    "title": "New Archicad class registration ARC-20261008092053-0Z86",
+    "module": "General",
+    "status": "Completed",
+    "summary": "New Archicad class registration ARC-20261008092053-0Z86",
+    "details": "Automatic entry from commit adbb54f. Changed files: data/class-registrations.json.",
+    "commit": "adbb54f4c0379cfd8cd7a5ee1583c4be354c2afb",
+    "updatedAt": "2026-10-08T09:21:02.749Z"
+  },
+  {
     "id": "DEV-20261008-a9ab8bd",
     "date": "2026-10-08",
     "title": "Preserve project details in IFC handoff context",
