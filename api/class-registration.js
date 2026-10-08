@@ -35,16 +35,16 @@ export default async function handler(req,res){
   try{
     const s=await store();
     if(req.method==='GET'){
-      const q=String(req.query?.q||'').trim().toLowerCase(),status=String(req.query?.status||'').trim().toLowerCase(),type=String(req.query?.type||'').trim().toLowerCase();
-      const items=s.items.filter(x=>(!q||JSON.stringify(x).toLowerCase().includes(q))&&(!status||String(x.status||'').toLowerCase()===status)&&(!type||String(x.type||'').toLowerCase()===type)).sort((a,b)=>String(b.createdAt).localeCompare(String(a.createdAt)));
+      const q=String(req.query?.q||'').trim().toLowerCase(),status=String(req.query?.status||'').trim().toLowerCase(),type=String(req.query?.type||'').trim().toLowerCase(),mode=String(req.query?.mode||'').trim().toLowerCase();
+      const items=s.items.filter(x=>(!q||JSON.stringify(x).toLowerCase().includes(q))&&(!status||String(x.status||'').toLowerCase()===status)&&(!type||String(x.type||'').toLowerCase()===type)&&(!mode||String(x.mode||'').toLowerCase()===mode)).sort((a,b)=>String(b.createdAt).localeCompare(String(a.createdAt)));
       return res.status(200).json({ok:true,items,generatedAt:new Date().toISOString()});
     }
     const body=typeof req.body==='string'?JSON.parse(req.body||'{}'):(req.body||{});
     if(req.method==='POST'){
-      const required=['name','phone','email','type','pax','date'];
+      const required=['name','phone','email','type','pax','date','mode'];
       if(required.some(k=>!String(body[k]||'').trim()))return res.status(400).json({message:'Please complete all required fields.'});
       const now=new Date().toISOString(),id='ARC-'+now.replace(/\D/g,'').slice(0,14)+'-'+Math.random().toString(36).slice(2,6).toUpperCase();
-      const item={id,status:'Pending',createdAt:now,updatedAt:now,name:String(body.name).trim(),phone:String(body.phone).trim(),email:String(body.email).trim(),type:String(body.type).trim(),pax:String(body.pax).trim(),company:String(body.company||'').trim(),occupation:String(body.occupation||'').trim(),date:String(body.date).trim(),experience:String(body.experience||'').trim(),laptop:String(body.laptop||'').trim(),payment:String(body.payment||'').trim(),source:String(body.source||'').trim(),notes:String(body.notes||'').trim()};
+      const item={id,status:'Pending',createdAt:now,updatedAt:now,name:String(body.name).trim(),phone:String(body.phone).trim(),email:String(body.email).trim(),type:String(body.type).trim(),pax:String(body.pax).trim(),company:String(body.company||'').trim(),occupation:String(body.occupation||'').trim(),mode:String(body.mode).trim(),date:String(body.date).trim(),experience:String(body.experience||'').trim(),laptop:String(body.laptop||'').trim(),payment:String(body.payment||'').trim(),source:String(body.source||'').trim(),notes:String(body.notes||'').trim()};
       s.items.unshift(item);const saved=await save(s.items,s.sha,`New Archicad class registration ${id}`);
       return res.status(201).json({ok:true,item,commitSha:saved?.commit?.sha||null});
     }
@@ -53,7 +53,7 @@ export default async function handler(req,res){
     const index=s.items.findIndex(x=>String(x.id)===id);
     if(index<0)return res.status(404).json({message:'Registration not found.'});
     if(req.method==='PUT'){
-      const allowed=['name','phone','email','type','pax','company','occupation','date','experience','laptop','payment','source','notes','status'];
+      const allowed=['name','phone','email','type','pax','company','occupation','mode','date','experience','laptop','payment','source','notes','status'];
       for(const k of allowed)if(body[k]!==undefined)s.items[index][k]=String(body[k]??'').trim();
       s.items[index].updatedAt=new Date().toISOString();
       const saved=await save(s.items,s.sha,`Update Archicad class registration ${id}`);
