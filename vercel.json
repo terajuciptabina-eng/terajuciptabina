@@ -3,6 +3,8 @@
   "rewrites": [
     { "source": "/api/create-payment", "destination": "/api/payment?route=create" },
     { "source": "/api/verify-payment", "destination": "/api/payment?route=verify" },
-    { "source": "/api/payment-callback", "destination": "/api/payment?route=callback" }
+    { "source": "/api/payment-callback", "destination": "/api/payment?route=callback" },
+    { "source": "/api/class-slots", "destination": "/api/class-management?resource=slots" },
+    { "source": "/api/class-registration", "destination": "/api/class-management?resource=registration" }
   ]
 }
