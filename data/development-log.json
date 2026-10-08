@@ -121,6 +121,17 @@
     "updatedAt": "2026-10-08T07:16:04.028Z"
   },
   {
+    "id": "DEV-20261008-e0a5ca2",
+    "date": "2026-10-08",
+    "title": "Delete Archicad class registration ARC-20261008092053-0Z86",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Delete Archicad class registration ARC-20261008092053-0Z86",
+    "details": "Automatic entry from commit e0a5ca2. Changed files: data/class-registrations.json.",
+    "commit": "e0a5ca2c52fe6111ecb85dec558102c24ef2bbea",
+    "updatedAt": "2026-10-08T09:27:08.467Z"
+  },
+  {
     "id": "DEV-20261008-dbf81d6",
     "date": "2026-10-08",
     "title": "Update Archicad registration page hero and class location options",
