@@ -660,6 +660,17 @@
     "updatedAt": "2026-10-08T05:09:54.928Z"
   },
   {
+    "id": "DEV-20261008-6d3cdbf",
+    "date": "2026-10-08",
+    "title": "Rebuild Archicad registration page cleanly",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Rebuild Archicad registration page cleanly",
+    "details": "Automatic entry from commit 6d3cdbf. Changed files: kelas-archicad/register.html.",
+    "commit": "6d3cdbf415b7db2ba20b837dca81ea2fba0d40fc",
+    "updatedAt": "2026-10-08T11:09:11.587Z"
+  },
+  {
     "id": "DEV-20261008-6ae148d",
     "date": "2026-10-08",
     "title": "Delete Archicad class registration ARC-20261008091000-S1HO",
