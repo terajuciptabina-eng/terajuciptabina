@@ -220,6 +220,17 @@
     "updatedAt": "2026-10-07T18:58:33.391Z"
   },
   {
+    "id": "DEV-20261008-818c27c",
+    "date": "2026-10-08",
+    "title": "Add class mode to Archicad registration admin",
+    "module": "Admin / Rate Management",
+    "status": "Completed",
+    "summary": "Add class mode to Archicad registration admin",
+    "details": "Automatic entry from commit 818c27c. Changed files: TerajuWorks/admin-class-registration.html.",
+    "commit": "818c27cca81d3e7037e71e9e0917e90dfc1df984",
+    "updatedAt": "2026-10-08T05:57:08.255Z"
+  },
+  {
     "id": "DEV-20261008-758aa46",
     "date": "2026-10-08",
     "title": "Save build quotation Q018 (EST-BLD-018-S)",
