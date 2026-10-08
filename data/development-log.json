@@ -1133,6 +1133,17 @@
     "updatedAt": "2026-10-08T07:52:11.779Z"
   },
   {
+    "id": "DEV-20261008-0bc89a0",
+    "date": "2026-10-08",
+    "title": "Fix Admin API endpoint in control panel",
+    "module": "Admin / Rate Management",
+    "status": "Completed",
+    "summary": "Fix Admin API endpoint in control panel",
+    "details": "Automatic entry from commit 0bc89a0. Changed files: TerajuWorks/admin.html.",
+    "commit": "0bc89a024b61ba8779e62ea6999d7acfa3554a7d",
+    "updatedAt": "2026-10-08T12:46:20.877Z"
+  },
+  {
     "id": "DEV-20261008-07311a0",
     "date": "2026-10-08",
     "title": "Fix Room Area import receiver as valid external JavaScript",
