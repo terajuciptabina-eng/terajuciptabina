@@ -297,6 +297,17 @@
     "updatedAt": "2026-10-07T18:38:04.225Z"
   },
   {
+    "id": "DEV-20261008-9afb487",
+    "date": "2026-10-08",
+    "title": "Fix Archicad admin edit modal bindings",
+    "module": "Admin / Rate Management",
+    "status": "Completed",
+    "summary": "Fix Archicad admin edit modal bindings",
+    "details": "Automatic entry from commit 9afb487. Changed files: TerajuWorks/admin-class-registration.html.",
+    "commit": "9afb48737b57c6dad47da1db0de1361fcf8fbe68",
+    "updatedAt": "2026-10-08T08:38:59.786Z"
+  },
+  {
     "id": "DEV-20261008-9054b92",
     "date": "2026-10-08",
     "title": "Update contractor profile CTR-20261002-PC09",
