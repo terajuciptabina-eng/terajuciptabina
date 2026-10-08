@@ -44,6 +44,17 @@
     "updatedAt": "2026-10-07T18:37:42.278Z"
   },
   {
+    "id": "DEV-20261008-dbf81d6",
+    "date": "2026-10-08",
+    "title": "Update Archicad registration page hero and class location options",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Update Archicad registration page hero and class location options",
+    "details": "Automatic entry from commit dbf81d6. Changed files: kelas-archicad/register.html.",
+    "commit": "dbf81d65f4f9899ef3fa591821933eab30e6b804",
+    "updatedAt": "2026-10-08T05:56:18.342Z"
+  },
+  {
     "id": "DEV-20261008-db09dea",
     "date": "2026-10-08",
     "title": "Add Archicad class registration infrastructure: api/class-registration.js",
