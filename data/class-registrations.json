@@ -1,9 +1,9 @@
 [
   {
     "id": "ARC-20261008092800-GOT3",
-    "status": "Pending",
+    "status": "Confirmed",
     "createdAt": "2026-10-08T09:28:00.801Z",
-    "updatedAt": "2026-10-08T09:28:04.521Z",
+    "updatedAt": "2026-10-08T09:32:14.310Z",
     "name": "Mohd Asyraf Reeza Bin Mohd Rasli",
     "phone": "01125476214",
     "email": "asyraf.reeza@gmail.com",
@@ -24,10 +24,10 @@
     "classFeePerPax": 100,
     "totalFee": 100,
     "bookingFee": 50,
-    "bookingPaid": 0,
-    "bookingPaidAt": null,
-    "bookingPaymentMethod": "",
-    "bookingPaymentRef": "",
+    "bookingPaid": 50,
+    "bookingPaidAt": "2026-10-08T09:32:14.310Z",
+    "bookingPaymentMethod": "Cash",
+    "bookingPaymentRef": "IN123456",
     "bookingBillCode": "ep1qklzw",
     "balanceDue": 50,
     "balancePaid": 0,
@@ -35,9 +35,21 @@
     "balancePaymentMethod": "",
     "balancePaymentRef": "",
     "balanceBillCode": "",
-    "payment": "",
-    "paymentStatus": "Booking Fee Pending",
-    "paymentMethod": "",
-    "paymentToken": "20261008092800801-7zxz692gf8dq9xc19ci06"
+    "payment": "Booking Fee Paid",
+    "paymentStatus": "Booking Fee Paid",
+    "paymentMethod": "Cash",
+    "paymentToken": "20261008092800801-7zxz692gf8dq9xc19ci06",
+    "cashPayments": [
+      {
+        "component": "Booking Fee",
+        "amount": 50,
+        "recordedAt": "2026-10-08T09:32:14.310Z",
+        "recordedBy": "admin",
+        "reference": "IN123456",
+        "note": "sudah bayar booking"
+      }
+    ],
+    "paymentLastRecordedAt": "2026-10-08T09:32:14.310Z",
+    "paymentLastRecordedBy": "admin"
   }
 ]
