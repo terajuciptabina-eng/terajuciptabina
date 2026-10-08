@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "contractor",
+  "contractorId": "CTR-20261008-L7AT",
+  "profile": {
+    "name": "JKR Malaysia",
+    "email": "aidzil.jkr@gov.my",
+    "phone": "01125476214"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-10-08T07:13:38.360Z",
+  "updatedAt": "2026-10-08T07:13:38.360Z"
+}
