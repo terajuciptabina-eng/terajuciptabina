@@ -253,6 +253,17 @@
     "updatedAt": "2026-10-07T19:10:20.660Z"
   },
   {
+    "id": "DEV-20261008-c18bf34",
+    "date": "2026-10-08",
+    "title": "Record Archicad cash payment ARC-20261008092800-GOT3",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Record Archicad cash payment ARC-20261008092800-GOT3",
+    "details": "Automatic entry from commit c18bf34. Changed files: data/class-registrations.json.",
+    "commit": "c18bf34f904f73c6551dda1b9950ebcd4566ee0f",
+    "updatedAt": "2026-10-08T09:33:01.088Z"
+  },
+  {
     "id": "DEV-20261008-c058cfc",
     "date": "2026-10-08",
     "title": "Fix Archicad payment freeze and class slot mode flow",
