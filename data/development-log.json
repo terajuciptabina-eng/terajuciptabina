@@ -671,6 +671,17 @@
     "updatedAt": "2026-10-08T08:07:13.329Z"
   },
   {
+    "id": "DEV-20261008-20580fa",
+    "date": "2026-10-08",
+    "title": "Clean Archicad class admin and fix payment dispatch order",
+    "module": "Admin / Rate Management",
+    "status": "Completed",
+    "summary": "Clean Archicad class admin and fix payment dispatch order",
+    "details": "Automatic entry from commit 20580fa. Changed files: TerajuWorks/admin-class-registration.html, api/class-management.js.",
+    "commit": "20580fa697a1251005e0f14610e99056a89805b8",
+    "updatedAt": "2026-10-08T08:28:16.317Z"
+  },
+  {
     "id": "DEV-20261008-1eb0bd6",
     "date": "2026-10-08",
     "title": "Update contractor profile CTR-20261008-L7AT",
