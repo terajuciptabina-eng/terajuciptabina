@@ -286,6 +286,17 @@
     "updatedAt": "2026-10-07T18:46:18.366Z"
   },
   {
+    "id": "DEV-20261008-3175a69",
+    "date": "2026-10-08",
+    "title": "Add Archicad class registration management panel to Admin Control",
+    "module": "Admin / Rate Management",
+    "status": "Completed",
+    "summary": "Add Archicad class registration management panel to Admin Control",
+    "details": "Automatic entry from commit 3175a69. Changed files: TerajuWorks/admin.html.",
+    "commit": "3175a69fe54da1e43f74b2ff4a878cd4758e39ef",
+    "updatedAt": "2026-10-08T05:45:21.747Z"
+  },
+  {
     "id": "DEV-20261008-186196b",
     "date": "2026-10-08",
     "title": "Preserve project state through Renovation BIM return",
