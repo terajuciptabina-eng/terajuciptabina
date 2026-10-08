@@ -8,7 +8,7 @@ export default async function handler(req,res){
   const resource=String(req.query?.resource||'').trim().toLowerCase();
   if(!['slots','registration','payment'].includes(resource))return res.status(404).json({message:'Class management resource not found.'});
 
-  const repo=process.env.GITHUB_REPO||'terajuciptabina-eng/terajuciptabina';
+  const repo='terajuciptabina-eng/terajuciptabina';
   const token=process.env.GITHUB_TOKEN;
   if(!token)return res.status(500).json({message:'GitHub data source is not configured.'});
 
@@ -25,7 +25,7 @@ export default async function handler(req,res){
   const normalizeSlotMode=v=>String(v||'').trim()==='Pejabat Teraju Ciptabina Resources'?'Fizikal':String(v||'').trim();
   const slotSupportsMode=(slotMode,attendance)=>{const m=normalizeSlotMode(slotMode);return m===attendance||m==='Online dan Fizikal';};
   const money=n=>Math.round(Number(n||0)*100)/100;
-  const paymentFields=x=>{const total=money(x.totalFee),booking=money(x.bookingFee||50*(parseInt(x.pax,10)||1)),bookingPaid=money(x.bookingPaid),balancePaid=money(x.balancePaid),balanceDue=money(Math.max(0,total-bookingPaid-balancePaid)),paymentStatus=String(x.paymentStatus||((bookingPaid>=booking)?(balanceDue<=0?'Fully Paid':'Booking Fee Paid'):'Booking Fee Pending'));return{totalFee:total,bookingFee:booking,bookingPaid,balancePaid,balanceDue,paymentStatus};};
+  const paymentFields=x=>{const pax=Math.max(1,parseInt(x.pax,10)||1),total=money(x.totalFee||classRate(x.type)*pax),booking=money(x.bookingFee||50*pax),bookingPaid=money(x.bookingPaid),balancePaid=money(x.balancePaid),balanceDue=money(Math.max(0,total-bookingPaid-balancePaid)),paymentStatus=String(x.paymentStatus||((bookingPaid>=booking)?(balanceDue<=0?'Fully Paid':'Booking Fee Paid'):'Booking Fee Pending'));return{totalFee:total,bookingFee:booking,bookingPaid,balancePaid,balanceDue,paymentStatus};};
   const ghHeaders={Authorization:`Bearer ${token}`,Accept:'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'};
 
   async function github(path,options={}){
@@ -37,9 +37,9 @@ export default async function handler(req,res){
 
   async function read(path){
     const r=await github(path);
-    if(!r.response.ok)return{items:[],sha:null};
+    if(!r.response.ok){throw new Error(`GitHub data read failed (${r.response.status}) for ${path}: ${r.data?.message||'Unknown GitHub error.'}`)}
     const content=r.data?.content?Buffer.from(r.data.content,'base64').toString('utf8'):'[]';
-    try{return{items:Array.isArray(JSON.parse(content))?JSON.parse(content):[],sha:r.data.sha}}catch{return{items:[],sha:r.data.sha}}
+    try{return{items:Array.isArray(JSON.parse(content))?JSON.parse(content):[],sha:r.data.sha}}catch(error){throw new Error(`Invalid JSON in ${path}: ${error.message}`)}
   }
 
   async function save(path,items,sha,message){
