@@ -363,6 +363,17 @@
     "updatedAt": "2026-10-08T05:39:47.928Z"
   },
   {
+    "id": "DEV-20261008-ba6e615",
+    "date": "2026-10-08",
+    "title": "fix: isolate Progress persistence from project control SHA conflicts",
+    "module": "Project Control",
+    "status": "Completed",
+    "summary": "fix: isolate Progress persistence from project control SHA conflicts",
+    "details": "Automatic entry from commit ba6e615. Changed files: api/project-control.js.",
+    "commit": "ba6e6158441009d038dd061d44541ad28d71eb87",
+    "updatedAt": "2026-10-08T14:32:11.018Z"
+  },
+  {
     "id": "DEV-20261008-ba5bb0f",
     "date": "2026-10-08",
     "title": "Delete Archicad class registration ARC-20261008075333-YW1O",
