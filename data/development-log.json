@@ -308,6 +308,17 @@
     "updatedAt": "2026-10-08T06:10:23.665Z"
   },
   {
+    "id": "DEV-20261008-a3352d0",
+    "date": "2026-10-08",
+    "title": "Rebuild Archicad class module from clean source",
+    "module": "Admin / Rate Management",
+    "status": "Completed",
+    "summary": "Rebuild Archicad class module from clean source",
+    "details": "Automatic entry from commit a3352d0. Changed files: TerajuWorks/admin-class-registration.html, TerajuWorks/admin-class-slots.html, api/class-management.js, kelas-archicad/register.html.",
+    "commit": "a3352d092bbc99995c314a921734c7c6a0848ca5",
+    "updatedAt": "2026-10-08T09:04:23.926Z"
+  },
+  {
     "id": "DEV-20261008-a15ebb3",
     "date": "2026-10-08",
     "title": "Update renovation quotation Q004 (EST-REN-004-S)",
