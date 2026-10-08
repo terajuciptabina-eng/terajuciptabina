@@ -35,7 +35,7 @@ export default async function handler(req,res){
   try{
     const s=await store();
     if(req.method==='GET'){
-      const items=s.items.filter(x=>x.active!==false).sort((a,b)=>String(a.date+' '+a.startTime).localeCompare(String(b.date+' '+b.startTime)));
+      const items=(isAdmin?s.items:s.items.filter(x=>x.active!==false)).sort((a,b)=>String(a.date+' '+a.startTime).localeCompare(String(b.date+' '+b.startTime)));
       return res.status(200).json({ok:true,items,generatedAt:new Date().toISOString()});
     }
     if(!isAdmin)return res.status(401).json({message:'Unauthorized.'});
