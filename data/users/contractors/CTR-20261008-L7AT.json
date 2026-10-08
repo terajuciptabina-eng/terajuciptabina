@@ -873,7 +873,7 @@
           "constructionBudgetGenerated": true,
           "rateSetId": "sarawak",
           "rateSetName": "Sarawak",
-          "rateSnapshotAt": "2026-10-08T14:11:09.125Z"
+          "rateSnapshotAt": "2026-10-08T14:50:23.031Z"
         },
         "itemListVersion": 1,
         "items": [
@@ -2069,7 +2069,7 @@
           }
         ],
         "createdAt": "2026-10-08T14:11:08.712Z",
-        "updatedAt": "2026-10-08T14:11:11.027Z"
+        "updatedAt": "2026-10-08T14:50:24.214Z"
       },
       {
         "schemaVersion": 2,
@@ -8051,7 +8051,7 @@
     "renovation": []
   },
   "createdAt": "2026-10-08T07:13:38.360Z",
-  "updatedAt": "2026-10-08T14:11:11.027Z",
+  "updatedAt": "2026-10-08T14:50:24.214Z",
   "quotationRunningNumber": {
     "build": 3
   },
