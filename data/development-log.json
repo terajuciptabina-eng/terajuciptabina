@@ -66,6 +66,17 @@
     "updatedAt": "2026-10-07T18:46:51.403Z"
   },
   {
+    "id": "DEV-20261008-d87411b",
+    "date": "2026-10-08",
+    "title": "Add Admin Class Registration management panel",
+    "module": "Admin / Rate Management",
+    "status": "Completed",
+    "summary": "Add Admin Class Registration management panel",
+    "details": "Automatic entry from commit d87411b. Changed files: TerajuWorks/admin-class-registration.html.",
+    "commit": "d87411b9d51145d8e40b492e3db10d06cc07632a",
+    "updatedAt": "2026-10-08T05:45:04.492Z"
+  },
+  {
     "id": "DEV-20261008-d501b9e",
     "date": "2026-10-08",
     "title": "Refresh shared import receiver for BIM handoff",
