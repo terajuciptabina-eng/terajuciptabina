@@ -649,6 +649,17 @@
     "updatedAt": "2026-10-08T07:26:49.199Z"
   },
   {
+    "id": "DEV-20261008-2094490",
+    "date": "2026-10-08",
+    "title": "Make Archicad class registration one participant per booking",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Make Archicad class registration one participant per booking",
+    "details": "Automatic entry from commit 2094490. Changed files: api/class-management.js, kelas-archicad/register.html.",
+    "commit": "209449026ff2bec74b0a1a9c85d0b0c13e14bd76",
+    "updatedAt": "2026-10-08T08:07:13.329Z"
+  },
+  {
     "id": "DEV-20261008-1eb0bd6",
     "date": "2026-10-08",
     "title": "Update contractor profile CTR-20261008-L7AT",
