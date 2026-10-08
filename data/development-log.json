@@ -110,6 +110,17 @@
     "updatedAt": "2026-10-08T05:56:18.342Z"
   },
   {
+    "id": "DEV-20261008-db898a4",
+    "date": "2026-10-08",
+    "title": "New Archicad class registration ARC-20261008091000-S1HO",
+    "module": "General",
+    "status": "Completed",
+    "summary": "New Archicad class registration ARC-20261008091000-S1HO",
+    "details": "Automatic entry from commit db898a4. Changed files: data/class-registrations.json.",
+    "commit": "db898a481f3a7d5f6b24675747aa98afa489b8dc",
+    "updatedAt": "2026-10-08T09:10:09.512Z"
+  },
+  {
     "id": "DEV-20261008-db09dea",
     "date": "2026-10-08",
     "title": "Add Archicad class registration infrastructure: api/class-registration.js",
