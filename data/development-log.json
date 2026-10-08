@@ -264,6 +264,17 @@
     "updatedAt": "2026-10-08T06:00:08.506Z"
   },
   {
+    "id": "DEV-20261008-c7a1b18",
+    "date": "2026-10-08",
+    "title": "Add Archicad class slot SLOT-20261008094135-X4YD",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Add Archicad class slot SLOT-20261008094135-X4YD",
+    "details": "Automatic entry from commit c7a1b18. Changed files: data/class-slots.json.",
+    "commit": "c7a1b18daeb634ab906620b72b0ba5adfc61d902",
+    "updatedAt": "2026-10-08T09:41:45.683Z"
+  },
+  {
     "id": "DEV-20261008-c65ae24",
     "date": "2026-10-08",
     "title": "Add consistent action icons to room controls",
