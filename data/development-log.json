@@ -88,6 +88,17 @@
     "updatedAt": "2026-10-08T09:39:04.996Z"
   },
   {
+    "id": "DEV-20261008-ede1a7e",
+    "date": "2026-10-08",
+    "title": "feat: add previous actual and cumulative S-Curve control data",
+    "module": "Project Control",
+    "status": "Completed",
+    "summary": "feat: add previous actual and cumulative S-Curve control data",
+    "details": "Automatic entry from commit ede1a7e. Changed files: TerajuWorks/s-curve.html.",
+    "commit": "ede1a7e1a27ac5e62a0f46d4f93606c4fbea115b",
+    "updatedAt": "2026-10-08T14:55:42.061Z"
+  },
+  {
     "id": "DEV-20261008-edd537a",
     "date": "2026-10-08",
     "title": "Rebuild Archicad class API from clean source",
