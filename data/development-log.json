@@ -385,6 +385,17 @@
     "updatedAt": "2026-10-07T19:00:00.154Z"
   },
   {
+    "id": "DEV-20261008-07183ca",
+    "date": "2026-10-08",
+    "title": "Add Archicad class slot admin page",
+    "module": "Admin / Rate Management",
+    "status": "Completed",
+    "summary": "Add Archicad class slot admin page",
+    "details": "Automatic entry from commit 07183ca. Changed files: TerajuWorks/admin-class-slots.html.",
+    "commit": "07183ca2e38a56ff5602fdca34b2f7e87134fb06",
+    "updatedAt": "2026-10-08T05:59:56.348Z"
+  },
+  {
     "id": "DEV-20261007-fd71608",
     "date": "2026-10-07",
     "title": "Align BIM import UX with AI Floor Plan flow",
