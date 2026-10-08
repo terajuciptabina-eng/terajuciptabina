@@ -407,6 +407,17 @@
     "updatedAt": "2026-10-08T06:00:37.992Z"
   },
   {
+    "id": "DEV-20261008-1ad6536",
+    "date": "2026-10-08",
+    "title": "Add navigation between Archicad registrations and class slots",
+    "module": "Admin / Rate Management",
+    "status": "Completed",
+    "summary": "Add navigation between Archicad registrations and class slots",
+    "details": "Automatic entry from commit 1ad6536. Changed files: TerajuWorks/admin-class-registration.html.",
+    "commit": "1ad65364b647a4325d083c7c7220886b7887515a",
+    "updatedAt": "2026-10-08T06:10:18.745Z"
+  },
+  {
     "id": "DEV-20261008-186196b",
     "date": "2026-10-08",
     "title": "Preserve project state through Renovation BIM return",
