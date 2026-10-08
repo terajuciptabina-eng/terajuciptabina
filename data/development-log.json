@@ -517,6 +517,17 @@
     "updatedAt": "2026-10-08T08:38:59.786Z"
   },
   {
+    "id": "DEV-20261008-97ad933",
+    "date": "2026-10-08",
+    "title": "Revise Investor Overview from full TERAJUWORKS product audit",
+    "module": "Investor",
+    "status": "Completed",
+    "summary": "Revise Investor Overview from full TERAJUWORKS product audit",
+    "details": "Automatic entry from commit 97ad933. Changed files: investor/index.html.",
+    "commit": "97ad933fbbeaa2603f9fba8feeffc8b288faba4f",
+    "updatedAt": "2026-10-08T13:37:04.368Z"
+  },
+  {
     "id": "DEV-20261008-94ebb48",
     "date": "2026-10-08",
     "title": "Update Archicad class slot SLOT-20261008094135-X4YD",
