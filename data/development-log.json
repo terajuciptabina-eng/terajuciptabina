@@ -473,6 +473,17 @@
     "updatedAt": "2026-10-08T06:37:38.190Z"
   },
   {
+    "id": "DEV-20261008-42939d6",
+    "date": "2026-10-08",
+    "title": "Implement Archicad booking fee and ToyyibPay class payments",
+    "module": "Admin / Rate Management",
+    "status": "Completed",
+    "summary": "Implement Archicad booking fee and ToyyibPay class payments",
+    "details": "Automatic entry from commit 42939d6. Changed files: TerajuWorks/admin-class-registration.html, api/class-management.js, kelas-archicad/register.html.",
+    "commit": "42939d6c85b0630c58f911bec5e006962eeea80d",
+    "updatedAt": "2026-10-08T07:32:45.204Z"
+  },
+  {
     "id": "DEV-20261008-426f766",
     "date": "2026-10-08",
     "title": "Reorder Archicad class navigation",
