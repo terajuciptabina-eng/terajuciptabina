@@ -748,6 +748,17 @@
     "updatedAt": "2026-10-08T05:59:56.348Z"
   },
   {
+    "id": "DEV-20261008-0558429",
+    "date": "2026-10-08",
+    "title": "Add Archicad class slot SLOT-20261008081257-WE7Z",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Add Archicad class slot SLOT-20261008081257-WE7Z",
+    "details": "Automatic entry from commit 0558429. Changed files: data/class-slots.json.",
+    "commit": "0558429b0ec76a979e630e831cd97e57e7ef9632",
+    "updatedAt": "2026-10-08T08:13:15.687Z"
+  },
+  {
     "id": "DEV-20261007-fd71608",
     "date": "2026-10-07",
     "title": "Align BIM import UX with AI Floor Plan flow",
