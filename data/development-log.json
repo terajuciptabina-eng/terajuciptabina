@@ -297,6 +297,17 @@
     "updatedAt": "2026-10-08T05:09:54.928Z"
   },
   {
+    "id": "DEV-20261008-661369b",
+    "date": "2026-10-08",
+    "title": "Show remaining capacity for Archicad class slots",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Show remaining capacity for Archicad class slots",
+    "details": "Automatic entry from commit 661369b. Changed files: api/class-slots.js.",
+    "commit": "661369b57d2265a05912cab190debe31930a233b",
+    "updatedAt": "2026-10-08T06:00:30.345Z"
+  },
+  {
     "id": "DEV-20261008-64138ad",
     "date": "2026-10-08",
     "title": "Add Archicad class slot management API",
