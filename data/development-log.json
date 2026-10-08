@@ -1,5 +1,16 @@
 [
   {
+    "id": "DEV-20261008-fcdeef2",
+    "date": "2026-10-08",
+    "title": "Harden Archicad cash payment button handling",
+    "module": "Admin / Rate Management",
+    "status": "Completed",
+    "summary": "Harden Archicad cash payment button handling",
+    "details": "Automatic entry from commit fcdeef2. Changed files: TerajuWorks/admin-class-registration.html.",
+    "commit": "fcdeef29776a0c7d23bbfe32fdbc6b671b49e379",
+    "updatedAt": "2026-10-08T08:57:26.308Z"
+  },
+  {
     "id": "DEV-20261008-fca6afe",
     "date": "2026-10-08",
     "title": "Fix Archicad cash payment modal initialization order",
