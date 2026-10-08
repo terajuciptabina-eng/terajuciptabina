@@ -66,6 +66,17 @@
     "updatedAt": "2026-10-08T06:48:04.843Z"
   },
   {
+    "id": "DEV-20261008-ef253c4",
+    "date": "2026-10-08",
+    "title": "Fix class payment operation dispatch",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Fix class payment operation dispatch",
+    "details": "Automatic entry from commit ef253c4. Changed files: api/class-management.js.",
+    "commit": "ef253c482de1c7e6ebfca0d95f8ca6ae3e896bc7",
+    "updatedAt": "2026-10-08T09:12:10.245Z"
+  },
+  {
     "id": "DEV-20261008-ed1d989",
     "date": "2026-10-08",
     "title": "Save renovation quotation Q004 (EST-REN-004-S)",
