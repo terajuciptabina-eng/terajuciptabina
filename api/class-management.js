@@ -121,6 +121,25 @@ export default async function handler(req,res){
     throw new Error('Unable to update class registration.');
   }
 
+  async function uploadStudentDocument(item,document){
+    const token=String(process.env.BLOB_READ_WRITE_TOKEN||'').trim();
+    if(!token)throw new Error('Student document storage is not configured.');
+    const filename=String(document.name||'student-document').replace(/[^a-zA-Z0-9._-]/g,'_').slice(0,160);
+    const pathname='archicad-student-documents/'+item.id+'/'+filename;
+    const response=await fetch('https://blob.vercel-storage.com/?pathname='+encodeURIComponent(pathname),{
+      method:'PUT',
+      headers:{
+        Authorization:'Bearer '+token,
+        'x-api-version':'7',
+        'Content-Type':String(document.type||'application/octet-stream'),
+        'x-vercel-blob-access':'private'
+      },
+      body:Buffer.from(String(document.data||''),'base64')
+    });
+    if(!response.ok)throw new Error('Unable to store student verification document.');
+    return{pathname,uploadedAt:new Date().toISOString(),originalName:filename,mimeType:String(document.type||'')};
+  }
+
   async function getRegistration(id){
     const store=await readArray(REG_PATH);
     const index=store.items.findIndex(item=>String(item.id)===String(id));
@@ -247,6 +266,13 @@ export default async function handler(req,res){
         }
 
         const type=String(body.type).trim();
+        if(type==='Student'){
+          if(!body.studentDocument)return res.status(400).json({message:'Student perlu melampirkan Student Card atau dokumen rasmi yang membuktikan status masih student.'});
+          const document=body.studentDocument;
+          const allowedTypes=['application/pdf','image/jpeg','image/png'];
+          if(!allowedTypes.includes(String(document.type||'')))return res.status(400).json({message:'Dokumen student mestilah PDF, JPG/JPEG atau PNG.'});
+          if(Buffer.byteLength(String(document.data||''),'base64')>5*1024*1024)return res.status(400).json({message:'Saiz dokumen student maksimum ialah 5MB.'});
+        }
         if(!['Individual','Kontraktor','Arkitek','Student'].includes(type)){
           return res.status(400).json({message:'Invalid participant category.'});
         }
@@ -309,9 +335,13 @@ export default async function handler(req,res){
           payment:'',
           paymentStatus:'Booking Fee Pending',
           paymentMethod:'',
-          paymentToken:now.replace(/\D/g,'')+'-'+Math.random().toString(36).slice(2)+Math.random().toString(36).slice(2)
+          paymentToken:now.replace(/\D/g,'')+'-'+Math.random().toString(36).slice(2)+Math.random().toString(36).slice(2),
+          bookingFeeRefundable:false
         };
 
+        if(type==='Student'){
+          item.studentVerification=await uploadStudentDocument(item,body.studentDocument);
+        }
         registrationStore.items.unshift(item);
         await writeArray(REG_PATH,registrationStore.items,registrationStore.sha,'New Archicad class registration '+id);
         return res.status(201).json({ok:true,item});
