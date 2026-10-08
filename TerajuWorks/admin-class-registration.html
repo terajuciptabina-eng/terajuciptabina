@@ -30,6 +30,7 @@ const $=id=>document.getElementById(id);
 const headers=()=>({'X-Admin-Username':sessionStorage.getItem(USER)||'','X-Admin-Password':sessionStorage.getItem(KEY)||'','Content-Type':'application/json'});
 let records=[],editing=null,cashRecord=null,loading=false;
 const esc=value=>String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+const formatClassDate=value=>{const d=new Date(String(value||'')+'T00:00:00');return Number.isNaN(d.getTime())?String(value||''):new Intl.DateTimeFormat('ms-MY',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).format(d)};
 const money=value=>'RM'+Number(value||0).toLocaleString('en-MY',{minimumFractionDigits:0,maximumFractionDigits:2});
 const tag=value=>{const text=String(value||''),cls=text.toLowerCase().replace(/\s+/g,'').replace('bookingfeepaid','confirmed').replace('fullypaid','paid').replace('bookingfeepending','pending');return '<span class="tag '+cls+'">'+esc(text)+'</span>'};
 
@@ -57,7 +58,7 @@ function render(){
   list.forEach(item=>{
     const canCash=Number(item.balanceDue||0)>0&&item.status!=='Cancelled';
     const canBalance=Number(item.balanceDue||0)>0&&item.paymentStatus==='Booking Fee Paid'&&item.status!=='Cancelled';
-    html+='<tr><td><b>'+esc(item.id)+'</b></td><td><b>'+esc(item.name)+'</b><br>'+esc(item.phone)+'<br>'+esc(item.email)+'</td><td>'+esc(item.type)+'</td><td>'+esc(item.slotLabel||item.mode||'-')+'</td><td>'+money(item.totalFee)+'</td><td>'+money(item.bookingPaid)+' / '+money(item.bookingFee)+'</td><td>'+money(item.balanceDue)+'</td><td>'+tag(item.paymentStatus)+'</td><td>'+esc(item.paymentMethod||'—')+'</td><td>'+tag(item.status)+'</td><td><div class="actions"><button type="button" data-action="edit" data-id="'+esc(item.id)+'">Edit</button>'+(canCash?'<button type="button" class="cash" data-action="cash" data-id="'+esc(item.id)+'">Cash Payment</button>':'')+(canBalance?'<button type="button" data-action="balance" data-id="'+esc(item.id)+'">Balance Link</button>':'')+'<button type="button" class="danger" data-action="delete" data-id="'+esc(item.id)+'">Delete</button></div></td></tr>';
+    html+='<tr><td><b>'+esc(item.id)+'</b></td><td><b>'+esc(item.name)+'</b><br>'+esc(item.phone)+'<br>'+esc(item.email)+'</td><td>'+esc(item.type)+'</td><td>'+esc((item.date?formatClassDate(item.date)+' · ':'')+(item.startTime&&item.endTime?item.startTime+'–'+item.endTime+' · ':'')+(item.mode||item.slotLabel||'-'))+'</td><td>'+money(item.totalFee)+'</td><td>'+money(item.bookingPaid)+' / '+money(item.bookingFee)+'</td><td>'+money(item.balanceDue)+'</td><td>'+tag(item.paymentStatus)+'</td><td>'+esc(item.paymentMethod||'—')+'</td><td>'+tag(item.status)+'</td><td><div class="actions"><button type="button" data-action="edit" data-id="'+esc(item.id)+'">Edit</button>'+(canCash?'<button type="button" class="cash" data-action="cash" data-id="'+esc(item.id)+'">Cash Payment</button>':'')+(canBalance?'<button type="button" data-action="balance" data-id="'+esc(item.id)+'">Balance Link</button>':'')+'<button type="button" class="danger" data-action="delete" data-id="'+esc(item.id)+'">Delete</button></div></td></tr>';
   });
   $('table').innerHTML=html+'</tbody></table>';
 }
