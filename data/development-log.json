@@ -583,6 +583,17 @@
     "updatedAt": "2026-10-08T07:19:00.808Z"
   },
   {
+    "id": "DEV-20261008-78c87c1",
+    "date": "2026-10-08",
+    "title": "Delete Archicad class slot SLOT-20261008081257-WE7Z",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Delete Archicad class slot SLOT-20261008081257-WE7Z",
+    "details": "Automatic entry from commit 78c87c1. Changed files: data/class-slots.json.",
+    "commit": "78c87c14d602a348fb405ef9b05791658b1f1b43",
+    "updatedAt": "2026-10-08T10:39:11.417Z"
+  },
+  {
     "id": "DEV-20261008-758aa46",
     "date": "2026-10-08",
     "title": "Save build quotation Q018 (EST-BLD-018-S)",
