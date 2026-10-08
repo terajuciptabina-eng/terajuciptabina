@@ -330,6 +330,17 @@
     "updatedAt": "2026-10-08T05:58:20.046Z"
   },
   {
+    "id": "DEV-20261008-49832e1",
+    "date": "2026-10-08",
+    "title": "Fix Vercel Hobby function limit by consolidating payment APIs",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Fix Vercel Hobby function limit by consolidating payment APIs",
+    "details": "Automatic entry from commit 49832e1. Changed files: api/create-payment.js, api/payment-callback.js, api/payment.js, api/verify-payment.js, vercel.json.",
+    "commit": "49832e1a01ebd408e80d8d75d47a901d3cf7893c",
+    "updatedAt": "2026-10-08T06:27:02.698Z"
+  },
+  {
     "id": "DEV-20261008-3fd3584",
     "date": "2026-10-08",
     "title": "Add Archicad class registration infrastructure: kelas-archicad/archicad-hero.svg",
