@@ -539,6 +539,17 @@
     "updatedAt": "2026-10-08T05:09:54.928Z"
   },
   {
+    "id": "DEV-20261008-6ae148d",
+    "date": "2026-10-08",
+    "title": "Delete Archicad class registration ARC-20261008091000-S1HO",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Delete Archicad class registration ARC-20261008091000-S1HO",
+    "details": "Automatic entry from commit 6ae148d. Changed files: data/class-registrations.json.",
+    "commit": "6ae148db973e32199cef55aca825d34b4180fa93",
+    "updatedAt": "2026-10-08T09:27:05.877Z"
+  },
+  {
     "id": "DEV-20261008-6986d18",
     "date": "2026-10-08",
     "title": "Fix Archicad class slot modes and class API",
