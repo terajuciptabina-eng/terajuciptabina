@@ -20,6 +20,10 @@ export default async function handler(req,res){
 
   const slotsPath='data/class-slots.json';
   const registrationsPath='data/class-registrations.json';
+  const SLOT_MODES=['Online','Fizikal','Online dan Fizikal'];
+  const ATTENDANCE_MODES=['Online','Fizikal'];
+  const normalizeSlotMode=value=>String(value||'').trim()==='Pejabat Teraju Ciptabina Resources'?'Fizikal':String(value||'').trim();
+  const slotSupportsMode=(slotMode,attendance)=>{const m=normalizeSlotMode(slotMode);return m===attendance||m==='Online dan Fizikal';};
   const ghHeaders={Authorization:`Bearer ${token}`,Accept:'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'};
 
   async function github(path,options={}){
@@ -54,7 +58,7 @@ export default async function handler(req,res){
           .sort((a,b)=>String(a.date+' '+a.startTime).localeCompare(String(b.date+' '+b.startTime)))
           .map(x=>{
             const booked=registrations.filter(r=>r.slotId===x.id&&r.status!=='Cancelled').reduce((n,r)=>n+(parseInt(r.pax,10)||1),0);
-            return{...x,booked,remaining:Math.max(0,Number(x.capacity)-booked)};
+            return{...x,mode:normalizeSlotMode(x.mode),booked,remaining:Math.max(0,Number(x.capacity)-booked)};
           })
           .filter(x=>isAdmin||x.remaining>0);
         return res.status(200).json({ok:true,items,generatedAt:new Date().toISOString()});
@@ -66,9 +70,11 @@ export default async function handler(req,res){
       if(req.method==='POST'){
         if(!String(body.date||'').trim()||!String(body.startTime||'').trim()||!String(body.endTime||'').trim()||!String(body.mode||'').trim()||!String(body.capacity||'').trim())
           return res.status(400).json({message:'Date, time, mode and capacity are required.'});
+        const slotMode=normalizeSlotMode(body.mode);
+        if(!SLOT_MODES.includes(slotMode))return res.status(400).json({message:'Invalid class mode.'});
         const now=new Date().toISOString();
         const id='SLOT-'+now.replace(/\D/g,'').slice(0,14)+'-'+Math.random().toString(36).slice(2,6).toUpperCase();
-        const slot={id,date:String(body.date).trim(),startTime:String(body.startTime).trim(),endTime:String(body.endTime).trim(),mode:String(body.mode).trim(),capacity:Math.max(1,Number(body.capacity)||1),active:body.active!==false,notes:String(body.notes||'').trim(),createdAt:now,updatedAt:now};
+        const slot={id,date:String(body.date).trim(),startTime:String(body.startTime).trim(),endTime:String(body.endTime).trim(),mode:slotMode,capacity:Math.max(1,Number(body.capacity)||1),active:body.active!==false,notes:String(body.notes||'').trim(),createdAt:now,updatedAt:now};
         s.items.push(slot);
         const saved=await save(slotsPath,s.items,s.sha,`Add Archicad class slot ${id}`);
         return res.status(201).json({ok:true,item:slot,commitSha:saved?.commit?.sha||null});
@@ -79,6 +85,7 @@ export default async function handler(req,res){
       if(index<0)return res.status(404).json({message:'Class slot not found.'});
 
       if(req.method==='PUT'){
+        if(body.mode!==undefined){const slotMode=normalizeSlotMode(body.mode);if(!SLOT_MODES.includes(slotMode))return res.status(400).json({message:'Invalid class mode.'});body.mode=slotMode;}
         for(const k of ['date','startTime','endTime','mode','notes'])if(body[k]!==undefined)s.items[index][k]=String(body[k]??'').trim();
         if(body.capacity!==undefined)s.items[index].capacity=Math.max(1,Number(body.capacity)||1);
         if(body.active!==undefined)s.items[index].active=Boolean(body.active);
@@ -96,39 +103,7 @@ export default async function handler(req,res){
       return res.status(405).json({message:'Method not allowed.'});
     }
 
-    
-    if(resource==='payment'){
-      const money=n=>Math.round(Number(n||0)*100)/100;
-      const fields=x=>{const total=money(x.totalFee),booking=money(x.bookingFee||50*(parseInt(x.pax,10)||1)),bookingPaid=money(x.bookingPaid),balancePaid=money(x.balancePaid),balanceDue=money(Math.max(0,total-bookingPaid-balancePaid));return{totalFee:total,bookingFee:booking,bookingPaid,balancePaid,balanceDue,paymentStatus:String(x.paymentStatus||((bookingPaid>=booking)?(balanceDue<=0?'Fully Paid':'Booking Fee Paid'):'Booking Fee Pending'))}};
-      const okStatus=s=>['1','success','successful','paid'].includes(String(s??'').trim().toLowerCase());
-      const amountOk=(a,e)=>{const n=Number(a);return Number.isFinite(n)&&(Math.round(n)===Math.round(Number(e)*100)||Math.abs(n-Number(e))<.0001)};
-      const apply=(x,type,amount,ref,bill)=>{amount=money(amount);if(type==='booking'){x.bookingPaid=money(Math.max(Number(x.bookingPaid||0),amount));x.bookingPaidAt=new Date().toISOString();x.bookingPaymentRef=String(ref||'');x.bookingBillCode=String(bill||x.bookingBillCode||'')}else{x.balancePaid=money(Math.min(Number(x.balanceDue||0),Number(x.balancePaid||0)+amount));x.balancePaidAt=new Date().toISOString();x.balancePaymentRef=String(ref||'');x.balanceBillCode=String(bill||x.balanceBillCode||'')}const p=fields(x);x.balanceDue=p.balanceDue;x.paymentStatus=p.balanceDue<=0?'Fully Paid':(p.bookingPaid>=p.bookingFee?'Booking Fee Paid':'Booking Fee Pending');x.payment=x.paymentStatus;if(x.status!=='Cancelled')x.status=x.paymentStatus==='Fully Paid'?'Paid':(x.paymentStatus==='Booking Fee Paid'?'Confirmed':'Pending');x.updatedAt=new Date().toISOString()};
-      const update=async(id,mutator,msg)=>{for(let n=0;n<2;n++){const s=await read(registrationsPath),i=s.items.findIndex(x=>String(x.id)===String(id));if(i<0)return null;if(mutator(s.items[i])===false)return s.items[i];try{await save(registrationsPath,s.items,s.sha,msg);return s.items[i]}catch(e){if(e.status===409&&n===0)continue;throw e}}throw new Error('Unable to update class payment.')};
-      const find=async id=>{const s=await read(registrationsPath),i=s.items.findIndex(x=>String(x.id)===String(id));return{s,item:i<0?null:s.items[i]}};
-      const createBill=async(x,type,amount)=>{const sk=process.env.TOYYIBPAY_SECRET_KEY,cc=process.env.TOYYIBPAY_CATEGORY_CODE;if(!sk||!cc)throw new Error('ToyyibPay payment configuration is incomplete.');const ret='https://terajuciptabina-eng.github.io/terajuciptabina/kelas-archicad/register.html?payment=return&paymentType='+encodeURIComponent(type)+'&registration='+encodeURIComponent(x.id)+'&token='+encodeURIComponent(x.paymentToken);const fd=new URLSearchParams();fd.append('userSecretKey',sk);fd.append('categoryCode',cc);fd.append('billName',type==='booking'?'Archicad Booking Fee':'Archicad Balance Payment');fd.append('billDescription',type==='booking'?'Archicad booking fee':'Archicad class balance');fd.append('billPriceSetting','1');fd.append('billPayorInfo','1');fd.append('billAmount',String(Math.round(Number(amount)*100)));fd.append('billReturnUrl',ret);fd.append('billCallbackUrl',String(process.env.PUBLIC_BASE_URL||'https://terajuciptabina.vercel.app').replace(/\/$/,'')+'/api/class-payment-callback');fd.append('billExternalReferenceNo',x.id+'-'+type);fd.append('billTo',String(x.name||'Participant'));fd.append('billEmail',String(x.email||''));fd.append('billPhone',String(x.phone||''));fd.append('billContentEmail','0');fd.append('billChargeToCustomer','0');fd.append('billExpiryDays','1');const r=await fetch('https://toyyibpay.com/index.php/api/createBill',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:fd.toString()}),out=await r.json();if(!Array.isArray(out)||!out[0]?.BillCode)throw new Error(out?.msg||'Unable to create ToyyibPay payment.');const billCode=String(out[0].BillCode);return{billCode,paymentUrl:'https://toyyibpay.com/'+billCode}};
-      const verifyBill=async(code,expected,order)=>{const sk=process.env.TOYYIBPAY_SECRET_KEY;if(!sk)throw new Error('ToyyibPay payment configuration is incomplete.');const fd=new URLSearchParams();fd.append('billCode',code);fd.append('userSecretKey',sk);const r=await fetch('https://toyyibpay.com/index.php/api/getBillTransactions',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:fd.toString()}),out=await r.json();if(!Array.isArray(out))return null;return out.find(t=>okStatus(t.billpaymentStatus??t.status??t.status_id??'')&&amountOk(t.billpaymentAmount??t.amount??0,expected)&&(!String(t.order_id??t.orderId??t.externalReferenceNo??'')||String(t.order_id??t.orderId??t.externalReferenceNo)===String(order)))||null};
-      const operation=String(req.query?.operation||'').trim().toLowerCase();if(!['create','verify','callback'].includes(operation))return res.status(404).json({message:'Class payment operation not found.'});
-      if(operation==='callback'){
-        if(req.method!=='POST')return res.status(405).json({message:'Method not allowed.'});
-        const b=bodyData(),sk=process.env.TOYYIBPAY_SECRET_KEY;if(!sk)return res.status(500).json({message:'ToyyibPay payment configuration is incomplete.'});
-        const hash=(await import('crypto')).createHash('md5').update(sk+String(b.status||'')+String(b.order_id||'')+String(b.refno||'')+'ok').digest('hex');if(String(b.hash||'').toLowerCase()!==hash.toLowerCase())return res.status(400).json({message:'Invalid callback signature.'});
-        if(!okStatus(b.status))return res.status(200).json({success:true,ignored:true});const m=String(b.order_id||'').match(/^(ARC-\d{14}-[A-Z0-9]{4})-(booking|balance)$/i);if(!m)return res.status(400).json({message:'Invalid payment reference.'});
-        const id=m[1],type=String(m[2]).toLowerCase(),found=await find(id);if(!found.item)return res.status(404).json({message:'Registration not found.'});
-        const p=fields(found.item),expected=type==='booking'?p.bookingFee:p.balanceDue;if(expected<=0)return res.status(200).json({success:true,alreadyPaid:true});
-        const stored=type==='booking'?String(found.item.bookingBillCode||''):String(found.item.balanceBillCode||'');if(stored&&stored!==String(b.billcode||''))return res.status(400).json({message:'Payment bill does not match the registration.'});if(!amountOk(b.amount,expected))return res.status(400).json({message:'Payment amount does not match the expected amount.'});
-        await update(id,x=>{const e=type==='booking'?money(Math.max(0,x.bookingFee-money(x.bookingPaid))):money(x.balanceDue);if(e<=0||!amountOk(b.amount,e))return false;apply(x,type,e,b.refno,b.billcode)},'Update Archicad class payment callback '+id);return res.status(200).json({success:true});
-      }
-      if(req.method!=='POST')return res.status(405).json({message:'Method not allowed.'});
-      const b=bodyData(),id=String(b.registrationId||'').trim(),tokenValue=String(b.token||'').trim(),type=String(b.paymentType||'').trim().toLowerCase();if(!id||!['booking','balance'].includes(type))return res.status(400).json({message:'Registration and payment type are required.'});
-      const found=await find(id);if(!found.item)return res.status(404).json({message:'Registration not found.'});const x=found.item;if(x.status==='Cancelled')return res.status(409).json({message:'This registration has been cancelled.'});if(!isAdmin&&String(x.paymentToken||'')!==tokenValue)return res.status(401).json({message:'Invalid payment access token.'});
-      if(operation==='create'){
-        const p=fields(x);if(type==='balance'&&p.bookingPaid<p.bookingFee)return res.status(409).json({message:'Booking fee must be paid before the balance can be paid.'});const amount=type==='booking'?money(p.bookingFee-p.bookingPaid):money(p.balanceDue);if(amount<=0)return res.status(200).json({success:true,alreadyPaid:true,registrationId:id,paymentType:type,paymentStatus:p.paymentStatus,balanceDue:p.balanceDue,bookingPaid:p.bookingPaid,balancePaid:p.balancePaid});
-        const existing=type==='booking'?String(x.bookingBillCode||''):String(x.balanceBillCode||'');if(existing)return res.status(200).json({success:true,registrationId:id,paymentType:type,billCode:existing,paymentUrl:'https://toyyibpay.com/'+existing,amount,paymentStatus:p.paymentStatus,balanceDue:p.balanceDue});
-        const bill=await createBill(x,type,amount);await update(id,z=>{if(type==='booking')z.bookingBillCode=bill.billCode;else z.balanceBillCode=bill.billCode},'Create Archicad '+type+' payment bill '+id);return res.status(200).json({success:true,registrationId:id,paymentType:type,billCode:bill.billCode,paymentUrl:bill.paymentUrl,amount,paymentStatus:p.paymentStatus,balanceDue:p.balanceDue});
-      }
-      const billCode=String(b.billCode||'').trim();if(!billCode)return res.status(400).json({paid:false,message:'Bill code is required.'});const stored=type==='booking'?String(x.bookingBillCode||''):String(x.balanceBillCode||'');if(stored&&stored!==billCode)return res.status(400).json({paid:false,message:'Bill code does not match the registration.'});const p=fields(x),expected=type==='booking'?money(p.bookingFee-p.bookingPaid):money(p.balanceDue);if(expected<=0)return res.status(200).json({paid:true,registrationId:id,paymentType:type,paymentStatus:p.paymentStatus,balanceDue:p.balanceDue,bookingPaid:p.bookingPaid,balancePaid:p.balancePaid});const tx=await verifyBill(billCode,expected,id+'-'+type);if(!tx)return res.status(200).json({paid:false,registrationId:id,paymentType:type,paymentStatus:p.paymentStatus,balanceDue:p.balanceDue,message:'Payment has not been verified.'});const actual=Number(tx.billpaymentAmount??tx.amount??expected),ref=String(tx.billpaymentInvoiceNo??tx.refno??tx.transaction_id??'');const updated=await update(id,z=>{const e=type==='booking'?money(Math.max(0,z.bookingFee-money(z.bookingPaid))):money(z.balanceDue);if(e<=0||!amountOk(actual,e))return false;apply(z,type,e,ref,billCode)},'Verify Archicad '+type+' payment '+id);if(!updated)return res.status(409).json({paid:false,message:'Payment was verified but the registration could not be updated yet.'});const final=fields(updated);return res.status(200).json({paid:true,registrationId:id,paymentType:type,billCode,paymentStatus:final.paymentStatus,balanceDue:final.balanceDue,bookingPaid:final.bookingPaid,balancePaid:final.balancePaid});
-    }
-const s=await read(registrationsPath);
+    const s=await read(registrationsPath);
 
     if(req.method!=='POST'&&!isAdmin)return res.status(401).json({message:'Unauthorized.'});
 
@@ -150,29 +125,42 @@ const s=await read(registrationsPath);
 
     if(req.method==='POST'){
       const required=['name','phone','email','type','pax','slotId','deviceConfirmed'];
-      if(required.some(k=>!String(body[k]??'').trim()))return res.status(400).json({message:'Please complete all required fields, including the laptop/MacBook confirmation.'});
-      const type=String(body.type).trim();
-      if(!['Individual','Kontraktor','Arkitek','Student'].includes(type))return res.status(400).json({message:'Invalid participant category.'});
-      const pax=parseInt(body.pax,10);
-      if(!Number.isInteger(pax)||pax<1||pax>50)return res.status(400).json({message:'Participant quantity must be between 1 and 50.'});
-      if(String(body.deviceConfirmed).toLowerCase()!=='true')return res.status(400).json({message:'Each participant must confirm that they will bring a laptop or MacBook.'});
-      const slotStore=await read(slotsPath),slot=slotStore.items.find(x=>String(x.id)===String(body.slotId)&&x.active!==false);
+      if(required.some(k=>!String(body[k]||'').trim()))return res.status(400).json({message:'Please complete all required fields, including the laptop/MacBook confirmation.'});
+
+      const slotStore=await read(slotsPath);
+      const slot=slotStore.items.find(x=>String(x.id)===String(body.slotId)&&x.active!==false);
       if(!slot)return res.status(400).json({message:'Selected class slot is no longer available.'});
+
       const used=s.items.filter(x=>x.slotId===slot.id&&x.status!=='Cancelled').reduce((n,x)=>n+(parseInt(x.pax,10)||1),0);
+      const pax=parseInt(body.pax,10)||1;
       if(used+pax>Number(slot.capacity))return res.status(409).json({message:'This class slot is full. Please choose another slot.'});
-      if(String(body.mode||'')!==String(slot.mode))return res.status(400).json({message:'Selected class mode does not match the class slot.'});
-      const classFeePerPax=type==='Student'?100:400,totalFee=classFeePerPax*pax,bookingFee=50*pax,now=new Date().toISOString(),id='ARC-'+now.replace(/\D/g,'').slice(0,14)+'-'+Math.random().toString(36).slice(2,6).toUpperCase(),paymentToken=now.replace(/\D/g,'')+'-'+Math.random().toString(36).slice(2)+Math.random().toString(36).slice(2);
-      const item={id,status:'Pending',createdAt:now,updatedAt:now,name:String(body.name).trim(),phone:String(body.phone).trim(),email:String(body.email).trim(),type,pax:String(pax),company:String(body.company||'').trim(),occupation:String(body.occupation||'').trim(),mode:String(slot.mode),slotId:String(slot.id),slotLabel:String(slot.date)+' · '+String(slot.startTime)+'-'+String(slot.endTime)+' · '+String(slot.mode),date:String(slot.date),experience:String(body.experience||'').trim(),laptop:'Mandatory — participant will bring laptop/MacBook',deviceConfirmed:true,source:String(body.source||'').trim(),notes:String(body.notes||'').trim(),classFeePerPax,totalFee,bookingFee,bookingPaid:0,bookingPaidAt:null,bookingPaymentRef:'',bookingBillCode:'',balanceDue:totalFee,balancePaid:0,balancePaidAt:null,balancePaymentRef:'',balanceBillCode:'',paymentStatus:'Booking Fee Pending',payment:'Booking Fee Pending',paymentToken};
-      s.items.unshift(item);const saved=await save(registrationsPath,s.items,s.sha,'New Archicad class registration '+id);
+      const attendanceMode=String(body.mode||'').trim();
+      if(!ATTENDANCE_MODES.includes(attendanceMode))return res.status(400).json({message:'Invalid attendance mode.'});
+      if(!slotSupportsMode(slot.mode,attendanceMode))return res.status(400).json({message:'Selected class slot does not support this attendance mode.'});
+      if(String(body.deviceConfirmed).toLowerCase()!=='true')return res.status(400).json({message:'Each participant must confirm that they will bring a laptop or MacBook.'});
+
+      const now=new Date().toISOString();
+      const id='ARC-'+now.replace(/\D/g,'').slice(0,14)+'-'+Math.random().toString(36).slice(2,6).toUpperCase();
+      const item={id,status:'Pending',createdAt:now,updatedAt:now,name:String(body.name).trim(),phone:String(body.phone).trim(),email:String(body.email).trim(),type:String(body.type).trim(),pax:String(body.pax).trim(),company:String(body.company||'').trim(),occupation:String(body.occupation||'').trim(),mode:attendanceMode,slotMode:normalizeSlotMode(slot.mode),slotId:String(slot.id),slotLabel:`${slot.date} · ${slot.startTime}-${slot.endTime} · ${normalizeSlotMode(slot.mode)} · ${attendanceMode}`,date:String(slot.date).trim(),experience:String(body.experience||'').trim(),laptop:'Mandatory — participant will bring laptop/MacBook',deviceConfirmed:true,payment:String(body.payment||'').trim(),source:String(body.source||'').trim(),notes:String(body.notes||'').trim()};
+      s.items.unshift(item);
+      const saved=await save(registrationsPath,s.items,s.sha,`New Archicad class registration ${id}`);
       return res.status(201).json({ok:true,item,commitSha:saved?.commit?.sha||null});
     }
-const id=String(body.id||'').trim();
+
+    const id=String(body.id||'').trim();
     if(!id)return res.status(400).json({message:'Registration ID is required.'});
     const index=s.items.findIndex(x=>String(x.id)===id);
     if(index<0)return res.status(404).json({message:'Registration not found.'});
 
     if(req.method==='PUT'){
-      const allowed=['name','phone','email','type','pax','company','occupation','mode','slotId','slotLabel','date','experience','laptop','payment','source','notes','status'];
+      const requestedMode=body.mode!==undefined?String(body.mode).trim():String(s.items[index].mode||'');
+      if(!ATTENDANCE_MODES.includes(requestedMode))return res.status(400).json({message:'Invalid attendance mode.'});
+      const selectedSlotId=body.slotId!==undefined?String(body.slotId).trim():String(s.items[index].slotId||'');
+      const selectedStore=await read(slotsPath),selectedSlot=selectedStore.items.find(x=>String(x.id)===selectedSlotId&&x.active!==false);
+      if(!selectedSlot)return res.status(400).json({message:'Selected class slot is not available.'});
+      if(!slotSupportsMode(selectedSlot.mode,requestedMode))return res.status(400).json({message:'Selected class slot does not support this attendance mode.'});
+      body.mode=requestedMode;body.slotId=selectedSlotId;body.slotMode=normalizeSlotMode(selectedSlot.mode);body.slotLabel=String(selectedSlot.date)+' · '+String(selectedSlot.startTime)+'-'+String(selectedSlot.endTime)+' · '+normalizeSlotMode(selectedSlot.mode)+' · '+requestedMode;body.date=String(selectedSlot.date);
+      const allowed=['name','phone','email','type','pax','company','occupation','mode','slotId','slotMode','slotLabel','date','experience','laptop','deviceConfirmed','payment','source','notes','status'];
       for(const k of allowed)if(body[k]!==undefined)s.items[index][k]=String(body[k]??'').trim();
       s.items[index].updatedAt=new Date().toISOString();
       const saved=await save(registrationsPath,s.items,s.sha,`Update Archicad class registration ${id}`);
@@ -185,7 +173,26 @@ const id=String(body.id||'').trim();
       return res.status(200).json({ok:true,id,commitSha:saved?.commit?.sha||null});
     }
 
-    return res.status(405).json({message:'Method not allowed.'});
+    return res.status(405).json({message:'Method not allowed.'});    if(resource==='payment'){
+      const crypto=await import('crypto');
+      const money=n=>Math.round(Number(n||0)*100)/100;
+      const fields=x=>{const total=money(x.totalFee),booking=money(x.bookingFee||50*(parseInt(x.pax,10)||1)),bookingPaid=money(x.bookingPaid),balancePaid=money(x.balancePaid),balanceDue=money(Math.max(0,total-bookingPaid-balancePaid));return{totalFee:total,bookingFee:booking,bookingPaid,balancePaid,balanceDue,paymentStatus:String(x.paymentStatus||((bookingPaid>=booking)?(balanceDue<=0?'Fully Paid':'Booking Fee Paid'):'Booking Fee Pending'))}};
+      const okStatus=s=>['1','success','successful','paid'].includes(String(s??'').trim().toLowerCase());
+      const amountOk=(a,e)=>{const n=Number(a);return Number.isFinite(n)&&(Math.round(n)===Math.round(Number(e)*100)||Math.abs(n-Number(e))<.0001)};
+      const apply=(x,type,amount,ref,bill)=>{if(type==='booking'){x.bookingPaid=money(Math.max(Number(x.bookingPaid||0),money(amount)));x.bookingPaidAt=new Date().toISOString();x.bookingPaymentRef=String(ref||'');x.bookingBillCode=String(bill||x.bookingBillCode||'')}else{x.balancePaid=money(Math.min(Number(x.balanceDue||0),Number(x.balancePaid||0)+money(amount)));x.balancePaidAt=new Date().toISOString();x.balancePaymentRef=String(ref||'');x.balanceBillCode=String(bill||x.balanceBillCode||'')}const p=fields(x);x.balanceDue=p.balanceDue;x.paymentStatus=p.balanceDue<=0?'Fully Paid':(p.bookingPaid>=p.bookingFee?'Booking Fee Paid':'Booking Fee Pending');x.payment=p.paymentStatus;if(x.status!=='Cancelled')x.status=x.paymentStatus==='Fully Paid'?'Paid':(x.paymentStatus==='Booking Fee Paid'?'Confirmed':'Pending');x.updatedAt=new Date().toISOString()};
+      const update=async(id,mutator,msg)=>{for(let n=0;n<2;n++){const s=await read(registrationsPath),i=s.items.findIndex(x=>String(x.id)===String(id));if(i<0)return null;if(mutator(s.items[i])===false)return s.items[i];try{await save(registrationsPath,s.items,s.sha,msg);return s.items[i]}catch(e){if(e.status===409&&n===0)continue;throw e}}throw new Error('Unable to update class payment.')};
+      const find=async id=>{const s=await read(registrationsPath),i=s.items.findIndex(x=>String(x.id)===String(id));return{s,item:i<0?null:s.items[i]}};
+      const createBill=async(x,type,amount)=>{const sk=process.env.TOYYIBPAY_SECRET_KEY,cc=process.env.TOYYIBPAY_CATEGORY_CODE;if(!sk||!cc)throw new Error('ToyyibPay payment configuration is incomplete.');const ret='https://terajuciptabina-eng.github.io/terajuciptabina/kelas-archicad/register.html?payment=return&paymentType='+encodeURIComponent(type)+'&registration='+encodeURIComponent(x.id)+'&token='+encodeURIComponent(x.paymentToken);const fd=new URLSearchParams();fd.append('userSecretKey',sk);fd.append('categoryCode',cc);fd.append('billName',type==='booking'?'Archicad Booking Fee':'Archicad Balance Payment');fd.append('billDescription',type==='booking'?'Archicad booking fee':'Archicad class balance');fd.append('billPriceSetting','1');fd.append('billPayorInfo','1');fd.append('billAmount',String(Math.round(Number(amount)*100)));fd.append('billReturnUrl',ret);fd.append('billCallbackUrl',String(process.env.PUBLIC_BASE_URL||'https://terajuciptabina.vercel.app').replace(/\/$/,'')+'/api/class-payment-callback');fd.append('billExternalReferenceNo',x.id+'-'+type);fd.append('billTo',String(x.name||'Participant'));fd.append('billEmail',String(x.email||''));fd.append('billPhone',String(x.phone||''));fd.append('billContentEmail','0');fd.append('billChargeToCustomer','0');fd.append('billExpiryDays','1');const r=await fetch('https://toyyibpay.com/index.php/api/createBill',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:fd.toString()}),out=await r.json();if(!Array.isArray(out)||!out[0]?.BillCode)throw new Error(out?.msg||'Unable to create ToyyibPay payment.');const billCode=String(out[0].BillCode);return{billCode,paymentUrl:'https://toyyibpay.com/'+billCode}};
+      const verifyBill=async(code,expected,order)=>{const sk=process.env.TOYYIBPAY_SECRET_KEY;if(!sk)throw new Error('ToyyibPay payment configuration is incomplete.');const fd=new URLSearchParams();fd.append('billCode',code);fd.append('userSecretKey',sk);const r=await fetch('https://toyyibpay.com/index.php/api/getBillTransactions',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:fd.toString()}),out=await r.json();if(!Array.isArray(out))return null;return out.find(t=>okStatus(t.billpaymentStatus??t.status??t.status_id??'')&&amountOk(t.billpaymentAmount??t.amount??0,expected)&&(!String(t.order_id??t.orderId??t.externalReferenceNo??'')||String(t.order_id??t.orderId??t.externalReferenceNo)===String(order)))||null};
+      const operation=String(req.query?.operation||'').trim().toLowerCase();if(!['create','verify','callback'].includes(operation))return res.status(404).json({message:'Class payment operation not found.'});
+      if(operation==='callback'){if(req.method!=='POST')return res.status(405).json({message:'Method not allowed.'});const b=bodyData(),sk=process.env.TOYYIBPAY_SECRET_KEY;if(!sk)return res.status(500).json({message:'ToyyibPay payment configuration is incomplete.'});const hash=crypto.createHash('md5').update(sk+String(b.status||'')+String(b.order_id||'')+String(b.refno||'')+'ok').digest('hex');if(String(b.hash||'').toLowerCase()!==hash.toLowerCase())return res.status(400).json({message:'Invalid callback signature.'});if(!okStatus(b.status))return res.status(200).json({success:true,ignored:true});const m=String(b.order_id||'').match(/^(ARC-\d{14}-[A-Z0-9]{4})-(booking|balance)$/i);if(!m)return res.status(400).json({message:'Invalid payment reference.'});const id=m[1],type=String(m[2]).toLowerCase(),found=await find(id);if(!found.item)return res.status(404).json({message:'Registration not found.'});const p=fields(found.item),expected=type==='booking'?p.bookingFee:p.balanceDue;if(expected<=0)return res.status(200).json({success:true,alreadyPaid:true});const stored=type==='booking'?String(found.item.bookingBillCode||''):String(found.item.balanceBillCode||'');if(stored&&stored!==String(b.billcode||''))return res.status(400).json({message:'Payment bill does not match the registration.'});if(!amountOk(b.amount,expected))return res.status(400).json({message:'Payment amount does not match the expected amount.'});await update(id,x=>{const e=type==='booking'?money(Math.max(0,x.bookingFee-money(x.bookingPaid))):money(x.balanceDue);if(e<=0||!amountOk(b.amount,e))return false;apply(x,type,e,b.refno,b.billcode)},'Update Archicad class payment callback '+id);return res.status(200).json({success:true});}
+      if(req.method!=='POST')return res.status(405).json({message:'Method not allowed.'});
+      const b=bodyData(),id=String(b.registrationId||'').trim(),tokenValue=String(b.token||'').trim(),type=String(b.paymentType||'').trim().toLowerCase();if(!id||!['booking','balance'].includes(type))return res.status(400).json({message:'Registration and payment type are required.'});
+      const found=await find(id);if(!found.item)return res.status(404).json({message:'Registration not found.'});const x=found.item;if(x.status==='Cancelled')return res.status(409).json({message:'This registration has been cancelled.'});if(!isAdmin&&String(x.paymentToken||'')!==tokenValue)return res.status(401).json({message:'Invalid payment access token.'});
+      if(operation==='create'){const p=fields(x);if(type==='balance'&&p.bookingPaid<p.bookingFee)return res.status(409).json({message:'Booking fee must be paid before the balance can be paid.'});const amount=type==='booking'?money(p.bookingFee-p.bookingPaid):money(p.balanceDue);if(amount<=0)return res.status(200).json({success:true,alreadyPaid:true,registrationId:id,paymentType:type,paymentStatus:p.paymentStatus,balanceDue:p.balanceDue,bookingPaid:p.bookingPaid,balancePaid:p.balancePaid});const existing=type==='booking'?String(x.bookingBillCode||''):String(x.balanceBillCode||'');if(existing)return res.status(200).json({success:true,registrationId:id,paymentType:type,billCode:existing,paymentUrl:'https://toyyibpay.com/'+existing,amount,paymentStatus:p.paymentStatus,balanceDue:p.balanceDue});const bill=await createBill(x,type,amount);await update(id,z=>{if(type==='booking')z.bookingBillCode=bill.billCode;else z.balanceBillCode=bill.billCode},'Create Archicad '+type+' payment bill '+id);return res.status(200).json({success:true,registrationId:id,paymentType:type,billCode:bill.billCode,paymentUrl:bill.paymentUrl,amount,paymentStatus:p.paymentStatus,balanceDue:p.balanceDue});}
+      const billCode=String(b.billCode||'').trim();if(!billCode)return res.status(400).json({paid:false,message:'Bill code is required.'});const stored=type==='booking'?String(x.bookingBillCode||''):String(x.balanceBillCode||'');if(stored&&stored!==billCode)return res.status(400).json({paid:false,message:'Bill code does not match the registration.'});const p=fields(x),expected=type==='booking'?money(p.bookingFee-p.bookingPaid):money(p.balanceDue);if(expected<=0)return res.status(200).json({paid:true,registrationId:id,paymentType:type,paymentStatus:p.paymentStatus,balanceDue:p.balanceDue,bookingPaid:p.bookingPaid,balancePaid:p.balancePaid});const tx=await verifyBill(billCode,expected,id+'-'+type);if(!tx)return res.status(200).json({paid:false,registrationId:id,paymentType:type,paymentStatus:p.paymentStatus,balanceDue:p.balanceDue,message:'Payment has not been verified.'});const actual=Number(tx.billpaymentAmount??tx.amount??expected),ref=String(tx.billpaymentInvoiceNo??tx.refno??tx.transaction_id??'');const updated=await update(id,z=>{const e=type==='booking'?money(Math.max(0,z.bookingFee-money(z.bookingPaid))):money(z.balanceDue);if(e<=0||!amountOk(actual,e))return false;apply(z,type,e,ref,billCode)},'Verify Archicad '+type+' payment '+id);if(!updated)return res.status(409).json({paid:false,message:'Payment was verified but the registration could not be updated yet.'});const final=fields(updated);return res.status(200).json({paid:true,registrationId:id,paymentType:type,billCode,paymentStatus:final.paymentStatus,balanceDue:final.balanceDue,bookingPaid:final.bookingPaid,balancePaid:final.balancePaid});
+    }
+
   }catch(error){
     console.error('class management error:',error);
     return res.status(500).json({message:error.message||'Unable to process class management request.'});
