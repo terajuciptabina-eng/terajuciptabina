@@ -330,6 +330,17 @@
     "updatedAt": "2026-10-07T18:37:47.777Z"
   },
   {
+    "id": "DEV-20261008-3aeaadc",
+    "date": "2026-10-08",
+    "title": "Show managed class slot in Archicad registrations",
+    "module": "Admin / Rate Management",
+    "status": "Completed",
+    "summary": "Show managed class slot in Archicad registrations",
+    "details": "Automatic entry from commit 3aeaadc. Changed files: TerajuWorks/admin-class-registration.html.",
+    "commit": "3aeaadcf5b67ba59375e05c4d4cf9c7481bb4f09",
+    "updatedAt": "2026-10-08T06:00:16.645Z"
+  },
+  {
     "id": "DEV-20261008-341f0e5",
     "date": "2026-10-08",
     "title": "Load corrected Room Area import receiver",
