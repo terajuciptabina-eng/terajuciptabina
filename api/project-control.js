@@ -15,6 +15,7 @@ export default async function handler(req, res) {
   const validPlanner = x => x === 'build' || x === 'renovation';
   const clean = x => String(x || '').trim();
   const pathFor = (id,type,qid) => `data/project-control/contractors/${encodeURIComponent(id)}/${encodeURIComponent(type)}/${encodeURIComponent(qid)}.json`;
+  const progressPathFor = (id,type,qid) => `data/project-control/contractors/${encodeURIComponent(id)}/${encodeURIComponent(type)}/${encodeURIComponent(qid)}.progress.json`;
 
   async function github(path, options={}) {
     const method=options.method||'GET';
@@ -35,6 +36,37 @@ export default async function handler(req, res) {
     return{record:content?JSON.parse(content):null,sha:x.data?.sha||null,status:200};
   }
 
+  async function readProgress(id,type,qid){
+    const x=await github(progressPathFor(id,type,qid),{ref:dataBranch});
+    if(x.response.status===404)return{progress:null,sha:null,status:404};
+    if(!x.response.ok)return{progress:null,sha:null,status:502};
+    const content=x.data?.content?Buffer.from(x.data.content,'base64').toString('utf8'):'';
+    return{progress:content?JSON.parse(content):null,sha:x.data?.sha||null,status:200};
+  }
+
+  async function saveProgress(id,type,qid,incoming){
+    const path=progressPathFor(id,type,qid);
+    let latest=await readProgress(id,type,qid);
+    const progress={schemaVersion:4,recordType:'progress',quotationId:qid,
+      history:incoming.history&&typeof incoming.history==='object'?incoming.history:{},
+      validDates:incoming.validDates&&typeof incoming.validDates==='object'?incoming.validDates:{},
+      updatedAt:new Date().toISOString()};
+    for(let attempt=0;attempt<5;attempt++){
+      const body={message:`Save progress ${type} ${qid}`,content:Buffer.from(JSON.stringify(progress,null,2)+'\\n').toString('base64'),branch:dataBranch};
+      if(latest.sha)body.sha=latest.sha;
+      const updated=await github(path,{method:'PUT',ref:dataBranch,body:JSON.stringify(body)});
+      if(updated.response.ok)return{progress,sha:updated.data?.content?.sha||latest.sha};
+      if(updated.response.status!==409){
+        const status=updated.response.status||502;
+        const message=typeof updated.data?.message==='string'?updated.data.message:'Unknown GitHub storage error.';
+        throw Object.assign(new Error(message),{githubStatus:status,githubData:updated.data});
+      }
+      latest=await readProgress(id,type,qid);
+      if(latest.status!==200&&latest.status!==404)throw Object.assign(new Error('Unable to refresh progress storage after a GitHub conflict.'),{githubStatus:502});
+    }
+    throw Object.assign(new Error('Progress save conflicted repeatedly with another progress write.'),{githubStatus:409});
+  }
+
   try{
     const source=req.method==='GET'||req.method==='DELETE'?req.query:(req.body||{});
     const id=clean(source?.id).toUpperCase();
@@ -43,7 +75,12 @@ export default async function handler(req, res) {
     if(!id||!validPlanner(type)||!quotationId)return res.status(400).json({message:'Missing contractor id, planner type or quotationId.'});
 
     const current=await read(id,type,quotationId);
-    if(req.method==='GET')return res.status(200).json({success:true,record:current.record});
+    if(req.method==='GET'){
+      const savedProgress=await readProgress(id,type,quotationId);
+      const merged=current.record?{...current.record}:null;
+      if(merged&&savedProgress.status===200&&savedProgress.progress)merged.progress=savedProgress.progress;
+      return res.status(200).json({success:true,record:merged});
+    }
 
     if(req.method==='DELETE'){
       if(!current.record)return res.status(404).json({message:'Project control record not found.'});
@@ -52,11 +89,27 @@ export default async function handler(req, res) {
         body:JSON.stringify({message:`Delete project control ${quotationId}`,sha:current.sha,branch:dataBranch})
       });
       if(!updated.response.ok)return res.status(502).json({message:'Unable to delete project control record.'});
+      const savedProgress=await readProgress(id,type,quotationId);
+      if(savedProgress.status===200&&savedProgress.sha){
+        const pd=await github(progressPathFor(id,type,quotationId),{method:'DELETE',ref:dataBranch,body:JSON.stringify({message:`Delete progress ${quotationId}`,sha:savedProgress.sha,branch:dataBranch})});
+        if(!pd.response.ok)console.warn('Project progress delete failed:',pd.data);
+      }
       return res.status(200).json({success:true,quotationId});
     }
 
     const payload=source?.record;
     if(!payload||typeof payload!=='object')return res.status(400).json({message:'Missing project control record.'});
+    if(payload.progress&&!payload.contract&&!payload.workProgram){
+      try{
+        const saved=await saveProgress(id,type,quotationId,payload.progress);
+        return res.status(200).json({success:true,record:{...(current.record||{schemaVersion:1,recordType:'project-control',contractorId:id,plannerType:type,quotationId}),progress:saved.progress}});
+      }catch(error){
+        const githubStatus=Number(error?.githubStatus)||502;
+        const githubMessage=error?.message||'Unknown GitHub storage error.';
+        console.error('Project progress write failed:',{status:githubStatus,message:githubMessage,github:error?.githubData});
+        return res.status(githubStatus===409?409:502).json({message:'Unable to save project progress.',storage:{provider:'github',status:githubStatus,detail:githubMessage}});
+      }
+    }
     const now=new Date().toISOString();
     const existing=current.record&&typeof current.record==='object'?current.record:{schemaVersion:1,recordType:'project-control',contractorId:id,plannerType:type,quotationId,createdAt:now};
     const record={...existing,schemaVersion:1,recordType:'project-control',contractorId:id,plannerType:type,quotationId,updatedAt:now};
