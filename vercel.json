@@ -5,6 +5,8 @@
     { "source": "/api/verify-payment", "destination": "/api/payment?route=verify" },
     { "source": "/api/payment-callback", "destination": "/api/payment?route=callback" },
     { "source": "/api/class-slots", "destination": "/api/class-management?resource=slots" },
-    { "source": "/api/class-registration", "destination": "/api/class-management?resource=registration" }
+    { "source": "/api/class-registration", "destination": "/api/class-management?resource=registration" },
+    { "source": "/api/class-payment", "destination": "/api/class-management?resource=payment" },
+    { "source": "/api/class-payment-callback", "destination": "/api/class-management?resource=payment&operation=callback" }
   ]
 }
