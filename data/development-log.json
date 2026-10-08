@@ -649,6 +649,17 @@
     "updatedAt": "2026-10-08T07:16:09.608Z"
   },
   {
+    "id": "DEV-20261008-5c7346a",
+    "date": "2026-10-08",
+    "title": "Record Archicad cash payment ARC-20261008093852-1R03",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Record Archicad cash payment ARC-20261008093852-1R03",
+    "details": "Automatic entry from commit 5c7346a. Changed files: data/class-registrations.json.",
+    "commit": "5c7346a66bd27851772df78b3542c8a51ff99959",
+    "updatedAt": "2026-10-08T09:40:09.907Z"
+  },
+  {
     "id": "DEV-20261008-51dc052",
     "date": "2026-10-08",
     "title": "Fix Archicad class registration API syntax",
