@@ -517,6 +517,17 @@
     "updatedAt": "2026-10-08T08:38:59.786Z"
   },
   {
+    "id": "DEV-20261008-944c2d3",
+    "date": "2026-10-08",
+    "title": "Delete Archicad class slot SLOT-20261008075202-Y9EB",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Delete Archicad class slot SLOT-20261008075202-Y9EB",
+    "details": "Automatic entry from commit 944c2d3. Changed files: data/class-slots.json.",
+    "commit": "944c2d3593afbfef43f3a5bb49fab87c7dbd12fe",
+    "updatedAt": "2026-10-08T11:14:04.425Z"
+  },
+  {
     "id": "DEV-20261008-9064fbf",
     "date": "2026-10-08",
     "title": "Delete Archicad class registration ARC-20261008092800-GOT3",
