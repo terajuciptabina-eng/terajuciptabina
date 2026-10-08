@@ -22,6 +22,17 @@
     "updatedAt": "2026-10-08T05:44:46.308Z"
   },
   {
+    "id": "DEV-20261008-f22161b",
+    "date": "2026-10-08",
+    "title": "Fix class registration legacy fee normalization and GitHub read errors",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Fix class registration legacy fee normalization and GitHub read errors",
+    "details": "Automatic entry from commit f22161b. Changed files: api/class-management.js.",
+    "commit": "f22161b042bc2e541b7958703dae59995efb7b51",
+    "updatedAt": "2026-10-08T08:43:54.916Z"
+  },
+  {
     "id": "DEV-20261008-f1ab439",
     "date": "2026-10-08",
     "title": "Add direct Archicad class registration link to homepage promo",
