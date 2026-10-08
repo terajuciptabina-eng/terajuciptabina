@@ -1,5 +1,16 @@
 [
   {
+    "id": "DEV-20261008-fca6afe",
+    "date": "2026-10-08",
+    "title": "Fix Archicad cash payment modal initialization order",
+    "module": "Admin / Rate Management",
+    "status": "Completed",
+    "summary": "Fix Archicad cash payment modal initialization order",
+    "details": "Automatic entry from commit fca6afe. Changed files: TerajuWorks/admin-class-registration.html.",
+    "commit": "fca6afe78ec717efb6b800f7c10ca664d46b907b",
+    "updatedAt": "2026-10-08T08:53:25.994Z"
+  },
+  {
     "id": "DEV-20261008-fbeaf83",
     "date": "2026-10-08",
     "title": "Add consistent action icons to room controls",
