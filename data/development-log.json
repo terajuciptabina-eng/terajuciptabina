@@ -176,6 +176,17 @@
     "updatedAt": "2026-10-07T19:10:20.660Z"
   },
   {
+    "id": "DEV-20261008-c058cfc",
+    "date": "2026-10-08",
+    "title": "Fix Archicad payment freeze and class slot mode flow",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Fix Archicad payment freeze and class slot mode flow",
+    "details": "Automatic entry from commit c058cfc. Changed files: api/class-management.js, kelas-archicad/register.html.",
+    "commit": "c058cfca73b9739b800238f34daf5b6e22d218de",
+    "updatedAt": "2026-10-08T08:00:12.826Z"
+  },
+  {
     "id": "DEV-20261008-bca76e7",
     "date": "2026-10-08",
     "title": "Create temporary homeowner account HME-20261008-VL3T",
