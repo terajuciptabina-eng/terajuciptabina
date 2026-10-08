@@ -363,6 +363,17 @@
     "updatedAt": "2026-10-08T06:27:02.698Z"
   },
   {
+    "id": "DEV-20261008-477565c",
+    "date": "2026-10-08",
+    "title": "Reorder Archicad class navigation",
+    "module": "Admin / Rate Management",
+    "status": "Completed",
+    "summary": "Reorder Archicad class navigation",
+    "details": "Automatic entry from commit 477565c. Changed files: TerajuWorks/admin-class-slots.html.",
+    "commit": "477565c0a4ae32365dd5f957a5671a40d59530ee",
+    "updatedAt": "2026-10-08T06:37:38.190Z"
+  },
+  {
     "id": "DEV-20261008-426f766",
     "date": "2026-10-08",
     "title": "Reorder Archicad class navigation",
