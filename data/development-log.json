@@ -1353,6 +1353,17 @@
     "updatedAt": "2026-10-08T08:13:15.687Z"
   },
   {
+    "id": "DEV-20261008-0459a6c",
+    "date": "2026-10-08",
+    "title": "fix: keep progress draft on save failure and show server error",
+    "module": "Project Control",
+    "status": "In Progress",
+    "summary": "fix: keep progress draft on save failure and show server error",
+    "details": "Automatic entry from commit 0459a6c. Changed files: TerajuWorks/progress.html.",
+    "commit": "0459a6c79767ddfa1422e28c0e73e5f208c24bde",
+    "updatedAt": "2026-10-08T14:25:15.990Z"
+  },
+  {
     "id": "DEV-20261008-015350a",
     "date": "2026-10-08",
     "title": "Save build quotation Q003 (EST-BLD-003-S)",
