@@ -429,6 +429,17 @@
     "updatedAt": "2026-10-07T18:38:04.225Z"
   },
   {
+    "id": "DEV-20261008-9cacb8f",
+    "date": "2026-10-08",
+    "title": "Record Archicad cash payment ARC-20261008092800-GOT3",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Record Archicad cash payment ARC-20261008092800-GOT3",
+    "details": "Automatic entry from commit 9cacb8f. Changed files: data/class-registrations.json.",
+    "commit": "9cacb8f10f37cf91b8593c0528c57126653d1e10",
+    "updatedAt": "2026-10-08T09:32:24.040Z"
+  },
+  {
     "id": "DEV-20261008-9afb487",
     "date": "2026-10-08",
     "title": "Fix Archicad admin edit modal bindings",
