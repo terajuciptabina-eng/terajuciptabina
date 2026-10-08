@@ -550,6 +550,17 @@
     "updatedAt": "2026-10-08T06:37:38.190Z"
   },
   {
+    "id": "DEV-20261008-4719fa8",
+    "date": "2026-10-08",
+    "title": "Update Archicad class registration ARC-20261008075333-YW1O",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Update Archicad class registration ARC-20261008075333-YW1O",
+    "details": "Automatic entry from commit 4719fa8. Changed files: data/class-registrations.json.",
+    "commit": "4719fa830e2c51a32c97ec4d75f652d7ed84368c",
+    "updatedAt": "2026-10-08T08:51:36.100Z"
+  },
+  {
     "id": "DEV-20261008-42939d6",
     "date": "2026-10-08",
     "title": "Implement Archicad booking fee and ToyyibPay class payments",
