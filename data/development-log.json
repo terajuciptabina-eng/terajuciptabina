@@ -1056,6 +1056,17 @@
     "updatedAt": "2026-10-08T11:14:46.004Z"
   },
   {
+    "id": "DEV-20261008-365160e",
+    "date": "2026-10-08",
+    "title": "fix: expose project control storage errors to client",
+    "module": "Project Control",
+    "status": "Completed",
+    "summary": "fix: expose project control storage errors to client",
+    "details": "Automatic entry from commit 365160e. Changed files: TerajuWorks/project-control-api.js.",
+    "commit": "365160ed8489dbc9e14cd9214b754366c09c380a",
+    "updatedAt": "2026-10-08T14:25:05.382Z"
+  },
+  {
     "id": "DEV-20261008-3467809",
     "date": "2026-10-08",
     "title": "Require student verification document and enforce non-refundable booking fee",
