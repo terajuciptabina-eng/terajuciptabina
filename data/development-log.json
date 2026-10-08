@@ -330,6 +330,17 @@
     "updatedAt": "2026-10-08T05:58:20.046Z"
   },
   {
+    "id": "DEV-20261008-51dc052",
+    "date": "2026-10-08",
+    "title": "Fix Archicad class registration API syntax",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Fix Archicad class registration API syntax",
+    "details": "Automatic entry from commit 51dc052. Changed files: api/class-registration.js.",
+    "commit": "51dc0527f03dfb0c9ca13f5100500fdf10a70606",
+    "updatedAt": "2026-10-08T06:29:53.810Z"
+  },
+  {
     "id": "DEV-20261008-4e1b1a7",
     "date": "2026-10-08",
     "title": "Fix Archicad class slots API syntax",
