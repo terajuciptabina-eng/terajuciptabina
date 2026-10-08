@@ -1,9 +1,9 @@
 [
   {
     "id": "ARC-20261008092800-GOT3",
-    "status": "Confirmed",
+    "status": "Paid",
     "createdAt": "2026-10-08T09:28:00.801Z",
-    "updatedAt": "2026-10-08T09:32:14.310Z",
+    "updatedAt": "2026-10-08T09:32:50.573Z",
     "name": "Mohd Asyraf Reeza Bin Mohd Rasli",
     "phone": "01125476214",
     "email": "asyraf.reeza@gmail.com",
@@ -29,14 +29,14 @@
     "bookingPaymentMethod": "Cash",
     "bookingPaymentRef": "IN123456",
     "bookingBillCode": "ep1qklzw",
-    "balanceDue": 50,
-    "balancePaid": 0,
-    "balancePaidAt": null,
-    "balancePaymentMethod": "",
-    "balancePaymentRef": "",
+    "balanceDue": 0,
+    "balancePaid": 50,
+    "balancePaidAt": "2026-10-08T09:32:50.573Z",
+    "balancePaymentMethod": "Cash",
+    "balancePaymentRef": "INV43215",
     "balanceBillCode": "",
-    "payment": "Booking Fee Paid",
-    "paymentStatus": "Booking Fee Paid",
+    "payment": "Fully Paid",
+    "paymentStatus": "Fully Paid",
     "paymentMethod": "Cash",
     "paymentToken": "20261008092800801-7zxz692gf8dq9xc19ci06",
     "cashPayments": [
@@ -47,9 +47,17 @@
         "recordedBy": "admin",
         "reference": "IN123456",
         "note": "sudah bayar booking"
+      },
+      {
+        "component": "Balance",
+        "amount": 50,
+        "recordedAt": "2026-10-08T09:32:50.573Z",
+        "recordedBy": "admin",
+        "reference": "INV43215",
+        "note": "sudah bayar  balance"
       }
     ],
-    "paymentLastRecordedAt": "2026-10-08T09:32:14.310Z",
+    "paymentLastRecordedAt": "2026-10-08T09:32:50.573Z",
     "paymentLastRecordedBy": "admin"
   }
 ]
