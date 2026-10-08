@@ -418,6 +418,17 @@
     "updatedAt": "2026-10-07T18:46:31.012Z"
   },
   {
+    "id": "DEV-20261008-a8cf498",
+    "date": "2026-10-08",
+    "title": "Show weekday in Archicad class slot displays",
+    "module": "Admin / Rate Management",
+    "status": "Completed",
+    "summary": "Show weekday in Archicad class slot displays",
+    "details": "Automatic entry from commit a8cf498. Changed files: TerajuWorks/admin-class-registration.html, TerajuWorks/admin-class-slots.html, kelas-archicad/register.html.",
+    "commit": "a8cf498ba49dbf894eb356f4ced882c4e3ffc4c2",
+    "updatedAt": "2026-10-08T10:42:19.753Z"
+  },
+  {
     "id": "DEV-20261008-a7f03b6",
     "date": "2026-10-08",
     "title": "Consolidate Archicad class tools under one admin entry",
