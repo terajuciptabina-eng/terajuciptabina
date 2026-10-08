@@ -121,6 +121,17 @@
     "updatedAt": "2026-10-07T18:37:42.278Z"
   },
   {
+    "id": "DEV-20261008-e4b6607",
+    "date": "2026-10-08",
+    "title": "Create Archicad balance payment bill ARC-20261008093852-1R03",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Create Archicad balance payment bill ARC-20261008093852-1R03",
+    "details": "Automatic entry from commit e4b6607. Changed files: data/class-registrations.json.",
+    "commit": "e4b6607fb3f7f79ffa0baec8194b2189683bcc93",
+    "updatedAt": "2026-10-08T09:40:23.990Z"
+  },
+  {
     "id": "DEV-20261008-e0cf1fd",
     "date": "2026-10-08",
     "title": "Update contractor profile CTR-20261008-L7AT",
