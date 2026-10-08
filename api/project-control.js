@@ -123,12 +123,46 @@ export default async function handler(req, res) {
     const body={message:`Save project control ${type} ${quotationId}`,content,branch:dataBranch};
     if(current.sha)body.sha=current.sha;
 
-    const updated=await github(pathFor(id,type,quotationId),{method:'PUT',ref:dataBranch,body:JSON.stringify(body)});
-    if(!updated.response.ok){
-      console.error('Project control write failed:',updated.data);
-      return res.status(502).json({message:'Unable to save project control record.'});
+    // GitHub Contents updates are SHA-guarded. Other project-control writes (including
+    // the development auto-log) may advance main between our read and PUT, so retry
+    // the write against the newest file instead of returning a generic save failure.
+    let updated=null;
+    let latestRecord=record;
+    let latestSha=current.sha;
+    for(let attempt=0;attempt<3;attempt++){
+      const writeBody={...body};
+      if(latestSha)writeBody.sha=latestSha;
+      updated=await github(pathFor(id,type,quotationId),{
+        method:'PUT',ref:dataBranch,body:JSON.stringify(writeBody)
+      });
+      if(updated.response.ok)break;
+      if(updated.response.status!==409)break;
+      const refreshed=await read(id,type,quotationId);
+      if(refreshed.status!==200||!refreshed.record)break;
+      latestRecord={...refreshed.record};
+      latestSha=refreshed.sha;
+      if(payload.contract)latestRecord.contract=record.contract;
+      if(payload.workProgram)latestRecord.workProgram=record.workProgram;
+      if(payload.progress)latestRecord.progress=record.progress;
+      latestRecord.schemaVersion=1;
+      latestRecord.recordType='project-control';
+      latestRecord.contractorId=id;
+      latestRecord.plannerType=type;
+      latestRecord.quotationId=quotationId;
+      latestRecord.updatedAt=now;
+      const refreshedContent=Buffer.from(JSON.stringify(latestRecord,null,2)+'\\n').toString('base64');
+      body.content=refreshedContent;
     }
-    return res.status(200).json({success:true,record});
+    if(!updated?.response?.ok){
+      const githubStatus=updated?.response?.status||502;
+      const githubMessage=typeof updated?.data?.message==='string'?updated.data.message:'Unknown GitHub storage error.';
+      console.error('Project control write failed:',{status:githubStatus,message:githubMessage,github:updated?.data});
+      return res.status(githubStatus===409?409:502).json({
+        message:'Unable to save project control record.',
+        storage:{provider:'github',status:githubStatus,detail:githubMessage}
+      });
+    }
+    return res.status(200).json({success:true,record:latestRecord});
   }catch(error){
     console.error('project control storage error:',error);
     return res.status(500).json({message:'Unable to process project control record.'});
