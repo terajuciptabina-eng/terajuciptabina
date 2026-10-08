@@ -96,7 +96,8 @@ const launchPlannerType=new URLSearchParams(location.search).get("plannerType");
 const plannerType=launchPlannerType==="renovation"?"renovation":"build";
 const plannerName=plannerType==="renovation"?"RenovationPlanner V2":"BuildPlanner V2";
 const PLANNER_ROOM_TYPES={living:"Living",dining:"Dining",bedroom:"Bedroom",masterBedroom:"Master Bedroom",family:"Family",kitchen:"Kitchen",store:"Store",utility:"Utility",bathroom:"Bathroom",porch:"Porch",other:"Other"};
-function mapBimRoomType(name){const n=String(name||"").trim().toLowerCase();if(/\bmaster\s+bed(room)?\b/.test(n))return "masterBedroom";if(/\bbed(room)?\b/.test(n))return "bedroom";if(/\bbath(room)?\b|\bbath\b|\btoilet\b|\bwashroom\b|\bwc\b|\bpowder\b/.test(n))return "bathroom";if(/\bliving\b|\blounge\b/.test(n))return "living";if(/\bdining\b/.test(n))return "dining";if(/\bkitchen\b|\bcook\b/.test(n))return "kitchen";if(/\bstore(room)?\b/.test(n))return "store";if(/\butility\b|\blaundry\b/.test(n))return "utility";if(/\bfamily\b/.test(n))return "family";if(/\bporch\b|\bveranda\b|\bterrace\b/.test(n))return "porch";return "other"}
+function mapBimRoomType(name){const n=String(name||"").trim().toLowerCase();if(/\bmaster\s+bed(room)?\b/.test(n))return "masterBedroom";if(/\bbed(room)?\b/.test(n))return "bedroom";if(/\bbath(room)?\b|\bbath\b|\btoilet\b|\bwashroom\b|\bwc\b|\bpowder\b/.test(n))return "bathroom";if(/\bliving\b|\blounge\b/.test(n))return "living";if(/\bdining\b/.test(n))return "dining";if(/\bkitchen\b|\bcook\b/.test(n))return "kitchen";if(/\bstore(room)?\b|\bstorage\b/.test(n))return "store";if(/\butility\b|\blaundry\b/.test(n))return "utility";if(/\bfamily\b/.test(n))return "family";if(/\bporch\b|\bveranda\b|\bterrace\b/.test(n))return "porch";return "other"}
+function spaceDisplayName(x,id){const candidates=[x?.LongName,x?.Name,x?.ObjectType,x?.Description];for(const candidate of candidates){const text=String(val(candidate)||"").trim();if(text)return text}return "Space "+id}
 function roomTypeOptions(selected){return Object.entries(PLANNER_ROOM_TYPES).map(x=>"<option value=\""+x[0]+"\" "+(x[0]===selected?"selected":"")+">"+x[1]+"</option>").join("")}
 function renderBimRoomReview(){
  if(!lastCanonical)return;
@@ -151,6 +152,46 @@ function resolveAreaQuantity(model,id){
  }
  return null;
 }
+function extractSpaceGeometryArea(model,spaceId){
+ let mesh=null,total=0,positive=0,negative=0,triangles=0;
+ try{
+  mesh=api.GetFlatMesh(model,spaceId);
+  const geometries=mesh?.geometries;if(!geometries)return null;
+  for(let gi=0;gi<geometries.size();gi++){
+   const placed=geometries.get(gi),matrix=placed.flatTransformation||[];
+   const geometry=api.GetGeometry(model,placed.geometryExpressID);
+   if(!geometry)continue;
+   try{
+    const vertices=api.GetVertexArray(geometry.GetVertexData(),geometry.GetVertexDataSize());
+    const indices=api.GetIndexArray(geometry.GetIndexData(),geometry.GetIndexDataSize());
+    const positions=new Array(vertices.length/6);
+    for(let vi=0;vi+5<vertices.length;vi+=6){
+     const x=vertices[vi],y=vertices[vi+1],z=vertices[vi+2];
+     positions[vi/6]=[
+      matrix[0]*x+matrix[4]*y+matrix[8]*z+matrix[12],
+      matrix[1]*x+matrix[5]*y+matrix[9]*z+matrix[13],
+      matrix[2]*x+matrix[6]*y+matrix[10]*z+matrix[14]
+     ];
+    }
+    for(let ii=0;ii+2<indices.length;ii+=3){
+     const a=positions[indices[ii]],b=positions[indices[ii+1]],d=positions[indices[ii+2]];
+     if(!a||!b||!d)continue;
+     const ux=b[0]-a[0],uy=b[1]-a[1],uz=b[2]-a[2],vx=d[0]-a[0],vy=d[1]-a[1],vz=d[2]-a[2];
+     const nx=uy*vz-uz*vy,ny=uz*vx-ux*vz,nz=ux*vy-uy*vx;
+     const projected=Math.abs(nz)*0.5;
+     if(projected<=1e-9)continue;
+     const area=projected;
+     total+=area;triangles++;
+     if(nz>=0)positive+=area;else negative+=area;
+    }
+   }finally{try{geometry.delete()}catch{}}
+  }
+  if(!Number.isFinite(total)||total<=0)return null;
+  const footprint=(positive>1e-8&&negative>1e-8)?(positive+negative)/2:total;
+  return {value:Number(footprint.toFixed(4)),source:"Geometry Footprint",triangles};
+ }catch(e){console.warn("IFC space geometry area failed",spaceId,e);return null}
+ finally{try{mesh?.delete()}catch{}}
+}
 function extractSpaceArea(model,spaceId){
  const space=line(model,spaceId,true,true);if(!space)return {value:null,source:null};
  for(const relItem of listValues(space.IsDefinedBy)){
@@ -164,7 +205,7 @@ function extractSpaceArea(model,spaceId){
    if(name.includes("area")){const n=Number(val(prop?.NominalValue));if(Number.isFinite(n))return {value:n,source:"Area Property"}}
   }
  }
- return {value:null,source:null};
+ return extractSpaceGeometryArea(model,spaceId)||{value:null,source:null};
 }
 function buildStoreyMap(model,storeyType,relType){
  const map=new Map();if(!storeyType||!relType)return map;
@@ -231,7 +272,7 @@ async function start(){
 async function extractIfc(file){
  if(!ready)return;
  if(!file||!file.name.toLowerCase().endsWith(".ifc")){statusEl.textContent="Please select a valid .ifc file.";statusEl.className="status err";return}
- statusEl.textContent="Saving IFC locally and building canonical Room / Area data…";statusEl.className="status";
+ statusEl.textContent="Saving IFC locally and extracting Room / Area data…";statusEl.className="status";
  let model=null;
  try{
   const bytes=new Uint8Array(await file.arrayBuffer());
@@ -245,14 +286,14 @@ async function extractIfc(file){
   const storeyMap=buildStoreyMap(model,storeyT,relAggT);
   const rooms=spaceT?ids(model,spaceT).map(id=>{
    const x=line(model,id,true,true);if(!x)return null;
-   const area=extractSpaceArea(model,id),storey=storeyMap.get(id);
-   return {sourceType:"IFC",sourceExpressId:id,globalId:String(val(x.GlobalId)||""),name:String(val(x.Name)||("Space "+id)),longName:String(val(x.LongName)||""),storeyId:storey?.id??null,storeyName:storey?.name??"",areaM2:area.value,areaSqft:area.value==null?null:Number((area.value*10.7639104167).toFixed(1)),areaSource:area.source,roomTypeKey:mapBimRoomType(String(val(x.Name)||"")),condition:"existing"};
+   const area=extractSpaceArea(model,id),storey=storeyMap.get(id),displayName=spaceDisplayName(x,id);
+   return {sourceType:"IFC",sourceExpressId:id,globalId:String(val(x.GlobalId)||""),name:displayName,longName:String(val(x.LongName)||""),originalName:String(val(x.Name)||""),storeyId:storey?.id??null,storeyName:storey?.name??"",areaM2:area.value,areaSqft:area.value==null?null:Number((area.value*10.7639104167).toFixed(1)),areaSource:area.source,roomTypeKey:mapBimRoomType(displayName),condition:"existing"};
   }).filter(Boolean):[];
   lastCanonical={schemaVersion:"terajuworks.room-area.v1",source:{type:"IFC",fileName:file.name},project:{name:String(val(projects[0]?.Name)||"")},building:{name:String(val(buildings[0]?.Name)||"")},storeys:storeys.map((s,i)=>({sourceExpressId:s.expressID??null,name:String(val(s.Name)||("Storey "+(i+1)))})),rooms};
   summaryEl.innerHTML="<h2>Import Review</h2><table><tbody><tr><th>Source</th><td>"+esc(file.name)+"</td></tr><tr><th>Project</th><td>"+esc(lastCanonical.project.name||"—")+"</td></tr><tr><th>Building</th><td>"+esc(lastCanonical.building.name||"—")+"</td></tr><tr><th>Storeys</th><td>"+lastCanonical.storeys.length+"</td></tr><tr><th>Rooms / Spaces</th><td>"+rooms.length+"</td></tr><tr><th>Areas mapped</th><td>"+rooms.filter(r=>r.areaM2!=null).length+"</td></tr></tbody></table>";
   summaryEl.hidden=false;
   renderBimRoomReview();jsonEl.textContent=JSON.stringify(lastCanonical,null,2);jsonCard.hidden=false;actionsEl.hidden=false;
-  statusEl.textContent="Review ready · "+rooms.length+" rooms/spaces · "+rooms.filter(r=>r.areaM2!=null).length+" areas mapped · IFC stored locally";
+  statusEl.textContent="Review ready · "+rooms.length+" rooms/spaces · "+rooms.filter(r=>r.areaM2!=null).length+" areas mapped · geometry fallback supported · IFC stored locally";
  }catch(e){console.error(e);statusEl.textContent="IFC import failed: "+(e?.message||e);statusEl.className="status err"}
  finally{if(model!==null)try{api.CloseModel(model)}catch{}}
 }
