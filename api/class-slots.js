@@ -13,6 +13,7 @@ export default async function handler(req,res){
   const suppliedPass=String(req.headers['x-admin-password']||req.headers['x-admin-key']||'').trim();
   const isAdmin=!!adminPass&&suppliedPass===adminPass&&(!suppliedUser||suppliedUser===adminUser);
   const path='data/class-slots.json';
+  const registrationsPath='data/class-registrations.json';
   const headers={Authorization:`Bearer ${token}`,Accept:'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'};
   async function github(options={}){
     const response=await fetch(`https://api.github.com/repos/${repo}/contents/${path}`,{...options,headers:{...headers,...(options.headers||{})}});
@@ -25,6 +26,7 @@ export default async function handler(req,res){
     const content=r.data?.content?Buffer.from(r.data.content,'base64').toString('utf8'):'';
     try{return{items:Array.isArray(JSON.parse(content))?JSON.parse(content):[],sha:r.data.sha}}catch{return{items:[],sha:r.data.sha}}
   }
+  async function readRegistrations(){const r=await fetch(\`https://api.github.com/repos/\${repo}/contents/\${registrationsPath}\`,{headers});if(!r.ok)return[];const d=await r.json();const text=d?.content?Buffer.from(d.content,'base64').toString('utf8'):'[]';try{return Array.isArray(JSON.parse(text))?JSON.parse(text):[]}catch{return[]}}
   async function save(items,sha,message){
     const body={message,content:Buffer.from(JSON.stringify(items,null,2)+'\n','utf8').toString('base64')};
     if(sha)body.sha=sha;
@@ -35,7 +37,7 @@ export default async function handler(req,res){
   try{
     const s=await store();
     if(req.method==='GET'){
-      const items=(isAdmin?s.items:s.items.filter(x=>x.active!==false)).sort((a,b)=>String(a.date+' '+a.startTime).localeCompare(String(b.date+' '+b.startTime)));
+      const registrations=await readRegistrations(); const items=(isAdmin?s.items:s.items.filter(x=>x.active!==false)).sort((a,b)=>String(a.date+' '+a.startTime).localeCompare(String(b.date+' '+b.startTime))).map(x=>{const booked=registrations.filter(r=>r.slotId===x.id&&r.status!=='Cancelled').reduce((n,r)=>n+(parseInt(r.pax,10)||1),0);return{...x,booked,remaining:Math.max(0,Number(x.capacity)-booked)}}).filter(x=>isAdmin||x.remaining>0);
       return res.status(200).json({ok:true,items,generatedAt:new Date().toISOString()});
     }
     if(!isAdmin)return res.status(401).json({message:'Unauthorized.'});
