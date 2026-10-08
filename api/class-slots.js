@@ -26,7 +26,7 @@ export default async function handler(req,res){
     const content=r.data?.content?Buffer.from(r.data.content,'base64').toString('utf8'):'';
     try{return{items:Array.isArray(JSON.parse(content))?JSON.parse(content):[],sha:r.data.sha}}catch{return{items:[],sha:r.data.sha}}
   }
-  async function readRegistrations(){const r=await fetch(\`https://api.github.com/repos/\${repo}/contents/\${registrationsPath}\`,{headers});if(!r.ok)return[];const d=await r.json();const text=d?.content?Buffer.from(d.content,'base64').toString('utf8'):'[]';try{return Array.isArray(JSON.parse(text))?JSON.parse(text):[]}catch{return[]}}
+  async function readRegistrations(){const r=await fetch(`https://api.github.com/repos/${repo}/contents/${registrationsPath}`,{headers});if(!r.ok)return[];const d=await r.json();const text=d?.content?Buffer.from(d.content,'base64').toString('utf8'):'[]';try{return Array.isArray(JSON.parse(text))?JSON.parse(text):[]}catch{return[]}}
   async function save(items,sha,message){
     const body={message,content:Buffer.from(JSON.stringify(items,null,2)+'\n','utf8').toString('base64')};
     if(sha)body.sha=sha;
