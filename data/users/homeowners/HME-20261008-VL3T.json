@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "homeowner",
+  "homeownerId": "HME-20261008-VL3T",
+  "profile": {
+    "name": "JKR Malaysia",
+    "email": "aidzil.jkr@gov.my",
+    "phone": "01125476214"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-10-08T07:11:10.235Z",
+  "updatedAt": "2026-10-08T07:11:10.235Z"
+}
