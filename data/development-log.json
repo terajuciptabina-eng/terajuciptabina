@@ -22,6 +22,17 @@
     "updatedAt": "2026-10-08T05:44:46.308Z"
   },
   {
+    "id": "DEV-20261008-f1ab439",
+    "date": "2026-10-08",
+    "title": "Add direct Archicad class registration link to homepage promo",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Add direct Archicad class registration link to homepage promo",
+    "details": "Automatic entry from commit f1ab439. Changed files: index.html.",
+    "commit": "f1ab439e6199a99b1ea13e24e7a4f91b053962aa",
+    "updatedAt": "2026-10-08T06:48:04.843Z"
+  },
+  {
     "id": "DEV-20261008-ed1d989",
     "date": "2026-10-08",
     "title": "Save renovation quotation Q004 (EST-REN-004-S)",
