@@ -649,6 +649,17 @@
     "updatedAt": "2026-10-08T07:26:49.199Z"
   },
   {
+    "id": "DEV-20261008-22515f9",
+    "date": "2026-10-08",
+    "title": "Add admin cash payment recording for Archicad class",
+    "module": "Admin / Rate Management",
+    "status": "Completed",
+    "summary": "Add admin cash payment recording for Archicad class",
+    "details": "Automatic entry from commit 22515f9. Changed files: TerajuWorks/admin-class-registration.html, api/class-management.js.",
+    "commit": "22515f94b2f9bf6e700c75733252eafc3f84d90e",
+    "updatedAt": "2026-10-08T08:19:33.248Z"
+  },
+  {
     "id": "DEV-20261008-2094490",
     "date": "2026-10-08",
     "title": "Make Archicad class registration one participant per booking",
