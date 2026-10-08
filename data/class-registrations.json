@@ -1,9 +1,9 @@
 [
   {
     "id": "ARC-20261008075333-YW1O",
-    "status": "Pending",
+    "status": "Paid",
     "createdAt": "2026-10-08T07:53:33.671Z",
-    "updatedAt": "2026-10-08T07:53:33.671Z",
+    "updatedAt": "2026-10-08T08:51:26.251Z",
     "name": "Mohd Asyraf Reeza Bin Mohd Rasli",
     "phone": "01125476214",
     "email": "asyraf.reeza@gmail.com",
@@ -19,8 +19,13 @@
     "experience": "Berpengalaman",
     "laptop": "Mandatory — participant will bring laptop/MacBook",
     "deviceConfirmed": true,
-    "payment": "",
+    "payment": "Booking Fee Pending",
     "source": "Rakan / kenalan",
-    "notes": ""
+    "notes": "",
+    "classFeePerPax": 400,
+    "totalFee": 400,
+    "bookingFee": 50,
+    "balanceDue": 400,
+    "paymentStatus": "Booking Fee Pending"
   }
 ]
