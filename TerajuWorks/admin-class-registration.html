@@ -1,13 +1,105 @@
 <!doctype html><html lang="ms"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Archicad Class Management | Admin</title><link rel="stylesheet" href="shared/teraju-workspace-theme.css"><style>*{box-sizing:border-box}body{margin:0;background:#f3f4f6;color:#172033;font-family:Inter,system-ui,sans-serif}.wrap{padding:24px;max-width:1500px;margin:auto}.top{display:flex;justify-content:space-between;align-items:end;gap:15px;margin-bottom:18px}.title{font-size:28px;font-weight:850}.muted{color:#64748b;font-size:12px}.back{padding:10px 13px;border:1px solid #d1d5db;background:#fff;border-radius:10px;color:#172033;text-decoration:none;font-weight:800}.nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:15px}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:15px}.stat{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:12px}.stat b{display:block;font-size:20px}.stat span{font-size:10px;color:#64748b}.toolbar,.tablebox,.modalCard{background:#fff;border:1px solid #e2e8f0;border-radius:16px;box-shadow:0 10px 30px rgba(15,23,42,.05)}.toolbar{padding:14px;display:flex;gap:9px;flex-wrap:wrap;margin-bottom:15px}.toolbar input,.toolbar select{min-height:42px;border:1px solid #d1d5db;border-radius:10px;padding:0 11px;font:inherit}.toolbar input{flex:1;min-width:220px}.btn{border:0;border-radius:10px;padding:10px 14px;background:#172033;color:#fff;font-weight:800;cursor:pointer}.tablebox{overflow:auto}table{width:100%;min-width:1450px;border-collapse:collapse}th,td{text-align:left;padding:11px;border-bottom:1px solid #edf0f2;font-size:12px;vertical-align:top}th{font-size:10px;text-transform:uppercase;color:#64748b;background:#fafafa;white-space:nowrap}.tag{display:inline-block;padding:5px 8px;border-radius:999px;background:#eef2f7;font-size:10px;font-weight:800}.pending{background:#fff4d6;color:#805b00}.confirmed{background:#e7f5ed;color:#17663c}.paid{background:#d1fae5;color:#166534}.cancelled{background:#fee2e2;color:#991b1b}.actions{display:flex;gap:6px;flex-wrap:wrap}.actions button{border:1px solid #d1d5db;background:#fff;color:#172033;border-radius:8px;padding:7px 9px;font-weight:800;cursor:pointer}.actions .danger{color:#b91c1c;border-color:#fecaca}.empty{text-align:center;padding:40px;color:#64748b}.modal{position:fixed;inset:0;background:rgba(15,23,42,.55);display:none;align-items:center;justify-content:center;padding:12px;z-index:10}.modal.open{display:flex}.modalCard{width:min(820px,100%);max-height:calc(100vh - 24px);overflow:auto;padding:20px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{display:grid;gap:6px}.full{grid-column:1/-1}.field label{font-size:10px;font-weight:850;text-transform:uppercase;color:#64748b}.field input,.field select,.field textarea{width:100%;border:1px solid #d1d5db;border-radius:9px;padding:10px;font:inherit}.field textarea{min-height:90px}.modalHead{display:flex;justify-content:space-between}.close{border:0;background:#f3f4f6;border-radius:9px;padding:8px 11px;cursor:pointer;font-size:18px}.modalActions{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}.paybox{padding:13px;border-radius:13px;background:#f8fafc;border:1px solid #e2e8f0}.payrow{display:flex;justify-content:space-between;margin:5px 0;font-size:12px}@media(max-width:800px){.wrap{padding:16px 12px}.top{display:block}.stats{grid-template-columns:1fr 1fr}.grid{grid-template-columns:1fr}.full{grid-column:auto}}</style></head><body class="tw-theme admin-workspace"><main class="wrap"><div class="top"><div><div class="title">Archicad Class Management</div><div class="muted">Urus slot kelas dan participant registration dalam satu workspace.</div></div><a class="back" href="admin.html">← Admin Control</a></div><nav class="nav"><a class="back" href="admin-class-slots.html">📅 Class Slots</a><a class="back" href="admin-class-registration.html" style="background:#172033;color:#fff">📋 Registrations</a></nav><div class="stats"><div class="stat"><b id="total">0</b><span>Total Registrations</span></div><div class="stat"><b id="pending">0</b><span>Booking Fee Pending</span></div><div class="stat"><b id="confirmed">0</b><span>Booking Fee Paid</span></div><div class="stat"><b id="paid">0</b><span>Fully Paid</span></div></div><div class="toolbar"><input id="q" placeholder="Search name, phone, email, reference…"><select id="status"><option value="">All booking status</option><option>Pending</option><option>Confirmed</option><option>Paid</option><option>Cancelled</option></select><select id="type"><option value="">All categories</option><option>Individual</option><option>Kontraktor</option><option>Arkitek</option><option>Student</option></select><select id="mode"><option value="">All class modes</option><option>Online</option><option>Fizikal</option></select><select id="paymentStatus"><option value="">All payment status</option><option>Booking Fee Pending</option><option>Booking Fee Paid</option><option>Fully Paid</option></select><button class="btn" id="refresh">Refresh</button></div><div id="table" class="tablebox"><div class="empty">Loading…</div></div></main><div id="modal" class="modal"><div class="modalCard"><div class="modalHead"><div><div class="muted">REGISTRATION</div><h2>Edit Participant</h2></div><button class="close" id="close">×</button></div><form id="edit"><div class="grid"><div class="field"><label>Reference</label><input id="id" disabled></div><div class="field"><label>Status</label><select id="statusEdit"><option>Pending</option><option>Confirmed</option><option>Paid</option><option>Cancelled</option></select></div><div class="field full"><label>Mode</label><select id="modeEdit"><option>Online</option><option>Fizikal</option></select></div><div class="field full"><label>Slot ID</label><input id="slotId"></div><div class="field full"><label>Name</label><input id="name" required></div><div class="field"><label>Phone</label><input id="phone" required></div><div class="field"><label>Email</label><input id="email" type="email" required></div><div class="field"><label>Category</label><select id="type"><option>Individual</option><option>Kontraktor</option><option>Arkitek</option><option>Student</option></select></div><div class="field"><label>Pax</label><input id="pax" type="number" min="1" max="50"></div><div class="field"><label>Company / Institution</label><input id="company"></div><div class="field"><label>Occupation</label><input id="occupation"></div><div class="field"><label>Class Date</label><input id="date" disabled></div><div class="field"><label>Experience</label><input id="experience"></div><div class="field"><label>Device</label><input value="Laptop / MacBook mandatory" disabled></div><div class="field"><label>Source</label><input id="source"></div><div class="field full"><label>Notes</label><textarea id="notes"></textarea></div><div class="field full"><div class="paybox"><div class="payrow"><span>Total Fee</span><b id="mTotal">RM0</b></div><div class="payrow"><span>Booking Fee</span><b id="mBooking">RM0</b></div><div class="payrow"><span>Booking Paid</span><b id="mBookingPaid">RM0</b></div><div class="payrow"><span>Balance Due</span><b id="mBalance">RM0</b></div><div class="payrow"><span>Balance Paid</span><b id="mBalancePaid">RM0</b></div><div class="payrow"><span>Payment Status</span><b id="mPaymentStatus">Booking Fee Pending</b></div></div></div></div><div class="modalActions"><button type="button" class="btn" id="cancel">Cancel</button><button class="btn" type="submit">Save Changes</button></div><div id="error" class="muted"></div></form></div></div><script>
-const API='https://terajuciptabina.vercel.app/api/class-registration',PAY='https://terajuciptabina.vercel.app/api/class-payment',KEY='teraju.admin.key',USER='teraju.admin.username',$=id=>document.getElementById(id),headers=()=>({'X-Admin-Username':sessionStorage.getItem(USER)||'','X-Admin-Password':sessionStorage.getItem(KEY)||'','Content-Type':'application/json'});let all=[],editing=null;
-function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}function money(n){return 'RM'+Number(n||0).toLocaleString('en-MY',{minimumFractionDigits:0,maximumFractionDigits:2})}function tag(s){const c=String(s||'').toLowerCase().replace(/\\s+/g,'').replace('bookingfeepaid','confirmed').replace('fullypaid','paid').replace('bookingfeepending','pending');return '<span class="tag '+c+'">'+esc(s)+'</span>'}
-function render(){const q=$('q').value.toLowerCase().trim(),st=$('status').value,ty=$('type').value,mo=$('mode').value,ps=$('paymentStatus').value,rows=all.filter(x=>(!q||JSON.stringify(x).toLowerCase().includes(q))&&(!st||x.status===st)&&(!ty||x.type===ty)&&(!mo||x.mode===mo)&&(!ps||x.paymentStatus===ps));$('total').textContent=all.length;$('pending').textContent=all.filter(x=>x.paymentStatus==='Booking Fee Pending').length;$('confirmed').textContent=all.filter(x=>x.paymentStatus==='Booking Fee Paid').length;$('paid').textContent=all.filter(x=>x.paymentStatus==='Fully Paid').length;if(!rows.length){$('table').innerHTML='<div class="empty">No registration records found.</div>';return}$('table').innerHTML='<table><thead><tr><th>Reference</th><th>Participant</th><th>Category</th><th>Slot</th><th>Pax</th><th>Total</th><th>Booking</th><th>Balance</th><th>Payment</th><th>Status</th><th>Action</th></tr></thead><tbody>'+rows.map(x=>'<tr><td><b>'+esc(x.id)+'</b></td><td><b>'+esc(x.name)+'</b><br>'+esc(x.email)+'</td><td>'+esc(x.type)+'</td><td>'+esc(x.slotLabel||x.mode||'-')+'</td><td>'+esc(x.pax)+'</td><td>'+money(x.totalFee)+'</td><td>'+money(x.bookingPaid)+' / '+money(x.bookingFee)+'</td><td>'+money(x.balanceDue)+'</td><td>'+tag(x.paymentStatus)+'</td><td>'+tag(x.status)+'</td><td><div class="actions"><button onclick="openEdit(\\''+esc(x.id)+'\\')">Edit</button>'+(Number(x.balanceDue||0)>0&&x.paymentStatus==='Booking Fee Paid'&&x.status!=='Cancelled'?'<button onclick="balancePay(\\''+esc(x.id)+'\\')">Balance Link</button>':'')+'<button class="danger" onclick="del(\\''+esc(x.id)+'\\')">Delete</button></div></td></tr>').join('')+'</tbody></table>'}
-async function load(){$('table').innerHTML='<div class="empty">Loading…</div>';try{const r=await fetch(API,{headers:headers(),cache:'no-store'}),d=await r.json();if(!r.ok)throw new Error(d.message||'Unable to load registrations.');all=d.items||[];render()}catch(e){$('table').innerHTML='<div class="empty">'+esc(e.message)+'</div>'}}
-function showPayment(x){$('mTotal').textContent=money(x.totalFee);$('mBooking').textContent=money(x.bookingFee);$('mBookingPaid').textContent=money(x.bookingPaid);$('mBalance').textContent=money(x.balanceDue);$('mBalancePaid').textContent=money(x.balancePaid);$('mPaymentStatus').textContent=x.paymentStatus||'Booking Fee Pending')}
-window.openEdit=id=>{editing=all.find(x=>x.id===id);if(!editing)return;['id','name','phone','email','type','pax','company','occupation','date','experience','source','notes'].forEach(k=>$(k).value=editing[k]??'');$('statusEdit').value=editing.status||'Pending';$('modeEdit').value=editing.mode||'Online';$('slotId').value=editing.slotId||'';showPayment(editing);$('modal').classList.add('open');$('error').textContent=''}
-$('close').onclick=$('cancel').onclick=()=>{$('modal').classList.remove('open');editing=null}
-$('edit').onsubmit=async e=>{e.preventDefault();if(!editing)return;const body={id:editing.id,status:$('statusEdit').value,mode:$('modeEdit').value,slotId:$('slotId').value,name:$('name').value,phone:$('phone').value,email:$('email').value,type:$('type').value,pax:$('pax').value,company:$('company').value,occupation:$('occupation').value,experience:$('experience').value,source:$('source').value,notes:$('notes').value};try{const r=await fetch(API,{method:'PUT',headers:headers(),body:JSON.stringify(body)}),d=await r.json();if(!r.ok)throw new Error(d.message||'Unable to update.');$('modal').classList.remove('open');editing=null;await load()}catch(e){$('error').textContent=e.message}}
-window.balancePay=async id=>{try{const r=await fetch(PAY,{method:'POST',headers:headers(),body:JSON.stringify({operation:'create',paymentType:'balance',registrationId:id})}),d=await r.json();if(!r.ok)throw new Error(d.message||'Unable to create balance payment link.');if(d.paymentUrl)window.open(d.paymentUrl,'_blank','noopener')}catch(e){alert(e.message)}}
-window.del=async id=>{if(!confirm('Delete registration '+id+'? This removes the record from GitHub database.'))return;try{const r=await fetch(API,{method:'DELETE',headers:headers(),body:JSON.stringify({id})}),d=await r.json();if(!r.ok)throw new Error(d.message||'Unable to delete.');await load()}catch(e){alert(e.message)}}
-$('refresh').onclick=load;$('q').oninput=render;$('status').onchange=render;$('type').onchange=render;$('mode').onchange=render;$('paymentStatus').onchange=render;load();
+const API='https://terajuciptabina.vercel.app/api/class-registration',PAY='https://terajuciptabina.vercel.app/api/class-payment',KEY='teraju.admin.key',USER='teraju.admin.username';
+const $=id=>document.getElementById(id),headers=()=>({'X-Admin-Username':sessionStorage.getItem(USER)||'','X-Admin-Password':sessionStorage.getItem(KEY)||'','Content-Type':'application/json'});
+let all=[],editing=null;
+
+function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function money(n){return 'RM'+Number(n||0).toLocaleString('en-MY',{minimumFractionDigits:0,maximumFractionDigits:2})}
+function tag(s){const c=String(s||'').toLowerCase().replace(/\s+/g,'').replace('bookingfeepaid','confirmed').replace('fullypaid','paid').replace('bookingfeepending','pending');return '<span class="tag '+c+'">'+esc(s)+'</span>'}
+
+function render(){
+  const q=$('q').value.toLowerCase().trim(),st=$('status').value,ty=$('type').value,mo=$('mode').value,ps=$('paymentStatus').value;
+  const rows=all.filter(x=>(!q||JSON.stringify(x).toLowerCase().includes(q))&&(!st||x.status===st)&&(!ty||x.type===ty)&&(!mo||x.mode===mo)&&(!ps||x.paymentStatus===ps));
+  $('total').textContent=all.length;
+  $('pending').textContent=all.filter(x=>x.paymentStatus==='Booking Fee Pending').length;
+  $('confirmed').textContent=all.filter(x=>x.paymentStatus==='Booking Fee Paid').length;
+  $('paid').textContent=all.filter(x=>x.paymentStatus==='Fully Paid').length;
+  if(!rows.length){$('table').innerHTML='<div class="empty">No registration records found.</div>';return}
+  $('table').innerHTML='<table><thead><tr><th>Reference</th><th>Participant</th><th>Category</th><th>Slot</th><th>Pax</th><th>Total</th><th>Booking</th><th>Balance</th><th>Payment</th><th>Method</th><th>Status</th><th>Action</th></tr></thead><tbody>'+
+    rows.map(x=>{
+      const cashButton=(Number(x.balanceDue||0)>0&&x.status!=='Cancelled')?'<button onclick="cashPay(&quot;'+esc(x.id)+'&quot;)">Cash Payment</button>':'';
+      const balanceButton=(Number(x.balanceDue||0)>0&&x.paymentStatus==='Booking Fee Paid'&&x.status!=='Cancelled')?'<button onclick="balancePay(&quot;'+esc(x.id)+'&quot;)">Balance Link</button>':'';
+      return '<tr><td><b>'+esc(x.id)+'</b></td><td><b>'+esc(x.name)+'</b><br>'+esc(x.email)+'</td><td>'+esc(x.type)+'</td><td>'+esc(x.slotLabel||x.mode||'-')+'</td><td>'+esc(x.pax)+'</td><td>'+money(x.totalFee)+'</td><td>'+money(x.bookingPaid)+' / '+money(x.bookingFee)+'</td><td>'+money(x.balanceDue)+'</td><td>'+tag(x.paymentStatus)+'</td><td>'+esc(x.paymentMethod||'—')+'</td><td>'+tag(x.status)+'</td><td><div class="actions"><button onclick="openEdit(&quot;'+esc(x.id)+'&quot;)">Edit</button>'+cashButton+balanceButton+'<button class="danger" onclick="del(&quot;'+esc(x.id)+'&quot;)">Delete</button></div></td></tr>';
+    }).join('')+
+    '</tbody></table>';
+}
+
+async function load(){
+  $('table').innerHTML='<div class="empty">Loading…</div>';
+  try{
+    const r=await fetch(API,{headers:headers(),cache:'no-store'}),d=await r.json();
+    if(!r.ok)throw new Error(d.message||'Unable to load registrations.');
+    all=d.items||[];render();
+  }catch(e){$('table').innerHTML='<div class="empty">'+esc(e.message)+'</div>'}
+}
+
+function showPayment(x){
+  $('mTotal').textContent=money(x.totalFee);
+  $('mBooking').textContent=money(x.bookingFee);
+  $('mBookingPaid').textContent=money(x.bookingPaid);
+  $('mBalance').textContent=money(x.balanceDue);
+  $('mBalancePaid').textContent=money(x.balancePaid);
+  $('mPaymentStatus').textContent=x.paymentStatus||'Booking Fee Pending';
+}
+
+window.openEdit=id=>{
+  editing=all.find(x=>x.id===id);if(!editing)return;
+  ['id','name','phone','email','type','pax','company','occupation','date','experience','source','notes'].forEach(k=>$(k).value=editing[k]??'');
+  $('statusEdit').value=editing.status||'Pending';$('modeEdit').value=editing.mode||'Online';$('slotId').value=editing.slotId||'';
+  showPayment(editing);$('modal').classList.add('open');$('error').textContent='';
+};
+
+$('close').onclick=$('cancel').onclick=()=>{$('modal').classList.remove('open');editing=null};
+
+$('edit').onsubmit=async e=>{
+  e.preventDefault();if(!editing)return;
+  const body={id:editing.id,status:$('statusEdit').value,mode:$('modeEdit').value,slotId:$('slotId').value,name:$('name').value,phone:$('phone').value,email:$('email').value,type:$('type').value,pax:$('pax').value,company:$('company').value,occupation:$('occupation').value,experience:$('experience').value,source:$('source').value,notes:$('notes').value};
+  try{
+    const r=await fetch(API,{method:'PUT',headers:headers(),body:JSON.stringify(body)}),d=await r.json();
+    if(!r.ok)throw new Error(d.message||'Unable to update.');
+    $('modal').classList.remove('open');editing=null;await load();
+  }catch(e){$('error').textContent=e.message}
+};
+
+window.balancePay=async id=>{
+  try{
+    const r=await fetch(PAY,{method:'POST',headers:headers(),body:JSON.stringify({operation:'create',paymentType:'balance',registrationId:id})}),d=await r.json();
+    if(!r.ok)throw new Error(d.message||'Unable to create balance payment link.');
+    if(d.paymentUrl)window.open(d.paymentUrl,'_blank','noopener');
+  }catch(e){alert(e.message)}
+};
+
+window.cashPay=async id=>{
+  const x=all.find(r=>r.id===id);if(!x)return;
+  const bookingDue=Math.max(0,Number(x.bookingFee||0)-Number(x.bookingPaid||0));
+  const balanceDue=Math.max(0,Number(x.balanceDue||0));
+  let choice=window.prompt('Cash payment type:\\n1 = Booking Fee\\n2 = Balance\\n3 = Full / All Outstanding',bookingDue>0?'1':'2');
+  if(choice===null)return;
+  choice=String(choice).trim();
+  const type=choice==='1'?'booking':choice==='2'?'balance':choice==='3'?'full':choice;
+  if(!['booking','balance','full'].includes(type)){alert('Invalid choice. Use 1, 2 or 3.');return}
+  const amount=type==='booking'?bookingDue:type==='balance'?balanceDue:bookingDue+balanceDue;
+  if(amount<=0){alert('No outstanding payment.');return}
+  const reference=window.prompt('Receipt / reference no. (optional):','')??'';
+  const note=window.prompt('Cash payment note (optional):','')??'';
+  if(!confirm('Record CASH payment of '+money(amount)+' for '+x.name+'?'))return;
+  try{
+    const r=await fetch(PAY,{method:'POST',headers:headers(),body:JSON.stringify({operation:'cash',registrationId:id,paymentType:type,reference,note})}),d=await r.json();
+    if(!r.ok)throw new Error(d.message||'Unable to record cash payment.');
+    alert('Cash payment recorded.\\nAmount: '+money(d.cashAmount)+'\\nPayment status: '+d.paymentStatus);
+    await load();
+  }catch(e){alert(e.message)}
+};
+
+window.del=async id=>{
+  if(!confirm('Delete registration '+id+'? This removes the record from GitHub database.'))return;
+  try{
+    const r=await fetch(API,{method:'DELETE',headers:headers(),body:JSON.stringify({id})}),d=await r.json();
+    if(!r.ok)throw new Error(d.message||'Unable to delete.');await load();
+  }catch(e){alert(e.message)}
+};
+
+$('refresh').onclick=load;
+$('q').oninput=render;$('status').onchange=render;$('type').onchange=render;$('mode').onchange=render;$('paymentStatus').onchange=render;
+load();
 </script></body></html>

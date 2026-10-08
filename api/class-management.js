@@ -113,7 +113,69 @@ export default async function handler(req,res){
       const findRegistration=async id=>{const fresh=await read(registrationsPath),i=fresh.items.findIndex(x=>String(x.id)===String(id));return i<0?null:fresh.items[i]};
       const createBill=async(x,type,amount)=>{const secret=process.env.TOYYIBPAY_SECRET_KEY,category=process.env.TOYYIBPAY_CATEGORY_CODE;if(!secret||!category)throw new Error('ToyyibPay payment configuration is incomplete.');const returnUrl='https://terajuciptabina-eng.github.io/terajuciptabina/kelas-archicad/register.html?payment=return&paymentType='+encodeURIComponent(type)+'&registration='+encodeURIComponent(x.id)+'&token='+encodeURIComponent(x.paymentToken),fd=new URLSearchParams();fd.append('userSecretKey',secret);fd.append('categoryCode',category);fd.append('billName',type==='booking'?'Archicad Booking Fee':'Archicad Balance Payment');fd.append('billDescription',type==='booking'?'Archicad booking fee':'Archicad class balance');fd.append('billPriceSetting','1');fd.append('billPayorInfo','1');fd.append('billAmount',String(Math.round(Number(amount)*100)));fd.append('billReturnUrl',returnUrl);fd.append('billCallbackUrl',(process.env.PUBLIC_BASE_URL||'https://terajuciptabina.vercel.app').replace(/\/$/,'')+'/api/class-payment-callback');fd.append('billExternalReferenceNo',x.id+'-'+type);fd.append('billTo',String(x.name||'Participant'));fd.append('billEmail',String(x.email||''));fd.append('billPhone',String(x.phone||''));fd.append('billContentEmail','0');fd.append('billChargeToCustomer','0');fd.append('billExpiryDays','1');const r=await fetch('https://toyyibpay.com/index.php/api/createBill',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:fd.toString()}),out=await r.json();if(!Array.isArray(out)||!out[0]?.BillCode)throw new Error(out?.msg||'Unable to create ToyyibPay payment.');const billCode=String(out[0].BillCode);return{billCode,paymentUrl:'https://toyyibpay.com/'+billCode}};
       const verifyBill=async(code,expected,order)=>{const secret=process.env.TOYYIBPAY_SECRET_KEY;if(!secret)throw new Error('ToyyibPay payment configuration is incomplete.');const fd=new URLSearchParams();fd.append('billCode',code);fd.append('userSecretKey',secret);const r=await fetch('https://toyyibpay.com/index.php/api/getBillTransactions',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:fd.toString()}),out=await r.json();if(!Array.isArray(out))return null;return out.find(t=>paymentSuccess(t.billpaymentStatus??t.status??t.status_id??'')&&amountMatches(t.billpaymentAmount??t.amount??0,expected)&&(!String(t.order_id??t.orderId??t.externalReferenceNo??'')||String(t.order_id??t.orderId??t.externalReferenceNo)===String(order)))||null};
-      const operation=String(req.query?.operation||'').trim().toLowerCase();if(!['create','verify','callback'].includes(operation))return res.status(404).json({message:'Class payment operation not found.'});
+      
+      if(operation==='cash'){
+        if(req.method!=='POST'||!isAdmin)return res.status(401).json({message:'Admin authorization required for cash payment.'});
+        const b=typeof req.body==='string'?JSON.parse(req.body||'{}'):(req.body||{});
+        const id=String(b.registrationId||'').trim();
+        const type=String(b.paymentType||'').trim().toLowerCase();
+        if(!id||!['booking','balance','full'].includes(type))return res.status(400).json({message:'Registration and cash payment type are required.'});
+        const item=await findRegistration(id);
+        if(!item)return res.status(404).json({message:'Registration not found.'});
+        if(item.status==='Cancelled')return res.status(409).json({message:'This registration has been cancelled.'});
+        const p=paymentFields(item);
+        const bookingOutstanding=money(Math.max(0,p.bookingFee-p.bookingPaid));
+        const balanceOutstanding=money(Math.max(0,p.balanceDue));
+        if(bookingOutstanding<=0&&balanceOutstanding<=0)return res.status(409).json({message:'This registration is already fully paid.'});
+        let bookingCash=0,balanceCash=0;
+        if(type==='booking'){
+          if(bookingOutstanding<=0)return res.status(409).json({message:'Booking fee is already paid.'});
+          bookingCash=bookingOutstanding;
+        }else if(type==='balance'){
+          if(bookingOutstanding>0)return res.status(409).json({message:'Booking fee must be paid before recording a cash balance payment.'});
+          if(balanceOutstanding<=0)return res.status(409).json({message:'Balance is already paid.'});
+          balanceCash=balanceOutstanding;
+        }else{
+          bookingCash=bookingOutstanding;
+          balanceCash=balanceOutstanding;
+        }
+        const now=new Date().toISOString();
+        const recordedBy=String(suppliedUser||adminUser||'admin').trim();
+        const reference=String(b.reference||'').trim();
+        const note=String(b.note||'').trim();
+        const updated=await updatePayment(id,x=>{
+          x.cashPayments=Array.isArray(x.cashPayments)?x.cashPayments:[];
+          if(bookingCash>0){
+            x.bookingPaid=money(Number(x.bookingPaid||0)+bookingCash);
+            x.bookingPaidAt=now;
+            x.bookingPaymentMethod='Cash';
+            x.bookingPaymentRef=reference;
+            x.cashPayments.push({component:'Booking Fee',amount:bookingCash,recordedAt:now,recordedBy,reference,note});
+          }
+          if(balanceCash>0){
+            x.balancePaid=money(Number(x.balancePaid||0)+balanceCash);
+            x.balancePaidAt=now;
+            x.balancePaymentMethod='Cash';
+            x.balancePaymentRef=reference;
+            x.cashPayments.push({component:'Balance',amount:balanceCash,recordedAt:now,recordedBy,reference,note});
+          }
+          const methods=[String(x.bookingPaymentMethod||'').trim(),String(x.balancePaymentMethod||'').trim()].filter(Boolean);
+          x.paymentMethod=methods.length===0?'':([...new Set(methods)].length===1?methods[0]:'Mixed');
+          const q=paymentFields(x);
+          x.balanceDue=q.balanceDue;
+          x.paymentStatus=q.paymentStatus;
+          x.payment=q.paymentStatus;
+          x.paymentLastRecordedAt=now;
+          x.paymentLastRecordedBy=recordedBy;
+          if(x.status!=='Cancelled')x.status=q.paymentStatus==='Fully Paid'?'Paid':(q.paymentStatus==='Booking Fee Paid'?'Confirmed':'Pending');
+          x.updatedAt=now;
+        },'Record Archicad cash payment '+id);
+        if(!updated)return res.status(409).json({message:'Cash payment could not be recorded.'});
+        const final=paymentFields(updated);
+        return res.status(200).json({ok:true,registrationId:id,paymentMethod:updated.paymentMethod||'Cash',paymentStatus:final.paymentStatus,bookingPaid:final.bookingPaid,balancePaid:final.balancePaid,balanceDue:final.balanceDue,cashAmount:money(bookingCash+balanceCash),reference});
+      }
+
+const operation=String(req.query?.operation||'').trim().toLowerCase();if(!['create','verify','callback','cash'].includes(operation))return res.status(404).json({message:'Class payment operation not found.'});
       if(operation==='callback'){if(req.method!=='POST')return res.status(405).json({message:'Method not allowed.'});const b=typeof req.body==='string'?JSON.parse(req.body||'{}'):(req.body||{}),secret=process.env.TOYYIBPAY_SECRET_KEY;if(!secret)return res.status(500).json({message:'ToyyibPay payment configuration is incomplete.'});const hash=crypto.createHash('md5').update(secret+String(b.status||'')+String(b.order_id||'')+String(b.refno||'')+'ok').digest('hex');if(String(b.hash||'').toLowerCase()!==hash.toLowerCase())return res.status(400).json({message:'Invalid callback signature.'});if(!paymentSuccess(b.status))return res.status(200).json({success:true,ignored:true});const m=String(b.order_id||'').match(/^(ARC-\d{14}-[A-Z0-9]{4})-(booking|balance)$/i);if(!m)return res.status(400).json({message:'Invalid payment reference.'});const id=m[1],type=String(m[2]).toLowerCase(),item=await findRegistration(id);if(!item)return res.status(404).json({message:'Registration not found.'});const p=paymentFields(item),expected=type==='booking'?p.bookingFee:p.balanceDue;if(expected<=0)return res.status(200).json({success:true,alreadyPaid:true});const stored=type==='booking'?String(item.bookingBillCode||''):String(item.balanceBillCode||'');if(stored&&stored!==String(b.billcode||''))return res.status(400).json({message:'Payment bill does not match the registration.'});if(!amountMatches(b.amount,expected))return res.status(400).json({message:'Payment amount does not match the expected amount.'});await updatePayment(id,x=>{const e=type==='booking'?money(Math.max(0,x.bookingFee-money(x.bookingPaid))):money(x.balanceDue);if(e<=0||!amountMatches(b.amount,e))return false;if(type==='booking'){x.bookingPaid=e;x.bookingPaidAt=new Date().toISOString();x.bookingPaymentRef=String(b.refno||'');x.bookingBillCode=String(b.billcode||x.bookingBillCode||'')}else{x.balancePaid=money(Math.min(Number(x.balanceDue||0),Number(x.balancePaid||0)+e));x.balancePaidAt=new Date().toISOString();x.balancePaymentRef=String(b.refno||'');x.balanceBillCode=String(b.billcode||x.balanceBillCode||'')}const z=paymentFields(x);x.balanceDue=z.balanceDue;x.paymentStatus=z.paymentStatus;x.payment=z.paymentStatus;if(x.status!=='Cancelled')x.status=z.paymentStatus==='Fully Paid'?'Paid':(z.paymentStatus==='Booking Fee Paid'?'Confirmed':'Pending');x.updatedAt=new Date().toISOString();},'Update Archicad class payment callback '+id);return res.status(200).json({success:true})}
       if(req.method!=='POST')return res.status(405).json({message:'Method not allowed.'});const b=typeof req.body==='string'?JSON.parse(req.body||'{}'):(req.body||{}),id=String(b.registrationId||'').trim(),tokenValue=String(b.token||'').trim(),type=String(b.paymentType||'').trim().toLowerCase();if(!id||!['booking','balance'].includes(type))return res.status(400).json({message:'Registration and payment type are required.'});const item=await findRegistration(id);if(!item)return res.status(404).json({message:'Registration not found.'});if(item.status==='Cancelled')return res.status(409).json({message:'This registration has been cancelled.'});if(!isAdmin&&String(item.paymentToken||'')!==tokenValue)return res.status(401).json({message:'Invalid payment access token.'});
       if(operation==='create'){const p=paymentFields(item);if(type==='balance'&&p.bookingPaid<p.bookingFee)return res.status(409).json({message:'Booking fee must be paid before the balance can be paid.'});const amount=type==='booking'?money(Math.max(0,p.bookingFee-p.bookingPaid)):money(p.balanceDue);if(amount<=0)return res.status(200).json({success:true,alreadyPaid:true,registrationId:id,paymentType:type,paymentStatus:p.paymentStatus,balanceDue:p.balanceDue,bookingPaid:p.bookingPaid,balancePaid:p.balancePaid});const existing=type==='booking'?String(item.bookingBillCode||''):String(item.balanceBillCode||'');if(existing)return res.status(200).json({success:true,registrationId:id,paymentType:type,billCode:existing,paymentUrl:'https://toyyibpay.com/'+existing,amount,paymentStatus:p.paymentStatus,balanceDue:p.balanceDue});const bill=await createBill(item,type,amount);await updatePayment(id,x=>{if(type==='booking')x.bookingBillCode=bill.billCode;else x.balanceBillCode=bill.billCode;x.updatedAt=new Date().toISOString()},'Create Archicad '+type+' payment bill '+id);return res.status(200).json({success:true,registrationId:id,paymentType:type,billCode:bill.billCode,paymentUrl:bill.paymentUrl,amount,paymentStatus:p.paymentStatus,balanceDue:p.balanceDue})}
