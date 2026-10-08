@@ -330,6 +330,17 @@
     "updatedAt": "2026-10-08T05:58:20.046Z"
   },
   {
+    "id": "DEV-20261008-4e1b1a7",
+    "date": "2026-10-08",
+    "title": "Fix Archicad class slots API syntax",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Fix Archicad class slots API syntax",
+    "details": "Automatic entry from commit 4e1b1a7. Changed files: api/class-slots.js.",
+    "commit": "4e1b1a72b4281d715e7cb184f347cb2bd4c8c75a",
+    "updatedAt": "2026-10-08T06:29:09.322Z"
+  },
+  {
     "id": "DEV-20261008-49832e1",
     "date": "2026-10-08",
     "title": "Fix Vercel Hobby function limit by consolidating payment APIs",
