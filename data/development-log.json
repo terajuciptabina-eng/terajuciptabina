@@ -671,6 +671,17 @@
     "updatedAt": "2026-10-07T18:47:25.847Z"
   },
   {
+    "id": "DEV-20261008-0d291f2",
+    "date": "2026-10-08",
+    "title": "Add Archicad class slot SLOT-20261008075202-Y9EB",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Add Archicad class slot SLOT-20261008075202-Y9EB",
+    "details": "Automatic entry from commit 0d291f2. Changed files: data/class-slots.json.",
+    "commit": "0d291f2ec553aa8391b8d77aface74f8db07528f",
+    "updatedAt": "2026-10-08T07:52:11.779Z"
+  },
+  {
     "id": "DEV-20261008-07311a0",
     "date": "2026-10-08",
     "title": "Fix Room Area import receiver as valid external JavaScript",
