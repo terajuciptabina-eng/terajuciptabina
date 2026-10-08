@@ -77,6 +77,17 @@
     "updatedAt": "2026-10-08T09:12:10.245Z"
   },
   {
+    "id": "DEV-20261008-edd537a",
+    "date": "2026-10-08",
+    "title": "Rebuild Archicad class API from clean source",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Rebuild Archicad class API from clean source",
+    "details": "Automatic entry from commit edd537a. Changed files: api/class-management.js.",
+    "commit": "edd537a149012ef316594bf5e2e39d369ec7cfe6",
+    "updatedAt": "2026-10-08T09:16:28.978Z"
+  },
+  {
     "id": "DEV-20261008-ed1d989",
     "date": "2026-10-08",
     "title": "Save renovation quotation Q004 (EST-REN-004-S)",
