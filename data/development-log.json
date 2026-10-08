@@ -880,6 +880,17 @@
     "updatedAt": "2026-10-08T06:00:16.645Z"
   },
   {
+    "id": "DEV-20261008-36c3198",
+    "date": "2026-10-08",
+    "title": "Clarify Student price verification wording",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Clarify Student price verification wording",
+    "details": "Automatic entry from commit 36c3198. Changed files: kelas-archicad/register.html.",
+    "commit": "36c3198e5e42d62428b9b209333b82e9c50e8c88",
+    "updatedAt": "2026-10-08T11:14:46.004Z"
+  },
+  {
     "id": "DEV-20261008-3467809",
     "date": "2026-10-08",
     "title": "Require student verification document and enforce non-refundable booking fee",
