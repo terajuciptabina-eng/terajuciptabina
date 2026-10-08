@@ -770,6 +770,17 @@
     "updatedAt": "2026-10-08T07:19:07.733Z"
   },
   {
+    "id": "DEV-20261008-1c94212",
+    "date": "2026-10-08",
+    "title": "Update Archicad class registration ARC-20261008075333-YW1O",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Update Archicad class registration ARC-20261008075333-YW1O",
+    "details": "Automatic entry from commit 1c94212. Changed files: data/class-registrations.json.",
+    "commit": "1c94212154dab0b170504a6a14958512a9d08f46",
+    "updatedAt": "2026-10-08T09:06:52.388Z"
+  },
+  {
     "id": "DEV-20261008-1ad6536",
     "date": "2026-10-08",
     "title": "Add navigation between Archicad registrations and class slots",
