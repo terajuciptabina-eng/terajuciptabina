@@ -187,6 +187,17 @@
     "updatedAt": "2026-10-08T08:00:12.826Z"
   },
   {
+    "id": "DEV-20261008-c04b41c",
+    "date": "2026-10-08",
+    "title": "Restore original Archicad hero background image",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Restore original Archicad hero background image",
+    "details": "Automatic entry from commit c04b41c. Changed files: kelas-archicad/register.html.",
+    "commit": "c04b41c09d4e2ad2834a3fde8fddc37a779029ff",
+    "updatedAt": "2026-10-08T08:03:52.035Z"
+  },
+  {
     "id": "DEV-20261008-bca76e7",
     "date": "2026-10-08",
     "title": "Create temporary homeowner account HME-20261008-VL3T",
