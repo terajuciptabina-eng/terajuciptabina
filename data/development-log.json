@@ -121,6 +121,17 @@
     "updatedAt": "2026-10-08T05:59:43.158Z"
   },
   {
+    "id": "DEV-20261008-c985750",
+    "date": "2026-10-08",
+    "title": "Add Archicad class slot management to admin control",
+    "module": "Admin / Rate Management",
+    "status": "Completed",
+    "summary": "Add Archicad class slot management to admin control",
+    "details": "Automatic entry from commit c985750. Changed files: TerajuWorks/admin.html.",
+    "commit": "c985750ec4491a289124ab16bbe34dfffd9f9e1b",
+    "updatedAt": "2026-10-08T06:00:08.506Z"
+  },
+  {
     "id": "DEV-20261008-c65ae24",
     "date": "2026-10-08",
     "title": "Add consistent action icons to room controls",
