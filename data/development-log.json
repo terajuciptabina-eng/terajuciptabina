@@ -605,6 +605,17 @@
     "updatedAt": "2026-10-08T05:57:08.255Z"
   },
   {
+    "id": "DEV-20261008-80585dc",
+    "date": "2026-10-08",
+    "title": "Update Archicad class slot SLOT-20261008130116-G44L",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Update Archicad class slot SLOT-20261008130116-G44L",
+    "details": "Automatic entry from commit 80585dc. Changed files: data/class-slots.json.",
+    "commit": "80585dc5ace979cb7adecc6e0219237c2b5c2e6d",
+    "updatedAt": "2026-10-08T13:02:08.393Z"
+  },
+  {
     "id": "DEV-20261008-7dcece9",
     "date": "2026-10-08",
     "title": "New Archicad class registration ARC-20261008075333-YW1O",
