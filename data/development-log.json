@@ -154,6 +154,17 @@
     "updatedAt": "2026-10-07T19:10:20.660Z"
   },
   {
+    "id": "DEV-20261008-bca76e7",
+    "date": "2026-10-08",
+    "title": "Create temporary homeowner account HME-20261008-VL3T",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Create temporary homeowner account HME-20261008-VL3T",
+    "details": "Automatic entry from commit bca76e7. Changed files: data/users/homeowners/HME-20261008-VL3T.json.",
+    "commit": "bca76e7b1c3bfbd0915f66b3d4aeee6a6d125cff",
+    "updatedAt": "2026-10-08T07:11:38.921Z"
+  },
+  {
     "id": "DEV-20261008-bb7a8ef",
     "date": "2026-10-08",
     "title": "Add Archicad class participant registration and booking page",
