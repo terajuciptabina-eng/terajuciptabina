@@ -11,6 +11,17 @@
     "updatedAt": "2026-10-07T19:10:25.198Z"
   },
   {
+    "id": "DEV-20261008-fa97a7e",
+    "date": "2026-10-08",
+    "title": "Upgrade Archicad class registration page with direct database booking and visual hero",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Upgrade Archicad class registration page with direct database booking and visual hero",
+    "details": "Automatic entry from commit fa97a7e. Changed files: kelas-archicad/register.html.",
+    "commit": "fa97a7e31d8cdd1a23671733311740291497d333",
+    "updatedAt": "2026-10-08T05:44:46.308Z"
+  },
+  {
     "id": "DEV-20261008-ed1d989",
     "date": "2026-10-08",
     "title": "Save renovation quotation Q004 (EST-REN-004-S)",
