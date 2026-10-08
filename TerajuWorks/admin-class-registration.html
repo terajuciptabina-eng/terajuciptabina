@@ -6,6 +6,7 @@ const API='https://terajuciptabina.vercel.app/api/class-registration';
 const PAY='https://terajuciptabina.vercel.app/api/class-payment';
 const KEY='teraju.admin.key';
 const USER='teraju.admin.username';
+if(!sessionStorage.getItem(USER)||!sessionStorage.getItem(KEY)){window.location.replace('admin.html');return;}
 const $=id=>document.getElementById(id);
 const headers=()=>({'X-Admin-Username':sessionStorage.getItem(USER)||'','X-Admin-Password':sessionStorage.getItem(KEY)||'','Content-Type':'application/json'});
 let records=[];
@@ -78,17 +79,22 @@ function render(){
 
 async function load(){
   $('table').innerHTML='<div class="empty">Loading…</div>';
+  const controller=new AbortController();
+  const timer=setTimeout(()=>controller.abort(),10000);
   try{
-    const response=await fetch(API,{headers:headers(),cache:'no-store'});
+    const response=await fetch(API,{headers:headers(),cache:'no-store',signal:controller.signal});
     const data=await response.json();
+    if(response.status===401)throw new Error('Admin session expired. Please login semula melalui Admin Control.');
     if(!response.ok)throw new Error(data.message||'Unable to load registrations.');
     records=Array.isArray(data.items)?data.items:[];
     render();
   }catch(error){
-    $('table').innerHTML='<div class="empty">'+esc(error.message)+'</div>';
+    const message=error.name==='AbortError'?'Registration API timeout. Please refresh atau login semula melalui Admin Control.':(error.message||'Unable to load registrations.');
+    $('table').innerHTML='<div class="empty">'+esc(message)+'</div>';
+  }finally{
+    clearTimeout(timer);
   }
 }
-
 function openEdit(id){
   const item=records.find(x=>x.id===id);
   if(!item)return;
