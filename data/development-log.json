@@ -495,6 +495,17 @@
     "updatedAt": "2026-10-08T08:38:59.786Z"
   },
   {
+    "id": "DEV-20261008-9064fbf",
+    "date": "2026-10-08",
+    "title": "Delete Archicad class registration ARC-20261008092800-GOT3",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Delete Archicad class registration ARC-20261008092800-GOT3",
+    "details": "Automatic entry from commit 9064fbf. Changed files: data/class-registrations.json.",
+    "commit": "9064fbfbefb9874e9b2577b1b50d2bc1a3f03950",
+    "updatedAt": "2026-10-08T10:39:27.636Z"
+  },
+  {
     "id": "DEV-20261008-9054b92",
     "date": "2026-10-08",
     "title": "Update contractor profile CTR-20261002-PC09",
