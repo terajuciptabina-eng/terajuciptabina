@@ -297,6 +297,17 @@
     "updatedAt": "2026-10-08T05:19:29.569Z"
   },
   {
+    "id": "DEV-20261008-9fbd39d",
+    "date": "2026-10-08",
+    "title": "Improve Archicad admin session and registration loading",
+    "module": "Admin / Rate Management",
+    "status": "Completed",
+    "summary": "Improve Archicad admin session and registration loading",
+    "details": "Automatic entry from commit 9fbd39d. Changed files: TerajuWorks/admin-class-registration.html.",
+    "commit": "9fbd39d57ad5ca580b2002a84e7da000c6eb81f5",
+    "updatedAt": "2026-10-08T08:47:34.235Z"
+  },
+  {
     "id": "DEV-20261008-9f3ec60",
     "date": "2026-10-08",
     "title": "Restore state before IFC room import",
