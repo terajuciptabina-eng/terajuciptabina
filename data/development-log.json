@@ -286,6 +286,17 @@
     "updatedAt": "2026-10-08T05:39:47.928Z"
   },
   {
+    "id": "DEV-20261008-ba5bb0f",
+    "date": "2026-10-08",
+    "title": "Delete Archicad class registration ARC-20261008075333-YW1O",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Delete Archicad class registration ARC-20261008075333-YW1O",
+    "details": "Automatic entry from commit ba5bb0f. Changed files: data/class-registrations.json.",
+    "commit": "ba5bb0f85cd691bfd308a4cd79226ca5fd3c21cd",
+    "updatedAt": "2026-10-08T09:26:56.492Z"
+  },
+  {
     "id": "DEV-20261008-b8bcbc7",
     "date": "2026-10-08",
     "title": "Carry project state in IFC planner handoff",
