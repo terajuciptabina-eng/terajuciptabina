@@ -110,6 +110,17 @@
     "updatedAt": "2026-10-08T16:48:42.185Z"
   },
   {
+    "id": "DEV-20261009-02c12c7",
+    "date": "2026-10-09",
+    "title": "Update Archicad class promo pricing display",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Update Archicad class promo pricing display",
+    "details": "Automatic entry from commit 02c12c7. Changed files: kelas-archicad/register.html.",
+    "commit": "02c12c74792bc4f5caffa53c0d575e0119ad627a",
+    "updatedAt": "2026-10-09T08:31:10.562Z"
+  },
+  {
     "id": "DEV-20261008-fcdeef2",
     "date": "2026-10-08",
     "title": "Harden Archicad cash payment button handling",
