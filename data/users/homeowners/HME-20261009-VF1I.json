@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "homeowner",
+  "homeownerId": "HME-20261009-VF1I",
+  "profile": {
+    "name": "Fz Podzi.",
+    "email": "fzpdzy@icloud.com",
+    "phone": "0105531305"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-10-09T06:07:08.530Z",
+  "updatedAt": "2026-10-09T06:07:08.530Z"
+}
