@@ -1,5 +1,16 @@
 [
   {
+    "id": "DEV-20261010-81dff03",
+    "date": "2026-10-10",
+    "title": "Replace Hero image with autoplay BIM video",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Replace Hero image with autoplay BIM video",
+    "details": "Automatic entry from commit 81dff03. Changed files: index.html.",
+    "commit": "81dff0311f5b7ff5ff6d6a3db3e83245240f5b8d",
+    "updatedAt": "2026-10-09T21:04:46.135Z"
+  },
+  {
     "id": "DEV-20261010-1fc160f",
     "date": "2026-10-10",
     "title": "Add files via upload",
