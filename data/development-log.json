@@ -33,6 +33,17 @@
     "updatedAt": "2026-10-09T21:03:39.419Z"
   },
   {
+    "id": "DEV-20261010-0b1e8d3",
+    "date": "2026-10-10",
+    "title": "Remove hero video poster flash",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Remove hero video poster flash",
+    "details": "Automatic entry from commit 0b1e8d3. Changed files: index.html.",
+    "commit": "0b1e8d3634fdbfa9af6c48d3df7cc6b2a56bb0cc",
+    "updatedAt": "2026-10-10T04:46:27.919Z"
+  },
+  {
     "id": "DEV-20261009-cc82e48",
     "date": "2026-10-09",
     "title": "Save build quotation Q001 (EST-BLD-001-S)",
