@@ -33,6 +33,17 @@
     "updatedAt": "2026-10-10T04:49:32.693Z"
   },
   {
+    "id": "DEV-20261010-21396fc",
+    "date": "2026-10-10",
+    "title": "fix: recover legacy Progress JSON suffix on read",
+    "module": "Project Control",
+    "status": "Completed",
+    "summary": "fix: recover legacy Progress JSON suffix on read",
+    "details": "Automatic entry from commit 21396fc. Changed files: api/project-control.js.",
+    "commit": "21396fc3a675c4665c53df7bd378bc9aeb05c0a1",
+    "updatedAt": "2026-10-10T05:11:00.077Z"
+  },
+  {
     "id": "DEV-20261010-1fc160f",
     "date": "2026-10-10",
     "title": "Add files via upload",
