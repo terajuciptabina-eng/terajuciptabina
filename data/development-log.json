@@ -1,5 +1,16 @@
 [
   {
+    "id": "DEV-20261010-aca6d6a",
+    "date": "2026-10-10",
+    "title": "fix: correct Progress persistence and reduce API reads",
+    "module": "Project Control",
+    "status": "Completed",
+    "summary": "fix: correct Progress persistence and reduce API reads",
+    "details": "Automatic entry from commit aca6d6a. Changed files: TerajuWorks/progress.html, api/project-control.js.",
+    "commit": "aca6d6a39cb7aa675ccc6dabc17a7e152e049bc7",
+    "updatedAt": "2026-10-10T05:06:57.099Z"
+  },
+  {
     "id": "DEV-20261010-81dff03",
     "date": "2026-10-10",
     "title": "Replace Hero image with autoplay BIM video",
