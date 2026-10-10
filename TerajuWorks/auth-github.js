@@ -92,7 +92,7 @@ ${id}.
 Please keep this reference number for your records. Happy log in 😇
 
 ${workspaceUrl}`;
-    window.location.href = `https://wa.me/${recipient}?text=${encodeURIComponent(message)}`;
+    return `https://wa.me/${recipient}?text=${encodeURIComponent(message)}`;
   }
   function showPortal(record) {
     currentRecord = record; setLocal(record); panel.classList.add('hidden'); portal.classList.remove('hidden'); const id = record[idKey];
@@ -356,7 +356,14 @@ ${workspaceUrl}`;
     if (!response) throw new Error('Unable to reach the account service.'); const data = await response.json().catch(() => ({})); if (!response.ok) throw new Error(data.message || 'Account request failed.'); return data;
   }
   form.addEventListener('submit', async event => {
-    event.preventDefault(); event.stopImmediatePropagation(); clearError(); button.disabled = true; button.textContent = mode === 'signup' ? 'Creating…' : 'Signing in…';
+    event.preventDefault(); event.stopImmediatePropagation(); clearError();
+    // Open the new tab synchronously from the user's submit gesture so mobile browsers
+    // do not block it after the account API request completes.
+    const signupTab = mode === 'signup' ? window.open('about:blank', '_blank') : null;
+    if (signupTab) {
+      try { signupTab.opener = null; } catch {}
+    }
+    button.disabled = true; button.textContent = mode === 'signup' ? 'Creating…' : 'Signing in…';
     try {
       if (mode === 'signup') {
         const name = nameInput.value.trim(), email = emailInput?.value.trim() || '', phone = phoneInput?.value.trim() || '';
@@ -369,7 +376,12 @@ ${workspaceUrl}`;
         generated.classList.remove('hidden');
         showPortal(data.record);
         showSignupPopup(data.record, data.emailSent === true, email);
-        openSignupWhatsApp(data.record, name, phone);
+        const whatsappUrl = openSignupWhatsApp(data.record, name, phone);
+        if (signupTab && !signupTab.closed) {
+          signupTab.location.replace(whatsappUrl);
+        } else {
+          setError('Account created successfully, but your browser blocked the WhatsApp tab. Please allow pop-ups and open WhatsApp using your registration details.');
+        }
         if (role === 'contractor') setTimeout(() => openProfile(data.record, { onboarding: true }), 550);
       } else {
         const id = idInput.value.trim().toUpperCase();
@@ -378,7 +390,10 @@ ${workspaceUrl}`;
         trackEvent('login', { login_role: role, method: 'github_account_store' });
         showPortal(account);
       }
-    } catch (err) { setError(err.message || 'Unable to complete the request.'); }
+    } catch (err) {
+      if (signupTab && !signupTab.closed) signupTab.close();
+      setError(err.message || 'Unable to complete the request.');
+    }
     finally { button.disabled = false; button.textContent = mode === 'signup' ? 'Create workspace' : 'Enter workspace'; }
   }, true);
   signInTab.addEventListener('click', () => setMode('signin'), true); signUpTab.addEventListener('click', () => setMode('signup'), true);
