@@ -11,6 +11,17 @@
     "updatedAt": "2026-10-09T21:04:46.135Z"
   },
   {
+    "id": "DEV-20261010-78d51e6",
+    "date": "2026-10-10",
+    "title": "Limit hero video gradient to bottom edge",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Limit hero video gradient to bottom edge",
+    "details": "Automatic entry from commit 78d51e6. Changed files: index.html.",
+    "commit": "78d51e635d758229fe02ffaab624943a4c2dcc18",
+    "updatedAt": "2026-10-10T04:49:32.693Z"
+  },
+  {
     "id": "DEV-20261010-1fc160f",
     "date": "2026-10-10",
     "title": "Add files via upload",
