@@ -19,5 +19,12 @@ Standalone solar calculator, package comparison and proposal print/PDF preview.
 - Rebate must be confirmed before it is applied; checkbox in this prototype is a demonstration control, not an actual eligibility verification.
 - Confirm current applicable scheme names, eligibility and rules with relevant authorities before production use.
 
+## Isolation rule — mandatory
+- All TerajuEnergy-specific source code, UI, styles, scripts, assets, API handlers, database schemas/migrations, admin tools, authentication, configuration, documentation and tests must live inside `/TerajuEnergy/`.
+- Do not add or edit TerajuEnergy-specific files in the repository root, shared `/api/`, `/data/`, `/admin/`, or any TerajuWorks folder.
+- Do not reuse TerajuWorks accounts, records, database collections, APIs, admin permissions or storage paths. TerajuEnergy must have its own database/storage namespace and its own admin access model.
+- Do not edit shared root deployment configuration (including `vercel.json`) to make this module work without explicit approval. If deployment requires configuration that cannot be isolated under `/TerajuEnergy/`, stop and report the limitation before changing shared files; prefer a separately configured deployment over coupling modules.
+- Keep development on `terajuenergy-mvp` until reviewed. Never merge to `main` or modify `latest-working` without explicit approval.
+
 ## Deploy/test
 This branch is `terajuenergy-mvp`, based on `main`. Review and test the page before merging or publishing. `latest-working` was not modified.
