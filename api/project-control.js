@@ -41,7 +41,17 @@ export default async function handler(req, res) {
     const raw=await fetch(`https://raw.githubusercontent.com/${actualRepo}/${dataBranch}/${path}`,{cache:'no-store'});
     if(raw.status===404)return{progress:null,sha:null,status:404};
     if(!raw.ok)return{progress:null,sha:null,status:502};
-    const progress=await raw.json();
+    const rawText=await raw.text();
+    let progress;
+    try{
+      progress=JSON.parse(rawText);
+    }catch(parseError){
+      // Recover the exact legacy corruption caused by writing literal backslash+n.
+      // Do not strip arbitrary characters or attempt a lossy repair.
+      const legacySuffix=String.fromCharCode(92)+'n';
+      if(!rawText.endsWith(legacySuffix))throw parseError;
+      progress=JSON.parse(rawText.slice(0,-legacySuffix.length));
+    }
     let sha=null;
     if(includeSha){
       const meta=await github(path,{ref:dataBranch});
