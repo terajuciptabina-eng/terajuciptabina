@@ -77,6 +77,17 @@
     "updatedAt": "2026-10-11T10:17:34.910Z"
   },
   {
+    "id": "DEV-20261011-0fc029d",
+    "date": "2026-10-11",
+    "title": "Capture contractor custom item CTR-20260923-SAOE",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Capture contractor custom item CTR-20260923-SAOE",
+    "details": "Automatic entry from commit 0fc029d. Changed files: data/contractors/database.json.",
+    "commit": "0fc029dbf892a1432627ac2f49a0bb63be7aae74",
+    "updatedAt": "2026-10-11T10:35:03.822Z"
+  },
+  {
     "id": "DEV-20261010-f86ed72",
     "date": "2026-10-10",
     "title": "fix: simplify S-Curve weekly control labels",
