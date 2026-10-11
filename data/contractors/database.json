@@ -205,10 +205,10 @@
           "plannerType": "renovation",
           "description": "Supply and install metal roofing sheet to selected roof, 25° pitch with 3ft overhang.",
           "unit": "m²",
-          "rate": 350,
+          "rate": 360,
           "globalRate": 420,
-          "rateDelta": -70,
-          "rateDeltaPercent": -16.67,
+          "rateDelta": -60,
+          "rateDeltaPercent": -14.29,
           "overrideActive": true,
           "state": "johor",
           "rateSetId": "johor",
@@ -216,11 +216,11 @@
           "reviewedAt": null,
           "reviewedBy": null,
           "reviewNote": null,
-          "capturedAt": "2026-10-11T10:32:54.305Z",
+          "capturedAt": "2026-10-11T10:34:55.258Z",
           "category": "direct-rate-override",
           "groupKey": "structure",
           "groupTitle": "Roof",
-          "updatedAt": "2026-10-11T10:32:54.305Z"
+          "updatedAt": "2026-10-11T10:34:55.258Z"
         }
       ],
       "marketHistory": [
@@ -626,9 +626,34 @@
           "groupTitle": "Roof",
           "updatedAt": "2026-10-11T10:32:54.305Z",
           "eventType": "override-update"
+        },
+        {
+          "customItemId": "ITEM-master-main-building-/-roof-/-metal-roofing-sheet",
+          "sourceType": "override",
+          "sourceGlobalId": "master-MAIN BUILDING / Roof / Metal Roofing Sheet",
+          "plannerType": "renovation",
+          "description": "Supply and install metal roofing sheet to selected roof, 25° pitch with 3ft overhang.",
+          "unit": "m²",
+          "rate": 360,
+          "globalRate": 420,
+          "rateDelta": -60,
+          "rateDeltaPercent": -14.29,
+          "overrideActive": true,
+          "state": "johor",
+          "rateSetId": "johor",
+          "approvalStatus": "pending",
+          "reviewedAt": null,
+          "reviewedBy": null,
+          "reviewNote": null,
+          "capturedAt": "2026-10-11T10:34:55.258Z",
+          "category": "direct-rate-override",
+          "groupKey": "structure",
+          "groupTitle": "Roof",
+          "updatedAt": "2026-10-11T10:34:55.258Z",
+          "eventType": "override-update"
         }
       ]
     }
   ],
-  "updatedAt": "2026-10-11T10:32:54.305Z"
+  "updatedAt": "2026-10-11T10:34:55.258Z"
 }
