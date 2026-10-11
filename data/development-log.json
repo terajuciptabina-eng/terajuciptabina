@@ -176,6 +176,17 @@
     "updatedAt": "2026-10-11T20:13:18.159Z"
   },
   {
+    "id": "DEV-20261012-27ea0d6",
+    "date": "2026-10-12",
+    "title": "Point SunG Explore card to terajuenergy-mvp page",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Point SunG Explore card to terajuenergy-mvp page",
+    "details": "Automatic entry from commit 27ea0d6. Changed files: index.html.",
+    "commit": "27ea0d69f82457d06c2dffd753b15e5e0af3236c",
+    "updatedAt": "2026-10-11T20:52:40.986Z"
+  },
+  {
     "id": "DEV-20261012-052c93c",
     "date": "2026-10-12",
     "title": "Fix SunG SVG source bounds for optical centering",
