@@ -1907,7 +1907,8 @@ function getRoomGroupsBase() {
     const base = ROOM_TYPES[roomType] || "Area";
     const autoLabel = typeIndexes[roomType] > 1 ? `${base} ${typeIndexes[roomType]}` : base;
     const label = customRoomLabels.has(roomId) ? customRoomLabels.get(roomId) : autoLabel;
-    return { roomId, roomType, label, area };
+    const condition = room.querySelector(".room-condition")?.value === "new" ? "new" : "existing";
+    return { roomId, roomType, label, area, condition };
   });
 }
 function getRoomGroups() {
