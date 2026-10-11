@@ -11,6 +11,17 @@
     "updatedAt": "2026-10-11T20:23:35.591Z"
   },
   {
+    "id": "DEV-20261012-93aef1e",
+    "date": "2026-10-12",
+    "title": "rename arqenvo logo",
+    "module": "General",
+    "status": "Completed",
+    "summary": "rename arqenvo logo",
+    "details": "Automatic entry from commit 93aef1e. Changed files: images/Arqenvo-logo.png.",
+    "commit": "93aef1e2f0c30c1a87c144670b7ff56b7e309123",
+    "updatedAt": "2026-10-11T20:25:49.417Z"
+  },
+  {
     "id": "DEV-20261012-45c35ed",
     "date": "2026-10-12",
     "title": "Add SunG Solution logo to main website assets",
