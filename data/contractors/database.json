@@ -197,6 +197,30 @@
           "groupKey": "doors-windows",
           "groupTitle": "Doors & Windows",
           "updatedAt": "2026-10-02T13:10:43.020Z"
+        },
+        {
+          "customItemId": "ITEM-master-main-building-/-roof-/-metal-roofing-sheet",
+          "sourceType": "override",
+          "sourceGlobalId": "master-MAIN BUILDING / Roof / Metal Roofing Sheet",
+          "plannerType": "renovation",
+          "description": "Supply and install metal roofing sheet to selected roof, 25° pitch with 3ft overhang.",
+          "unit": "m²",
+          "rate": 350,
+          "globalRate": 420,
+          "rateDelta": -70,
+          "rateDeltaPercent": -16.67,
+          "overrideActive": true,
+          "state": "johor",
+          "rateSetId": "johor",
+          "approvalStatus": "pending",
+          "reviewedAt": null,
+          "reviewedBy": null,
+          "reviewNote": null,
+          "capturedAt": "2026-10-11T10:32:54.305Z",
+          "category": "direct-rate-override",
+          "groupKey": "structure",
+          "groupTitle": "Roof",
+          "updatedAt": "2026-10-11T10:32:54.305Z"
         }
       ],
       "marketHistory": [
@@ -577,9 +601,34 @@
           "groupTitle": "Doors & Windows",
           "updatedAt": "2026-10-02T13:10:43.020Z",
           "eventType": "override-update"
+        },
+        {
+          "customItemId": "ITEM-master-main-building-/-roof-/-metal-roofing-sheet",
+          "sourceType": "override",
+          "sourceGlobalId": "master-MAIN BUILDING / Roof / Metal Roofing Sheet",
+          "plannerType": "renovation",
+          "description": "Supply and install metal roofing sheet to selected roof, 25° pitch with 3ft overhang.",
+          "unit": "m²",
+          "rate": 350,
+          "globalRate": 420,
+          "rateDelta": -70,
+          "rateDeltaPercent": -16.67,
+          "overrideActive": true,
+          "state": "johor",
+          "rateSetId": "johor",
+          "approvalStatus": "pending",
+          "reviewedAt": null,
+          "reviewedBy": null,
+          "reviewNote": null,
+          "capturedAt": "2026-10-11T10:32:54.305Z",
+          "category": "direct-rate-override",
+          "groupKey": "structure",
+          "groupTitle": "Roof",
+          "updatedAt": "2026-10-11T10:32:54.305Z",
+          "eventType": "override-update"
         }
       ]
     }
   ],
-  "updatedAt": "2026-10-02T13:10:43.020Z"
+  "updatedAt": "2026-10-11T10:32:54.305Z"
 }
