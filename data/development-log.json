@@ -209,6 +209,17 @@
     "updatedAt": "2026-10-11T10:56:40.779Z"
   },
   {
+    "id": "DEV-20261011-064a38d",
+    "date": "2026-10-11",
+    "title": "fix(quotations): preserve independent duplicate identity and list by immutable quotationId",
+    "module": "Cost Estimate",
+    "status": "Completed",
+    "summary": "fix(quotations): preserve independent duplicate identity and list by immutable quotationId",
+    "details": "Automatic entry from commit 064a38d. Changed files: api/quotations.js.",
+    "commit": "064a38d9b12f9ede322a28e1aa536b4e8c64e17d",
+    "updatedAt": "2026-10-11T11:00:08.090Z"
+  },
+  {
     "id": "DEV-20261010-f86ed72",
     "date": "2026-10-10",
     "title": "fix: simplify S-Curve weekly control labels",
