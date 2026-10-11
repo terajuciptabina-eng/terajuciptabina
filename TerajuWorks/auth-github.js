@@ -22,7 +22,38 @@
   let currentRecord = null, profileLogoDataUrl = '';
   let mode = 'signup';
   const getLocal = () => { try { return JSON.parse(localStorage.getItem(storageKey) || 'null'); } catch { return null; } };
-  const setLocal = record => localStorage.setItem(storageKey, JSON.stringify(record));
+  // GitHub is the source of truth. Browser storage is only a small convenience cache,
+  // never a prerequisite for signing in. Do not cache planner records or embedded logo data.
+  const setLocal = record => {
+    const id = String(record?.[idKey] || '').trim().toUpperCase();
+    if (!id) return false;
+    const sourceProfile = record?.profile && typeof record.profile === 'object' ? record.profile : {};
+    const profile = {};
+    const profileFieldsToCache = isHomeowner
+      ? ['name', 'phone', 'email', 'propertyAddress', 'propertyType', 'projectNotes']
+      : ['name', 'registrationNo', 'phone', 'address', 'email', 'website', 'previewBrandingMode', 'previewBrandingConfigured', 'contractorProfileConfigured'];
+    profileFieldsToCache.forEach(key => {
+      if (Object.prototype.hasOwnProperty.call(sourceProfile, key)) profile[key] = sourceProfile[key];
+    });
+    const cache = {
+      schemaVersion: record.schemaVersion || 1,
+      recordType: record.recordType || 'user-account',
+      role,
+      [idKey]: id,
+      profile,
+      state: record.state || 'active',
+      createdAt: record.createdAt || '',
+      updatedAt: record.updatedAt || ''
+    };
+    try {
+      localStorage.setItem(storageKey, JSON.stringify(cache));
+      return true;
+    } catch (storageError) {
+      // A full/disabled browser cache must not turn a successful server login into a failure.
+      console.warn('TerajuWorks account cache skipped:', storageError?.name || 'StorageError');
+      return false;
+    }
+  };
   const trackEvent = (name, extra = {}) => { try { if (typeof window.TERAJU_GA_EVENT === 'function') window.TERAJU_GA_EVENT(name, Object.fromEntries(Object.entries({ role, ...extra }).filter(([,v]) => v !== undefined && v !== ''))); } catch {} };
   const setError = message => { error.textContent = message; error.classList.remove('hidden'); };
   const clearError = () => { error.textContent = ''; error.classList.add('hidden'); };
