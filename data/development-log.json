@@ -187,6 +187,17 @@
     "updatedAt": "2026-10-11T20:52:40.986Z"
   },
   {
+    "id": "DEV-20261012-07e8c21",
+    "date": "2026-10-12",
+    "title": "Add Explore ARQENVO link to products section",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Add Explore ARQENVO link to products section",
+    "details": "Automatic entry from commit 07e8c21. Changed files: index.html.",
+    "commit": "07e8c213d6cfe7b0705ef2ef0bc6243db91b6290",
+    "updatedAt": "2026-10-11T21:45:45.314Z"
+  },
+  {
     "id": "DEV-20261012-052c93c",
     "date": "2026-10-12",
     "title": "Fix SunG SVG source bounds for optical centering",
