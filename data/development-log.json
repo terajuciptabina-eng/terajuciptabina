@@ -44,6 +44,17 @@
     "updatedAt": "2026-10-11T08:25:29.285Z"
   },
   {
+    "id": "DEV-20261011-1dd57d0",
+    "date": "2026-10-11",
+    "title": "fix(auth): keep browser account cache small and non-blocking",
+    "module": "General",
+    "status": "Completed",
+    "summary": "fix(auth): keep browser account cache small and non-blocking",
+    "details": "Automatic entry from commit 1dd57d0. Changed files: TerajuWorks/auth-github.js.",
+    "commit": "1dd57d0c63a84ab7367664648b7ccbd80597d918",
+    "updatedAt": "2026-10-11T10:17:34.910Z"
+  },
+  {
     "id": "DEV-20261010-f86ed72",
     "date": "2026-10-10",
     "title": "fix: simplify S-Curve weekly control labels",
