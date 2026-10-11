@@ -22,6 +22,17 @@
     "updatedAt": "2026-10-10T18:20:04.439Z"
   },
   {
+    "id": "DEV-20261011-4f6bde4",
+    "date": "2026-10-11",
+    "title": "Create temporary homeowner account HME-20261011-YZ2D",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Create temporary homeowner account HME-20261011-YZ2D",
+    "details": "Automatic entry from commit 4f6bde4. Changed files: data/users/homeowners/HME-20261011-YZ2D.json.",
+    "commit": "4f6bde4d9a741ae81d4ba9664fdeff66d801cc33",
+    "updatedAt": "2026-10-11T08:14:47.704Z"
+  },
+  {
     "id": "DEV-20261010-f86ed72",
     "date": "2026-10-10",
     "title": "fix: simplify S-Curve weekly control labels",
