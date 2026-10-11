@@ -1,5 +1,16 @@
 [
   {
+    "id": "DEV-20261012-e671c56",
+    "date": "2026-10-12",
+    "title": "Simplify ARQENVO BIM software description",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Simplify ARQENVO BIM software description",
+    "details": "Automatic entry from commit e671c56. Changed files: index.html.",
+    "commit": "e671c56a636132bbdbb2a1c013314a3c5d420348",
+    "updatedAt": "2026-10-11T20:36:33.335Z"
+  },
+  {
     "id": "DEV-20261012-e28a2ed",
     "date": "2026-10-12",
     "title": "Add files via upload",
