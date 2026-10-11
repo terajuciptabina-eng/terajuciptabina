@@ -11,6 +11,17 @@
     "updatedAt": "2026-10-11T20:23:35.591Z"
   },
   {
+    "id": "DEV-20261012-ba58318",
+    "date": "2026-10-12",
+    "title": "Use original ARQENVO logo on homepage",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Use original ARQENVO logo on homepage",
+    "details": "Automatic entry from commit ba58318. Changed files: index.html.",
+    "commit": "ba58318768fc41e06ddf2aa564beabfb33e9079d",
+    "updatedAt": "2026-10-11T20:26:42.948Z"
+  },
+  {
     "id": "DEV-20261012-93aef1e",
     "date": "2026-10-12",
     "title": "rename arqenvo logo",
