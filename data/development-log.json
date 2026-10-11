@@ -1,5 +1,16 @@
 [
   {
+    "id": "DEV-20261011-ea4e2ee",
+    "date": "2026-10-11",
+    "title": "fix(renovation): preserve room condition in canonical area data",
+    "module": "RenovationPlanner",
+    "status": "Completed",
+    "summary": "fix(renovation): preserve room condition in canonical area data",
+    "details": "Automatic entry from commit ea4e2ee. Changed files: TerajuWorks/renovationplanner-v2.html.",
+    "commit": "ea4e2ee6a8090f315df5ec9cd60889e8ffb99b7e",
+    "updatedAt": "2026-10-11T10:45:43.213Z"
+  },
+  {
     "id": "DEV-20261011-d7ec1e0",
     "date": "2026-10-11",
     "title": "Open signup WhatsApp confirmation in a new tab",
