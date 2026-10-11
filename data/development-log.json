@@ -11,6 +11,17 @@
     "updatedAt": "2026-10-11T20:12:57.654Z"
   },
   {
+    "id": "DEV-20261012-43b3cb3",
+    "date": "2026-10-12",
+    "title": "Avoid broken image while keeping ARQENVO product card",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Avoid broken image while keeping ARQENVO product card",
+    "details": "Automatic entry from commit 43b3cb3. Changed files: index.html.",
+    "commit": "43b3cb318b9134c398b9c951e50a70000d348a33",
+    "updatedAt": "2026-10-11T20:13:27.595Z"
+  },
+  {
     "id": "DEV-20261012-348277e",
     "date": "2026-10-12",
     "title": "Add product ecosystem section to company homepage",
