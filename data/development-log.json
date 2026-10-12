@@ -33,6 +33,17 @@
     "updatedAt": "2026-10-12T21:55:46.984Z"
   },
   {
+    "id": "DEV-20261013-81b52b5",
+    "date": "2026-10-13",
+    "title": "fix: bust cached country context script in planner",
+    "module": "RenovationPlanner",
+    "status": "Completed",
+    "summary": "fix: bust cached country context script in planner",
+    "details": "Automatic entry from commit 81b52b5. Changed files: TerajuWorks/renovationplanner-v2.html.",
+    "commit": "81b52b575e67f3b53867fe6f6b28063b52ebfb93",
+    "updatedAt": "2026-10-12T21:59:46.275Z"
+  },
+  {
     "id": "DEV-20261013-80f6e69",
     "date": "2026-10-13",
     "title": "fix: restore currency helper syntax in estimate history",
