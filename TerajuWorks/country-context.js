@@ -26,7 +26,34 @@
  function set(raw){const next=normalize({...raw,projectId:raw?.projectId||current().projectId});window.TERAJU_PROJECT_COUNTRY=next;safeWrite(next);window.dispatchEvent(new CustomEvent('teraju:countrychange',{detail:next}));return next}
  function format(value,options={}){const c=current();return new Intl.NumberFormat(c.locale,{style:'currency',currency:c.currency,minimumFractionDigits:options.minimumFractionDigits??2,maximumFractionDigits:options.maximumFractionDigits??2}).format(Number(value)||0)}
  async function loadRates(){if(!dataPromise)dataPromise=fetch(DATA_URL,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('Unable to load country rate comparison data');return r.json()});return dataPromise}
- async function rateById(id, snapshot){const ctx=normalize(snapshot||current());if(ctx.countryCode==='MY'&&window.TERAJU_RATE_CONTEXT?.state){/* Malaysian state resolver remains authoritative; do not substitute baseline here. */}const data=await loadRates();const item=data.rates.find(x=>x.id===id);if(!item)return null;return {id:item.id,rate:item[ctx.currency],currency:ctx.currency,countryCode:ctx.countryCode,planner:item.planner,provisional:ctx.countryCode==='VN'||ctx.countryCode==='BN'} }
+ async function rateById(id, snapshot){const ctx=normalize(snapshot||current());const data=await loadRates();const item=data.rates.find(x=>x.id===id);if(!item)return null;return {id:item.id,rate:item[ctx.currency],currency:ctx.currency,countryCode:ctx.countryCode,planner:item.planner,provisional:ctx.countryCode==='VN'||ctx.countryCode==='BN'} }
+ const RENOVATION_RATE_KEYS={plaster_ceiling:'ceiling',spc_flooring:'spc',downlight:'downlight',ceiling_fan:'ceilingFan',curtain_box_led:'curtainBoxLED',bar_lamp:'barLamp',kitchen_frame:'kitchenFrame',making_good:'kitchenMakingGood',swing_glass_door:'kitchenGlassDoor',floor_tiles:'floorTile',wall_tiles:'wallTile',kitchen_lighting:'barLamp',sanitary_accessories:'bathroomSanitary',toilet_door:'bathroomDoor',exhaust_fan:'exhaustFan',gate_motor:'gateMotor',brickwall_divider:'brickwallDivider',front_fence:'frontFence',facade_wall:'facadeWall',wall_light:'wallLight'};
+ let baseRates=null,applying=false;
+ async function applyCountryRates(){
+  if(applying)return;applying=true;
+  try{
+   const ctx=current(),data=await loadRates();
+   if(typeof RATES==='undefined'||!RATES||typeof RATES!=='object')return;
+   if(!baseRates)baseRates={...RATES};
+   if(ctx.countryCode==='MY'){
+    Object.assign(RATES,baseRates);
+    if(typeof window.TERAJU_RESOLVE_RATE==='function')await window.TERAJU_RESOLVE_RATE();
+    else if(typeof updateEstimate==='function')updateEstimate();
+    return;
+   }
+   const selected=data.rates.filter(x=>x.planner===plannerType);
+   if(selected.length!==(plannerType==='build'?82:40))throw new Error('Country rate set failed planner-count validation.');
+   for(const item of selected){
+    const value=Number(item[ctx.currency]);if(!Number.isFinite(value))throw new Error('Missing '+ctx.currency+' rate for '+item.id);
+    if(plannerType==='build')RATES[item.id]=value;
+    else {const token=item.id.replace(/^renovation_rule_/,'').replace(/_\\d+$/,'');const alias=RENOVATION_RATE_KEYS[token.slice(token.indexOf('_')+1)]||RENOVATION_RATE_KEYS[token];if(alias)RATES[alias]=value;}
+   }
+   window.TERAJU_RATE_CONTEXT={countryCode:ctx.countryCode,currency:ctx.currency,name:ctx.name,source:'country-comparison-2026.json',provisional:ctx.countryCode==='VN'||ctx.countryCode==='BN'};
+   window.dispatchEvent(new CustomEvent('teraju:ratechange',{detail:window.TERAJU_RATE_CONTEXT}));
+   if(typeof updateEstimate==='function')updateEstimate();
+  }catch(error){console.error('[TERAJU] Country rate integration failed:',error);window.TERAJU_COUNTRY_RATE_ERROR=String(error?.message||error)}
+  finally{applying=false}
+ }
  function installSelector(){
   if(document.getElementById('tcProjectCountrySelect'))return;
   const state=document.getElementById('projectState');
@@ -39,8 +66,9 @@
   const initial=current();
   select.value=initial.countryCode;
   function reflect(){const ctx=set({countryCode:select.value,projectId:current().projectId,source:'project-selector'});wrap.querySelector('#tcProjectCurrencyHint').textContent=ctx.countryCode==='VN'||ctx.countryCode==='BN'?'Currency: '+ctx.currency+'. Rates are provisional estimates and need local validation.':'Currency: '+ctx.currency+'. Malaysian state-specific rates remain authoritative for Malaysia.'}
-  select.addEventListener('change',reflect);
+  select.addEventListener('change',()=>{reflect();applyCountryRates()});
   reflect();
+  applyCountryRates();
  }
  window.TERAJU_COUNTRIES=CURRENCIES;
  window.TERAJU_GET_PROJECT_COUNTRY=current;
