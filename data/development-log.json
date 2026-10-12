@@ -33,6 +33,17 @@
     "updatedAt": "2026-10-12T20:10:51.040Z"
   },
   {
+    "id": "DEV-20261013-b681e39",
+    "date": "2026-10-13",
+    "title": "fix: require country selection before Malaysian state gate",
+    "module": "General",
+    "status": "Completed",
+    "summary": "fix: require country selection before Malaysian state gate",
+    "details": "Automatic entry from commit b681e39. Changed files: TerajuWorks/country-context.js.",
+    "commit": "b681e392cf6e1ed33bd5ab8287e57c56e4d5960f",
+    "updatedAt": "2026-10-12T22:11:55.107Z"
+  },
+  {
     "id": "DEV-20261013-b2b0794",
     "date": "2026-10-13",
     "title": "fix: detect actual injected state selector before applying country rules",
