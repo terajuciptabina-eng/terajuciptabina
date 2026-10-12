@@ -132,6 +132,17 @@
     "updatedAt": "2026-10-12T20:12:24.223Z"
   },
   {
+    "id": "DEV-20261013-102ee46",
+    "date": "2026-10-13",
+    "title": "fix: load country-first selection flow",
+    "module": "BuildPlanner",
+    "status": "Completed",
+    "summary": "fix: load country-first selection flow",
+    "details": "Automatic entry from commit 102ee46. Changed files: TerajuWorks/buildplanner-v2.html.",
+    "commit": "102ee46634ef0ae58ced81eaefb9fef8690fc42a",
+    "updatedAt": "2026-10-12T22:12:09.622Z"
+  },
+  {
     "id": "DEV-20261012-e671c56",
     "date": "2026-10-12",
     "title": "Simplify ARQENVO BIM software description",
