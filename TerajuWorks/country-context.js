@@ -24,6 +24,7 @@
  function normalize(raw){const code=countryCode(raw?.countryCode||raw?.country||raw?.code);return {...CURRENCIES[code],countryCode:code,projectId:String(raw?.projectId||params.get('projectId')||params.get('quotationId')||''),source:raw?.source||'session'} }
  function current(){const explicit=params.get('countryCode')||params.get('country');if(explicit)return normalize({countryCode:explicit,projectId:params.get('projectId')||params.get('quotationId')||''});if(window.TERAJU_PROJECT_COUNTRY)return normalize(window.TERAJU_PROJECT_COUNTRY);const saved=safeRead();const activeProject=String(params.get('projectId')||params.get('quotationId')||'');if(activeProject&&saved&&String(saved.projectId||'')===activeProject)return normalize(saved);return normalize({countryCode:'MY',projectId:activeProject,source:'safe-default'})}
  function set(raw){const next=normalize({...raw,projectId:raw?.projectId||current().projectId});window.TERAJU_PROJECT_COUNTRY=next;safeWrite(next);window.dispatchEvent(new CustomEvent('teraju:countrychange',{detail:next}));return next}
+ function formatNumber(value,options={}){const c=current();return new Intl.NumberFormat(c.locale,{minimumFractionDigits:options.minimumFractionDigits??2,maximumFractionDigits:options.maximumFractionDigits??2}).format(Number(value)||0)}
  function format(value,options={}){const c=current();return new Intl.NumberFormat(c.locale,{style:'currency',currency:c.currency,minimumFractionDigits:options.minimumFractionDigits??2,maximumFractionDigits:options.maximumFractionDigits??2}).format(Number(value)||0)}
  async function loadRates(){if(!dataPromise)dataPromise=fetch(DATA_URL,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('Unable to load country rate comparison data');return r.json()});return dataPromise}
  async function rateById(id, snapshot){const ctx=normalize(snapshot||current());const data=await loadRates();const item=data.rates.find(x=>x.id===id);if(!item)return null;return {id:item.id,rate:item[ctx.currency],currency:ctx.currency,countryCode:ctx.countryCode,planner:item.planner,provisional:ctx.countryCode==='VN'||ctx.countryCode==='BN'} }
@@ -46,7 +47,7 @@
    for(const item of selected){
     const value=Number(item[ctx.currency]);if(!Number.isFinite(value))throw new Error('Missing '+ctx.currency+' rate for '+item.id);
     if(plannerType==='build')RATES[item.id]=value;
-    else {const token=item.id.replace(/^renovation_rule_/,'').replace(/_\\d+$/,'');const aliasKey=Object.keys(RENOVATION_RATE_KEYS).sort((a,b)=>b.length-a.length).find(key=>token===key||token.endsWith('_'+key));const alias=aliasKey?RENOVATION_RATE_KEYS[aliasKey]:'';if(alias)RATES[alias]=value;}
+    else {const token=item.id.replace(/^renovation_rule_/,'').replace(/_\d+$/,'');const aliasKey=Object.keys(RENOVATION_RATE_KEYS).sort((a,b)=>b.length-a.length).find(key=>token===key||token.endsWith('_'+key));const alias=aliasKey?RENOVATION_RATE_KEYS[aliasKey]:'';if(alias)RATES[alias]=value;}
    }
    window.TERAJU_RATE_CONTEXT={countryCode:ctx.countryCode,currency:ctx.currency,name:ctx.name,source:'country-comparison-2026.json',provisional:ctx.countryCode==='VN'||ctx.countryCode==='BN'};
    window.dispatchEvent(new CustomEvent('teraju:ratechange',{detail:window.TERAJU_RATE_CONTEXT}));
@@ -93,6 +94,10 @@
  window.TERAJU_GET_PROJECT_COUNTRY=current;
  window.TERAJU_SET_PROJECT_COUNTRY=set;
  window.TERAJU_FORMAT_CURRENCY=format;
+ window.TERAJU_FORMAT_NUMBER=formatNumber;
+ function applyCurrencyLabels(){const ctx=current(),symbol=ctx.symbol;document.querySelectorAll('th,td,span,p,label,div,strong,b').forEach(el=>{if(el.children.length)return;const t=el.textContent;if(!t)return;const next=t.replace(/Rate \(RM\)/g,'Rate ('+symbol+')').replace(/Amount \(RM\)/g,'Amount ('+symbol+')').replace(/RM\/sqft: RM /g,symbol+'/sqft: '+symbol+' ').replace(/Existing: RM /g,'Existing: '+symbol+' ').replace(/New: RM /g,'New: '+symbol+' ');if(next!==t)el.textContent=next});let style=document.getElementById('tc-country-currency-labels');if(!style){style=document.createElement('style');style.id='tc-country-currency-labels';document.head.appendChild(style)}style.textContent='#constructionBudgetSection .cr-budget-table tbody tr:not(.cr-group-row):not(.cr-hierarchy-row) td:nth-child(5)::before{content:"Rate ('+symbol+')"}#constructionBudgetSection .cr-budget-table tbody tr:not(.cr-group-row):not(.cr-hierarchy-row) td:nth-child(6)::before{content:"Amount ('+symbol+')"}'}
+ let currencyObserver=null;function watchCurrencyLabels(){applyCurrencyLabels();if(currencyObserver)return;currencyObserver=new MutationObserver(()=>{if(!window.__TERAJU_CURRENCY_LABELS_PENDING){window.__TERAJU_CURRENCY_LABELS_PENDING=true;queueMicrotask(()=>{window.__TERAJU_CURRENCY_LABELS_PENDING=false;applyCurrencyLabels()})}});currencyObserver.observe(document.body,{subtree:true,childList:true,characterData:true})}
+ window.addEventListener('teraju:countrychange',applyCurrencyLabels);window.addEventListener('teraju:ratechange',applyCurrencyLabels);if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',watchCurrencyLabels,{once:true});else watchCurrencyLabels();
  window.TERAJU_GET_COUNTRY_RATE=rateById;
  window.TERAJU_GET_COUNTRY_RATE_DATA=loadRates;
  window.TERAJU_PROJECT_COUNTRY=current();
