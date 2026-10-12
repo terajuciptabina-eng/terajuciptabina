@@ -46,7 +46,7 @@
    for(const item of selected){
     const value=Number(item[ctx.currency]);if(!Number.isFinite(value))throw new Error('Missing '+ctx.currency+' rate for '+item.id);
     if(plannerType==='build')RATES[item.id]=value;
-    else {const token=item.id.replace(/^renovation_rule_/,'').replace(/_\\d+$/,'');const alias=RENOVATION_RATE_KEYS[token.slice(token.indexOf('_')+1)]||RENOVATION_RATE_KEYS[token];if(alias)RATES[alias]=value;}
+    else {const token=item.id.replace(/^renovation_rule_/,'').replace(/_\\d+$/,'');const aliasKey=Object.keys(RENOVATION_RATE_KEYS).sort((a,b)=>b.length-a.length).find(key=>token===key||token.endsWith('_'+key));const alias=aliasKey?RENOVATION_RATE_KEYS[aliasKey]:'';if(alias)RATES[alias]=value;}
    }
    window.TERAJU_RATE_CONTEXT={countryCode:ctx.countryCode,currency:ctx.currency,name:ctx.name,source:'country-comparison-2026.json',provisional:ctx.countryCode==='VN'||ctx.countryCode==='BN'};
    window.dispatchEvent(new CustomEvent('teraju:ratechange',{detail:window.TERAJU_RATE_CONTEXT}));
