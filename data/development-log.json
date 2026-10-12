@@ -44,6 +44,17 @@
     "updatedAt": "2026-10-12T22:11:55.107Z"
   },
   {
+    "id": "DEV-20261013-b5f4f41",
+    "date": "2026-10-13",
+    "title": "fix: load country-first selection flow",
+    "module": "RenovationPlanner",
+    "status": "Completed",
+    "summary": "fix: load country-first selection flow",
+    "details": "Automatic entry from commit b5f4f41. Changed files: TerajuWorks/renovationplanner-v2.html.",
+    "commit": "b5f4f411f81cf56722f511cb1477cff5752cf5e6",
+    "updatedAt": "2026-10-12T22:12:13.313Z"
+  },
+  {
     "id": "DEV-20261013-b2b0794",
     "date": "2026-10-13",
     "title": "fix: detect actual injected state selector before applying country rules",
