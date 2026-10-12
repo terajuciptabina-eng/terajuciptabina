@@ -80,22 +80,37 @@
       },120);
     };
 
+    function projectCountry(){
+      const picker=document.getElementById('tcProjectCountrySelect');
+      const context=window.TERAJU_GET_PROJECT_COUNTRY?.();
+      return String(picker?.value||context?.countryCode||'MY').trim().toUpperCase();
+    }
     function apply(){
-      const ok=!!select.value;
+      const isMalaysia=projectCountry()==='MY';
+      const hasState=!!select.value;
+      const canProceed=!isMalaysia||hasState;
       controls.forEach(el=>{
-        el.disabled=!ok;
-        el.setAttribute('aria-disabled',String(!ok));
+        el.disabled=!canProceed;
+        el.setAttribute('aria-disabled',String(!canProceed));
       });
-      select.disabled=false;
-      lock.classList.toggle('hidden',ok);
-      lock.classList.toggle('flex',!ok);
-      if(ok){
+      select.disabled=!isMalaysia;
+      const stateWrap=select.closest('.mb-4')||select.parentElement;
+      if(stateWrap){stateWrap.hidden=!isMalaysia;stateWrap.setAttribute('aria-hidden',String(!isMalaysia));}
+      lock.classList.toggle('hidden',canProceed);
+      lock.classList.toggle('flex',!canProceed);
+      if(isMalaysia&&hasState){
         setSelected(select.value);
         locationInput.removeAttribute('disabled');
         window.TERAJU_SELECTED_STATE=select.value;
         loadResolver();
+      }else if(!isMalaysia){
+        window.TERAJU_SELECTED_STATE='';
+        window.TERAJU_RATE_CONTEXT={...(window.TERAJU_RATE_CONTEXT||{}),countryCode:projectCountry(),state:null};
       }
     }
+    window.TERAJU_APPLY_STATE_GATE=apply;
+    window.addEventListener('teraju:countrychange',apply);
+    document.addEventListener('change',event=>{if(event.target?.id==='tcProjectCountrySelect')setTimeout(apply,0)});
 
     select.addEventListener('change',function(){
       if(!select.value){apply();return}
