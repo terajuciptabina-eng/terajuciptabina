@@ -1,5 +1,16 @@
 [
   {
+    "id": "DEV-20261013-e994d36",
+    "date": "2026-10-13",
+    "title": "chore(terajuw orks): remove obsolete legacy planners",
+    "module": "Development Control",
+    "status": "Completed",
+    "summary": "chore(terajuw orks): remove obsolete legacy planners",
+    "details": "Automatic entry from commit e994d36. Changed files: .github/workflows/add-location-autocomplete.yml, .github/workflows/add-renovation-promo-ui.yml, TerajuWorks/buildplanner.html, TerajuWorks/location-autocomplete.js, TerajuWorks/rate-items.js, TerajuWorks/renovationplanner.html, TerajuWorks/state-rate-resolver.js.",
+    "commit": "e994d36d0bc9882b4e85e6052d1b9b55f44512a5",
+    "updatedAt": "2026-10-12T20:10:51.040Z"
+  },
+  {
     "id": "DEV-20261012-e671c56",
     "date": "2026-10-12",
     "title": "Simplify ARQENVO BIM software description",
