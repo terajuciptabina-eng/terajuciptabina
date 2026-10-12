@@ -88,6 +88,17 @@
     "updatedAt": "2026-10-12T21:46:15.263Z"
   },
   {
+    "id": "DEV-20261013-247fc0c",
+    "date": "2026-10-13",
+    "title": "fix: load country-aware project state gate",
+    "module": "BuildPlanner",
+    "status": "Completed",
+    "summary": "fix: load country-aware project state gate",
+    "details": "Automatic entry from commit 247fc0c. Changed files: TerajuWorks/buildplanner-v2.html.",
+    "commit": "247fc0c9d6426b3b6576fb46b1b6127ab07d401f",
+    "updatedAt": "2026-10-12T22:06:08.502Z"
+  },
+  {
     "id": "DEV-20261013-234e3c6",
     "date": "2026-10-13",
     "title": "fix: scope project country selection and default new projects to Malaysia",
