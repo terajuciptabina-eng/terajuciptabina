@@ -22,6 +22,17 @@
     "updatedAt": "2026-10-12T20:10:51.040Z"
   },
   {
+    "id": "DEV-20261013-80f6e69",
+    "date": "2026-10-13",
+    "title": "fix: restore currency helper syntax in estimate history",
+    "module": "Cost Estimate",
+    "status": "Completed",
+    "summary": "fix: restore currency helper syntax in estimate history",
+    "details": "Automatic entry from commit 80f6e69. Changed files: TerajuWorks/quotations.html.",
+    "commit": "80f6e699a7059159e1d5772b45bf38725848ef36",
+    "updatedAt": "2026-10-12T21:46:28.689Z"
+  },
+  {
     "id": "DEV-20261013-43947fe",
     "date": "2026-10-13",
     "title": "fix: repair broken currency helper in cost estimate history",
