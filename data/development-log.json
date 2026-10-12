@@ -1,5 +1,16 @@
 [
   {
+    "id": "DEV-20261013-fa35360",
+    "date": "2026-10-13",
+    "title": "fix: require state only for Malaysian projects",
+    "module": "General",
+    "status": "Completed",
+    "summary": "fix: require state only for Malaysian projects",
+    "details": "Automatic entry from commit fa35360. Changed files: TerajuWorks/state-rate-gate.js.",
+    "commit": "fa353606e765186617171966592f5c206db65e2e",
+    "updatedAt": "2026-10-12T22:06:00.683Z"
+  },
+  {
     "id": "DEV-20261013-ee105b3",
     "date": "2026-10-13",
     "title": "Implement seven-country construction rate system",
