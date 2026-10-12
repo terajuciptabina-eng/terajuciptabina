@@ -64,12 +64,30 @@
   wrap.innerHTML='<span style="display:block;margin-bottom:6px">Project Country / Negara Projek</span><select id="tcProjectCountrySelect" style="width:100%;min-height:44px;padding:8px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#0f172a"><option value="MY">Malaysia · MYR</option><option value="SG">Singapore · SGD</option><option value="ID">Indonesia · IDR</option><option value="TH">Thailand · THB</option><option value="PH">Philippines · PHP</option><option value="VN">Vietnam · VND · provisional rates</option><option value="BN">Brunei · BND · provisional rates</option></select><span id="tcProjectCurrencyHint" style="display:block;margin-top:6px;font-weight:400;color:#64748b">Country is saved with this project. Malaysian projects continue to use the selected state rate set.</span>';
   anchor.insertAdjacentElement('afterend',wrap);
   const select=wrap.querySelector('select');
-  const initial=current();
-  select.value=initial.countryCode;
-  function reflect(){const ctx=set({countryCode:select.value,projectId:current().projectId,source:'project-selector'});const stateField=findStateSelect();const stateWrap=stateField?.closest('label')||stateField?.parentElement;if(stateWrap){stateWrap.hidden=ctx.countryCode!=='MY';stateField.disabled=ctx.countryCode!=='MY';stateWrap.setAttribute('aria-hidden',ctx.countryCode!=='MY'?'true':'false');}wrap.querySelector('#tcProjectCurrencyHint').textContent=ctx.countryCode==='MY'?'Currency: MYR. Malaysian state-specific rates apply to this project.':ctx.countryCode==='VN'||ctx.countryCode==='BN'?'Currency: '+ctx.currency+'. Rates are provisional estimates and need local validation.':'Currency: '+ctx.currency+'. State selection is only applicable to Malaysian projects.'}
-  select.addEventListener('change',()=>{reflect();applyCountryRates()});
-  reflect();
-  applyCountryRates();
+  const activeProject=String(params.get('projectId')||params.get('quotationId')||'');
+  const saved=safeRead();
+  const explicitCountry=params.get('countryCode')||params.get('country');
+  const initialCode=explicitCountry?countryCode(explicitCountry):(activeProject&&saved&&String(saved.projectId||'')===activeProject?countryCode(saved.countryCode):'');
+  select.insertAdjacentHTML('afterbegin','<option value="">Select country / negara</option>');
+  select.value=initialCode;
+  function reflect(){
+   const stateField=findStateSelect();const stateWrap=stateField?.closest('label')||stateField?.parentElement;
+   if(!select.value){
+    window.TERAJU_COUNTRY_SELECTION_PENDING=true;
+    if(stateWrap){stateWrap.hidden=true;stateField.disabled=true;stateWrap.setAttribute('aria-hidden','true');}
+    wrap.querySelector('#tcProjectCurrencyHint').textContent='Select the project country first. Malaysian projects will then require a state selection.';
+    window.dispatchEvent(new CustomEvent('teraju:countrychange',{detail:{countryCode:'',pending:true}}));
+    return null;
+   }
+   window.TERAJU_COUNTRY_SELECTION_PENDING=false;
+   const ctx=set({countryCode:select.value,projectId:activeProject||current().projectId,source:'project-selector'});
+   if(stateWrap){stateWrap.hidden=ctx.countryCode!=='MY';stateField.disabled=ctx.countryCode!=='MY';stateWrap.setAttribute('aria-hidden',ctx.countryCode!=='MY'?'true':'false');}
+   wrap.querySelector('#tcProjectCurrencyHint').textContent=ctx.countryCode==='MY'?'Currency: MYR. Malaysian state-specific rates apply to this project.':ctx.countryCode==='VN'||ctx.countryCode==='BN'?'Currency: '+ctx.currency+'. Rates are provisional estimates and need local validation.':'Currency: '+ctx.currency+'. State selection is only applicable to Malaysian projects.';
+   return ctx;
+  }
+  select.addEventListener('change',()=>{const ctx=reflect();if(ctx)applyCountryRates();});
+  const initialContext=reflect();
+  if(initialContext)applyCountryRates();
  }
  window.TERAJU_COUNTRIES=CURRENCIES;
  window.TERAJU_GET_PROJECT_COUNTRY=current;
