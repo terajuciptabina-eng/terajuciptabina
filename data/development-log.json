@@ -33,6 +33,17 @@
     "updatedAt": "2026-10-12T21:46:28.689Z"
   },
   {
+    "id": "DEV-20261013-61da03e",
+    "date": "2026-10-13",
+    "title": "fix: remove corrupted duplicated tail from estimate history page",
+    "module": "Cost Estimate",
+    "status": "Completed",
+    "summary": "fix: remove corrupted duplicated tail from estimate history page",
+    "details": "Automatic entry from commit 61da03e. Changed files: TerajuWorks/quotations.html.",
+    "commit": "61da03e4c4cf88f181963e02b34a343c07634a7d",
+    "updatedAt": "2026-10-12T21:48:45.273Z"
+  },
+  {
     "id": "DEV-20261013-43947fe",
     "date": "2026-10-13",
     "title": "fix: repair broken currency helper in cost estimate history",
