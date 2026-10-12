@@ -348,7 +348,7 @@ applyAudienceUI();window.__TERAJU_ROOM_SCHEDULE_DIRTY=true;setRoomScheduleStatus
 <script src="quotation-document-engine.js?v=20261005-footer-render-v2"></script>
 <script src="state-rate-record-bridge.js?v=20260923-hidden-rate-capture-v1"></script>
 <script src="contractor-master-bridge.js?v=20260923-hidden-rate-capture-v1"></script>
-<script src="country-context.js?v=20261013-country-context-v2"></script>
+<script src="country-context.js?v=20261013-country-first-v3"></script>
 <script src="quotation-records.js?v=20261004-single-project-v1"></script>
 <script id="tc-homeowner-customer-default">(()=>{const params=new URLSearchParams(location.search),role=(params.get('audience')||document.body.dataset.role||'homeowner').toLowerCase();if(role!=='homeowner'||params.get('quotationId'))return;const storageKey='teraju.homeowner.github.v1';function applyHomeownerName(){const input=document.getElementById('customerName');if(!input||input.value.trim())return;try{const account=JSON.parse(localStorage.getItem(storageKey)||'null'),name=String(account?.profile?.name||'').trim();if(!name)return;input.value=name;input.dispatchEvent(new Event('input',{bubbles:true}));input.dispatchEvent(new Event('change',{bubbles:true}))}catch{}}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',applyHomeownerName,{once:true});else applyHomeownerName()})();</script>
 <script id="tc-navigation-context">
@@ -408,7 +408,7 @@ applyAudienceUI();window.__TERAJU_ROOM_SCHEDULE_DIRTY=true;setRoomScheduleStatus
 .planner-header #workspaceIdLabel{color:rgba(203,213,225,.72)!important}
 .planner-header #workspaceIdDisplay{color:#f8fafc!important;text-shadow:0 1px 8px rgba(0,0,0,.24)!important}
 </style>
-<script src="state-rate-gate.js?v=20261013-country-aware-v2"></script>
+<script src="state-rate-gate.js?v=20261013-country-first-v3"></script>
 <script src="floor-plan-import-receiver.js?v=20261008-bim-handoff-v2"></script>
 <script src="shared/preview-branding.js?v=20260930-preview-branding-clean-v1"></script>
 <script src="shared/teraju-button-feedback.js?v=20260929-button-feedback-v1"></script>
