@@ -56,7 +56,8 @@
  }
  function installSelector(){
   if(document.getElementById('tcProjectCountrySelect'))return;
-  const state=document.getElementById('projectState');
+  function findStateSelect(){return Array.from(document.querySelectorAll('select')).find(el=>{const text=Array.from(el.options||[]).map(o=>(o.textContent||'').trim().toLowerCase());return text.some(t=>t==='select state / negeri'||t==='select state'||t==='select negeri')&&text.some(t=>t==='kedah')&&text.some(t=>t==='johor')})||document.getElementById('projectState')||null}
+  const state=findStateSelect();
   const anchor=state?.closest('label')||state?.parentElement||document.querySelector('#customerName')?.closest('label')||document.querySelector('#customerName')?.parentElement;
   if(!anchor)return;
   const wrap=document.createElement('label');wrap.id='tcProjectCountryWrap';wrap.style.cssText='display:block;margin:12px 0;padding:12px;border:1px solid #dbe2ea;border-radius:12px;background:#fff;color:#0f172a;font-size:13px;font-weight:600';
@@ -65,7 +66,7 @@
   const select=wrap.querySelector('select');
   const initial=current();
   select.value=initial.countryCode;
-  function reflect(){const ctx=set({countryCode:select.value,projectId:current().projectId,source:'project-selector'});const stateWrap=state?.closest('label')||state?.parentElement;if(stateWrap){stateWrap.hidden=ctx.countryCode!=='MY';state.disabled=ctx.countryCode!=='MY';}wrap.querySelector('#tcProjectCurrencyHint').textContent=ctx.countryCode==='MY'?'Currency: MYR. Malaysian state-specific rates apply to this project.':ctx.countryCode==='VN'||ctx.countryCode==='BN'?'Currency: '+ctx.currency+'. Rates are provisional estimates and need local validation.':'Currency: '+ctx.currency+'. State selection is only applicable to Malaysian projects.'}
+  function reflect(){const ctx=set({countryCode:select.value,projectId:current().projectId,source:'project-selector'});const stateField=findStateSelect();const stateWrap=stateField?.closest('label')||stateField?.parentElement;if(stateWrap){stateWrap.hidden=ctx.countryCode!=='MY';stateField.disabled=ctx.countryCode!=='MY';stateWrap.setAttribute('aria-hidden',ctx.countryCode!=='MY'?'true':'false');}wrap.querySelector('#tcProjectCurrencyHint').textContent=ctx.countryCode==='MY'?'Currency: MYR. Malaysian state-specific rates apply to this project.':ctx.countryCode==='VN'||ctx.countryCode==='BN'?'Currency: '+ctx.currency+'. Rates are provisional estimates and need local validation.':'Currency: '+ctx.currency+'. State selection is only applicable to Malaysian projects.'}
   select.addEventListener('change',()=>{reflect();applyCountryRates()});
   reflect();
   applyCountryRates();
