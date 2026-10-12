@@ -22,6 +22,17 @@
     "updatedAt": "2026-10-12T20:10:51.040Z"
   },
   {
+    "id": "DEV-20261013-43947fe",
+    "date": "2026-10-13",
+    "title": "fix: repair broken currency helper in cost estimate history",
+    "module": "Cost Estimate",
+    "status": "Completed",
+    "summary": "fix: repair broken currency helper in cost estimate history",
+    "details": "Automatic entry from commit 43947fe. Changed files: TerajuWorks/quotations.html.",
+    "commit": "43947fec78794438542cfde7a2f9b264dfe43b0d",
+    "updatedAt": "2026-10-12T21:46:15.263Z"
+  },
+  {
     "id": "DEV-20261013-1b335ba",
     "date": "2026-10-13",
     "title": "chore: remove stale planner route references",
