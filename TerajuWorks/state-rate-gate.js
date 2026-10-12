@@ -59,7 +59,7 @@
       window.TERAJU_SELECTED_STATE=handoffState;
     }else if(!existingQuotationId)select.value='';
 
-    const controls=[...document.querySelectorAll('main input, main select, main textarea, main button')].filter(el=>el!==select);
+    const controls=[...document.querySelectorAll('main input, main select, main textarea, main button')].filter(el=>el!==select&&el.id!=='tcProjectCountrySelect');
     const lock=document.createElement('div');
     lock.id='stateFirstOverlay';
     lock.className='no-print fixed inset-0 z-[9000] hidden items-center justify-center p-5 bg-black/20 backdrop-blur-[1px]';
@@ -82,30 +82,38 @@
 
     function projectCountry(){
       const picker=document.getElementById('tcProjectCountrySelect');
+      if(picker)return String(picker.value||'').trim().toUpperCase();
       const context=window.TERAJU_GET_PROJECT_COUNTRY?.();
-      return String(picker?.value||context?.countryCode||'MY').trim().toUpperCase();
+      return String(context?.countryCode||'').trim().toUpperCase();
     }
     function apply(){
-      const isMalaysia=projectCountry()==='MY';
+      const country=projectCountry();
+      const countryChosen=!!country;
+      const isMalaysia=country==='MY';
       const hasState=!!select.value;
-      const canProceed=!isMalaysia||hasState;
+      const canProceed=countryChosen&&(!isMalaysia||hasState);
       controls.forEach(el=>{
         el.disabled=!canProceed;
         el.setAttribute('aria-disabled',String(!canProceed));
       });
+      const countryPicker=document.getElementById('tcProjectCountrySelect');
+      if(countryPicker){countryPicker.disabled=false;countryPicker.removeAttribute('aria-disabled');}
       select.disabled=!isMalaysia;
       const stateWrap=select.closest('.mb-4')||select.parentElement;
       if(stateWrap){stateWrap.hidden=!isMalaysia;stateWrap.setAttribute('aria-hidden',String(!isMalaysia));}
-      lock.classList.toggle('hidden',canProceed);
-      lock.classList.toggle('flex',!canProceed);
+      const showStatePopup=countryChosen&&isMalaysia&&!hasState;
+      lock.classList.toggle('hidden',!showStatePopup);
+      lock.classList.toggle('flex',showStatePopup);
       if(isMalaysia&&hasState){
         setSelected(select.value);
         locationInput.removeAttribute('disabled');
         window.TERAJU_SELECTED_STATE=select.value;
         loadResolver();
-      }else if(!isMalaysia){
+      }else if(countryChosen&&!isMalaysia){
         window.TERAJU_SELECTED_STATE='';
-        window.TERAJU_RATE_CONTEXT={...(window.TERAJU_RATE_CONTEXT||{}),countryCode:projectCountry(),state:null};
+        window.TERAJU_RATE_CONTEXT={...(window.TERAJU_RATE_CONTEXT||{}),countryCode:country,state:null};
+      }else if(!countryChosen){
+        window.TERAJU_SELECTED_STATE='';
       }
     }
     window.TERAJU_APPLY_STATE_GATE=apply;
