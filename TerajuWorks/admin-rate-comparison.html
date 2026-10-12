@@ -107,6 +107,7 @@ function renderCountryRates(){
   const master=defaultMeta?.rateItems?.[r.id]||{};
   const group=String(master.groupKey||master.groupTitle||r.group||'').trim().toUpperCase();
   const match=ruleMap.get(r.id);
+  if(r.planner==='renovation'||r.planner==='build')return r.planner;
   if(match?.planner)return match.planner;
   return renovationGroups.has(group)?'renovation':'build';
  };
@@ -123,6 +124,8 @@ async function loadCountryRates(){
  const response=await fetch(COUNTRY_RATE_URL,{cache:'no-store'});if(!response.ok)throw new Error('Unable to load the seven-country comparison dataset.');
  const data=await response.json();if(!Array.isArray(data.rates)||data.rates.length!==122)throw new Error('Country comparison dataset failed validation (expected 122 items).');
  const ids=new Set(data.rates.map(x=>x.id));if(ids.size!==122||!data.rates.every(x=>COUNTRY_COLUMNS.every(c=>Number.isFinite(Number(x[c[0]])))))throw new Error('Country comparison dataset has missing or duplicate rates.');
+ const buildCount=data.rates.filter(x=>x.planner==='build').length,renovationCount=data.rates.filter(x=>x.planner==='renovation').length;
+ if(buildCount!==82||renovationCount!==40)throw new Error('Country comparison planner mapping invalid: expected 82 BuildPlanner and 40 RenovationPlanner items.');
  countryRateData=data;renderCountryRates();
 }
 $('countrySearch')?.addEventListener('input',renderCountryRates);
