@@ -96,16 +96,27 @@ const COUNTRY_COLUMNS=[
 ];
 function countryNumber(v,code){if(v==null||!Number.isFinite(Number(v)))return '—';const digits=code==='IDR'||code==='THB'||code==='PHP'||code==='VND'?0:2;return Number(v).toLocaleString('en-US',{minimumFractionDigits:digits,maximumFractionDigits:digits})}
 function renderCountryRates(){
- const head=$('countryThead'),body=$('countryTbody');if(!countryRateData){head.innerHTML='';body.innerHTML='<tr><td colspan="10">Country rate data unavailable.</td></tr>';return}
+ const head=$('countryThead'),body=$('countryTbody');
+ if(!countryRateData){head.innerHTML='';body.innerHTML='<tr><td colspan="11">Country rate data unavailable.</td></tr>';return}
  const query=String($('countrySearch')?.value||'').trim().toLowerCase(),planner=$('countryPlanner')?.value||'all';
  const ruleMap=new Map(ruleRows.map(x=>[x.key,x]));
+ // IDs in the international dataset are canonical master-rate IDs, not
+ // "renovation_*" IDs. Classify from the master rate group instead.
+ const renovationGroups=new Set(['LIVING / DINING','BEDROOM','DRY KITCHEN','WET KITCHEN','BATHROOM','CAR PORCH','BALCONY']);
+ const plannerOfCountryRate=r=>{
+  const master=defaultMeta?.rateItems?.[r.id]||{};
+  const group=String(master.groupKey||master.groupTitle||r.group||'').trim().toUpperCase();
+  const match=ruleMap.get(r.id);
+  if(match?.planner)return match.planner;
+  return renovationGroups.has(group)?'renovation':'build';
+ };
  const rows=countryRateData.rates.filter(r=>{
-  const match=ruleMap.get(r.id);const p=match?.planner||(String(r.id).startsWith('renovation_')?'renovation':'build');
+  const p=plannerOfCountryRate(r);
   if(planner!=='all'&&planner!==p)return false;
   return !query||[r.id,r.group,r.description,r.unit].some(v=>String(v||'').toLowerCase().includes(query));
  });
  head.innerHTML='<tr><th>No.</th><th>Planner / Group</th><th>Description</th><th>Unit</th>'+COUNTRY_COLUMNS.map(c=>'<th class="rate">'+esc(c[1])+'</th>').join('')+'</tr>';
- body.innerHTML=rows.map((r,i)=>{const match=ruleMap.get(r.id),p=match?.planner||(String(r.id).startsWith('renovation_')?'renovation':'build');return '<tr><td>'+(i+1)+'</td><td>'+esc((p==='renovation'?'RenovationPlanner':'BuildPlanner')+' / '+r.group)+'</td><td class="description" style="min-width:380px">'+esc(r.description)+'</td><td class="unit">'+esc(r.unit)+'</td>'+COUNTRY_COLUMNS.map(c=>'<td class="rate">'+countryNumber(r[c[0]],c[0])+'</td>').join('')+'</tr>'}).join('')||'<tr><td colspan="11" class="muted">No matching items.</td></tr>';
+ body.innerHTML=rows.map((r,i)=>{const p=plannerOfCountryRate(r);return '<tr><td>'+(i+1)+'</td><td>'+esc((p==='renovation'?'RenovationPlanner':'BuildPlanner')+' / '+r.group)+'</td><td class="description" style="min-width:380px">'+esc(r.description)+'</td><td class="unit">'+esc(r.unit)+'</td>'+COUNTRY_COLUMNS.map(c=>'<td class="rate">'+countryNumber(r[c[0]],c[0])+'</td>').join('')+'</tr>'}).join('')||'<tr><td colspan="11" class="muted">No matching items.</td></tr>';
  $('countryRateMeta').textContent=rows.length+' / '+countryRateData.rates.length+' items · Version '+countryRateData.version+' · *Vietnam/Brunei rates are provisional estimates.';
 }
 async function loadCountryRates(){
