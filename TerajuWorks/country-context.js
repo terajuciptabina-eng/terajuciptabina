@@ -22,7 +22,7 @@
  function safeWrite(value){try{sessionStorage.setItem(STORAGE_KEY,JSON.stringify(value))}catch{}}
  function countryCode(value){const c=String(value||'').trim().toUpperCase();return CURRENCIES[c]?c:'MY'}
  function normalize(raw){const code=countryCode(raw?.countryCode||raw?.country||raw?.code);return {...CURRENCIES[code],countryCode:code,projectId:String(raw?.projectId||params.get('projectId')||params.get('quotationId')||''),source:raw?.source||'session'} }
- function current(){return normalize(window.TERAJU_PROJECT_COUNTRY||safeRead()||{countryCode:'MY'})}
+ function current(){const explicit=params.get('countryCode')||params.get('country');if(explicit)return normalize({countryCode:explicit,projectId:params.get('projectId')||params.get('quotationId')||''});if(window.TERAJU_PROJECT_COUNTRY)return normalize(window.TERAJU_PROJECT_COUNTRY);const saved=safeRead();const activeProject=String(params.get('projectId')||params.get('quotationId')||'');if(activeProject&&saved&&String(saved.projectId||'')===activeProject)return normalize(saved);return normalize({countryCode:'MY',projectId:activeProject,source:'safe-default'})}
  function set(raw){const next=normalize({...raw,projectId:raw?.projectId||current().projectId});window.TERAJU_PROJECT_COUNTRY=next;safeWrite(next);window.dispatchEvent(new CustomEvent('teraju:countrychange',{detail:next}));return next}
  function format(value,options={}){const c=current();return new Intl.NumberFormat(c.locale,{style:'currency',currency:c.currency,minimumFractionDigits:options.minimumFractionDigits??2,maximumFractionDigits:options.maximumFractionDigits??2}).format(Number(value)||0)}
  async function loadRates(){if(!dataPromise)dataPromise=fetch(DATA_URL,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('Unable to load country rate comparison data');return r.json()});return dataPromise}
@@ -65,7 +65,7 @@
   const select=wrap.querySelector('select');
   const initial=current();
   select.value=initial.countryCode;
-  function reflect(){const ctx=set({countryCode:select.value,projectId:current().projectId,source:'project-selector'});wrap.querySelector('#tcProjectCurrencyHint').textContent=ctx.countryCode==='VN'||ctx.countryCode==='BN'?'Currency: '+ctx.currency+'. Rates are provisional estimates and need local validation.':'Currency: '+ctx.currency+'. Malaysian state-specific rates remain authoritative for Malaysia.'}
+  function reflect(){const ctx=set({countryCode:select.value,projectId:current().projectId,source:'project-selector'});const stateWrap=state?.closest('label')||state?.parentElement;if(stateWrap){stateWrap.hidden=ctx.countryCode!=='MY';state.disabled=ctx.countryCode!=='MY';}wrap.querySelector('#tcProjectCurrencyHint').textContent=ctx.countryCode==='MY'?'Currency: MYR. Malaysian state-specific rates apply to this project.':ctx.countryCode==='VN'||ctx.countryCode==='BN'?'Currency: '+ctx.currency+'. Rates are provisional estimates and need local validation.':'Currency: '+ctx.currency+'. State selection is only applicable to Malaysian projects.'}
   select.addEventListener('change',()=>{reflect();applyCountryRates()});
   reflect();
   applyCountryRates();
