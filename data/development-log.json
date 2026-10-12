@@ -88,6 +88,17 @@
     "updatedAt": "2026-10-11T20:25:49.417Z"
   },
   {
+    "id": "DEV-20261012-8a5e073",
+    "date": "2026-10-12",
+    "title": "Add Archicad class slot SLOT-20261012093427-T5QG",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Add Archicad class slot SLOT-20261012093427-T5QG",
+    "details": "Automatic entry from commit 8a5e073. Changed files: data/class-slots.json.",
+    "commit": "8a5e073a6d95857e169a5abb33bd0c6983055485",
+    "updatedAt": "2026-10-12T09:34:36.591Z"
+  },
+  {
     "id": "DEV-20261012-626412e",
     "date": "2026-10-12",
     "title": "Clarify ARQENVO as BIM software and remove duplicate label",
