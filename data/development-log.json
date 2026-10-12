@@ -55,6 +55,17 @@
     "updatedAt": "2026-10-12T21:46:15.263Z"
   },
   {
+    "id": "DEV-20261013-234e3c6",
+    "date": "2026-10-13",
+    "title": "fix: scope project country selection and default new projects to Malaysia",
+    "module": "General",
+    "status": "Completed",
+    "summary": "fix: scope project country selection and default new projects to Malaysia",
+    "details": "Automatic entry from commit 234e3c6. Changed files: TerajuWorks/country-context.js.",
+    "commit": "234e3c6889dc1c451f73abc4801261d25393f943",
+    "updatedAt": "2026-10-12T21:51:37.824Z"
+  },
+  {
     "id": "DEV-20261013-1b335ba",
     "date": "2026-10-13",
     "title": "chore: remove stale planner route references",
