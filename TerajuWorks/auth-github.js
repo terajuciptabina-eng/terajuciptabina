@@ -79,7 +79,7 @@
   };
 
   if (emailInput) { emailInput.type = 'email'; emailInput.autocomplete = 'email'; }
-  if (phoneInput) { phoneInput.type = 'tel'; phoneInput.autocomplete = 'tel'; phoneInput.inputMode = 'tel'; phoneInput.placeholder = '+60 12 345 6789'; }
+  if (phoneInput) { phoneInput.type = 'tel'; phoneInput.autocomplete = 'tel'; phoneInput.inputMode = 'tel'; phoneInput.placeholder = 'Enter your local phone number'; }
 
   function setMode(next) {
     mode = next; clearError(); generated.classList.add('hidden'); const signup = next === 'signup';
@@ -407,7 +407,7 @@ ${workspaceUrl}`;
         if (!name) throw new Error('Name is required.');
         if (!validEmail(email)) throw new Error('Please enter a valid email address.');
         if (!DIAL_CODES[country]) throw new Error('Please select your country of registration.');
-        if (!validPhone(phone, country)) throw new Error('Please enter a valid phone number for the selected country.');
+        if (!validPhone(phone, country)) throw new Error('Please enter a valid local phone number for the selected country.');
         const data = await postAccount({role,name,email,phone,country});
         trackEvent('sign_up', { signup_role: role, generated_id: data.id, method: 'github_account_store' });
         generated.innerHTML = `<strong>Your ${isHomeowner ? 'Homeowner' : 'Contractor'} ID:</strong><br><span class=\"mt-1 inline-block text-lg font-bold tracking-wide text-slate-950\">${escapeHtml(data.id)}</span><br><span class=\"text-xs text-slate-500\">Keep this ID. You will use it to sign in later.</span>`;
