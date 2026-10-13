@@ -987,11 +987,7 @@ function generateEstimateNumber() {
 }
 document.getElementById("estimateNumber").textContent = generateEstimateNumber();
 
-function money(value, decimals = 0) {
-  return new Intl.NumberFormat("en-MY", {
-    minimumFractionDigits: decimals, maximumFractionDigits: decimals
-  }).format(Number(value) || 0);
-}
+function money(value, decimals = 0) { const n=Number(value)||0; return typeof window.TERAJU_FORMAT_NUMBER==="function" ? window.TERAJU_FORMAT_NUMBER(n,{minimumFractionDigits:decimals,maximumFractionDigits:decimals}) : new Intl.NumberFormat("en-MY",{minimumFractionDigits:decimals,maximumFractionDigits:decimals}).format(n); }
 
 function calculateDownlights(area) {
   if (!area || area <= 0) return 0;
@@ -3152,7 +3148,7 @@ initContractorMode();
 <script src="quotation-document-engine.js?v=20261005-footer-render-v2"></script>
 <script src="detailed-quotation-promo-ui.js"></script>
 <script src="location-autocomplete.js"></script>
-<script src="state-rate-gate.js?v=20261008-state-import-preserve-v1"></script>
+<script src="state-rate-gate.js?v=20261013-country-rate-flow-v1"></script>
 <script src="renovation-calculation-rules.js?v=20260924-rate-master-v1"></script>
 <script src="renovation-planner-v2-engine.js?v=20261003-budget-simple-action-v7"></script>
 <script src="contractor-master-bridge.js?v=20260924-renovation-rate-master-v2"></script>
