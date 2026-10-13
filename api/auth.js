@@ -22,14 +22,14 @@ export default async function handler(req, res) {
   const makeId = role => `${role === 'homeowner' ? 'HME' : 'CTR'}-${new Date().toISOString().slice(0,10).replace(/-/g,'')}-${Math.random().toString(36).slice(2,6).toUpperCase()}`;
   const pathFor = (role, id) => `data/users/${folder(role)}/${encodeURIComponent(id)}.json`;
   const validEmail = value => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(value || '').trim());
-  const normalizePhone = value => String(value || '').replace(/[\\s().-]/g, '');
+  const normalizePhone = value => String(value || '').replace(/[\s().-]/g, '');
   const DIAL_CODES = { MY:'60', SG:'65', ID:'62', TH:'66', PH:'63', VN:'84', BN:'673' };
   const validCountry = value => Object.prototype.hasOwnProperty.call(DIAL_CODES, String(value || '').trim().toUpperCase());
   const normalizePhoneForCountry = (value, country) => {
     const code = String(country || '').trim().toUpperCase();
     const dial = DIAL_CODES[code];
     const raw = String(value || '').trim();
-    const digits = raw.replace(/\\D/g, '');
+    const digits = raw.replace(/\D/g, '');
     if (!dial || !digits) return '';
     if (raw.startsWith('+')) return '+' + digits;
     if (digits.startsWith(dial)) return '+' + digits;
@@ -41,7 +41,7 @@ export default async function handler(req, res) {
     const normalized = normalizePhoneForCountry(value, code);
     if (!dial || !normalized.startsWith('+' + dial)) return false;
     const national = normalized.slice(dial.length + 1);
-    if (!/^\\d{7,12}$/.test(national) || /^(\\d)\\1+$/.test(national)) return false;
+    if (!/^\d{7,12}$/.test(national) || /^(\d)\1+$/.test(national)) return false;
     if (code === 'MY' && national === '123456789') return false;
     return true;
   };
