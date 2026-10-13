@@ -209,6 +209,17 @@
     "updatedAt": "2026-10-13T08:10:52.959Z"
   },
   {
+    "id": "DEV-20261013-760b9e6",
+    "date": "2026-10-13",
+    "title": "Add Archicad class slot SLOT-20261013081816-OIPB",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Add Archicad class slot SLOT-20261013081816-OIPB",
+    "details": "Automatic entry from commit 760b9e6. Changed files: data/class-slots.json.",
+    "commit": "760b9e6b1492352e4f10cd9dcfedce6ce0f68eda",
+    "updatedAt": "2026-10-13T08:18:25.132Z"
+  },
+  {
     "id": "DEV-20261013-70b5679",
     "date": "2026-10-13",
     "title": "Create temporary homeowner account HME-20261013-1E5S",
