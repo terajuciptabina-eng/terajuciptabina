@@ -67,6 +67,26 @@
   for(const value of candidates){const code=value?.countryCode||value?.country||value?.profile?.countryCode||value?.profile?.country;if(code&&CURRENCIES[String(code).trim().toUpperCase()])return String(code).trim().toUpperCase()}
   return 'MY';
  }
+
+ async function hydrateAccountCountry(){
+  const roleRaw=String(params.get('role')||'').toLowerCase();
+  const role=roleRaw==='homeowner'||roleRaw==='contractor'?roleRaw:'';
+  const id=String(params.get('id')||params.get('contractorId')||params.get('homeownerId')||'').trim().toUpperCase();
+  if(!role||!id)return;
+  try{
+   const response=await fetch('https://terajuciptabina.vercel.app/api/auth?role='+encodeURIComponent(role)+'&id='+encodeURIComponent(id),{cache:'no-store',credentials:'omit'});
+   if(!response.ok)return;
+   const account=await response.json();
+   const code=String(account?.country||account?.countryCode||'MY').trim().toUpperCase();
+   if(!CURRENCIES[code])return;
+   const ctx=normalize({countryCode:code,projectId:params.get('projectId')||params.get('quotationId')||'',source:'account-api'});
+   window.TERAJU_PROJECT_COUNTRY=ctx;
+   safeWrite(ctx);
+   window.dispatchEvent(new CustomEvent('teraju:countrychange',{detail:ctx}));
+   await applyCountryRates();
+  }catch(error){console.error('[TERAJU] Unable to resolve account country:',error)}
+ }
+
  window.TERAJU_COUNTRIES=CURRENCIES;
  window.TERAJU_GET_PROJECT_COUNTRY=current;
  window.TERAJU_SET_PROJECT_COUNTRY=set;
@@ -78,4 +98,5 @@
  window.TERAJU_GET_COUNTRY_RATE=rateById;
  window.TERAJU_GET_COUNTRY_RATE_DATA=loadRates;
  window.TERAJU_PROJECT_COUNTRY=current();
+ hydrateAccountCountry();
 })();
