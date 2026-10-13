@@ -143,6 +143,17 @@
     "updatedAt": "2026-10-13T08:03:25.917Z"
   },
   {
+    "id": "DEV-20261013-8dd8a56",
+    "date": "2026-10-13",
+    "title": "Add Archicad class slot SLOT-20261013081613-EZ8E",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Add Archicad class slot SLOT-20261013081613-EZ8E",
+    "details": "Automatic entry from commit 8dd8a56. Changed files: data/class-slots.json.",
+    "commit": "8dd8a5608d0d64e0e526778e42d67706d569f7be",
+    "updatedAt": "2026-10-13T08:16:21.585Z"
+  },
+  {
     "id": "DEV-20261013-81b52b5",
     "date": "2026-10-13",
     "title": "fix: bust cached country context script in planner",
