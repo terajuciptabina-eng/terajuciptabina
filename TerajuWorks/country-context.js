@@ -71,7 +71,7 @@
  async function hydrateAccountCountry(){
   const roleRaw=String(params.get('role')||params.get('audience')||'').toLowerCase();
   const role=roleRaw==='homeowner'||roleRaw==='contractor'?roleRaw:'';
-  const id=String(params.get('id')||params.get('contractorId')||params.get('homeownerId')||(()=>{try{const key=role==='contractor'?'teraju.contractor.github.v1':'teraju.homeowner.github.v1';const saved=JSON.parse(localStorage.getItem(key)||'null');return saved?.contractorId||saved?.homeownerId||saved?.id||saved?.profile?.contractorId||saved?.profile?.homeownerId||''}catch{return ''}})()).trim().toUpperCase();
+  const id=String(params.get('id')||params.get('contractorId')||params.get('homeownerId')||(()=>{try{if(role==='contractor'){const active=localStorage.getItem('teraju.contractor.local.v1.activeContractorId');if(active)return active;const saved=JSON.parse(localStorage.getItem('teraju.contractor.github.v1')||'null');return saved?.contractorId||saved?.id||saved?.profile?.contractorId||''}const saved=JSON.parse(localStorage.getItem('teraju.homeowner.github.v1')||'null');return saved?.homeownerId||saved?.id||saved?.profile?.homeownerId||''}catch{return ''}})()).trim().toUpperCase();
   if(!role||!id)return;
   try{
    const response=await fetch('https://terajuciptabina.vercel.app/api/auth?role='+encodeURIComponent(role)+'&id='+encodeURIComponent(id),{cache:'no-store',credentials:'omit'});
