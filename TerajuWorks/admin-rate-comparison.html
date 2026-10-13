@@ -37,22 +37,10 @@ th{font-size:10px;text-transform:uppercase;color:#6b7280;background:#fafafa;posi
 <main class="wrap"><div class="top"><div class="eyebrow">Quotation Analysis</div><div class="title">Overall Description &amp; Rate Comparison</div><div class="sub">Descriptions, units and row order are taken directly from the Admin Calculation Rules master.</div></div>
 <section class="panel"><div class="controls"><select id="planner"><option value="all">All Planners</option><option value="build">Build Planner</option><option value="renovation">Renovation Planner</option></select><select id="scope"><option value="all">All Accounts</option><option value="contractor">Contractors</option><option value="homeowner">Homeowners</option></select><button id="load">Load Comparison</button></div><div class="notice">Calculation Rules is managed in one place only: Admin Calculation Rules. This comparison reads that same master source; it does not maintain or create another rules list.</div></section>
 <div id="error" class="error hidden"></div><section id="summary" class="panel summary hidden"></section>
-<section id="stateResult" class="panel"><div class="state-panel-head"><div><div class="eyebrow">State Rate Matrix</div><div class="section-title">Calculation Rules Description × Unit × All States / Federal Territories</div><div class="section-sub">All eligible Calculation Rules items are shown in Admin Calculation Rules order. Each state keeps its own rate set.</div></div><button type="button" id="toggleStateMatrix" class="state-toggle" aria-expanded="true">Hide ▲</button></div><div id="stateMatrixContent"><div class="table-wrap"><table><thead id="stateThead"></thead><tbody id="stateTbody"><tr><td colspan="20" class="muted" style="padding:28px;text-align:center">Loading state rates…</td></tr></tbody></table></div></div></section>
+<section id="stateResult" class="panel"><div class="state-panel-head"><div><div class="eyebrow">State Rate Matrix</div><div class="section-title">Calculation Rules Description × Unit × All States / Federal Territories</div><div class="section-sub">One master matrix for Malaysia state rates and international country rates. Malaysia uses the selected state rate set; other countries use their own currency columns.</div><div class="controls" style="grid-template-columns:minmax(220px,1fr) 220px;margin-top:12px"><input id="matrixSearch" type="search" placeholder="Search item, group or description"><select id="matrixPlanner"><option value="all">All Planners</option><option value="build">BuildPlanner</option><option value="renovation">RenovationPlanner</option></select></div></div><button type="button" id="toggleStateMatrix" class="state-toggle" aria-expanded="true">Hide ▲</button></div><div id="stateMatrixContent"><div class="table-wrap"><table><thead id="stateThead"></thead><tbody id="stateTbody"><tr><td colspan="30" class="muted" style="padding:28px;text-align:center">Loading combined rate matrix…</td></tr></tbody></table></div></div><div class="muted" id="combinedRateMeta" style="margin-top:10px">Loading state and country rates…</div></section>
 
 
-<section id="countryComparison" class="panel">
-  <div class="eyebrow">International Rate Matrix</div>
-  <div class="section-title">Construction Rates · 7 Countries · 122 Items</div>
-  <div class="section-sub">Comparison estimates for labour + material. Malaysia is the Default Rate baseline; Malaysia state-specific rates remain authoritative for Malaysian projects.</div>
-  <div class="notice">Singapore, Indonesia, Thailand and Philippines are indicative modelled estimates. Vietnam and Brunei are formula-based preliminary estimates and require local market validation. This matrix is for comparison only and does not activate or overwrite project rates.</div>
-  <div class="controls" style="grid-template-columns:minmax(220px,1fr) 220px auto;margin-bottom:12px">
-    <input id="countrySearch" type="search" placeholder="Search item, group or description">
-    <select id="countryPlanner"><option value="all">All Planners</option><option value="build">BuildPlanner · 82 items</option><option value="renovation">RenovationPlanner · 40 items</option></select>
-    <button type="button" id="reloadCountryRates">Reload Country Rates</button>
-  </div>
-  <div class="table-wrap"><table style="min-width:1500px"><thead id="countryThead"></thead><tbody id="countryTbody"><tr><td colspan="10" class="muted" style="padding:28px;text-align:center">Loading international rate matrix…</td></tr></tbody></table></div>
-  <div class="muted" id="countryRateMeta" style="margin-top:10px">Rate dataset not loaded.</div>
-</section>
+
 
 <section id="result" class="panel hidden"><div class="eyebrow">Account Rate Matrix</div><div class="section-title">Changed Calculation Rules Description × Unit × Account ID</div><div class="table-wrap"><table><thead id="thead"></thead><tbody id="tbody"></tbody></table></div><div class="muted" style="margin-top:10px">Only account rates explicitly changed from the master rate are shown. Unchanged master rates are hidden.</div></section>
 <section id="reviewResult" class="panel"><div class="eyebrow">Admin Review</div><div class="section-title">Captured Contractor Rates · Pending Review</div><div class="section-sub">Contractor rates are captured silently by the system. Contractors do not see this review status. Only Admin decides whether a captured rate is accepted or rejected.</div><div id="reviewSummary" class="summary" style="margin-bottom:14px"></div><div class="table-wrap"><table><thead><tr><th>State</th><th>Planner</th><th>Description</th><th>Unit</th><th>Global Rate</th><th>Contractor Rate</th><th>Change</th><th>Source</th><th>Captured</th><th>Action</th></tr></thead><tbody id="reviewTbody"><tr><td colspan="8" class="muted" style="padding:28px;text-align:center">Loading pending rate captures…</td></tr></tbody></table></div><div class="muted" style="margin-top:10px">Approval changes the review status and, when approved, updates the official State Rate Matrix for the captured state and calculation rule.</div></section>
@@ -86,7 +74,28 @@ function excluded(rule){const s=JSON.stringify(rule).toLowerCase();return s.incl
 let rules=[],ruleRows=[],defaultMeta={},stateData=[];
 async function loadRules(){const [rr,dr]=await Promise.all([fetch(RULES_API,{cache:'no-store'}),fetch(DEFAULT_RATE,{cache:'no-store'})]);if(!rr.ok)throw new Error('Unable to load Admin Calculation Rules.');if(!dr.ok)throw new Error('Unable to load Default Rate metadata.');const data=await rr.json();if(!Array.isArray(data.rules))throw new Error('Invalid Admin Calculation Rules response.');rules=data.rules.map(normalizeRule).filter(x=>x&&x.group&&x.path&&x.description&&x.output);defaultMeta=await dr.json();defaultMeta.rates={...(defaultMeta.rates||{})};defaultMeta.rateItems={...(defaultMeta.rateItems||{})};ruleRows=[];rules.forEach((rule,index)=>{if(!excluded(rule))ruleRows.push({rule,key:canonicalKey(rule.path,index),planner:'build'})});const renovationMaster=window.TerajuRenovationRateMaster;for(const row of renovationMaster?.rows?.()||[]){const source=row.rule;const rule={group:'RENOVATION — '+String(source[0]||''),path:String(source[1]||''),description:String(source[2]||''),method:String(source[3]||''),coefficient:String(source[4]||''),formula:String(source[5]||''),output:String(source[6]||''),basis:String(source[7]||''),note:String(source[8]||'')};ruleRows.push({rule,key:row.key,planner:'renovation'});if(row.defaultRate!=null&&!Object.prototype.hasOwnProperty.call(defaultMeta.rates,row.key))defaultMeta.rates[row.key]=row.defaultRate;if(!defaultMeta.rateItems[row.key])defaultMeta.rateItems[row.key]={description:rule.description,unit:rule.output,category:'calculation-rule',groupKey:rule.group,groupTitle:rule.group,plannerType:'renovation'}}}
 function rateDisplay(raw,key,rule,data){if(raw==null||raw==='')return'—';const source=data?.rateItems?.[key]?.unit||defaultMeta?.rateItems?.[key]?.unit||'',target=rule.output,s=normUnit(source),t=normUnit(target),n=Number(raw);if(!Number.isFinite(n))return'—';if(s===t||!source)return money(n);if((s==='sqft'||s==='rmsqft')&&t==='m2')return money(n/0.09290304);if((s==='ft'||s==='rm/ft')&&(t==='m'||t==='rm/m'))return money(n*3.280839895);return money(n)}
-function renderState(){const search='',rows=ruleRows.filter(({rule,key})=>!search||rule.path.toLowerCase().includes(search)||rule.description.toLowerCase().includes(search)||key.toLowerCase().includes(search));$('stateThead').innerHTML='<tr><th class="path">Calculation Rules Hierarchy</th><th class="description">Description</th><th class="unit">Unit</th>'+stateData.map(st=>`<th class="statehead">${esc(st.name)}</th>`).join('')+'</tr>';let html='',lastGroup='',seen=new Set();for(const{rule,key}of rows){if(rule.group!==lastGroup){html+=CRUI.groupRow(rule.group,rows.filter(x=>x.rule.group===rule.group).length,3+stateData.length);lastGroup=rule.group}html+=CRUI.hierarchyRows(rule,seen,3+stateData.length);const cells=stateData.map(st=>`<td class="rate">${rateDisplay(st.data.rates?.[key]??defaultMeta.rates?.[key],key,rule,st.data)}</td>`).join('');html+=`<tr><td class="cr-leaf-item path">${CRUI.esc(CRUI.leaf(rule))}</td><td class="cr-description description">${CRUI.esc(rule.description)}</td><td class="cr-unit unit">${CRUI.esc(rule.output)}</td>${cells}</tr>`}$('stateTbody').innerHTML=html||'<tr><td colspan="20" class="muted" style="padding:28px;text-align:center">No matching Calculation Rules items.</td></tr>'}
+function renderState(){
+ const query=String($('matrixSearch')?.value||'').trim().toLowerCase(),planner=$('matrixPlanner')?.value||'all';
+ const countryById=new Map((countryRateData?.rates||[]).map(item=>[item.id,item]));
+ const rows=ruleRows.filter(({rule,key,planner:p})=>{
+  const effective=String(p||'build').toLowerCase();
+  if(planner!=='all'&&effective!==planner)return false;
+  return !query||[rule.path,rule.description,key,rule.group,rule.output].some(v=>String(v||'').toLowerCase().includes(query));
+ });
+ const columns=3+stateData.length+COUNTRY_COLUMNS.length;
+ $('stateThead').innerHTML='<tr><th class="path">Calculation Rules Hierarchy</th><th class="description">Description</th><th class="unit">Unit</th>'+stateData.map(st=>'<th class="statehead">'+esc(st.name)+' · MYR</th>').join('')+COUNTRY_COLUMNS.map(c=>'<th class="statehead">'+esc(c[1])+'</th>').join('')+'</tr>';
+ let html='',lastGroup='',seen=new Set();
+ for(const{rule,key}of rows){
+  if(rule.group!==lastGroup){html+=CRUI.groupRow(rule.group,rows.filter(x=>x.rule.group===rule.group).length,columns);lastGroup=rule.group}
+  html+=CRUI.hierarchyRows(rule,seen,columns);
+  const cells=stateData.map(st=>'<td class="rate">'+rateDisplay(st.data.rates?.[key]??defaultMeta.rates?.[key],key,rule,st.data)+'</td>').join('');
+  const international=countryById.get(key);
+  const countryCells=COUNTRY_COLUMNS.map(c=>'<td class="rate">'+(international?countryNumber(international[c[0]],c[0]):'—')+'</td>').join('');
+  html+='<tr><td class="cr-leaf-item path">'+CRUI.esc(CRUI.leaf(rule))+'</td><td class="cr-description description">'+CRUI.esc(rule.description)+'</td><td class="cr-unit unit">'+CRUI.esc(rule.output)+'</td>'+cells+countryCells+'</tr>';
+ }
+ $('stateTbody').innerHTML=html||'<tr><td colspan="'+columns+'" class="muted" style="padding:28px;text-align:center">No matching Calculation Rules items.</td></tr>';
+ $('combinedRateMeta').textContent=rows.length+' master Calculation Rules items · '+stateData.length+' Malaysia state rate sets · '+COUNTRY_COLUMNS.length+' international rate columns.';
+}
 
 const COUNTRY_RATE_URL='../data/rates/country-comparison-2026.json';
 let countryRateData=null;
@@ -95,42 +104,20 @@ const COUNTRY_COLUMNS=[
  ['THB','Thailand · THB'],['PHP','Philippines · PHP'],['VND','Vietnam · VND*'],['BND','Brunei · BND*']
 ];
 function countryNumber(v,code){if(v==null||!Number.isFinite(Number(v)))return '—';const digits=code==='IDR'||code==='THB'||code==='PHP'||code==='VND'?0:2;return Number(v).toLocaleString('en-US',{minimumFractionDigits:digits,maximumFractionDigits:digits})}
-function renderCountryRates(){
- const head=$('countryThead'),body=$('countryTbody');
- if(!countryRateData){head.innerHTML='';body.innerHTML='<tr><td colspan="11">Country rate data unavailable.</td></tr>';return}
- const query=String($('countrySearch')?.value||'').trim().toLowerCase(),planner=$('countryPlanner')?.value||'all';
- const ruleMap=new Map(ruleRows.map(x=>[x.key,x]));
- // IDs in the international dataset are canonical master-rate IDs, not
- // "renovation_*" IDs. Classify from the master rate group instead.
- const renovationGroups=new Set(['LIVING / DINING','BEDROOM','DRY KITCHEN','WET KITCHEN','BATHROOM','CAR PORCH','BALCONY']);
- const plannerOfCountryRate=r=>{
-  const master=defaultMeta?.rateItems?.[r.id]||{};
-  const group=String(master.groupKey||master.groupTitle||r.group||'').trim().toUpperCase();
-  const match=ruleMap.get(r.id);
-  if(r.planner==='renovation'||r.planner==='build')return r.planner;
-  if(match?.planner)return match.planner;
-  return renovationGroups.has(group)?'renovation':'build';
- };
- const rows=countryRateData.rates.filter(r=>{
-  const p=plannerOfCountryRate(r);
-  if(planner!=='all'&&planner!==p)return false;
-  return !query||[r.id,r.group,r.description,r.unit].some(v=>String(v||'').toLowerCase().includes(query));
- });
- head.innerHTML='<tr><th>No.</th><th>Planner / Group</th><th>Description</th><th>Unit</th>'+COUNTRY_COLUMNS.map(c=>'<th class="rate">'+esc(c[1])+'</th>').join('')+'</tr>';
- body.innerHTML=rows.map((r,i)=>{const p=plannerOfCountryRate(r);return '<tr><td>'+(i+1)+'</td><td>'+esc((p==='renovation'?'RenovationPlanner':'BuildPlanner')+' / '+r.group)+'</td><td class="description" style="min-width:380px">'+esc(r.description)+'</td><td class="unit">'+esc(r.unit)+'</td>'+COUNTRY_COLUMNS.map(c=>'<td class="rate">'+countryNumber(r[c[0]],c[0])+'</td>').join('')+'</tr>'}).join('')||'<tr><td colspan="11" class="muted">No matching items.</td></tr>';
- $('countryRateMeta').textContent=rows.length+' / '+countryRateData.rates.length+' items · Version '+countryRateData.version+' · *Vietnam/Brunei rates are provisional estimates.';
-}
 async function loadCountryRates(){
- const response=await fetch(COUNTRY_RATE_URL,{cache:'no-store'});if(!response.ok)throw new Error('Unable to load the seven-country comparison dataset.');
- const data=await response.json();if(!Array.isArray(data.rates)||data.rates.length!==122)throw new Error('Country comparison dataset failed validation (expected 122 items).');
- const ids=new Set(data.rates.map(x=>x.id));if(ids.size!==122||!data.rates.every(x=>COUNTRY_COLUMNS.every(c=>Number.isFinite(Number(x[c[0]])))))throw new Error('Country comparison dataset has missing or duplicate rates.');
+ const response=await fetch(COUNTRY_RATE_URL,{cache:'no-store'});
+ if(!response.ok)throw new Error('Unable to load the seven-country rate data.');
+ const data=await response.json();
+ if(!Array.isArray(data.rates)||data.rates.length!==122)throw new Error('Country rates failed validation: expected 122 items.');
+ const ids=new Set(data.rates.map(x=>x.id));
+ if(ids.size!==122||!data.rates.every(x=>COUNTRY_COLUMNS.every(c=>Number.isFinite(Number(x[c[0]])))))throw new Error('Country rates contain missing or duplicate values.');
  const buildCount=data.rates.filter(x=>x.planner==='build').length,renovationCount=data.rates.filter(x=>x.planner==='renovation').length;
- if(buildCount!==82||renovationCount!==40)throw new Error('Country comparison planner mapping invalid: expected 82 BuildPlanner and 40 RenovationPlanner items.');
- countryRateData=data;renderCountryRates();
+ if(buildCount!==82||renovationCount!==40)throw new Error('Country rate planner mapping is invalid.');
+ countryRateData=data;
+ if(stateData.length)renderState();
 }
-$('countrySearch')?.addEventListener('input',renderCountryRates);
-$('countryPlanner')?.addEventListener('change',renderCountryRates);
-$('reloadCountryRates')?.addEventListener('click',()=>loadCountryRates().catch(e=>{$('countryRateMeta').textContent=e.message}));
+$('matrixSearch')?.addEventListener('input',renderState);
+$('matrixPlanner')?.addEventListener('change',renderState);
 
 function compactId(v){return String(v||'').toLowerCase().replace(/[^a-z0-9]+/g,'')}
 function collectAccountRates(accounts){
