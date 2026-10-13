@@ -101,14 +101,10 @@
       ? `Your ID has also been sent to ${escapeHtml(email)}.`
       : 'Account created, but the ID email could not be sent yet. Please keep this ID.';
     const noteClass = emailSent ? 'color:#64748b' : 'color:#b45309';
-    popup.innerHTML = `<div style=\"font-size:11px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:#64748b\">Account created</div><div style=\"margin-top:8px;font-size:15px;font-weight:700\">Your ${label} ID</div><div style=\"margin-top:5px;font-size:24px;font-weight:800;letter-spacing:.06em\">${escapeHtml(record[idKey])}</div><div style=\"margin-top:10px;font-size:12px;line-height:1.5;${noteClass}\">${note}</div>`;
+    popup.innerHTML = `<div style=\"font-size:11px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:#64748b\">Account created</div><div style=\"margin-top:8px;font-size:15px;font-weight:700\">Your ${label} ID</div><div style=\"margin-top:5px;font-size:24px;font-weight:800;letter-spacing:.06em\">${escapeHtml(record[idKey])}</div><div style=\"margin-top:10px;font-size:12px;line-height:1.5;${noteClass}\">${note}</div><a href="${escapeHtml(whatsappUrl || "#")}" target="_blank" rel="noopener noreferrer" style="display:block;margin-top:14px;padding:11px 14px;border-radius:12px;background:#166534;color:#fff;text-align:center;font-size:13px;font-weight:700;text-decoration:none">Continue to WhatsApp in a new tab</a>`;
     document.body.appendChild(popup);
     requestAnimationFrame(() => { popup.style.opacity = '1'; popup.style.transform = 'translateX(-50%) translateY(0)'; });
-    setTimeout(() => {
-      popup.style.opacity = '0';
-      popup.style.transform = 'translateX(-50%) translateY(-8px)';
-      setTimeout(() => popup.remove(), 300);
-    }, 5000);
+    // Keep the success popup visible so the user can finish the WhatsApp step when ready.
   }
   function openSignupWhatsApp(record, name, phone) {
     const normalizedPhone = normalizePhone(phone);
