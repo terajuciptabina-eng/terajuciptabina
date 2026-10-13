@@ -22,8 +22,29 @@ export default async function handler(req, res) {
   const makeId = role => `${role === 'homeowner' ? 'HME' : 'CTR'}-${new Date().toISOString().slice(0,10).replace(/-/g,'')}-${Math.random().toString(36).slice(2,6).toUpperCase()}`;
   const pathFor = (role, id) => `data/users/${folder(role)}/${encodeURIComponent(id)}.json`;
   const validEmail = value => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(value || '').trim());
-  const normalizePhone = value => String(value || '').replace(/[\s().-]/g, '');
-  const validPhone = value => /^(?:01\d{8,9}|\+601\d{8,9}|601\d{8,9})$/.test(normalizePhone(value));
+  const normalizePhone = value => String(value || '').replace(/[\\s().-]/g, '');
+  const DIAL_CODES = { MY:'60', SG:'65', ID:'62', TH:'66', PH:'63', VN:'84', BN:'673' };
+  const validCountry = value => Object.prototype.hasOwnProperty.call(DIAL_CODES, String(value || '').trim().toUpperCase());
+  const normalizePhoneForCountry = (value, country) => {
+    const code = String(country || '').trim().toUpperCase();
+    const dial = DIAL_CODES[code];
+    const raw = String(value || '').trim();
+    const digits = raw.replace(/\\D/g, '');
+    if (!dial || !digits) return '';
+    if (raw.startsWith('+')) return '+' + digits;
+    if (digits.startsWith(dial)) return '+' + digits;
+    return '+' + dial + digits.replace(/^0+/, '');
+  };
+  const validPhone = (value, country = 'MY') => {
+    const code = String(country || '').trim().toUpperCase();
+    const dial = DIAL_CODES[code];
+    const normalized = normalizePhoneForCountry(value, code);
+    if (!dial || !normalized.startsWith('+' + dial)) return false;
+    const national = normalized.slice(dial.length + 1);
+    if (!/^\\d{7,12}$/.test(national) || /^(\\d)\\1+$/.test(national)) return false;
+    if (code === 'MY' && national === '123456789') return false;
+    return true;
+  };
 
   async function github(path, options = {}) {
     const url = `https://api.github.com/repos/${repo}/contents/${path}`;
@@ -84,7 +105,7 @@ export default async function handler(req, res) {
   }
 
 
-  async function sendWelcomeWhatsApp({ role, id, name, phone }) {
+  async function sendWelcomeWhatsApp({ role, id, name, phone, country }) {
     const token = String(process.env.WHATSAPP_ACCESS_TOKEN || '').trim();
     const phoneNumberId = String(process.env.WHATSAPP_PHONE_NUMBER_ID || '').trim();
     const configuredTemplateName = String(process.env.WHATSAPP_SIGNUP_TEMPLATE_NAME || '').trim();
@@ -204,7 +225,8 @@ export default async function handler(req, res) {
       });
       if (String(nextProfile.name || '').trim() === '') return res.status(400).json({ message: 'Company / contractor name is required.' });
       if (nextProfile.email && !validEmail(nextProfile.email)) return res.status(400).json({ message: 'Please enter a valid email address.' });
-      if (nextProfile.phone && !validPhone(nextProfile.phone)) return res.status(400).json({ message: 'Please enter a valid Malaysian phone number.' });
+      if (nextProfile.phone && !validPhone(nextProfile.phone, record.country || 'MY')) return res.status(400).json({ message: 'Please enter a valid phone number for this account country.' });
+      if (nextProfile.phone) nextProfile.phone = normalizePhoneForCountry(nextProfile.phone, record.country || 'MY');
       if (String(nextProfile.logoDataUrl || '').length > 350000) return res.status(413).json({ message: 'Logo image is too large. Please use a smaller image.' });
       record.profile = nextProfile;
       if (!record.country) record.country = 'MY';
@@ -225,10 +247,12 @@ export default async function handler(req, res) {
     const name = String(body.name || '').trim();
     const email = String(body.email || '').trim().toLowerCase();
     const phone = String(body.phone || '').trim();
+    const country = String(body.country || '').trim().toUpperCase();
     if (!validRole(role)) return res.status(400).json({ message: 'Invalid role.' });
     if (!name) return res.status(400).json({ message: 'Name is required.' });
     if (!validEmail(email)) return res.status(400).json({ message: 'Please enter a valid email address.' });
-    if (!validPhone(phone)) return res.status(400).json({ message: 'Please enter a valid Malaysian phone number, e.g. 0123456789 or +60123456789.' });
+    if (!validCountry(country)) return res.status(400).json({ message: 'A supported country of registration is required.' });
+    if (!validPhone(phone, country)) return res.status(400).json({ message: 'Please enter a valid phone number for the selected country.' });
 
     let id = '';
     for (let attempt = 0; attempt < 5; attempt++) {
@@ -243,9 +267,9 @@ export default async function handler(req, res) {
       recordType: 'user-account',
       storage: 'github-temporary',
       role,
-      country: 'MY',
+      country,
       [idKey(role)]: id,
-      profile: { name, email, phone },
+      profile: { name, email, phone: normalizePhoneForCountry(phone, country) },
       auth: { mode: 'temporary-id', passwordStored: false },
       state: 'active',
       plannerRecords: { build: [], renovation: [] },
@@ -270,7 +294,7 @@ export default async function handler(req, res) {
       return { sent: false, reason: 'Welcome email could not be sent.' };
     });
 
-    const whatsappResult = await sendWelcomeWhatsApp({ role, id, name, phone }).catch(error => {
+    const whatsappResult = await sendWelcomeWhatsApp({ role, id, name, phone: record.profile.phone, country }).catch(error => {
       console.error('Welcome WhatsApp error:', error);
       return { sent: false, reason: 'Welcome WhatsApp message could not be sent.' };
     });
