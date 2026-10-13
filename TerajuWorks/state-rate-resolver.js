@@ -38,8 +38,9 @@
     const rates=cloneRates(data);
     if(!Object.keys(rates).length)throw new Error('Rate set is empty for '+(entry.name||stateId)+'.');
     const defaultData=await loadDefault();
+    const masterRates={...cloneRates(defaultData),...rates};
     const rateItems=Object.keys(cloneRateItems(data)).length?cloneRateItems(data):cloneRateItems(defaultData);
-    return {state:stateId,rateSetId:data?.rateSetId||entry.rateSetId||stateId,name:data?.state||entry.name||stateId,rates,rateItems,source:entry.source};
+    return {state:stateId,rateSetId:data?.rateSetId||entry.rateSetId||stateId,name:data?.state||entry.name||stateId,rates,masterRates,rateItems,source:entry.source};
   }
 
   async function apply(){
@@ -49,9 +50,21 @@
     try{
       const result=await resolve(selected);
       if(token!==applyToken)return;
-      if(typeof RATES!=='undefined'&&RATES&&typeof RATES==='object')Object.assign(RATES,result.rates);
+      if(typeof RATES!=='undefined'&&RATES&&typeof RATES==='object'){
+        // Remove the previous state's BuildPlanner canonical keys first so state-only
+        // extras cannot leak when switching from one state rate set to another.
+        Object.keys(RATES).forEach(key=>{if(key.startsWith('rule_')&&!key.startsWith('renovation_rule_'))delete RATES[key]});
+        Object.assign(RATES,result.rates);
+        // State files currently contain BuildPlanner rates only. Keep RenovationPlanner
+        // on the canonical Malaysian defaults until a genuine state-specific renovation set exists.
+        if(/renovationplanner-v2\.html$/i.test(location.pathname)){
+          const defaultRenovationRates=Object.fromEntries(Object.entries(result.masterRates||{}).filter(([key])=>key.startsWith('renovation_rule_')));
+          Object.assign(RATES,defaultRenovationRates);
+        }
+      }
       window.TERAJU_RATE_ITEMS=result.rateItems;
-      window.TERAJU_RATE_CONTEXT={state:result.state,rateSetId:result.rateSetId,name:result.name,source:'states/'+result.source};
+      window.TERAJU_RATE_CONTEXT={countryCode:'MY',currency:'MYR',state:result.state,rateSetId:result.rateSetId,name:result.name,source:'states/'+result.source,renovationRateSource:/renovationplanner-v2\.html$/i.test(location.pathname)?'default.json fallback; no state-specific renovation rate set is available':undefined};
+      if(typeof window.TERAJU_SET_MASTER_RATE_SOURCE==='function')window.TERAJU_SET_MASTER_RATE_SOURCE(result.masterRates||result.rates,window.TERAJU_RATE_CONTEXT);
       window.dispatchEvent(new CustomEvent('teraju:ratechange',{detail:window.TERAJU_RATE_CONTEXT}));
       if(typeof updateEstimate==='function')updateEstimate();
     }catch(error){console.error('[TERAJU] Rate resolver failed:',error)}
@@ -59,8 +72,11 @@
 
   window.TERAJU_RESOLVE_RATE=apply;
   window.addEventListener('teraju:statechange',apply);
+  window.addEventListener('teraju:countrychange',event=>{const code=String(event.detail?.countryCode||'').toUpperCase();if(code&&code!=='MY')applyToken++;});
   const hasQuotationId=new URLSearchParams(location.search).has('quotationId');
-  if(!hasQuotationId){
+  // Existing estimates may restore their state after this resolver script is injected.
+  // Apply immediately when a valid project state is already present; otherwise wait for statechange.
+  if(!hasQuotationId||state()){
     if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(apply,0),{once:true});
     else setTimeout(apply,0);
   }

@@ -11,6 +11,12 @@ function rate(p){let v=0,base=String(p||'').toLowerCase().replace(/[^a-z0-9]+/g,
 
 function globalRateOnly(p){let v=0,base=String(p||'').toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,''),prefix=NOR('rule_'+base),k=Object.keys(RATES).find(x=>NOR(x).startsWith(prefix));if(k)v=N(RATES[k]);return R2(v)}
 window.__tcGetGlobalRate=globalRateOnly;
+window.TERAJU_SET_MASTER_RATE_SOURCE=function(rateSource,context){
+  if(!rateSource||typeof rateSource!=='object'||!Object.keys(rateSource).length)return false;
+  RATES={...rateSource};
+  window.TERAJU_MASTER_RATE_SOURCE={...(context||{}),rateCount:Object.keys(RATES).length};
+  return true;
+};
 function rooms(){
   const all=typeof getRoomGroups==='function'?(getRoomGroups()||[]):[];
   if(/renovationplanner-v2\.html$/i.test(location.pathname)&&typeof window.__TERAJU_BUILD_ROOM_FILTER==='function'){
@@ -220,7 +226,7 @@ window.updateEstimate=function(){
   try{if(typeof saveContractorState==='function')saveContractorState()}catch(e){console.error('[TERAJU SAVE STATE]',e)}
 };
 window.updateEstimate();
-if(!window.__TERAJU_BUILD_BUDGET_GENERATED)window.showBuildBudgetPending()}else if(isRenovation){window.__TERAJU_GET_BUILD_ITEMS=getMasterItems;if(typeof window.__TERAJU_RENOVATION_V2_BUILD_READY==='function')window.__TERAJU_RENOVATION_V2_BUILD_READY()}}main().catch(e=>{console.error('[TERAJU MASTER 20260922]',e);window.__TERAJU_MASTER_ENGINE_ACTIVE=false;const c=document.getElementById('constructionBudgetContent');if(c)c.innerHTML='<div class="border rounded-xl bg-red-50 p-5 text-center text-sm text-red-700">Global Calculation Rules could not be loaded. Please try again.</div>'});
+if(!window.__TERAJU_BUILD_BUDGET_GENERATED)window.showBuildBudgetPending()}else if(isRenovation){window.__TERAJU_GET_BUILD_ITEMS=getMasterItems;if(typeof window.__TERAJU_RENOVATION_V2_BUILD_READY==='function')window.__TERAJU_RENOVATION_V2_BUILD_READY()}window.dispatchEvent(new CustomEvent('teraju:master-rate-source-ready',{detail:{plannerType:isBuild?'build':'renovation',rateCount:Object.keys(RATES).length}}))}main().catch(e=>{console.error('[TERAJU MASTER 20260922]',e);window.__TERAJU_MASTER_ENGINE_ACTIVE=false;const c=document.getElementById('constructionBudgetContent');if(c)c.innerHTML='<div class="border rounded-xl bg-red-50 p-5 text-center text-sm text-red-700">Global Calculation Rules could not be loaded. Please try again.</div>'});
 })();
 /* TERAJU V2 ITEM ACTIONS — CANONICAL MANUAL ITEM HIERARCHY FLOW 20261001 SOURCE LOCK */
 (function(){

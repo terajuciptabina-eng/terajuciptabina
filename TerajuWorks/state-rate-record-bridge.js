@@ -13,17 +13,26 @@
       const method=String(init?.method||(input&&input.method)||'GET').toUpperCase();
       if(method==='PUT' && /\/api\/quotations(?:\?|$)/i.test(url) && init?.body){
         const payload=JSON.parse(init.body);
-        const context=window.TERAJU_RATE_CONTEXT;
-        const state=String(window.TERAJU_SELECTED_STATE||context?.state||'').trim();
-        if(state && payload && payload.quotation){
+        const context=window.TERAJU_RATE_CONTEXT||{};
+        const country=window.TERAJU_GET_PROJECT_COUNTRY?.()||{countryCode:payload?.quotation?.countryCode||'MY',currency:payload?.quotation?.currency||'MYR',symbol:payload?.quotation?.currencySymbol||'RM',name:'Malaysia'};
+        const countryCode=String(country.countryCode||'MY').toUpperCase();
+        const isMalaysia=countryCode==='MY';
+        const state=String(window.TERAJU_SELECTED_STATE||context.state||'').trim().toLowerCase();
+        if(payload && payload.quotation){
           const q=payload.quotation;
+          q.countryCode=countryCode;
+          q.currency=country.currency||q.currency||'MYR';
+          q.currencySymbol=country.symbol||q.currencySymbol||'RM';
           q.project=q.project||{};
-          q.project.state=state;
           q.plannerState=q.plannerState||{};
-          q.plannerState.projectState=state;
-          q.plannerState.rateSetId=context?.rateSetId||q.plannerState.rateSetId||'default';
-          q.plannerState.rateSetName=context?.name||q.plannerState.rateSetName||'Default Rate';
+          q.plannerState.countryCode=countryCode;
+          q.plannerState.currency=q.currency;
+          q.plannerState.projectCountry={...country,projectId:q.projectId||q.plannerState.projectId||''};
+          q.plannerState.projectState=isMalaysia?state:'';
+          q.plannerState.rateSetId=isMalaysia?(context.rateSetId||state||q.plannerState.rateSetId||'default'):('country-comparison-2026:'+countryCode);
+          q.plannerState.rateSetName=isMalaysia?(context.name||q.plannerState.rateSetName||state||'Malaysian state rate'):(country.name+' estimated rates');
           q.plannerState.rateSnapshotAt=new Date().toISOString();
+          if(isMalaysia&&state){q.project.state=state;}else{delete q.project.state;}
           init={...init,body:JSON.stringify(payload)};
         }
       }

@@ -10,6 +10,8 @@
   const captureSignatures = new Map();
 
   function currentState() {
+    const country=window.TERAJU_GET_PROJECT_COUNTRY?.();
+    if(String(country?.countryCode||window.TERAJU_RATE_CONTEXT?.countryCode||'MY').toUpperCase()!=='MY')return '';
     return String(window.TERAJU_SELECTED_STATE || window.TERAJU_RATE_CONTEXT?.state || qs.get('state') || localStorage.getItem('teraju.planner.state.v1') || '').trim().toLowerCase();
   }
 

@@ -116,17 +116,36 @@ export default async function handler(req, res) {
       duplicate.items = [];
       duplicate.sourceItems = [];
       duplicate.total = 0;
+      const sourcePlannerState = duplicate.plannerState || {};
+      const countryCode = String(duplicate.countryCode || sourcePlannerState.countryCode || sourcePlannerState.projectCountry?.countryCode || 'MY').toUpperCase();
+      const sourceState = String(sourcePlannerState.projectState || duplicate.project?.state || '').trim().toLowerCase();
+      const projectCountry = sourcePlannerState.projectCountry || {
+        countryCode,
+        currency: duplicate.currency || 'MYR',
+        symbol: duplicate.currencySymbol || 'RM',
+        name: countryCode
+      };
       duplicate.plannerState = {
-        ...(duplicate.plannerState || {}),
+        ...sourcePlannerState,
         projectId: newProjectId,
         quotationId: newQuotationId,
         quotationType: type,
         constructionBudgetGenerated: false,
-        projectState: '',
-        rateSetId: '',
-        rateSetName: ''
+        projectState: countryCode === 'MY' ? sourceState : '',
+        projectCountry: { ...projectCountry, projectId: newProjectId },
+        countryCode,
+        currency: duplicate.currency || projectCountry.currency || 'MYR',
+        rateSetId: countryCode === 'MY'
+          ? (sourcePlannerState.rateSetId || sourceState)
+          : (sourcePlannerState.rateSetId || 'country-comparison-2026:' + countryCode),
+        rateSetName: sourcePlannerState.rateSetName || (countryCode === 'MY' ? sourceState : (projectCountry.name + ' estimated rates'))
       };
-      duplicate.project = { ...(duplicate.project || {}), location: '', state: '' };
+      delete duplicate.plannerState.rateSnapshotAt;
+      duplicate.project = {
+        ...(duplicate.project || {}),
+        location: String(duplicate.project?.location || sourcePlannerState.projectLocation || '').trim(),
+        state: countryCode === 'MY' ? sourceState : ''
+      };
       duplicate.revision = { current: 'R00', history: [] };
       delete duplicate.revisionHistory;
       list.unshift(duplicate);
@@ -143,9 +162,25 @@ export default async function handler(req, res) {
     }
     if (req.method === 'DELETE') { const quotationId = String(source?.quotationId || '').trim(); if (!quotationId) return res.status(400).json({ message: 'Missing quotationId.' }); const list = plannerList(current.record, plannerType); const existingIndex = list.findIndex(q => q?.quotationId === quotationId); if (existingIndex < 0) return res.status(404).json({ message: 'Cost estimate not found.' }); current.record.plannerRecords = current.record.plannerRecords || { build: [], renovation: [] }; current.record.plannerRecords[plannerType] = list.filter(q => q?.quotationId !== quotationId); current.record.updatedAt = new Date().toISOString(); const updated = await github(pathFor(role, id), { method: 'PUT', body: JSON.stringify({ message: `Delete ${plannerType} quotation ${quotationId}`, content: Buffer.from(JSON.stringify(current.record, null, 2) + '\n').toString('base64'), sha: current.sha }) }); if (!updated.response.ok) return res.status(502).json({ message: 'Unable to delete quotation.' }); return res.status(200).json({ success: true, quotationId }); }
     const quotation = source?.quotation; if (!quotation || typeof quotation !== 'object') return res.status(400).json({ message: 'Missing quotation record.' }); const quotationId = String(quotation.quotationId || '').trim(); if (!quotationId) return res.status(400).json({ message: 'Missing quotationId.' });
+    const incomingCountryCode = String(quotation?.countryCode || quotation?.plannerState?.countryCode || quotation?.plannerState?.projectCountry?.countryCode || 'MY').trim().toUpperCase() || 'MY';
     const incomingState = String(quotation?.plannerState?.projectState || quotation?.project?.state || '').trim().toLowerCase();
-    if (!incomingState) return res.status(400).json({ message: 'Project state / negeri is required.' });
-    const now = new Date().toISOString(); const normalized = { ...quotation, quotationId, role, [idKey(role)]: id, plannerType, updatedAt: now, createdAt: quotation.createdAt || now };
+    if (incomingCountryCode === 'MY' && !incomingState) return res.status(400).json({ message: 'Select the project state / negeri before saving the Malaysian Cost Estimate.' });
+    const now = new Date().toISOString();
+    const normalized = { ...quotation, countryCode: incomingCountryCode, quotationId, role, [idKey(role)]: id, plannerType, updatedAt: now, createdAt: quotation.createdAt || now };
+    if (incomingCountryCode !== 'MY') {
+      normalized.project = { ...(normalized.project || {}), state: '' };
+      normalized.plannerState = {
+        ...(normalized.plannerState || {}),
+        projectState: '',
+        countryCode: incomingCountryCode,
+        currency: normalized.currency || normalized.plannerState?.currency || 'MYR',
+        projectCountry: {
+          ...(normalized.plannerState?.projectCountry || {}),
+          countryCode: incomingCountryCode,
+          projectId: normalized.projectId || normalized.plannerState?.projectId || ''
+        }
+      };
+    }
     current.record.plannerRecords = current.record.plannerRecords || { build: [], renovation: [] }; current.record.plannerRecords.build = plannerList(current.record, 'build'); current.record.plannerRecords.renovation = plannerList(current.record, 'renovation');
     const list = current.record.plannerRecords[plannerType];
     const incomingType = quotationType(normalized.quotationType || normalized.plannerState?.quotationType);
