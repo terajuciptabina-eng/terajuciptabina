@@ -2674,9 +2674,30 @@ function initContractorMode() {
       : `quotations.html?role=${encodeURIComponent(IS_CONTRACTOR ? "contractor" : "homeowner")}&plannerType=renovation`;
   }
 
+  // Browser draft restoration is only valid when continuing an existing estimate
+  // or returning from an explicit room/area import flow. A fresh estimate must
+  // not inherit the previous project's customer, rooms, or item overrides.
+  const pageParams = new URLSearchParams(location.search);
+  const isExistingQuotation = !!pageParams.get("quotationId");
+  const isFloorPlanReturn = pageParams.get("floorPlanImport") === "1";
   let saved = null;
-  if (IS_CONTRACTOR) {
+  if (IS_CONTRACTOR && (isExistingQuotation || isFloorPlanReturn)) {
     saved = loadContractorState();
+  } else if (IS_CONTRACTOR) {
+    const roomsContainer = document.getElementById("roomsContainer");
+    if (roomsContainer) roomsContainer.replaceChildren();
+    roomCounter = 0;
+    const customer = document.getElementById("customerName");
+    const projectLocationField = document.getElementById("projectLocation");
+    if (customer) customer.value = "";
+    if (projectLocationField) projectLocationField.value = "";
+    customRates.clear();
+    customQuantities.clear();
+    customDescriptions.clear();
+    customRoomLabels.clear();
+    excludedItems.clear();
+    manualItems.clear();
+    standardRateItems = [];
   }
 
   updateRoomsEmptyState();
