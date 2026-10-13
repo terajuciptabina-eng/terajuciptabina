@@ -44,6 +44,17 @@
     "updatedAt": "2026-10-12T21:38:03.400Z"
   },
   {
+    "id": "DEV-20261013-ed99a58",
+    "date": "2026-10-13",
+    "title": "Add responsive Kedai Resepi recipe browsing page",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Add responsive Kedai Resepi recipe browsing page",
+    "details": "Automatic entry from commit ed99a58. Changed files: resepi/index.html.",
+    "commit": "ed99a5864a96412f6af794ab4bf81ea9ee5d67bd",
+    "updatedAt": "2026-10-13T11:39:40.018Z"
+  },
+  {
     "id": "DEV-20261013-e994d36",
     "date": "2026-10-13",
     "title": "chore(terajuw orks): remove obsolete legacy planners",
