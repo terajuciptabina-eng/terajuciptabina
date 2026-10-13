@@ -60,7 +60,9 @@
   const candidates=[
    window.TERAJU_ACCOUNT,window.TERAJU_USER,window.currentUser,window.userProfile,
    (()=>{try{return JSON.parse(sessionStorage.getItem('teraju.user')||'null')}catch{return null}})(),
-   (()=>{try{return JSON.parse(localStorage.getItem('teraju.user')||'null')}catch{return null}})()
+   (()=>{try{return JSON.parse(localStorage.getItem('teraju.user')||'null')}catch{return null}})(),
+   (()=>{try{return JSON.parse(localStorage.getItem('teraju.contractor.github.v1')||'null')}catch{return null}})(),
+   (()=>{try{return JSON.parse(localStorage.getItem('teraju.homeowner.github.v1')||'null')}catch{return null}})()
   ];
   for(const value of candidates){const code=value?.countryCode||value?.country||value?.profile?.countryCode||value?.profile?.country;if(code&&CURRENCIES[String(code).trim().toUpperCase()])return String(code).trim().toUpperCase()}
   return 'MY';
