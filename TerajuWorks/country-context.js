@@ -29,31 +29,46 @@
  async function loadRates(){if(!dataPromise)dataPromise=fetch(DATA_URL,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('Unable to load country rate comparison data');return r.json()});return dataPromise}
  async function rateById(id, snapshot){const ctx=normalize(snapshot||current());const data=await loadRates();const item=data.rates.find(x=>x.id===id);if(!item)return null;return {id:item.id,rate:item[ctx.currency],currency:ctx.currency,countryCode:ctx.countryCode,planner:item.planner,provisional:ctx.countryCode==='VN'||ctx.countryCode==='BN'} }
  const RENOVATION_RATE_KEYS={plaster_ceiling:'ceiling',spc_flooring:'spc',downlight:'downlight',ceiling_fan:'ceilingFan',curtain_box_led:'curtainBoxLED',bar_lamp:'barLamp',kitchen_frame:'kitchenFrame',making_good:'kitchenMakingGood',swing_glass_door:'kitchenGlassDoor',floor_tiles:'floorTile',wall_tiles:'wallTile',kitchen_lighting:'barLamp',sanitary_accessories:'bathroomSanitary',toilet_door:'bathroomDoor',exhaust_fan:'exhaustFan',gate_motor:'gateMotor',brickwall_divider:'brickwallDivider',front_fence:'frontFence',facade_wall:'facadeWall',wall_light:'wallLight'};
- let baseRates=null,applying=false;
+ let baseRates=null,applying=false,applyVersion=0;
  async function applyCountryRates(){
-  if(applying)return;applying=true;
+  const version=++applyVersion;if(applying)return;applying=true;
   try{
-   const ctx=current(),data=await loadRates();
+   const ctx=current(),data=await loadRates();if(version!==applyVersion)return;
    if(typeof RATES==='undefined'||!RATES||typeof RATES!=='object')return;
    if(!baseRates)baseRates={...RATES};
    if(ctx.countryCode==='MY'){
+    Object.keys(RATES).forEach(key=>{if(!Object.prototype.hasOwnProperty.call(baseRates,key))delete RATES[key]});
     Object.assign(RATES,baseRates);
+    window.TERAJU_RATE_CONTEXT={countryCode:'MY',currency:'MYR',name:'Malaysia',source:'awaiting-state'};
     if(typeof window.TERAJU_RESOLVE_RATE==='function')await window.TERAJU_RESOLVE_RATE();
     else if(typeof updateEstimate==='function')updateEstimate();
     return;
    }
    const selected=data.rates.filter(x=>x.planner===plannerType);
-   if(selected.length!==(plannerType==='build'?82:40))throw new Error('Country rate set failed planner-count validation.');
+   if(data.rates.length!==122||data.rates.filter(x=>x.planner==='build').length!==82||data.rates.filter(x=>x.planner==='renovation').length!==40)throw new Error('Country rate set failed planner-count validation.');
+   const masterRates={};
+   for(const item of data.rates){
+    const masterValue=Number(item[ctx.currency]);if(!Number.isFinite(masterValue))throw new Error('Missing '+ctx.currency+' rate for '+item.id);
+    masterRates[item.id]=masterValue;
+   }
+   const canonicalRates={};
    for(const item of selected){
-    const value=Number(item[ctx.currency]);if(!Number.isFinite(value))throw new Error('Missing '+ctx.currency+' rate for '+item.id);
-    if(plannerType==='build')RATES[item.id]=value;
-    else {const token=item.id.replace(/^renovation_rule_/,'').replace(/_\d+$/,'');const aliasKey=Object.keys(RENOVATION_RATE_KEYS).sort((a,b)=>b.length-a.length).find(key=>token===key||token.endsWith('_'+key));const alias=aliasKey?RENOVATION_RATE_KEYS[aliasKey]:'';if(alias)RATES[alias]=value;}
+    const value=masterRates[item.id];
+    canonicalRates[item.id]=value;
+    RATES[item.id]=value;
+    if(plannerType==='renovation'){
+     const token=item.id.replace(/^renovation_rule_/,'').replace(/_\d+$/,'');
+     const aliasKey=Object.keys(RENOVATION_RATE_KEYS).sort((a,b)=>b.length-a.length).find(key=>token===key||token.endsWith('_'+key));
+     const alias=aliasKey?RENOVATION_RATE_KEYS[aliasKey]:'';
+     if(alias)RATES[alias]=value;
+    }
    }
    window.TERAJU_RATE_CONTEXT={countryCode:ctx.countryCode,currency:ctx.currency,name:ctx.name,source:'country-comparison-2026.json',provisional:ctx.countryCode==='VN'||ctx.countryCode==='BN'};
+   if(typeof window.TERAJU_SET_MASTER_RATE_SOURCE==='function')window.TERAJU_SET_MASTER_RATE_SOURCE(masterRates,window.TERAJU_RATE_CONTEXT);
    window.dispatchEvent(new CustomEvent('teraju:ratechange',{detail:window.TERAJU_RATE_CONTEXT}));
    if(typeof updateEstimate==='function')updateEstimate();
   }catch(error){console.error('[TERAJU] Country rate integration failed:',error);window.TERAJU_COUNTRY_RATE_ERROR=String(error?.message||error)}
-  finally{applying=false}
+  finally{applying=false;if(version!==applyVersion)applyCountryRates()}
  }
  function installSelector(){
   if(document.getElementById('tcProjectCountrySelect'))return;
@@ -70,7 +85,7 @@
   const explicitCountry=params.get('countryCode')||params.get('country');
   const initialCode=explicitCountry?countryCode(explicitCountry):(activeProject&&saved&&String(saved.projectId||'')===activeProject?countryCode(saved.countryCode):'');
   select.insertAdjacentHTML('afterbegin','<option value="">Select country / negara</option>');
-  select.value=initialCode;
+  select.value=initialCode||'MY';
   function reflect(){
    const stateField=findStateSelect();const stateWrap=stateField?.closest('label')||stateField?.parentElement;
    if(!select.value){
@@ -97,7 +112,7 @@
  window.TERAJU_FORMAT_NUMBER=formatNumber;
  function applyCurrencyLabels(){const ctx=current(),symbol=ctx.symbol;document.querySelectorAll('th,td,span,p,label,div,strong,b').forEach(el=>{if(el.children.length)return;const t=el.textContent;if(!t)return;const next=t.replace(/Rate \(RM\)/g,'Rate ('+symbol+')').replace(/Amount \(RM\)/g,'Amount ('+symbol+')').replace(/RM\/sqft: RM /g,symbol+'/sqft: '+symbol+' ').replace(/Existing: RM /g,'Existing: '+symbol+' ').replace(/New: RM /g,'New: '+symbol+' ');if(next!==t)el.textContent=next});let style=document.getElementById('tc-country-currency-labels');if(!style){style=document.createElement('style');style.id='tc-country-currency-labels';document.head.appendChild(style)}style.textContent='#constructionBudgetSection .cr-budget-table tbody tr:not(.cr-group-row):not(.cr-hierarchy-row) td:nth-child(5)::before{content:"Rate ('+symbol+')"}#constructionBudgetSection .cr-budget-table tbody tr:not(.cr-group-row):not(.cr-hierarchy-row) td:nth-child(6)::before{content:"Amount ('+symbol+')"}'}
  let currencyObserver=null;function watchCurrencyLabels(){applyCurrencyLabels();if(currencyObserver)return;currencyObserver=new MutationObserver(()=>{if(!window.__TERAJU_CURRENCY_LABELS_PENDING){window.__TERAJU_CURRENCY_LABELS_PENDING=true;queueMicrotask(()=>{window.__TERAJU_CURRENCY_LABELS_PENDING=false;applyCurrencyLabels()})}});currencyObserver.observe(document.body,{subtree:true,childList:true,characterData:true})}
- window.addEventListener('teraju:countrychange',applyCurrencyLabels);window.addEventListener('teraju:ratechange',applyCurrencyLabels);if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',watchCurrencyLabels,{once:true});else watchCurrencyLabels();
+ window.addEventListener('teraju:countrychange',applyCurrencyLabels);window.addEventListener('teraju:ratechange',applyCurrencyLabels);window.addEventListener('teraju:countrychange',()=>{if(!window.TERAJU_COUNTRY_SELECTION_PENDING)applyCountryRates()});window.addEventListener('teraju:master-rate-source-ready',()=>setTimeout(()=>{if(!window.TERAJU_COUNTRY_SELECTION_PENDING)applyCountryRates()},0));if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',watchCurrencyLabels,{once:true});else watchCurrencyLabels();
  window.TERAJU_GET_COUNTRY_RATE=rateById;
  window.TERAJU_GET_COUNTRY_RATE_DATA=loadRates;
  window.TERAJU_PROJECT_COUNTRY=current();

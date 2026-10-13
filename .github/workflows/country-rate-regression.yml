@@ -1,0 +1,18 @@
+name: Country Rate Regression
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [fix/country-rate-source-unification]
+
+jobs:
+  country-rate-regression:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: node --input-type=module --check < api/quotations.js
+      - run: node --test tests/country-rate-selection.test.cjs
