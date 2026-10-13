@@ -451,6 +451,17 @@
     "updatedAt": "2026-10-13T08:14:09.024Z"
   },
   {
+    "id": "DEV-20261013-07aae1e",
+    "date": "2026-10-13",
+    "title": "Unify state and international rates into one master matrix (#61)",
+    "module": "Admin / Rate Management",
+    "status": "Completed",
+    "summary": "Unify state and international rates into one master matrix (#61)",
+    "details": "Automatic entry from commit 07aae1e. Changed files: TerajuWorks/admin-rate-comparison.html.",
+    "commit": "07aae1ef3478fb52103413925ea7970b8f95e3a8",
+    "updatedAt": "2026-10-13T08:59:48.606Z"
+  },
+  {
     "id": "DEV-20261013-04670d4",
     "date": "2026-10-13",
     "title": "Enforce dark country text in account table (#59)",
