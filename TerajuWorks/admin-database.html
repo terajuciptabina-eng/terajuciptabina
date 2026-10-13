@@ -116,12 +116,13 @@ function exportExcel(){
       'Name':x.name||'',
       'Email':x.email||'',
       'Phone':x.phone||'',
+      'Country':x.countryName||'Malaysia',
       'Estimate Number':nums.join(', '),
       'Sign Up':x.createdAt||''
     };
   });
   const ws=XLSX.utils.json_to_sheet(rows);
-  ws['!cols']=[{wch:22},{wch:14},{wch:28},{wch:34},{wch:20},{wch:32},{wch:24}];
+  ws['!cols']=[{wch:22},{wch:14},{wch:28},{wch:34},{wch:20},{wch:16},{wch:32},{wch:24}];
   const wb=XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb,ws,'Records');
   XLSX.writeFile(wb,'terajuworks-admin-records.xlsx');
@@ -138,7 +139,7 @@ async function load(){
     if(!r.ok)throw new Error(d.message||'Unable to load database.');
     const a=(d.accounts||[]).sort((x,y)=>Date.parse(y.createdAt||'')-Date.parse(x.createdAt||''));currentAccounts=a;
     result.classList.remove('hidden');
-    result.innerHTML='<div class="eyebrow">Records</div><h2>'+a.length+' account(s)</h2><div class="table"><table><thead><tr><th>Account</th><th>Profile</th><th>Estimate Number</th><th>Sign Up</th><th>Actions</th></tr></thead><tbody>'+a.map(x=>{const nums=Array.isArray(x.estimateNumbers)?x.estimateNumbers.filter(Boolean):[];return '<tr><td><b>'+esc(x.id||'-')+'</b><br><span class="muted">'+esc(x.role||'-')+'</span></td><td>'+esc(x.name||'-')+'<br>'+esc(x.email||'-')+'<br>'+esc(x.phone||'-')+'</td><td>'+(nums.length?nums.map(n=>'<span class="tag estimate-number">'+esc(n)+'</span>').join(' '):'—')+'</td><td>'+esc(x.createdAt||'-')+'</td><td class="actions"><a href="#" data-view-id="'+esc(x.id||'')+'" data-view-role="'+esc(x.role||'')+'">View / Edit</a> <button data-id="'+esc(x.id||'')+'" data-role="'+esc(x.role||'')+'" title="Delete account">×</button></td></tr>'}).join('')+'</tbody></table></div>';
+    const myCount=a.filter(x=>(x.country||'MY')==='MY').length;const otherCount=a.length-myCount;result.innerHTML='<div class="eyebrow">Records</div><h2>'+a.length+' account(s)</h2><div style="display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 16px"><span class="tag">Malaysia: '+myCount+'</span><span class="tag">Other countries: '+otherCount+'</span></div><div class="table"><table><thead><tr><th>Account</th><th>Profile</th><th>Country</th><th>Estimate Number</th><th>Sign Up</th><th>Actions</th></tr></thead><tbody>'+a.map(x=>{const nums=Array.isArray(x.estimateNumbers)?x.estimateNumbers.filter(Boolean):[];const country=(x.country||'MY')==='MY'?'Malaysia':(x.countryName||x.country);return '<tr><td><b>'+esc(x.id||'-')+'</b><br><span class="muted">'+esc(x.role||'-')+'</span></td><td>'+esc(x.name||'-')+'<br>'+esc(x.email||'-')+'<br>'+esc(x.phone||'-')+'</td><td><span class="tag">'+esc(country)+'</span></td><td>'+(nums.length?nums.map(n=>'<span class="tag estimate-number">'+esc(n)+'</span>').join(' '):'—')+'</td><td>'+esc(x.createdAt||'-')+'</td><td class="actions"><a href="#" data-view-id="'+esc(x.id||'')+'" data-view-role="'+esc(x.role||'')+'">View / Edit</a> <button data-id="'+esc(x.id||'')+'" data-role="'+esc(x.role||'')+'" title="Delete account">×</button></td></tr>'}).join('')+'</tbody></table></div>;
     result.querySelectorAll('.actions button').forEach(b=>b.onclick=()=>del(b));
     result.querySelectorAll('[data-view-id]').forEach(a=>a.onclick=e=>{e.preventDefault();openProfile(a.dataset.viewId,a.dataset.viewRole)});
     status.textContent='Database loaded.';
