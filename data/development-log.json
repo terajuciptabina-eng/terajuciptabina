@@ -308,6 +308,17 @@
     "updatedAt": "2026-10-12T22:12:09.622Z"
   },
   {
+    "id": "DEV-20261013-081fde6",
+    "date": "2026-10-13",
+    "title": "Add Archicad class slot SLOT-20261013081401-7Z5Z",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Add Archicad class slot SLOT-20261013081401-7Z5Z",
+    "details": "Automatic entry from commit 081fde6. Changed files: data/class-slots.json.",
+    "commit": "081fde639bd03d87c0aa2da80d26f20c5e9aa479",
+    "updatedAt": "2026-10-13T08:14:09.024Z"
+  },
+  {
     "id": "DEV-20261012-e671c56",
     "date": "2026-10-12",
     "title": "Simplify ARQENVO BIM software description",
