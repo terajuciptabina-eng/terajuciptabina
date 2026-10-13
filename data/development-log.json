@@ -66,6 +66,17 @@
     "updatedAt": "2026-10-12T21:55:46.984Z"
   },
   {
+    "id": "DEV-20261013-a1c6cbf",
+    "date": "2026-10-13",
+    "title": "Delete homeowner HME-20261010-UTS6 from admin database",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Delete homeowner HME-20261010-UTS6 from admin database",
+    "details": "Automatic entry from commit a1c6cbf. Changed files: data/users/homeowners/HME-20261010-UTS6.json.",
+    "commit": "a1c6cbf420ca71a3db28d40d7485a509c1726312",
+    "updatedAt": "2026-10-13T08:03:25.917Z"
+  },
+  {
     "id": "DEV-20261013-81b52b5",
     "date": "2026-10-13",
     "title": "fix: bust cached country context script in planner",
