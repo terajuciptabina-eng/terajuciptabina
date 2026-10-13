@@ -179,7 +179,10 @@ export default async function handler(req, res) {
       if (result.response.status === 404) return res.status(404).json({ message: 'Account not found.' });
       if (!result.response.ok) return res.status(502).json({ message: 'Unable to read account record.' });
       const content = decodeGithubContent(result.data);
-      return res.status(200).json(JSON.parse(content));
+      const record = JSON.parse(content);
+      // Existing accounts predate country support; treat them as Malaysia until Admin explicitly changes the account country.
+      if (!record.country) record.country = 'MY';
+      return res.status(200).json(record);
     }
 
     const body = req.body || {};
@@ -204,6 +207,7 @@ export default async function handler(req, res) {
       if (nextProfile.phone && !validPhone(nextProfile.phone)) return res.status(400).json({ message: 'Please enter a valid Malaysian phone number.' });
       if (String(nextProfile.logoDataUrl || '').length > 350000) return res.status(413).json({ message: 'Logo image is too large. Please use a smaller image.' });
       record.profile = nextProfile;
+      if (!record.country) record.country = 'MY';
       record.updatedAt = new Date().toISOString();
       const updated = await github(pathFor(role, id), {
         method: 'PUT',
@@ -239,6 +243,7 @@ export default async function handler(req, res) {
       recordType: 'user-account',
       storage: 'github-temporary',
       role,
+      country: 'MY',
       [idKey(role)]: id,
       profile: { name, email, phone },
       auth: { mode: 'temporary-id', passwordStored: false },
