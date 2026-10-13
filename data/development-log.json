@@ -11,6 +11,17 @@
     "updatedAt": "2026-10-12T22:06:00.683Z"
   },
   {
+    "id": "DEV-20261013-f934c50",
+    "date": "2026-10-13",
+    "title": "New Archicad class registration ARC-20261013094250-8UGE",
+    "module": "General",
+    "status": "Completed",
+    "summary": "New Archicad class registration ARC-20261013094250-8UGE",
+    "details": "Automatic entry from commit f934c50. Changed files: data/class-registrations.json.",
+    "commit": "f934c505e670580a7ed31c613e242b3673f2067c",
+    "updatedAt": "2026-10-13T09:42:59.886Z"
+  },
+  {
     "id": "DEV-20261013-ee105b3",
     "date": "2026-10-13",
     "title": "Implement seven-country construction rate system",
