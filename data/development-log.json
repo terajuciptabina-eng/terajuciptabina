@@ -242,6 +242,17 @@
     "updatedAt": "2026-10-13T08:03:25.917Z"
   },
   {
+    "id": "DEV-20261013-97b0e8d",
+    "date": "2026-10-13",
+    "title": "Remove project country selector and use account country (#65)",
+    "module": "RenovationPlanner",
+    "status": "Completed",
+    "summary": "Remove project country selector and use account country (#65)",
+    "details": "Automatic entry from commit 97b0e8d. Changed files: TerajuWorks/buildplanner-v2.html, TerajuWorks/country-context.js, TerajuWorks/renovationplanner-v2.html.",
+    "commit": "97b0e8dceee334c2dbdf55bc2cae7bdd110e4056",
+    "updatedAt": "2026-10-13T10:57:48.896Z"
+  },
+  {
     "id": "DEV-20261013-958981e",
     "date": "2026-10-13",
     "title": "Create Archicad booking payment bill ARC-20261013091853-9NCW",
