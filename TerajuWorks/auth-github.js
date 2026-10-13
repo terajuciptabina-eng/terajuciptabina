@@ -414,13 +414,20 @@ ${workspaceUrl}`;
         generated.classList.remove('hidden');
         showPortal(data.record);
         showSignupPopup(data.record, data.emailSent === true, email);
+        // Finish the workspace onboarding on this page first. WhatsApp must never replace
+        // the page containing the contractor profile form.
+        if (role === 'contractor') openProfile(data.record, { onboarding: true });
         const whatsappUrl = openSignupWhatsApp(data.record, name, data.record?.profile?.phone || phone);
         if (signupTab && !signupTab.closed) {
-          signupTab.location.replace(whatsappUrl);
+          try {
+            signupTab.location.href = whatsappUrl;
+          } catch {
+            signupTab.close();
+            setError('Account created successfully. Your profile remains open; use the WhatsApp button to send your registration details.');
+          }
         } else {
-          setError('Account created successfully, but your browser blocked the WhatsApp tab. Please allow pop-ups and open WhatsApp using your registration details.');
+          setError('Account created successfully. Your profile remains open, but this browser blocked the WhatsApp tab. Use the WhatsApp button to send your registration details.');
         }
-        if (role === 'contractor') setTimeout(() => openProfile(data.record, { onboarding: true }), 550);
       } else {
         const id = idInput.value.trim().toUpperCase();
         if (!id) throw new Error(`Please enter your ${isHomeowner ? 'Homeowner' : 'Contractor'} ID.`);
