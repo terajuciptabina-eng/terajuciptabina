@@ -77,10 +77,8 @@ function rateDisplay(raw,key,rule,data){if(raw==null||raw==='')return'—';const
 function renderState(){
  const query=String($('matrixSearch')?.value||'').trim().toLowerCase(),planner=$('matrixPlanner')?.value||'all';
  const countryById=new Map((countryRateData?.rates||[]).map(item=>[item.id,item]));
- const rows=ruleRows.filter(({rule,key})=>{
-  const p=String(rule.planner||rule.plannerType||'').toLowerCase();
-  const inferred=(/^renovation_rule_/.test(key)||['LIVING / DINING','BEDROOM','DRY KITCHEN','WET KITCHEN','BATHROOM','CAR PORCH','BALCONY'].includes(String(rule.group||'').toUpperCase()))?'renovation':'build';
-  const effective=p.includes('renovation')?'renovation':p.includes('build')?'build':inferred;
+ const rows=ruleRows.filter(({rule,key,planner:p})=>{
+  const effective=String(p||'build').toLowerCase();
   if(planner!=='all'&&effective!==planner)return false;
   return !query||[rule.path,rule.description,key,rule.group,rule.output].some(v=>String(v||'').toLowerCase().includes(query));
  });
@@ -106,6 +104,20 @@ const COUNTRY_COLUMNS=[
  ['THB','Thailand · THB'],['PHP','Philippines · PHP'],['VND','Vietnam · VND*'],['BND','Brunei · BND*']
 ];
 function countryNumber(v,code){if(v==null||!Number.isFinite(Number(v)))return '—';const digits=code==='IDR'||code==='THB'||code==='PHP'||code==='VND'?0:2;return Number(v).toLocaleString('en-US',{minimumFractionDigits:digits,maximumFractionDigits:digits})}
+async function loadCountryRates(){
+ const response=await fetch(COUNTRY_RATE_URL,{cache:'no-store'});
+ if(!response.ok)throw new Error('Unable to load the seven-country rate data.');
+ const data=await response.json();
+ if(!Array.isArray(data.rates)||data.rates.length!==122)throw new Error('Country rates failed validation: expected 122 items.');
+ const ids=new Set(data.rates.map(x=>x.id));
+ if(ids.size!==122||!data.rates.every(x=>COUNTRY_COLUMNS.every(c=>Number.isFinite(Number(x[c[0]])))))throw new Error('Country rates contain missing or duplicate values.');
+ const buildCount=data.rates.filter(x=>x.planner==='build').length,renovationCount=data.rates.filter(x=>x.planner==='renovation').length;
+ if(buildCount!==82||renovationCount!==40)throw new Error('Country rate planner mapping is invalid.');
+ countryRateData=data;
+ if(stateData.length)renderState();
+}
+$('matrixSearch')?.addEventListener('input',renderState);
+$('matrixPlanner')?.addEventListener('change',renderState);
 
 function compactId(v){return String(v||'').toLowerCase().replace(/[^a-z0-9]+/g,'')}
 function collectAccountRates(accounts){
