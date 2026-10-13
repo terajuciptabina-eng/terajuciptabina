@@ -2674,9 +2674,29 @@ function initContractorMode() {
       : `quotations.html?role=${encodeURIComponent(IS_CONTRACTOR ? "contractor" : "homeowner")}&plannerType=renovation`;
   }
 
+  // A contractor's browser draft belongs to the previous working session, not to a new Cost Estimate.
+  // Restore it only when reopening an existing quotation or returning from an intentional floor-plan import.
+  const pageParams = new URLSearchParams(location.search);
+  const isExistingQuotation = !!pageParams.get("quotationId");
+  const isFloorPlanReturn = pageParams.get("floorPlanImport") === "1";
   let saved = null;
-  if (IS_CONTRACTOR) {
+  if (IS_CONTRACTOR && (isExistingQuotation || isFloorPlanReturn)) {
     saved = loadContractorState();
+  } else if (IS_CONTRACTOR) {
+    const roomsContainer = document.getElementById("roomsContainer");
+    if (roomsContainer) roomsContainer.innerHTML = "";
+    roomCounter = 0;
+    const customer = document.getElementById("customerName");
+    const locationField = document.getElementById("projectLocation");
+    if (customer) customer.value = "";
+    if (locationField) locationField.value = "";
+    customRates.clear();
+    customQuantities.clear();
+    customDescriptions.clear();
+    customRoomLabels.clear();
+    excludedItems.clear();
+    manualItems.clear();
+    standardRateItems = [];
   }
 
   updateRoomsEmptyState();
