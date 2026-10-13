@@ -12,7 +12,7 @@
   const emailInput = document.getElementById('accountEmailInput'), phoneInput = document.getElementById('accountPhoneInput'), countryInput = document.getElementById('accountCountryInput');
   const countryField = document.getElementById('accountCountryField');
   const DIAL_CODES = { MY:'60', SG:'65', ID:'62', TH:'66', PH:'63', VN:'84', BN:'673' };
-  const normalizePhoneForCountry = (value, country) => { const digits=String(value||'').replace(/\\D/g,''); const dial=DIAL_CODES[country]||''; if(!dial||!digits)return ''; if(String(value||'').trim().startsWith('+'))return '+'+digits; if(digits.startsWith(dial))return '+'+digits; return '+'+dial+digits.replace(/^0+/, ''); };
+  const normalizePhoneForCountry = (value, country) => { const digits=String(value||'').replace(/\D/g,''); const dial=DIAL_CODES[country]||''; if(!dial||!digits)return ''; if(String(value||'').trim().startsWith('+'))return '+'+digits; if(digits.startsWith(dial))return '+'+digits; return '+'+dial+digits.replace(/^0+/, ''); };
   const idField = document.getElementById(isHomeowner ? 'homeownerIdField' : 'contractorIdField'), nameField = document.getElementById(isHomeowner ? 'homeownerNameField' : 'contractorNameField');
   const button = document.getElementById('authButton'), title = document.getElementById('authTitle'), description = document.getElementById('authDescription'), error = document.getElementById('authError'), generated = document.getElementById('authGeneratedId');
   const panel = document.getElementById('authPanel') || document.getElementById('loginPanel'), portal = document.getElementById('portal'), welcome = document.getElementById('welcome'), buildLink = document.getElementById('buildLink'), renoLink = document.getElementById('renoLink');
@@ -42,6 +42,7 @@
       schemaVersion: record.schemaVersion || 1,
       recordType: record.recordType || 'user-account',
       role,
+      country: record.country || 'MY',
       [idKey]: id,
       profile,
       state: record.state || 'active',
@@ -66,13 +67,13 @@
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return false;
     return !new Set(['a@b.com', 'test@test.com', 'abc@abc.com', 'test@example.com', 'user@example.com']).has(email);
   };
-  const normalizePhone = value => String(value || '').replace(/[\\s().-]/g, '');
+  const normalizePhone = value => String(value || '').replace(/[\s().-]/g, '');
   const validPhone = (value, country = 'MY') => {
     const normalized = normalizePhoneForCountry(value, country);
     const dial = DIAL_CODES[country];
     if (!normalized || !dial || !normalized.startsWith('+' + dial)) return false;
     const national = normalized.slice(dial.length + 1);
-    if (!/^\\d{7,12}$/.test(national) || /^(\\d)\\1+$/.test(national)) return false;
+    if (!/^\d{7,12}$/.test(national) || /^(\d)\1+$/.test(national)) return false;
     if (country === 'MY' && national === '123456789') return false;
     return true;
   };
@@ -111,7 +112,7 @@
   }
   function openSignupWhatsApp(record, name, phone) {
     const normalizedPhone = normalizePhone(phone);
-    const recipient = normalizedPhone.replace(/^\+/, '').replace(/^0/, '60');
+    const recipient = normalizePhoneForCountry(record?.profile?.phone || phone, record?.country || countryInput?.value || 'MY').replace(/^\+/, '');
     if (!recipient) throw new Error('A valid registered phone number is required to open WhatsApp.');
     const id = record?.[idKey] || '';
     const label = isHomeowner ? 'HOMEOWNER' : 'CONTRACTOR';
@@ -181,7 +182,7 @@ ${workspaceUrl}`;
     Object.entries(homeProfileFields).forEach(([key, input]) => { profile[key] = input?.value.trim() || ''; });
     if (!profile.name) return setHomeProfileStatus('Name is required.');
     if (!validEmail(profile.email)) return setHomeProfileStatus('Please use a valid email address.');
-    if (!validPhone(profile.phone, getLocal()?.country || 'MY')) return setHomeProfileStatus('Please enter a valid phone number for your account country.');
+    if (!validPhone(profile.phone, currentRecord?.country || getLocal()?.country || 'MY')) return setHomeProfileStatus('Please enter a valid phone number for your account country.');
     homeProfileSave.disabled = true;
     homeProfileSave.textContent = 'Saving…';
     setHomeProfileStatus('');
