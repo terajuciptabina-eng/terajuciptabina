@@ -79,6 +79,10 @@
    if(oldMalaysiaLocation.test(locationInput.value)){locationInput.value='';locationInput.dispatchEvent(new Event('input',{bubbles:true}))}
    locationInput.placeholder='Enter project location';
   }
+  if(ctx.countryCode!=='MY'){
+   document.querySelectorAll('[data-detailed-price]').forEach(el=>{el.textContent='FREE';el.querySelectorAll('.line-through').forEach(node=>node.remove())});
+   document.querySelectorAll('[data-detailed-promo-note]').forEach(el=>{el.textContent='Promotional access is available now. Local service pricing will be shown when published for your market.'});
+  }
  }
  // Country is inherited from the signed-in account/project context. Do not inject a second country selector into planners.
  function accountCountry(){
