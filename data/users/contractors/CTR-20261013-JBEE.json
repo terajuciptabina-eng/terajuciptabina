@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "contractor",
+  "contractorId": "CTR-20261013-JBEE",
+  "profile": {
+    "name": "Rahman",
+    "email": "98rahmanamin@gmail.com",
+    "phone": "01121452295"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-10-13T06:06:16.690Z",
+  "updatedAt": "2026-10-13T06:06:16.690Z"
+}
