@@ -90,7 +90,7 @@
     signInTab.className = signup ? 'rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-500' : 'tab-active rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-950';
     signUpTab.className = signup ? 'tab-active rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-950' : 'rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-500';
   }
-  function showSignupPopup(record, emailSent, email) {
+  function showSignupPopup(record, emailSent, email, whatsappUrl) {
     const existing = document.getElementById('terajuSignupPopup');
     existing?.remove();
     const label = isHomeowner ? 'Homeowner' : 'Contractor';
@@ -394,12 +394,6 @@ ${workspaceUrl}`;
   }
   form.addEventListener('submit', async event => {
     event.preventDefault(); event.stopImmediatePropagation(); clearError();
-    // Open the new tab synchronously from the user's submit gesture so mobile browsers
-    // do not block it after the account API request completes.
-    const signupTab = mode === 'signup' ? window.open('about:blank', '_blank') : null;
-    if (signupTab) {
-      try { signupTab.opener = null; } catch {}
-    }
     button.disabled = true; button.textContent = mode === 'signup' ? 'Creating…' : 'Signing in…';
     try {
       if (mode === 'signup') {
@@ -413,21 +407,12 @@ ${workspaceUrl}`;
         generated.innerHTML = `<strong>Your ${isHomeowner ? 'Homeowner' : 'Contractor'} ID:</strong><br><span class=\"mt-1 inline-block text-lg font-bold tracking-wide text-slate-950\">${escapeHtml(data.id)}</span><br><span class=\"text-xs text-slate-500\">Keep this ID. You will use it to sign in later.</span>`;
         generated.classList.remove('hidden');
         showPortal(data.record);
-        showSignupPopup(data.record, data.emailSent === true, email);
-        // Finish the workspace onboarding on this page first. WhatsApp must never replace
-        // the page containing the contractor profile form.
+        // Build the WhatsApp destination without navigating away from the new workspace.
+        // The user opens it deliberately from the success popup, in a separate tab.
+        let whatsappUrl = '';
+        try { whatsappUrl = openSignupWhatsApp(data.record, name, data.record?.profile?.phone || phone); } catch (whatsappError) { console.warn('WhatsApp link unavailable:', whatsappError); }
+        showSignupPopup(data.record, data.emailSent === true, email, whatsappUrl);
         if (role === 'contractor') openProfile(data.record, { onboarding: true });
-        const whatsappUrl = openSignupWhatsApp(data.record, name, data.record?.profile?.phone || phone);
-        if (signupTab && !signupTab.closed) {
-          try {
-            signupTab.location.href = whatsappUrl;
-          } catch {
-            signupTab.close();
-            setError('Account created successfully. Your profile remains open; use the WhatsApp button to send your registration details.');
-          }
-        } else {
-          setError('Account created successfully. Your profile remains open, but this browser blocked the WhatsApp tab. Use the WhatsApp button to send your registration details.');
-        }
       } else {
         const id = idInput.value.trim().toUpperCase();
         if (!id) throw new Error(`Please enter your ${isHomeowner ? 'Homeowner' : 'Contractor'} ID.`);
@@ -436,7 +421,6 @@ ${workspaceUrl}`;
         showPortal(account);
       }
     } catch (err) {
-      if (signupTab && !signupTab.closed) signupTab.close();
       setError(err.message || 'Unable to complete the request.');
     }
     finally { button.disabled = false; button.textContent = mode === 'signup' ? 'Create workspace' : 'Enter workspace'; }
