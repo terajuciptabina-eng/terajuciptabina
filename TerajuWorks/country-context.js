@@ -22,7 +22,7 @@
  function safeWrite(value){try{sessionStorage.setItem(STORAGE_KEY,JSON.stringify(value))}catch{}}
  function countryCode(value){const c=String(value||'').trim().toUpperCase();return CURRENCIES[c]?c:'MY'}
  function normalize(raw){const code=countryCode(raw?.countryCode||raw?.country||raw?.code);return {...CURRENCIES[code],countryCode:code,projectId:String(raw?.projectId||params.get('projectId')||params.get('quotationId')||''),source:raw?.source||'session'} }
- function current(){const explicit=params.get('countryCode')||params.get('country');if(explicit)return normalize({countryCode:explicit,projectId:params.get('projectId')||params.get('quotationId')||''});if(window.TERAJU_PROJECT_COUNTRY)return normalize(window.TERAJU_PROJECT_COUNTRY);const saved=safeRead();const activeProject=String(params.get('projectId')||params.get('quotationId')||'');if(activeProject&&saved&&String(saved.projectId||'')===activeProject)return normalize(saved);return normalize({countryCode:'MY',projectId:activeProject,source:'safe-default'})}
+ function current(){const explicit=params.get('countryCode')||params.get('country');if(explicit)return normalize({countryCode:explicit,projectId:params.get('projectId')||params.get('quotationId')||''});if(window.TERAJU_PROJECT_COUNTRY)return normalize(window.TERAJU_PROJECT_COUNTRY);const saved=safeRead();const activeProject=String(params.get('projectId')||params.get('quotationId')||'');if(activeProject&&saved&&String(saved.projectId||'')===activeProject)return normalize(saved);return normalize({countryCode:accountCountry(),projectId:activeProject,source:'account-default'})}
  function set(raw){const next=normalize({...raw,projectId:raw?.projectId||current().projectId});window.TERAJU_PROJECT_COUNTRY=next;safeWrite(next);window.dispatchEvent(new CustomEvent('teraju:countrychange',{detail:next}));return next}
  function formatNumber(value,options={}){const c=current();return new Intl.NumberFormat(c.locale,{minimumFractionDigits:options.minimumFractionDigits??2,maximumFractionDigits:options.maximumFractionDigits??2}).format(Number(value)||0)}
  function format(value,options={}){const c=current();return new Intl.NumberFormat(c.locale,{style:'currency',currency:c.currency,minimumFractionDigits:options.minimumFractionDigits??2,maximumFractionDigits:options.maximumFractionDigits??2}).format(Number(value)||0)}
@@ -55,40 +55,15 @@
   }catch(error){console.error('[TERAJU] Country rate integration failed:',error);window.TERAJU_COUNTRY_RATE_ERROR=String(error?.message||error)}
   finally{applying=false}
  }
- function installSelector(){
-  if(document.getElementById('tcProjectCountrySelect'))return;
-  function findStateSelect(){return Array.from(document.querySelectorAll('select')).find(el=>{const text=Array.from(el.options||[]).map(o=>(o.textContent||'').trim().toLowerCase());return text.some(t=>t==='select state / negeri'||t==='select state'||t==='select negeri')&&text.some(t=>t==='kedah')&&text.some(t=>t==='johor')})||document.getElementById('projectState')||null}
-  const state=findStateSelect();
-  const anchor=state?.closest('label')||state?.parentElement||document.querySelector('#customerName')?.closest('label')||document.querySelector('#customerName')?.parentElement;
-  if(!anchor)return;
-  const wrap=document.createElement('label');wrap.id='tcProjectCountryWrap';wrap.style.cssText='display:block;margin:12px 0;padding:12px;border:1px solid #dbe2ea;border-radius:12px;background:#fff;color:#0f172a;font-size:13px;font-weight:600';
-  wrap.innerHTML='<span style="display:block;margin-bottom:6px">Project Country / Negara Projek</span><select id="tcProjectCountrySelect" style="width:100%;min-height:44px;padding:8px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#0f172a"><option value="MY">Malaysia · MYR</option><option value="SG">Singapore · SGD</option><option value="ID">Indonesia · IDR</option><option value="TH">Thailand · THB</option><option value="PH">Philippines · PHP</option><option value="VN">Vietnam · VND · provisional rates</option><option value="BN">Brunei · BND · provisional rates</option></select><span id="tcProjectCurrencyHint" style="display:block;margin-top:6px;font-weight:400;color:#64748b">Country is saved with this project. Malaysian projects continue to use the selected state rate set.</span>';
-  anchor.insertAdjacentElement('afterend',wrap);
-  const select=wrap.querySelector('select');
-  const activeProject=String(params.get('projectId')||params.get('quotationId')||'');
-  const saved=safeRead();
-  const explicitCountry=params.get('countryCode')||params.get('country');
-  const initialCode=explicitCountry?countryCode(explicitCountry):(activeProject&&saved&&String(saved.projectId||'')===activeProject?countryCode(saved.countryCode):'');
-  select.insertAdjacentHTML('afterbegin','<option value="">Select country / negara</option>');
-  select.value=initialCode;
-  function reflect(){
-   const stateField=findStateSelect();const stateWrap=stateField?.closest('label')||stateField?.parentElement;
-   if(!select.value){
-    window.TERAJU_COUNTRY_SELECTION_PENDING=true;
-    if(stateWrap){stateWrap.hidden=true;stateField.disabled=true;stateWrap.setAttribute('aria-hidden','true');}
-    wrap.querySelector('#tcProjectCurrencyHint').textContent='Select the project country first. Malaysian projects will then require a state selection.';
-    window.dispatchEvent(new CustomEvent('teraju:countrychange',{detail:{countryCode:'',pending:true}}));
-    return null;
-   }
-   window.TERAJU_COUNTRY_SELECTION_PENDING=false;
-   const ctx=set({countryCode:select.value,projectId:activeProject||current().projectId,source:'project-selector'});
-   if(stateWrap){stateWrap.hidden=ctx.countryCode!=='MY';stateField.disabled=ctx.countryCode!=='MY';stateWrap.setAttribute('aria-hidden',ctx.countryCode!=='MY'?'true':'false');}
-   wrap.querySelector('#tcProjectCurrencyHint').textContent=ctx.countryCode==='MY'?'Currency: MYR. Malaysian state-specific rates apply to this project.':ctx.countryCode==='VN'||ctx.countryCode==='BN'?'Currency: '+ctx.currency+'. Rates are provisional estimates and need local validation.':'Currency: '+ctx.currency+'. State selection is only applicable to Malaysian projects.';
-   return ctx;
-  }
-  select.addEventListener('change',()=>{const ctx=reflect();if(ctx)applyCountryRates();});
-  const initialContext=reflect();
-  if(initialContext)applyCountryRates();
+ // Country is inherited from the signed-in account/project context. Do not inject a second country selector into planners.
+ function accountCountry(){
+  const candidates=[
+   window.TERAJU_ACCOUNT,window.TERAJU_USER,window.currentUser,window.userProfile,
+   (()=>{try{return JSON.parse(sessionStorage.getItem('teraju.user')||'null')}catch{return null}})(),
+   (()=>{try{return JSON.parse(localStorage.getItem('teraju.user')||'null')}catch{return null}})()
+  ];
+  for(const value of candidates){const code=value?.countryCode||value?.country||value?.profile?.countryCode||value?.profile?.country;if(code&&CURRENCIES[String(code).trim().toUpperCase()])return String(code).trim().toUpperCase()}
+  return 'MY';
  }
  window.TERAJU_COUNTRIES=CURRENCIES;
  window.TERAJU_GET_PROJECT_COUNTRY=current;
@@ -101,5 +76,4 @@
  window.TERAJU_GET_COUNTRY_RATE=rateById;
  window.TERAJU_GET_COUNTRY_RATE_DATA=loadRates;
  window.TERAJU_PROJECT_COUNTRY=current();
- if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',installSelector,{once:true});else installSelector();
 })();
