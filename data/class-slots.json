@@ -82,5 +82,17 @@
     "notes": "",
     "createdAt": "2026-10-13T08:11:19.734Z",
     "updatedAt": "2026-10-13T08:11:19.734Z"
+  },
+  {
+    "id": "SLOT-20261013081401-7Z5Z",
+    "date": "2026-10-18",
+    "startTime": "09:00",
+    "endTime": "16:00",
+    "mode": "Fizikal",
+    "capacity": 10,
+    "active": true,
+    "notes": "",
+    "createdAt": "2026-10-13T08:14:01.426Z",
+    "updatedAt": "2026-10-13T08:14:01.426Z"
   }
 ]
