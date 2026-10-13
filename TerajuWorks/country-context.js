@@ -127,5 +127,6 @@
  window.TERAJU_GET_COUNTRY_RATE=rateById;
  window.TERAJU_GET_COUNTRY_RATE_DATA=loadRates;
  window.TERAJU_PROJECT_COUNTRY=current();
+ applyCountryRates();
  hydrateAccountCountry();
 })();
