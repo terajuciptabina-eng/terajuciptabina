@@ -484,6 +484,17 @@
     "updatedAt": "2026-10-13T08:10:36.289Z"
   },
   {
+    "id": "DEV-20261013-2a0627c",
+    "date": "2026-10-13",
+    "title": "Remove BSL recipe page from Teraju Ciptabina repository; BSL will be standalone",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Remove BSL recipe page from Teraju Ciptabina repository; BSL will be standalone",
+    "details": "Automatic entry from commit 2a0627c. Changed files: resepi/index.html.",
+    "commit": "2a0627c6bf06f3f9d0506634508ee9ec06fad954",
+    "updatedAt": "2026-10-13T11:42:00.768Z"
+  },
+  {
     "id": "DEV-20261013-247fc0c",
     "date": "2026-10-13",
     "title": "fix: load country-aware project state gate",
