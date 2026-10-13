@@ -9,7 +9,10 @@
   const signInTab = document.getElementById('signInTab'), signUpTab = document.getElementById('signUpTab');
   const idInput = document.getElementById(isHomeowner ? 'homeownerIdInput' : 'contractorIdInput');
   const nameInput = document.getElementById(isHomeowner ? 'homeownerNameInput' : 'contractorNameInput');
-  const emailInput = document.getElementById('accountEmailInput'), phoneInput = document.getElementById('accountPhoneInput');
+  const emailInput = document.getElementById('accountEmailInput'), phoneInput = document.getElementById('accountPhoneInput'), countryInput = document.getElementById('accountCountryInput');
+  const countryField = document.getElementById('accountCountryField');
+  const DIAL_CODES = { MY:'60', SG:'65', ID:'62', TH:'66', PH:'63', VN:'84', BN:'673' };
+  const normalizePhoneForCountry = (value, country) => { const digits=String(value||'').replace(/\\D/g,''); const dial=DIAL_CODES[country]||''; if(!dial||!digits)return ''; if(String(value||'').trim().startsWith('+'))return '+'+digits; if(digits.startsWith(dial))return '+'+digits; return '+'+dial+digits.replace(/^0+/, ''); };
   const idField = document.getElementById(isHomeowner ? 'homeownerIdField' : 'contractorIdField'), nameField = document.getElementById(isHomeowner ? 'homeownerNameField' : 'contractorNameField');
   const button = document.getElementById('authButton'), title = document.getElementById('authTitle'), description = document.getElementById('authDescription'), error = document.getElementById('authError'), generated = document.getElementById('authGeneratedId');
   const panel = document.getElementById('authPanel') || document.getElementById('loginPanel'), portal = document.getElementById('portal'), welcome = document.getElementById('welcome'), buildLink = document.getElementById('buildLink'), renoLink = document.getElementById('renoLink');
@@ -63,23 +66,25 @@
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return false;
     return !new Set(['a@b.com', 'test@test.com', 'abc@abc.com', 'test@example.com', 'user@example.com']).has(email);
   };
-  const normalizePhone = value => String(value || '').replace(/[\s().-]/g, '');
-  const validPhone = value => {
-    const normalized = normalizePhone(value);
-    if (!/^(?:01\d{8,9}|\+601\d{8,9}|601\d{8,9})$/.test(normalized)) return false;
-    const local = normalized.replace(/^\+?60/, '0');
-    const subscriber = local.slice(3);
-    return local !== '0123456789' && !/^(\d)\1+$/.test(subscriber);
+  const normalizePhone = value => String(value || '').replace(/[\\s().-]/g, '');
+  const validPhone = (value, country = 'MY') => {
+    const normalized = normalizePhoneForCountry(value, country);
+    const dial = DIAL_CODES[country];
+    if (!normalized || !dial || !normalized.startsWith('+' + dial)) return false;
+    const national = normalized.slice(dial.length + 1);
+    if (!/^\\d{7,12}$/.test(national) || /^(\\d)\\1+$/.test(national)) return false;
+    if (country === 'MY' && national === '123456789') return false;
+    return true;
   };
 
   if (emailInput) { emailInput.type = 'email'; emailInput.autocomplete = 'email'; }
-  if (phoneInput) { phoneInput.type = 'tel'; phoneInput.autocomplete = 'tel'; phoneInput.inputMode = 'tel'; phoneInput.placeholder = '0123456789'; }
+  if (phoneInput) { phoneInput.type = 'tel'; phoneInput.autocomplete = 'tel'; phoneInput.inputMode = 'tel'; phoneInput.placeholder = '+60 12 345 6789'; }
 
   function setMode(next) {
     mode = next; clearError(); generated.classList.add('hidden'); const signup = next === 'signup';
     title.textContent = signup ? `Create ${isHomeowner ? 'homeowner' : 'contractor'} account` : `${isHomeowner ? 'Homeowner' : 'Contractor'} sign in`;
     description.textContent = signup ? `Create your ${isHomeowner ? 'home project' : 'contractor'} workspace.` : `Enter the ${isHomeowner ? 'Homeowner' : 'Contractor'} ID generated during Sign Up.`;
-    idField.classList.toggle('hidden', signup); nameField.classList.toggle('hidden', !signup); emailInput?.parentElement.classList.toggle('hidden', !signup); phoneInput?.parentElement.classList.toggle('hidden', !signup);
+    idField.classList.toggle('hidden', signup); nameField.classList.toggle('hidden', !signup); emailInput?.parentElement.classList.toggle('hidden', !signup); phoneInput?.parentElement.classList.toggle('hidden', !signup); countryField?.classList.toggle('hidden', !signup); if(countryInput) countryInput.required = signup;
     idInput.required = !signup; nameInput.required = signup; if (emailInput) emailInput.required = signup; if (phoneInput) phoneInput.required = signup; button.textContent = signup ? 'Create workspace' : 'Enter workspace';
     signInTab.className = signup ? 'rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-500' : 'tab-active rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-950';
     signUpTab.className = signup ? 'tab-active rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-950' : 'rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-500';
@@ -176,7 +181,7 @@ ${workspaceUrl}`;
     Object.entries(homeProfileFields).forEach(([key, input]) => { profile[key] = input?.value.trim() || ''; });
     if (!profile.name) return setHomeProfileStatus('Name is required.');
     if (!validEmail(profile.email)) return setHomeProfileStatus('Please use a valid email address.');
-    if (!validPhone(profile.phone)) return setHomeProfileStatus('Please enter a valid Malaysian phone number.');
+    if (!validPhone(profile.phone, getLocal()?.country || 'MY')) return setHomeProfileStatus('Please enter a valid phone number for your account country.');
     homeProfileSave.disabled = true;
     homeProfileSave.textContent = 'Saving…';
     setHomeProfileStatus('');
@@ -257,7 +262,7 @@ ${workspaceUrl}`;
     renderProfileLogo(profileLogoDataUrl);
     if (!profile.name) return setProfileStatus('Company / Contractor Name is required.');
     if (!validEmail(profile.email)) return setProfileStatus('Please enter a valid email address.');
-    if (!validPhone(profile.phone)) return setProfileStatus('Please enter a valid Malaysian phone number.');
+    if (!validPhone(profile.phone, getLocal()?.country || 'MY')) return setProfileStatus('Please enter a valid phone number for your account country.');
     if (profile.logoDataUrl.length > 900000) return setProfileStatus('Logo image is too large. Please use a smaller image.');
     profileSave.disabled = true; profileSave.textContent = 'Saving…'; setProfileStatus('');
     try {
@@ -397,7 +402,7 @@ ${workspaceUrl}`;
     button.disabled = true; button.textContent = mode === 'signup' ? 'Creating…' : 'Signing in…';
     try {
       if (mode === 'signup') {
-        const name = nameInput.value.trim(), email = emailInput?.value.trim() || '', phone = phoneInput?.value.trim() || '';
+        const name = nameInput.value.trim(), email = emailInput?.value.trim() || '', phone = phoneInput?.value.trim() || '', country = String(countryInput?.value || '').trim().toUpperCase();
         if (!name) throw new Error('Name is required.');
         if (!validEmail(email)) throw new Error('Please enter a valid email address.');
         if (!validPhone(phone)) throw new Error('Please use a valid phone number.');
@@ -407,7 +412,7 @@ ${workspaceUrl}`;
         generated.classList.remove('hidden');
         showPortal(data.record);
         showSignupPopup(data.record, data.emailSent === true, email);
-        const whatsappUrl = openSignupWhatsApp(data.record, name, phone);
+        const whatsappUrl = openSignupWhatsApp(data.record, name, data.record?.profile?.phone || phone);
         if (signupTab && !signupTab.closed) {
           signupTab.location.replace(whatsappUrl);
         } else {
