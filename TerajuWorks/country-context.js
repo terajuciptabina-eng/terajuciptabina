@@ -1,6 +1,6 @@
-/* TERAJU WORKS — project country/currency context.
- * Country is stored per project/session; it never overwrites Malaysia state-rate files.
- * Rates are resolved separately from this context. Existing quotation snapshots win on restore.
+/* TERAJU WORKS — account-market country/currency context.
+ * Market is fixed by the registered account. Project/session state cannot override it.
+ * Malaysia retains its state-based rate resolver; other markets use their own validated rate field.
  */
 (function(){
  'use strict';
@@ -57,14 +57,18 @@
  }
  // Country is inherited from the signed-in account/project context. Do not inject a second country selector into planners.
  function accountCountry(){
+  const roleRaw=String(params.get('role')||params.get('audience')||'').toLowerCase();
+  const role=roleRaw==='homeowner'||roleRaw==='contractor'?roleRaw:'';
+  const roleAccount=role?(()=>{try{return JSON.parse(localStorage.getItem('teraju.'+role+'.github.v1')||'null')}catch{return null}})():null;
   const candidates=[
+   roleAccount,
    window.TERAJU_ACCOUNT,window.TERAJU_USER,window.currentUser,window.userProfile,
    (()=>{try{return JSON.parse(sessionStorage.getItem('teraju.user')||'null')}catch{return null}})(),
    (()=>{try{return JSON.parse(localStorage.getItem('teraju.user')||'null')}catch{return null}})(),
    (()=>{try{return JSON.parse(localStorage.getItem('teraju.contractor.github.v1')||'null')}catch{return null}})(),
    (()=>{try{return JSON.parse(localStorage.getItem('teraju.homeowner.github.v1')||'null')}catch{return null}})()
   ];
-  for(const value of candidates){const code=value?.countryCode||value?.country||value?.profile?.countryCode||value?.profile?.country;if(code&&CURRENCIES[String(code).trim().toUpperCase()])return String(code).trim().toUpperCase()}
+  for(const value of candidates){const code=value?.country||value?.countryCode||value?.profile?.country||value?.profile?.countryCode;if(code&&CURRENCIES[String(code).trim().toUpperCase()])return String(code).trim().toUpperCase()}
   return 'MY';
  }
 
