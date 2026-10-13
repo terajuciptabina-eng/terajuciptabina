@@ -27,7 +27,7 @@
  function formatNumber(value,options={}){const c=current();return new Intl.NumberFormat(c.locale,{minimumFractionDigits:options.minimumFractionDigits??2,maximumFractionDigits:options.maximumFractionDigits??2}).format(Number(value)||0)}
  function format(value,options={}){const c=current();return new Intl.NumberFormat(c.locale,{style:'currency',currency:c.currency,minimumFractionDigits:options.minimumFractionDigits??2,maximumFractionDigits:options.maximumFractionDigits??2}).format(Number(value)||0)}
  async function loadRates(){if(!dataPromise)dataPromise=fetch(DATA_URL,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('Unable to load country rate comparison data');return r.json()});return dataPromise}
- async function rateById(id, snapshot){const ctx=normalize(snapshot||current());const data=await loadRates();const item=data.rates.find(x=>x.id===id);if(!item)return null;const rateField=ctx.countryCode==='MY'?'Malaysia_MYR':ctx.currency;const rate=Number(item[rateField]);if(!Number.isFinite(rate))throw new Error('No validated rate for '+ctx.countryCode+' item '+id);return {id:item.id,rate,currency:ctx.currency,countryCode:ctx.countryCode,planner:item.planner,provisional:ctx.countryCode==='VN'||ctx.countryCode==='BN'} }
+ async function rateById(id, snapshot){const ctx=normalize(snapshot||current());const data=await loadRates();const item=data.rates.find(x=>x.id===id);if(!item)return null;const rateField=ctx.countryCode==='MY'?'Malaysia_MYR':ctx.currency;const rawRate=item[rateField];if(rawRate===null||rawRate===undefined||String(rawRate).trim()==='')throw new Error('No validated rate for '+ctx.countryCode+' item '+id);const rate=Number(rawRate);if(!Number.isFinite(rate)||rate<0)throw new Error('No validated rate for '+ctx.countryCode+' item '+id);return {id:item.id,rate,currency:ctx.currency,countryCode:ctx.countryCode,planner:item.planner,provisional:ctx.countryCode==='VN'||ctx.countryCode==='BN'} }
  const RENOVATION_RATE_KEYS={plaster_ceiling:'ceiling',spc_flooring:'spc',downlight:'downlight',ceiling_fan:'ceilingFan',curtain_box_led:'curtainBoxLED',bar_lamp:'barLamp',kitchen_frame:'kitchenFrame',making_good:'kitchenMakingGood',swing_glass_door:'kitchenGlassDoor',floor_tiles:'floorTile',wall_tiles:'wallTile',kitchen_lighting:'barLamp',sanitary_accessories:'bathroomSanitary',toilet_door:'bathroomDoor',exhaust_fan:'exhaustFan',gate_motor:'gateMotor',brickwall_divider:'brickwallDivider',front_fence:'frontFence',facade_wall:'facadeWall',wall_light:'wallLight'};
  let baseRates=null,applying=false;
  async function applyCountryRates(){
@@ -45,15 +45,40 @@
    const selected=data.rates.filter(x=>x.planner===plannerType);
    if(selected.length!==(plannerType==='build'?82:40))throw new Error('Country rate set failed planner-count validation.');
    for(const item of selected){
-    const rateField=ctx.countryCode==='MY'?'Malaysia_MYR':ctx.currency;const value=Number(item[rateField]);if(!Number.isFinite(value))throw new Error('Missing '+rateField+' rate for '+item.id);
+    const rateField=ctx.countryCode==='MY'?'Malaysia_MYR':ctx.currency;const rawValue=item[rateField];if(rawValue===null||rawValue===undefined||String(rawValue).trim()==='')throw new Error('Missing '+rateField+' rate for '+item.id);const value=Number(rawValue);if(!Number.isFinite(value)||value<0)throw new Error('Invalid '+rateField+' rate for '+item.id);
     if(plannerType==='build')RATES[item.id]=value;
-    else {const token=item.id.replace(/^renovation_rule_/,'').replace(/_\d+$/,'');const aliasKey=Object.keys(RENOVATION_RATE_KEYS).sort((a,b)=>b.length-a.length).find(key=>token===key||token.endsWith('_'+key));const alias=aliasKey?RENOVATION_RATE_KEYS[aliasKey]:'';if(alias)RATES[alias]=value;}
+    else {const token=item.id.replace(/^renovation_rule_/,'').replace(/_\d+$/,'');const aliasKey=Object.keys(RENOVATION_RATE_KEYS).sort((a,b)=>b.length-a.length).find(key=>token===key||token.endsWith('_'+key));const alias=aliasKey?RENOVATION_RATE_KEYS[aliasKey]:'';if(!alias)throw new Error('No RenovationPlanner rate-key mapping for '+item.id);RATES[alias]=value;}
    }
    window.TERAJU_RATE_CONTEXT={countryCode:ctx.countryCode,currency:ctx.currency,name:ctx.name,source:'country-comparison-2026.json',provisional:ctx.countryCode==='VN'||ctx.countryCode==='BN'};
    window.dispatchEvent(new CustomEvent('teraju:ratechange',{detail:window.TERAJU_RATE_CONTEXT}));
    if(typeof updateEstimate==='function')updateEstimate();
   }catch(error){console.error('[TERAJU] Country rate integration failed:',error);window.TERAJU_COUNTRY_RATE_ERROR=String(error?.message||error);const ctx=current();if(ctx.countryCode!=='MY'&&typeof RATES!=='undefined'&&RATES&&typeof RATES==='object'){Object.keys(RATES).forEach(key=>{RATES[key]=NaN});let banner=document.getElementById('tc-country-rate-error');if(!banner){banner=document.createElement('div');banner.id='tc-country-rate-error';banner.setAttribute('role','alert');banner.style.cssText='position:sticky;top:0;z-index:99999;padding:12px 16px;background:#fff1f2;color:#9f1239;border-bottom:1px solid #fecdd3;font:600 14px/1.45 system-ui,sans-serif';banner.textContent='Country rate data is unavailable. Cost estimates are disabled until valid local rates are available.';document.body.prepend(banner)}document.querySelectorAll('button').forEach(button=>{if(/estimate|quotation|generate|export pdf|download pdf/i.test(button.textContent||'')){button.disabled=true;button.setAttribute('aria-disabled','true')}})}}
   finally{applying=false}
+ }
+ // Keep market-specific location and state UI aligned with the registered account market.
+ const MARKET_LOCATIONS={
+  MY:['Kuala Lumpur','Selangor','Johor','Penang','Perak','Negeri Sembilan','Melaka','Pahang','Terengganu','Kelantan','Kedah','Perlis','Sabah','Sarawak','Putrajaya','Labuan'],
+  SG:['Singapore','Central Region','East Region','North Region','North-East Region','West Region'],
+  ID:['Jakarta','Surabaya','Bandung','Medan','Semarang','Yogyakarta','Denpasar','Makassar'],
+  TH:['Bangkok','Chiang Mai','Phuket','Pattaya','Nonthaburi','Khon Kaen'],
+  PH:['Metro Manila','Quezon City','Cebu City','Davao City','Makati','Taguig','Iloilo City'],
+  VN:['Ho Chi Minh City','Hanoi','Da Nang','Hai Phong','Can Tho','Nha Trang'],
+  BN:['Bandar Seri Begawan','Kuala Belait','Seria','Tutong','Bangar']
+ };
+ function applyMarketExperience(){
+  const ctx=current(),state=document.getElementById('projectState');
+  if(state){
+   const wrap=state.closest('label')||state.parentElement;
+   if(wrap)wrap.hidden=ctx.countryCode!=='MY';
+   if(ctx.countryCode!=='MY'){state.value='';state.disabled=true}else{state.disabled=false}
+  }
+  const locationInput=document.getElementById('projectLocation'),list=document.getElementById('projectLocationSuggestions');
+  if(list){list.replaceChildren();(MARKET_LOCATIONS[ctx.countryCode]||[]).forEach(name=>{const option=document.createElement('option');option.value=name;list.appendChild(option)})}
+  if(locationInput&&ctx.countryCode!=='MY'){
+   const oldMalaysiaLocation=/\b(malaysia|selangor|kuala lumpur|johor|penang|puchong|putrajaya|sarawak|sabah|kelantan|terengganu|perak|kedah|perlis|melaka|negeri sembilan|pahang|labuan)\b/i;
+   if(oldMalaysiaLocation.test(locationInput.value)){locationInput.value='';locationInput.dispatchEvent(new Event('input',{bubbles:true}))}
+   locationInput.placeholder='Enter project location';
+  }
  }
  // Country is inherited from the signed-in account/project context. Do not inject a second country selector into planners.
  function accountCountry(){
