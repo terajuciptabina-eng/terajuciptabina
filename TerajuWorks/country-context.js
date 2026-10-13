@@ -89,15 +89,16 @@
   const roleRaw=String(params.get('role')||params.get('audience')||'').toLowerCase();
   const role=roleRaw==='homeowner'||roleRaw==='contractor'?roleRaw:'';
   const roleAccount=role?(()=>{try{return JSON.parse(localStorage.getItem('teraju.'+role+'.github.v1')||'null')}catch{return null}})():null;
+  const readCountry=value=>{const raw=value?.country||value?.countryCode||value?.profile?.country||value?.profile?.countryCode;const code=String(raw||'').trim().toUpperCase();return CURRENCIES[code]?code:''};
+  // If the URL identifies the workspace role, never borrow the other role's cached country.
+  // Legacy accounts without a country are Malaysia, matching the API's migration rule.
+  if(role&&roleAccount)return readCountry(roleAccount)||'MY';
   const candidates=[
-   roleAccount,
    window.TERAJU_ACCOUNT,window.TERAJU_USER,window.currentUser,window.userProfile,
    (()=>{try{return JSON.parse(sessionStorage.getItem('teraju.user')||'null')}catch{return null}})(),
-   (()=>{try{return JSON.parse(localStorage.getItem('teraju.user')||'null')}catch{return null}})(),
-   (()=>{try{return JSON.parse(localStorage.getItem('teraju.contractor.github.v1')||'null')}catch{return null}})(),
-   (()=>{try{return JSON.parse(localStorage.getItem('teraju.homeowner.github.v1')||'null')}catch{return null}})()
+   (()=>{try{return JSON.parse(localStorage.getItem('teraju.user')||'null')}catch{return null}})()
   ];
-  for(const value of candidates){const code=value?.country||value?.countryCode||value?.profile?.country||value?.profile?.countryCode;if(code&&CURRENCIES[String(code).trim().toUpperCase()])return String(code).trim().toUpperCase()}
+  for(const value of candidates){const code=readCountry(value);if(code)return code}
   return 'MY';
  }
 
