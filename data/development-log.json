@@ -66,6 +66,17 @@
     "updatedAt": "2026-10-12T20:10:51.040Z"
   },
   {
+    "id": "DEV-20261013-e628fa7",
+    "date": "2026-10-13",
+    "title": "Rename recipe shop branding to BSL",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Rename recipe shop branding to BSL",
+    "details": "Automatic entry from commit e628fa7. Changed files: resepi/index.html.",
+    "commit": "e628fa77d6e3820dd42e11b625fe8ffe792b836c",
+    "updatedAt": "2026-10-13T11:40:39.260Z"
+  },
+  {
     "id": "DEV-20261013-df6e0ce",
     "date": "2026-10-13",
     "title": "Update Archicad class slot SLOT-20261008094135-X4YD",
