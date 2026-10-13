@@ -99,6 +99,17 @@
     "updatedAt": "2026-10-12T21:48:45.273Z"
   },
   {
+    "id": "DEV-20261013-5409a9f",
+    "date": "2026-10-13",
+    "title": "Fix country-based rate selection and currency display",
+    "module": "RenovationPlanner",
+    "status": "Completed",
+    "summary": "Fix country-based rate selection and currency display",
+    "details": "Automatic entry from commit 5409a9f. Changed files: TerajuWorks/buildplanner-v2.html, TerajuWorks/country-context.js, TerajuWorks/renovationplanner-v2.html.",
+    "commit": "5409a9f1880753eb7ae62bd99da0dc881ef05d00",
+    "updatedAt": "2026-10-13T04:21:31.544Z"
+  },
+  {
     "id": "DEV-20261013-43947fe",
     "date": "2026-10-13",
     "title": "fix: repair broken currency helper in cost estimate history",
