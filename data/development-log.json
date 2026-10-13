@@ -143,6 +143,17 @@
     "updatedAt": "2026-10-12T21:48:45.273Z"
   },
   {
+    "id": "DEV-20261013-56cea33",
+    "date": "2026-10-13",
+    "title": "Add Archicad class slot SLOT-20261013080754-ZKG7",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Add Archicad class slot SLOT-20261013080754-ZKG7",
+    "details": "Automatic entry from commit 56cea33. Changed files: data/class-slots.json.",
+    "commit": "56cea33bd27f2c802d080d392837898c6a50207b",
+    "updatedAt": "2026-10-13T08:08:02.771Z"
+  },
+  {
     "id": "DEV-20261013-5409a9f",
     "date": "2026-10-13",
     "title": "Fix country-based rate selection and currency display",
