@@ -22,7 +22,7 @@
  function safeWrite(value){try{sessionStorage.setItem(STORAGE_KEY,JSON.stringify(value))}catch{}}
  function countryCode(value){const c=String(value||'').trim().toUpperCase();return CURRENCIES[c]?c:'MY'}
  function normalize(raw){const code=countryCode(raw?.countryCode||raw?.country||raw?.code);return {...CURRENCIES[code],countryCode:code,projectId:String(raw?.projectId||params.get('projectId')||params.get('quotationId')||''),source:raw?.source||'session'} }
- function current(){const explicit=params.get('countryCode')||params.get('country');if(explicit)return normalize({countryCode:explicit,projectId:params.get('projectId')||params.get('quotationId')||''});if(window.TERAJU_PROJECT_COUNTRY)return normalize(window.TERAJU_PROJECT_COUNTRY);const saved=safeRead();const activeProject=String(params.get('projectId')||params.get('quotationId')||'');if(activeProject&&saved&&String(saved.projectId||'')===activeProject)return normalize(saved);return normalize({countryCode:accountCountry(),projectId:activeProject,source:'account-default'})}
+ function current(){if(window.TERAJU_PROJECT_COUNTRY)return normalize(window.TERAJU_PROJECT_COUNTRY);const activeProject=String(params.get('projectId')||params.get('quotationId')||'');return normalize({countryCode:accountCountry(),projectId:activeProject,source:'account-default'})}
  function set(raw){const next=normalize({...raw,projectId:raw?.projectId||current().projectId});window.TERAJU_PROJECT_COUNTRY=next;safeWrite(next);window.dispatchEvent(new CustomEvent('teraju:countrychange',{detail:next}));return next}
  function formatNumber(value,options={}){const c=current();return new Intl.NumberFormat(c.locale,{minimumFractionDigits:options.minimumFractionDigits??2,maximumFractionDigits:options.maximumFractionDigits??2}).format(Number(value)||0)}
  function format(value,options={}){const c=current();return new Intl.NumberFormat(c.locale,{style:'currency',currency:c.currency,minimumFractionDigits:options.minimumFractionDigits??2,maximumFractionDigits:options.maximumFractionDigits??2}).format(Number(value)||0)}
@@ -45,7 +45,7 @@
    const selected=data.rates.filter(x=>x.planner===plannerType);
    if(selected.length!==(plannerType==='build'?82:40))throw new Error('Country rate set failed planner-count validation.');
    for(const item of selected){
-    const value=Number(item[ctx.currency]);if(!Number.isFinite(value))throw new Error('Missing '+ctx.currency+' rate for '+item.id);
+    const rateField=ctx.countryCode==='MY'?'Malaysia_MYR':ctx.currency;const value=Number(item[rateField]);if(!Number.isFinite(value))throw new Error('Missing '+rateField+' rate for '+item.id);
     if(plannerType==='build')RATES[item.id]=value;
     else {const token=item.id.replace(/^renovation_rule_/,'').replace(/_\d+$/,'');const aliasKey=Object.keys(RENOVATION_RATE_KEYS).sort((a,b)=>b.length-a.length).find(key=>token===key||token.endsWith('_'+key));const alias=aliasKey?RENOVATION_RATE_KEYS[aliasKey]:'';if(alias)RATES[alias]=value;}
    }
@@ -69,9 +69,9 @@
  }
 
  async function hydrateAccountCountry(){
-  const roleRaw=String(params.get('role')||'').toLowerCase();
+  const roleRaw=String(params.get('role')||params.get('audience')||'').toLowerCase();
   const role=roleRaw==='homeowner'||roleRaw==='contractor'?roleRaw:'';
-  const id=String(params.get('id')||params.get('contractorId')||params.get('homeownerId')||'').trim().toUpperCase();
+  const id=String(params.get('id')||params.get('contractorId')||params.get('homeownerId')||(()=>{try{const key=role==='contractor'?'teraju.contractor.github.v1':'teraju.homeowner.github.v1';const saved=JSON.parse(localStorage.getItem(key)||'null');return saved?.contractorId||saved?.homeownerId||saved?.id||saved?.profile?.contractorId||saved?.profile?.homeownerId||''}catch{return ''}})()).trim().toUpperCase();
   if(!role||!id)return;
   try{
    const response=await fetch('https://terajuciptabina.vercel.app/api/auth?role='+encodeURIComponent(role)+'&id='+encodeURIComponent(id),{cache:'no-store',credentials:'omit'});
