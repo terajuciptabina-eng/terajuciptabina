@@ -495,6 +495,17 @@
     "updatedAt": "2026-10-12T22:12:09.622Z"
   },
   {
+    "id": "DEV-20261013-0c08b36",
+    "date": "2026-10-13",
+    "title": "Create Archicad booking payment bill ARC-20261013094250-8UGE",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Create Archicad booking payment bill ARC-20261013094250-8UGE",
+    "details": "Automatic entry from commit 0c08b36. Changed files: data/class-registrations.json.",
+    "commit": "0c08b3673c2cb757336641165dd3e7f049475943",
+    "updatedAt": "2026-10-13T09:43:04.231Z"
+  },
+  {
     "id": "DEV-20261013-081fde6",
     "date": "2026-10-13",
     "title": "Add Archicad class slot SLOT-20261013081401-7Z5Z",
