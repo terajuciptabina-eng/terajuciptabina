@@ -66,6 +66,17 @@
     "updatedAt": "2026-10-13T08:11:28.564Z"
   },
   {
+    "id": "DEV-20261013-b81cb5d",
+    "date": "2026-10-13",
+    "title": "Update Archicad class slot SLOT-20261012093427-T5QG",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Update Archicad class slot SLOT-20261012093427-T5QG",
+    "details": "Automatic entry from commit b81cb5d. Changed files: data/class-slots.json.",
+    "commit": "b81cb5dfcba8f2d28b65b5e0c129aafc4b112038",
+    "updatedAt": "2026-10-13T08:12:23.708Z"
+  },
+  {
     "id": "DEV-20261013-b681e39",
     "date": "2026-10-13",
     "title": "fix: require country selection before Malaysian state gate",
