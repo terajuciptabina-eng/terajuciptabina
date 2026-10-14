@@ -113,8 +113,15 @@
    const response=await fetch('https://terajuciptabina.vercel.app/api/auth?role='+encodeURIComponent(role)+'&id='+encodeURIComponent(id),{cache:'no-store',credentials:'omit'});
    if(!response.ok)return;
    const account=await response.json();
-   const code=String(account?.country||account?.countryCode||'MY').trim().toUpperCase();
+   const code=String(account?.country||account?.countryCode||'').trim().toUpperCase();
    if(!CURRENCIES[code])return;
+   // The API record is authoritative. Refresh the role-specific local cache before
+   // calling current(), otherwise a stale cached country can override the API result.
+   try{
+    const cacheKey='teraju.'+role+'.github.v1';
+    const cached=JSON.parse(localStorage.getItem(cacheKey)||'null')||{};
+    localStorage.setItem(cacheKey,JSON.stringify({...cached,country:code,countryCode:code}));
+   }catch(error){console.warn('[TERAJU] Unable to refresh cached account country:',error)}
    const ctx=normalize({countryCode:code,projectId:params.get('projectId')||params.get('quotationId')||'',source:'account-api'});
    window.TERAJU_PROJECT_COUNTRY=ctx;
    safeWrite(ctx);
