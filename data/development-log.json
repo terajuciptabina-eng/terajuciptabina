@@ -495,6 +495,17 @@
     "updatedAt": "2026-10-14T19:20:55.970Z"
   },
   {
+    "id": "DEV-20261015-66b54aa",
+    "date": "2026-10-15",
+    "title": "fix: use full-viewBox TerajuWorks wordmark in estimate preview",
+    "module": "BuildPlanner",
+    "status": "Completed",
+    "summary": "fix: use full-viewBox TerajuWorks wordmark in estimate preview",
+    "details": "Automatic entry from commit 66b54aa. Changed files: TerajuWorks/buildplanner-v2.html.",
+    "commit": "66b54aaa02d62c4475451bd0f36e79f055f5ee75",
+    "updatedAt": "2026-10-14T20:11:16.596Z"
+  },
+  {
     "id": "DEV-20261015-611dde1",
     "date": "2026-10-15",
     "title": "Update contractor profile CTR-20261014-SFZS",
