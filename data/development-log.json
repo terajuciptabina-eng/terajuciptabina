@@ -66,6 +66,17 @@
     "updatedAt": "2026-10-14T18:22:32.460Z"
   },
   {
+    "id": "DEV-20261015-e479d7d",
+    "date": "2026-10-15",
+    "title": "fix: make signup WhatsApp confirmation non-blocking for contractor profile",
+    "module": "General",
+    "status": "Completed",
+    "summary": "fix: make signup WhatsApp confirmation non-blocking for contractor profile",
+    "details": "Automatic entry from commit e479d7d. Changed files: TerajuWorks/auth-github.js.",
+    "commit": "e479d7d75747f798c4b48d78ca090915105ef740",
+    "updatedAt": "2026-10-14T19:44:03.972Z"
+  },
+  {
     "id": "DEV-20261015-e21e5df",
     "date": "2026-10-15",
     "title": "fix: keep authoritative account country for planner rates",
