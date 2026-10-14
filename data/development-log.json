@@ -1,5 +1,16 @@
 [
   {
+    "id": "DEV-20261015-fbf4158",
+    "date": "2026-10-15",
+    "title": "fix: dismiss signup popup when returning from WhatsApp",
+    "module": "General",
+    "status": "Completed",
+    "summary": "fix: dismiss signup popup when returning from WhatsApp",
+    "details": "Automatic entry from commit fbf4158. Changed files: TerajuWorks/auth-github.js.",
+    "commit": "fbf415806f1d796d7bc5a11e29471847c711e60b",
+    "updatedAt": "2026-10-14T19:46:33.821Z"
+  },
+  {
     "id": "DEV-20261015-f6ff62d",
     "date": "2026-10-15",
     "title": "Update contractor profile CTR-20261014-PWYI",
