@@ -46,7 +46,7 @@
    list.innerHTML=items.map(q=>{
      const edit=`${plannerFile}?audience=${role}&${idKey}=${encodeURIComponent(id)}&quotationId=${encodeURIComponent(q.quotationId)}`;
      const contract=role==='contractor'?'<a href="contract.html?role=contractor&id='+encodeURIComponent(id)+'&plannerType='+encodeURIComponent(type)+'&quotationId='+encodeURIComponent(q.quotationId)+'" class="secondary-action rounded-xl px-4 py-2.5 text-sm font-semibold">Contract</a>':'';
-     const metric=typeof window.TERAJU_COST_METRIC==='object' ? window.TERAJU_COST_METRIC.summarize(type,q.items||[],q.plannerState?.rooms||[]) : null;
+     const metric=typeof window.TERAJU_COST_METRIC==='object' ? window.TERAJU_COST_METRIC.summarize(type,q.items||[],q.plannerState?.rooms||[{id:'saved-build-area',area:Number(q.project?.builtUpArea||q.plannerState?.builtUpArea||0),condition:'existing'}]) : null;
      return `<article class="history-card rounded-2xl p-5 sm:p-6" data-quotation-id="${esc(q.quotationId)}">
        <div class="history-card-grid">
          <div class="history-card-main">
