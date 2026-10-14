@@ -8,7 +8,12 @@
   "profile": {
     "name": "Test 123",
     "email": "zait.ismail@gmail.com",
-    "phone": "+651125476214"
+    "phone": "+651125476214",
+    "registrationNo": "",
+    "address": "",
+    "website": "",
+    "logoDataUrl": "",
+    "contractorProfileConfigured": true
   },
   "auth": {
     "mode": "temporary-id",
@@ -20,5 +25,5 @@
     "renovation": []
   },
   "createdAt": "2026-10-14T17:08:38.353Z",
-  "updatedAt": "2026-10-14T17:08:38.353Z"
+  "updatedAt": "2026-10-14T17:08:48.955Z"
 }
