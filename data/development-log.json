@@ -187,6 +187,17 @@
     "updatedAt": "2026-10-14T19:04:36.091Z"
   },
   {
+    "id": "DEV-20261015-4360d99",
+    "date": "2026-10-15",
+    "title": "fix: apply account market rates after restoring estimate snapshot",
+    "module": "Cost Estimate",
+    "status": "Completed",
+    "summary": "fix: apply account market rates after restoring estimate snapshot",
+    "details": "Automatic entry from commit 4360d99. Changed files: TerajuWorks/quotation-records.js.",
+    "commit": "4360d9907c817110b8bce18aba0b300fe24f2bdf",
+    "updatedAt": "2026-10-14T19:10:39.643Z"
+  },
+  {
     "id": "DEV-20261015-3a417ac",
     "date": "2026-10-15",
     "title": "fix: reapply market rates after restoring saved estimate",
