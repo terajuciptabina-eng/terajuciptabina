@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "contractor",
+  "country": "VN",
+  "contractorId": "CTR-20261014-7IUU",
+  "profile": {
+    "name": "Company vietnam",
+    "email": "viet.nam@gmail.com",
+    "phone": "+8465985465646"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-10-14T19:49:29.559Z",
+  "updatedAt": "2026-10-14T19:49:29.559Z"
+}
