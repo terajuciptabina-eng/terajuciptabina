@@ -9,7 +9,10 @@
   const signInTab = document.getElementById('signInTab'), signUpTab = document.getElementById('signUpTab');
   const idInput = document.getElementById(isHomeowner ? 'homeownerIdInput' : 'contractorIdInput');
   const nameInput = document.getElementById(isHomeowner ? 'homeownerNameInput' : 'contractorNameInput');
-  const emailInput = document.getElementById('accountEmailInput'), phoneInput = document.getElementById('accountPhoneInput');
+  const emailInput = document.getElementById('accountEmailInput'), phoneInput = document.getElementById('accountPhoneInput'), countryInput = document.getElementById('accountCountryInput');
+  const countryField = document.getElementById('accountCountryField');
+  const DIAL_CODES = { MY:'60', SG:'65', ID:'62', TH:'66', PH:'63', VN:'84', BN:'673' };
+  const normalizePhoneForCountry = (value, country) => { const digits=String(value||'').replace(/\D/g,''); const dial=DIAL_CODES[country]||''; if(!dial||!digits)return ''; if(String(value||'').trim().startsWith('+'))return '+'+digits; if(digits.startsWith(dial))return '+'+digits; return '+'+dial+digits.replace(/^0+/, ''); };
   const idField = document.getElementById(isHomeowner ? 'homeownerIdField' : 'contractorIdField'), nameField = document.getElementById(isHomeowner ? 'homeownerNameField' : 'contractorNameField');
   const button = document.getElementById('authButton'), title = document.getElementById('authTitle'), description = document.getElementById('authDescription'), error = document.getElementById('authError'), generated = document.getElementById('authGeneratedId');
   const panel = document.getElementById('authPanel') || document.getElementById('loginPanel'), portal = document.getElementById('portal'), welcome = document.getElementById('welcome'), buildLink = document.getElementById('buildLink'), renoLink = document.getElementById('renoLink');
@@ -39,6 +42,7 @@
       schemaVersion: record.schemaVersion || 1,
       recordType: record.recordType || 'user-account',
       role,
+      country: record.country || 'MY',
       [idKey]: id,
       profile,
       state: record.state || 'active',
@@ -64,27 +68,29 @@
     return !new Set(['a@b.com', 'test@test.com', 'abc@abc.com', 'test@example.com', 'user@example.com']).has(email);
   };
   const normalizePhone = value => String(value || '').replace(/[\s().-]/g, '');
-  const validPhone = value => {
-    const normalized = normalizePhone(value);
-    if (!/^(?:01\d{8,9}|\+601\d{8,9}|601\d{8,9})$/.test(normalized)) return false;
-    const local = normalized.replace(/^\+?60/, '0');
-    const subscriber = local.slice(3);
-    return local !== '0123456789' && !/^(\d)\1+$/.test(subscriber);
+  const validPhone = (value, country = 'MY') => {
+    const normalized = normalizePhoneForCountry(value, country);
+    const dial = DIAL_CODES[country];
+    if (!normalized || !dial || !normalized.startsWith('+' + dial)) return false;
+    const national = normalized.slice(dial.length + 1);
+    if (!/^\d{7,12}$/.test(national) || /^(\d)\1+$/.test(national)) return false;
+    if (country === 'MY' && national === '123456789') return false;
+    return true;
   };
 
   if (emailInput) { emailInput.type = 'email'; emailInput.autocomplete = 'email'; }
-  if (phoneInput) { phoneInput.type = 'tel'; phoneInput.autocomplete = 'tel'; phoneInput.inputMode = 'tel'; phoneInput.placeholder = '0123456789'; }
+  if (phoneInput) { phoneInput.type = 'tel'; phoneInput.autocomplete = 'tel'; phoneInput.inputMode = 'tel'; phoneInput.placeholder = 'Enter your local phone number'; }
 
   function setMode(next) {
     mode = next; clearError(); generated.classList.add('hidden'); const signup = next === 'signup';
     title.textContent = signup ? `Create ${isHomeowner ? 'homeowner' : 'contractor'} account` : `${isHomeowner ? 'Homeowner' : 'Contractor'} sign in`;
     description.textContent = signup ? `Create your ${isHomeowner ? 'home project' : 'contractor'} workspace.` : `Enter the ${isHomeowner ? 'Homeowner' : 'Contractor'} ID generated during Sign Up.`;
-    idField.classList.toggle('hidden', signup); nameField.classList.toggle('hidden', !signup); emailInput?.parentElement.classList.toggle('hidden', !signup); phoneInput?.parentElement.classList.toggle('hidden', !signup);
+    idField.classList.toggle('hidden', signup); nameField.classList.toggle('hidden', !signup); emailInput?.parentElement.classList.toggle('hidden', !signup); phoneInput?.parentElement.classList.toggle('hidden', !signup); countryField?.classList.toggle('hidden', !signup); if(countryInput) countryInput.required = signup;
     idInput.required = !signup; nameInput.required = signup; if (emailInput) emailInput.required = signup; if (phoneInput) phoneInput.required = signup; button.textContent = signup ? 'Create workspace' : 'Enter workspace';
     signInTab.className = signup ? 'rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-500' : 'tab-active rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-950';
     signUpTab.className = signup ? 'tab-active rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-950' : 'rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-500';
   }
-  function showSignupPopup(record, emailSent, email) {
+  function showSignupPopup(record, emailSent, email, whatsappUrl) {
     const existing = document.getElementById('terajuSignupPopup');
     existing?.remove();
     const label = isHomeowner ? 'Homeowner' : 'Contractor';
@@ -95,18 +101,14 @@
       ? `Your ID has also been sent to ${escapeHtml(email)}.`
       : 'Account created, but the ID email could not be sent yet. Please keep this ID.';
     const noteClass = emailSent ? 'color:#64748b' : 'color:#b45309';
-    popup.innerHTML = `<div style=\"font-size:11px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:#64748b\">Account created</div><div style=\"margin-top:8px;font-size:15px;font-weight:700\">Your ${label} ID</div><div style=\"margin-top:5px;font-size:24px;font-weight:800;letter-spacing:.06em\">${escapeHtml(record[idKey])}</div><div style=\"margin-top:10px;font-size:12px;line-height:1.5;${noteClass}\">${note}</div>`;
+    popup.innerHTML = `<div style=\"font-size:11px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:#64748b\">Account created</div><div style=\"margin-top:8px;font-size:15px;font-weight:700\">Your ${label} ID</div><div style=\"margin-top:5px;font-size:24px;font-weight:800;letter-spacing:.06em\">${escapeHtml(record[idKey])}</div><div style=\"margin-top:10px;font-size:12px;line-height:1.5;${noteClass}\">${note}</div>${whatsappUrl ? `<a href="${escapeHtml(whatsappUrl)}" target="_blank" rel="noopener noreferrer" style="display:block;margin-top:14px;padding:11px 14px;border-radius:12px;background:#166534;color:#fff;text-align:center;font-size:13px;font-weight:700;text-decoration:none">Continue to WhatsApp in a new tab</a>` : `<div style="margin-top:12px;font-size:12px;color:#b45309">Your account is ready. WhatsApp could not be prepared; you can continue in your workspace.</div>`}`;
     document.body.appendChild(popup);
     requestAnimationFrame(() => { popup.style.opacity = '1'; popup.style.transform = 'translateX(-50%) translateY(0)'; });
-    setTimeout(() => {
-      popup.style.opacity = '0';
-      popup.style.transform = 'translateX(-50%) translateY(-8px)';
-      setTimeout(() => popup.remove(), 300);
-    }, 5000);
+    // Keep the success popup visible so the user can finish the WhatsApp step when ready.
   }
   function openSignupWhatsApp(record, name, phone) {
     const normalizedPhone = normalizePhone(phone);
-    const recipient = normalizedPhone.replace(/^\+/, '').replace(/^0/, '60');
+    const recipient = normalizePhoneForCountry(record?.profile?.phone || phone, record?.country || countryInput?.value || 'MY').replace(/^\+/, '');
     if (!recipient) throw new Error('A valid registered phone number is required to open WhatsApp.');
     const id = record?.[idKey] || '';
     const label = isHomeowner ? 'HOMEOWNER' : 'CONTRACTOR';
@@ -176,7 +178,7 @@ ${workspaceUrl}`;
     Object.entries(homeProfileFields).forEach(([key, input]) => { profile[key] = input?.value.trim() || ''; });
     if (!profile.name) return setHomeProfileStatus('Name is required.');
     if (!validEmail(profile.email)) return setHomeProfileStatus('Please use a valid email address.');
-    if (!validPhone(profile.phone)) return setHomeProfileStatus('Please enter a valid Malaysian phone number.');
+    if (!validPhone(profile.phone, currentRecord?.country || getLocal()?.country || 'MY')) return setHomeProfileStatus('Please enter a valid phone number for your account country.');
     homeProfileSave.disabled = true;
     homeProfileSave.textContent = 'Saving…';
     setHomeProfileStatus('');
@@ -257,7 +259,7 @@ ${workspaceUrl}`;
     renderProfileLogo(profileLogoDataUrl);
     if (!profile.name) return setProfileStatus('Company / Contractor Name is required.');
     if (!validEmail(profile.email)) return setProfileStatus('Please enter a valid email address.');
-    if (!validPhone(profile.phone)) return setProfileStatus('Please enter a valid Malaysian phone number.');
+    if (!validPhone(profile.phone, getLocal()?.country || 'MY')) return setProfileStatus('Please enter a valid phone number for your account country.');
     if (profile.logoDataUrl.length > 900000) return setProfileStatus('Logo image is too large. Please use a smaller image.');
     profileSave.disabled = true; profileSave.textContent = 'Saving…'; setProfileStatus('');
     try {
@@ -388,32 +390,25 @@ ${workspaceUrl}`;
   }
   form.addEventListener('submit', async event => {
     event.preventDefault(); event.stopImmediatePropagation(); clearError();
-    // Open the new tab synchronously from the user's submit gesture so mobile browsers
-    // do not block it after the account API request completes.
-    const signupTab = mode === 'signup' ? window.open('about:blank', '_blank') : null;
-    if (signupTab) {
-      try { signupTab.opener = null; } catch {}
-    }
     button.disabled = true; button.textContent = mode === 'signup' ? 'Creating…' : 'Signing in…';
     try {
       if (mode === 'signup') {
-        const name = nameInput.value.trim(), email = emailInput?.value.trim() || '', phone = phoneInput?.value.trim() || '';
+        const name = nameInput.value.trim(), email = emailInput?.value.trim() || '', phone = phoneInput?.value.trim() || '', country = String(countryInput?.value || '').trim().toUpperCase();
         if (!name) throw new Error('Name is required.');
         if (!validEmail(email)) throw new Error('Please enter a valid email address.');
-        if (!validPhone(phone)) throw new Error('Please use a valid phone number.');
-        const data = await postAccount({role,name,email,phone});
+        if (!DIAL_CODES[country]) throw new Error('Please select your country of registration.');
+        if (!validPhone(phone, country)) throw new Error('Please enter a valid local phone number for the selected country.');
+        const data = await postAccount({role,name,email,phone,country});
         trackEvent('sign_up', { signup_role: role, generated_id: data.id, method: 'github_account_store' });
         generated.innerHTML = `<strong>Your ${isHomeowner ? 'Homeowner' : 'Contractor'} ID:</strong><br><span class=\"mt-1 inline-block text-lg font-bold tracking-wide text-slate-950\">${escapeHtml(data.id)}</span><br><span class=\"text-xs text-slate-500\">Keep this ID. You will use it to sign in later.</span>`;
         generated.classList.remove('hidden');
         showPortal(data.record);
-        showSignupPopup(data.record, data.emailSent === true, email);
-        const whatsappUrl = openSignupWhatsApp(data.record, name, phone);
-        if (signupTab && !signupTab.closed) {
-          signupTab.location.replace(whatsappUrl);
-        } else {
-          setError('Account created successfully, but your browser blocked the WhatsApp tab. Please allow pop-ups and open WhatsApp using your registration details.');
-        }
-        if (role === 'contractor') setTimeout(() => openProfile(data.record, { onboarding: true }), 550);
+        // Build the WhatsApp destination without navigating away from the new workspace.
+        // The user opens it deliberately from the success popup, in a separate tab.
+        let whatsappUrl = '';
+        try { whatsappUrl = openSignupWhatsApp(data.record, name, data.record?.profile?.phone || phone); } catch (whatsappError) { console.warn('WhatsApp link unavailable:', whatsappError); }
+        showSignupPopup(data.record, data.emailSent === true, email, whatsappUrl);
+        if (role === 'contractor') openProfile(data.record, { onboarding: true });
       } else {
         const id = idInput.value.trim().toUpperCase();
         if (!id) throw new Error(`Please enter your ${isHomeowner ? 'Homeowner' : 'Contractor'} ID.`);
@@ -422,7 +417,6 @@ ${workspaceUrl}`;
         showPortal(account);
       }
     } catch (err) {
-      if (signupTab && !signupTab.closed) signupTab.close();
       setError(err.message || 'Unable to complete the request.');
     }
     finally { button.disabled = false; button.textContent = mode === 'signup' ? 'Create workspace' : 'Enter workspace'; }
