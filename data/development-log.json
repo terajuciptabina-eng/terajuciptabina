@@ -209,6 +209,17 @@
     "updatedAt": "2026-10-14T18:22:34.524Z"
   },
   {
+    "id": "DEV-20261015-7ad3b0f",
+    "date": "2026-10-15",
+    "title": "fix: refresh country-aware cost per sqft metrics",
+    "module": "RenovationPlanner",
+    "status": "Completed",
+    "summary": "fix: refresh country-aware cost per sqft metrics",
+    "details": "Automatic entry from commit 7ad3b0f. Changed files: TerajuWorks/renovationplanner-v2.html.",
+    "commit": "7ad3b0f785746a854f04393e09d873a31dd85a31",
+    "updatedAt": "2026-10-14T19:26:35.184Z"
+  },
+  {
     "id": "DEV-20261015-76b31f0",
     "date": "2026-10-15",
     "title": "fix: do not restore Malaysia rate snapshot into international estimates",
