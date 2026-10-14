@@ -66,6 +66,17 @@
     "updatedAt": "2026-10-14T17:45:31.192Z"
   },
   {
+    "id": "DEV-20261015-a723cdb",
+    "date": "2026-10-15",
+    "title": "fix: refresh country rate resolver in planner pages",
+    "module": "BuildPlanner",
+    "status": "Completed",
+    "summary": "fix: refresh country rate resolver in planner pages",
+    "details": "Automatic entry from commit a723cdb. Changed files: TerajuWorks/buildplanner-v2.html.",
+    "commit": "a723cdb4a6a3dac8f2a5918e4b5138daf35e2926",
+    "updatedAt": "2026-10-14T18:46:17.445Z"
+  },
+  {
     "id": "DEV-20261015-9ad71cf",
     "date": "2026-10-15",
     "title": "Update contractor profile CTR-20261014-SFZS",
