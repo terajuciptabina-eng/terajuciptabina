@@ -187,6 +187,17 @@
     "updatedAt": "2026-10-14T19:34:44.544Z"
   },
   {
+    "id": "DEV-20261015-ad8529e",
+    "date": "2026-10-15",
+    "title": "fix: reload rebuilt cost per sqft module",
+    "module": "Cost Estimate",
+    "status": "Completed",
+    "summary": "fix: reload rebuilt cost per sqft module",
+    "details": "Automatic entry from commit ad8529e. Changed files: TerajuWorks/quotations.html.",
+    "commit": "ad8529e5d2cca6f3ea8df3ec9d59e7bf70697ab7",
+    "updatedAt": "2026-10-14T19:39:26.791Z"
+  },
+  {
     "id": "DEV-20261015-aa8a331",
     "date": "2026-10-15",
     "title": "fix: use contractor/default branding and selected market currency in estimate preview",
