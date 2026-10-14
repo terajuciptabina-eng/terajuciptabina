@@ -11,6 +11,17 @@
     "updatedAt": "2026-10-14T17:39:43.762Z"
   },
   {
+    "id": "DEV-20261015-bf17ea4",
+    "date": "2026-10-15",
+    "title": "revert: restore original default quotation preview logo",
+    "module": "BuildPlanner",
+    "status": "Completed",
+    "summary": "revert: restore original default quotation preview logo",
+    "details": "Automatic entry from commit bf17ea4. Changed files: TerajuWorks/buildplanner-v2.html.",
+    "commit": "bf17ea4e2fc220f20b1cf3eba2fd2c9406d36681",
+    "updatedAt": "2026-10-14T17:45:31.192Z"
+  },
+  {
     "id": "DEV-20261015-9ad71cf",
     "date": "2026-10-15",
     "title": "Update contractor profile CTR-20261014-SFZS",
