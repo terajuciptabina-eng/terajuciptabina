@@ -275,6 +275,17 @@
     "updatedAt": "2026-10-14T19:08:44.678Z"
   },
   {
+    "id": "DEV-20261015-33ba165",
+    "date": "2026-10-15",
+    "title": "fix: refresh quotation restore script after preserving country-specific rates",
+    "module": "BuildPlanner",
+    "status": "Completed",
+    "summary": "fix: refresh quotation restore script after preserving country-specific rates",
+    "details": "Automatic entry from commit 33ba165. Changed files: TerajuWorks/buildplanner-v2.html.",
+    "commit": "33ba165d9b2734b0c2befcb1d104e3d4a8160782",
+    "updatedAt": "2026-10-14T19:17:58.712Z"
+  },
+  {
     "id": "DEV-20261015-2a4f4aa",
     "date": "2026-10-15",
     "title": "fix: expose authoritative country rate reapplication",
