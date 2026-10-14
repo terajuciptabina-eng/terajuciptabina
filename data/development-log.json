@@ -231,6 +231,17 @@
     "updatedAt": "2026-10-14T18:46:17.445Z"
   },
   {
+    "id": "DEV-20261015-9bf9525",
+    "date": "2026-10-15",
+    "title": "fix: reload rebuilt cost per sqft module",
+    "module": "RenovationPlanner",
+    "status": "Completed",
+    "summary": "fix: reload rebuilt cost per sqft module",
+    "details": "Automatic entry from commit 9bf9525. Changed files: TerajuWorks/renovationplanner-v2.html.",
+    "commit": "9bf9525609c16998c64cc0c62cdfb47a23f771ac",
+    "updatedAt": "2026-10-14T19:39:36.590Z"
+  },
+  {
     "id": "DEV-20261015-9ad71cf",
     "date": "2026-10-15",
     "title": "Update contractor profile CTR-20261014-SFZS",
