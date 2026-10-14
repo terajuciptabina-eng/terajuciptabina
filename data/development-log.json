@@ -143,6 +143,17 @@
     "updatedAt": "2026-10-14T18:32:48.788Z"
   },
   {
+    "id": "DEV-20261015-3a417ac",
+    "date": "2026-10-15",
+    "title": "fix: reapply market rates after restoring saved estimate",
+    "module": "Cost Estimate",
+    "status": "Completed",
+    "summary": "fix: reapply market rates after restoring saved estimate",
+    "details": "Automatic entry from commit 3a417ac. Changed files: TerajuWorks/quotation-records.js.",
+    "commit": "3a417acf724754f148f2567a6f6c90d9a6409e58",
+    "updatedAt": "2026-10-14T18:52:46.034Z"
+  },
+  {
     "id": "DEV-20261015-2a4f4aa",
     "date": "2026-10-15",
     "title": "fix: expose authoritative country rate reapplication",
