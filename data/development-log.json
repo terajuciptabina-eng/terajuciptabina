@@ -154,6 +154,17 @@
     "updatedAt": "2026-10-14T18:22:34.524Z"
   },
   {
+    "id": "DEV-20261015-76b31f0",
+    "date": "2026-10-15",
+    "title": "fix: do not restore Malaysia rate snapshot into international estimates",
+    "module": "Cost Estimate",
+    "status": "Completed",
+    "summary": "fix: do not restore Malaysia rate snapshot into international estimates",
+    "details": "Automatic entry from commit 76b31f0. Changed files: TerajuWorks/quotation-records.js.",
+    "commit": "76b31f086974d7470265fb86d4cd99b00be763bc",
+    "updatedAt": "2026-10-14T19:17:48.505Z"
+  },
+  {
     "id": "DEV-20261015-7597c23",
     "date": "2026-10-15",
     "title": "Update build quotation Q001 (EST-BLD-001-S)",
