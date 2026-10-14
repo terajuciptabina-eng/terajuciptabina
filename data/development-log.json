@@ -55,6 +55,17 @@
     "updatedAt": "2026-10-14T18:32:54.214Z"
   },
   {
+    "id": "DEV-20261015-c6a7efd",
+    "date": "2026-10-15",
+    "title": "fix: refresh country rate resolver in planner pages",
+    "module": "RenovationPlanner",
+    "status": "Completed",
+    "summary": "fix: refresh country rate resolver in planner pages",
+    "details": "Automatic entry from commit c6a7efd. Changed files: TerajuWorks/renovationplanner-v2.html.",
+    "commit": "c6a7efdadb2753aff8f9691c1bcb64425b39e3ef",
+    "updatedAt": "2026-10-14T18:46:24.348Z"
+  },
+  {
     "id": "DEV-20261015-bf17ea4",
     "date": "2026-10-15",
     "title": "revert: restore original default quotation preview logo",
