@@ -242,6 +242,17 @@
     "updatedAt": "2026-10-14T17:45:31.192Z"
   },
   {
+    "id": "DEV-20261015-be96da1",
+    "date": "2026-10-15",
+    "title": "fix: reduce cost estimate preview logo size",
+    "module": "BuildPlanner",
+    "status": "Completed",
+    "summary": "fix: reduce cost estimate preview logo size",
+    "details": "Automatic entry from commit be96da1. Changed files: TerajuWorks/buildplanner-v2.html.",
+    "commit": "be96da15ae1dbf21c73e3415564b197fa9b877f0",
+    "updatedAt": "2026-10-14T20:38:34.878Z"
+  },
+  {
     "id": "DEV-20261015-bc2f322",
     "date": "2026-10-15",
     "title": "revert: restore BuildPlanner preview header before latest preview changes",
