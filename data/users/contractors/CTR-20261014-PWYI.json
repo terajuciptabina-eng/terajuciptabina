@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "contractor",
+  "country": "ID",
+  "contractorId": "CTR-20261014-PWYI",
+  "profile": {
+    "name": "Company indonesia",
+    "email": "indon.conoany@gmail.com",
+    "phone": "+621254764848"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-10-14T19:26:59.320Z",
+  "updatedAt": "2026-10-14T19:26:59.320Z"
+}
