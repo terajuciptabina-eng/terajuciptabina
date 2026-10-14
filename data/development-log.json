@@ -121,6 +121,17 @@
     "updatedAt": "2026-10-14T18:46:24.348Z"
   },
   {
+    "id": "DEV-20261015-c5d7a60",
+    "date": "2026-10-15",
+    "title": "fix: show build cost per sqft for saved estimates without room snapshots",
+    "module": "Cost Estimate",
+    "status": "Completed",
+    "summary": "fix: show build cost per sqft for saved estimates without room snapshots",
+    "details": "Automatic entry from commit c5d7a60. Changed files: TerajuWorks/quotations.html.",
+    "commit": "c5d7a6015942a73e0a0062ba084652088a7d5528",
+    "updatedAt": "2026-10-14T19:31:23.619Z"
+  },
+  {
     "id": "DEV-20261015-c55e89c",
     "date": "2026-10-15",
     "title": "fix: validate estimate state only for Malaysia",
