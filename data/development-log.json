@@ -187,6 +187,17 @@
     "updatedAt": "2026-10-14T19:04:36.091Z"
   },
   {
+    "id": "DEV-20261015-4d14e35",
+    "date": "2026-10-15",
+    "title": "fix: prevent Malaysian state resolver overriding international country rates",
+    "module": "General",
+    "status": "Completed",
+    "summary": "fix: prevent Malaysian state resolver overriding international country rates",
+    "details": "Automatic entry from commit 4d14e35. Changed files: TerajuWorks/state-rate-resolver.js.",
+    "commit": "4d14e350d768e346003ebdad9ce3e54512987a57",
+    "updatedAt": "2026-10-14T19:13:24.708Z"
+  },
+  {
     "id": "DEV-20261015-478d37e",
     "date": "2026-10-15",
     "title": "fix: refresh quotation records script after market-rate restore fix",
