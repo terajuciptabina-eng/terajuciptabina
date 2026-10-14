@@ -154,6 +154,17 @@
     "updatedAt": "2026-10-14T18:52:35.574Z"
   },
   {
+    "id": "DEV-20261015-20fde8d",
+    "date": "2026-10-15",
+    "title": "fix: reapply account rates after contractor state restore",
+    "module": "BuildPlanner",
+    "status": "Completed",
+    "summary": "fix: reapply account rates after contractor state restore",
+    "details": "Automatic entry from commit 20fde8d. Changed files: TerajuWorks/buildplanner-v2.html.",
+    "commit": "20fde8dccfdefc57037749274100354534ad0427",
+    "updatedAt": "2026-10-14T18:52:39.183Z"
+  },
+  {
     "id": "DEV-20261015-1671b6a",
     "date": "2026-10-15",
     "title": "fix: map country rates to planner calculation keys",
