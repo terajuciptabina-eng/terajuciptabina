@@ -715,6 +715,17 @@
     "updatedAt": "2026-10-14T19:50:09.856Z"
   },
   {
+    "id": "DEV-20261015-0e16fb2",
+    "date": "2026-10-15",
+    "title": "fix: restore TerajuWorks preview logo and header defaults",
+    "module": "BuildPlanner",
+    "status": "Completed",
+    "summary": "fix: restore TerajuWorks preview logo and header defaults",
+    "details": "Automatic entry from commit 0e16fb2. Changed files: TerajuWorks/buildplanner-v2.html.",
+    "commit": "0e16fb22968b7cc866ade2714dc7775b9d038ad7",
+    "updatedAt": "2026-10-14T20:08:36.870Z"
+  },
+  {
     "id": "DEV-20261015-0458618",
     "date": "2026-10-15",
     "title": "fix: refresh non-blocking signup confirmation script",
