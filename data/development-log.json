@@ -803,6 +803,17 @@
     "updatedAt": "2026-10-14T18:52:39.183Z"
   },
   {
+    "id": "DEV-20261015-1e74872",
+    "date": "2026-10-15",
+    "title": "fix: invalidate cached preview branding script after logo sizing fix",
+    "module": "BuildPlanner",
+    "status": "Completed",
+    "summary": "fix: invalidate cached preview branding script after logo sizing fix",
+    "details": "Automatic entry from commit 1e74872. Changed files: TerajuWorks/buildplanner-v2.html.",
+    "commit": "1e748725a3029b7a59d063fbc497d2925876a2e1",
+    "updatedAt": "2026-10-14T20:40:47.131Z"
+  },
+  {
     "id": "DEV-20261015-1ba7aa8",
     "date": "2026-10-15",
     "title": "fix: load updated country-aware master rate engine",
