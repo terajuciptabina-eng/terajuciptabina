@@ -231,6 +231,17 @@
     "updatedAt": "2026-10-14T17:45:31.192Z"
   },
   {
+    "id": "DEV-20261015-bc2f322",
+    "date": "2026-10-15",
+    "title": "revert: restore BuildPlanner preview header before latest preview changes",
+    "module": "BuildPlanner",
+    "status": "Completed",
+    "summary": "revert: restore BuildPlanner preview header before latest preview changes",
+    "details": "Automatic entry from commit bc2f322. Changed files: TerajuWorks/buildplanner-v2.html.",
+    "commit": "bc2f322e72dc8bf03a88cba0139267d3cdc2546e",
+    "updatedAt": "2026-10-14T20:31:10.742Z"
+  },
+  {
     "id": "DEV-20261015-bb10cfe",
     "date": "2026-10-15",
     "title": "Update build quotation Q001 (EST-BLD-001-S)",
