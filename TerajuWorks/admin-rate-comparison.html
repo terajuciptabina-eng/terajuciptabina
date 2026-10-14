@@ -6,8 +6,18 @@
 <link rel="stylesheet" href="shared/calculation-rules-ui.css">
 <style>
 :root{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#111827;background:#f5f7fa}*{box-sizing:border-box}html,body{width:100%;min-height:100%;margin:0}body{overflow-x:hidden}.wrap{width:100%;max-width:none;padding:24px}.top{margin-bottom:18px}.eyebrow{font-size:11px;font-weight:800;letter-spacing:.08em;color:#6b7280;text-transform:uppercase}.title{font-size:26px;font-weight:800;margin:5px 0}.sub{font-size:13px;color:#6b7280}.panel{background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:16px;margin-bottom:16px}.controls{display:grid;grid-template-columns:minmax(260px,1fr) 220px 220px auto;gap:10px}input,select,button{min-height:42px;border:1px solid #d1d5db;border-radius:11px;padding:0 12px;font:inherit}button{cursor:pointer;font-weight:800;background:#111827;color:#fff;border-color:#111827}.muted{color:#6b7280;font-size:12px}.table-wrap{width:100%;overflow:auto;border:1px solid #eef0f2;border-radius:12px}table{width:100%;border-collapse:collapse;min-width:1200px}th,td{text-align:left;padding:10px;border-bottom:1px solid #eef0f2;font-size:13px;vertical-align:top}
-/* State Rate Matrix: use the full viewport width; never create a horizontal slider. */
-#stateResult .table-wrap{overflow-x:hidden;overflow-y:visible;width:100%;}.state-panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}.state-toggle{flex:0 0 auto;border:1px solid #d1d5db;border-radius:10px;padding:9px 14px;background:#fff;color:#111827;font-weight:800;cursor:pointer}.state-toggle:hover{background:#f8fafc}#stateMatrixContent.state-collapsed{display:none}@media(max-width:650px){.state-panel-head{display:block}.state-toggle{margin-top:6px}}
+/* State Rate Matrix: preserve readable rate columns on narrow screens.
+   The matrix has many state/country columns, so it must scroll horizontally rather
+   than compress every column into a few pixels. */
+#stateResult .table-wrap{overflow-x:auto;overflow-y:visible;width:100%;max-width:100%;-webkit-overflow-scrolling:touch;}.state-panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}.state-toggle{flex:0 0 auto;border:1px solid #d1d5db;border-radius:10px;padding:9px 14px;background:#fff;color:#111827;font-weight:800;cursor:pointer}.state-toggle:hover{background:#f8fafc}#stateMatrixContent.state-collapsed{display:none}
+#stateResult table{width:max-content;min-width:1800px;table-layout:auto;}
+#stateResult th,#stateResult td{min-width:105px;padding:9px 10px;white-space:normal;overflow-wrap:normal;word-break:normal;font-size:12px;line-height:1.35;}
+#stateResult th.path,#stateResult td.path{width:220px;min-width:220px;overflow-wrap:anywhere;}
+#stateResult th.description,#stateResult td.description{width:360px;min-width:360px;overflow-wrap:break-word;}
+#stateResult th.unit,#stateResult td.unit{width:80px;min-width:80px;white-space:nowrap;}
+#stateResult .statehead,#stateResult td.rate{width:112px;min-width:112px;padding:9px 8px;text-align:right;white-space:nowrap;overflow-wrap:normal;word-break:normal;font-size:12px;}
+#stateResult .cr-group-row td,#stateResult .cr-hierarchy-row td{white-space:normal;min-width:0;}
+@media(max-width:650px){.state-panel-head{display:block}.state-toggle{margin-top:6px}#stateResult .table-wrap{overflow-x:auto;}#stateResult table{min-width:1800px;}}
 /* Contractor Market Signal: landscape uses the full viewport with no horizontal slider. */
 @media (orientation:landscape){
   #marketResult{width:100%;max-width:none;}
