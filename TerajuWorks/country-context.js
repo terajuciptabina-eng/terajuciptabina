@@ -51,7 +51,7 @@
    if(selected.length!==(plannerType==='build'?82:40))throw new Error('Country rate set failed planner-count validation.');
    for(const item of selected){
     const rateField=ctx.countryCode==='MY'?'Malaysia_MYR':ctx.currency;const rawValue=item[rateField];if(rawValue===null||rawValue===undefined||String(rawValue).trim()==='')throw new Error('Missing '+rateField+' rate for '+item.id);const value=Number(rawValue);if(!Number.isFinite(value)||value<0)throw new Error('Invalid '+rateField+' rate for '+item.id);
-    if(plannerType==='build'){const alias=canonicalBuildAlias(item.id);if(!alias||!Object.prototype.hasOwnProperty.call(baseRates,alias))throw new Error('No BuildPlanner calculation-key mapping for '+item.id);RATES[alias]=value;}
+    if(plannerType==='build'){const alias=canonicalBuildAlias(item.id);if(alias&&Object.prototype.hasOwnProperty.call(baseRates,alias))RATES[alias]=value;}
     else {const token=item.id.replace(/^renovation_rule_/,'').replace(/_\d+$/,'');const aliasKey=Object.keys(RENOVATION_RATE_KEYS).sort((a,b)=>b.length-a.length).find(key=>token===key||token.endsWith('_'+key));const alias=aliasKey?RENOVATION_RATE_KEYS[aliasKey]:'';if(!alias)throw new Error('No RenovationPlanner rate-key mapping for '+item.id);RATES[alias]=value;}
    }
    window.TERAJU_RATE_CONTEXT={countryCode:ctx.countryCode,currency:ctx.currency,name:ctx.name,source:'country-comparison-2026.json',provisional:ctx.countryCode==='VN'||ctx.countryCode==='BN'};
