@@ -264,6 +264,17 @@
     "updatedAt": "2026-10-14T19:26:17.802Z"
   },
   {
+    "id": "DEV-20261015-8d15c7e",
+    "date": "2026-10-15",
+    "title": "fix: reload rebuilt cost per sqft module",
+    "module": "BuildPlanner",
+    "status": "Completed",
+    "summary": "fix: reload rebuilt cost per sqft module",
+    "details": "Automatic entry from commit 8d15c7e. Changed files: TerajuWorks/buildplanner-v2.html.",
+    "commit": "8d15c7e01807a4556da96d735d26055b33203400",
+    "updatedAt": "2026-10-14T19:39:31.226Z"
+  },
+  {
     "id": "DEV-20261015-8caaa18",
     "date": "2026-10-15",
     "title": "fix: populate contractor profile country from account",
