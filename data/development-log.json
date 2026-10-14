@@ -187,6 +187,17 @@
     "updatedAt": "2026-10-14T17:08:57.703Z"
   },
   {
+    "id": "DEV-20261015-994df0b",
+    "date": "2026-10-15",
+    "title": "fix: use TERAJU default branding when contractor preview profile is not configured",
+    "module": "Cost Estimate",
+    "status": "Completed",
+    "summary": "fix: use TERAJU default branding when contractor preview profile is not configured",
+    "details": "Automatic entry from commit 994df0b. Changed files: TerajuWorks/shared/preview-branding.js.",
+    "commit": "994df0b2fec92f0e43412d7da4fab9e20aacc7de",
+    "updatedAt": "2026-10-14T19:26:43.852Z"
+  },
+  {
     "id": "DEV-20261015-984e7ce",
     "date": "2026-10-15",
     "title": "fix: pass saved estimate currency to history cost per sqft",
