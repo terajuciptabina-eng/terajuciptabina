@@ -92,20 +92,24 @@
     signUpTab.className = signup ? 'tab-active rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-950' : 'rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-500';
   }
   function showSignupPopup(record, emailSent, email, whatsappUrl) {
+    // Signup confirmation must never sit above or block the Contractor Profile onboarding modal.
     const existing = document.getElementById('terajuSignupPopup');
     existing?.remove();
     const label = isHomeowner ? 'Homeowner' : 'Contractor';
-    const popup = document.createElement('div');
+    const popup = document.createElement('aside');
     popup.id = 'terajuSignupPopup';
-    popup.style.cssText = 'position:fixed;top:24px;left:50%;transform:translateX(-50%);z-index:99999;width:min(92vw,460px);padding:20px 22px;border:1px solid #d9c49a;border-radius:18px;background:rgba(255,255,255,.97);box-shadow:0 18px 55px rgba(15,23,42,.18);font-family:inherit;color:#0f172a;opacity:0;transition:opacity .25s ease,transform .25s ease';
+    popup.setAttribute('role', 'status');
+    popup.setAttribute('aria-live', 'polite');
+    popup.style.cssText = 'position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:900;width:min(92vw,420px);max-height:42vh;overflow:auto;padding:14px 16px;border:1px solid #d9c49a;border-radius:16px;background:rgba(255,255,255,.98);box-shadow:0 12px 34px rgba(15,23,42,.16);font-family:inherit;color:#0f172a;opacity:0;transform:translateY(8px);transition:opacity .2s ease,transform .2s ease';
     const note = emailSent
-      ? `Your ID has also been sent to ${escapeHtml(email)}.`
+      ? 'Your ID has also been sent to ' + escapeHtml(email) + '.'
       : 'Account created, but the ID email could not be sent yet. Please keep this ID.';
     const noteClass = emailSent ? 'color:#64748b' : 'color:#b45309';
-    popup.innerHTML = `<div style=\"font-size:11px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:#64748b\">Account created</div><div style=\"margin-top:8px;font-size:15px;font-weight:700\">Your ${label} ID</div><div style=\"margin-top:5px;font-size:24px;font-weight:800;letter-spacing:.06em\">${escapeHtml(record[idKey])}</div><div style=\"margin-top:10px;font-size:12px;line-height:1.5;${noteClass}\">${note}</div>${whatsappUrl ? `<a href="${escapeHtml(whatsappUrl)}" target="_blank" rel="noopener noreferrer" style="display:block;margin-top:14px;padding:11px 14px;border-radius:12px;background:#166534;color:#fff;text-align:center;font-size:13px;font-weight:700;text-decoration:none">Continue to WhatsApp in a new tab</a>` : `<div style="margin-top:12px;font-size:12px;color:#b45309">Your account is ready. WhatsApp could not be prepared; you can continue in your workspace.</div>`}`;
+    popup.innerHTML = '<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px"><div style="min-width:0"><div style="font-size:10px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:#64748b">Account created</div><div style="margin-top:5px;font-size:13px;font-weight:700">Your ' + label + ' ID</div><div style="margin-top:3px;font-size:19px;font-weight:800;letter-spacing:.04em;overflow-wrap:anywhere">' + escapeHtml(record[idKey]) + '</div><div style="margin-top:6px;font-size:11px;line-height:1.45;' + noteClass + '">' + note + '</div></div><button type="button" id="terajuSignupPopupClose" aria-label="Dismiss account confirmation" style="flex:0 0 auto;width:32px;height:32px;border:1px solid #e2e8f0;border-radius:10px;background:#fff;color:#475569;font-size:20px;line-height:1">×</button></div>' +
+      (whatsappUrl ? '<a href="' + escapeHtml(whatsappUrl) + '" target="_blank" rel="noopener noreferrer" style="display:block;margin-top:10px;padding:9px 12px;border-radius:10px;background:#166534;color:#fff;text-align:center;font-size:12px;font-weight:700;text-decoration:none">Continue to WhatsApp in a new tab ↗</a>' : '<div style="margin-top:8px;font-size:11px;color:#b45309">WhatsApp could not be prepared. You can continue in your workspace.</div>');
     document.body.appendChild(popup);
-    requestAnimationFrame(() => { popup.style.opacity = '1'; popup.style.transform = 'translateX(-50%) translateY(0)'; });
-    // Keep the success popup visible so the user can finish the WhatsApp step when ready.
+    popup.querySelector('#terajuSignupPopupClose')?.addEventListener('click', () => popup.remove());
+    requestAnimationFrame(() => { popup.style.opacity = '1'; popup.style.transform = 'translateY(0)'; });
   }
   function openSignupWhatsApp(record, name, phone) {
     const normalizedPhone = normalizePhone(phone);
