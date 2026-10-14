@@ -66,6 +66,17 @@
     "updatedAt": "2026-10-14T18:46:24.348Z"
   },
   {
+    "id": "DEV-20261015-c55e89c",
+    "date": "2026-10-15",
+    "title": "fix: validate estimate state only for Malaysia",
+    "module": "Cost Estimate",
+    "status": "Completed",
+    "summary": "fix: validate estimate state only for Malaysia",
+    "details": "Automatic entry from commit c55e89c. Changed files: api/quotations.js.",
+    "commit": "c55e89ca661c578a02417d8b93cfd54d412c3cfe",
+    "updatedAt": "2026-10-14T18:58:24.403Z"
+  },
+  {
     "id": "DEV-20261015-bf17ea4",
     "date": "2026-10-15",
     "title": "revert: restore original default quotation preview logo",
