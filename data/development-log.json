@@ -583,6 +583,17 @@
     "updatedAt": "2026-10-14T18:52:22.393Z"
   },
   {
+    "id": "DEV-20261015-023a6d5",
+    "date": "2026-10-15",
+    "title": "fix: restore valid cost per sqft module and saved estimate currency rendering",
+    "module": "Cost Estimate",
+    "status": "Completed",
+    "summary": "fix: restore valid cost per sqft module and saved estimate currency rendering",
+    "details": "Automatic entry from commit 023a6d5. Changed files: TerajuWorks/cost-per-sqft.js.",
+    "commit": "023a6d5b3814240bc83d106a3a6fbe836d4ea10f",
+    "updatedAt": "2026-10-14T19:39:19.407Z"
+  },
+  {
     "id": "DEV-20261015-01a4368",
     "date": "2026-10-15",
     "title": "Update contractor profile CTR-20261014-PWYI",
