@@ -44,6 +44,17 @@
     "updatedAt": "2026-10-14T17:08:57.703Z"
   },
   {
+    "id": "DEV-20261015-8caaa18",
+    "date": "2026-10-15",
+    "title": "fix: populate contractor profile country from account",
+    "module": "General",
+    "status": "Completed",
+    "summary": "fix: populate contractor profile country from account",
+    "details": "Automatic entry from commit 8caaa18. Changed files: TerajuWorks/auth-github.js.",
+    "commit": "8caaa189a303e1c7e2c4eee1c583f1d7e799aa06",
+    "updatedAt": "2026-10-14T18:22:34.524Z"
+  },
+  {
     "id": "DEV-20261015-6a3ed4e",
     "date": "2026-10-15",
     "title": "Implement country-specific signup and market-aware planner output",
