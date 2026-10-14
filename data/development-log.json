@@ -110,6 +110,17 @@
     "updatedAt": "2026-10-14T18:22:34.524Z"
   },
   {
+    "id": "DEV-20261015-6c0f35a",
+    "date": "2026-10-15",
+    "title": "fix: correct canonical rate ID suffix matching",
+    "module": "General",
+    "status": "Completed",
+    "summary": "fix: correct canonical rate ID suffix matching",
+    "details": "Automatic entry from commit 6c0f35a. Changed files: TerajuWorks/country-context.js.",
+    "commit": "6c0f35aea9901ae154991b40dedd1d14903c28db",
+    "updatedAt": "2026-10-14T18:48:18.951Z"
+  },
+  {
     "id": "DEV-20261015-6a3ed4e",
     "date": "2026-10-15",
     "title": "Implement country-specific signup and market-aware planner output",
