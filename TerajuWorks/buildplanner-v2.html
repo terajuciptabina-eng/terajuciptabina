@@ -275,7 +275,7 @@ async function generateQuotation(typeOverride){
  const moneyQ=v=>money(v,2);
  const totalOf=list=>(list||[]).reduce((s,i)=>s+Number(i.amount||0),0);
  const summaryGroups=[['preliminaries','PRELIMINARIES'],['structures','STRUCTURAL WORKS'],['architecture','ARCHITECTURAL WORKS'],['electrical','ELECTRICAL WORKS'],['doors-windows','DOORS & WINDOWS'],['external-work','EXTERNAL WORKS']].map(([category,title])=>({category,title,items:active.filter(i=>i.category===category)})).filter(g=>g.items.length);
- const brandLogo=escQ((brand?.mode==="custom"&&brand?.logo)?brand.logo:"../images/terajuworks.svg");
+ const brandLogo=escQ((brand?.mode==="custom"&&brand?.logo)?brand.logo:"assets/terajuworks-footer.svg");
  const brandAlt=escQ(brand?.alt||"Company Logo");
  const activeMarket=window.TERAJU_GET_PROJECT_COUNTRY?.()||{countryCode:"MY",currency:"MYR",symbol:"RM",locale:"en-MY"};const marketCountry=String(activeMarket.countryCode||"MY").toUpperCase();const marketSymbol=String(activeMarket.symbol||({MY:"RM",SG:"S$",ID:"Rp",TH:"฿",PH:"₱",VN:"₫",BN:"B$"}[marketCountry]||activeMarket.currency||"RM"));
   const brandName=escQ((brand?.mode==="custom"&&brand?.name)?brand.name:"TERAJUWORKS");
