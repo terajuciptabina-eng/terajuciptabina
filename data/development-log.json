@@ -99,6 +99,17 @@
     "updatedAt": "2026-10-14T18:27:27.263Z"
   },
   {
+    "id": "DEV-20261015-db71516",
+    "date": "2026-10-15",
+    "title": "fix: restore preview branding choice flow from latest-working",
+    "module": "Cost Estimate",
+    "status": "Completed",
+    "summary": "fix: restore preview branding choice flow from latest-working",
+    "details": "Automatic entry from commit db71516. Changed files: TerajuWorks/shared/preview-branding.js.",
+    "commit": "db71516bc3a4fdaddaa1fa27e5b31d9d0dbd97a4",
+    "updatedAt": "2026-10-14T20:02:36.080Z"
+  },
+  {
     "id": "DEV-20261015-d8022f7",
     "date": "2026-10-15",
     "title": "Update build quotation Q001 (EST-BLD-001-S)",
