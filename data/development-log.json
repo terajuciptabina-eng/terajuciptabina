@@ -22,6 +22,17 @@
     "updatedAt": "2026-10-14T18:22:32.460Z"
   },
   {
+    "id": "DEV-20261015-e21e5df",
+    "date": "2026-10-15",
+    "title": "fix: keep authoritative account country for planner rates",
+    "module": "General",
+    "status": "Completed",
+    "summary": "fix: keep authoritative account country for planner rates",
+    "details": "Automatic entry from commit e21e5df. Changed files: TerajuWorks/country-context.js.",
+    "commit": "e21e5dfd7a22c2fd92659b10c01aa8e5555b33a0",
+    "updatedAt": "2026-10-14T18:27:27.263Z"
+  },
+  {
     "id": "DEV-20261015-bf17ea4",
     "date": "2026-10-15",
     "title": "revert: restore original default quotation preview logo",
