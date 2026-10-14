@@ -132,6 +132,17 @@
     "updatedAt": "2026-10-14T19:23:26.630Z"
   },
   {
+    "id": "DEV-20261015-aa8a331",
+    "date": "2026-10-15",
+    "title": "fix: use contractor/default branding and selected market currency in estimate preview",
+    "module": "BuildPlanner",
+    "status": "Completed",
+    "summary": "fix: use contractor/default branding and selected market currency in estimate preview",
+    "details": "Automatic entry from commit aa8a331. Changed files: TerajuWorks/buildplanner-v2.html.",
+    "commit": "aa8a331b21de7549da2a068355060cc154f99069",
+    "updatedAt": "2026-10-14T19:25:59.521Z"
+  },
+  {
     "id": "DEV-20261015-a7ca1eb",
     "date": "2026-10-15",
     "title": "fix: restore quotation history script after duplicate country declaration",
