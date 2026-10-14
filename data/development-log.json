@@ -198,6 +198,17 @@
     "updatedAt": "2026-10-14T17:05:57.860Z"
   },
   {
+    "id": "DEV-20261015-674b8f4",
+    "date": "2026-10-15",
+    "title": "fix: feed account country rates into master construction budget engine",
+    "module": "Cost Estimate",
+    "status": "Completed",
+    "summary": "fix: feed account country rates into master construction budget engine",
+    "details": "Automatic entry from commit 674b8f4. Changed files: TerajuWorks/quotation-quantity-fix.js.",
+    "commit": "674b8f47b3b10493f4bd3fb295b1be9978240f30",
+    "updatedAt": "2026-10-14T19:20:35.246Z"
+  },
+  {
     "id": "DEV-20261015-611dde1",
     "date": "2026-10-15",
     "title": "Update contractor profile CTR-20261014-SFZS",
