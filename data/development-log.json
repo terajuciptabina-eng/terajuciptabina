@@ -209,6 +209,17 @@
     "updatedAt": "2026-10-14T19:20:35.246Z"
   },
   {
+    "id": "DEV-20261015-66e344b",
+    "date": "2026-10-15",
+    "title": "fix: load updated country-aware master rate engine",
+    "module": "RenovationPlanner",
+    "status": "Completed",
+    "summary": "fix: load updated country-aware master rate engine",
+    "details": "Automatic entry from commit 66e344b. Changed files: TerajuWorks/renovationplanner-v2.html.",
+    "commit": "66e344b796571f01257cf731baf1195a087b6648",
+    "updatedAt": "2026-10-14T19:20:55.970Z"
+  },
+  {
     "id": "DEV-20261015-611dde1",
     "date": "2026-10-15",
     "title": "Update contractor profile CTR-20261014-SFZS",
