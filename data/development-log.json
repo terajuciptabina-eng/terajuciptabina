@@ -1,5 +1,16 @@
 [
   {
+    "id": "DEV-20261015-6a3ed4e",
+    "date": "2026-10-15",
+    "title": "Implement country-specific signup and market-aware planner output",
+    "module": "RenovationPlanner",
+    "status": "Completed",
+    "summary": "Implement country-specific signup and market-aware planner output",
+    "details": "Automatic entry from commit 6a3ed4e. Changed files: TerajuWorks/auth-github.js, TerajuWorks/buildplanner-v2.html, TerajuWorks/contract.html, TerajuWorks/contractor.html, TerajuWorks/cost-per-sqft.js, TerajuWorks/country-context.js, TerajuWorks/homeowner.html, TerajuWorks/quotations.html, TerajuWorks/renovationplanner-v2.html, TerajuWorks/s-curve.html, TerajuWorks/work-program.html, api/auth.js.",
+    "commit": "6a3ed4edf19e3c59aacb593720a9e05649599104",
+    "updatedAt": "2026-10-14T17:05:57.860Z"
+  },
+  {
     "id": "DEV-20261014-ed88bb5",
     "date": "2026-10-14",
     "title": "Update build quotation Q020 (EST-BLD-020-S)",
