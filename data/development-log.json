@@ -220,6 +220,17 @@
     "updatedAt": "2026-10-14T19:39:26.791Z"
   },
   {
+    "id": "DEV-20261015-ac601e4",
+    "date": "2026-10-15",
+    "title": "fix: load WhatsApp return popup dismissal behavior",
+    "module": "General",
+    "status": "Completed",
+    "summary": "fix: load WhatsApp return popup dismissal behavior",
+    "details": "Automatic entry from commit ac601e4. Changed files: TerajuWorks/contractor.html.",
+    "commit": "ac601e48682887431878dbe852b18fb0edc72299",
+    "updatedAt": "2026-10-14T19:46:40.649Z"
+  },
+  {
     "id": "DEV-20261015-aa8a331",
     "date": "2026-10-15",
     "title": "fix: use contractor/default branding and selected market currency in estimate preview",
