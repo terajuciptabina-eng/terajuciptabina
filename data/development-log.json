@@ -275,6 +275,17 @@
     "updatedAt": "2026-10-14T19:19:56.686Z"
   },
   {
+    "id": "DEV-20261015-5489398",
+    "date": "2026-10-15",
+    "title": "fix: render estimate history cost per sqft in saved project currency",
+    "module": "Cost Estimate",
+    "status": "Completed",
+    "summary": "fix: render estimate history cost per sqft in saved project currency",
+    "details": "Automatic entry from commit 5489398. Changed files: TerajuWorks/cost-per-sqft.js.",
+    "commit": "548939830f99accb6c812d274e45f6f0e4c70396",
+    "updatedAt": "2026-10-14T19:26:11.072Z"
+  },
+  {
     "id": "DEV-20261015-4e90757",
     "date": "2026-10-15",
     "title": "Save build quotation Q001 (EST-BLD-001-S)",
