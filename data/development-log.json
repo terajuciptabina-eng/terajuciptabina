@@ -198,6 +198,17 @@
     "updatedAt": "2026-10-14T18:52:46.034Z"
   },
   {
+    "id": "DEV-20261015-39b336a",
+    "date": "2026-10-15",
+    "title": "fix: keep state rate matrix columns readable on mobile",
+    "module": "Admin / Rate Management",
+    "status": "Completed",
+    "summary": "fix: keep state rate matrix columns readable on mobile",
+    "details": "Automatic entry from commit 39b336a. Changed files: TerajuWorks/admin-rate-comparison.html.",
+    "commit": "39b336ac3b30db0b6a645a50e73011ada86143af",
+    "updatedAt": "2026-10-14T19:08:44.678Z"
+  },
+  {
     "id": "DEV-20261015-2a4f4aa",
     "date": "2026-10-15",
     "title": "fix: expose authoritative country rate reapplication",
