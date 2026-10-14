@@ -10,7 +10,12 @@
     "email": "indon.conoany@gmail.com",
     "phone": "+621254764848",
     "previewBrandingMode": "teraju",
-    "previewBrandingConfigured": true
+    "previewBrandingConfigured": true,
+    "registrationNo": "",
+    "address": "",
+    "website": "",
+    "logoDataUrl": "",
+    "contractorProfileConfigured": true
   },
   "auth": {
     "mode": "temporary-id",
@@ -22,5 +27,5 @@
     "renovation": []
   },
   "createdAt": "2026-10-14T19:26:59.320Z",
-  "updatedAt": "2026-10-14T19:27:13.469Z"
+  "updatedAt": "2026-10-14T19:27:18.413Z"
 }
