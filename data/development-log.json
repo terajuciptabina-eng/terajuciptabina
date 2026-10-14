@@ -33,6 +33,17 @@
     "updatedAt": "2026-10-14T17:05:57.860Z"
   },
   {
+    "id": "DEV-20261015-137e121",
+    "date": "2026-10-15",
+    "title": "fix: restore full TerajuWorks logo in default cost estimate preview",
+    "module": "BuildPlanner",
+    "status": "Completed",
+    "summary": "fix: restore full TerajuWorks logo in default cost estimate preview",
+    "details": "Automatic entry from commit 137e121. Changed files: TerajuWorks/buildplanner-v2.html.",
+    "commit": "137e1213bbdf0da0532542f1bad96f409a0319c0",
+    "updatedAt": "2026-10-14T17:45:15.866Z"
+  },
+  {
     "id": "DEV-20261014-ed88bb5",
     "date": "2026-10-14",
     "title": "Update build quotation Q020 (EST-BLD-020-S)",
