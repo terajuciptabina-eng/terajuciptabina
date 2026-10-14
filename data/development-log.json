@@ -88,6 +88,17 @@
     "updatedAt": "2026-10-14T17:45:31.192Z"
   },
   {
+    "id": "DEV-20261015-a7ca1eb",
+    "date": "2026-10-15",
+    "title": "fix: restore quotation history script after duplicate country declaration",
+    "module": "Cost Estimate",
+    "status": "Completed",
+    "summary": "fix: restore quotation history script after duplicate country declaration",
+    "details": "Automatic entry from commit a7ca1eb. Changed files: TerajuWorks/quotation-records.js.",
+    "commit": "a7ca1eb37f457e24ff070c72255df5530db991ef",
+    "updatedAt": "2026-10-14T19:00:49.567Z"
+  },
+  {
     "id": "DEV-20261015-a723cdb",
     "date": "2026-10-15",
     "title": "fix: refresh country rate resolver in planner pages",
