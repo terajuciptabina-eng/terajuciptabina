@@ -11,6 +11,17 @@
     "updatedAt": "2026-10-14T19:46:33.821Z"
   },
   {
+    "id": "DEV-20261015-fb7b200",
+    "date": "2026-10-15",
+    "title": "fix: restore latest-working estimate header and Teraju Ciptabina default branding",
+    "module": "BuildPlanner",
+    "status": "Completed",
+    "summary": "fix: restore latest-working estimate header and Teraju Ciptabina default branding",
+    "details": "Automatic entry from commit fb7b200. Changed files: TerajuWorks/buildplanner-v2.html.",
+    "commit": "fb7b200001d4248a6645bd7485c6cbe6be954c90",
+    "updatedAt": "2026-10-14T20:17:30.646Z"
+  },
+  {
     "id": "DEV-20261015-f6ff62d",
     "date": "2026-10-15",
     "title": "Update contractor profile CTR-20261014-PWYI",
