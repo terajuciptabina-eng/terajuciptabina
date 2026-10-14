@@ -29,9 +29,11 @@
  async function loadRates(){if(!dataPromise)dataPromise=fetch(DATA_URL,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('Unable to load country rate comparison data');return r.json()});return dataPromise}
  async function rateById(id, snapshot){const ctx=normalize(snapshot||current());const data=await loadRates();const item=data.rates.find(x=>x.id===id);if(!item)return null;const rateField=ctx.countryCode==='MY'?'Malaysia_MYR':ctx.currency;const rawRate=item[rateField];if(rawRate===null||rawRate===undefined||String(rawRate).trim()==='')throw new Error('No validated rate for '+ctx.countryCode+' item '+id);const rate=Number(rawRate);if(!Number.isFinite(rate)||rate<0)throw new Error('No validated rate for '+ctx.countryCode+' item '+id);return {id:item.id,rate,currency:ctx.currency,countryCode:ctx.countryCode,planner:item.planner,provisional:ctx.countryCode==='VN'||ctx.countryCode==='BN'} }
  const RENOVATION_RATE_KEYS={plaster_ceiling:'ceiling',spc_flooring:'spc',downlight:'downlight',ceiling_fan:'ceilingFan',curtain_box_led:'curtainBoxLED',bar_lamp:'barLamp',kitchen_frame:'kitchenFrame',making_good:'kitchenMakingGood',swing_glass_door:'kitchenGlassDoor',floor_tiles:'floorTile',wall_tiles:'wallTile',kitchen_lighting:'barLamp',sanitary_accessories:'bathroomSanitary',toilet_door:'bathroomDoor',exhaust_fan:'exhaustFan',gate_motor:'gateMotor',brickwall_divider:'brickwallDivider',front_fence:'frontFence',facade_wall:'facadeWall',wall_light:'wallLight'};
- let baseRates=null,applying=false;
+ let baseRates=null,applying=false,rateRefreshQueued=false;
  async function applyCountryRates(){
-  if(applying)return;applying=true;
+  // Account API hydration can finish while the initial (cached/default) market is still applying.
+  // Queue a second pass instead of silently dropping the authoritative account market.
+  if(applying){rateRefreshQueued=true;return;}applying=true;
   try{
    const ctx=current(),data=await loadRates();
    if(typeof RATES==='undefined'||!RATES||typeof RATES!=='object')return;
@@ -53,7 +55,7 @@
    window.dispatchEvent(new CustomEvent('teraju:ratechange',{detail:window.TERAJU_RATE_CONTEXT}));
    if(typeof updateEstimate==='function')updateEstimate();
   }catch(error){console.error('[TERAJU] Country rate integration failed:',error);window.TERAJU_COUNTRY_RATE_ERROR=String(error?.message||error);const ctx=current();if(ctx.countryCode!=='MY'&&typeof RATES!=='undefined'&&RATES&&typeof RATES==='object'){Object.keys(RATES).forEach(key=>{RATES[key]=NaN});let banner=document.getElementById('tc-country-rate-error');if(!banner){banner=document.createElement('div');banner.id='tc-country-rate-error';banner.setAttribute('role','alert');banner.style.cssText='position:sticky;top:0;z-index:99999;padding:12px 16px;background:#fff1f2;color:#9f1239;border-bottom:1px solid #fecdd3;font:600 14px/1.45 system-ui,sans-serif';banner.textContent='Country rate data is unavailable. Cost estimates are disabled until valid local rates are available.';document.body.prepend(banner)}document.querySelectorAll('button').forEach(button=>{if(/estimate|quotation|generate|export pdf|download pdf/i.test(button.textContent||'')){button.disabled=true;button.setAttribute('aria-disabled','true')}})}}
-  finally{applying=false}
+  finally{applying=false;if(rateRefreshQueued){rateRefreshQueued=false;queueMicrotask(()=>applyCountryRates())}}
  }
  // Keep market-specific location and state UI aligned with the registered account market.
  const MARKET_LOCATIONS={
