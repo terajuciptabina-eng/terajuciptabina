@@ -143,6 +143,17 @@
     "updatedAt": "2026-10-14T19:04:40.459Z"
   },
   {
+    "id": "DEV-20261015-d30c44f",
+    "date": "2026-10-15",
+    "title": "fix: prioritize page workspace role over stale session context",
+    "module": "Cost Estimate",
+    "status": "Completed",
+    "summary": "fix: prioritize page workspace role over stale session context",
+    "details": "Automatic entry from commit d30c44f. Changed files: TerajuWorks/shared/preview-branding.js.",
+    "commit": "d30c44fe889cc54c46a5a58084ee0a54f5710fca",
+    "updatedAt": "2026-10-14T20:21:39.072Z"
+  },
+  {
     "id": "DEV-20261015-cbc55b3",
     "date": "2026-10-15",
     "title": "Update contractor profile CTR-20261014-SFZS",
