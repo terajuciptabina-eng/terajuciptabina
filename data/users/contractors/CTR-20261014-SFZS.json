@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "contractor",
+  "country": "SG",
+  "contractorId": "CTR-20261014-SFZS",
+  "profile": {
+    "name": "Test 123",
+    "email": "zait.ismail@gmail.com",
+    "phone": "+651125476214"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-10-14T17:08:38.353Z",
+  "updatedAt": "2026-10-14T17:08:38.353Z"
+}
