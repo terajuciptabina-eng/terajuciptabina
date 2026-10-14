@@ -10,7 +10,12 @@
     "email": "viet.nam@gmail.com",
     "phone": "+8465985465646",
     "previewBrandingMode": "teraju",
-    "previewBrandingConfigured": true
+    "previewBrandingConfigured": true,
+    "registrationNo": "",
+    "address": "",
+    "website": "",
+    "logoDataUrl": "",
+    "contractorProfileConfigured": true
   },
   "auth": {
     "mode": "temporary-id",
@@ -22,5 +27,5 @@
     "renovation": []
   },
   "createdAt": "2026-10-14T19:49:29.559Z",
-  "updatedAt": "2026-10-14T19:49:55.202Z"
+  "updatedAt": "2026-10-14T19:50:01.330Z"
 }
