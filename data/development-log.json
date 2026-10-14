@@ -891,6 +891,17 @@
     "updatedAt": "2026-10-14T20:06:55.556Z"
   },
   {
+    "id": "DEV-20261015-0012988",
+    "date": "2026-10-15",
+    "title": "fix: use Teraju Ciptabina default logo in cost estimate preview",
+    "module": "Cost Estimate",
+    "status": "Completed",
+    "summary": "fix: use Teraju Ciptabina default logo in cost estimate preview",
+    "details": "Automatic entry from commit 0012988. Changed files: TerajuWorks/shared/preview-branding.js.",
+    "commit": "0012988d4743a622976df45b1982d1f41982b078",
+    "updatedAt": "2026-10-14T20:34:40.864Z"
+  },
+  {
     "id": "DEV-20261014-ed88bb5",
     "date": "2026-10-14",
     "title": "Update build quotation Q020 (EST-BLD-020-S)",
