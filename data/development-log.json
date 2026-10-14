@@ -33,6 +33,17 @@
     "updatedAt": "2026-10-14T19:27:27.811Z"
   },
   {
+    "id": "DEV-20261015-f3e8d9a",
+    "date": "2026-10-15",
+    "title": "fix: preserve contractor role when opening saved estimate history",
+    "module": "Cost Estimate",
+    "status": "Completed",
+    "summary": "fix: preserve contractor role when opening saved estimate history",
+    "details": "Automatic entry from commit f3e8d9a. Changed files: TerajuWorks/quotations.html.",
+    "commit": "f3e8d9a7d9ffef714b0f98409bd0c57b99458440",
+    "updatedAt": "2026-10-14T20:24:22.691Z"
+  },
+  {
     "id": "DEV-20261015-ecb1979",
     "date": "2026-10-15",
     "title": "Update contractor profile CTR-20261014-SFZS",
