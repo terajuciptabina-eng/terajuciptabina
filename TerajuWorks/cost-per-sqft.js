@@ -3,7 +3,10 @@
   'use strict';
   if(window.TERAJU_COST_METRIC)return;
   const N=v=>Number.isFinite(Number(v))?Number(v):0;
-  const money=v=>N(v).toLocaleString('en-MY',{minimumFractionDigits:2,maximumFractionDigits:2});
+  const market=()=>{try{return typeof window.TERAJU_GET_PROJECT_COUNTRY==='function'?window.TERAJU_GET_PROJECT_COUNTRY():{currency:'MYR',symbol:'RM',locale:'en-MY'}}catch{return {currency:'MYR',symbol:'RM',locale:'en-MY'}}};
+  const money=v=>N(v).toLocaleString(market().locale||'en-MY',{minimumFractionDigits:2,maximumFractionDigits:2});
+  const currency=()=>market().symbol||'RM';
+  const moneyWithCurrency=v=>currency()+' '+money(v);
   const area=v=>Math.max(0,N(v));
   const rate=(cost,sqft)=>sqft>0?cost/sqft:null;
   function roomsFor(value){
@@ -44,14 +47,14 @@
       const cls=mode==='card'?'':'';
       return '<div class="teraju-cost-sqft-grid '+cls+'">'+
         '<div><p class="teraju-cost-sqft-label">Existing Area</p><p class="teraju-cost-sqft-value">'+money(summary.existingArea)+' sqft</p></div>'+
-        '<div><p class="teraju-cost-sqft-label">Existing RM/sqft</p><p class="teraju-cost-sqft-value">'+(summary.existingRate==null?'—':'RM '+money(summary.existingRate)+'/sqft')+'</p></div>'+
+        '<div><p class="teraju-cost-sqft-label">Existing RM/sqft</p><p class="teraju-cost-sqft-value">'+(summary.existingRate==null?'—':moneyWithCurrency(summary.existingRate)+'/sqft')+'</p></div>'+
         '<div><p class="teraju-cost-sqft-label">New Area</p><p class="teraju-cost-sqft-value">'+money(summary.newArea)+' sqft</p></div>'+
-        '<div><p class="teraju-cost-sqft-label">New RM/sqft</p><p class="teraju-cost-sqft-value">'+(summary.newRate==null?'—':'RM '+money(summary.newRate)+'/sqft')+'</p></div>'+
+        '<div><p class="teraju-cost-sqft-label">New RM/sqft</p><p class="teraju-cost-sqft-value">'+(summary.newRate==null?'—':moneyWithCurrency(summary.newRate)+'/sqft')+'</p></div>'+
       '</div>';
     }
     return '<div class="teraju-cost-sqft-grid '+mode+'">'+
       '<div><p class="teraju-cost-sqft-label">Built-up Area</p><p class="teraju-cost-sqft-value">'+money(summary.builtUpArea)+' sqft</p></div>'+
-      '<div><p class="teraju-cost-sqft-label">RM/sqft</p><p class="teraju-cost-sqft-value">'+(summary.costPerSqft==null?'—':'RM '+money(summary.costPerSqft)+'/sqft')+'</p></div>'+
+      '<div><p class="teraju-cost-sqft-label">RM/sqft</p><p class="teraju-cost-sqft-value">'+(summary.costPerSqft==null?'—':moneyWithCurrency(summary.costPerSqft)+'/sqft')+'</p></div>'+
     '</div>';
   }
   function history(summary){
