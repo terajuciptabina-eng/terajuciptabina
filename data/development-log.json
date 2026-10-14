@@ -121,6 +121,17 @@
     "updatedAt": "2026-10-14T18:58:24.403Z"
   },
   {
+    "id": "DEV-20261015-bf77342",
+    "date": "2026-10-15",
+    "title": "fix: refresh default contractor preview branding behavior",
+    "module": "BuildPlanner",
+    "status": "Completed",
+    "summary": "fix: refresh default contractor preview branding behavior",
+    "details": "Automatic entry from commit bf77342. Changed files: TerajuWorks/buildplanner-v2.html.",
+    "commit": "bf77342cde1189ddbe937c7674520bafdd9092af",
+    "updatedAt": "2026-10-14T19:26:48.696Z"
+  },
+  {
     "id": "DEV-20261015-bf17ea4",
     "date": "2026-10-15",
     "title": "revert: restore original default quotation preview logo",
