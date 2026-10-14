@@ -99,6 +99,17 @@
     "updatedAt": "2026-10-14T09:02:25.134Z"
   },
   {
+    "id": "DEV-20261014-07e1c00",
+    "date": "2026-10-14",
+    "title": "Remove 50% discount promo from design services carousel",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Remove 50% discount promo from design services carousel",
+    "details": "Automatic entry from commit 07e1c00. Changed files: index.html.",
+    "commit": "07e1c0071b6505761396a771ab5da62a49595280",
+    "updatedAt": "2026-10-14T14:45:28.878Z"
+  },
+  {
     "id": "DEV-20261013-fb892bf",
     "date": "2026-10-13",
     "title": "Create temporary contractor account CTR-20261013-3CID",
