@@ -109,6 +109,29 @@
       (whatsappUrl ? '<a href="' + escapeHtml(whatsappUrl) + '" target="_blank" rel="noopener noreferrer" style="display:block;margin-top:10px;padding:9px 12px;border-radius:10px;background:#166534;color:#fff;text-align:center;font-size:12px;font-weight:700;text-decoration:none">Continue to WhatsApp in a new tab ↗</a>' : '<div style="margin-top:8px;font-size:11px;color:#b45309">WhatsApp could not be prepared. You can continue in your workspace.</div>');
     document.body.appendChild(popup);
     popup.querySelector('#terajuSignupPopupClose')?.addEventListener('click', () => popup.remove());
+    const whatsappLink = popup.querySelector('a[href^="https://wa.me/"]');
+    if (whatsappLink) {
+      // Open WhatsApp directly from the tap (user gesture), then dismiss the signup notice
+      // when the user returns to this tab or when the tab becomes visible again.
+      whatsappLink.addEventListener('click', () => {
+        popup.dataset.whatsappOpened = '1';
+        window.setTimeout(() => {
+          if (popup.isConnected && popup.dataset.whatsappOpened === '1') popup.remove();
+        }, 900);
+      }, { once: true });
+      const dismissOnReturn = () => {
+        if (popup.dataset.whatsappOpened === '1' && document.visibilityState === 'visible') {
+          popup.remove();
+          window.removeEventListener('focus', dismissOnFocus);
+          document.removeEventListener('visibilitychange', dismissOnReturn);
+          window.removeEventListener('pageshow', dismissOnReturn);
+        }
+      };
+      const dismissOnFocus = () => dismissOnReturn();
+      document.addEventListener('visibilitychange', dismissOnReturn);
+      window.addEventListener('focus', dismissOnFocus);
+      window.addEventListener('pageshow', dismissOnReturn);
+    }
     requestAnimationFrame(() => { popup.style.opacity = '1'; popup.style.transform = 'translateY(0)'; });
   }
   function openSignupWhatsApp(record, name, phone) {
