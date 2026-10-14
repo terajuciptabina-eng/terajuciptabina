@@ -176,6 +176,17 @@
     "updatedAt": "2026-10-14T19:23:26.630Z"
   },
   {
+    "id": "DEV-20261015-adde46f",
+    "date": "2026-10-15",
+    "title": "fix: fall back to saved built-up area when room list is empty",
+    "module": "Cost Estimate",
+    "status": "Completed",
+    "summary": "fix: fall back to saved built-up area when room list is empty",
+    "details": "Automatic entry from commit adde46f. Changed files: TerajuWorks/quotations.html.",
+    "commit": "adde46f212b2bdf9e606c042aafad61bfe52a878",
+    "updatedAt": "2026-10-14T19:34:44.544Z"
+  },
+  {
     "id": "DEV-20261015-aa8a331",
     "date": "2026-10-15",
     "title": "fix: use contractor/default branding and selected market currency in estimate preview",
