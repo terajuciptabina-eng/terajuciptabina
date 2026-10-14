@@ -13,7 +13,9 @@
     "address": "",
     "website": "",
     "logoDataUrl": "",
-    "contractorProfileConfigured": true
+    "contractorProfileConfigured": true,
+    "previewBrandingMode": "teraju",
+    "previewBrandingConfigured": true
   },
   "auth": {
     "mode": "temporary-id",
@@ -25,5 +27,5 @@
     "renovation": []
   },
   "createdAt": "2026-10-14T17:08:38.353Z",
-  "updatedAt": "2026-10-14T17:08:48.955Z"
+  "updatedAt": "2026-10-14T17:39:34.003Z"
 }
