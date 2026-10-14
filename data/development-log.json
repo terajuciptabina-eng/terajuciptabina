@@ -176,6 +176,17 @@
     "updatedAt": "2026-10-14T17:08:57.703Z"
   },
   {
+    "id": "DEV-20261015-984e7ce",
+    "date": "2026-10-15",
+    "title": "fix: pass saved estimate currency to history cost per sqft",
+    "module": "Cost Estimate",
+    "status": "Completed",
+    "summary": "fix: pass saved estimate currency to history cost per sqft",
+    "details": "Automatic entry from commit 984e7ce. Changed files: TerajuWorks/quotations.html.",
+    "commit": "984e7cec7ca58e434847edb1459830a5c92b95f7",
+    "updatedAt": "2026-10-14T19:26:17.802Z"
+  },
+  {
     "id": "DEV-20261015-8caaa18",
     "date": "2026-10-15",
     "title": "fix: populate contractor profile country from account",
