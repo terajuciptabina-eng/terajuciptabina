@@ -253,6 +253,17 @@
     "updatedAt": "2026-10-14T19:10:39.643Z"
   },
   {
+    "id": "DEV-20261015-4237cf4",
+    "date": "2026-10-15",
+    "title": "fix: refresh quotation restore script after preserving country-specific rates",
+    "module": "RenovationPlanner",
+    "status": "Completed",
+    "summary": "fix: refresh quotation restore script after preserving country-specific rates",
+    "details": "Automatic entry from commit 4237cf4. Changed files: TerajuWorks/renovationplanner-v2.html.",
+    "commit": "4237cf4e060afbebb15e3d11645f89d34c86e006",
+    "updatedAt": "2026-10-14T19:18:04.199Z"
+  },
+  {
     "id": "DEV-20261015-3a417ac",
     "date": "2026-10-15",
     "title": "fix: reapply market rates after restoring saved estimate",
