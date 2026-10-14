@@ -121,6 +121,17 @@
     "updatedAt": "2026-10-14T17:45:31.192Z"
   },
   {
+    "id": "DEV-20261015-b8d8240",
+    "date": "2026-10-15",
+    "title": "fix: fit cost estimate preview to mobile without breaking A4 layout",
+    "module": "BuildPlanner",
+    "status": "Completed",
+    "summary": "fix: fit cost estimate preview to mobile without breaking A4 layout",
+    "details": "Automatic entry from commit b8d8240. Changed files: TerajuWorks/buildplanner-v2.html.",
+    "commit": "b8d82406626de875e0d52f32515b97ad8749367b",
+    "updatedAt": "2026-10-14T19:23:26.630Z"
+  },
+  {
     "id": "DEV-20261015-a7ca1eb",
     "date": "2026-10-15",
     "title": "fix: restore quotation history script after duplicate country declaration",
