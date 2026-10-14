@@ -19,6 +19,7 @@
   const workspaceAccountIdValue = document.getElementById('workspaceAccountIdValue');
   const profileButton = document.getElementById('profileButton'), profileModal = document.getElementById('profileModal'), profileClose = document.getElementById('profileClose'), profileCancel = document.getElementById('profileCancel'), profileSave = document.getElementById('profileSave'), profileUseBranding = document.getElementById('profileUseBranding'), profileResetBranding = document.getElementById('profileResetBranding'), profileStatus = document.getElementById('profileStatus'), profileLogoInput = document.getElementById('profileLogoInput'), profileLogoWrap = document.getElementById('profileLogoWrap');
   const profileAccountId = document.getElementById('profileAccountId'), homeProfileAccountId = document.getElementById('homeProfileAccountId');
+  const profileCountry = document.getElementById('profileCountry');
   const profileFields = { name: document.getElementById('profileName'), registrationNo: document.getElementById('profileRegistration'), phone: document.getElementById('profilePhone'), address: document.getElementById('profileAddress'), email: document.getElementById('profileEmail'), website: document.getElementById('profileWebsite') };
   const homeProfileButton = document.getElementById('homeProfileButton'), homeProfileModal = document.getElementById('homeProfileModal'), homeProfileClose = document.getElementById('homeProfileClose'), homeProfileCancel = document.getElementById('homeProfileCancel'), homeProfileSave = document.getElementById('homeProfileSave'), homeProfileStatus = document.getElementById('homeProfileStatus');
   const homeProfileFields = { name: document.getElementById('homeProfileName'), phone: document.getElementById('homeProfilePhone'), email: document.getElementById('homeProfileEmail'), propertyAddress: document.getElementById('homeProfileAddress'), propertyType: document.getElementById('homeProfilePropertyType'), projectNotes: document.getElementById('homeProfileNotes') };
@@ -211,6 +212,8 @@ ${workspaceUrl}`;
     if (onboardingNote) onboardingNote.style.display = onboarding ? 'block' : 'none';
     if (profileCancel) profileCancel.textContent = onboarding ? 'Skip for now' : 'Cancel';
     if (profileAccountId) profileAccountId.value = record?.[idKey] || '';
+    const countryNames = { MY: 'Malaysia', SG: 'Singapore', ID: 'Indonesia', TH: 'Thailand', PH: 'Philippines', VN: 'Vietnam', BN: 'Brunei' };
+    if (profileCountry) profileCountry.value = countryNames[String(record?.country || getLocal()?.country || 'MY').toUpperCase()] || 'Country not set';
     const p = record?.profile || {};
     Object.entries(profileFields).forEach(([key, input]) => { if (input) input.value = p[key] || ''; });
     profileLogoDataUrl = p.logoDataUrl || '';
