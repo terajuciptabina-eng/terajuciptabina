@@ -11,6 +11,17 @@
     "updatedAt": "2026-10-14T17:39:43.762Z"
   },
   {
+    "id": "DEV-20261015-ec6d2a6",
+    "date": "2026-10-15",
+    "title": "fix: apply country rates to active BuildPlanner keys",
+    "module": "General",
+    "status": "Completed",
+    "summary": "fix: apply country rates to active BuildPlanner keys",
+    "details": "Automatic entry from commit ec6d2a6. Changed files: TerajuWorks/country-context.js.",
+    "commit": "ec6d2a657d5b3eb4afc1a9d54c8230410bd4aa96",
+    "updatedAt": "2026-10-14T18:41:12.189Z"
+  },
+  {
     "id": "DEV-20261015-e5cab29",
     "date": "2026-10-15",
     "title": "fix: show registered country in contractor profile",
