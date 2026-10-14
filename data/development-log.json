@@ -99,6 +99,17 @@
     "updatedAt": "2026-10-14T18:32:48.788Z"
   },
   {
+    "id": "DEV-20261015-1671b6a",
+    "date": "2026-10-15",
+    "title": "fix: map country rates to planner calculation keys",
+    "module": "General",
+    "status": "Completed",
+    "summary": "fix: map country rates to planner calculation keys",
+    "details": "Automatic entry from commit 1671b6a. Changed files: TerajuWorks/country-context.js.",
+    "commit": "1671b6ab9aaf3ac53fdcea321e6a8b10a0717d58",
+    "updatedAt": "2026-10-14T18:40:50.479Z"
+  },
+  {
     "id": "DEV-20261015-137e121",
     "date": "2026-10-15",
     "title": "fix: restore full TerajuWorks logo in default cost estimate preview",
