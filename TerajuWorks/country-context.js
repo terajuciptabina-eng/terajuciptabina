@@ -21,8 +21,8 @@
  window.TERAJU_ACCOUNT_MARKET_VERIFIED=false;
  function safeRead(){try{return JSON.parse(sessionStorage.getItem(STORAGE_KEY)||'null')}catch{return null}}
  function safeWrite(value){try{sessionStorage.setItem(STORAGE_KEY,JSON.stringify(value))}catch{}}
- function countryCode(value){const c=String(value||'').trim().toUpperCase();return CURRENCIES[c]?c:'MY'}
- function normalize(raw){const code=countryCode(raw?.countryCode||raw?.country||raw?.code);return {...CURRENCIES[code],countryCode:code,projectId:String(raw?.projectId||params.get('projectId')||params.get('quotationId')||''),source:raw?.source||'session'} }
+ function countryCode(value){const c=String(value||'').trim().toUpperCase();return CURRENCIES[c]?c:''}
+ function normalize(raw){const code=countryCode(raw?.countryCode||raw?.country||raw?.code);return {...(CURRENCIES[code]||{}),countryCode:code,projectId:String(raw?.projectId||params.get('projectId')||params.get('quotationId')||''),source:raw?.source||'session'} }
  function current(){const accountCode=accountCountry();const activeProject=String(params.get('projectId')||params.get('quotationId')||'');const existing=window.TERAJU_PROJECT_COUNTRY;if(existing&&countryCode(existing.countryCode||existing.country)===accountCode)return normalize(existing);return normalize({countryCode:accountCode,projectId:activeProject,source:'account-default'})}
  function set(raw){const next=normalize({...raw,countryCode:accountCountry(),projectId:raw?.projectId||current().projectId});window.TERAJU_PROJECT_COUNTRY=next;safeWrite(next);window.dispatchEvent(new CustomEvent('teraju:countrychange',{detail:next}));return next}
  function formatNumber(value,options={}){const c=current();return new Intl.NumberFormat(c.locale,{minimumFractionDigits:options.minimumFractionDigits??2,maximumFractionDigits:options.maximumFractionDigits??2}).format(Number(value)||0)}
@@ -125,21 +125,21 @@
   const readCountry=value=>{const raw=value?.country||value?.countryCode||value?.profile?.country||value?.profile?.countryCode;const code=String(raw||'').trim().toUpperCase();return CURRENCIES[code]?code:''};
   // If the URL identifies the workspace role, never borrow the other role's cached country.
   // Missing account country is not evidence that the account belongs to Malaysia; the API gate must verify it.
-  if(role&&roleAccount)return readCountry(roleAccount)||'MY';
+  if(role&&roleAccount)return readCountry(roleAccount);
   const candidates=[
    window.TERAJU_ACCOUNT,window.TERAJU_USER,window.currentUser,window.userProfile,
    (()=>{try{return JSON.parse(sessionStorage.getItem('teraju.user')||'null')}catch{return null}})(),
    (()=>{try{return JSON.parse(localStorage.getItem('teraju.user')||'null')}catch{return null}})()
   ];
   for(const value of candidates){const code=readCountry(value);if(code)return code}
-  return 'MY';
+  return '';
  }
 
  async function hydrateAccountCountry(){
   const roleRaw=String(params.get('role')||params.get('audience')||window.TERAJU_WORKSPACE_CONTEXT?.role||'').toLowerCase();
   const role=roleRaw==='homeowner'||roleRaw==='contractor'?roleRaw:'';
   const id=String(params.get('id')||params.get('contractorId')||params.get('homeownerId')||window.TERAJU_WORKSPACE_CONTEXT?.id||window.TERAJU_WORKSPACE_CONTEXT?.contractorId||window.TERAJU_WORKSPACE_CONTEXT?.homeownerId||(()=>{try{if(role==='contractor'){const active=localStorage.getItem('teraju.contractor.local.v1.activeContractorId');if(active)return active;const saved=JSON.parse(localStorage.getItem('teraju.contractor.github.v1')||'null');return saved?.contractorId||saved?.id||saved?.profile?.contractorId||''}const saved=JSON.parse(localStorage.getItem('teraju.homeowner.github.v1')||'null');return saved?.homeownerId||saved?.id||saved?.profile?.homeownerId||''}catch{return ''}})()).trim().toUpperCase();
-  if(!role||!id){accountMarketReady=true;return false;}
+  if(!role||!id){accountMarketReady=false;return false;}
   try{
    const response=await fetch('https://terajuciptabina.vercel.app/api/auth?role='+encodeURIComponent(role)+'&id='+encodeURIComponent(id),{cache:'no-store',credentials:'omit'});
    if(!response.ok)return false;
@@ -169,7 +169,7 @@
  window.TERAJU_SET_PROJECT_COUNTRY=set;
  window.TERAJU_FORMAT_CURRENCY=format;
  window.TERAJU_FORMAT_NUMBER=formatNumber;
- function applyCurrencyLabels(){const ctx=current(),symbol=ctx.symbol;document.querySelectorAll('th,td,span,p,label,div,strong,b').forEach(el=>{if(el.children.length)return;const t=el.textContent;if(!t)return;const next=t.replace(/Rate \(RM\)/g,'Rate ('+symbol+')').replace(/Amount \(RM\)/g,'Amount ('+symbol+')').replace(/RM\/sqft: RM /g,symbol+'/sqft: '+symbol+' ').replace(/Existing: RM /g,'Existing: '+symbol+' ').replace(/New: RM /g,'New: '+symbol+' ').replace(/\bRM\b/g,symbol);if(next!==t)el.textContent=next});let style=document.getElementById('tc-country-currency-labels');if(!style){style=document.createElement('style');style.id='tc-country-currency-labels';document.head.appendChild(style)}style.textContent='#constructionBudgetSection .cr-budget-table tbody tr:not(.cr-group-row):not(.cr-hierarchy-row) td:nth-child(5)::before{content:"Rate ('+symbol+')"}#constructionBudgetSection .cr-budget-table tbody tr:not(.cr-group-row):not(.cr-hierarchy-row) td:nth-child(6)::before{content:"Amount ('+symbol+')"}'}
+ function applyCurrencyLabels(){if(window.TERAJU_ACCOUNT_MARKET_VERIFIED!==true)return;const ctx=current(),symbol=ctx.symbol;document.querySelectorAll('th,td,span,p,label,div,strong,b').forEach(el=>{if(el.children.length)return;const t=el.textContent;if(!t)return;const next=t.replace(/Rate \(RM\)/g,'Rate ('+symbol+')').replace(/Amount \(RM\)/g,'Amount ('+symbol+')').replace(/RM\/sqft: RM /g,symbol+'/sqft: '+symbol+' ').replace(/Existing: RM /g,'Existing: '+symbol+' ').replace(/New: RM /g,'New: '+symbol+' ').replace(/\bRM\b/g,symbol);if(next!==t)el.textContent=next});let style=document.getElementById('tc-country-currency-labels');if(!style){style=document.createElement('style');style.id='tc-country-currency-labels';document.head.appendChild(style)}style.textContent='#constructionBudgetSection .cr-budget-table tbody tr:not(.cr-group-row):not(.cr-hierarchy-row) td:nth-child(5)::before{content:"Rate ('+symbol+')"}#constructionBudgetSection .cr-budget-table tbody tr:not(.cr-group-row):not(.cr-hierarchy-row) td:nth-child(6)::before{content:"Amount ('+symbol+')"}'}
  let currencyObserver=null;function watchCurrencyLabels(){applyCurrencyLabels();if(currencyObserver)return;currencyObserver=new MutationObserver(()=>{if(!window.__TERAJU_CURRENCY_LABELS_PENDING){window.__TERAJU_CURRENCY_LABELS_PENDING=true;queueMicrotask(()=>{window.__TERAJU_CURRENCY_LABELS_PENDING=false;applyCurrencyLabels()})}});currencyObserver.observe(document.body,{subtree:true,childList:true,characterData:true})}
  window.addEventListener('teraju:countrychange',applyMarketExperience);window.addEventListener('teraju:countrychange',applyCurrencyLabels);window.addEventListener('teraju:ratechange',applyCurrencyLabels);if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',watchCurrencyLabels,{once:true});else watchCurrencyLabels();
  window.TERAJU_APPLY_COUNTRY_RATES=applyCountryRates;
