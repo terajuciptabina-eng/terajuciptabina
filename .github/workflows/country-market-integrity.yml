@@ -1,4 +1,4 @@
-name: Country market integrity tests # validates API loading and country/currency separation end-to-end in CI
+name: Country market integrity tests # validates API loading, source syntax and country/currency data integrity
 on:
   pull_request:
     branches: [main]
