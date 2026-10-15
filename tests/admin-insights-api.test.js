@@ -203,6 +203,8 @@ test('all changed country-market scripts parse and the rate dataset is complete'
   assert.match(rates.methodology, /not contractor-quoted or independently validated/i);
   for (const row of rates.rates) {
     for (const field of ['Malaysia_MYR', 'SGD', 'IDR', 'THB', 'PHP', 'VND', 'BND']) {
+      assert.notEqual(row[field], null, row.id + ' must not omit ' + field);
+      assert.notEqual(String(row[field]).trim(), '', row.id + ' must not leave ' + field + ' blank');
       assert.ok(Number.isFinite(Number(row[field])) && Number(row[field]) >= 0, row.id + ' must have valid ' + field);
     }
   }
