@@ -188,6 +188,8 @@ test('all changed country-market scripts parse and the rate dataset is complete'
   assert.equal(rates.rates.length, 122);
   assert.equal(rates.plannerCounts.build, 82);
   assert.equal(rates.plannerCounts.renovation, 40);
+  assert.doesNotMatch(rates.methodology, /\[object Object\]/, 'methodology must be human-readable, not object-coercion output');
+  assert.match(rates.methodology, /not contractor-quoted or independently validated/i);
   for (const row of rates.rates) {
     for (const field of ['Malaysia_MYR', 'SGD', 'IDR', 'THB', 'PHP', 'VND', 'BND']) {
       assert.ok(Number.isFinite(Number(row[field])) && Number(row[field]) >= 0, row.id + ' must have valid ' + field);
