@@ -46,13 +46,13 @@
       "name": "Vietnam",
       "code": "VN",
       "currency": "VND",
-      "status": "formula-estimated-needs-local-validation"
+      "status": "estimated"
     },
     {
       "name": "Brunei",
       "code": "BN",
       "currency": "BND",
-      "status": "formula-estimated-needs-local-validation"
+      "status": "estimated"
     }
   ],
   "methodology": "[object Object]\nPlanner classification is assigned from canonical rateItems.groupKey: 82 BuildPlanner items and 40 RenovationPlanner items.",
@@ -152,7 +152,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 48450000,
       "BND": 30855,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -168,7 +168,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 68400000,
       "BND": 43560,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -184,7 +184,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 2257000,
       "BND": 1996.5,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -200,7 +200,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 226000,
       "BND": 199.65,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -216,7 +216,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 33000,
       "BND": 29.04,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -232,7 +232,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 2257000,
       "BND": 1996.5,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -248,7 +248,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 84000,
       "BND": 74.41,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -264,7 +264,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 1436000,
       "BND": 1270.5,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -280,7 +280,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 226000,
       "BND": 199.65,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -296,7 +296,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 33000,
       "BND": 29.04,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -312,7 +312,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 1436000,
       "BND": 1270.5,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -328,7 +328,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 226000,
       "BND": 199.65,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -344,7 +344,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 33000,
       "BND": 29.04,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -360,7 +360,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 2257000,
       "BND": 1996.5,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -376,7 +376,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 226000,
       "BND": 199.65,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -392,7 +392,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 33000,
       "BND": 29.04,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -408,7 +408,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 2257000,
       "BND": 1996.5,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -424,7 +424,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 226000,
       "BND": 199.65,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -440,7 +440,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 84000,
       "BND": 74.41,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -456,7 +456,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 1724000,
       "BND": 1524.6,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -472,7 +472,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 1436000,
       "BND": 1270.5,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -488,7 +488,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 226000,
       "BND": 199.65,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -504,7 +504,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 84000,
       "BND": 74.41,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -520,7 +520,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 144000,
       "BND": 127.05,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -536,7 +536,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 2257000,
       "BND": 1996.5,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -552,7 +552,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 226000,
       "BND": 199.65,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -568,7 +568,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 33000,
       "BND": 29.04,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -584,7 +584,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 2257000,
       "BND": 1996.5,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -600,7 +600,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 84000,
       "BND": 74.41,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -616,7 +616,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 1436000,
       "BND": 1270.5,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -632,7 +632,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 226000,
       "BND": 199.65,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -648,7 +648,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 33000,
       "BND": 29.04,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -664,7 +664,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 1436000,
       "BND": 1270.5,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -680,7 +680,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 226000,
       "BND": 199.65,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -696,7 +696,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 33000,
       "BND": 29.04,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -712,7 +712,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 2257000,
       "BND": 1996.5,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -728,7 +728,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 226000,
       "BND": 199.65,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -744,7 +744,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 33000,
       "BND": 29.04,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -760,7 +760,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 2257000,
       "BND": 1996.5,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -776,7 +776,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 226000,
       "BND": 199.65,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -792,7 +792,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 84000,
       "BND": 74.41,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -808,7 +808,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 1847000,
       "BND": 1633.5,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -824,7 +824,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 333000,
       "BND": 272.25,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -840,7 +840,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 534000,
       "BND": 435.6,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -856,7 +856,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 422000,
       "BND": 344.85,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -872,7 +872,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 667000,
       "BND": 544.5,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -888,7 +888,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 133000,
       "BND": 108.9,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -904,7 +904,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 213000,
       "BND": 174.24,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -920,7 +920,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 734000,
       "BND": 598.95,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -936,7 +936,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 734000,
       "BND": 598.95,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -952,7 +952,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 667000,
       "BND": 544.5,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -968,7 +968,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 667000,
       "BND": 544.5,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -984,7 +984,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 734000,
       "BND": 598.95,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -1000,7 +1000,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 4891000,
       "BND": 3993,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -1016,7 +1016,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 3557000,
       "BND": 2904,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -1032,7 +1032,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 1778000,
       "BND": 1452,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -1048,7 +1048,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 1112000,
       "BND": 907.5,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -1064,7 +1064,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 889000,
       "BND": 726,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -1080,7 +1080,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 2394000,
       "BND": 2178,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -1096,7 +1096,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 9975000,
       "BND": 9075,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -1112,7 +1112,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 684000,
       "BND": 544.5,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -1128,7 +1128,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 912000,
       "BND": 726,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -1144,7 +1144,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 912000,
       "BND": 726,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -1160,7 +1160,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 912000,
       "BND": 726,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -1176,7 +1176,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 1368000,
       "BND": 1089,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -1192,7 +1192,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 912000,
       "BND": 726,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -1208,7 +1208,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 912000,
       "BND": 726,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -1224,7 +1224,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 684000,
       "BND": 544.5,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -1240,7 +1240,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 11400000,
       "BND": 9075,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -1256,7 +1256,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 11400000,
       "BND": 9075,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -1272,7 +1272,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 114000,
       "BND": 90.75,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -1288,7 +1288,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 5609000,
       "BND": 4356,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -1304,7 +1304,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 11685000,
       "BND": 9075,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -1320,7 +1320,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 3973000,
       "BND": 3085.5,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -1336,7 +1336,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 11218000,
       "BND": 8712,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -1352,7 +1352,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 5609000,
       "BND": 4356,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -1368,7 +1368,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 6544000,
       "BND": 5082,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -1384,7 +1384,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 4440000,
       "BND": 3448.5,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -1400,7 +1400,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 171570000,
       "BND": 156090,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -1416,7 +1416,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 25935000,
       "BND": 23595,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -1432,7 +1432,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 19950000,
       "BND": 18150,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -1448,7 +1448,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 7980000,
       "BND": 7260,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "build"
     },
     {
@@ -1464,7 +1464,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 53000,
       "BND": 43.56,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1480,7 +1480,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 62000,
       "BND": 50.82,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1496,7 +1496,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 889000,
       "BND": 726,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1512,7 +1512,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 2445000,
       "BND": 1996.5,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1528,7 +1528,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 1334000,
       "BND": 1089,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1544,7 +1544,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 53000,
       "BND": 43.56,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1560,7 +1560,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 62000,
       "BND": 50.82,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1576,7 +1576,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 889000,
       "BND": 726,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1592,7 +1592,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 2445000,
       "BND": 1996.5,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1608,7 +1608,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 1334000,
       "BND": 1089,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1624,7 +1624,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 53000,
       "BND": 43.56,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1640,7 +1640,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 62000,
       "BND": 50.82,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1656,7 +1656,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 889000,
       "BND": 726,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1672,7 +1672,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 2223000,
       "BND": 1815,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1688,7 +1688,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 2445000,
       "BND": 1996.5,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1704,7 +1704,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 5335000,
       "BND": 4356,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1720,7 +1720,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 4446000,
       "BND": 3630,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1736,7 +1736,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 5335000,
       "BND": 4356,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1752,7 +1752,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 98000,
       "BND": 79.86,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1768,7 +1768,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 98000,
       "BND": 79.86,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1784,7 +1784,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 53000,
       "BND": 43.56,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1800,7 +1800,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 889000,
       "BND": 726,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1816,7 +1816,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 2445000,
       "BND": 1996.5,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1832,7 +1832,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 2223000,
       "BND": 1815,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1848,7 +1848,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 98000,
       "BND": 79.86,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1864,7 +1864,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 98000,
       "BND": 79.86,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1880,7 +1880,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 53000,
       "BND": 43.56,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1896,7 +1896,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 13338000,
       "BND": 10890,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1912,7 +1912,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 5335000,
       "BND": 4356,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1928,7 +1928,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 889000,
       "BND": 726,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1944,7 +1944,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 889000,
       "BND": 726,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1960,7 +1960,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 98000,
       "BND": 79.86,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1976,7 +1976,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 53000,
       "BND": 43.56,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1992,7 +1992,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 889000,
       "BND": 726,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -2008,7 +2008,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 28454000,
       "BND": 23232,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -2024,7 +2024,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 12449000,
       "BND": 10164,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -2040,7 +2040,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 24453000,
       "BND": 19965,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -2056,7 +2056,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 98000,
       "BND": 79.86,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -2072,7 +2072,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 267000,
       "BND": 217.8,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -2088,7 +2088,7 @@
       "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
       "VND": 1112000,
       "BND": 907.5,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; provisional, not locally validated or contractor-quoted",
+      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
       "planner": "renovation"
     }
   ],

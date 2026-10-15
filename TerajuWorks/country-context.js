@@ -27,34 +27,61 @@
  function formatNumber(value,options={}){const c=current();return new Intl.NumberFormat(c.locale,{minimumFractionDigits:options.minimumFractionDigits??2,maximumFractionDigits:options.maximumFractionDigits??2}).format(Number(value)||0)}
  function format(value,options={}){const c=current();return new Intl.NumberFormat(c.locale,{style:'currency',currency:c.currency,minimumFractionDigits:options.minimumFractionDigits??2,maximumFractionDigits:options.maximumFractionDigits??2}).format(Number(value)||0)}
  async function loadRates(){if(!dataPromise)dataPromise=fetch(DATA_URL,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('Unable to load country rate comparison data');return r.json()});return dataPromise}
- async function rateById(id, snapshot){const ctx=normalize(snapshot||current());const data=await loadRates();const item=data.rates.find(x=>x.id===id);if(!item)return null;const rateField=ctx.countryCode==='MY'?'Malaysia_MYR':ctx.currency;const rawRate=item[rateField];if(rawRate===null||rawRate===undefined||String(rawRate).trim()==='')throw new Error('No validated rate for '+ctx.countryCode+' item '+id);const rate=Number(rawRate);if(!Number.isFinite(rate)||rate<0)throw new Error('No validated rate for '+ctx.countryCode+' item '+id);return {id:item.id,rate,currency:ctx.currency,countryCode:ctx.countryCode,planner:item.planner,provisional:ctx.countryCode==='VN'||ctx.countryCode==='BN'} }
+ async function rateById(id, snapshot){const ctx=normalize(snapshot||current());const data=await loadRates();const item=data.rates.find(x=>x.id===id);if(!item)return null;const rateField=ctx.countryCode==='MY'?'Malaysia_MYR':ctx.currency;const rawRate=item[rateField];if(rawRate===null||rawRate===undefined||String(rawRate).trim()==='')throw new Error('No rate value available for '+ctx.countryCode+' item '+id);const rate=Number(rawRate);if(!Number.isFinite(rate)||rate<0)throw new Error('No rate value available for '+ctx.countryCode+' item '+id);return {id:item.id,rate,currency:ctx.currency,countryCode:ctx.countryCode,planner:item.planner,rateStatus:ctx.countryCode==='MY'?'baseline':'estimated',provisional:false} }
  const RENOVATION_RATE_KEYS={plaster_ceiling:'ceiling',spc_flooring:'spc',downlight:'downlight',ceiling_fan:'ceilingFan',curtain_box_led:'curtainBoxLED',bar_lamp:'barLamp',kitchen_frame:'kitchenFrame',making_good:'kitchenMakingGood',swing_glass_door:'kitchenGlassDoor',floor_tiles:'floorTile',wall_tiles:'wallTile',kitchen_lighting:'barLamp',sanitary_accessories:'bathroomSanitary',toilet_door:'bathroomDoor',exhaust_fan:'exhaustFan',gate_motor:'gateMotor',brickwall_divider:'brickwallDivider',front_fence:'frontFence',facade_wall:'facadeWall',wall_light:'wallLight'};
  const BUILD_RATE_KEYS={building_plan_submission:'permit',site_mobilisation_project_management:'prelim',footing_concrete:'footingConc',footing_formwork:'footingFw',footing_rebar:'footingRebar',ground_slab_concrete:'slabConc',ground_slab_brc:'slabBrc',ground_beam_concrete:'beamConc',ground_beam_formwork:'beamFw',ground_beam_rebar:'beamRebar',roof_beam_concrete:'beamConc',roof_beam_formwork:'beamFw',roof_beam_rebar:'beamRebar',column_concrete:'colConc',column_formwork:'colFw',column_rebar:'colRebar',flat_roof_concrete:'flatRoofConc',flat_roof_formwork:'flatRoofFw',flat_roof_brc:'flatRoofBrc',roof_metal_roofing_sheet:'metalSheet',apron_concrete:'apronConc',apron_formwork:'apronFw',apron_brc:'apronBrc',drainage:'drainage',brickwall_internal_wall:'brickwallInt',brickwall_external_wall:'brickwallExt',floor_tiles_internal:'floorTileInt',floor_tiles_external:'floorTileExt',painting_internal:'paintInt',painting_external:'paintExt',ceiling_internal:'ceilingInt',ceiling_external:'ceilingExt',bathroom_wall_tiles:'bathWallTile',bathroom_floor_tiles:'bathFloorTile',bathroom_ceiling:'bathCeiling',bathroom_piping:'bathPiping',bathroom_wc:'bathWc',bathroom_basin:'bathBasin',bathroom_shower:'bathShower',bathroom_tap:'bathTap',water_tank:'waterTank',septic_tank:'septicTank',power_point:'powerPoint',switch:'switch',lighting:'lighting',fan:'fan',aircond_point:'aircond',porch_lighting:'lighting',porch_fan:'fan',porch_power_point:'powerPoint',earthing:'earthing',db_box:'dbBox',wiring:'wiring',doors_type_1_single_leaf:'door',doors_type_2_sliding:'door',doors_type_3_bathroom:'door',doors_type_4_double_leaf_main_door:'door',windows_type_1_1200_1200:'window',windows_type_2_1800_1200:'window',windows_type_3_900_600:'window',boundary_fencing:'boundaryFence',gate:'gate',driveway:'driveway',landscaping:'landscaping'};
  function canonicalBuildAlias(id){const token=String(id||'').replace(/^rule_/,'').replace(/_\d+$/,'');const keys=Object.keys(BUILD_RATE_KEYS).sort((a,b)=>b.length-a.length);const match=keys.find(key=>token===key||token.endsWith('_'+key));return match?BUILD_RATE_KEYS[match]:null;}
 
- let baseRates=null,applying=false,rateRefreshQueued=false;
+ let baseRates=null,applying=false,rateRefreshQueued=false,accountMarketReady=false;
  async function applyCountryRates(){
   // Account API hydration can finish while the initial (cached/default) market is still applying.
   // Queue a second pass instead of silently dropping the authoritative account market.
+  const roleCheck=String(params.get('role')||params.get('audience')||window.TERAJU_WORKSPACE_CONTEXT?.role||'').toLowerCase();
+  const idCheck=String(params.get('id')||params.get('contractorId')||params.get('homeownerId')||'').trim();
+  if(!accountMarketReady)return; // Never apply rates before API verification of the registered account market.
   if(applying){rateRefreshQueued=true;return;}applying=true;
   try{
    const ctx=current(),data=await loadRates();
    if(typeof RATES==='undefined'||!RATES||typeof RATES!=='object')return;
-   if(!baseRates)baseRates={...RATES};
+   const selected=data.rates.filter(x=>x.planner===plannerType);
+   if(selected.length!==(plannerType==='build'?82:40))throw new Error('Country rate set failed planner-count validation.');
+   if(!baseRates){
+    baseRates={...RATES};
+    // Keep a deterministic baseline for comparison records not yet consumed by a planner control.
+    selected.forEach(item=>{
+     if(plannerType!=='build')return;
+     const alias=canonicalBuildAlias(item.id);
+     if(!alias)throw new Error('No BuildPlanner rate-key mapping for '+item.id);
+     if(!Object.prototype.hasOwnProperty.call(baseRates,alias)){
+      const baseline=Number(item.Malaysia_MYR);
+      if(!Number.isFinite(baseline)||baseline<0)throw new Error('Missing Malaysia baseline rate for '+item.id);
+      baseRates[alias]=baseline;
+     }
+    });
+   }
    if(ctx.countryCode==='MY'){
     Object.assign(RATES,baseRates);
+    window.TERAJU_RATE_CONTEXT={countryCode:'MY',currency:'MYR',name:'Malaysia',source:'data/rates/default.json',rateStatus:'baseline'};
+    window.dispatchEvent(new CustomEvent('teraju:ratechange',{detail:window.TERAJU_RATE_CONTEXT}));
     if(typeof window.TERAJU_RESOLVE_RATE==='function')await window.TERAJU_RESOLVE_RATE();
     else if(typeof updateEstimate==='function')updateEstimate();
     return;
    }
-   const selected=data.rates.filter(x=>x.planner===plannerType);
-   if(selected.length!==(plannerType==='build'?82:40))throw new Error('Country rate set failed planner-count validation.');
+   const mappedBuildRates={};
    for(const item of selected){
     const rateField=ctx.countryCode==='MY'?'Malaysia_MYR':ctx.currency;const rawValue=item[rateField];if(rawValue===null||rawValue===undefined||String(rawValue).trim()==='')throw new Error('Missing '+rateField+' rate for '+item.id);const value=Number(rawValue);if(!Number.isFinite(value)||value<0)throw new Error('Invalid '+rateField+' rate for '+item.id);
-    if(plannerType==='build'){const alias=canonicalBuildAlias(item.id);if(alias&&Object.prototype.hasOwnProperty.call(baseRates,alias))RATES[alias]=value;}
-    else {const token=item.id.replace(/^renovation_rule_/,'').replace(/_\d+$/,'');const aliasKey=Object.keys(RENOVATION_RATE_KEYS).sort((a,b)=>b.length-a.length).find(key=>token===key||token.endsWith('_'+key));const alias=aliasKey?RENOVATION_RATE_KEYS[aliasKey]:'';if(!alias)throw new Error('No RenovationPlanner rate-key mapping for '+item.id);RATES[alias]=value;}
+    if(plannerType==='build'){
+     const alias=canonicalBuildAlias(item.id);if(!alias)throw new Error('No BuildPlanner rate-key mapping for '+item.id);if(!Object.prototype.hasOwnProperty.call(baseRates,alias))throw new Error('Missing BuildPlanner baseline rate key '+alias+' for '+item.id);
+     (mappedBuildRates[alias]||(mappedBuildRates[alias]=[])).push(value);
+    }else{
+     const token=item.id.replace(/^renovation_rule_/,'').replace(/_\d+$/,'');const aliasKey=Object.keys(RENOVATION_RATE_KEYS).sort((a,b)=>b.length-a.length).find(key=>token===key||token.endsWith('_'+key));const alias=aliasKey?RENOVATION_RATE_KEYS[aliasKey]:'';if(!alias)throw new Error('No RenovationPlanner rate-key mapping for '+item.id);if(!Object.prototype.hasOwnProperty.call(baseRates,alias))throw new Error('Missing RenovationPlanner baseline rate key '+alias+' for '+item.id);RATES[alias]=value;
+    }
    }
-   window.TERAJU_RATE_CONTEXT={countryCode:ctx.countryCode,currency:ctx.currency,name:ctx.name,source:'country-comparison-2026.json',provisional:ctx.countryCode==='VN'||ctx.countryCode==='BN'};
+   // BuildPlanner currently exposes generic door/window/roof-sheet rate keys while the
+   // comparison table has type-specific rows. Aggregate those rows rather than letting
+   // the last item silently overwrite the others; values remain explicitly estimated.
+   Object.entries(mappedBuildRates).forEach(([alias,values])=>{RATES[alias]=values.reduce((sum,value)=>sum+value,0)/values.length;});
+   window.TERAJU_RATE_CONTEXT={countryCode:ctx.countryCode,currency:ctx.currency,name:ctx.name,source:'country-comparison-2026.json',rateStatus:'estimated',provisional:false};
    window.dispatchEvent(new CustomEvent('teraju:ratechange',{detail:window.TERAJU_RATE_CONTEXT}));
    if(typeof updateEstimate==='function')updateEstimate();
   }catch(error){console.error('[TERAJU] Country rate integration failed:',error);window.TERAJU_COUNTRY_RATE_ERROR=String(error?.message||error);const ctx=current();if(ctx.countryCode!=='MY'&&typeof RATES!=='undefined'&&RATES&&typeof RATES==='object'){Object.keys(RATES).forEach(key=>{RATES[key]=NaN});let banner=document.getElementById('tc-country-rate-error');if(!banner){banner=document.createElement('div');banner.id='tc-country-rate-error';banner.setAttribute('role','alert');banner.style.cssText='position:sticky;top:0;z-index:99999;padding:12px 16px;background:#fff1f2;color:#9f1239;border-bottom:1px solid #fecdd3;font:600 14px/1.45 system-ui,sans-serif';banner.textContent='Country rate data is unavailable. Cost estimates are disabled until valid local rates are available.';document.body.prepend(banner)}document.querySelectorAll('button').forEach(button=>{if(/estimate|quotation|generate|export pdf|download pdf/i.test(button.textContent||'')){button.disabled=true;button.setAttribute('aria-disabled','true')}})}}
@@ -91,7 +118,7 @@
  }
  // Country is inherited from the signed-in account/project context. Do not inject a second country selector into planners.
  function accountCountry(){
-  const roleRaw=String(params.get('role')||params.get('audience')||'').toLowerCase();
+  const roleRaw=String(params.get('role')||params.get('audience')||window.TERAJU_WORKSPACE_CONTEXT?.role||'').toLowerCase();
   const role=roleRaw==='homeowner'||roleRaw==='contractor'?roleRaw:'';
   const roleAccount=role?(()=>{try{return JSON.parse(localStorage.getItem('teraju.'+role+'.github.v1')||'null')}catch{return null}})():null;
   const readCountry=value=>{const raw=value?.country||value?.countryCode||value?.profile?.country||value?.profile?.countryCode;const code=String(raw||'').trim().toUpperCase();return CURRENCIES[code]?code:''};
@@ -108,16 +135,16 @@
  }
 
  async function hydrateAccountCountry(){
-  const roleRaw=String(params.get('role')||params.get('audience')||'').toLowerCase();
+  const roleRaw=String(params.get('role')||params.get('audience')||window.TERAJU_WORKSPACE_CONTEXT?.role||'').toLowerCase();
   const role=roleRaw==='homeowner'||roleRaw==='contractor'?roleRaw:'';
-  const id=String(params.get('id')||params.get('contractorId')||params.get('homeownerId')||(()=>{try{if(role==='contractor'){const active=localStorage.getItem('teraju.contractor.local.v1.activeContractorId');if(active)return active;const saved=JSON.parse(localStorage.getItem('teraju.contractor.github.v1')||'null');return saved?.contractorId||saved?.id||saved?.profile?.contractorId||''}const saved=JSON.parse(localStorage.getItem('teraju.homeowner.github.v1')||'null');return saved?.homeownerId||saved?.id||saved?.profile?.homeownerId||''}catch{return ''}})()).trim().toUpperCase();
-  if(!role||!id)return;
+  const id=String(params.get('id')||params.get('contractorId')||params.get('homeownerId')||window.TERAJU_WORKSPACE_CONTEXT?.id||window.TERAJU_WORKSPACE_CONTEXT?.contractorId||window.TERAJU_WORKSPACE_CONTEXT?.homeownerId||(()=>{try{if(role==='contractor'){const active=localStorage.getItem('teraju.contractor.local.v1.activeContractorId');if(active)return active;const saved=JSON.parse(localStorage.getItem('teraju.contractor.github.v1')||'null');return saved?.contractorId||saved?.id||saved?.profile?.contractorId||''}const saved=JSON.parse(localStorage.getItem('teraju.homeowner.github.v1')||'null');return saved?.homeownerId||saved?.id||saved?.profile?.homeownerId||''}catch{return ''}})()).trim().toUpperCase();
+  if(!role||!id){accountMarketReady=true;return false;}
   try{
    const response=await fetch('https://terajuciptabina.vercel.app/api/auth?role='+encodeURIComponent(role)+'&id='+encodeURIComponent(id),{cache:'no-store',credentials:'omit'});
-   if(!response.ok)return;
+   if(!response.ok)return false;
    const account=await response.json();
    const code=String(account?.country||account?.countryCode||'').trim().toUpperCase();
-   if(!CURRENCIES[code])return;
+   if(!CURRENCIES[code])return false;
    // The API record is authoritative. Refresh the role-specific local cache before
    // calling current(), otherwise a stale cached country can override the API result.
    try{
@@ -127,10 +154,12 @@
    }catch(error){console.warn('[TERAJU] Unable to refresh cached account country:',error)}
    const ctx=normalize({countryCode:code,projectId:params.get('projectId')||params.get('quotationId')||'',source:'account-api'});
    window.TERAJU_PROJECT_COUNTRY=ctx;
+   accountMarketReady=true;
    safeWrite(ctx);
    window.dispatchEvent(new CustomEvent('teraju:countrychange',{detail:ctx}));
    await applyCountryRates();
-  }catch(error){console.error('[TERAJU] Unable to resolve account country:',error)}
+   return true;
+  }catch(error){console.error('[TERAJU] Unable to resolve account country:',error);return false}
  }
 
  window.TERAJU_COUNTRIES=CURRENCIES;
@@ -145,6 +174,17 @@
  window.TERAJU_GET_COUNTRY_RATE=rateById;
  window.TERAJU_GET_COUNTRY_RATE_DATA=loadRates;
  window.TERAJU_PROJECT_COUNTRY=current();
- applyCountryRates();
- hydrateAccountCountry();
+ const marketGate=document.createElement('div');marketGate.id='tc-country-market-gate';marketGate.setAttribute('role','status');marketGate.style.cssText='position:fixed;inset:0;z-index:2147483647;display:flex;align-items:center;justify-content:center;padding:28px;background:#fff;color:#0f172a;text-align:center;font:600 16px/1.5 system-ui,sans-serif';marketGate.textContent='Verifying registered account market…';document.body.appendChild(marketGate);
+ const rolePresent=String(params.get('role')||params.get('audience')||window.TERAJU_WORKSPACE_CONTEXT?.role||'').trim();
+ const idPresent=String(params.get('id')||params.get('contractorId')||params.get('homeownerId')||window.TERAJU_WORKSPACE_CONTEXT?.id||window.TERAJU_WORKSPACE_CONTEXT?.contractorId||window.TERAJU_WORKSPACE_CONTEXT?.homeownerId||'').trim();
+ hydrateAccountCountry().then(resolved=>{
+  if(resolved){document.getElementById('tc-country-market-gate')?.remove();return;}
+  const message=rolePresent&&idPresent
+   ?'Unable to verify registered account country. Cost estimation remains locked; please sign in again or retry when the account service is available.'
+   :'Sign in through a registered workspace to load country-specific rates.';
+  window.TERAJU_COUNTRY_CONTEXT_ERROR=message;
+  if(typeof RATES!=='undefined'&&RATES&&typeof RATES==='object'){if(!baseRates)baseRates={...RATES};Object.keys(RATES).forEach(key=>{RATES[key]=NaN});if(typeof updateEstimate==='function')updateEstimate();}
+  marketGate.setAttribute('role','alert');marketGate.textContent=message;
+  document.querySelectorAll('button').forEach(button=>{if(/estimate|quotation|generate|export pdf|download pdf|save cost estimate/i.test(button.textContent||'')){button.disabled=true;button.setAttribute('aria-disabled','true')}});
+ });
 })();
