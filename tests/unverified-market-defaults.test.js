@@ -5,6 +5,9 @@ import { readFileSync } from 'node:fs';
 const countryContext = readFileSync(new URL('../TerajuWorks/country-context.js', import.meta.url), 'utf8');
 const projectControl = readFileSync(new URL('../api/project-control.js', import.meta.url), 'utf8');
 const adminDatabase = readFileSync(new URL('../TerajuWorks/admin-database.html', import.meta.url), 'utf8');
+const contractPage = readFileSync(new URL('../TerajuWorks/contract.html', import.meta.url), 'utf8');
+const workProgramPage = readFileSync(new URL('../TerajuWorks/work-program.html', import.meta.url), 'utf8');
+const authApi = readFileSync(new URL('../api/auth.js', import.meta.url), 'utf8');
 
 test('unverified account market never defaults to Malaysia in country context', () => {
   assert.match(countryContext, /function countryCode\(value\)\{[^}]*return CURRENCIES\[c\]\?c:''\}/);
@@ -22,4 +25,16 @@ test('Project Control persistence requires verified market metadata instead of M
 
 test('Admin Database renders missing account country as UNVERIFIED, not Malaysia', () => {
   assert.match(adminDatabase, /const country=\(x\.country\|\|'UNVERIFIED'\)==='MY'\?'Malaysia':\(x\.countryName\|\|x\.country\|\|'UNVERIFIED'\)/);
+});
+
+test('Contract and Work Program do not silently label missing market metadata as Malaysia', () => {
+  assert.doesNotMatch(contractPage, /countryCode:quotation\.countryCode\|\|quotation\.plannerState\?\.projectCountry\?\.countryCode\|\|'MY'/);
+  assert.doesNotMatch(contractPage, /currency:quotation\.currency\|\|quotation\.plannerState\?\.projectCountry\?\.currency\|\|'MYR'/);
+  assert.doesNotMatch(workProgramPage, /countryCode:selected\.countryCode\|\|selected\.plannerState\?\.projectCountry\?\.countryCode\|\|'MY'/);
+  assert.doesNotMatch(workProgramPage, /currency:selected\.currency\|\|selected\.plannerState\?\.projectCountry\?\.currency\|\|'MYR'/);
+});
+
+test('WhatsApp welcome flow does not infer Malaysia when country is absent', () => {
+  assert.match(authApi, /if \(!validCountry\(country\)\) return \{ sent: false, reason: 'Registered country is not verified\.' \};\s*const normalizedPhone = normalizePhoneForCountry\(phone, country\);/);
+  assert.doesNotMatch(authApi, /normalizePhoneForCountry\(phone, country \|\| 'MY'\)/);
 });
