@@ -117,7 +117,8 @@ export default async function handler(req, res) {
       return { sent: false, reason: 'WhatsApp service is not configured.' };
     }
 
-    const normalizedPhone = normalizePhoneForCountry(phone, country || 'MY');
+    if (!validCountry(country)) return { sent: false, reason: 'Registered country is not verified.' };
+    const normalizedPhone = normalizePhoneForCountry(phone, country);
     const recipient = normalizedPhone.replace(/^\+/, '');
     if (!/^\d{8,15}$/.test(recipient)) {
       console.log('WhatsApp skipped: invalid recipient format', {
