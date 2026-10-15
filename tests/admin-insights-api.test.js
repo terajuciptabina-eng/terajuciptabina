@@ -124,7 +124,7 @@ test('Admin Insights isolates country metrics and quarantines conflicting estima
     .map(match => match[1]).find(value => value.includes('function recordMatchesAccountMarket'));
   assert.ok(script, 'Admin Insights market functions must exist');
   const start = script.indexOf('const CURRENCIES=');
-  const end = script.indexOf('function dateKey(');
+  const end = script.indexOf('function destroy(');
   assert.ok(start >= 0 && end > start, 'market function block must be extractable');
   const block = script.slice(start, end);
   const context = {
