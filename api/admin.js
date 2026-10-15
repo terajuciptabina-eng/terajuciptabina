@@ -58,7 +58,7 @@ export default async function handler(req,res){
   try{return JSON.parse(content)}catch{return null}
 }
   const DIAL_CODES={MY:'60',SG:'65',ID:'62',TH:'66',PH:'63',VN:'84',BN:'673'};
-  function phoneMatchesCountry(value,country){const raw=String(value||'').trim();if(!raw)return true;const digits=raw.replace(/\\D/g,'');const dial=DIAL_CODES[country];if(!dial)return false;const normalized=raw.startsWith('+')?digits:(digits.startsWith(dial)?digits:dial+digits.replace(/^0+/,''));if(!normalized.startsWith(dial)||normalized.length-dial.length<7||normalized.length-dial.length>12)return false;return !/^(\\d)\\1+$/.test(normalized.slice(dial.length));}
+  function phoneMatchesCountry(value,country){const raw=String(value||'').trim();if(!raw)return true;const digits=raw.replace(/\D/g,'');const dial=DIAL_CODES[country];if(!dial)return false;const normalized=raw.startsWith('+')?digits:(digits.startsWith(dial)?digits:dial+digits.replace(/^0+/,''));if(!normalized.startsWith(dial)||normalized.length-dial.length<7||normalized.length-dial.length>12)return false;return !/^(\d)\1+$/.test(normalized.slice(dial.length));}
   async function findUser(role,id){const folder=role==='homeowner'?'homeowners':'contractors';const listing=await github(`data/users/${folder}`);if(!listing.response.ok||!Array.isArray(listing.data))return{error:'Database folder not found.'};for(const item of listing.data.filter(x=>x.type==='file'&&x.name.endsWith('.json'))){const record=await readJson(`data/users/${folder}/${item.name}`);const recordId=String(record?.homeownerId||record?.contractorId||'').trim();if(recordId===id)return{folder,item,record}}return{error:'User not found.'}}
   try{
     if(String(req.query?.['development-log']||'')==='1'){
