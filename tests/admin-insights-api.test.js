@@ -180,7 +180,7 @@ test('all changed country-market scripts parse and the rate dataset is complete'
   ];
   for (const relative of htmlPaths) {
     const source = await readFile(new URL(relative, import.meta.url), 'utf8');
-    const scripts = [...source.matchAll(/<script\\b(?![^>]*\\bsrc=)[^>]*>([\\s\\S]*?)<\\/script>/gi)].map(m => m[1]).filter(x => x.trim());
+    const scripts = [...source.matchAll(/<script\b(?![^>]*\bsrc=)[^>]*>([\s\S]*?)<\/script>/gi)].map(m => m[1]).filter(x => x.trim());
     assert.ok(scripts.length, relative + ' should contain inline application code');
     scripts.forEach((script, index) => assert.doesNotThrow(() => new Script(script), relative + ' inline script ' + index + ' must parse'));
   }
