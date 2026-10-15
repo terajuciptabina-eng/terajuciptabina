@@ -199,8 +199,7 @@ export default async function handler(req, res) {
       if (!result.response.ok) return res.status(502).json({ message: 'Unable to read account record.' });
       const content = decodeGithubContent(result.data);
       const record = JSON.parse(content);
-      // Existing accounts predate country support; treat them as Malaysia until Admin explicitly changes the account country.
-      if (!record.country) record.country = 'MY';
+      // Do not silently classify legacy accounts as Malaysia. The workspace must be explicitly assigned a market.
       return res.status(200).json(record);
     }
 
@@ -215,6 +214,8 @@ export default async function handler(req, res) {
       const content = decodeGithubContent(current.data);
       let record;
       try { record = JSON.parse(content); } catch { return res.status(502).json({ message: 'Account record is invalid.' }); }
+      const accountCountry = String(record.country || '').trim().toUpperCase();
+      if (!['MY','SG','ID','TH','PH','VN','BN'].includes(accountCountry)) return res.status(409).json({ message: 'Account country is not verified. Set the registered country in Admin before updating this profile.' });
       const incoming = body.profile && typeof body.profile === 'object' ? body.profile : {};
       const existingProfile = record.profile && typeof record.profile === 'object' ? record.profile : {};
       const nextProfile = { ...existingProfile };
@@ -223,11 +224,10 @@ export default async function handler(req, res) {
       });
       if (String(nextProfile.name || '').trim() === '') return res.status(400).json({ message: 'Company / contractor name is required.' });
       if (nextProfile.email && !validEmail(nextProfile.email)) return res.status(400).json({ message: 'Please enter a valid email address.' });
-      if (nextProfile.phone && !validPhone(nextProfile.phone, record.country || 'MY')) return res.status(400).json({ message: 'Please enter a valid phone number for this account country.' });
+      if (nextProfile.phone && !validPhone(nextProfile.phone, record.country)) return res.status(400).json({ message: 'Please enter a valid phone number for this account country.' });
       if (nextProfile.phone) nextProfile.phone = normalizePhoneForCountry(nextProfile.phone, record.country || 'MY');
       if (String(nextProfile.logoDataUrl || '').length > 350000) return res.status(413).json({ message: 'Logo image is too large. Please use a smaller image.' });
       record.profile = nextProfile;
-      if (!record.country) record.country = 'MY';
       record.updatedAt = new Date().toISOString();
       const updated = await github(pathFor(role, id), {
         method: 'PUT',
