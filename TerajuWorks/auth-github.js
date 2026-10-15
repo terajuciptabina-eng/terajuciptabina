@@ -69,7 +69,7 @@
     return !new Set(['a@b.com', 'test@test.com', 'abc@abc.com', 'test@example.com', 'user@example.com']).has(email);
   };
   const normalizePhone = value => String(value || '').replace(/[\s().-]/g, '');
-  const validPhone = (value, country = 'MY') => {
+  const validPhone = (value, country = '') => {
     const normalized = normalizePhoneForCountry(value, country);
     const dial = DIAL_CODES[country];
     if (!normalized || !dial || !normalized.startsWith('+' + dial)) return false;
@@ -289,7 +289,7 @@ ${workspaceUrl}`;
     renderProfileLogo(profileLogoDataUrl);
     if (!profile.name) return setProfileStatus('Company / Contractor Name is required.');
     if (!validEmail(profile.email)) return setProfileStatus('Please enter a valid email address.');
-    if (!validPhone(profile.phone, getLocal()?.country || 'MY')) return setProfileStatus('Please enter a valid phone number for your account country.');
+    if (!validPhone(profile.phone, getLocal()?.country || '')) return setProfileStatus('Please enter a valid phone number for your account country.');
     if (profile.logoDataUrl.length > 900000) return setProfileStatus('Logo image is too large. Please use a smaller image.');
     profileSave.disabled = true; profileSave.textContent = 'Saving…'; setProfileStatus('');
     try {
