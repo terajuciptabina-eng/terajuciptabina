@@ -1,4 +1,4 @@
-name: Country market integrity tests
+name: Country market integrity tests # verifies API loading and market isolation
 on:
   pull_request:
     branches: [main]
