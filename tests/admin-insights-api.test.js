@@ -149,5 +149,5 @@ test('Admin Insights isolates country metrics and quarantines conflicting estima
   const display = context.api.moneyByCurrency([{countryCode:'SG',record:{total:200}},{countryCode:'MY',record:{total:100}}]);
   assert.match(display, /Singapore \(SGD S\$ 200\)/);
   assert.match(display, /Malaysia \(MYR RM 100\)/);
-  assert.ok(display.indexOf('Singapore') < display.indexOf('Malaysia'), 'currency groups should be deterministic');
+  assert.ok(display.indexOf('Malaysia') < display.indexOf('Singapore'), 'currency groups should be alphabetically deterministic');
 });
