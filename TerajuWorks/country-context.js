@@ -18,6 +18,7 @@
  const params=new URLSearchParams(location.search);
  const plannerType=/renovationplanner-v2\.html$/i.test(location.pathname)?'renovation':'build';
  let dataPromise=null;
+ window.TERAJU_ACCOUNT_MARKET_VERIFIED=false;
  function safeRead(){try{return JSON.parse(sessionStorage.getItem(STORAGE_KEY)||'null')}catch{return null}}
  function safeWrite(value){try{sessionStorage.setItem(STORAGE_KEY,JSON.stringify(value))}catch{}}
  function countryCode(value){const c=String(value||'').trim().toUpperCase();return CURRENCIES[c]?c:'MY'}
@@ -155,6 +156,7 @@
    const ctx=normalize({countryCode:code,projectId:params.get('projectId')||params.get('quotationId')||'',source:'account-api'});
    window.TERAJU_PROJECT_COUNTRY=ctx;
    accountMarketReady=true;
+   window.TERAJU_ACCOUNT_MARKET_VERIFIED=true;
    safeWrite(ctx);
    window.dispatchEvent(new CustomEvent('teraju:countrychange',{detail:ctx}));
    await applyCountryRates();
