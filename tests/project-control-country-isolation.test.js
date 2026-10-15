@@ -61,3 +61,12 @@ test('Project Control PUT accepts matching Singapore market and stamps SGD metad
  assert.equal(res.body.record.currency,'SGD');
  assert.equal(res.body.record.currencySymbol,'S$');
 });
+
+test('Project Control quarantines a legacy source estimate without country/currency metadata',async t=>{
+ const legacyEstimate={quotationId:'QT-SG-1',total:1000,items:[]};
+ setup(t,{account:accountWith('SG',legacyEstimate)});
+ const res=makeRes();
+ await handler({method:'GET',query:{id:'CTR-TEST',plannerType:'build',quotationId:'QT-SG-1'}},res);
+ assert.equal(res.statusCode,409);
+ assert.match(res.body.message,/country/i);
+});
