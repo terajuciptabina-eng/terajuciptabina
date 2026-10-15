@@ -54,8 +54,8 @@ export default async function handler(req, res) {
     if(result.response.status===404)return{status:404};
     if(!result.response.ok)return{status:502};
     let account;try{account=JSON.parse(Buffer.from(result.data?.content||'','base64').toString('utf8'))}catch{return{status:502}}
-    const accountCountry=String(account?.country||'MY').trim().toUpperCase();
-    if(!CURRENCY_BY_COUNTRY[accountCountry])return{status:409,message:'Contractor account country is unsupported.'};
+    const accountCountry=String(account?.country||'').trim().toUpperCase();
+    if(!CURRENCY_BY_COUNTRY[accountCountry])return{status:409,message:'Contractor account country is not verified. Set the registered country in Admin before using Project Control.'};
     const list=Array.isArray(account?.plannerRecords?.[type])?account.plannerRecords[type]:[];
     const estimate=list.find(q=>String(q?.quotationId||'')===qid);
     if(!estimate)return{status:404,message:'Source Cost Estimate not found for this Project Control record.'};
