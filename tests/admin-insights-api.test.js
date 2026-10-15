@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import vm from 'node:vm';
 import handler from '../api/admin.js';
 
 const originalFetch = globalThis.fetch;
@@ -113,4 +114,40 @@ test('Admin Insights fails clearly when a country-independent account index fail
   assert.equal(res.statusCode, 502);
   assert.match(res.body.message, /contractor account index/i);
   assert.equal(res.body.accounts, undefined, 'must not return partial account metrics');
+});
+
+
+test('Admin Insights isolates country metrics and quarantines conflicting estimate metadata', async () => {
+  const html = (await import('node:fs/promises')).readFile;
+  const source = await html(new URL('../TerajuWorks/admin-insights.html', import.meta.url), 'utf8');
+  const script = [...source.matchAll(/<script\\b(?![^>]*\\bsrc=)[^>]*>([\\s\\S]*?)<\\/script>/gi)]
+    .map(match => match[1]).find(value => value.includes('function recordMatchesAccountMarket'));
+  assert.ok(script, 'Admin Insights market functions must exist');
+  const start = script.indexOf('const CURRENCIES=');
+  const end = script.indexOf('function dateKey(');
+  assert.ok(start >= 0 && end > start, 'market function block must be extractable');
+  const block = script.slice(start, end);
+  const context = {
+    document: { getElementById(id) { return { value: id === 'countryFilter' ? 'SG' : 'all' }; } },
+    Intl, Number, String, Array, Object, Math, Date
+  };
+  vm.createContext(context);
+  vm.runInContext('let accounts=[];\\n' + block + '\\n globalThis.api={setAccounts(v){accounts=v},accountCountry,recordsFor,recordMatchesAccountMarket,quarantinedRecordCount,filteredCountryAccounts,moneyByCurrency};', context);
+  const accounts = [
+    {id:'MY-1',country:'MY',role:'homeowner',plannerRecords:{build:[{plannerType:'build',total:100,countryCode:'MY',currency:'MYR'}]}},
+    {id:'SG-1',country:'SG',role:'contractor',plannerRecords:{build:[{plannerType:'build',total:200,countryCode:'SG',currency:'SGD'}]}},
+    {id:'SG-2',country:'SG',role:'contractor',plannerRecords:{build:[{plannerType:'build',total:9000,countryCode:'SG',currency:'SGD',plannerState:{projectCountry:{countryCode:'MY',currency:'MYR'}}}]}},
+    {id:'VN-1',country:'VN',role:'homeowner',plannerRecords:{renovation:[{plannerType:'renovation',total:300,countryCode:'VN',currency:'VND'}]}},
+    {id:'SG-3',country:'SG',role:'contractor',plannerRecords:{build:[{plannerType:'build',total:500}]}}
+  ];
+  context.api.setAccounts(accounts);
+  assert.equal(context.api.filteredCountryAccounts().length, 3, 'Singapore account filter must not include other countries');
+  assert.equal(context.api.recordsFor(accounts[1]).length, 1, 'consistent Singapore estimate should remain visible');
+  assert.equal(context.api.recordsFor(accounts[2]).length, 0, 'conflicting nested country/currency metadata must be excluded');
+  assert.equal(context.api.recordsFor(accounts[4]).length, 0, 'non-MY estimates without country metadata must be excluded');
+  assert.equal(context.api.quarantinedRecordCount(), 2, 'both invalid Singapore estimates should be counted');
+  const display = context.api.moneyByCurrency([{countryCode:'SG',record:{total:200}},{countryCode:'MY',record:{total:100}}]);
+  assert.match(display, /Singapore \\(SGD S\\$ 200\\)/);
+  assert.match(display, /Malaysia \\(MYR RM 100\\)/);
+  assert.ok(display.indexOf('Singapore') < display.indexOf('Malaysia'), 'currency groups should be deterministic');
 });
