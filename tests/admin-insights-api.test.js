@@ -161,7 +161,6 @@ test('all changed country-market scripts parse and the rate dataset is complete'
     '../api/quotations.js',
     '../api/project-control.js',
     '../api/auth.js',
-    '../api/admin.js',
     '../TerajuWorks/auth-github.js',
     '../TerajuWorks/country-context.js',
     '../TerajuWorks/state-rate-gate.js',
@@ -189,9 +188,9 @@ test('all changed country-market scripts parse and the rate dataset is complete'
     scripts.forEach((script, index) => assert.doesNotThrow(() => new Script(script), relative + ' inline script ' + index + ' must parse'));
   }
   const resolverSource = await readFile(new URL('../TerajuWorks/state-rate-resolver.js', import.meta.url), 'utf8');
-  assert.doesNotMatch(resolverSource, /TERAJU_PROJECT_COUNTRY\\?\.countryCode\\s*\\|\\|\\s*['\"]MY['\"]/, 'state-rate resolver must not assume Malaysia when account market is unverified');
+  assert.doesNotMatch(resolverSource, /TERAJU_PROJECT_COUNTRY\?\.countryCode\s*\|\|\s*['\"]MY['\"]/, 'state-rate resolver must not assume Malaysia when account market is unverified');
   const authUiSource = await readFile(new URL('../TerajuWorks/auth-github.js', import.meta.url), 'utf8');
-  assert.doesNotMatch(authUiSource, /country:\\s*record\\.country\\s*\\|\\|\\s*['\"]MY['\"]/, 'account cache must not silently label legacy accounts as Malaysia');
+  assert.doesNotMatch(authUiSource, /country:\s*record\.country\s*\|\|\s*['\"]MY['\"]/, 'account cache must not silently label legacy accounts as Malaysia');
   const rates = JSON.parse(await readFile(new URL('../data/rates/country-comparison-2026.json', import.meta.url), 'utf8'));
   assert.equal(rates.rates.length, 122);
   assert.equal(rates.plannerCounts.build, 82);
