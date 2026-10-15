@@ -93,8 +93,8 @@ export default async function handler(req, res) {
     if (!validRole(role) || !id || !validPlanner(plannerType)) return res.status(400).json({ message: 'Invalid role, id or planner type.' });
     const current = await readRecord(role, id); if (!current.record) return res.status(current.status === 404 ? 404 : 502).json({ message: current.status === 404 ? 'Account not found.' : 'Unable to read account record.' });
     if (req.method === 'GET') {
-      const accountCountry=String(current.record.country||'MY').trim().toUpperCase();
-      if(!MARKET_META[accountCountry])return res.status(409).json({message:'Account country is not supported.'});
+      const accountCountry=String(current.record.country||'').trim().toUpperCase();
+      if(!MARKET_META[accountCountry])return res.status(409).json({message:'Account country is not verified. Set the registered country in Admin before accessing Cost Estimates.'});
       const all=plannerList(current.record,plannerType);
       const safe=all.filter(q=>matchesAccountMarket(q,accountCountry));
       const excludedMarketRecordCount=all.length-safe.length;
@@ -109,7 +109,9 @@ export default async function handler(req, res) {
       if (!sourceQuotationId) return res.status(400).json({ message: 'Missing quotationId.' });
       const list = plannerList(current.record, plannerType);
       const sourceQuotation = list.find(q => q?.quotationId === sourceQuotationId);
-      if (!sourceQuotation || !matchesAccountMarket(sourceQuotation,String(current.record.country||'MY').trim().toUpperCase())) return res.status(404).json({ message: 'Cost estimate not found in this account market.' });
+      const duplicateAccountCountry=String(current.record.country||'').trim().toUpperCase();
+      if(!MARKET_META[duplicateAccountCountry])return res.status(409).json({message:'Account country is not verified. Set the registered country in Admin before duplicating Cost Estimates.'});
+      if (!sourceQuotation || !matchesAccountMarket(sourceQuotation,duplicateAccountCountry)) return res.status(404).json({ message: 'Cost estimate not found in this account market.' });
       const now = new Date().toISOString();
       const type = quotationType(sourceQuotation.quotationType);
       const baseNumber = nextBaseNumber(current.record, plannerType);
@@ -118,7 +120,7 @@ export default async function handler(req, res) {
       const estimateNumber = displayEstimateNumber(estimateBaseNumber, plannerType, type);
       const newQuotationId = `QT-${plannerType === 'renovation' ? 'REN' : 'BLD'}-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).slice(2,7).toUpperCase()}`;
       const duplicate = JSON.parse(JSON.stringify(sourceQuotation));
-      const duplicateCountry=String(current.record.country||'MY').trim().toUpperCase(),duplicateMarket=MARKET_META[duplicateCountry];
+      const duplicateCountry=duplicateAccountCountry,duplicateMarket=MARKET_META[duplicateCountry];
       duplicate.countryCode=duplicateCountry;duplicate.currency=duplicateMarket.currency;duplicate.currencySymbol=duplicateMarket.symbol;
       duplicate.plannerState={...(duplicate.plannerState||{}),countryCode:duplicateCountry,projectCountry:{...(duplicate.plannerState?.projectCountry||{}),...duplicateMarket,countryCode:duplicateCountry}};
       duplicate.quotationId = newQuotationId;
@@ -162,7 +164,8 @@ export default async function handler(req, res) {
     if (req.method === 'DELETE') { const quotationId = String(source?.quotationId || '').trim(); if (!quotationId) return res.status(400).json({ message: 'Missing quotationId.' }); const list = plannerList(current.record, plannerType); const existingIndex = list.findIndex(q => q?.quotationId === quotationId); if (existingIndex < 0) return res.status(404).json({ message: 'Cost estimate not found.' }); current.record.plannerRecords = current.record.plannerRecords || { build: [], renovation: [] }; current.record.plannerRecords[plannerType] = list.filter(q => q?.quotationId !== quotationId); current.record.updatedAt = new Date().toISOString(); const updated = await github(pathFor(role, id), { method: 'PUT', body: JSON.stringify({ message: `Delete ${plannerType} quotation ${quotationId}`, content: Buffer.from(JSON.stringify(current.record, null, 2) + '\n').toString('base64'), sha: current.sha }) }); if (!updated.response.ok) return res.status(502).json({ message: 'Unable to delete quotation.' }); return res.status(200).json({ success: true, quotationId }); }
     const quotation = source?.quotation; if (!quotation || typeof quotation !== 'object') return res.status(400).json({ message: 'Missing quotation record.' }); const quotationId = String(quotation.quotationId || '').trim(); if (!quotationId) return res.status(400).json({ message: 'Missing quotationId.' });
     const supportedCountries = new Set(['MY','SG','ID','TH','PH','VN','BN']);
-    const accountCountryCode = String(current.record.country || 'MY').trim().toUpperCase();
+    const accountCountryCode = String(current.record.country || '').trim().toUpperCase();
+    if(!MARKET_META[accountCountryCode])return res.status(409).json({message:'Account country is not verified. Set the registered country in Admin before saving Cost Estimates.'});
     const incomingCountries=quotationCountries(quotation);
     const incomingCountryCode=incomingCountries[0]||accountCountryCode;
     const incomingCurrencies=quotationCurrencies(quotation);
