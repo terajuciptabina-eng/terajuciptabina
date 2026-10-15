@@ -55,7 +55,7 @@
       "status": "estimated"
     }
   ],
-  "methodology": "[object Object]\nPlanner classification is assigned from canonical rateItems.groupKey: 82 BuildPlanner items and 40 RenovationPlanner items.",
+  "methodology": "Malaysia rates are baseline values from data/rates/default.json and must remain unchanged. Non-Malaysia rates are estimates derived from country-level construction-cost adjustment factors; they are not contractor-quoted or independently validated. Planner classification follows canonical rateItems.groupKey: 82 BuildPlanner items and 40 RenovationPlanner items.",
   "currencyBasisDate": "2026-10-09 indicative BNM middle rates",
   "sources": [
     {
