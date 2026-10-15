@@ -3120,9 +3120,9 @@ function generateQuotationConfirmed(type) {
           <p class="font-semibold">${escapeHtml(location)}</p>
         </div>
         <div>
-          <p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Area & ${window.TERAJU_GET_PROJECT_COUNTRY?.().symbol||"RM"}/sqft</p>
-          <p class="font-semibold">Existing: ${formatQty(metricSummary?.existingArea)} sqft · ${window.TERAJU_GET_PROJECT_COUNTRY?.().symbol||"RM"} ${metricSummary?.existingRate==null?"—":money(metricSummary.existingRate,2)}/sqft</p>
-          <p class="font-semibold">New: ${formatQty(metricSummary?.newArea)} sqft · ${window.TERAJU_GET_PROJECT_COUNTRY?.().symbol||"RM"} ${metricSummary?.newRate==null?"—":money(metricSummary.newRate,2)}/sqft</p>
+          <p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Area & ${window.TERAJU_GET_PROJECT_COUNTRY?.().symbol||""}/sqft</p>
+          <p class="font-semibold">Existing: ${formatQty(metricSummary?.existingArea)} sqft · ${window.TERAJU_GET_PROJECT_COUNTRY?.().symbol||""} ${metricSummary?.existingRate==null?"—":money(metricSummary.existingRate,2)}/sqft</p>
+          <p class="font-semibold">New: ${formatQty(metricSummary?.newArea)} sqft · ${window.TERAJU_GET_PROJECT_COUNTRY?.().symbol||""} ${metricSummary?.newRate==null?"—":money(metricSummary.newRate,2)}/sqft</p>
         </div>
       </div>
     </div>
