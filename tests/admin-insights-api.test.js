@@ -189,6 +189,10 @@ test('all changed country-market scripts parse and the rate dataset is complete'
   }
   const resolverSource = await readFile(new URL('../TerajuWorks/state-rate-resolver.js', import.meta.url), 'utf8');
   assert.doesNotMatch(resolverSource, /TERAJU_PROJECT_COUNTRY\?\.countryCode\s*\|\|\s*['\"]MY['\"]/, 'state-rate resolver must not assume Malaysia when account market is unverified');
+  assert.match(resolverSource, /TERAJU_ACCOUNT_MARKET_VERIFIED\s*!==\s*true/, 'state-rate resolver must wait for authoritative account-country verification');
+  const contextSource = await readFile(new URL('../TerajuWorks/country-context.js', import.meta.url), 'utf8');
+  assert.match(contextSource, /TERAJU_ACCOUNT_MARKET_VERIFIED\s*=\s*false/, 'country verification must start closed');
+  assert.match(contextSource, /TERAJU_ACCOUNT_MARKET_VERIFIED\s*=\s*true/, 'country verification opens only after account API resolution');
   const authUiSource = await readFile(new URL('../TerajuWorks/auth-github.js', import.meta.url), 'utf8');
   assert.doesNotMatch(authUiSource, /country:\s*record\.country\s*\|\|\s*['\"]MY['\"]/, 'account cache must not silently label legacy accounts as Malaysia');
   const rates = JSON.parse(await readFile(new URL('../data/rates/country-comparison-2026.json', import.meta.url), 'utf8'));
