@@ -186,7 +186,8 @@ export default async function handler(req, res) {
     }
     const now=new Date().toISOString();
     const existing=current.record&&typeof current.record==='object'?current.record:{schemaVersion:1,recordType:'project-control',contractorId:id,plannerType:type,quotationId,createdAt:now};
-    const record={...existing,schemaVersion:2,recordType:'project-control',contractorId:id,plannerType:type,quotationId,countryCode:market?.accountCountry||existing.countryCode||'MY',currency:market?.expected.currency||existing.currency||'MYR',currencySymbol:market?.expected.symbol||existing.currencySymbol||'RM',updatedAt:now};
+    if(!market?.accountCountry||!market?.expected?.currency||!market?.expected?.symbol)return res.status(409).json({message:'Contractor account country is not verified. Project Control writes are blocked until Admin assigns a registered country.'});
+    const record={...existing,schemaVersion:2,recordType:'project-control',contractorId:id,plannerType:type,quotationId,countryCode:market.accountCountry,currency:market.expected.currency,currencySymbol:market.expected.symbol,updatedAt:now};
 
     if(payload.contract){
       const incoming={...payload.contract,countryCode:market.accountCountry,currency:market.expected.currency,currencySymbol:market.expected.symbol,projectCountry:payload.contract.projectCountry||{countryCode:market.accountCountry,currency:market.expected.currency,symbol:market.expected.symbol}};
