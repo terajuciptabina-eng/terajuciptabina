@@ -225,7 +225,7 @@ export default async function handler(req, res) {
       if (String(nextProfile.name || '').trim() === '') return res.status(400).json({ message: 'Company / contractor name is required.' });
       if (nextProfile.email && !validEmail(nextProfile.email)) return res.status(400).json({ message: 'Please enter a valid email address.' });
       if (nextProfile.phone && !validPhone(nextProfile.phone, record.country)) return res.status(400).json({ message: 'Please enter a valid phone number for this account country.' });
-      if (nextProfile.phone) nextProfile.phone = normalizePhoneForCountry(nextProfile.phone, record.country || 'MY');
+      if (nextProfile.phone) nextProfile.phone = normalizePhoneForCountry(nextProfile.phone, record.country);
       if (String(nextProfile.logoDataUrl || '').length > 350000) return res.status(413).json({ message: 'Logo image is too large. Please use a smaller image.' });
       record.profile = nextProfile;
       record.updatedAt = new Date().toISOString();
