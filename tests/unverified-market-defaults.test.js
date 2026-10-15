@@ -8,6 +8,11 @@ const adminDatabase = readFileSync(new URL('../TerajuWorks/admin-database.html',
 const contractPage = readFileSync(new URL('../TerajuWorks/contract.html', import.meta.url), 'utf8');
 const workProgramPage = readFileSync(new URL('../TerajuWorks/work-program.html', import.meta.url), 'utf8');
 const authApi = readFileSync(new URL('../api/auth.js', import.meta.url), 'utf8');
+const quotationRecords = readFileSync(new URL('../TerajuWorks/quotation-records.js', import.meta.url), 'utf8');
+const buildPlanner = readFileSync(new URL('../TerajuWorks/buildplanner-v2.html', import.meta.url), 'utf8');
+const renovationPlanner = readFileSync(new URL('../TerajuWorks/renovationplanner-v2.html', import.meta.url), 'utf8');
+const quotationsApi = readFileSync(new URL('../api/quotations.js', import.meta.url), 'utf8');
+const quotationsPage = readFileSync(new URL('../TerajuWorks/quotations.html', import.meta.url), 'utf8');
 
 test('unverified account market never defaults to Malaysia in country context', () => {
   assert.match(countryContext, /function countryCode\(value\)\{[^}]*return CURRENCIES\[c\]\?c:''\}/);
@@ -40,4 +45,18 @@ test('Contract and Work Program do not silently label missing market metadata as
 test('WhatsApp welcome flow does not infer Malaysia when country is absent', () => {
   assert.match(authApi, /if \(!validCountry\(country\)\) return \{ sent: false, reason: 'Registered country is not verified\.' \};\s*const normalizedPhone = normalizePhoneForCountry\(phone, country\);/);
   assert.doesNotMatch(authApi, /normalizePhoneForCountry\(phone, country \|\| 'MY'\)/);
+});
+
+test('BuildPlanner, RenovationPlanner and quotation snapshots do not infer MY/MYR for missing context', () => {
+  assert.doesNotMatch(buildPlanner, /TERAJU_GET_PROJECT_COUNTRY\?\.\(\)\|\|\{countryCode:"MY",currency:"MYR"/);
+  assert.doesNotMatch(renovationPlanner, /TERAJU_GET_PROJECT_COUNTRY\?\.\(\)\.symbol\|\|"RM"/);
+  assert.match(quotationRecords, /if\(window\.TERAJU_ACCOUNT_MARKET_VERIFIED!==true\|\|!projectCountry\?\.countryCode\|\|!projectCountry\?\.currency\)throw new Error/);
+  assert.doesNotMatch(quotationRecords, /countryCode:projectCountry\.countryCode\|\|'MY'/);
+  assert.doesNotMatch(quotationRecords, /currency:projectCountry\.currency\|\|'MYR'/);
+});
+
+test('legacy estimates without country and currency metadata are quarantined from market history', () => {
+  assert.match(quotationsApi, /return countries\.length>0&&countries\.every\(code=>MARKET_META\[code\]&&code===accountCountry\)&&currencies\.length>0&&currencies\.every\(code=>code===MARKET_META\[accountCountry\]\?\.currency\)/);
+  assert.match(quotationsPage, /const code=String\(a\?\.country\|\|a\?\.countryCode\|\|''\)\.toUpperCase\(\)/);
+  assert.doesNotMatch(quotationsPage, /const code=String\(a\?\.country\|\|'MY'\)/);
 });
