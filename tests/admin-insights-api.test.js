@@ -132,7 +132,7 @@ test('Admin Insights isolates country metrics and quarantines conflicting estima
     Intl, Number, String, Array, Object, Math, Date
   };
   vm.createContext(context);
-  vm.runInContext('let accounts=[];\\n' + block + '\\n globalThis.api={setAccounts(v){accounts=v},accountCountry,recordsFor,recordMatchesAccountMarket,quarantinedRecordCount,filteredCountryAccounts,moneyByCurrency};', context);
+  vm.runInContext('let accounts=[];\n' + block + '\n globalThis.api={setAccounts(v){accounts=v},accountCountry,recordsFor,recordMatchesAccountMarket,quarantinedRecordCount,filteredCountryAccounts,moneyByCurrency};', context);
   const accounts = [
     {id:'MY-1',country:'MY',role:'homeowner',plannerRecords:{build:[{plannerType:'build',total:100,countryCode:'MY',currency:'MYR'}]}},
     {id:'SG-1',country:'SG',role:'contractor',plannerRecords:{build:[{plannerType:'build',total:200,countryCode:'SG',currency:'SGD'}]}},
@@ -147,7 +147,7 @@ test('Admin Insights isolates country metrics and quarantines conflicting estima
   assert.equal(context.api.recordsFor(accounts[4]).length, 0, 'non-MY estimates without country metadata must be excluded');
   assert.equal(context.api.quarantinedRecordCount(), 2, 'both invalid Singapore estimates should be counted');
   const display = context.api.moneyByCurrency([{countryCode:'SG',record:{total:200}},{countryCode:'MY',record:{total:100}}]);
-  assert.match(display, /Singapore \\(SGD S\\$ 200\\)/);
-  assert.match(display, /Malaysia \\(MYR RM 100\\)/);
+  assert.match(display, /Singapore \(SGD S\$ 200\)/);
+  assert.match(display, /Malaysia \(MYR RM 100\)/);
   assert.ok(display.indexOf('Singapore') < display.indexOf('Malaysia'), 'currency groups should be deterministic');
 });
