@@ -151,3 +151,46 @@ test('Admin Insights isolates country metrics and quarantines conflicting estima
   assert.match(display, /Malaysia \(MYR RM 100\)/);
   assert.ok(display.indexOf('Malaysia') < display.indexOf('Singapore'), 'currency groups should be alphabetically deterministic');
 });
+
+
+test('all changed country-market scripts parse and the rate dataset is complete', async () => {
+  const readFile = (await import('node:fs/promises')).readFile;
+  const { Script } = await import('node:vm');
+  const paths = [
+    '../api/admin.js',
+    '../api/quotations.js',
+    '../api/project-control.js',
+    '../TerajuWorks/country-context.js',
+    '../TerajuWorks/state-rate-gate.js',
+    '../TerajuWorks/quotation-records.js'
+  ];
+  for (const relative of paths) {
+    const source = await readFile(new URL(relative, import.meta.url), 'utf8');
+    const normalized = source.replace(/^export default async function handler/m, 'async function handler');
+    assert.doesNotThrow(() => new Script(normalized), relative + ' must parse');
+  }
+  const htmlPaths = [
+    '../TerajuWorks/admin-insights.html',
+    '../TerajuWorks/admin-database.html',
+    '../TerajuWorks/contract.html',
+    '../TerajuWorks/work-program.html',
+    '../TerajuWorks/progress.html',
+    '../TerajuWorks/s-curve.html',
+    '../TerajuWorks/project-insight.html'
+  ];
+  for (const relative of htmlPaths) {
+    const source = await readFile(new URL(relative, import.meta.url), 'utf8');
+    const scripts = [...source.matchAll(/<script\\b(?![^>]*\\bsrc=)[^>]*>([\\s\\S]*?)<\\/script>/gi)].map(m => m[1]).filter(x => x.trim());
+    assert.ok(scripts.length, relative + ' should contain inline application code');
+    scripts.forEach((script, index) => assert.doesNotThrow(() => new Script(script), relative + ' inline script ' + index + ' must parse'));
+  }
+  const rates = JSON.parse(await readFile(new URL('../data/rates/country-comparison-2026.json', import.meta.url), 'utf8'));
+  assert.equal(rates.rates.length, 122);
+  assert.equal(rates.plannerCounts.build, 82);
+  assert.equal(rates.plannerCounts.renovation, 40);
+  for (const row of rates.rates) {
+    for (const field of ['Malaysia_MYR', 'SGD', 'IDR', 'THB', 'PHP', 'VND', 'BND']) {
+      assert.ok(Number.isFinite(Number(row[field])) && Number(row[field]) >= 0, row.id + ' must have valid ' + field);
+    }
+  }
+});
