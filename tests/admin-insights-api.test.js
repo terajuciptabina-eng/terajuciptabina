@@ -120,7 +120,7 @@ test('Admin Insights fails clearly when a country-independent account index fail
 test('Admin Insights isolates country metrics and quarantines conflicting estimate metadata', async () => {
   const html = (await import('node:fs/promises')).readFile;
   const source = await html(new URL('../TerajuWorks/admin-insights.html', import.meta.url), 'utf8');
-  const script = [...source.matchAll(/<script\\b(?![^>]*\\bsrc=)[^>]*>([\\s\\S]*?)<\\/script>/gi)]
+  const script = [...source.matchAll(/<script\b(?![^>]*\bsrc=)[^>]*>([\s\S]*?)<\/script>/gi)]
     .map(match => match[1]).find(value => value.includes('function recordMatchesAccountMarket'));
   assert.ok(script, 'Admin Insights market functions must exist');
   const start = script.indexOf('const CURRENCIES=');
