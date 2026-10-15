@@ -59,10 +59,10 @@ export default async function handler(req, res) {
     const list=Array.isArray(account?.plannerRecords?.[type])?account.plannerRecords[type]:[];
     const estimate=list.find(q=>String(q?.quotationId||'')===qid);
     if(!estimate)return{status:404,message:'Source Cost Estimate not found for this Project Control record.'};
-    const estimateRawCountry=rawCountryOf(estimate),estimateCountry=countryOf(estimate)||(estimateRawCountry?'UNSUPPORTED':'MY');
+    const estimateRawCountry=rawCountryOf(estimate),estimateCountry=countryOf(estimate)||(estimateRawCountry?'UNSUPPORTED':'');
     if(estimateCountry!==accountCountry)return{status:409,message:'Source Cost Estimate country does not match the registered contractor account.'};
     const expected=CURRENCY_BY_COUNTRY[accountCountry],storedCurrency=currencyOf(estimate);
-    if(storedCurrency&&storedCurrency!==expected.currency)return{status:409,message:'Source Cost Estimate currency does not match its registered country.'};
+    if(storedCurrency!==expected.currency)return{status:409,message:'Source Cost Estimate currency is missing or does not match its registered country.'};
     return{status:200,accountCountry,estimate,expected};
   }
 
