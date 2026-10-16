@@ -991,20 +991,18 @@ function roomOptions() {
 
 function optionalScopeHtml() {
   return OPTIONAL_SCOPES.map(scope => {
-    const fixed = scope.rate !== null;
+    const initialRate = scope.rate === null ? "" : String(scope.rate);
     return `
       <div class="optional-scope border rounded-lg p-3 bg-white" data-scope="${scope.key}">
         <div class="flex items-start gap-3">
           <input type="checkbox" class="optional-check h-4 w-4" data-scope="${scope.key}">
           <div class="flex-1 min-w-0">
             <label class="text-sm font-medium cursor-pointer">${escapeHtml(scope.label)}</label>
-            <p class="text-xs text-gray-500 mt-1">
-              ${fixed ? `Standard rate: ${money(scope.rate)} / ${scope.unit}` : "Enter a room-specific rate if required"}
-            </p>
+            <p class="text-xs text-gray-500 mt-1 optional-rate-note">${scope.rate === null ? "Enter a rate if required" : `Standard rate: ${money(scope.rate)} / ${scope.unit}`}</p>
           </div>
-          ${fixed
-            ? `<div class="text-sm font-semibold whitespace-nowrap flex-shrink-0">${money(scope.rate)}</div>`
-            : `<input type="number" min="0" step="1" value="" placeholder="Rate" class="optional-rate w-28 border rounded-lg px-3 py-2 text-sm flex-shrink-0">`}
+          ${IS_CONTRACTOR
+            ? `<input type="number" min="0" step="0.01" value="${initialRate}" placeholder="Rate" aria-label="Rate for ${escapeHtml(scope.label)}" class="optional-rate w-28 border rounded-lg px-3 py-2 text-sm flex-shrink-0">`
+            : `<span class="homeowner-rate-blurred text-sm font-semibold whitespace-nowrap flex-shrink-0">${scope.rate === null ? "Rate" : money(scope.rate)}</span>`}
         </div>
       </div>`;
   }).join("");
@@ -1494,11 +1492,11 @@ function generateOptionalProjectItems() {
     const key = scopeEl.dataset.scope;
     const definition = OPTIONAL_SCOPES.find(s => s.key === key);
     if (!definition) return;
-    let rate = definition.rate;
-    if (definition.custom) {
-      rate = parseFloat(scopeEl.querySelector(".optional-rate")?.value) || 0;
-      if (rate <= 0) return;
-    }
+    const rawRate = scopeEl.querySelector(".optional-rate")?.value;
+    const rate = rawRate === "" || rawRate == null
+      ? (Number(definition.rate) || 0)
+      : Math.max(0, Number(rawRate) || 0);
+    if (rate <= 0) return;
     pushItem(items, "project", "Project / Optional Works", "optional-" + key, definition.label, 1, definition.unit, rate, true);
   });
   return items;
