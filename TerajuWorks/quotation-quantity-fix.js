@@ -11,8 +11,8 @@ async function load(){const marketPromise=window.TERAJU_ACCOUNT_MARKET_PROMISE;i
    const countryData=await window.TERAJU_GET_COUNTRY_RATE_DATA();
    const field=({SG:'SGD',ID:'IDR',TH:'THB',PH:'PHP',VN:'VND',BN:'BND'})[market];
    if(!field)throw Error('Unsupported country rate market: '+market);
-   const selected=(countryData.rates||[]).filter(x=>x.planner===(isRenovationV2?'renovation':'build'));
-   const expected=isRenovationV2?40:82;
+   const selected=(countryData.rates||[]).filter(x=>x.planner==='build');
+   const expected=82;
    if(selected.length!==expected)throw Error('Country rate master item count mismatch for '+market+'.');
    const norm=x=>String(x||'').toLowerCase().replace(/^rule_/,'').replace(/_\\d+$/,'').replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'');
    for(const row of selected){
