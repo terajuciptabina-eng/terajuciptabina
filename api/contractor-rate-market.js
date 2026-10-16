@@ -29,6 +29,7 @@ export default async function handler(req, res) {
 
   const norm = v => String(v || '').trim().toLowerCase().replace(/×/g, '*').replace(/÷/g, '/').replace(/[^a-z0-9]+/g, ' ').trim();
   const slug = v => String(v || '').toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '');
+  const MALAYSIAN_STATES = new Set(['johor','kedah','kelantan','melaka','negeri-sembilan','pahang','perak','perlis','pulau-pinang','sabah','sarawak','selangor','terengganu','kuala-lumpur','putrajaya','labuan']);
   const median = values => {
     const a = values.slice().sort((x,y) => x-y);
     if (!a.length) return null;
@@ -84,19 +85,22 @@ export default async function handler(req, res) {
       let account = null;
       try { account = JSON.parse(Buffer.from(recordResult.data?.content || '', 'base64').toString('utf8')); } catch { continue; }
       const contractorId = String(account?.contractorId || '').trim().toUpperCase();
-      if (!contractorId) continue;
+      if (!contractorId || String(account?.country || '').trim().toUpperCase() !== 'MY') continue;
 
       for (const plannerType of ['build','renovation']) {
         for (const record of Array.isArray(account?.plannerRecords?.[plannerType]) ? account.plannerRecords[plannerType] : []) {
           if (String(record?.state || '').toLowerCase() !== 'final') continue;
           const plannerState = record?.plannerState || {};
+          const countryCodes = [record?.countryCode, plannerState?.projectCountry?.countryCode, plannerState?.countryCode].map(v=>String(v||'').trim().toUpperCase()).filter(Boolean);
+          const currencies = [record?.currency, plannerState?.currency, plannerState?.projectCountry?.currency].map(v=>String(v||'').trim().toUpperCase()).filter(Boolean);
+          if (!countryCodes.length || countryCodes.some(code=>code!=='MY') || !currencies.length || currencies.some(code=>code!=='MYR')) continue;
           const state = String(
             plannerState.projectState ||
             plannerState.rateSetId ||
             record?.project?.state ||
             ''
           ).trim().toLowerCase();
-          if (!state) continue;
+          if (!MALAYSIAN_STATES.has(state)) continue;
           const rates = plannerState?.rates && typeof plannerState.rates === 'object' ? plannerState.rates : {};
           const updatedAt = String(record?.updatedAt || plannerState?.rateSnapshotAt || record?.createdAt || '');
           for (const rule of rules) {
