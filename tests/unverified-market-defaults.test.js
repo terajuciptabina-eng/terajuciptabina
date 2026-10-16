@@ -69,6 +69,6 @@ test('legacy estimates without country and currency metadata are quarantined fro
 test('PDF generation does not leak Malaysian company address or hard-code RM in non-MY markets', () => {
   assert.match(renovationPlanner, /brand\?\.address\|\|\(window\.TERAJU_GET_PROJECT_COUNTRY\?\.\(\)\.countryCode===\"MY\"\?\"No 10A, Jalan PP 2\/1, Taman Putra Prima, 47100 Puchong, Selangor\":\"\"\)/);
   assert.match(renovationPlanner, /brand\?\.name\|\|\(window\.TERAJU_GET_PROJECT_COUNTRY\?\.\(\)\.countryCode===\"MY\"\?\"TERAJU CIPTABINA RESOURCES\":\"TERAJUWORKS\"\)/);
-  assert.doesNotMatch(buildPlanner, /Rate \(RM\)<\\/th>/);
-  assert.doesNotMatch(buildPlanner, /Amount \(RM\)<\\/th>/);
+  assert.doesNotMatch(buildPlanner, /Rate \(RM\)/);
+  assert.doesNotMatch(buildPlanner, /Amount \(RM\)/);
 });
