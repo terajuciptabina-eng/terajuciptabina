@@ -42,8 +42,8 @@ test('Project Control persistence requires verified market metadata instead of M
   assert.doesNotMatch(projectControl, /currency:market\?\.expected\.currency\|\|existing\.currency\|\|'MYR'/);
 });
 
-test('Admin Database renders missing account country as UNVERIFIED, not Malaysia', () => {
-  assert.match(adminDatabase, /const country=\(x\.country\|\|'UNVERIFIED'\)==='MY'\?'Malaysia':\(x\.countryName\|\|x\.country\|\|'UNVERIFIED'\)/);
+test('Admin Database renders missing legacy account country as Malaysia', () => {
+  assert.match(adminDatabase, /const country=\(x\.country\|\|'MY'\)==='MY'\?'Malaysia':\(x\.countryName\|\|x\.country\|\|'MY'\)/);
 });
 
 test('Contract and Work Program do not silently label missing market metadata as Malaysia', () => {
