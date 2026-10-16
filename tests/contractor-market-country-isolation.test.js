@@ -47,8 +47,11 @@ test('non-Malaysia contractor rates cannot be approved into Malaysia state rates
 test('contractor market aggregates only explicit or account-verified MYR observations',()=>{
  const source=readFileSync(new URL('../api/contractor-market.js',import.meta.url),'utf8');
  const rateMarket=readFileSync(new URL('../api/contractor-rate-market.js',import.meta.url),'utf8');
+ const adminComparison=readFileSync(new URL('../TerajuWorks/admin-rate-comparison.html',import.meta.url),'utf8');
  assert.match(source,/contractor\.countryCode!=='MY'\|\|contractor\.currency!=='MYR'\|\|itemCountry!=='MY'\|\|itemCurrency!=='MYR'/);
  assert.match(source,/if \(action === 'approve'\) \{\s*const registered = await registeredContractorCountry\(contractorId\);\s*if \(!registered\.ok \|\| registered\.country !== 'MY'\)/);
  assert.match(rateMarket,/String\(account\?\.country \|\| ''\)\.trim\(\)\.toUpperCase\(\) !== 'MY'/);
  assert.match(rateMarket,/countryCodes\.some\(code=>code!=='MY'\) \|\| !currencies\.length \|\| currencies\.some\(code=>code!=='MYR'\)/);
+ assert.match(adminComparison,/filter\(c=>c\.countryCode==='MY'&&c\.currency==='MYR'\)/);
+ assert.match(adminComparison,/item\?\.currency&&String\(item\.currency\)\.toUpperCase\(\)!=='MYR'/);
 });
