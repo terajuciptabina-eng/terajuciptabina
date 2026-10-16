@@ -212,7 +212,7 @@ test('all changed country-market scripts parse and the rate dataset is complete'
   assert.equal(rates.plannerCounts.build, 82);
   assert.equal(rates.plannerCounts.renovation, 40);
   const calculationRules = JSON.parse(await readFile(new URL('../data/calculation-rules.json', import.meta.url), 'utf8'));
-  const norm = value => String(value || '').toLowerCase().replace(/^rule_/, '').replace(/_\\d+$/, '').replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '');
+  const norm = value => String(value || '').toLowerCase().replace(/^rule_/, '').replace(/_\d+$/, '').replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '');
   const buildRulePaths = (calculationRules.rules || []).map(rule => rule?.path).filter(Boolean).map(norm);
   const buildRateRows = rates.rates.filter(row => row.planner === 'build');
   const unmatchedBuildRows = buildRateRows.filter(row => {
