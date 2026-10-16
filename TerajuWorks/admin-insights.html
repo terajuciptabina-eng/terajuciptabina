@@ -178,8 +178,9 @@ function recordMatchesAccountMarket(a,r){
   if(!CURRENCIES[account])return false;
   const countries=[r?.countryCode,r?.plannerState?.projectCountry?.countryCode,r?.plannerState?.countryCode,r?.projectCountry?.countryCode].map(v=>String(v||'').trim().toUpperCase()).filter(Boolean);
   if(countries.some(code=>!CURRENCIES[code]||code!==account))return false;
-  if(!countries.length&&account!=='MY')return false;
+  if(!countries.length)return false;
   const currencies=[r?.currency,r?.plannerState?.projectCountry?.currency,r?.projectCountry?.currency].map(v=>String(v||'').trim().toUpperCase()).filter(Boolean);
+  if(!currencies.length)return false;
   return currencies.every(code=>code===CURRENCIES[account].currency);
 }
 function recordsFor(a){return rawRecordsFor(a).filter(r=>recordMatchesAccountMarket(a,r))}
