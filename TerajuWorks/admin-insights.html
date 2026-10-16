@@ -167,7 +167,7 @@ function headers(){const s=session();return{'X-Admin-Username':s.username,'X-Adm
 function accountCountry(a){
   const raw=String(a?.country||a?.countryCode||'').trim().toUpperCase();
   if(['MY','SG','ID','TH','PH','VN','BN'].includes(raw))return raw;
-  return raw?'UNVERIFIED':'MY'; // Legacy accounts without a country follow the existing Malaysia migration rule.
+  return raw||'UNVERIFIED'; // Missing registered country must never be counted as Malaysia.
 }
 function rawRecordsFor(a){
   const p=a.plannerRecords||{};
