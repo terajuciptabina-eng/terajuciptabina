@@ -175,7 +175,8 @@ export default async function handler(req, res) {
     if (!supportedCountries.has(accountCountryCode)) return res.status(409).json({ message: 'Account country is not supported. Update the account country before saving estimates.' });
     if (incomingCountries.some(code=>!supportedCountries.has(code))) return res.status(400).json({ message: 'A supported project country is required.' });
     if (incomingCountries.some(code=>code!==accountCountryCode)) return res.status(409).json({ message: 'Project country does not match the registered account country. Reopen the planner to reload the correct market rates before saving.' });
-    if (incomingCountries.length===0&&accountCountryCode!=='MY') return res.status(400).json({ message: 'Country market metadata is required before saving this Cost Estimate.' });
+    if (incomingCountries.length===0) return res.status(400).json({ message: 'Country market metadata is required before saving this Cost Estimate.' });
+    if (incomingCurrencies.length===0) return res.status(400).json({ message: 'Currency metadata is required before saving this Cost Estimate.' });
     if (incomingCurrencies.some(code=>code!==market.currency)) return res.status(409).json({ message: 'Cost Estimate currency does not match the registered account country.' });
     // Malaysia alone uses state-specific rates; other markets use their configured country rate set.
     if (accountCountryCode === 'MY' && !incomingState) return res.status(400).json({ message: 'Project state / negeri is required for Malaysia.' });
