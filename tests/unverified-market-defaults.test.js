@@ -98,6 +98,9 @@ test('planner rate engine waits for authoritative country verification and Renov
   assert.match(quantityEngine, /RATES=market==='MY'\?\(loadedRateSet\.rates\|\|\{\}\):\{\}/);
   assert.match(quantityEngine, /filter\(x=>x\.planner==='build'\)/);
   assert.match(quantityEngine, /const expected=82/);
+  assert.ok(quantityEngine.includes("if(market==='MY'&&!rateResponse)"), 'only Malaysia may fetch the Malaysia default rate set');
+  assert.ok(quantityEngine.includes("else{RATES={}}"), 'non-MY rate maps must start empty rather than inherit MYR rates');
+  assert.match(quantityEngine, /RATES\[rateKey\|\|\('rule_'\+norm\(matchingRule\)\)\]=value/);
   assert.ok(renovationPlanner.indexOf('country-context.js') < renovationPlanner.indexOf('quotation-quantity-fix.js'), 'country verification must initialize before the RenovationPlanner rate engine');
   assert.ok(renovationPlanner.indexOf('country-context.js') < renovationPlanner.indexOf('state-rate-gate.js'), 'country context must initialize before the RenovationPlanner rate gate');
 });
