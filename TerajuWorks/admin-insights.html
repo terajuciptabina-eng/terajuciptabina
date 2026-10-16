@@ -256,7 +256,10 @@ function render(){
   const countryNames={MY:'Malaysia',SG:'Singapore',ID:'Indonesia',TH:'Thailand',PH:'Philippines',VN:'Vietnam',BN:'Brunei',UNVERIFIED:'Unverified country'};
   document.getElementById('usersSub').textContent=(countrySelection?(countryNames[countrySelection]||countrySelection):'All countries; monetary totals separated by currency')+' · '+num(homeowners)+' Homeowner · '+num(contractors)+' Contractor';
 
-  const mode=chartMode(),growth={homeowner:{},contractor:{}},estimateCounts={homeowner:{},contractor:{}},homeownerValues={},contractorValues={};\n  const chartCountry=document.getElementById('countryFilter')?.value||'';\n  const chartCurrency=CURRENCIES[chartCountry]?.currency||'MYR';\n  const chartCurrencyName=Object.values(CURRENCIES).find(x=>x.currency===chartCurrency)?.name||chartCurrency;
+  const mode=chartMode(),growth={homeowner:{},contractor:{}},estimateCounts={homeowner:{},contractor:{}},homeownerValues={},contractorValues={};
+  const chartCountry=document.getElementById('countryFilter')?.value||'';
+  const chartCurrency=CURRENCIES[chartCountry]?.currency||'MYR';
+  const chartCurrencyName=Object.values(CURRENCIES).find(x=>x.currency===chartCurrency)?.name||chartCurrency;
   countryAccounts.forEach(a=>{
     const d=new Date(a.createdAt);if(Number.isNaN(d.getTime()))return;
     const k=chartBucket(d,mode);if(k){const role=String(a.role||'').toLowerCase();if(role==='homeowner'||role==='contractor')growth[role][k]=(growth[role][k]||0)+1;}
