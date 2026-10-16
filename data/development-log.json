@@ -11,6 +11,17 @@
     "updatedAt": "2026-10-16T03:41:13.085Z"
   },
   {
+    "id": "DEV-20261016-c040dd3",
+    "date": "2026-10-16",
+    "title": "Fix raw JavaScript rendered in Cost Estimate History",
+    "module": "Cost Estimate",
+    "status": "Completed",
+    "summary": "Fix raw JavaScript rendered in Cost Estimate History",
+    "details": "Automatic entry from commit c040dd3. Changed files: TerajuWorks/quotations.html.",
+    "commit": "c040dd3c0b066cfeac82ecb1edeacc232b237cdd",
+    "updatedAt": "2026-10-16T03:45:26.708Z"
+  },
+  {
     "id": "DEV-20261016-9e98fb4",
     "date": "2026-10-16",
     "title": "Update build quotation Q001 (EST-BLD-001-S)",
