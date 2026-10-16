@@ -27,6 +27,23 @@ export default async function handler(req, res) {
     return { response, data };
   }
   const MALAYSIAN_STATES = new Set(['johor','kedah','kelantan','melaka','negeri-sembilan','pahang','perak','perlis','pulau-pinang','sabah','sarawak','selangor','terengganu','kuala-lumpur','putrajaya','labuan']);
+  const CURRENCY_BY_COUNTRY = {MY:'MYR',SG:'SGD',ID:'IDR',TH:'THB',PH:'PHP',VN:'VND',BN:'BND'};
+  async function enrichContractorMarkets(contractors) {
+    const result = new Array(contractors.length);
+    let next = 0;
+    const workers = Array.from({length:Math.min(8, contractors.length)}, async () => {
+      while (next < contractors.length) {
+        const index = next++;
+        const contractor = contractors[index];
+        const id = String(contractor?.contractorId || contractor?.id || '').trim().toUpperCase();
+        const registered = id ? await registeredContractorCountry(id) : {ok:false,country:''};
+        const country = registered.ok && CURRENCY_BY_COUNTRY[registered.country] ? registered.country : 'UNVERIFIED';
+        result[index] = {...contractor,countryCode:country,currency:CURRENCY_BY_COUNTRY[country]||''};
+      }
+    });
+    await Promise.all(workers);
+    return result;
+  }
   async function registeredContractorCountry(id) {
     const result = await githubFile(`data/users/contractors/${encodeURIComponent(id)}.json`);
     if (!result.response.ok) return { ok:false, country:'' };
@@ -103,12 +120,15 @@ export default async function handler(req, res) {
     if (req.method === 'GET') {
       const supplied = clean(req.headers['x-admin-key'], 200);
       if (!adminKey || supplied !== adminKey) return res.status(401).json({ message: 'Unauthorized.' });
+      database.contractors = await enrichContractorMarkets(database.contractors);
       const market={};
       for(const contractor of database.contractors){
         for(const item of (Array.isArray(contractor.customItems)?contractor.customItems:[])){
           const state=clean(item?.state,80).toLowerCase();
           const planner=clean(item?.plannerType,30).toLowerCase();
-          if(String(item?.countryCode||'').trim().toUpperCase()!=='MY'||String(item?.currency||'').trim().toUpperCase()!=='MYR'||!MALAYSIAN_STATES.has(state))continue;
+          const itemCountry=String(item?.countryCode||contractor.countryCode||'').trim().toUpperCase();
+          const itemCurrency=String(item?.currency||contractor.currency||'').trim().toUpperCase();
+          if(contractor.countryCode!=='MY'||contractor.currency!=='MYR'||itemCountry!=='MY'||itemCurrency!=='MYR'||!MALAYSIAN_STATES.has(state))continue;
           const key=clean(item?.sourceGlobalId,160);
           const rate=Number(item?.rate), globalRate=Number(item?.globalRate);
           if(!state||!['build','renovation'].includes(planner)||!key||!Number.isFinite(rate)||!Number.isFinite(globalRate))continue;
