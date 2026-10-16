@@ -121,6 +121,17 @@
     "updatedAt": "2026-10-16T05:23:38.425Z"
   },
   {
+    "id": "DEV-20261016-14d4b53",
+    "date": "2026-10-16",
+    "title": "Normalize unverified country to Malaysia for homeowner account HME-20260910-V9LN",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Normalize unverified country to Malaysia for homeowner account HME-20260910-V9LN",
+    "details": "Automatic entry from commit 14d4b53. Changed files: data/users/homeowners/HME-20260910-V9LN.json.",
+    "commit": "14d4b53f29b273eadc2ed8ef8d54fa7aef5f8eb7",
+    "updatedAt": "2026-10-16T05:23:45.844Z"
+  },
+  {
     "id": "DEV-20261016-0f1a625",
     "date": "2026-10-16",
     "title": "Enforce seven-country market integrity across TerajuWorks",
