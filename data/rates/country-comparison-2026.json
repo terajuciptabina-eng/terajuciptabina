@@ -1,6 +1,6 @@
 {
   "title": "TerajuWorks Country Construction Rate Comparison",
-  "version": "2026-10-16-indonesia-rates-approved-1",
+  "version": "2026-10-16-all-non-malaysia-working-rates-approved-1",
   "status": "comparison-estimate-not-production-rate-master",
   "itemCount": 122,
   "sourceDefaultRate": {
@@ -22,40 +22,46 @@
       "name": "Singapore",
       "code": "SG",
       "currency": "SGD",
-      "status": "estimated"
+      "status": "user-approved-working-rates",
+      "source": "Current country-specific indicative rate table; accepted as working rates by user, not independently verified contractor quotations."
     },
     {
       "name": "Indonesia",
       "code": "ID",
       "currency": "IDR",
-      "status": "estimated"
+      "status": "user-approved-working-rates",
+      "source": "Current country-specific indicative rate table; accepted as working rates by user, not independently verified contractor quotations."
     },
     {
       "name": "Thailand",
       "code": "TH",
       "currency": "THB",
-      "status": "estimated"
+      "status": "user-approved-working-rates",
+      "source": "Current country-specific indicative rate table; accepted as working rates by user, not independently verified contractor quotations."
     },
     {
       "name": "Philippines",
       "code": "PH",
       "currency": "PHP",
-      "status": "estimated"
+      "status": "user-approved-working-rates",
+      "source": "Current country-specific indicative rate table; accepted as working rates by user, not independently verified contractor quotations."
     },
     {
       "name": "Vietnam",
       "code": "VN",
       "currency": "VND",
-      "status": "estimated"
+      "status": "user-approved-working-rates",
+      "source": "Current country-specific indicative rate table; accepted as working rates by user, not independently verified contractor quotations."
     },
     {
       "name": "Brunei",
       "code": "BN",
       "currency": "BND",
-      "status": "estimated"
+      "status": "user-approved-working-rates",
+      "source": "Current country-specific indicative rate table; accepted as working rates by user, not independently verified contractor quotations."
     }
   ],
-  "methodology": "Malaysia rates remain unchanged from data/rates/default.json. Indonesia IDR rates for all 122 items (82 BuildPlanner, 40 RenovationPlanner) were updated using the user-approved indicative rate table. Rates are accepted as the user's chosen working rates; they are not represented as independently verified contractor quotations.",
+  "methodology": "Malaysia rates remain unchanged from data/rates/default.json. The existing country-specific rates for Singapore (SGD), Indonesia (IDR), Thailand (THB), Philippines (PHP), Vietnam (VND), and Brunei (BND) are accepted as working rates by the user for all 122 items (82 BuildPlanner, 40 RenovationPlanner). Keep each country's currency and rate column separate. Rates are indicative working rates and are not represented as independently verified contractor quotations. Quantities, formulas, item scope, item IDs, planner grouping, and Malaysia baseline are unchanged.",
   "currencyBasisDate": "2026-10-09 indicative BNM middle rates",
   "sources": [
     {
@@ -149,10 +155,10 @@
       "IDR": 22000000,
       "THB": 64170,
       "PHP": 115000,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 48450000,
       "BND": 30855,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -165,10 +171,10 @@
       "IDR": 32000000,
       "THB": 90600,
       "PHP": 162350,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 68400000,
       "BND": 43560,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -181,10 +187,10 @@
       "IDR": 1350000,
       "THB": 4290,
       "PHP": 7610,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 2257000,
       "BND": 1996.5,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -197,10 +203,10 @@
       "IDR": 160000,
       "THB": 430,
       "PHP": 760,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 226000,
       "BND": 199.65,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -213,10 +219,10 @@
       "IDR": 15500,
       "THB": 60,
       "PHP": 110,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 33000,
       "BND": 29.04,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -229,10 +235,10 @@
       "IDR": 1150000,
       "THB": 4290,
       "PHP": 7610,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 2257000,
       "BND": 1996.5,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -245,10 +251,10 @@
       "IDR": 52000,
       "THB": 160,
       "PHP": 280,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 84000,
       "BND": 74.41,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -261,10 +267,10 @@
       "IDR": 950000,
       "THB": 2730,
       "PHP": 4840,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 1436000,
       "BND": 1270.5,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -277,10 +283,10 @@
       "IDR": 160000,
       "THB": 430,
       "PHP": 760,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 226000,
       "BND": 199.65,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -293,10 +299,10 @@
       "IDR": 15500,
       "THB": 60,
       "PHP": 110,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 33000,
       "BND": 29.04,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -309,10 +315,10 @@
       "IDR": 950000,
       "THB": 2730,
       "PHP": 4840,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 1436000,
       "BND": 1270.5,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -325,10 +331,10 @@
       "IDR": 160000,
       "THB": 430,
       "PHP": 760,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 226000,
       "BND": 199.65,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -341,10 +347,10 @@
       "IDR": 15500,
       "THB": 60,
       "PHP": 110,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 33000,
       "BND": 29.04,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -357,10 +363,10 @@
       "IDR": 1450000,
       "THB": 4290,
       "PHP": 7610,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 2257000,
       "BND": 1996.5,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -373,10 +379,10 @@
       "IDR": 160000,
       "THB": 430,
       "PHP": 760,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 226000,
       "BND": 199.65,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -389,10 +395,10 @@
       "IDR": 15500,
       "THB": 60,
       "PHP": 110,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 33000,
       "BND": 29.04,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -405,10 +411,10 @@
       "IDR": 1600000,
       "THB": 4290,
       "PHP": 7610,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 2257000,
       "BND": 1996.5,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -421,10 +427,10 @@
       "IDR": 160000,
       "THB": 430,
       "PHP": 760,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 226000,
       "BND": 199.65,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -437,10 +443,10 @@
       "IDR": 52000,
       "THB": 160,
       "PHP": 280,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 84000,
       "BND": 74.41,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -453,10 +459,10 @@
       "IDR": 650000,
       "THB": 3270,
       "PHP": 5810,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 1724000,
       "BND": 1524.6,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -469,10 +475,10 @@
       "IDR": 950000,
       "THB": 2730,
       "PHP": 4840,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 1436000,
       "BND": 1270.5,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -485,10 +491,10 @@
       "IDR": 160000,
       "THB": 430,
       "PHP": 760,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 226000,
       "BND": 199.65,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -501,10 +507,10 @@
       "IDR": 52000,
       "THB": 160,
       "PHP": 280,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 84000,
       "BND": 74.41,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -517,10 +523,10 @@
       "IDR": 180000,
       "THB": 270,
       "PHP": 480,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 144000,
       "BND": 127.05,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -533,10 +539,10 @@
       "IDR": 1350000,
       "THB": 4290,
       "PHP": 7610,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 2257000,
       "BND": 1996.5,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -549,10 +555,10 @@
       "IDR": 160000,
       "THB": 430,
       "PHP": 760,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 226000,
       "BND": 199.65,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -565,10 +571,10 @@
       "IDR": 15500,
       "THB": 60,
       "PHP": 110,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 33000,
       "BND": 29.04,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -581,10 +587,10 @@
       "IDR": 1150000,
       "THB": 4290,
       "PHP": 7610,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 2257000,
       "BND": 1996.5,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -597,10 +603,10 @@
       "IDR": 52000,
       "THB": 160,
       "PHP": 280,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 84000,
       "BND": 74.41,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -613,10 +619,10 @@
       "IDR": 950000,
       "THB": 2730,
       "PHP": 4840,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 1436000,
       "BND": 1270.5,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -629,10 +635,10 @@
       "IDR": 160000,
       "THB": 430,
       "PHP": 760,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 226000,
       "BND": 199.65,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -645,10 +651,10 @@
       "IDR": 15500,
       "THB": 60,
       "PHP": 110,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 33000,
       "BND": 29.04,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -661,10 +667,10 @@
       "IDR": 950000,
       "THB": 2730,
       "PHP": 4840,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 1436000,
       "BND": 1270.5,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -677,10 +683,10 @@
       "IDR": 160000,
       "THB": 430,
       "PHP": 760,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 226000,
       "BND": 199.65,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -693,10 +699,10 @@
       "IDR": 15500,
       "THB": 60,
       "PHP": 110,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 33000,
       "BND": 29.04,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -709,10 +715,10 @@
       "IDR": 1450000,
       "THB": 4290,
       "PHP": 7610,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 2257000,
       "BND": 1996.5,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -725,10 +731,10 @@
       "IDR": 160000,
       "THB": 430,
       "PHP": 760,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 226000,
       "BND": 199.65,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -741,10 +747,10 @@
       "IDR": 15500,
       "THB": 60,
       "PHP": 110,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 33000,
       "BND": 29.04,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -757,10 +763,10 @@
       "IDR": 1600000,
       "THB": 4290,
       "PHP": 7610,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 2257000,
       "BND": 1996.5,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -773,10 +779,10 @@
       "IDR": 160000,
       "THB": 430,
       "PHP": 760,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 226000,
       "BND": 199.65,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -789,10 +795,10 @@
       "IDR": 52000,
       "THB": 160,
       "PHP": 280,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 84000,
       "BND": 74.41,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -805,10 +811,10 @@
       "IDR": 700000,
       "THB": 3510,
       "PHP": 6230,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 1847000,
       "BND": 1633.5,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -821,10 +827,10 @@
       "IDR": 220000,
       "THB": 600,
       "PHP": 1080,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 333000,
       "BND": 272.25,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -837,10 +843,10 @@
       "IDR": 300000,
       "THB": 970,
       "PHP": 1730,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 534000,
       "BND": 435.6,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -853,10 +859,10 @@
       "IDR": 205000,
       "THB": 760,
       "PHP": 1370,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 422000,
       "BND": 344.85,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -869,10 +875,10 @@
       "IDR": 240000,
       "THB": 1210,
       "PHP": 2170,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 667000,
       "BND": 544.5,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -885,10 +891,10 @@
       "IDR": 65000,
       "THB": 240,
       "PHP": 430,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 133000,
       "BND": 108.9,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -901,10 +907,10 @@
       "IDR": 95000,
       "THB": 390,
       "PHP": 690,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 213000,
       "BND": 174.24,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -917,10 +923,10 @@
       "IDR": 180000,
       "THB": 1330,
       "PHP": 2380,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 734000,
       "BND": 598.95,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -933,10 +939,10 @@
       "IDR": 180000,
       "THB": 1330,
       "PHP": 2380,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 734000,
       "BND": 598.95,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -949,10 +955,10 @@
       "IDR": 260000,
       "THB": 1210,
       "PHP": 2170,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 667000,
       "BND": 544.5,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -965,10 +971,10 @@
       "IDR": 240000,
       "THB": 1210,
       "PHP": 2170,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 667000,
       "BND": 544.5,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -981,10 +987,10 @@
       "IDR": 180000,
       "THB": 1330,
       "PHP": 2380,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 734000,
       "BND": 598.95,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -997,10 +1003,10 @@
       "IDR": 2500000,
       "THB": 8850,
       "PHP": 15900,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 4891000,
       "BND": 3993,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -1013,10 +1019,10 @@
       "IDR": 1800000,
       "THB": 6430,
       "PHP": 11560,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 3557000,
       "BND": 2904,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -1029,10 +1035,10 @@
       "IDR": 850000,
       "THB": 3220,
       "PHP": 5780,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 1778000,
       "BND": 1452,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -1045,10 +1051,10 @@
       "IDR": 550000,
       "THB": 2010,
       "PHP": 3610,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 1112000,
       "BND": 907.5,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -1061,10 +1067,10 @@
       "IDR": 450000,
       "THB": 1610,
       "PHP": 2890,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 889000,
       "BND": 726,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -1077,10 +1083,10 @@
       "IDR": 1500000,
       "THB": 4530,
       "PHP": 8120,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 2394000,
       "BND": 2178,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -1093,10 +1099,10 @@
       "IDR": 6000000,
       "THB": 18870,
       "PHP": 33820,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 9975000,
       "BND": 9075,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -1109,10 +1115,10 @@
       "IDR": 400000,
       "THB": 1210,
       "PHP": 2190,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 684000,
       "BND": 544.5,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -1125,10 +1131,10 @@
       "IDR": 350000,
       "THB": 1610,
       "PHP": 2920,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 912000,
       "BND": 726,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -1141,10 +1147,10 @@
       "IDR": 450000,
       "THB": 1610,
       "PHP": 2920,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 912000,
       "BND": 726,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -1157,10 +1163,10 @@
       "IDR": 350000,
       "THB": 1610,
       "PHP": 2920,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 912000,
       "BND": 726,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -1173,10 +1179,10 @@
       "IDR": 650000,
       "THB": 2410,
       "PHP": 4380,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 1368000,
       "BND": 1089,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -1189,10 +1195,10 @@
       "IDR": 350000,
       "THB": 1610,
       "PHP": 2920,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 912000,
       "BND": 726,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -1205,10 +1211,10 @@
       "IDR": 450000,
       "THB": 1610,
       "PHP": 2920,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 912000,
       "BND": 726,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -1221,10 +1227,10 @@
       "IDR": 450000,
       "THB": 1210,
       "PHP": 2190,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 684000,
       "BND": 544.5,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -1237,10 +1243,10 @@
       "IDR": 6000000,
       "THB": 20100,
       "PHP": 36510,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 11400000,
       "BND": 9075,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -1253,10 +1259,10 @@
       "IDR": 4500000,
       "THB": 20100,
       "PHP": 36510,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 11400000,
       "BND": 9075,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -1269,10 +1275,10 @@
       "IDR": 28719,
       "THB": 200,
       "PHP": 370,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 114000,
       "BND": 90.75,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -1285,10 +1291,10 @@
       "IDR": 2200000,
       "THB": 9650,
       "PHP": 16970,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 5609000,
       "BND": 4356,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -1301,10 +1307,10 @@
       "IDR": 5000000,
       "THB": 20100,
       "PHP": 35360,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 11685000,
       "BND": 9075,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -1317,10 +1323,10 @@
       "IDR": 1500000,
       "THB": 6840,
       "PHP": 12020,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 3973000,
       "BND": 3085.5,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -1333,10 +1339,10 @@
       "IDR": 4500000,
       "THB": 19300,
       "PHP": 33950,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 11218000,
       "BND": 8712,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -1349,10 +1355,10 @@
       "IDR": 2200000,
       "THB": 9650,
       "PHP": 16970,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 5609000,
       "BND": 4356,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -1365,10 +1371,10 @@
       "IDR": 2700000,
       "THB": 11260,
       "PHP": 19800,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 6544000,
       "BND": 5082,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -1381,10 +1387,10 @@
       "IDR": 1800000,
       "THB": 7640,
       "PHP": 13440,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 4440000,
       "BND": 3448.5,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -1397,10 +1403,10 @@
       "IDR": 95000000,
       "THB": 324630,
       "PHP": 581770,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 171570000,
       "BND": 156090,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -1413,10 +1419,10 @@
       "IDR": 12000000,
       "THB": 49070,
       "PHP": 87940,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 25935000,
       "BND": 23595,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -1429,10 +1435,10 @@
       "IDR": 10000000,
       "THB": 37750,
       "PHP": 67650,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 19950000,
       "BND": 18150,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -1445,10 +1451,10 @@
       "IDR": 4000000,
       "THB": 15100,
       "PHP": 27060,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 7980000,
       "BND": 7260,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "build"
     },
     {
@@ -1461,10 +1467,10 @@
       "IDR": 25000,
       "THB": 100,
       "PHP": 170,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 53000,
       "BND": 43.56,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1477,10 +1483,10 @@
       "IDR": 35000,
       "THB": 110,
       "PHP": 200,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 62000,
       "BND": 50.82,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1493,10 +1499,10 @@
       "IDR": 150000,
       "THB": 1610,
       "PHP": 2890,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 889000,
       "BND": 726,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1509,10 +1515,10 @@
       "IDR": 350000,
       "THB": 4420,
       "PHP": 7950,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 2445000,
       "BND": 1996.5,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1525,10 +1531,10 @@
       "IDR": 200000,
       "THB": 2410,
       "PHP": 4340,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 1334000,
       "BND": 1089,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1541,10 +1547,10 @@
       "IDR": 25000,
       "THB": 100,
       "PHP": 170,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 53000,
       "BND": 43.56,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1557,10 +1563,10 @@
       "IDR": 35000,
       "THB": 110,
       "PHP": 200,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 62000,
       "BND": 50.82,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1573,10 +1579,10 @@
       "IDR": 150000,
       "THB": 1610,
       "PHP": 2890,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 889000,
       "BND": 726,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1589,10 +1595,10 @@
       "IDR": 350000,
       "THB": 4420,
       "PHP": 7950,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 2445000,
       "BND": 1996.5,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1605,10 +1611,10 @@
       "IDR": 200000,
       "THB": 2410,
       "PHP": 4340,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 1334000,
       "BND": 1089,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1621,10 +1627,10 @@
       "IDR": 25000,
       "THB": 100,
       "PHP": 170,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 53000,
       "BND": 43.56,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1637,10 +1643,10 @@
       "IDR": 35000,
       "THB": 110,
       "PHP": 200,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 62000,
       "BND": 50.82,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1653,10 +1659,10 @@
       "IDR": 150000,
       "THB": 1610,
       "PHP": 2890,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 889000,
       "BND": 726,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1669,10 +1675,10 @@
       "IDR": 250000,
       "THB": 4020,
       "PHP": 7230,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 2223000,
       "BND": 1815,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1685,10 +1691,10 @@
       "IDR": 350000,
       "THB": 4420,
       "PHP": 7950,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 2445000,
       "BND": 1996.5,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1701,10 +1707,10 @@
       "IDR": 2000000,
       "THB": 9650,
       "PHP": 17340,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 5335000,
       "BND": 4356,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1717,10 +1723,10 @@
       "IDR": 1500000,
       "THB": 8040,
       "PHP": 14450,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 4446000,
       "BND": 3630,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1733,10 +1739,10 @@
       "IDR": 2200000,
       "THB": 9650,
       "PHP": 17340,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 5335000,
       "BND": 4356,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1749,10 +1755,10 @@
       "IDR": 55000,
       "THB": 180,
       "PHP": 320,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 98000,
       "BND": 79.86,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1765,10 +1771,10 @@
       "IDR": 55000,
       "THB": 180,
       "PHP": 320,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 98000,
       "BND": 79.86,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1781,10 +1787,10 @@
       "IDR": 25000,
       "THB": 100,
       "PHP": 170,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 53000,
       "BND": 43.56,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1797,10 +1803,10 @@
       "IDR": 150000,
       "THB": 1610,
       "PHP": 2890,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 889000,
       "BND": 726,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1813,10 +1819,10 @@
       "IDR": 350000,
       "THB": 4420,
       "PHP": 7950,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 2445000,
       "BND": 1996.5,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1829,10 +1835,10 @@
       "IDR": 250000,
       "THB": 4020,
       "PHP": 7230,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 2223000,
       "BND": 1815,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1845,10 +1851,10 @@
       "IDR": 55000,
       "THB": 180,
       "PHP": 320,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 98000,
       "BND": 79.86,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1861,10 +1867,10 @@
       "IDR": 55000,
       "THB": 180,
       "PHP": 320,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 98000,
       "BND": 79.86,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1877,10 +1883,10 @@
       "IDR": 25000,
       "THB": 100,
       "PHP": 170,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 53000,
       "BND": 43.56,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1893,10 +1899,10 @@
       "IDR": 5000000,
       "THB": 24130,
       "PHP": 43360,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 13338000,
       "BND": 10890,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1909,10 +1915,10 @@
       "IDR": 1800000,
       "THB": 9650,
       "PHP": 17340,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 5335000,
       "BND": 4356,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1925,10 +1931,10 @@
       "IDR": 150000,
       "THB": 1610,
       "PHP": 2890,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 889000,
       "BND": 726,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1941,10 +1947,10 @@
       "IDR": 250000,
       "THB": 1610,
       "PHP": 2890,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 889000,
       "BND": 726,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1957,10 +1963,10 @@
       "IDR": 55000,
       "THB": 180,
       "PHP": 320,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 98000,
       "BND": 79.86,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1973,10 +1979,10 @@
       "IDR": 25000,
       "THB": 100,
       "PHP": 170,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 53000,
       "BND": 43.56,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -1989,10 +1995,10 @@
       "IDR": 150000,
       "THB": 1610,
       "PHP": 2890,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 889000,
       "BND": 726,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -2005,10 +2011,10 @@
       "IDR": 15000000,
       "THB": 51470,
       "PHP": 92490,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 28454000,
       "BND": 23232,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -2021,10 +2027,10 @@
       "IDR": 6000000,
       "THB": 22520,
       "PHP": 40470,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 12449000,
       "BND": 10164,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -2037,10 +2043,10 @@
       "IDR": 12000000,
       "THB": 44230,
       "PHP": 79490,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 24453000,
       "BND": 19965,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -2053,10 +2059,10 @@
       "IDR": 55000,
       "THB": 180,
       "PHP": 320,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 98000,
       "BND": 79.86,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -2069,10 +2075,10 @@
       "IDR": 150000,
       "THB": 480,
       "PHP": 870,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 267000,
       "BND": 217.8,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "renovation"
     },
     {
@@ -2085,10 +2091,10 @@
       "IDR": 250000,
       "THB": 2010,
       "PHP": 3610,
-      "rate_basis": "Estimated all-in labour + material; local construction-cost adjustment applied; not contractor-quoted",
+      "rate_basis": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "VND": 1112000,
       "BND": 907.5,
-      "rate_basis_vnd_bnd": "Formula-estimated all-in labour + material; estimated and not contractor-quoted",
+      "rate_basis_vnd_bnd": "User-approved indicative working rate; all-in labour + material; not independently verified contractor-quoted",
       "planner": "renovation"
     }
   ],
