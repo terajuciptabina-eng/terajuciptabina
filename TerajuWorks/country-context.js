@@ -61,6 +61,7 @@
     });
    }
    if(ctx.countryCode==='MY'){
+    document.getElementById('tc-country-rate-status')?.remove();
     Object.assign(RATES,baseRates);
     window.TERAJU_RATE_CONTEXT={countryCode:'MY',currency:'MYR',name:'Malaysia',source:'data/rates/default.json',rateStatus:'baseline'};
     window.dispatchEvent(new CustomEvent('teraju:ratechange',{detail:window.TERAJU_RATE_CONTEXT}));
