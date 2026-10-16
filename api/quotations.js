@@ -15,9 +15,10 @@ export default async function handler(req, res) {
   const MARKET_META={MY:{name:'Malaysia',currency:'MYR',symbol:'RM',locale:'en-MY'},SG:{name:'Singapore',currency:'SGD',symbol:'S$',locale:'en-SG'},ID:{name:'Indonesia',currency:'IDR',symbol:'Rp',locale:'id-ID'},TH:{name:'Thailand',currency:'THB',symbol:'฿',locale:'th-TH'},PH:{name:'Philippines',currency:'PHP',symbol:'₱',locale:'en-PH'},VN:{name:'Vietnam',currency:'VND',symbol:'₫',locale:'vi-VN'},BN:{name:'Brunei',currency:'BND',symbol:'B$',locale:'en-BN'}};
   function quotationCountries(q){return [q?.countryCode,q?.plannerState?.projectCountry?.countryCode,q?.plannerState?.countryCode,q?.projectCountry?.countryCode].map(v=>String(v||'').trim().toUpperCase()).filter(Boolean)}
   function quotationCurrencies(q){return [q?.currency,q?.plannerState?.projectCountry?.currency,q?.projectCountry?.currency].map(v=>String(v||'').trim().toUpperCase()).filter(Boolean)}
+  function quotationSymbols(q){return [q?.currencySymbol,q?.plannerState?.projectCountry?.symbol,q?.projectCountry?.symbol].map(v=>String(v||'').trim()).filter(Boolean)}
   function quotationCountry(q){const values=quotationCountries(q);if(values.some(code=>!MARKET_META[code]))return 'UNSUPPORTED';if(values.some(code=>code!==values[0]))return 'CONFLICT';return values[0]||''}
   function quotationCurrency(q){const values=quotationCurrencies(q);if(values.some(code=>code!==values[0]))return 'CONFLICT';return values[0]||''}
-  function matchesAccountMarket(q,accountCountry){const countries=quotationCountries(q),currencies=quotationCurrencies(q);return countries.length>0&&countries.every(code=>MARKET_META[code]&&code===accountCountry)&&currencies.length>0&&currencies.every(code=>code===MARKET_META[accountCountry]?.currency)}
+  function matchesAccountMarket(q,accountCountry){const countries=quotationCountries(q),currencies=quotationCurrencies(q),symbols=quotationSymbols(q);return countries.length>0&&countries.every(code=>MARKET_META[code]&&code===accountCountry)&&currencies.length>0&&currencies.every(code=>code===MARKET_META[accountCountry]?.currency)&&symbols.every(symbol=>symbol===MARKET_META[accountCountry]?.symbol)}
   const folder = role => role === 'homeowner' ? 'homeowners' : 'contractors';
   const idKey = role => role === 'homeowner' ? 'homeownerId' : 'contractorId';
   const pathFor = (role, id) => `data/users/${folder(role)}/${encodeURIComponent(id)}.json`;
@@ -169,6 +170,7 @@ export default async function handler(req, res) {
     const incomingCountries=quotationCountries(quotation);
     const incomingCountryCode=incomingCountries[0]||accountCountryCode;
     const incomingCurrencies=quotationCurrencies(quotation);
+    const incomingSymbols=quotationSymbols(quotation);
     const incomingState = String(quotation?.plannerState?.projectState || quotation?.project?.state || '').trim().toLowerCase();
     const market=MARKET_META[accountCountryCode];
     // Validate every country/currency snapshot, not only the first field: nested conflicts must never be relabelled.
@@ -178,6 +180,7 @@ export default async function handler(req, res) {
     if (incomingCountries.length===0) return res.status(400).json({ message: 'Country market metadata is required before saving this Cost Estimate.' });
     if (incomingCurrencies.length===0) return res.status(400).json({ message: 'Currency metadata is required before saving this Cost Estimate.' });
     if (incomingCurrencies.some(code=>code!==market.currency)) return res.status(409).json({ message: 'Cost Estimate currency does not match the registered account country.' });
+    if (incomingSymbols.some(symbol=>symbol!==market.symbol)) return res.status(409).json({ message: 'Cost Estimate currency symbol does not match the registered account country.' });
     // Malaysia alone uses state-specific rates; other markets use their configured country rate set.
     if (accountCountryCode === 'MY' && !incomingState) return res.status(400).json({ message: 'Project state / negeri is required for Malaysia.' });
     const now = new Date().toISOString(); const savedProjectCountry={...(quotation?.plannerState?.projectCountry||{}),...market,countryCode:accountCountryCode}; const normalized = { ...quotation, quotationId, role, [idKey(role)]: id, plannerType, countryCode:accountCountryCode,currency:market.currency,currencySymbol:market.symbol,plannerState:{...(quotation.plannerState||{}),countryCode:accountCountryCode,projectCountry:savedProjectCountry}, updatedAt: now, createdAt: quotation.createdAt || now };
