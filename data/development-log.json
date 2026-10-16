@@ -1,5 +1,16 @@
 [
   {
+    "id": "DEV-20261016-dbbb3c5",
+    "date": "2026-10-16",
+    "title": "Fix Admin Insights currency by selected market",
+    "module": "Admin / Rate Management",
+    "status": "Completed",
+    "summary": "Fix Admin Insights currency by selected market",
+    "details": "Automatic entry from commit dbbb3c5. Changed files: TerajuWorks/admin-insights.html.",
+    "commit": "dbbb3c50e14f986d497b39c9ab6144c58ace94c1",
+    "updatedAt": "2026-10-16T03:41:13.085Z"
+  },
+  {
     "id": "DEV-20261016-9e98fb4",
     "date": "2026-10-16",
     "title": "Update build quotation Q001 (EST-BLD-001-S)",
