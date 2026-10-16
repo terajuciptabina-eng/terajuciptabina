@@ -221,8 +221,8 @@ test('all changed country-market scripts parse and the rate dataset is complete'
   });
   assert.equal(unmatchedBuildRows.length, 0, 'all 82 BuildPlanner country rates must map to canonical calculation rules');
   const quantityEngine = await readFile(new URL('../TerajuWorks/quotation-quantity-fix.js', import.meta.url), 'utf8');
-  assert.match(quantityEngine, /replace\(/);
-  assert.match(quantityEngine, /replace\(/);
+  assert.ok(quantityEngine.includes("replace(/_\\d+$/,'')"), 'country rate IDs must strip their trailing row index');
+  assert.ok(quantityEngine.includes("matchingRule.replace(/\\//g,'_')"), 'canonical rule paths must normalize slashes correctly');
   assert.match(quantityEngine, /if\(market==='MY'&&!rateResponse\)/, 'only Malaysia may fetch the Malaysia default rate set');
   assert.match(quantityEngine, /RATES\[rateKey\|\|\('rule_'\+norm\(matchingRule\)\)\]=value/, 'international rates must map to canonical BuildPlanner rules when no Malaysia rate keys are loaded');
 
