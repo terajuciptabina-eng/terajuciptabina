@@ -126,6 +126,27 @@ export default async function handler(req,res){
         return res.status(200).json({ok:true,id,commitSha:saved?.commit?.sha||null});
       }
     }
+    if(req.method==='POST'&&String(req.query?.['normalize-unverified-country']||'')==='1'){
+      const results={updated:0,alreadyMalaysia:0,validOtherCountry:0,failed:0};
+      for(const role of ['homeowner','contractor']){
+        const folder=role==='homeowner'?'homeowners':'contractors';
+        const listing=await github(`data/users/${folder}`);
+        if(!listing.response.ok||!Array.isArray(listing.data))throw new Error(`Unable to list ${role} accounts.`);
+        for(const item of listing.data.filter(x=>x&&x.type==='file'&&String(x.name||'').endsWith('.json'))){
+          const path=`data/users/${folder}/${item.name}`;
+          const record=await readJson(path);
+          if(!record){results.failed++;continue;}
+          const raw=String(record.country??'').trim().toUpperCase();
+          if(raw==='MY'){results.alreadyMalaysia++;continue;}
+          if(raw&& !['UNVERIFIED','UNKNOWN','N/A','NA'].includes(raw)){results.validOtherCountry++;continue;}
+          record.country='MY';record.updatedAt=new Date().toISOString();
+          const saved=await github(path,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:`Normalize unverified country to Malaysia for ${role} account ${record.homeownerId||record.contractorId||item.name}`,content:Buffer.from(JSON.stringify(record,null,2)+'\n','utf8').toString('base64'),sha:item.sha})});
+          if(!saved.response.ok){results.failed++;continue;}
+          results.updated++;
+        }
+      }
+      return res.status(200).json({ok:true,message:'Unverified country records normalized to Malaysia.',...results,generatedAt:new Date().toISOString()});
+    }
     const roleFilter=String(req.query?.role||'').toLowerCase(),q=String(req.query?.q||'').trim().toLowerCase(),includeRecords=String(req.query?.records||'')==='1',detailId=String(req.query?.id||'').trim();
     const roles=roleFilter==='homeowner'||roleFilter==='contractor'?[roleFilter]:['homeowner','contractor'];
     if(detailId){

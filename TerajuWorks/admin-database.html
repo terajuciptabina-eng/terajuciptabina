@@ -79,7 +79,7 @@ th:nth-child(5),td:nth-child(5){width:125px}
       <input id="q" placeholder="Search ID, name, email or phone">
       <select id="role"><option value="">All accounts</option><option value="homeowner">Homeowner</option><option value="contractor">Contractor</option></select>
       <select id="country"><option value="">All countries</option><option value="MY">Malaysia</option><option value="SG">Singapore</option><option value="ID">Indonesia</option><option value="TH">Thailand</option><option value="PH">Philippines</option><option value="VN">Vietnam</option><option value="BN">Brunei</option></select>
-      <div style="display:flex;gap:8px;flex-wrap:wrap"><button id="load" type="button">Load database</button><button id="exportExcel" type="button" style="background:#fff;color:#172033;border-color:#cbd5e1">Export Excel</button></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap"><button id="load" type="button">Load database</button><button id="normalizeCountries" type="button" style="background:#0f766e;border-color:#0f766e">Set UNVERIFIED → Malaysia</button><button id="exportExcel" type="button" style="background:#fff;color:#172033;border-color:#cbd5e1">Export Excel</button></div>
     </div>
     <div id="status" class="status"></div>
   </section>
@@ -211,7 +211,20 @@ document.getElementById('profileClose').onclick=closeProfile;document.getElement
 profileModal.onclick=e=>{if(e.target===profileModal)closeProfile()};
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeProfile()});
 
-document.getElementById('load').onclick=load;document.getElementById('exportExcel').onclick=exportExcel;
+document.getElementById('load').onclick=load;
+document.getElementById('normalizeCountries').onclick=async()=>{
+  if(!confirm('Tukar semua rekod negara kosong/UNVERIFIED/UNKNOWN kepada Malaysia (MY)? Negara sah lain tidak akan diubah.'))return;
+  const button=document.getElementById('normalizeCountries');button.disabled=true;button.textContent='Updating…';status.textContent='Updating account records…';
+  try{
+    const r=await fetch(API+'?normalize-unverified-country=1',{method:'POST',headers:{...adminHeaders(),'Content-Type':'application/json'},body:JSON.stringify({})});
+    let d={};try{d=await r.json()}catch{}
+    if(!r.ok||!d.ok)throw new Error(d.message||'Country normalization failed.');
+    status.textContent='Selesai — updated: '+d.updated+', already Malaysia: '+d.alreadyMalaysia+', negara sah lain dikekalkan: '+d.validOtherCountry+', gagal: '+d.failed+'.';
+    await load();
+  }catch(e){status.textContent=e.message||'Country normalization failed.';}
+  finally{button.disabled=false;button.textContent='Set UNVERIFIED → Malaysia';}
+};
+document.getElementById('exportExcel').onclick=exportExcel;
 q.addEventListener('keydown',e=>{if(e.key==='Enter')load()});
 role.addEventListener('change',load);
 country.addEventListener('change',load);
