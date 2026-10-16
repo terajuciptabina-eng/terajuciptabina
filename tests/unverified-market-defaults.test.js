@@ -15,6 +15,7 @@ const quotationsApi = readFileSync(new URL('../api/quotations.js', import.meta.u
 const quotationsPage = readFileSync(new URL('../TerajuWorks/quotations.html', import.meta.url), 'utf8');
 const snapshotSource = readFileSync(new URL('../TerajuWorks/quotation-records.js', import.meta.url), 'utf8');
 const costPerSqft = readFileSync(new URL('../TerajuWorks/cost-per-sqft.js', import.meta.url), 'utf8');
+const quantityEngine = readFileSync(new URL('../TerajuWorks/quotation-quantity-fix.js', import.meta.url), 'utf8');
 
 test('unverified account market never defaults to Malaysia in country context', () => {
   assert.match(countryContext, /function countryCode\(value\)\{[^}]*return CURRENCIES\[c\]\?c:''\}/);
@@ -85,4 +86,11 @@ test('Cost-per-sqft metrics do not fall back to MYR when the market is unverifie
   assert.doesNotMatch(costPerSqft, /market\(\)\.symbol \|\| 'RM'/);
   assert.match(costPerSqft, /Market unverified — currency display withheld/);
   assert.doesNotMatch(costPerSqft, /\|\| 'MYR'\)\)\.toUpperCase/);
+});
+
+test('planner rate engine waits for authoritative country verification and RenovationPlanner loads context first', () => {
+  assert.match(quantityEngine, /const marketPromise=window\.TERAJU_ACCOUNT_MARKET_PROMISE;\s*if\(!marketPromise\|\|await marketPromise!==true\|\|window\.TERAJU_ACCOUNT_MARKET_VERIFIED!==true\)/);
+  assert.doesNotMatch(quantityEngine, /TERAJU_PROJECT_COUNTRY\?\.countryCode\|\|'MY'/);
+  assert.ok(renovationPlanner.indexOf('country-context.js') < renovationPlanner.indexOf('quotation-quantity-fix.js'), 'country verification must initialize before the RenovationPlanner rate engine');
+  assert.ok(renovationPlanner.indexOf('country-context.js') < renovationPlanner.indexOf('state-rate-gate.js'), 'country context must initialize before the RenovationPlanner rate gate');
 });
