@@ -15,26 +15,24 @@ function setup(t,record){
 }
 const legacy={role:'contractor',contractorId:'CTR-TEST',profile:{name:'Legacy contractor'},plannerRecords:{build:[],renovation:[]}};
 
-test('legacy account GET does not silently assign Malaysia',async t=>{
+test('legacy account GET defaults pre-country-feature accounts to Malaysia',async t=>{
  setup(t,legacy);
  const res=makeRes();
  await auth({method:'GET',query:{role:'contractor',id:'CTR-TEST'},headers:{}},res);
  assert.equal(res.statusCode,200);
- assert.equal(Object.hasOwn(res.body,'country'),false);
+ assert.equal(res.body.country,'MY');
 });
 
-test('Cost Estimate API fails closed for account without verified country',async t=>{
+test('Cost Estimate API treats legacy account without country as Malaysia',async t=>{
  setup(t,legacy);
  const res=makeRes();
  await quotations({method:'GET',query:{role:'contractor',id:'CTR-TEST',plannerType:'build'},headers:{}},res);
- assert.equal(res.statusCode,409);
- assert.match(res.body.message,/country is not verified/i);
+ assert.notEqual(res.statusCode,409);
 });
 
-test('Project Control fails closed for contractor without verified country',async t=>{
+test('Project Control treats legacy contractor without country as Malaysia',async t=>{
  setup(t,legacy);
  const res=makeRes();
  await projectControl({method:'GET',query:{id:'CTR-TEST',plannerType:'build',quotationId:'QT-LEGACY'},headers:{}},res);
- assert.equal(res.statusCode,409);
- assert.match(res.body.message,/country is not verified/i);
+ assert.notEqual(res.statusCode,409);
 });

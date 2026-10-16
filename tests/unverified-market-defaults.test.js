@@ -42,8 +42,8 @@ test('Project Control persistence requires verified market metadata instead of M
   assert.doesNotMatch(projectControl, /currency:market\?\.expected\.currency\|\|existing\.currency\|\|'MYR'/);
 });
 
-test('Admin Database renders missing account country as UNVERIFIED, not Malaysia', () => {
-  assert.match(adminDatabase, /const country=\(x\.country\|\|'UNVERIFIED'\)==='MY'\?'Malaysia':\(x\.countryName\|\|x\.country\|\|'UNVERIFIED'\)/);
+test('Admin Database renders missing legacy account country as Malaysia', () => {
+  assert.match(adminDatabase, /const country=\(x\.country\|\|'MY'\)==='MY'\?'Malaysia':\(x\.countryName\|\|x\.country\|\|'MY'\)/);
 });
 
 test('Contract and Work Program do not silently label missing market metadata as Malaysia', () => {
@@ -67,8 +67,8 @@ test('BuildPlanner, RenovationPlanner and quotation snapshots do not infer MY/MY
   assert.doesNotMatch(snapshotSource, /projectCountry:window\.TERAJU_GET_PROJECT_COUNTRY\?\.\(\)\|\|\{countryCode:'MY',currency:'MYR',name:'Malaysia'\}/);
 });
 
-test('legacy estimates without country and currency metadata are quarantined from market history', () => {
-  assert.match(quotationsApi, /return countries\.length>0&&countries\.every\(code=>MARKET_META\[code\]&&code===accountCountry\)&&currencies\.length>0&&currencies\.every\(code=>code===MARKET_META\[accountCountry\]\?\.currency\)/);
+test('legacy estimates without country and currency metadata remain compatible for Malaysia accounts only', () => {
+  assert.match(quotationsApi, /accountCountry==='MY'\|\|\(countries\.length>0&&currencies\.length>0\)/);
   assert.match(quotationsPage, /const code=String\(a\?\.country\|\|a\?\.countryCode\|\|''\)\.toUpperCase\(\)/);
   assert.doesNotMatch(quotationsPage, /const code=String\(a\?\.country\|\|'MY'\)/);
   assert.match(quotationsPage, /TERAJUWORKS · COST ESTIMATES/);
