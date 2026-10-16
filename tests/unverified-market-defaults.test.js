@@ -13,6 +13,7 @@ const buildPlanner = readFileSync(new URL('../TerajuWorks/buildplanner-v2.html',
 const renovationPlanner = readFileSync(new URL('../TerajuWorks/renovationplanner-v2.html', import.meta.url), 'utf8');
 const quotationsApi = readFileSync(new URL('../api/quotations.js', import.meta.url), 'utf8');
 const quotationsPage = readFileSync(new URL('../TerajuWorks/quotations.html', import.meta.url), 'utf8');
+const snapshotSource = readFileSync(new URL('../TerajuWorks/quotation-records.js', import.meta.url), 'utf8');
 
 test('unverified account market never defaults to Malaysia in country context', () => {
   assert.match(countryContext, /function countryCode\(value\)\{[^}]*return CURRENCIES\[c\]\?c:''\}/);
@@ -56,10 +57,18 @@ test('BuildPlanner, RenovationPlanner and quotation snapshots do not infer MY/MY
   assert.match(quotationRecords, /if\(window\.TERAJU_ACCOUNT_MARKET_VERIFIED!==true\|\|!projectCountry\?\.countryCode\|\|!projectCountry\?\.currency\)throw new Error/);
   assert.doesNotMatch(quotationRecords, /countryCode:projectCountry\.countryCode\|\|'MY'/);
   assert.doesNotMatch(quotationRecords, /currency:projectCountry\.currency\|\|'MYR'/);
+  assert.doesNotMatch(snapshotSource, /projectCountry:window\.TERAJU_GET_PROJECT_COUNTRY\?\.\(\)\|\|\{countryCode:'MY',currency:'MYR',name:'Malaysia'\}/);
 });
 
 test('legacy estimates without country and currency metadata are quarantined from market history', () => {
   assert.match(quotationsApi, /return countries\.length>0&&countries\.every\(code=>MARKET_META\[code\]&&code===accountCountry\)&&currencies\.length>0&&currencies\.every\(code=>code===MARKET_META\[accountCountry\]\?\.currency\)/);
   assert.match(quotationsPage, /const code=String\(a\?\.country\|\|a\?\.countryCode\|\|''\)\.toUpperCase\(\)/);
   assert.doesNotMatch(quotationsPage, /const code=String\(a\?\.country\|\|'MY'\)/);
+});
+
+test('PDF generation does not leak Malaysian company address or hard-code RM in non-MY markets', () => {
+  assert.match(renovationPlanner, /brand\?\.address\|\|\(window\.TERAJU_GET_PROJECT_COUNTRY\?\.\(\)\.countryCode===\"MY\"\?\"No 10A, Jalan PP 2\/1, Taman Putra Prima, 47100 Puchong, Selangor\":\"\"\)/);
+  assert.match(renovationPlanner, /brand\?\.name\|\|\(window\.TERAJU_GET_PROJECT_COUNTRY\?\.\(\)\.countryCode===\"MY\"\?\"TERAJU CIPTABINA RESOURCES\":\"TERAJUWORKS\"\)/);
+  assert.doesNotMatch(buildPlanner, /Rate \(RM\)<\\/th>/);
+  assert.doesNotMatch(buildPlanner, /Amount \(RM\)<\\/th>/);
 });
