@@ -11,6 +11,17 @@
     "updatedAt": "2026-10-16T18:43:48.715Z"
   },
   {
+    "id": "DEV-20261017-54e8510",
+    "date": "2026-10-17",
+    "title": "Fix Optional Works rate recalculation in RenovationPlanner V2",
+    "module": "RenovationPlanner",
+    "status": "Completed",
+    "summary": "Fix Optional Works rate recalculation in RenovationPlanner V2",
+    "details": "Automatic entry from commit 54e8510. Changed files: TerajuWorks/renovation-planner-v2-engine.js.",
+    "commit": "54e8510739c2470064ba0e2ab9dd0746f1d8b410",
+    "updatedAt": "2026-10-16T19:16:28.066Z"
+  },
+  {
     "id": "DEV-20261016-f90599a",
     "date": "2026-10-16",
     "title": "Normalize unverified country to Malaysia for homeowner account HME-20260910-41WP",
