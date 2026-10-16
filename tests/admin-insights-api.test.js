@@ -142,6 +142,7 @@ test('Admin Insights isolates country metrics and quarantines conflicting estima
   ];
   context.api.setAccounts(accounts);
   assert.equal(context.api.accountCountry({id:'LEGACY-NO-COUNTRY'}), 'UNVERIFIED', 'legacy account without registered country must not be counted as Malaysia');
+  assert.equal(context.api.accountCountry({id:'UNSUPPORTED-COUNTRY',country:'XX'}), 'UNVERIFIED', 'unsupported country code must not break currency filtering or be assigned a market');
   assert.equal(context.api.filteredCountryAccounts().length, 3, 'Singapore account filter must not include other countries');
   assert.equal(context.api.recordsFor(accounts[1]).length, 1, 'consistent Singapore estimate should remain visible');
   assert.equal(context.api.recordsFor(accounts[2]).length, 0, 'conflicting nested country/currency metadata must be excluded');
