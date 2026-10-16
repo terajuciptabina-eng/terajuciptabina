@@ -692,10 +692,10 @@
           "plannerType": "renovation",
           "description": "Supply and install metal roofing sheet to selected roof, 25° pitch with 3ft overhang.",
           "unit": "m²",
-          "rate": 300,
+          "rate": 250,
           "globalRate": 420,
-          "rateDelta": -120,
-          "rateDeltaPercent": -28.57,
+          "rateDelta": -170,
+          "rateDeltaPercent": -40.48,
           "overrideActive": true,
           "state": "perak",
           "rateSetId": "perak",
@@ -703,11 +703,11 @@
           "reviewedAt": null,
           "reviewedBy": null,
           "reviewNote": null,
-          "capturedAt": "2026-10-16T15:03:54.229Z",
+          "capturedAt": "2026-10-16T15:04:10.295Z",
           "category": "direct-rate-override",
           "groupKey": "structure",
           "groupTitle": "Roof",
-          "updatedAt": "2026-10-16T15:03:54.229Z"
+          "updatedAt": "2026-10-16T15:04:10.295Z"
         }
       ],
       "marketHistory": [
@@ -791,9 +791,36 @@
           "groupTitle": "Roof",
           "updatedAt": "2026-10-16T15:03:54.229Z",
           "eventType": "override-update"
+        },
+        {
+          "customItemId": "ITEM-master-main-building-/-roof-/-metal-roofing-sheet",
+          "sourceType": "override",
+          "sourceGlobalId": "master-MAIN BUILDING / Roof / Metal Roofing Sheet",
+          "countryCode": "MY",
+          "currency": "MYR",
+          "plannerType": "renovation",
+          "description": "Supply and install metal roofing sheet to selected roof, 25° pitch with 3ft overhang.",
+          "unit": "m²",
+          "rate": 250,
+          "globalRate": 420,
+          "rateDelta": -170,
+          "rateDeltaPercent": -40.48,
+          "overrideActive": true,
+          "state": "perak",
+          "rateSetId": "perak",
+          "approvalStatus": "pending",
+          "reviewedAt": null,
+          "reviewedBy": null,
+          "reviewNote": null,
+          "capturedAt": "2026-10-16T15:04:10.295Z",
+          "category": "direct-rate-override",
+          "groupKey": "structure",
+          "groupTitle": "Roof",
+          "updatedAt": "2026-10-16T15:04:10.295Z",
+          "eventType": "override-update"
         }
       ]
     }
   ],
-  "updatedAt": "2026-10-16T15:03:54.229Z"
+  "updatedAt": "2026-10-16T15:04:10.295Z"
 }
