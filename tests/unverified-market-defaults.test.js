@@ -14,6 +14,7 @@ const renovationPlanner = readFileSync(new URL('../TerajuWorks/renovationplanner
 const quotationsApi = readFileSync(new URL('../api/quotations.js', import.meta.url), 'utf8');
 const quotationsPage = readFileSync(new URL('../TerajuWorks/quotations.html', import.meta.url), 'utf8');
 const snapshotSource = readFileSync(new URL('../TerajuWorks/quotation-records.js', import.meta.url), 'utf8');
+const costPerSqft = readFileSync(new URL('../TerajuWorks/cost-per-sqft.js', import.meta.url), 'utf8');
 
 test('unverified account market never defaults to Malaysia in country context', () => {
   assert.match(countryContext, /function countryCode\(value\)\{[^}]*return CURRENCIES\[c\]\?c:''\}/);
@@ -74,4 +75,12 @@ test('PDF generation does not leak Malaysian company address or hard-code RM in 
   assert.match(renovationPlanner, /brand\?\.name\|\|\(window\.TERAJU_GET_PROJECT_COUNTRY\?\.\(\)\.countryCode===\"MY\"\?\"TERAJU CIPTABINA RESOURCES\":\"TERAJUWORKS\"\)/);
   assert.doesNotMatch(buildPlanner, /Rate \(RM\)/);
   assert.doesNotMatch(buildPlanner, /Amount \(RM\)/);
+});
+
+test('Cost-per-sqft metrics do not fall back to MYR when the market is unverified', () => {
+  assert.match(costPerSqft, /if \(window\.TERAJU_ACCOUNT_MARKET_VERIFIED !== true\) return EMPTY_MARKET/);
+  assert.doesNotMatch(costPerSqft, /value\?\.currency \|\| 'MYR'/);
+  assert.doesNotMatch(costPerSqft, /market\(\)\.symbol \|\| 'RM'/);
+  assert.match(costPerSqft, /Market unverified — currency display withheld/);
+  assert.doesNotMatch(costPerSqft, /\|\| 'MYR'\)\)\.toUpperCase/);
 });
