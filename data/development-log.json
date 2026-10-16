@@ -264,6 +264,17 @@
     "updatedAt": "2026-10-16T05:23:45.844Z"
   },
   {
+    "id": "DEV-20261016-14916f5",
+    "date": "2026-10-16",
+    "title": "Apply approved Indonesia IDR rates for all 122 items",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Apply approved Indonesia IDR rates for all 122 items",
+    "details": "Automatic entry from commit 14916f5. Changed files: data/rates/country-comparison-2026.json.",
+    "commit": "14916f54570b9add7c2ffec34c2919c43e76b77a",
+    "updatedAt": "2026-10-16T06:13:33.510Z"
+  },
+  {
     "id": "DEV-20261016-0f1a625",
     "date": "2026-10-16",
     "title": "Enforce seven-country market integrity across TerajuWorks",
