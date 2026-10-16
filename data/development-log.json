@@ -1,5 +1,16 @@
 [
   {
+    "id": "DEV-20261016-f90599a",
+    "date": "2026-10-16",
+    "title": "Normalize unverified country to Malaysia for homeowner account HME-20260910-41WP",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Normalize unverified country to Malaysia for homeowner account HME-20260910-41WP",
+    "details": "Automatic entry from commit f90599a. Changed files: data/users/homeowners/HME-20260910-41WP.json.",
+    "commit": "f90599a70ccb6d2fd737505e6a007b053d60fa5b",
+    "updatedAt": "2026-10-16T05:23:13.209Z"
+  },
+  {
     "id": "DEV-20261016-dbbb3c5",
     "date": "2026-10-16",
     "title": "Fix Admin Insights currency by selected market",
