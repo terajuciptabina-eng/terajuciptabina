@@ -167,7 +167,7 @@ function headers(){const s=session();return{'X-Admin-Username':s.username,'X-Adm
 function accountCountry(a){
   const raw=String(a?.country||a?.countryCode||'').trim().toUpperCase();
   if(['MY','SG','ID','TH','PH','VN','BN'].includes(raw))return raw;
-  return CURRENCIES[raw]?raw:'UNVERIFIED'; // Missing or unsupported country must never be counted as Malaysia.
+  return CURRENCIES[raw]?raw:'MY'; // Accounts created before country selection was introduced are legacy Malaysia accounts.
 }
 function rawRecordsFor(a){
   const p=a.plannerRecords||{};
@@ -178,9 +178,9 @@ function recordMatchesAccountMarket(a,r){
   if(!CURRENCIES[account])return false;
   const countries=[r?.countryCode,r?.plannerState?.projectCountry?.countryCode,r?.plannerState?.countryCode,r?.projectCountry?.countryCode].map(v=>String(v||'').trim().toUpperCase()).filter(Boolean);
   if(countries.some(code=>!CURRENCIES[code]||code!==account))return false;
-  if(!countries.length)return false;
+  if(!countries.length&&account!=='MY')return false;
   const currencies=[r?.currency,r?.plannerState?.projectCountry?.currency,r?.projectCountry?.currency].map(v=>String(v||'').trim().toUpperCase()).filter(Boolean);
-  if(!currencies.length)return false;
+  if(!currencies.length&&account!=='MY')return false;
   return currencies.every(code=>code===CURRENCIES[account].currency);
 }
 function recordsFor(a){return rawRecordsFor(a).filter(r=>recordMatchesAccountMarket(a,r))}
