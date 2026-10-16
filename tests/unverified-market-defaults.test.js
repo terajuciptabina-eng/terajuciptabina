@@ -9,7 +9,7 @@ const contractPage = readFileSync(new URL('../TerajuWorks/contract.html', import
 const workProgramPage = readFileSync(new URL('../TerajuWorks/work-program.html', import.meta.url), 'utf8');
 const progressPage = readFileSync(new URL('../TerajuWorks/progress.html', import.meta.url), 'utf8');
 const sCurvePage = readFileSync(new URL('../TerajuWorks/s-curve.html', import.meta.url), 'utf8');
-const contractPage = readFileSync(new URL('../TerajuWorks/contract.html', import.meta.url), 'utf8');
+
 const authApi = readFileSync(new URL('../api/auth.js', import.meta.url), 'utf8');
 const quotationRecords = readFileSync(new URL('../TerajuWorks/quotation-records.js', import.meta.url), 'utf8');
 const buildPlanner = readFileSync(new URL('../TerajuWorks/buildplanner-v2.html', import.meta.url), 'utf8');
