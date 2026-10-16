@@ -26,7 +26,7 @@ test('unverified account market never defaults to Malaysia in country context', 
   assert.match(countryContext, /return '';\s*}\s*\n\s*async function hydrateAccountCountry/);
   assert.match(countryContext, /if\(!role\|\|!id\)\{accountMarketReady=false;return false;\}/);
   assert.doesNotMatch(countryContext, /params\.get\(['\"]countryCode['\"]\)/, 'query parameters cannot choose the registered account country');
-  assert.match(countryContext, /function set\(raw\)\{const code=accountCountry\(\);const ctx=normalize\(\{\.\.\.raw,countryCode:code/);
+  assert.match(countryContext, /function set\(raw\)\{const next=normalize\(\{\.\.\.raw,countryCode:accountCountry\(\)/);
   assert.match(countryContext, /function applyCurrencyLabels\(\)\{if\(window\.TERAJU_ACCOUNT_MARKET_VERIFIED!==true\)return;/);
   assert.match(countryContext, /async function rateById\(id, snapshot\)\{if\(window\.TERAJU_ACCOUNT_MARKET_VERIFIED!==true\)throw new Error/);
   assert.doesNotMatch(countryContext, /async function rateById\(id, snapshot\)\{const ctx=normalize\(snapshot\|\|current\(\)\)/);
