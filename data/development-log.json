@@ -22,6 +22,17 @@
     "updatedAt": "2026-10-16T03:41:13.085Z"
   },
   {
+    "id": "DEV-20261016-c2dc330",
+    "date": "2026-10-16",
+    "title": "Normalize unverified country to Malaysia for homeowner account HME-20260910-KUJV",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Normalize unverified country to Malaysia for homeowner account HME-20260910-KUJV",
+    "details": "Automatic entry from commit c2dc330. Changed files: data/users/homeowners/HME-20260910-KUJV.json.",
+    "commit": "c2dc3306aadd41ba7a9cc6474740d5eda51a59cd",
+    "updatedAt": "2026-10-16T05:23:36.740Z"
+  },
+  {
     "id": "DEV-20261016-c040dd3",
     "date": "2026-10-16",
     "title": "Fix raw JavaScript rendered in Cost Estimate History",
