@@ -16,9 +16,9 @@ export default async function handler(req, res) {
   function quotationCountries(q){return [q?.countryCode,q?.plannerState?.projectCountry?.countryCode,q?.plannerState?.countryCode,q?.projectCountry?.countryCode].map(v=>String(v||'').trim().toUpperCase()).filter(Boolean)}
   function quotationCurrencies(q){return [q?.currency,q?.plannerState?.projectCountry?.currency,q?.projectCountry?.currency].map(v=>String(v||'').trim().toUpperCase()).filter(Boolean)}
   function quotationSymbols(q){return [q?.currencySymbol,q?.plannerState?.projectCountry?.symbol,q?.projectCountry?.symbol].map(v=>String(v||'').trim()).filter(Boolean)}
-  function quotationCountry(q){const values=quotationCountries(q);if(values.some(code=>!MARKET_META[code]))return 'UNSUPPORTED';if(values.some(code=>code!==values[0]))return 'CONFLICT';return values[0]||''}
-  function quotationCurrency(q){const values=quotationCurrencies(q);if(values.some(code=>code!==values[0]))return 'CONFLICT';return values[0]||''}
-  function matchesAccountMarket(q,accountCountry){const countries=quotationCountries(q),currencies=quotationCurrencies(q),symbols=quotationSymbols(q);return countries.length>0&&countries.every(code=>MARKET_META[code]&&code===accountCountry)&&currencies.length>0&&currencies.every(code=>code===MARKET_META[accountCountry]?.currency)&&symbols.every(symbol=>symbol===MARKET_META[accountCountry]?.symbol)}
+  function quotationCountry(q){const values=quotationCountries(q);if(values.some(code=>!MARKET_META[code]))return 'UNSUPPORTED';if(values.some(code=>code!==values[0]))return 'CONFLICT';return values[0]||'MY'}
+  function quotationCurrency(q){const values=quotationCurrencies(q);if(values.some(code=>code!==values[0]))return 'CONFLICT';return values[0]||'MYR'}
+  function matchesAccountMarket(q,accountCountry){const countries=quotationCountries(q),currencies=quotationCurrencies(q),symbols=quotationSymbols(q);return countries.every(code=>MARKET_META[code]&&code===accountCountry)&&currencies.every(code=>code===MARKET_META[accountCountry]?.currency)&&symbols.every(symbol=>symbol===MARKET_META[accountCountry]?.symbol)}
   const folder = role => role === 'homeowner' ? 'homeowners' : 'contractors';
   const idKey = role => role === 'homeowner' ? 'homeownerId' : 'contractorId';
   const pathFor = (role, id) => `data/users/${folder(role)}/${encodeURIComponent(id)}.json`;
@@ -94,7 +94,7 @@ export default async function handler(req, res) {
     if (!validRole(role) || !id || !validPlanner(plannerType)) return res.status(400).json({ message: 'Invalid role, id or planner type.' });
     const current = await readRecord(role, id); if (!current.record) return res.status(current.status === 404 ? 404 : 502).json({ message: current.status === 404 ? 'Account not found.' : 'Unable to read account record.' });
     if (req.method === 'GET') {
-      const accountCountry=String(current.record.country||'').trim().toUpperCase();
+      const accountCountry=String(current.record.country||'MY').trim().toUpperCase();
       if(!MARKET_META[accountCountry])return res.status(409).json({message:'Account country is not verified. Set the registered country in Admin before accessing Cost Estimates.'});
       const all=plannerList(current.record,plannerType);
       const safe=all.filter(q=>matchesAccountMarket(q,accountCountry));
@@ -110,7 +110,7 @@ export default async function handler(req, res) {
       if (!sourceQuotationId) return res.status(400).json({ message: 'Missing quotationId.' });
       const list = plannerList(current.record, plannerType);
       const sourceQuotation = list.find(q => q?.quotationId === sourceQuotationId);
-      const duplicateAccountCountry=String(current.record.country||'').trim().toUpperCase();
+      const duplicateAccountCountry=String(current.record.country||'MY').trim().toUpperCase();
       if(!MARKET_META[duplicateAccountCountry])return res.status(409).json({message:'Account country is not verified. Set the registered country in Admin before duplicating Cost Estimates.'});
       if (!sourceQuotation || !matchesAccountMarket(sourceQuotation,duplicateAccountCountry)) return res.status(404).json({ message: 'Cost estimate not found in this account market.' });
       const now = new Date().toISOString();
