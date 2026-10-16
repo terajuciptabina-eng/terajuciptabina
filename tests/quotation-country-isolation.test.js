@@ -94,3 +94,22 @@ test('Cost Estimate save rejects country metadata without currency metadata', as
   assert.match(res.body.message,/currency metadata/i);
   assert.equal(writes,0,'an estimate without explicit currency metadata must not be persisted');
 });
+
+test('Cost Estimate save rejects a currency symbol that conflicts with the registered market', async t => {
+  const account={role:'contractor',contractorId:'CTR-TEST',country:'SG',plannerRecords:{build:[],renovation:[]}};
+  let writes=0;
+  setup(t,account);
+  globalThis.fetch=async (url, options={}) => {
+    if(String(url).includes('/contents/data/users/contractors/CTR-TEST.json')) return response(200,{sha:'account-sha',encoding:'base64',content:Buffer.from(JSON.stringify(account)).toString('base64')});
+    if(options.method==='PUT') { writes++; return response(200,{content:{sha:'saved-sha'}}); }
+    return response(404,{message:'Not found'});
+  };
+  const res=makeRes();
+  await handler({method:'PUT',body:{role:'contractor',id:'CTR-TEST',plannerType:'build',quotation:{
+    quotationId:'WRONG-SYMBOL',countryCode:'SG',currency:'SGD',currencySymbol:'RM',
+    plannerState:{countryCode:'SG',projectCountry:{countryCode:'SG',currency:'SGD',symbol:'S$'}},items:[]
+  }}},res);
+  assert.equal(res.statusCode,409);
+  assert.match(res.body.message,/currency symbol/i);
+  assert.equal(writes,0);
+});
