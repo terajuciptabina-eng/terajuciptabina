@@ -183,7 +183,8 @@
  const marketGate=document.createElement('div');marketGate.id='tc-country-market-gate';marketGate.setAttribute('role','status');marketGate.style.cssText='position:fixed;inset:0;z-index:2147483647;display:flex;align-items:center;justify-content:center;padding:28px;background:#fff;color:#0f172a;text-align:center;font:600 16px/1.5 system-ui,sans-serif';marketGate.textContent='Verifying registered account market…';document.body.appendChild(marketGate);
  const rolePresent=String(params.get('role')||params.get('audience')||window.TERAJU_WORKSPACE_CONTEXT?.role||'').trim();
  const idPresent=String(params.get('id')||params.get('contractorId')||params.get('homeownerId')||window.TERAJU_WORKSPACE_CONTEXT?.id||window.TERAJU_WORKSPACE_CONTEXT?.contractorId||window.TERAJU_WORKSPACE_CONTEXT?.homeownerId||'').trim();
- hydrateAccountCountry().then(resolved=>{
+ window.TERAJU_ACCOUNT_MARKET_PROMISE=hydrateAccountCountry();
+ window.TERAJU_ACCOUNT_MARKET_PROMISE.then(resolved=>{
   if(resolved){document.getElementById('tc-country-market-gate')?.remove();return;}
   const message=rolePresent&&idPresent
    ?'Unable to verify registered account country. Cost estimation remains locked; please sign in again or retry when the account service is available.'
