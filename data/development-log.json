@@ -77,6 +77,17 @@
     "updatedAt": "2026-10-16T03:26:22.275Z"
   },
   {
+    "id": "DEV-20261016-9b81919",
+    "date": "2026-10-16",
+    "title": "Normalize unverified country to Malaysia for homeowner account HME-20260910-UYST",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Normalize unverified country to Malaysia for homeowner account HME-20260910-UYST",
+    "details": "Automatic entry from commit 9b81919. Changed files: data/users/homeowners/HME-20260910-UYST.json.",
+    "commit": "9b81919d0f2b27cee2f843e29725d81768d65264",
+    "updatedAt": "2026-10-16T05:23:43.245Z"
+  },
+  {
     "id": "DEV-20261016-9989bad",
     "date": "2026-10-16",
     "title": "Normalize unverified account countries to Malaysia (#71)",
