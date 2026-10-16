@@ -35,7 +35,7 @@ export default async function handler(req, res) {
     if (digits.startsWith(dial)) return '+' + digits;
     return '+' + dial + digits.replace(/^0+/, '');
   };
-  const validPhone = (value, country = 'MY') => {
+  const validPhone = (value, country = '') => {
     const code = String(country || '').trim().toUpperCase();
     const dial = DIAL_CODES[code];
     const normalized = normalizePhoneForCountry(value, code);
