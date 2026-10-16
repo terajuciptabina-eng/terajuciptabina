@@ -23,6 +23,9 @@ test('unverified account market never defaults to Malaysia in country context', 
   assert.match(countryContext, /async function rateById\(id, snapshot\)\{if\(window\.TERAJU_ACCOUNT_MARKET_VERIFIED!==true\)throw new Error/);
   assert.doesNotMatch(countryContext, /async function rateById\(id, snapshot\)\{const ctx=normalize\(snapshot\|\|current\(\)\)/);
   assert.match(countryContext, /function format\(value,options=\{\}\)\{if\(window\.TERAJU_ACCOUNT_MARKET_VERIFIED!==true\)return '—'/);
+  assert.match(countryContext, /rates are indicative estimates, not verified contractor quotations/i);
+  assert.match(countryContext, /rateStatus:'estimated',provisional:true/);
+  assert.match(countryContext, /provisional:ctx\.countryCode!==\'MY\'/);
 });
 
 test('Project Control persistence requires verified market metadata instead of MYR defaults', () => {
