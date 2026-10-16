@@ -176,6 +176,17 @@
     "updatedAt": "2026-10-16T05:23:38.425Z"
   },
   {
+    "id": "DEV-20261016-7751c1f",
+    "date": "2026-10-16",
+    "title": "Fix literal newline escapes breaking Admin Insights JavaScript (#72)",
+    "module": "Admin / Rate Management",
+    "status": "Completed",
+    "summary": "Fix literal newline escapes breaking Admin Insights JavaScript (#72)",
+    "details": "Automatic entry from commit 7751c1f. Changed files: TerajuWorks/admin-insights.html.",
+    "commit": "7751c1f11f1c1f61b3b530c261f85bafd58b3eee",
+    "updatedAt": "2026-10-16T05:26:27.558Z"
+  },
+  {
     "id": "DEV-20261016-467387c",
     "date": "2026-10-16",
     "title": "Normalize unverified country to Malaysia for homeowner account HME-20261013-1E5S",
