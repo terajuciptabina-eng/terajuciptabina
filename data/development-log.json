@@ -11,6 +11,17 @@
     "updatedAt": "2026-10-16T02:59:16.126Z"
   },
   {
+    "id": "DEV-20261016-0f1a625",
+    "date": "2026-10-16",
+    "title": "Enforce seven-country market integrity across TerajuWorks",
+    "module": "Development Control",
+    "status": "Completed",
+    "summary": "Enforce seven-country market integrity across TerajuWorks",
+    "details": "Automatic entry from commit 0f1a625. Changed files: .github/workflows/country-market-integrity.yml, TerajuWorks/admin-database.html, TerajuWorks/admin-insights.html, TerajuWorks/admin-rate-comparison.html, TerajuWorks/auth-github.js, TerajuWorks/buildplanner-v2.html, TerajuWorks/contract.html, TerajuWorks/cost-per-sqft.js, TerajuWorks/country-context.js, TerajuWorks/progress.html, TerajuWorks/project-insight.html, TerajuWorks/quotation-quantity-fix.js, TerajuWorks/quotation-records.js, TerajuWorks/quotations.html, TerajuWorks/renovationplanner-v2.html, TerajuWorks/s-curve.html, TerajuWorks/state-rate-gate.js, TerajuWorks/state-rate-resolver.js, TerajuWorks/work-program.html, api/admin.js, api/auth.js, api/contractor-market.js, api/contractor-rate-market.js, api/project-control.js, api/quotations.js, data/rates/country-comparison-2026.json, tests/admin-country-assignment.test.js, tests/admin-insights-api.test.js, tests/auth-country-validation.test.js, tests/contractor-market-country-isolation.test.js, tests/legacy-country-fail-closed.test.js, tests/project-control-country-isolation.test.js, tests/quotation-country-isolation.test.js, tests/unverified-market-defaults.test.js.",
+    "commit": "0f1a6257ee4862bb47f3ebe0aff647d8c2a0d616",
+    "updatedAt": "2026-10-16T03:13:20.979Z"
+  },
+  {
     "id": "DEV-20261015-fbf4158",
     "date": "2026-10-15",
     "title": "fix: dismiss signup popup when returning from WhatsApp",
