@@ -200,7 +200,9 @@ export default async function handler(req, res) {
       if (!result.response.ok) return res.status(502).json({ message: 'Unable to read account record.' });
       const content = decodeGithubContent(result.data);
       const record = JSON.parse(content);
-      // Do not silently classify legacy accounts as Malaysia. The workspace must be explicitly assigned a market.
+      // Accounts created before country selection was introduced are legacy Malaysia accounts.
+      // New signups always store an explicit country, so this fallback only applies to older records.
+      if (!record.country) record.country = 'MY';
       return res.status(200).json(record);
     }
 
@@ -215,7 +217,7 @@ export default async function handler(req, res) {
       const content = decodeGithubContent(current.data);
       let record;
       try { record = JSON.parse(content); } catch { return res.status(502).json({ message: 'Account record is invalid.' }); }
-      const accountCountry = String(record.country || '').trim().toUpperCase();
+      const accountCountry = String(record.country || 'MY').trim().toUpperCase();
       if (!['MY','SG','ID','TH','PH','VN','BN'].includes(accountCountry)) return res.status(409).json({ message: 'Account country is not verified. Set the registered country in Admin before updating this profile.' });
       const incoming = body.profile && typeof body.profile === 'object' ? body.profile : {};
       const existingProfile = record.profile && typeof record.profile === 'object' ? record.profile : {};
