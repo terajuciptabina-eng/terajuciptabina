@@ -93,6 +93,8 @@ test('planner rate engine waits for authoritative country verification and Renov
   assert.doesNotMatch(quantityEngine, /TERAJU_PROJECT_COUNTRY\?\.countryCode\|\|'MY'/);
   assert.match(quantityEngine, /stateRateUrl=market==='MY'&&state\?/);
   assert.match(quantityEngine, /RATES=market==='MY'\?\(loadedRateSet\.rates\|\|\{\}\):\{\}/);
+  assert.match(quantityEngine, /filter\(x=>x\.planner==='build'\)/);
+  assert.match(quantityEngine, /const expected=82/);
   assert.ok(renovationPlanner.indexOf('country-context.js') < renovationPlanner.indexOf('quotation-quantity-fix.js'), 'country verification must initialize before the RenovationPlanner rate engine');
   assert.ok(renovationPlanner.indexOf('country-context.js') < renovationPlanner.indexOf('state-rate-gate.js'), 'country context must initialize before the RenovationPlanner rate gate');
 });
