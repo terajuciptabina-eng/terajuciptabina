@@ -231,7 +231,7 @@ test('all changed country-market scripts parse and the rate dataset is complete'
   const renovationRateKeys = [...renovationRateBlock.matchAll(/([A-Za-z0-9_]+)\s*:/g)].map(match => match[1]);
   const renovationRows = rates.rates.filter(row => row.planner === 'renovation');
   const unmatchedRenovationRates = renovationRows.filter(row => {
-    const token = String(row.id).replace(/^renovation_rule_/, '').replace(/_\\d+$/, '');
+    const token = String(row.id).replace(/^renovation_rule_/, '').replace(/_\d+$/, '');
     const alias = renovationAliases.slice().sort((a, b) => b.key.length - a.key.length).find(item => token === item.key || token.endsWith('_' + item.key));
     return !alias || !renovationRateKeys.includes(alias.alias);
   });
