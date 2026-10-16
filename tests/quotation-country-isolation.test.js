@@ -58,3 +58,39 @@ test('Cost Estimate save rejects nested country or currency conflicts before wri
   assert.match(res.body.message,/country/i);
   assert.equal(writes,0,'conflicting market metadata must not be persisted');
 });
+
+test('Cost Estimate save rejects missing country and currency metadata even for Malaysia accounts', async t => {
+  const account={role:'contractor',contractorId:'CTR-TEST',country:'MY',plannerRecords:{build:[],renovation:[]}};
+  let writes=0;
+  setup(t,account);
+  globalThis.fetch=async (url, options={}) => {
+    if(String(url).includes('/contents/data/users/contractors/CTR-TEST.json')) return response(200,{sha:'account-sha',encoding:'base64',content:Buffer.from(JSON.stringify(account)).toString('base64')});
+    if(options.method==='PUT') { writes++; return response(200,{content:{sha:'saved-sha'}}); }
+    return response(404,{message:'Not found'});
+  };
+  const res=makeRes();
+  await handler({method:'PUT',body:{role:'contractor',id:'CTR-TEST',plannerType:'build',quotation:{
+    quotationId:'NO-MARKET-METADATA',items:[],plannerState:{projectState:'selangor'}
+  }}},res);
+  assert.equal(res.statusCode,400);
+  assert.match(res.body.message,/country market metadata/i);
+  assert.equal(writes,0,'an estimate without explicit market metadata must never be relabelled MYR');
+});
+
+test('Cost Estimate save rejects country metadata without currency metadata', async t => {
+  const account={role:'contractor',contractorId:'CTR-TEST',country:'SG',plannerRecords:{build:[],renovation:[]}};
+  let writes=0;
+  setup(t,account);
+  globalThis.fetch=async (url, options={}) => {
+    if(String(url).includes('/contents/data/users/contractors/CTR-TEST.json')) return response(200,{sha:'account-sha',encoding:'base64',content:Buffer.from(JSON.stringify(account)).toString('base64')});
+    if(options.method==='PUT') { writes++; return response(200,{content:{sha:'saved-sha'}}); }
+    return response(404,{message:'Not found'});
+  };
+  const res=makeRes();
+  await handler({method:'PUT',body:{role:'contractor',id:'CTR-TEST',plannerType:'build',quotation:{
+    quotationId:'NO-CURRENCY-METADATA',countryCode:'SG',plannerState:{countryCode:'SG',projectCountry:{countryCode:'SG'}},items:[]
+  }}},res);
+  assert.equal(res.statusCode,400);
+  assert.match(res.body.message,/currency metadata/i);
+  assert.equal(writes,0,'an estimate without explicit currency metadata must not be persisted');
+});
