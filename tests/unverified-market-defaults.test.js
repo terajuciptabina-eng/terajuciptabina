@@ -107,6 +107,7 @@ test('Project Control currency displays never default missing market data to RM/
     assert.doesNotMatch(page, /currencySymbol\|\|q\?\.projectCountry\?\.symbol\|\|'RM'/);
     assert.doesNotMatch(page, /selected\?\.projectCountry\?\.locale\|\|'en-MY'/);
     assert.match(page, /MARKET_SYMBOL\[marketCode\(q\)\]\|\|'—'/);
+    assert.match(page, /return expected&&currencies\.every\(code=>code===expected\)\?expected:''/);
   }
   assert.match(contractPage, /MARKET_SYMBOL\[marketCode\(q\)\]\|\|'—'/);
 });
