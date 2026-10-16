@@ -97,7 +97,7 @@ test('planner rate engine waits for authoritative country verification and Renov
   assert.match(quantityEngine, /const marketPromise=window\.TERAJU_ACCOUNT_MARKET_PROMISE;\s*if\(!marketPromise\|\|await marketPromise!==true\|\|window\.TERAJU_ACCOUNT_MARKET_VERIFIED!==true\)/);
   assert.doesNotMatch(quantityEngine, /TERAJU_PROJECT_COUNTRY\?\.countryCode\|\|'MY'/);
   assert.match(quantityEngine, /stateRateUrl=market==='MY'&&state\?/);
-  assert.match(quantityEngine, /RATES=market==='MY'\?\(loadedRateSet\.rates\|\|\{\}\):\{\}/);
+  assert.ok(quantityEngine.includes("if(market==='MY'){if(!rateResponse)throw Error('Malaysia rate master unavailable');const loadedRateSet=await rateResponse.json();RATES=loadedRateSet.rates||{}}else{RATES={}}"), 'non-MY markets must not load the Malaysia default rate set');
   assert.match(quantityEngine, /filter\(x=>x\.planner==='build'\)/);
   assert.match(quantityEngine, /const expected=82/);
   assert.ok(quantityEngine.includes("if(market==='MY'&&!rateResponse)"), 'only Malaysia may fetch the Malaysia default rate set');
