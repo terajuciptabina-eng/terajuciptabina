@@ -1,4 +1,4 @@
-name: Country market integrity tests # validates API loading, source syntax, strict country/currency metadata, legacy quarantine and estimated-rate disclosure
+name: Country market integrity tests # validates API loading, source syntax, strict country/currency metadata, legacy quarantine, strict save validation and estimated-rate disclosure
 on:
   pull_request:
     branches: [main]
