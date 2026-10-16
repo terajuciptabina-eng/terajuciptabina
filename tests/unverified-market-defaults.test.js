@@ -7,6 +7,9 @@ const projectControl = readFileSync(new URL('../api/project-control.js', import.
 const adminDatabase = readFileSync(new URL('../TerajuWorks/admin-database.html', import.meta.url), 'utf8');
 const contractPage = readFileSync(new URL('../TerajuWorks/contract.html', import.meta.url), 'utf8');
 const workProgramPage = readFileSync(new URL('../TerajuWorks/work-program.html', import.meta.url), 'utf8');
+const progressPage = readFileSync(new URL('../TerajuWorks/progress.html', import.meta.url), 'utf8');
+const sCurvePage = readFileSync(new URL('../TerajuWorks/s-curve.html', import.meta.url), 'utf8');
+const contractPage = readFileSync(new URL('../TerajuWorks/contract.html', import.meta.url), 'utf8');
 const authApi = readFileSync(new URL('../api/auth.js', import.meta.url), 'utf8');
 const quotationRecords = readFileSync(new URL('../TerajuWorks/quotation-records.js', import.meta.url), 'utf8');
 const buildPlanner = readFileSync(new URL('../TerajuWorks/buildplanner-v2.html', import.meta.url), 'utf8');
@@ -97,4 +100,13 @@ test('planner rate engine waits for authoritative country verification and Renov
   assert.match(quantityEngine, /const expected=82/);
   assert.ok(renovationPlanner.indexOf('country-context.js') < renovationPlanner.indexOf('quotation-quantity-fix.js'), 'country verification must initialize before the RenovationPlanner rate engine');
   assert.ok(renovationPlanner.indexOf('country-context.js') < renovationPlanner.indexOf('state-rate-gate.js'), 'country context must initialize before the RenovationPlanner rate gate');
+});
+
+test('Project Control currency displays never default missing market data to RM/MYR', () => {
+  for (const page of [contractPage, workProgramPage, progressPage, sCurvePage]) {
+    assert.doesNotMatch(page, /currencySymbol\|\|q\?\.projectCountry\?\.symbol\|\|'RM'/);
+    assert.doesNotMatch(page, /selected\?\.projectCountry\?\.locale\|\|'en-MY'/);
+    assert.match(page, /MARKET_SYMBOL\[marketCode\(q\)\]\|\|'—'/);
+  }
+  assert.match(contractPage, /MARKET_SYMBOL\[marketCode\(q\)\]\|\|'—'/);
 });
