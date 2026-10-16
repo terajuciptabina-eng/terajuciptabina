@@ -148,7 +148,7 @@ test('Admin Insights isolates country metrics and quarantines conflicting estima
   assert.equal(context.api.recordsFor(accounts[2]).length, 1, 'consistent Singapore estimate should remain visible');
   assert.equal(context.api.recordsFor(accounts[3]).length, 0, 'conflicting nested country/currency metadata must be excluded');
   assert.equal(context.api.recordsFor(accounts[4]).length, 0, 'non-MY estimates without country metadata must be excluded');
-  assert.equal(context.api.recordsFor(accounts[5]).length, 0, 'Malaysia legacy estimates without country/currency metadata should be excluded too');
+  assert.equal(context.api.recordsFor(accounts[1]).length, 0, 'Malaysia legacy estimates without country/currency metadata should be excluded too');
   assert.equal(context.api.quarantinedRecordCount(), 3, 'invalid Singapore and Malaysia estimates should be counted');
   const display = context.api.moneyByCurrency([{countryCode:'SG',record:{total:200}},{countryCode:'MY',record:{total:100}}]);
   assert.match(display, /Singapore \(SGD S\$ 200\)/);
