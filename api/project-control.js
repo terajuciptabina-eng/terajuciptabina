@@ -48,6 +48,11 @@ export default async function handler(req, res) {
     if(!values.length)return '';
     return values.some(code=>code!==values[0])?'CONFLICT':values[0];
   }
+  function symbolOf(value){
+    const values=[value?.currencySymbol,value?.projectCountry?.symbol,value?.contract?.currencySymbol,value?.contract?.projectCountry?.symbol,value?.workProgram?.currencySymbol,value?.workProgram?.projectCountry?.symbol].map(v=>String(v||'').trim()).filter(Boolean);
+    if(!values.length)return '';
+    return values.some(symbol=>symbol!==values[0])?'CONFLICT':values[0];
+  }
   async function readAccountEstimate(id,type,qid){
     const path=`data/users/contractors/${encodeURIComponent(id)}.json`;
     const result=await github(path,{ref:dataBranch});
@@ -128,10 +133,11 @@ export default async function handler(req, res) {
       if(market.status!==200)return res.status(market.status).json({message:market.message||(market.status===404?'Contractor account or source estimate not found.':'Unable to verify source Cost Estimate market.')});
       const expectedCountry=market.accountCountry,expectedCurrency=market.expected.currency;
       for(const item of [source?.record?.contract,source?.record?.workProgram].filter(x=>x&&typeof x==='object')){
-        const itemRawCountry=rawCountryOf(item),itemCountry=countryOf(item),itemCurrency=currencyOf(item);
+        const itemRawCountry=rawCountryOf(item),itemCountry=countryOf(item),itemCurrency=currencyOf(item),itemSymbol=symbolOf(item);
         if(itemRawCountry&&!itemCountry)return res.status(409).json({message:'Project Control contains an unsupported country code.'});
         if(itemCountry&&itemCountry!==expectedCountry)return res.status(409).json({message:'Project Control country does not match the registered account and source Cost Estimate.'});
         if(itemCurrency&&itemCurrency!==expectedCurrency)return res.status(409).json({message:'Project Control currency does not match the registered account and source Cost Estimate.'});
+        if(itemSymbol&&itemSymbol!==market.expected.symbol)return res.status(409).json({message:'Project Control currency symbol does not match the registered account and source Cost Estimate.'});
       }
       const old=current.record;
       if(old){
@@ -247,6 +253,8 @@ export default async function handler(req, res) {
       record.progress={schemaVersion:4,recordType:'progress',quotationId,history:newHistory,validDates:newValid,updatedAt:now};
     }
 
+    const canonicalProjectCountry={countryCode:market.accountCountry,name:market.expected.name,currency:market.expected.currency,symbol:market.expected.symbol,locale:market.expected.locale};
+    for(const key of ['contract','workProgram'])if(record[key]&&typeof record[key]==='object')record[key]={...record[key],countryCode:market.accountCountry,currency:market.expected.currency,currencySymbol:market.expected.symbol,projectCountry:{...(record[key].projectCountry||{}),...canonicalProjectCountry}};
     const content=Buffer.from(JSON.stringify(record,null,2)+'\n').toString('base64');
     const body={message:`Save project control ${type} ${quotationId}`,content,branch:dataBranch};
     if(current.sha)body.sha=current.sha;
