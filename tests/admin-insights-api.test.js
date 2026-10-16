@@ -220,6 +220,11 @@ test('all changed country-market scripts parse and the rate dataset is complete'
     return !buildRulePaths.some(path => token === path || token.endsWith('_' + path) || path.endsWith('_' + token));
   });
   assert.equal(unmatchedBuildRows.length, 0, 'all 82 BuildPlanner country rates must map to canonical calculation rules');
+  const buildAliasText = contextSource.match(/const BUILD_RATE_KEYS=\{([^}]+)\}/)?.[1] || '';
+  const buildAliases = [...buildAliasText.matchAll(/([A-Za-z0-9_]+):'([^']+)'/g)].map(match => match[1]);
+  const unmatchedBuildAliases = buildRateRows.filter(row => { const token = String(row.id).replace(/^rule_/, '').replace(/_\\d+$/, ''); return !buildAliases.some(alias => token === alias || token.endsWith('_' + alias)); });
+  assert.equal(unmatchedBuildAliases.length, 0, 'all BuildPlanner country-rate rows must map to rate aliases, including keys absent from the Malaysia baseline');
+  assert.doesNotMatch(contextSource, /Missing BuildPlanner baseline rate key/, 'international estimates must be allowed to define a rule alias missing from the Malaysia baseline');
   const quantityEngine = await readFile(new URL('../TerajuWorks/quotation-quantity-fix.js', import.meta.url), 'utf8');
   assert.ok(quantityEngine.includes("replace(/_\\d+$/,'')"), 'country rate IDs must strip their trailing row index');
   assert.ok(quantityEngine.includes("matchingRule.replace(/\\//g,'_')"), 'canonical rule paths must normalize slashes correctly');
