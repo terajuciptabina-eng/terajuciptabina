@@ -91,6 +91,8 @@ test('Cost-per-sqft metrics do not fall back to MYR when the market is unverifie
 test('planner rate engine waits for authoritative country verification and RenovationPlanner loads context first', () => {
   assert.match(quantityEngine, /const marketPromise=window\.TERAJU_ACCOUNT_MARKET_PROMISE;\s*if\(!marketPromise\|\|await marketPromise!==true\|\|window\.TERAJU_ACCOUNT_MARKET_VERIFIED!==true\)/);
   assert.doesNotMatch(quantityEngine, /TERAJU_PROJECT_COUNTRY\?\.countryCode\|\|'MY'/);
+  assert.match(quantityEngine, /stateRateUrl=market==='MY'&&state\?/);
+  assert.match(quantityEngine, /RATES=market==='MY'\?\(loadedRateSet\.rates\|\|\{\}\):\{\}/);
   assert.ok(renovationPlanner.indexOf('country-context.js') < renovationPlanner.indexOf('quotation-quantity-fix.js'), 'country verification must initialize before the RenovationPlanner rate engine');
   assert.ok(renovationPlanner.indexOf('country-context.js') < renovationPlanner.indexOf('state-rate-gate.js'), 'country context must initialize before the RenovationPlanner rate gate');
 });
