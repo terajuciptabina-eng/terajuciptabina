@@ -145,10 +145,9 @@ test('Admin Insights isolates country metrics and quarantines conflicting estima
   assert.equal(context.api.accountCountry({id:'LEGACY-NO-COUNTRY'}), 'UNVERIFIED', 'legacy account without registered country must not be counted as Malaysia');
   assert.equal(context.api.accountCountry({id:'UNSUPPORTED-COUNTRY',country:'XX'}), 'UNVERIFIED', 'unsupported country code must not break currency filtering or be assigned a market');
   assert.equal(context.api.filteredCountryAccounts().length, 3, 'Singapore account filter must not include other countries');
-  assert.equal(context.api.recordsFor(accounts[1]).length, 1, 'consistent Singapore estimate should remain visible');
-  assert.equal(context.api.recordsFor(accounts[2]).length, 0, 'conflicting nested country/currency metadata must be excluded');
+  assert.equal(context.api.recordsFor(accounts[2]).length, 1, 'consistent Singapore estimate should remain visible');
+  assert.equal(context.api.recordsFor(accounts[3]).length, 0, 'conflicting nested country/currency metadata must be excluded');
   assert.equal(context.api.recordsFor(accounts[4]).length, 0, 'non-MY estimates without country metadata must be excluded');
-  assert.equal(context.api.recordsFor(accounts[1]).length, 1, 'consistent Singapore estimate should remain visible');
   assert.equal(context.api.recordsFor(accounts[5]).length, 0, 'Malaysia legacy estimates without country/currency metadata should be excluded too');
   assert.equal(context.api.quarantinedRecordCount(), 3, 'invalid Singapore and Malaysia estimates should be counted');
   const display = context.api.moneyByCurrency([{countryCode:'SG',record:{total:200}},{countryCode:'MY',record:{total:100}}]);
