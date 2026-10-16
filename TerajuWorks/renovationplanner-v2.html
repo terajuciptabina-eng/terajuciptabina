@@ -1000,7 +1000,9 @@ function optionalScopeHtml() {
             <label class="text-sm font-medium cursor-pointer">${escapeHtml(scope.label)}</label>
             <p class="text-xs text-gray-500 mt-1 optional-rate-note">${scope.rate === null ? "Enter a rate if required" : `Standard rate: ${money(scope.rate)} / ${scope.unit}`}</p>
           </div>
-          <input type="number" min="0" step="0.01" value="${initialRate}" placeholder="Rate" aria-label="Rate for ${escapeHtml(scope.label)}" class="optional-rate w-28 border rounded-lg px-3 py-2 text-sm flex-shrink-0">
+          ${IS_CONTRACTOR
+            ? `<input type="number" min="0" step="0.01" value="${initialRate}" placeholder="Rate" aria-label="Rate for ${escapeHtml(scope.label)}" class="optional-rate w-28 border rounded-lg px-3 py-2 text-sm flex-shrink-0">`
+            : `<span class="homeowner-rate-blurred text-sm font-semibold whitespace-nowrap flex-shrink-0">${scope.rate === null ? "Rate" : money(scope.rate)}</span>`}
         </div>
       </div>`;
   }).join("");
