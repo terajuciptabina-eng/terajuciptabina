@@ -14,7 +14,7 @@ async function load(){const marketPromise=window.TERAJU_ACCOUNT_MARKET_PROMISE;i
    const selected=(countryData.rates||[]).filter(x=>x.planner==='build');
    const expected=82;
    if(selected.length!==expected)throw Error('Country rate master item count mismatch for '+market+'.');
-   const norm=x=>String(x||'').toLowerCase().replace(/^rule_/,'').replace(/_\\d+$/,'').replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'');
+   const norm=x=>String(x||'').toLowerCase().replace(/^rule_/,'').replace(/_\d+$/,'').replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'');
    for(const row of selected){
      const raw=row[field],value=Number(raw);
      if(raw===null||raw===undefined||String(raw).trim()===''||!Number.isFinite(value)||value<0)throw Error('Missing or invalid '+field+' rate for '+row.id);
@@ -23,7 +23,7 @@ async function load(){const marketPromise=window.TERAJU_ACCOUNT_MARKET_PROMISE;i
      if(!matchingRule)throw Error('No BuildPlanner rule mapping for '+row.id);
      const key=Object.keys(RATES).find(k=>norm(k)===token);
      if(key)RATES[key]=value;
-     else{const rateKey=Object.keys(RATES).find(k=>norm(k)===norm('rule_'+matchingRule.replace(/\\//g,'_'))||norm(k).endsWith('_'+norm(matchingRule)));RATES[rateKey||('rule_'+norm(matchingRule))]=value}
+     else{const rateKey=Object.keys(RATES).find(k=>norm(k)===norm('rule_'+matchingRule.replace(/\//g,'_'))||norm(k).endsWith('_'+norm(matchingRule)));RATES[rateKey||('rule_'+norm(matchingRule))]=value}
    }
  }
 }
