@@ -135,6 +135,7 @@ test('Admin Insights isolates country metrics and quarantines conflicting estima
   vm.runInContext('let accounts=[];\n' + block + '\n globalThis.api={setAccounts(v){accounts=v},accountCountry,recordsFor,recordMatchesAccountMarket,quarantinedRecordCount,filteredCountryAccounts,moneyByCurrency};', context);
   const accounts = [
     {id:'MY-1',country:'MY',role:'homeowner',plannerRecords:{build:[{plannerType:'build',total:100,countryCode:'MY',currency:'MYR'}]}},
+    {id:'MY-LEGACY',country:'MY',role:'homeowner',plannerRecords:{build:[{plannerType:'build',total:7000}]}},
     {id:'SG-1',country:'SG',role:'contractor',plannerRecords:{build:[{plannerType:'build',total:200,countryCode:'SG',currency:'SGD'}]}},
     {id:'SG-2',country:'SG',role:'contractor',plannerRecords:{build:[{plannerType:'build',total:9000,countryCode:'SG',currency:'SGD',plannerState:{projectCountry:{countryCode:'MY',currency:'MYR'}}}]}},
     {id:'VN-1',country:'VN',role:'homeowner',plannerRecords:{renovation:[{plannerType:'renovation',total:300,countryCode:'VN',currency:'VND'}]}},
@@ -147,7 +148,9 @@ test('Admin Insights isolates country metrics and quarantines conflicting estima
   assert.equal(context.api.recordsFor(accounts[1]).length, 1, 'consistent Singapore estimate should remain visible');
   assert.equal(context.api.recordsFor(accounts[2]).length, 0, 'conflicting nested country/currency metadata must be excluded');
   assert.equal(context.api.recordsFor(accounts[4]).length, 0, 'non-MY estimates without country metadata must be excluded');
-  assert.equal(context.api.quarantinedRecordCount(), 2, 'both invalid Singapore estimates should be counted');
+  assert.equal(context.api.recordsFor(accounts[1]).length, 1, 'consistent Singapore estimate should remain visible');
+  assert.equal(context.api.recordsFor(accounts[5]).length, 0, 'Malaysia legacy estimates without country/currency metadata should be excluded too');
+  assert.equal(context.api.quarantinedRecordCount(), 3, 'invalid Singapore and Malaysia estimates should be counted');
   const display = context.api.moneyByCurrency([{countryCode:'SG',record:{total:200}},{countryCode:'MY',record:{total:100}}]);
   assert.match(display, /Singapore \(SGD S\$ 200\)/);
   assert.match(display, /Malaysia \(MYR RM 100\)/);
