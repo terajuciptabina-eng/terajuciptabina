@@ -241,11 +241,16 @@
       const definition=OPTIONAL_SCOPES.find(scope=>scope.key===key);
       if(!definition) return;
 
-      let rate=definition.rate;
-      if(definition.custom){
-        rate=parseFloat(scopeEl.querySelector('.optional-rate')?.value)||0;
-        if(rate<=0) return;
+      // Use the contractor-entered rate for every Optional Works item.
+      // Standard items fall back to their default only when the rate field is blank.
+      const rawRate=scopeEl.querySelector('.optional-rate')?.value;
+      let rate;
+      if(rawRate===undefined || rawRate===null || String(rawRate).trim()===''){
+        rate=Number(definition.rate)||0;
+      }else{
+        rate=Math.max(0,Number(rawRate)||0);
       }
+      if(rate<=0) return;
 
       result.push(applyOverrides({
         id:'project-optional-'+key,
