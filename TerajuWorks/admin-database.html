@@ -78,7 +78,7 @@ th:nth-child(5),td:nth-child(5){width:125px}
     <div class="controls">
       <input id="q" placeholder="Search ID, name, email or phone">
       <select id="role"><option value="">All accounts</option><option value="homeowner">Homeowner</option><option value="contractor">Contractor</option></select>
-      <select id="country"><option value="">All countries</option><option value="MY">Malaysia</option></select>
+      <select id="country"><option value="">All countries</option><option value="MY">Malaysia</option><option value="SG">Singapore</option><option value="ID">Indonesia</option><option value="TH">Thailand</option><option value="PH">Philippines</option><option value="VN">Vietnam</option><option value="BN">Brunei</option></select>
       <div style="display:flex;gap:8px;flex-wrap:wrap"><button id="load" type="button">Load database</button><button id="exportExcel" type="button" style="background:#fff;color:#172033;border-color:#cbd5e1">Export Excel</button></div>
     </div>
     <div id="status" class="status"></div>
@@ -116,7 +116,7 @@ function exportExcel(){
       'Name':x.name||'',
       'Email':x.email||'',
       'Phone':x.phone||'',
-      'Country':(x.country||'MY')==='MY'?'Malaysia':(x.countryName||x.country||''),
+      'Country':(x.country||'UNVERIFIED')==='MY'?'Malaysia':(x.countryName||x.country||''),
       'Estimate Number':nums.join(', '),
       'Sign Up':x.createdAt||''
     };
@@ -138,12 +138,12 @@ async function load(){
     let d={};try{d=await r.json()}catch{}
     if(!r.ok)throw new Error(d.message||'Unable to load database.');
     const all=(d.accounts||[]).sort((x,y)=>Date.parse(y.createdAt||'')-Date.parse(x.createdAt||''));
-    const countryValues=[...new Set(all.map(x=>String(x.country||'MY').trim().toUpperCase()).filter(Boolean))].sort();
+    const countryValues=[...new Set(all.map(x=>String(x.country||'UNVERIFIED').trim().toUpperCase()).filter(Boolean))].sort();
     const previousCountry=country.value;country.innerHTML='<option value="">All countries</option>'+countryValues.map(code=>'<option value="'+esc(code)+'">'+esc(code==='MY'?'Malaysia':code)+'</option>').join('');
     if(countryValues.includes(previousCountry))country.value=previousCountry;
-    const a=country.value?all.filter(x=>String(x.country||'MY').trim().toUpperCase()===country.value):all;currentAccounts=a;
+    const a=country.value?all.filter(x=>String(x.country||'UNVERIFIED').trim().toUpperCase()===country.value):all;currentAccounts=a;
     result.classList.remove('hidden');
-    const myCount=a.filter(x=>(x.country||'MY')==='MY').length;const otherCount=a.length-myCount;result.innerHTML='<div class="eyebrow">Records</div><h2>'+a.length+' account(s)</h2><div style="display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 16px"><span class="tag">Malaysia: '+myCount+'</span><span class="tag">Other countries: '+otherCount+'</span></div><div class="table"><table><thead><tr><th>Account</th><th>Profile</th><th>Country</th><th>Estimate Number</th><th>Sign Up</th><th>Actions</th></tr></thead><tbody>'+a.map(x=>{const nums=Array.isArray(x.estimateNumbers)?x.estimateNumbers.filter(Boolean):[];const country=(x.country||'MY')==='MY'?'Malaysia':(x.countryName||x.country);return '<tr><td><b>'+esc(x.id||'-')+'</b><br><span class="muted">'+esc(x.role||'-')+'</span></td><td>'+esc(x.name||'-')+'<br>'+esc(x.email||'-')+'<br>'+esc(x.phone||'-')+'</td><td><span class="tag">'+esc(country)+'</span></td><td>'+(nums.length?nums.map(n=>'<span class="tag estimate-number">'+esc(n)+'</span>').join(' '):'—')+'</td><td>'+esc(x.createdAt||'-')+'</td><td class="actions"><a href="#" data-view-id="'+esc(x.id||'')+'" data-view-role="'+esc(x.role||'')+'">View / Edit</a> <button data-id="'+esc(x.id||'')+'" data-role="'+esc(x.role||'')+'" title="Delete account">×</button></td></tr>'}).join('')+'</tbody></table></div>';
+    const myCount=a.filter(x=>(x.country||'UNVERIFIED')==='MY').length;const otherCount=a.length-myCount;result.innerHTML='<div class="eyebrow">Records</div><h2>'+a.length+' account(s)</h2><div style="display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 16px"><span class="tag">Malaysia: '+myCount+'</span><span class="tag">Other countries: '+otherCount+'</span></div><div class="table"><table><thead><tr><th>Account</th><th>Profile</th><th>Country</th><th>Estimate Number</th><th>Sign Up</th><th>Actions</th></tr></thead><tbody>'+a.map(x=>{const nums=Array.isArray(x.estimateNumbers)?x.estimateNumbers.filter(Boolean):[];const country=(x.country||'UNVERIFIED')==='MY'?'Malaysia':(x.countryName||x.country||'UNVERIFIED');return '<tr><td><b>'+esc(x.id||'-')+'</b><br><span class="muted">'+esc(x.role||'-')+'</span></td><td>'+esc(x.name||'-')+'<br>'+esc(x.email||'-')+'<br>'+esc(x.phone||'-')+'</td><td><span class="tag">'+esc(country)+'</span></td><td>'+(nums.length?nums.map(n=>'<span class="tag estimate-number">'+esc(n)+'</span>').join(' '):'—')+'</td><td>'+esc(x.createdAt||'-')+'</td><td class="actions"><a href="#" data-view-id="'+esc(x.id||'')+'" data-view-role="'+esc(x.role||'')+'">View / Edit</a> <button data-id="'+esc(x.id||'')+'" data-role="'+esc(x.role||'')+'" title="Delete account">×</button></td></tr>'}).join('')+'</tbody></table></div>';
     result.querySelectorAll('.actions button').forEach(b=>b.onclick=()=>del(b));
     result.querySelectorAll('[data-view-id]').forEach(a=>a.onclick=e=>{e.preventDefault();openProfile(a.dataset.viewId,a.dataset.viewRole)});
     status.textContent='Database loaded.';
@@ -168,11 +168,12 @@ async function compressAdminLogo(file){
   return canvas.toDataURL('image/webp',.82);
 }
 function profileField(label,key,value,full=false,type='text'){return '<div class="profile-field'+(full?' full':'')+'"><label>'+esc(label)+'</label><input name="'+esc(key)+'" type="'+type+'" value="'+esc(value||'')+'"></div>'}
+function countryField(value){const options=[['','Select country'],['MY','Malaysia'],['SG','Singapore'],['ID','Indonesia'],['TH','Thailand'],['PH','Philippines'],['VN','Vietnam'],['BN','Brunei']];return '<div class="profile-field"><label>Registered Country (required)</label><select name="country" required style="width:100%;min-height:42px;padding:10px 12px;border:1px solid #d1d5db;border-radius:10px;font:inherit">'+options.map(([code,label])=>'<option value="'+code+'" '+(code===(value||'')?'selected':'')+'>'+label+'</option>').join('')+'</select><div class="profile-meta">Assign the verified country before this account can calculate or save estimates.</div></div>'}
 function renderProfile(account){
   const p=account.profile||{}, isContractor=account.role==='contractor';
   profileTitle.textContent=(isContractor?'Contractor':'Homeowner')+' Profile';
   profileMeta.textContent=account.id+' · '+account.role+' · Updated '+(account.updatedAt||'-');
-  let html=profileField('Account ID','__accountId',account.id)+profileField('Role','__role',account.role)+profileField('Name','name',p.name)+profileField('Email','email',p.email,'', 'email')+profileField('Phone','phone',p.phone);
+  let html=profileField('Account ID','__accountId',account.id)+profileField('Role','__role',account.role)+countryField(account.country==='UNVERIFIED'?'':account.country)+profileField('Name','name',p.name)+profileField('Email','email',p.email,'', 'email')+profileField('Phone','phone',p.phone);
   if(isContractor){
     html+=profileField('Registration No.','registrationNo',p.registrationNo)+profileField('Website','website',p.website,'', 'url')+profileField('Company Address','address',p.address,true);
     html+='<div class="profile-field full"><label>Company Logo</label><div class="profile-logo">'+(p.logoDataUrl?'<img src="'+esc(p.logoDataUrl)+'" alt="Company logo">':'<div style="width:150px;height:58px;display:flex;align-items:center;justify-content:center;border:1px dashed #cbd5e1;border-radius:8px;color:#94a3b8;font-size:11px">No logo uploaded</div>')+'<div style="flex:1"><input id="adminLogoInput" type="file" accept="image/png,image/jpeg,image/webp"><div class="profile-meta">PNG, JPG or WEBP. Uploading a new logo replaces the current logo.</div></div></div></div>';
@@ -192,7 +193,7 @@ async function openProfile(id,accountRole){
 function closeProfile(){profileModal.classList.remove('open');profileForm.reset();profileStatus.classList.remove('is-loading');profileStatus.textContent='';activeProfile={id:'',role:''}}
 profileForm.onsubmit=async e=>{
   e.preventDefault();if(!activeProfile.id)return;
-  const data=Object.fromEntries(new FormData(profileForm).entries()); delete data.__accountId; delete data.__role;
+  const data=Object.fromEntries(new FormData(profileForm).entries()); delete data.__accountId; delete data.__role; const accountCountry=data.country; delete data.country;
   const logoInput=document.getElementById('adminLogoInput');
   if(logoInput?.files?.[0]){
     const file=logoInput.files[0];
@@ -201,7 +202,7 @@ profileForm.onsubmit=async e=>{
   }
   profileStatus.textContent='Saving…';profileStatus.style.color='#6b7280';
   try{
-    const r=await fetch(API,{method:'PUT',headers:{...adminHeaders(),'Content-Type':'application/json'},body:JSON.stringify({id:activeProfile.id,role:activeProfile.role,profile:data})});
+    const r=await fetch(API,{method:'PUT',headers:{...adminHeaders(),'Content-Type':'application/json'},body:JSON.stringify({id:activeProfile.id,role:activeProfile.role,country:accountCountry,profile:data})});
     let d={};try{d=await r.json()}catch{} if(!r.ok)throw new Error(d.message||'Unable to save profile.');
     profileStatus.textContent='Profile updated.';profileStatus.style.color='#166534';load();
   }catch(e){profileStatus.textContent=e.message||'Unable to save profile.';profileStatus.style.color='#b91c1c'}

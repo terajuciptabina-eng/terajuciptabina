@@ -36,6 +36,41 @@ export default async function handler(req, res) {
     return{record:content?JSON.parse(content):null,sha:x.data?.sha||null,status:200};
   }
 
+  const CURRENCY_BY_COUNTRY={MY:{name:'Malaysia',currency:'MYR',symbol:'RM',locale:'en-MY'},SG:{name:'Singapore',currency:'SGD',symbol:'S$',locale:'en-SG'},ID:{name:'Indonesia',currency:'IDR',symbol:'Rp',locale:'id-ID'},TH:{name:'Thailand',currency:'THB',symbol:'฿',locale:'th-TH'},PH:{name:'Philippines',currency:'PHP',symbol:'₱',locale:'en-PH'},VN:{name:'Vietnam',currency:'VND',symbol:'₫',locale:'vi-VN'},BN:{name:'Brunei',currency:'BND',symbol:'B$',locale:'en-BN'}};
+  function rawCountryOf(value){
+    const values=[value?.countryCode,value?.country,value?.projectCountry?.countryCode,value?.plannerState?.projectCountry?.countryCode,value?.plannerState?.countryCode,value?.contract?.countryCode,value?.contract?.projectCountry?.countryCode,value?.workProgram?.countryCode,value?.workProgram?.projectCountry?.countryCode].map(v=>String(v||'').trim().toUpperCase()).filter(Boolean);
+    if(!values.length)return '';
+    return values.some(code=>code!==values[0])?'CONFLICT':values[0];
+  }
+  function countryOf(value){const code=rawCountryOf(value);return CURRENCY_BY_COUNTRY[code]?code:''}
+  function currencyOf(value){
+    const values=[value?.currency,value?.projectCountry?.currency,value?.plannerState?.projectCountry?.currency,value?.contract?.currency,value?.contract?.projectCountry?.currency,value?.workProgram?.currency,value?.workProgram?.projectCountry?.currency].map(v=>String(v||'').trim().toUpperCase()).filter(Boolean);
+    if(!values.length)return '';
+    return values.some(code=>code!==values[0])?'CONFLICT':values[0];
+  }
+  function symbolOf(value){
+    const values=[value?.currencySymbol,value?.projectCountry?.symbol,value?.contract?.currencySymbol,value?.contract?.projectCountry?.symbol,value?.workProgram?.currencySymbol,value?.workProgram?.projectCountry?.symbol].map(v=>String(v||'').trim()).filter(Boolean);
+    if(!values.length)return '';
+    return values.some(symbol=>symbol!==values[0])?'CONFLICT':values[0];
+  }
+  async function readAccountEstimate(id,type,qid){
+    const path=`data/users/contractors/${encodeURIComponent(id)}.json`;
+    const result=await github(path,{ref:dataBranch});
+    if(result.response.status===404)return{status:404};
+    if(!result.response.ok)return{status:502};
+    let account;try{account=JSON.parse(Buffer.from(result.data?.content||'','base64').toString('utf8'))}catch{return{status:502}}
+    const accountCountry=String(account?.country||'').trim().toUpperCase();
+    if(!CURRENCY_BY_COUNTRY[accountCountry])return{status:409,message:'Contractor account country is not verified. Set the registered country in Admin before using Project Control.'};
+    const list=Array.isArray(account?.plannerRecords?.[type])?account.plannerRecords[type]:[];
+    const estimate=list.find(q=>String(q?.quotationId||'')===qid);
+    if(!estimate)return{status:404,message:'Source Cost Estimate not found for this Project Control record.'};
+    const estimateRawCountry=rawCountryOf(estimate),estimateCountry=countryOf(estimate)||(estimateRawCountry?'UNSUPPORTED':'');
+    if(estimateCountry!==accountCountry)return{status:409,message:'Source Cost Estimate country does not match the registered contractor account.'};
+    const expected=CURRENCY_BY_COUNTRY[accountCountry],storedCurrency=currencyOf(estimate);
+    if(storedCurrency!==expected.currency)return{status:409,message:'Source Cost Estimate currency is missing or does not match its registered country.'};
+    return{status:200,accountCountry,estimate,expected};
+  }
+
   async function readProgress(id,type,qid,includeSha=false){
     const path=progressPathFor(id,type,qid);
     const raw=await fetch(`https://raw.githubusercontent.com/${actualRepo}/${dataBranch}/${path}`,{cache:'no-store'});
@@ -92,9 +127,37 @@ export default async function handler(req, res) {
     if(!id||!validPlanner(type)||!quotationId)return res.status(400).json({message:'Missing contractor id, planner type or quotationId.'});
 
     const current=await read(id,type,quotationId);
+    let market=null;
+    if(req.method==='PUT'||req.method==='GET'){
+      market=await readAccountEstimate(id,type,quotationId);
+      if(market.status!==200)return res.status(market.status).json({message:market.message||(market.status===404?'Contractor account or source estimate not found.':'Unable to verify source Cost Estimate market.')});
+      const expectedCountry=market.accountCountry,expectedCurrency=market.expected.currency;
+      for(const item of [source?.record?.contract,source?.record?.workProgram].filter(x=>x&&typeof x==='object')){
+        const itemRawCountry=rawCountryOf(item),itemCountry=countryOf(item),itemCurrency=currencyOf(item),itemSymbol=symbolOf(item);
+        if(itemRawCountry&&!itemCountry)return res.status(409).json({message:'Project Control contains an unsupported country code.'});
+        if(itemCountry&&itemCountry!==expectedCountry)return res.status(409).json({message:'Project Control country does not match the registered account and source Cost Estimate.'});
+        if(itemCurrency&&itemCurrency!==expectedCurrency)return res.status(409).json({message:'Project Control currency does not match the registered account and source Cost Estimate.'});
+        if(itemSymbol&&itemSymbol!==market.expected.symbol)return res.status(409).json({message:'Project Control currency symbol does not match the registered account and source Cost Estimate.'});
+      }
+      const old=current.record;
+      if(old){
+        const oldRawCountry=rawCountryOf(old),oldNestedRaw=rawCountryOf(old.contract)||rawCountryOf(old.workProgram),oldNestedCountry=countryOf(old.contract)||countryOf(old.workProgram);
+        if((oldRawCountry&&!countryOf(old))||(oldNestedRaw&&!oldNestedCountry))return res.status(409).json({message:'Existing Project Control record contains conflicting or unsupported country metadata. It was not overwritten.'});
+        const oldCountry=oldNestedCountry||countryOf(old)||String(old.countryCode||'').toUpperCase();
+        const oldCurrency=currencyOf(old);
+        if(oldCountry&&oldCountry!==expectedCountry)return res.status(409).json({message:'Existing Project Control record belongs to a different country market. It was not overwritten.'});
+        if(oldCurrency&&oldCurrency!==expectedCurrency)return res.status(409).json({message:'Existing Project Control record uses a different currency. It was not overwritten.'});
+      }
+    }
     if(req.method==='GET'){
       const savedProgress=await readProgress(id,type,quotationId);
       const merged=current.record?{...current.record}:null;
+      if(merged&&market){
+        const projectCountry={countryCode:market.accountCountry,name:market.expected.name,currency:market.expected.currency,symbol:market.expected.symbol,locale:market.expected.locale};
+        merged.countryCode=market.accountCountry;merged.currency=market.expected.currency;merged.currencySymbol=market.expected.symbol;
+        if(merged.contract)merged.contract={...merged.contract,countryCode:market.accountCountry,currency:market.expected.currency,currencySymbol:market.expected.symbol,projectCountry:{...(merged.contract.projectCountry||{}),...projectCountry}};
+        if(merged.workProgram)merged.workProgram={...merged.workProgram,countryCode:market.accountCountry,currency:market.expected.currency,currencySymbol:market.expected.symbol,projectCountry:{...(merged.workProgram.projectCountry||{}),...projectCountry}};
+      }
       if(merged&&savedProgress.status===200&&savedProgress.progress)merged.progress=savedProgress.progress;
       return res.status(200).json({success:true,record:merged});
     }
@@ -129,10 +192,11 @@ export default async function handler(req, res) {
     }
     const now=new Date().toISOString();
     const existing=current.record&&typeof current.record==='object'?current.record:{schemaVersion:1,recordType:'project-control',contractorId:id,plannerType:type,quotationId,createdAt:now};
-    const record={...existing,schemaVersion:1,recordType:'project-control',contractorId:id,plannerType:type,quotationId,updatedAt:now};
+    if(!market?.accountCountry||!market?.expected?.currency||!market?.expected?.symbol)return res.status(409).json({message:'Contractor account country is not verified. Project Control writes are blocked until Admin assigns a registered country.'});
+    const record={...existing,schemaVersion:2,recordType:'project-control',contractorId:id,plannerType:type,quotationId,countryCode:market.accountCountry,currency:market.expected.currency,currencySymbol:market.expected.symbol,updatedAt:now};
 
     if(payload.contract){
-      const incoming={...payload.contract};
+      const incoming={...payload.contract,countryCode:market.accountCountry,currency:market.expected.currency,currencySymbol:market.expected.symbol,projectCountry:payload.contract.projectCountry||{countryCode:market.accountCountry,currency:market.expected.currency,symbol:market.expected.symbol}};
       const previous=record.contract&&typeof record.contract==='object'?record.contract:null;
       const sameContract=previous&&JSON.stringify({
         contractNumber:previous.contractNumber||'',
@@ -179,7 +243,7 @@ export default async function handler(req, res) {
       record.contract={...incoming,updatedAt:now};
     }
     if(payload.workProgram){
-      record.workProgram={...payload.workProgram,updatedAt:now};
+      record.workProgram={...payload.workProgram,countryCode:market.accountCountry,currency:market.expected.currency,currencySymbol:market.expected.symbol,projectCountry:payload.workProgram.projectCountry||{countryCode:market.accountCountry,currency:market.expected.currency,symbol:market.expected.symbol},updatedAt:now};
       delete record.workProgram.versions;
     }
     if(payload.progress){
@@ -189,6 +253,8 @@ export default async function handler(req, res) {
       record.progress={schemaVersion:4,recordType:'progress',quotationId,history:newHistory,validDates:newValid,updatedAt:now};
     }
 
+    const canonicalProjectCountry={countryCode:market.accountCountry,name:market.expected.name,currency:market.expected.currency,symbol:market.expected.symbol,locale:market.expected.locale};
+    for(const key of ['contract','workProgram'])if(record[key]&&typeof record[key]==='object')record[key]={...record[key],countryCode:market.accountCountry,currency:market.expected.currency,currencySymbol:market.expected.symbol,projectCountry:{...(record[key].projectCountry||{}),...canonicalProjectCountry}};
     const content=Buffer.from(JSON.stringify(record,null,2)+'\n').toString('base64');
     const body={message:`Save project control ${type} ${quotationId}`,content,branch:dataBranch};
     if(current.sha)body.sha=current.sha;

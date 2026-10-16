@@ -81,9 +81,8 @@
     };
 
     function projectCountry(){
-      const picker=document.getElementById('tcProjectCountrySelect');
-      if(picker)return String(picker.value||'').trim().toUpperCase();
       const context=window.TERAJU_GET_PROJECT_COUNTRY?.();
+      // The signed-in account market is authoritative; never trust a planner-local picker.
       return String(context?.countryCode||'').trim().toUpperCase();
     }
     function apply(){
@@ -97,7 +96,7 @@
         el.setAttribute('aria-disabled',String(!canProceed));
       });
       const countryPicker=document.getElementById('tcProjectCountrySelect');
-      if(countryPicker){countryPicker.disabled=false;countryPicker.removeAttribute('aria-disabled');}
+      if(countryPicker){const authoritative=String(window.TERAJU_GET_PROJECT_COUNTRY?.()?.countryCode||'').toUpperCase();if(authoritative)countryPicker.value=authoritative;countryPicker.disabled=true;countryPicker.setAttribute('aria-disabled','true');const wrapper=countryPicker.closest('label')||countryPicker.parentElement;if(wrapper)wrapper.hidden=true;}
       select.disabled=!isMalaysia;
       const stateWrap=select.closest('.mb-4')||select.parentElement;
       if(stateWrap){stateWrap.hidden=!isMalaysia;stateWrap.setAttribute('aria-hidden',String(!isMalaysia));}

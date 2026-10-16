@@ -1,0 +1,256 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import vm from 'node:vm';
+import handler from '../api/admin.js';
+
+const originalFetch = globalThis.fetch;
+const originalEnv = {
+  GITHUB_TOKEN: process.env.GITHUB_TOKEN,
+  GITHUB_REPO: process.env.GITHUB_REPO,
+  ADMIN_PASSWORD: process.env.ADMIN_PASSWORD,
+  ADMIN_KEY: process.env.ADMIN_KEY
+};
+
+function response(status, data) {
+  return {
+    ok: status >= 200 && status < 300,
+    status,
+    async text() { return JSON.stringify(data); }
+  };
+}
+
+function makeRes() {
+  return {
+    statusCode: 200,
+    headers: {},
+    body: null,
+    setHeader(k, v) { this.headers[k] = v; return this; },
+    status(n) { this.statusCode = n; return this; },
+    json(v) { this.body = v; return this; },
+    end() { return this; }
+  };
+}
+
+function makeReq(query = {}) {
+  return { method: 'GET', query, headers: {
+    'x-admin-username': 'admin',
+    'x-admin-password': 'test-secret'
+  } };
+}
+
+function encoded(record) {
+  return Buffer.from(JSON.stringify(record)).toString('base64');
+}
+
+test('Admin Insights loads every account with bounded parallel reads', async t => {
+  process.env.GITHUB_TOKEN = 'test-token';
+  process.env.GITHUB_REPO = 'terajuciptabina-eng/terajuciptabina';
+  process.env.ADMIN_PASSWORD = 'test-secret';
+  process.env.ADMIN_KEY = '';
+  let activeReads = 0, maxReads = 0;
+  const accountCount = 12;
+  globalThis.fetch = async urlValue => {
+    const url = new URL(String(urlValue));
+    const path = decodeURIComponent(url.pathname.replace('/repos/terajuciptabina-eng/terajuciptabina/contents/', ''));
+    if (path === 'data/users/homeowners') return response(200,
+      Array.from({ length: accountCount }, (_, i) => ({ type: 'file', name: `h${i}.json` })));
+    if (path === 'data/users/contractors') return response(200,
+      Array.from({ length: accountCount }, (_, i) => ({ type: 'file', name: `c${i}.json` })));
+    const match = path.match(/^data\/users\/(homeowners|contractors)\/(.+\.json)$/);
+    if (!match) return response(404, { message: 'Not found' });
+    activeReads++;
+    maxReads = Math.max(maxReads, activeReads);
+    await new Promise(resolve => setTimeout(resolve, 2));
+    activeReads--;
+    const contractor = match[1] === 'contractors';
+    const id = match[2].replace('.json', '');
+    return response(200, { content: encoded({
+      role: contractor ? 'contractor' : 'homeowner',
+      [contractor ? 'contractorId' : 'homeownerId']: id,
+      country: contractor ? 'SG' : 'MY',
+      profile: { name: id },
+      createdAt: '2026-10-01T00:00:00Z',
+      plannerRecords: { build: [{ total: 100 }], renovation: [] }
+    }) });
+  };
+  t.after(() => {
+    globalThis.fetch = originalFetch;
+    for (const [key, value] of Object.entries(originalEnv)) {
+      if (value === undefined) delete process.env[key]; else process.env[key] = value;
+    }
+  });
+
+  const res = makeRes();
+  await handler(makeReq({ records: '1' }), res);
+  assert.equal(res.statusCode, 200);
+  assert.equal(res.body.accounts.length, accountCount * 2);
+  assert.equal(res.body.counts.accounts, accountCount * 2);
+  assert.equal(res.body.counts.quotations, accountCount * 2);
+  assert.ok(maxReads > 1, 'account JSON files should be read concurrently');
+  assert.ok(maxReads <= 8, 'parallel account reads must remain bounded to eight');
+  assert.equal(res.body.accounts.filter(a => a.country === 'SG').length, accountCount);
+});
+
+test('Admin Insights fails clearly when a country-independent account index fails', async t => {
+  process.env.GITHUB_TOKEN = 'test-token';
+  process.env.GITHUB_REPO = 'terajuciptabina-eng/terajuciptabina';
+  process.env.ADMIN_PASSWORD = 'test-secret';
+  process.env.ADMIN_KEY = '';
+  globalThis.fetch = async urlValue => {
+    const url = new URL(String(urlValue));
+    const path = decodeURIComponent(url.pathname.replace('/repos/terajuciptabina-eng/terajuciptabina/contents/', ''));
+    if (path === 'data/users/homeowners') return response(200, []);
+    if (path === 'data/users/contractors') return response(503, { message: 'upstream unavailable' });
+    return response(404, { message: 'Not found' });
+  };
+  t.after(() => {
+    globalThis.fetch = originalFetch;
+    for (const [key, value] of Object.entries(originalEnv)) {
+      if (value === undefined) delete process.env[key]; else process.env[key] = value;
+    }
+  });
+  const res = makeRes();
+  await handler(makeReq({ records: '1' }), res);
+  assert.equal(res.statusCode, 502);
+  assert.match(res.body.message, /contractor account index/i);
+  assert.equal(res.body.accounts, undefined, 'must not return partial account metrics');
+});
+
+
+test('Admin Insights isolates country metrics and quarantines conflicting estimate metadata', async () => {
+  const html = (await import('node:fs/promises')).readFile;
+  const source = await html(new URL('../TerajuWorks/admin-insights.html', import.meta.url), 'utf8');
+  const script = [...source.matchAll(/<script\b(?![^>]*\bsrc=)[^>]*>([\s\S]*?)<\/script>/gi)]
+    .map(match => match[1]).find(value => value.includes('function recordMatchesAccountMarket'));
+  assert.ok(script, 'Admin Insights market functions must exist');
+  const start = script.indexOf('const CURRENCIES=');
+  const end = script.indexOf('function destroy(');
+  assert.ok(start >= 0 && end > start, 'market function block must be extractable');
+  const block = script.slice(start, end);
+  const context = {
+    document: { getElementById(id) { return { value: id === 'countryFilter' ? 'SG' : 'all' }; } },
+    Intl, Number, String, Array, Object, Math, Date
+  };
+  vm.createContext(context);
+  vm.runInContext('let accounts=[];\n' + block + '\n globalThis.api={setAccounts(v){accounts=v},accountCountry,recordsFor,recordMatchesAccountMarket,quarantinedRecordCount,filteredCountryAccounts,moneyByCurrency};', context);
+  const accounts = [
+    {id:'MY-1',country:'MY',role:'homeowner',plannerRecords:{build:[{plannerType:'build',total:100,countryCode:'MY',currency:'MYR'}]}},
+    {id:'MY-LEGACY',country:'MY',role:'homeowner',plannerRecords:{build:[{plannerType:'build',total:7000}]}},
+    {id:'SG-1',country:'SG',role:'contractor',plannerRecords:{build:[{plannerType:'build',total:200,countryCode:'SG',currency:'SGD'}]}},
+    {id:'SG-2',country:'SG',role:'contractor',plannerRecords:{build:[{plannerType:'build',total:9000,countryCode:'SG',currency:'SGD',plannerState:{projectCountry:{countryCode:'MY',currency:'MYR'}}}]}},
+    {id:'VN-1',country:'VN',role:'homeowner',plannerRecords:{renovation:[{plannerType:'renovation',total:300,countryCode:'VN',currency:'VND'}]}},
+    {id:'SG-3',country:'SG',role:'contractor',plannerRecords:{build:[{plannerType:'build',total:500}]}}
+  ];
+  context.api.setAccounts(accounts);
+  assert.equal(context.api.accountCountry({id:'LEGACY-NO-COUNTRY'}), 'UNVERIFIED', 'legacy account without registered country must not be counted as Malaysia');
+  assert.equal(context.api.accountCountry({id:'UNSUPPORTED-COUNTRY',country:'XX'}), 'UNVERIFIED', 'unsupported country code must not break currency filtering or be assigned a market');
+  assert.equal(context.api.filteredCountryAccounts().length, 3, 'Singapore account filter must not include other countries');
+  assert.equal(context.api.recordsFor(accounts[2]).length, 1, 'consistent Singapore estimate should remain visible');
+  assert.equal(context.api.recordsFor(accounts[3]).length, 0, 'conflicting nested country/currency metadata must be excluded');
+  assert.equal(context.api.recordsFor(accounts[5]).length, 0, 'non-MY estimates without country metadata must be excluded');
+  assert.equal(context.api.recordsFor(accounts[1]).length, 0, 'Malaysia legacy estimates without country/currency metadata should be excluded too');
+  assert.equal(context.api.quarantinedRecordCount(), 3, 'invalid Singapore and Malaysia estimates should be counted');
+  const display = context.api.moneyByCurrency([{countryCode:'SG',record:{total:200}},{countryCode:'MY',record:{total:100}}]);
+  assert.match(display, /Singapore \(SGD S\$ 200\)/);
+  assert.match(display, /Malaysia \(MYR RM 100\)/);
+  assert.ok(display.indexOf('Malaysia') < display.indexOf('Singapore'), 'currency groups should be alphabetically deterministic');
+});
+
+
+test('all changed country-market scripts parse and the rate dataset is complete', async () => {
+  const readFile = (await import('node:fs/promises')).readFile;
+  const { Script } = await import('node:vm');
+  const paths = [
+    '../api/admin.js',
+    '../api/quotations.js',
+    '../api/project-control.js',
+    '../api/auth.js',
+    '../api/contractor-market.js',
+    '../api/contractor-rate-market.js',
+    '../TerajuWorks/auth-github.js',
+    '../TerajuWorks/cost-per-sqft.js',
+    '../TerajuWorks/quotation-quantity-fix.js',
+    '../TerajuWorks/country-context.js',
+    '../TerajuWorks/state-rate-gate.js',
+    '../TerajuWorks/state-rate-resolver.js',
+    '../TerajuWorks/quotation-records.js'
+  ];
+  for (const relative of paths) {
+    const source = await readFile(new URL(relative, import.meta.url), 'utf8');
+    const normalized = source.replace(/^export default async function handler/m, 'async function handler');
+    assert.doesNotThrow(() => new Script(normalized), relative + ' must parse');
+  }
+  const htmlPaths = [
+    '../TerajuWorks/admin-insights.html',
+    '../TerajuWorks/admin-database.html',
+    '../TerajuWorks/admin-rate-comparison.html',
+    '../TerajuWorks/buildplanner-v2.html',
+    '../TerajuWorks/renovationplanner-v2.html',
+    '../TerajuWorks/quotations.html',
+    '../TerajuWorks/contract.html',
+    '../TerajuWorks/work-program.html',
+    '../TerajuWorks/progress.html',
+    '../TerajuWorks/s-curve.html',
+    '../TerajuWorks/project-insight.html'
+  ];
+  for (const relative of htmlPaths) {
+    const source = await readFile(new URL(relative, import.meta.url), 'utf8');
+    const scripts = [...source.matchAll(/<script\b(?![^>]*\bsrc=)[^>]*>([\s\S]*?)<\/script>/gi)].map(m => m[1]).filter(x => x.trim());
+    assert.ok(scripts.length, relative + ' should contain inline application code');
+    scripts.forEach((script, index) => assert.doesNotThrow(() => new Script(script), relative + ' inline script ' + index + ' must parse'));
+  }
+  const resolverSource = await readFile(new URL('../TerajuWorks/state-rate-resolver.js', import.meta.url), 'utf8');
+  assert.doesNotMatch(resolverSource, /TERAJU_PROJECT_COUNTRY\?\.countryCode\s*\|\|\s*['\"]MY['\"]/, 'state-rate resolver must not assume Malaysia when account market is unverified');
+  assert.match(resolverSource, /TERAJU_ACCOUNT_MARKET_VERIFIED\s*!==\s*true/, 'state-rate resolver must wait for authoritative account-country verification');
+  const contextSource = await readFile(new URL('../TerajuWorks/country-context.js', import.meta.url), 'utf8');
+  assert.match(contextSource, /TERAJU_ACCOUNT_MARKET_VERIFIED\s*=\s*false/, 'country verification must start closed');
+  assert.match(contextSource, /TERAJU_ACCOUNT_MARKET_VERIFIED\s*=\s*true/, 'country verification opens only after account API resolution');
+  const authUiSource = await readFile(new URL('../TerajuWorks/auth-github.js', import.meta.url), 'utf8');
+  assert.doesNotMatch(authUiSource, /country:\s*record\.country\s*\|\|\s*['\"]MY['\"]/, 'account cache must not silently label legacy accounts as Malaysia');
+  const rates = JSON.parse(await readFile(new URL('../data/rates/country-comparison-2026.json', import.meta.url), 'utf8'));
+  assert.equal(rates.rates.length, 122);
+  assert.equal(rates.plannerCounts.build, 82);
+  assert.equal(rates.plannerCounts.renovation, 40);
+  const calculationRules = JSON.parse(await readFile(new URL('../data/calculation-rules.json', import.meta.url), 'utf8'));
+  const norm = value => String(value || '').toLowerCase().replace(/^rule_/, '').replace(/_\d+$/, '').replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '');
+  const buildRulePaths = (calculationRules.rules || []).map(rule => rule?.path).filter(Boolean).map(norm);
+  const buildRateRows = rates.rates.filter(row => row.planner === 'build');
+  const unmatchedBuildRows = buildRateRows.filter(row => {
+    const token = norm(row.id);
+    return !buildRulePaths.some(path => token === path || token.endsWith('_' + path) || path.endsWith('_' + token));
+  });
+  assert.equal(unmatchedBuildRows.length, 0, 'all 82 BuildPlanner country rates must map to canonical calculation rules');
+  const buildAliasText = contextSource.match(/const BUILD_RATE_KEYS=\{([^}]+)\}/)?.[1] || '';
+  const buildAliases = [...buildAliasText.matchAll(/([A-Za-z0-9_]+):'([^']+)'/g)].map(match => match[1]);
+  const unmatchedBuildAliases = buildRateRows.filter(row => { const token = String(row.id).replace(/^rule_/, '').replace(/_\d+$/, ''); return !buildAliases.some(alias => token === alias || token.endsWith('_' + alias)); });
+  assert.equal(unmatchedBuildAliases.length, 0, 'all BuildPlanner country-rate rows must map to rate aliases, including keys absent from the Malaysia baseline');
+  const renovationPlannerSource = await readFile(new URL('../TerajuWorks/renovationplanner-v2.html', import.meta.url), 'utf8');
+  const renovationAliasText = contextSource.match(/const RENOVATION_RATE_KEYS=\{([^}]+)\}/)?.[1] || '';
+  const renovationAliases = [...renovationAliasText.matchAll(/([A-Za-z0-9_]+):'([^']+)'/g)].map(match => ({ key: match[1], alias: match[2] }));
+  const renovationRateBlock = renovationPlannerSource.match(/const RATES\s*=\s*\{([\s\S]*?)\};/)?.[1] || '';
+  const renovationRateKeys = [...renovationRateBlock.matchAll(/([A-Za-z0-9_]+)\s*:/g)].map(match => match[1]);
+  const renovationRows = rates.rates.filter(row => row.planner === 'renovation');
+  const unmatchedRenovationRates = renovationRows.filter(row => {
+    const token = String(row.id).replace(/^renovation_rule_/, '').replace(/_\d+$/, '');
+    const alias = renovationAliases.slice().sort((a, b) => b.key.length - a.key.length).find(item => token === item.key || token.endsWith('_' + item.key));
+    return !alias || !renovationRateKeys.includes(alias.alias);
+  });
+  assert.equal(unmatchedRenovationRates.length, 0, 'all 40 RenovationPlanner country rates must map to RenovationPlanner rate keys');
+
+  assert.doesNotMatch(contextSource, /Missing BuildPlanner baseline rate key/, 'international estimates must be allowed to define a rule alias missing from the Malaysia baseline');
+  const quantityEngine = await readFile(new URL('../TerajuWorks/quotation-quantity-fix.js', import.meta.url), 'utf8');
+  assert.ok(quantityEngine.includes("replace(/_\\d+$/,'')"), 'country rate IDs must strip their trailing row index');
+  assert.ok(quantityEngine.includes("matchingRule.replace(/\\//g,'_')"), 'canonical rule paths must normalize slashes correctly');
+  assert.match(quantityEngine, /if\(market==='MY'&&!rateResponse\)/, 'only Malaysia may fetch the Malaysia default rate set');
+  assert.match(quantityEngine, /RATES\[rateKey\|\|\('rule_'\+norm\(matchingRule\)\)\]=value/, 'international rates must map to canonical BuildPlanner rules when no Malaysia rate keys are loaded');
+
+  assert.doesNotMatch(rates.methodology, /\[object Object\]/, 'methodology must be human-readable, not object-coercion output');
+  assert.match(rates.methodology, /not contractor-quoted or independently validated/i);
+  for (const row of rates.rates) {
+    for (const field of ['Malaysia_MYR', 'SGD', 'IDR', 'THB', 'PHP', 'VND', 'BND']) {
+      assert.notEqual(row[field], null, row.id + ' must not omit ' + field);
+      assert.notEqual(String(row[field]).trim(), '', row.id + ' must not leave ' + field + ' blank');
+      assert.ok(Number.isFinite(Number(row[field])) && Number(row[field]) >= 0, row.id + ' must have valid ' + field);
+    }
+  }
+});

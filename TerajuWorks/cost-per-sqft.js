@@ -18,20 +18,24 @@
     VND: { symbol: '₫', locale: 'vi-VN' },
     BND: { symbol: 'B$', locale: 'en-BN' }
   };
+  const EMPTY_MARKET = { symbol: '', locale: 'en', currency: '' };
   const market = () => {
+    if (window.TERAJU_ACCOUNT_MARKET_VERIFIED !== true) return EMPTY_MARKET;
     try {
       const value = typeof window.TERAJU_GET_PROJECT_COUNTRY === 'function'
         ? window.TERAJU_GET_PROJECT_COUNTRY() : null;
-      const code = String(value?.currency || 'MYR').toUpperCase();
-      return { ...MARKETS[code] || MARKETS.MYR, ...value };
-    } catch (_) { return MARKETS.MYR; }
+      const code = String(value?.currency || '').toUpperCase();
+      const selected = MARKETS[code];
+      if (!selected) return EMPTY_MARKET;
+      return { ...selected, ...value };
+    } catch (_) { return EMPTY_MARKET; }
   };
-  const format = (value, locale) => N(value).toLocaleString(locale || 'en-MY', {
+  const format = (value, locale) => N(value).toLocaleString(locale || 'en', {
     minimumFractionDigits: 2, maximumFractionDigits: 2
   });
   const money = value => format(value, market().locale);
-  const currency = () => market().symbol || 'RM';
-  const moneyWithCurrency = value => currency() + ' ' + money(value);
+  const currency = () => market().symbol || '';
+  const moneyWithCurrency = value => currency() ? currency() + ' ' + money(value) : '—';
   function roomsFor(value) {
     return Array.isArray(value) ? value.map(room => ({
       roomId: String(room?.roomId ?? room?.id ?? ''),
@@ -81,9 +85,12 @@
       '<div><p class="teraju-cost-sqft-label">' + currency() + '/sqft</p><p class="teraju-cost-sqft-value">' + (summary.costPerSqft == null ? '—' : moneyWithCurrency(summary.costPerSqft) + '/sqft') + '</p></div></div>';
   }
   function history(summary, quotation) {
-    const code = String(quotation?.currency || quotation?.plannerState?.currency || quotation?.plannerState?.projectCountry?.currency || ({ MY: 'MYR', SG: 'SGD', ID: 'IDR', TH: 'THB', PH: 'PHP', VN: 'VND', BN: 'BND' }[quotation?.countryCode || quotation?.plannerState?.projectCountry?.countryCode] || 'MYR')).toUpperCase();
-    const selected = MARKETS[code] || MARKETS.MYR;
-    const symbol = quotation?.currencySymbol || quotation?.plannerState?.projectCountry?.symbol || selected.symbol;
+    const countryCode = String(quotation?.countryCode || quotation?.plannerState?.projectCountry?.countryCode || quotation?.plannerState?.countryCode || '').toUpperCase();
+    const code = String(quotation?.currency || quotation?.plannerState?.currency || quotation?.plannerState?.projectCountry?.currency || '').toUpperCase();
+    const expected = ({ MY: 'MYR', SG: 'SGD', ID: 'IDR', TH: 'THB', PH: 'PHP', VN: 'VND', BN: 'BND' })[countryCode];
+    const selected = MARKETS[code];
+    if (!expected || expected !== code || !selected) return '<div class="mt-3 text-[10px] font-bold tracking-wide text-amber-700">Market unverified — currency display withheld</div>';
+    const symbol = selected.symbol;
     const moneyForEstimate = value => symbol + ' ' + format(value, selected.locale);
     if (summary?.plannerType === 'renovation') {
       return '<div class="mt-3 flex flex-wrap gap-2 text-[10px] font-bold tracking-wide">' +

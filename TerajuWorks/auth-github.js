@@ -43,7 +43,7 @@
       schemaVersion: record.schemaVersion || 1,
       recordType: record.recordType || 'user-account',
       role,
-      country: record.country || 'MY',
+      country: String(record.country || '').trim().toUpperCase(),
       [idKey]: id,
       profile,
       state: record.state || 'active',
@@ -69,7 +69,7 @@
     return !new Set(['a@b.com', 'test@test.com', 'abc@abc.com', 'test@example.com', 'user@example.com']).has(email);
   };
   const normalizePhone = value => String(value || '').replace(/[\s().-]/g, '');
-  const validPhone = (value, country = 'MY') => {
+  const validPhone = (value, country = '') => {
     const normalized = normalizePhoneForCountry(value, country);
     const dial = DIAL_CODES[country];
     if (!normalized || !dial || !normalized.startsWith('+' + dial)) return false;
@@ -136,7 +136,7 @@
   }
   function openSignupWhatsApp(record, name, phone) {
     const normalizedPhone = normalizePhone(phone);
-    const recipient = normalizePhoneForCountry(record?.profile?.phone || phone, record?.country || countryInput?.value || 'MY').replace(/^\+/, '');
+    const recipient = normalizePhoneForCountry(record?.profile?.phone || phone, record?.country || countryInput?.value || '').replace(/^\+/, '');
     if (!recipient) throw new Error('A valid registered phone number is required to open WhatsApp.');
     const id = record?.[idKey] || '';
     const label = isHomeowner ? 'HOMEOWNER' : 'CONTRACTOR';
@@ -206,7 +206,7 @@ ${workspaceUrl}`;
     Object.entries(homeProfileFields).forEach(([key, input]) => { profile[key] = input?.value.trim() || ''; });
     if (!profile.name) return setHomeProfileStatus('Name is required.');
     if (!validEmail(profile.email)) return setHomeProfileStatus('Please use a valid email address.');
-    if (!validPhone(profile.phone, currentRecord?.country || getLocal()?.country || 'MY')) return setHomeProfileStatus('Please enter a valid phone number for your account country.');
+    if (!validPhone(profile.phone, currentRecord?.country || getLocal()?.country || '')) return setHomeProfileStatus('Please enter a valid phone number for your account country.');
     homeProfileSave.disabled = true;
     homeProfileSave.textContent = 'Saving…';
     setHomeProfileStatus('');
@@ -240,7 +240,7 @@ ${workspaceUrl}`;
     if (profileCancel) profileCancel.textContent = onboarding ? 'Skip for now' : 'Cancel';
     if (profileAccountId) profileAccountId.value = record?.[idKey] || '';
     const countryNames = { MY: 'Malaysia', SG: 'Singapore', ID: 'Indonesia', TH: 'Thailand', PH: 'Philippines', VN: 'Vietnam', BN: 'Brunei' };
-    if (profileCountry) profileCountry.value = countryNames[String(record?.country || getLocal()?.country || 'MY').toUpperCase()] || 'Country not set';
+    if (profileCountry) profileCountry.value = countryNames[String(record?.country || getLocal()?.country || '').toUpperCase()] || 'Country not set';
     const p = record?.profile || {};
     Object.entries(profileFields).forEach(([key, input]) => { if (input) input.value = p[key] || ''; });
     profileLogoDataUrl = p.logoDataUrl || '';
@@ -289,7 +289,7 @@ ${workspaceUrl}`;
     renderProfileLogo(profileLogoDataUrl);
     if (!profile.name) return setProfileStatus('Company / Contractor Name is required.');
     if (!validEmail(profile.email)) return setProfileStatus('Please enter a valid email address.');
-    if (!validPhone(profile.phone, getLocal()?.country || 'MY')) return setProfileStatus('Please enter a valid phone number for your account country.');
+    if (!validPhone(profile.phone, getLocal()?.country || '')) return setProfileStatus('Please enter a valid phone number for your account country.');
     if (profile.logoDataUrl.length > 900000) return setProfileStatus('Logo image is too large. Please use a smaller image.');
     profileSave.disabled = true; profileSave.textContent = 'Saving…'; setProfileStatus('');
     try {

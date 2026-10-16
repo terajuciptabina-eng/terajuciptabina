@@ -91,6 +91,7 @@ th{font-size:10px;text-transform:uppercase;color:#6b7280;background:#f8fafc;lett
   <div class="toolbar">
     <div class="status" id="status"></div>
     <div>
+      <select id="countryFilter" aria-label="Filter analytics by registered country"><option value="">All countries (currency-separated)</option><option value="MY">Malaysia</option><option value="SG">Singapore</option><option value="ID">Indonesia</option><option value="TH">Thailand</option><option value="PH">Philippines</option><option value="VN">Vietnam</option><option value="BN">Brunei</option><option value="UNVERIFIED">Unverified country</option></select>
       <select id="range"><option value="30">Last 30 days</option><option value="90">Last 90 days</option><option value="365">Last 12 months</option><option value="all">All time</option></select>
       <button id="refresh">Refresh</button>
     </div>
@@ -156,15 +157,34 @@ const API='https://terajuciptabina.vercel.app/api/admin';
 const KEY='teraju.admin.key',USER='teraju.admin.username';
 const charts={};
 let accounts=[];
-const money=n=>new Intl.NumberFormat('en-MY',{style:'currency',currency:'MYR',maximumFractionDigits:0}).format(Number(n)||0);
+const CURRENCIES={MY:{name:'Malaysia',currency:'MYR',symbol:'RM'},SG:{name:'Singapore',currency:'SGD',symbol:'S$'},ID:{name:'Indonesia',currency:'IDR',symbol:'Rp'},TH:{name:'Thailand',currency:'THB',symbol:'฿'},PH:{name:'Philippines',currency:'PHP',symbol:'₱'},VN:{name:'Vietnam',currency:'VND',symbol:'₫'},BN:{name:'Brunei',currency:'BND',symbol:'B$'}};
+function recordCurrency(entry){return CURRENCIES[String(entry?.countryCode||'').toUpperCase()]?.currency||null}
+function moneyByCurrency(entries,average=false){const grouped={};entries.forEach(entry=>{const currency=recordCurrency(entry);if(!currency)return;if(!grouped[currency])grouped[currency]={sum:0,count:0};const amount=Number(entry?.record?.total)||0;grouped[currency].sum+=amount;if(amount>0)grouped[currency].count++});const labels=Object.keys(grouped).sort();if(!labels.length)return '—';return labels.map(currency=>{const info=Object.values(CURRENCIES).find(x=>x.currency===currency)||{name:'Unknown market',symbol:currency};const value=average?(grouped[currency].count?grouped[currency].sum/grouped[currency].count:0):grouped[currency].sum;return info.name+' ('+currency+' '+info.symbol+' '+new Intl.NumberFormat('en',{maximumFractionDigits:0}).format(value)+')'}).join(' · ')}
 const num=n=>new Intl.NumberFormat('en-MY').format(Number(n)||0);
 const esc=v=>String(v??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 function session(){const username=sessionStorage.getItem(USER)||'',password=sessionStorage.getItem(KEY)||'';if(!username||!password){location.href='admin.html';throw new Error('Admin session not found.');}return{username,password}}
 function headers(){const s=session();return{'X-Admin-Username':s.username,'X-Admin-Password':s.password}}
-function recordsFor(a){
+function accountCountry(a){
+  const raw=String(a?.country||a?.countryCode||'').trim().toUpperCase();
+  if(['MY','SG','ID','TH','PH','VN','BN'].includes(raw))return raw;
+  return CURRENCIES[raw]?raw:'UNVERIFIED'; // Missing or unsupported country must never be counted as Malaysia.
+}
+function rawRecordsFor(a){
   const p=a.plannerRecords||{};
   return [...(Array.isArray(p.build)?p.build:[]),...(Array.isArray(p.renovation)?p.renovation:[])];
 }
+function recordMatchesAccountMarket(a,r){
+  const account=accountCountry(a);
+  if(!CURRENCIES[account])return false;
+  const countries=[r?.countryCode,r?.plannerState?.projectCountry?.countryCode,r?.plannerState?.countryCode,r?.projectCountry?.countryCode].map(v=>String(v||'').trim().toUpperCase()).filter(Boolean);
+  if(countries.some(code=>!CURRENCIES[code]||code!==account))return false;
+  if(!countries.length)return false;
+  const currencies=[r?.currency,r?.plannerState?.projectCountry?.currency,r?.projectCountry?.currency].map(v=>String(v||'').trim().toUpperCase()).filter(Boolean);
+  if(!currencies.length)return false;
+  return currencies.every(code=>code===CURRENCIES[account].currency);
+}
+function recordsFor(a){return rawRecordsFor(a).filter(r=>recordMatchesAccountMarket(a,r))}
+function quarantinedRecordCount(){return accounts.reduce((n,a)=>n+rawRecordsFor(a).filter(r=>!recordMatchesAccountMarket(a,r)).length,0)}
 function dateKey(d){const x=new Date(d);if(Number.isNaN(x.getTime()))return null;return x.toISOString().slice(0,10)}
 function monthKey(d){const x=new Date(d);if(Number.isNaN(x.getTime()))return null;return x.toISOString().slice(0,7)}
 function selectedSince(){
@@ -172,10 +192,16 @@ function selectedSince(){
   if(v==='all')return null;
   const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()-Number(v)+1);return d;
 }
+function filteredCountryAccounts(){
+  const country=document.getElementById('countryFilter')?.value||'';
+  return accounts.filter(a=>!country||accountCountry(a)===country);
+}
 function filteredAccounts(){
   const since=selectedSince();
-  if(!since)return accounts;
-  return accounts.filter(a=>{const d=new Date(a.updatedAt||a.createdAt);return !Number.isNaN(d.getTime())&&d>=since});
+  return filteredCountryAccounts().filter(a=>{
+    if(!since)return true;
+    const d=new Date(a.updatedAt||a.createdAt);return !Number.isNaN(d.getTime())&&d>=since;
+  });
 }
 function destroy(name){if(charts[name]){charts[name].destroy();delete charts[name]}}
 const TERAJU_COLORS={navy:'#172033',navySoft:'#334155',emerald:'#10b981',emeraldSoft:'#6ee7b7',slate:'#64748b',grid:'rgba(23,32,51,.08)'};
@@ -198,47 +224,46 @@ function chartLabel(k,mode){
   return mode==='week'?'Wk '+d.toLocaleDateString('en-MY',{day:'2-digit',month:'short'}):d.toLocaleDateString('en-MY',{day:'2-digit',month:'short'});
 }
 function render(){
+  const countryAccounts=filteredCountryAccounts();
   const selected=filteredAccounts();
-  const selectedEntries=selected.flatMap(a=>recordsFor(a).map(record=>({record,role:String(a.role||'').toLowerCase()})));
+  const selectedEntries=selected.flatMap(a=>recordsFor(a).map(record=>({record,role:String(a.role||'').toLowerCase(),countryCode:accountCountry(a)})));
   const selectedRecords=selectedEntries.map(x=>x.record);
-  const homeowners=accounts.filter(a=>String(a.role).toLowerCase()==='homeowner').length;
-  const contractors=accounts.filter(a=>String(a.role).toLowerCase()==='contractor').length;
-  const homeownerValue=selectedEntries.filter(x=>x.role==='homeowner').reduce((s,x)=>s+(Number(x.record.total)||0),0);
-  const contractorValue=selectedEntries.filter(x=>x.role==='contractor').reduce((s,x)=>s+(Number(x.record.total)||0),0);
+  const homeowners=countryAccounts.filter(a=>String(a.role).toLowerCase()==='homeowner').length;
+  const contractors=countryAccounts.filter(a=>String(a.role).toLowerCase()==='contractor').length;
   const valued=selectedEntries.filter(x=>Number.isFinite(Number(x.record.total))&&Number(x.record.total)>0);
-  const avg=valued.length?valued.reduce((s,x)=>s+(Number(x.record.total)||0),0)/valued.length:0;
   const homeownerValued=valued.filter(x=>x.role==='homeowner');
   const contractorValued=valued.filter(x=>x.role==='contractor');
-  const homeownerAvg=homeownerValued.length?homeownerValued.reduce((s,x)=>s+(Number(x.record.total)||0),0)/homeownerValued.length:0;
-  const contractorAvg=contractorValued.length?contractorValued.reduce((s,x)=>s+(Number(x.record.total)||0),0)/contractorValued.length:0;
   const activeHomeowners=selected.filter(a=>String(a.role).toLowerCase()==='homeowner').length;
   const activeContractors=selected.filter(a=>String(a.role).toLowerCase()==='contractor').length;
   const engagedSelected=selected.filter(a=>recordsFor(a).length>0);
   const engagedHomeowners=engagedSelected.filter(a=>String(a.role).toLowerCase()==='homeowner').length;
   const engagedContractors=engagedSelected.filter(a=>String(a.role).toLowerCase()==='contractor').length;
-  document.getElementById('users').textContent=num(accounts.length);
+  document.getElementById('users').textContent=num(countryAccounts.length);
   document.getElementById('homeowners').textContent=num(homeowners);
   document.getElementById('contractors').textContent=num(contractors);
   document.getElementById('estimates').textContent=num(selectedRecords.length);
   document.getElementById('estimateSub').textContent=num(selectedEntries.filter(x=>x.role==='homeowner').length)+' H · '+num(selectedEntries.filter(x=>x.role==='contractor').length)+' C · '+num(selectedRecords.filter(r=>r.plannerType==='build').length)+' B · '+num(selectedRecords.filter(r=>r.plannerType==='renovation').length)+' R';
-  document.getElementById('homeownerValue').textContent=money(homeownerValue);
-  document.getElementById('contractorValue').textContent=money(contractorValue);
-  document.getElementById('average').textContent=money(avg);
-  document.getElementById('averageSub').textContent='H '+money(homeownerAvg)+' · C '+money(contractorAvg);
+  document.getElementById('homeownerValue').textContent=moneyByCurrency(selectedEntries.filter(x=>x.role==='homeowner'));
+  document.getElementById('contractorValue').textContent=moneyByCurrency(selectedEntries.filter(x=>x.role==='contractor'));
+  document.getElementById('average').textContent=moneyByCurrency(valued,true);
+  document.getElementById('averageSub').textContent='H '+moneyByCurrency(homeownerValued,true)+' · C '+moneyByCurrency(contractorValued,true);
   document.getElementById('active').textContent=num(selected.length);
   document.getElementById('activeSub').textContent=num(activeHomeowners)+' H · '+num(activeContractors)+' C';
   document.getElementById('engaged').textContent=num(engagedSelected.length);
   document.getElementById('engagedSub').textContent=num(engagedHomeowners)+' H · '+num(engagedContractors)+' C';
-  document.getElementById('usersSub').textContent=num(homeowners)+' Homeowner · '+num(contractors)+' Contractor';
+  const countrySelection=document.getElementById('countryFilter')?.value||'';
+  const countryNames={MY:'Malaysia',SG:'Singapore',ID:'Indonesia',TH:'Thailand',PH:'Philippines',VN:'Vietnam',BN:'Brunei',UNVERIFIED:'Unverified country'};
+  document.getElementById('usersSub').textContent=(countrySelection?(countryNames[countrySelection]||countrySelection):'All countries; monetary totals separated by currency')+' · '+num(homeowners)+' Homeowner · '+num(contractors)+' Contractor';
 
   const mode=chartMode(),growth={homeowner:{},contractor:{}},estimateCounts={homeowner:{},contractor:{}},homeownerValues={},contractorValues={};
-  accounts.forEach(a=>{
+  countryAccounts.forEach(a=>{
     const d=new Date(a.createdAt);if(Number.isNaN(d.getTime()))return;
     const k=chartBucket(d,mode);if(k){const role=String(a.role||'').toLowerCase();if(role==='homeowner'||role==='contractor')growth[role][k]=(growth[role][k]||0)+1;}
   });
-  selectedEntries.forEach(({record:r,role})=>{
+  selectedEntries.forEach(({record:r,role,countryCode})=>{
     const d=new Date(r.updatedAt||r.createdAt);const k=chartBucket(d,mode);if(!k)return;
     if(role==='homeowner'||role==='contractor')estimateCounts[role][k]=(estimateCounts[role][k]||0)+1;
+    if(recordCurrency({record:r,countryCode})!=='MYR')return;
     const amount=Number(r.total)||0;
     if(role==='homeowner')homeownerValues[k]=(homeownerValues[k]||0)+amount;
     if(role==='contractor')contractorValues[k]=(contractorValues[k]||0)+amount;
@@ -257,7 +282,7 @@ function render(){
     {label:'Homeowner',data:keys.map(k=>estimateCounts.homeowner[k]||0),backgroundColor:TERAJU_COLORS.emerald,borderColor:TERAJU_COLORS.emerald,borderWidth:1,borderRadius:5},
     {label:'Contractor',data:keys.map(k=>estimateCounts.contractor[k]||0),backgroundColor:TERAJU_COLORS.navy,borderColor:TERAJU_COLORS.navy,borderWidth:1,borderRadius:5}
   ]},options:cd});
-  destroy('valueChart');charts.valueChart=new Chart(document.getElementById('valueChart'),{type:'bar',data:{labels,datasets:[{label:'Homeowner — Potential Project Value',data:keys.map(k=>Math.round(homeownerValues[k]||0)),backgroundColor:TERAJU_COLORS.emerald,borderColor:TERAJU_COLORS.emerald,borderWidth:1,borderRadius:4},{label:'Contractor — Estimate / Market Value',data:keys.map(k=>Math.round(contractorValues[k]||0)),backgroundColor:TERAJU_COLORS.navy,borderColor:TERAJU_COLORS.navy,borderWidth:1,borderRadius:4}]},options:{...cd,plugins:{...cd.plugins,legend:{position:'top',labels:{boxWidth:10,font:{size:10}}}},scales:{...cd.scales,x:{...cd.scales.x,stacked:false},y:{beginAtZero:true,ticks:{font:{size:10},callback:v=>'RM '+Number(v).toLocaleString()}}}}});
+  destroy('valueChart');charts.valueChart=new Chart(document.getElementById('valueChart'),{type:'bar',data:{labels,datasets:[{label:'Homeowner — Potential Project Value (MYR only)',data:keys.map(k=>Math.round(homeownerValues[k]||0)),backgroundColor:TERAJU_COLORS.emerald,borderColor:TERAJU_COLORS.emerald,borderWidth:1,borderRadius:4},{label:'Contractor — Estimate / Market Value (MYR only)',data:keys.map(k=>Math.round(contractorValues[k]||0)),backgroundColor:TERAJU_COLORS.navy,borderColor:TERAJU_COLORS.navy,borderWidth:1,borderRadius:4}]},options:{...cd,plugins:{...cd.plugins,legend:{position:'top',labels:{boxWidth:10,font:{size:10}}}},scales:{...cd.scales,x:{...cd.scales.x,stacked:false},y:{beginAtZero:true,ticks:{font:{size:10},callback:v=>'MYR '+Number(v).toLocaleString()}}}}});
 
   const homeownerBuild=selectedEntries.filter(x=>x.role==='homeowner'&&x.record.plannerType==='build').length;
   const homeownerRenovation=selectedEntries.filter(x=>x.role==='homeowner'&&x.record.plannerType==='renovation').length;
@@ -275,7 +300,7 @@ function renderStates(){
   selected.forEach(a=>{
     const role=String(a.role||'').toLowerCase();
     recordsFor(a).forEach(r=>{
-      const s=String((r.project&&r.project.state)||r.plannerState?.projectState||'Not specified').trim()||'Not specified';
+      const country=accountCountry(a);const state=String((r.project&&r.project.state)||r.plannerState?.projectState||'Not specified').trim()||'Not specified';const s=country+' · '+state;
       if(!map[s])map[s]={homeowner:0,contractor:0};
       if(role==='homeowner')map[s].homeowner++;
       if(role==='contractor')map[s].contractor++;
@@ -290,7 +315,7 @@ function renderStates(){
   }).join(''):'<div class="muted">No project state data.</div>';
 }
 function renderRecent(){
-  const rows=[...accounts].sort((a,b)=>new Date(b.updatedAt||b.createdAt)-new Date(a.updatedAt||a.createdAt)).slice(0,12);
+  const rows=[...filteredAccounts()].sort((a,b)=>new Date(b.updatedAt||b.createdAt)-new Date(a.updatedAt||a.createdAt)).slice(0,12);
   document.getElementById('recent').innerHTML=rows.map(a=>{
     const records=recordsFor(a);
     const build=records.filter(r=>r.plannerType==='build').length;
@@ -307,11 +332,12 @@ async function load(){
     if(!r.ok)throw new Error(d.message||'Unable to load database.');
     accounts=Array.isArray(d.accounts)?d.accounts:[];
     document.getElementById('updated').textContent='Updated '+new Date().toLocaleString('en-MY');
-    status.textContent=num(accounts.length)+' accounts loaded from GitHub database.';
+    status.textContent=num(accounts.length)+' accounts loaded · '+num(quarantinedRecordCount())+' cross-market/unsupported estimate records excluded from insights.';
     render();
   }catch(e){status.className='status error';status.textContent=e.message||'Unable to load insights.'}finally{stopLoading();}
 }
 document.getElementById('range').onchange=render;
+document.getElementById('countryFilter').onchange=render;
 document.getElementById('refresh').onclick=load;
 load();
 </script>

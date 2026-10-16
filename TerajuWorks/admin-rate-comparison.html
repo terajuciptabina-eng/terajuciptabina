@@ -47,7 +47,7 @@ th{font-size:10px;text-transform:uppercase;color:#6b7280;background:#fafafa;posi
 <main class="wrap"><div class="top"><div class="eyebrow">Quotation Analysis</div><div class="title">Overall Description &amp; Rate Comparison</div><div class="sub">Descriptions, units and row order are taken directly from the Admin Calculation Rules master.</div></div>
 <section class="panel"><div class="controls"><select id="planner"><option value="all">All Planners</option><option value="build">Build Planner</option><option value="renovation">Renovation Planner</option></select><select id="scope"><option value="all">All Accounts</option><option value="contractor">Contractors</option><option value="homeowner">Homeowners</option></select><button id="load">Load Comparison</button></div><div class="notice">Calculation Rules is managed in one place only: Admin Calculation Rules. This comparison reads that same master source; it does not maintain or create another rules list.</div></section>
 <div id="error" class="error hidden"></div><section id="summary" class="panel summary hidden"></section>
-<section id="stateResult" class="panel"><div class="state-panel-head"><div><div class="eyebrow">State Rate Matrix</div><div class="section-title">Calculation Rules Description × Unit × All States / Federal Territories</div><div class="section-sub">One master matrix for Malaysia state rates and international country rates. Malaysia uses the selected state rate set; other countries use their own currency columns.</div><div class="controls" style="grid-template-columns:minmax(220px,1fr) 220px;margin-top:12px"><input id="matrixSearch" type="search" placeholder="Search item, group or description"><select id="matrixPlanner"><option value="all">All Planners</option><option value="build">BuildPlanner</option><option value="renovation">RenovationPlanner</option></select></div></div><button type="button" id="toggleStateMatrix" class="state-toggle" aria-expanded="true">Hide ▲</button></div><div id="stateMatrixContent"><div class="table-wrap"><table><thead id="stateThead"></thead><tbody id="stateTbody"><tr><td colspan="30" class="muted" style="padding:28px;text-align:center">Loading combined rate matrix…</td></tr></tbody></table></div></div><div class="muted" id="combinedRateMeta" style="margin-top:10px">Loading state and country rates…</div></section>
+<section id="stateResult" class="panel"><div class="state-panel-head"><div><div class="eyebrow">State Rate Matrix</div><div class="section-title">Calculation Rules Description × Unit × All States / Federal Territories</div><div class="section-sub">One master matrix for Malaysia state rates and international country rates. Malaysia uses the selected state rate set; other countries use their own currency columns.</div><div class="notice" style="margin-top:10px">International country columns are indicative estimates, not verified contractor quotations. Only approved Malaysia contractor observations can update the Malaysia State Rate Matrix.</div><div class="controls" style="grid-template-columns:minmax(220px,1fr) 220px;margin-top:12px"><input id="matrixSearch" type="search" placeholder="Search item, group or description"><select id="matrixPlanner"><option value="all">All Planners</option><option value="build">BuildPlanner</option><option value="renovation">RenovationPlanner</option></select></div></div><button type="button" id="toggleStateMatrix" class="state-toggle" aria-expanded="true">Hide ▲</button></div><div id="stateMatrixContent"><div class="table-wrap"><table><thead id="stateThead"></thead><tbody id="stateTbody"><tr><td colspan="30" class="muted" style="padding:28px;text-align:center">Loading combined rate matrix…</td></tr></tbody></table></div></div><div class="muted" id="combinedRateMeta" style="margin-top:10px">Loading state and country rates…</div></section>
 
 
 
@@ -110,8 +110,8 @@ function renderState(){
 const COUNTRY_RATE_URL='../data/rates/country-comparison-2026.json';
 let countryRateData=null;
 const COUNTRY_COLUMNS=[
- ['Malaysia_MYR','Malaysia · MYR'],['SGD','Singapore · SGD'],['IDR','Indonesia · IDR'],
- ['THB','Thailand · THB'],['PHP','Philippines · PHP'],['VND','Vietnam · VND*'],['BND','Brunei · BND*']
+ ['Malaysia_MYR','Malaysia · MYR · Estimate'],['SGD','Singapore · SGD · Estimate'],['IDR','Indonesia · IDR · Estimate'],
+ ['THB','Thailand · THB · Estimate'],['PHP','Philippines · PHP · Estimate'],['VND','Vietnam · VND · Estimate*'],['BND','Brunei · BND · Estimate*']
 ];
 function countryNumber(v,code){if(v==null||!Number.isFinite(Number(v)))return '—';const digits=code==='IDR'||code==='THB'||code==='PHP'||code==='VND'?0:2;return Number(v).toLocaleString('en-US',{minimumFractionDigits:digits,maximumFractionDigits:digits})}
 async function loadCountryRates(){
@@ -158,7 +158,7 @@ async function loadAccounts(){
   const r=await fetch(MARKET_API,{headers:{'X-Admin-Key':key},cache:'no-store'});
   const data=await r.json().catch(()=>({}));
   if(!r.ok)throw new Error(data.message||'Unable to load contractor rate database.');
-  return (Array.isArray(data.database?.contractors)?data.database.contractors:[]).map(c=>({...c,id:c.contractorId||c.id,role:'contractor'}));
+  return (Array.isArray(data.database?.contractors)?data.database.contractors:[]).map(c=>({...c,id:c.contractorId||c.id,role:'contractor'})).filter(c=>c.countryCode==='MY'&&c.currency==='MYR');
 }
 function renderAccounts(accounts){accounts=accounts.filter(a=>$('scope').value==='all'||a.role===$('scope').value);accounts.sort((a,b)=>String(a.profile?.name||a.name||a.id).localeCompare(String(b.profile?.name||b.name||b.id),'ms',{sensitivity:'base'}));const by=collectAccountRates(accounts),search='',ids=accounts.map(a=>a.id),rows=[];for(const[key,row]of by.entries()){if(!search&&!row.vals?.size)continue;const rule=row.rule;if(rule){if(search&&!rule.path.toLowerCase().includes(search)&&!rule.description.toLowerCase().includes(search)&&!key.toLowerCase().includes(search)&&!ids.some(id=>id.toLowerCase().includes(search)))continue;rows.push({rule,key,vals:row,custom:false})}else{if(search&&!key.toLowerCase().includes(search)&&!row.custom?.description?.toLowerCase().includes(search))continue;rows.push({rule:{group:'CUSTOM RATE ITEMS',path:'CUSTOM RATE ITEM',description:row.custom?.description||key.slice(7),output:row.custom?.unit||'—'},key,vals:row,custom:true})}}$('summary').classList.remove('hidden');$('summary').innerHTML=`<div class="stat"><b>${accounts.length}</b><span>Accounts</span></div><div class="stat"><b>${ruleRows.length}</b><span>Calculation Rules items</span></div><div class="stat"><b>${ids.length}</b><span>Account columns</span></div>`;$('thead').innerHTML='<tr><th class="path">Calculation Rules Hierarchy</th><th class="description">Description</th><th class="unit">Unit</th>'+ids.map(id=>{const a=accounts.find(x=>x.id===id);return`<th class="statehead"><span>${esc(id)}</span><br><span class="muted">${esc(a?.profile?.name||a?.name||a?.role||'')}</span></th>`}).join('')+'</tr>';let html='',lastGroup='',seen=new Set();for(const x of rows){if(x.rule.group!==lastGroup){html+=CRUI.groupRow(x.rule.group,rows.filter(r=>r.rule.group===x.rule.group).length,3+ids.length);lastGroup=x.rule.group}if(!x.custom)html+=CRUI.hierarchyRows(x.rule,seen,3+ids.length);const cells=ids.map(id=>{const set=x.vals?.vals?.get(id);return`<td class="rate">${set?[...set].map(money).join('<br>'):'—'}</td>`}).join('');html+=`<tr class="${x.custom?'custom-row':''}"><td class="cr-leaf-item path">${CRUI.esc(CRUI.leaf(x.rule))}</td><td class="cr-description description">${CRUI.esc(x.rule.description)}</td><td class="cr-unit unit">${CRUI.esc(x.rule.output)}</td>${cells}</tr>`}$('tbody').innerHTML=html||'<tr><td colspan="100" class="muted" style="padding:28px;text-align:center">No matching records.</td></tr>';$('result').classList.remove('hidden')}
 async function loadStateRates(){
@@ -203,10 +203,12 @@ async function loadReviewQueue(){
     const r=await fetch('https://terajuciptabina.vercel.app/api/contractor-market',{headers:{'X-Admin-Key':key},cache:'no-store'});
     const data=await r.json().catch(()=>({}));
     if(!r.ok)throw new Error(data.message||'Unable to load pending contractor rates.');
-    const contractors=Array.isArray(data.database?.contractors)?data.database.contractors:[];
+    const contractors=(Array.isArray(data.database?.contractors)?data.database.contractors:[]).filter(c=>c.countryCode==='MY'&&c.currency==='MYR');
     const pending=[];
     contractors.forEach(c=>{
       (Array.isArray(c.customItems)?c.customItems:[]).forEach(item=>{
+        if(item?.countryCode&&String(item.countryCode).toUpperCase()!=='MY')return;
+        if(item?.currency&&String(item.currency).toUpperCase()!=='MYR')return;
         if(String(item?.approvalStatus||'pending').toLowerCase()!=='pending')return;
         pending.push({...item,contractorId:c.contractorId});
       });
@@ -250,7 +252,7 @@ async function loadMarketSignal(){
     const search='';
     const marketApi=data.market||{};
     const market={...marketApi};
-    const contractors=Array.isArray(data.database?.contractors)?data.database.contractors:[];
+    const contractors=(Array.isArray(data.database?.contractors)?data.database.contractors:[]).filter(c=>c.countryCode==='MY'&&c.currency==='MYR');
     // Canonical fallback/overlay: normalize saved contractor source IDs to the same
     // canonical rule key used by ruleRows. Older captures stored masterPath, while
     // newer rule rows use renovation_rule_* / rule_* canonical keys.
@@ -268,6 +270,8 @@ async function loadMarketSignal(){
     // This keeps Market Signal aligned with Changed Contractor Rates even when the API aggregate is stale.
     for(const contractor of contractors){
       for(const item of (Array.isArray(contractor.customItems)?contractor.customItems:[])){
+        if(item?.countryCode&&String(item.countryCode).toUpperCase()!=='MY')continue;
+        if(item?.currency&&String(item.currency).toUpperCase()!=='MYR')continue;
         const state=String(item?.state||'').trim().toLowerCase();
         const p=String(item?.plannerType||'').trim().toLowerCase();
         const rawKey=String(item?.sourceGlobalId||'').trim();

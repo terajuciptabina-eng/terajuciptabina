@@ -44,7 +44,8 @@
 
   async function apply(){
     // Malaysian state-rate resolver must never overwrite an international account's country rates.
-    const country=String(window.TERAJU_GET_PROJECT_COUNTRY?.()?.countryCode||window.TERAJU_PROJECT_COUNTRY?.countryCode||'MY').trim().toUpperCase();
+    if(window.TERAJU_ACCOUNT_MARKET_VERIFIED!==true)return;
+    const country=String(window.TERAJU_GET_PROJECT_COUNTRY?.()?.countryCode||window.TERAJU_PROJECT_COUNTRY?.countryCode||'').trim().toUpperCase();
     if(country!=='MY')return;
     const selected=state();
     if(!selected)return;

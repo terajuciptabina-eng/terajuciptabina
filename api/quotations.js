@@ -12,6 +12,13 @@ export default async function handler(req, res) {
   const headers = { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28', 'Content-Type': 'application/json' };
   const validRole = role => role === 'homeowner' || role === 'contractor';
   const validPlanner = type => type === 'build' || type === 'renovation';
+  const MARKET_META={MY:{name:'Malaysia',currency:'MYR',symbol:'RM',locale:'en-MY'},SG:{name:'Singapore',currency:'SGD',symbol:'S$',locale:'en-SG'},ID:{name:'Indonesia',currency:'IDR',symbol:'Rp',locale:'id-ID'},TH:{name:'Thailand',currency:'THB',symbol:'฿',locale:'th-TH'},PH:{name:'Philippines',currency:'PHP',symbol:'₱',locale:'en-PH'},VN:{name:'Vietnam',currency:'VND',symbol:'₫',locale:'vi-VN'},BN:{name:'Brunei',currency:'BND',symbol:'B$',locale:'en-BN'}};
+  function quotationCountries(q){return [q?.countryCode,q?.plannerState?.projectCountry?.countryCode,q?.plannerState?.countryCode,q?.projectCountry?.countryCode].map(v=>String(v||'').trim().toUpperCase()).filter(Boolean)}
+  function quotationCurrencies(q){return [q?.currency,q?.plannerState?.projectCountry?.currency,q?.projectCountry?.currency].map(v=>String(v||'').trim().toUpperCase()).filter(Boolean)}
+  function quotationSymbols(q){return [q?.currencySymbol,q?.plannerState?.projectCountry?.symbol,q?.projectCountry?.symbol].map(v=>String(v||'').trim()).filter(Boolean)}
+  function quotationCountry(q){const values=quotationCountries(q);if(values.some(code=>!MARKET_META[code]))return 'UNSUPPORTED';if(values.some(code=>code!==values[0]))return 'CONFLICT';return values[0]||''}
+  function quotationCurrency(q){const values=quotationCurrencies(q);if(values.some(code=>code!==values[0]))return 'CONFLICT';return values[0]||''}
+  function matchesAccountMarket(q,accountCountry){const countries=quotationCountries(q),currencies=quotationCurrencies(q),symbols=quotationSymbols(q);return countries.length>0&&countries.every(code=>MARKET_META[code]&&code===accountCountry)&&currencies.length>0&&currencies.every(code=>code===MARKET_META[accountCountry]?.currency)&&symbols.every(symbol=>symbol===MARKET_META[accountCountry]?.symbol)}
   const folder = role => role === 'homeowner' ? 'homeowners' : 'contractors';
   const idKey = role => role === 'homeowner' ? 'homeownerId' : 'contractorId';
   const pathFor = (role, id) => `data/users/${folder(role)}/${encodeURIComponent(id)}.json`;
@@ -86,7 +93,16 @@ export default async function handler(req, res) {
     const source = req.method === 'GET' ? req.query : (req.body || {}); const role = String(source?.role || '').toLowerCase(); const id = String(source?.id || '').trim().toUpperCase(); const plannerType = String(source?.plannerType || 'build').toLowerCase();
     if (!validRole(role) || !id || !validPlanner(plannerType)) return res.status(400).json({ message: 'Invalid role, id or planner type.' });
     const current = await readRecord(role, id); if (!current.record) return res.status(current.status === 404 ? 404 : 502).json({ message: current.status === 404 ? 'Account not found.' : 'Unable to read account record.' });
-    if (req.method === 'GET') { const seenEstimateTypes = new Set(); const quotations = plannerList(current.record, plannerType).map(q => { const copy = JSON.parse(JSON.stringify(q || {})); const type = quotationType(copy.quotationType || copy.plannerState?.quotationType); if (copy.estimateNumber) copy.estimateNumber = canonicalEstimateNumber(copy.estimateNumber, plannerType, type); if (copy.plannerState && typeof copy.plannerState === 'object' && copy.plannerState.estimateNumber) copy.plannerState.estimateNumber = canonicalEstimateNumber(copy.plannerState.estimateNumber, plannerType, type); copy.quotationType = type; if (copy.plannerState && typeof copy.plannerState === 'object') copy.plannerState.quotationType = type; return copy; }).filter(q => { const projectId = String(q?.projectId || q?.plannerState?.projectId || '').trim(); const type = quotationType(q?.quotationType || q?.plannerState?.quotationType); const key = String(q?.quotationId || '').trim(); if (!key || seenEstimateTypes.has(key)) return false; seenEstimateTypes.add(key); return true; }); return res.status(200).json({ role, id, plannerType, quotations }); }
+    if (req.method === 'GET') {
+      const accountCountry=String(current.record.country||'').trim().toUpperCase();
+      if(!MARKET_META[accountCountry])return res.status(409).json({message:'Account country is not verified. Set the registered country in Admin before accessing Cost Estimates.'});
+      const all=plannerList(current.record,plannerType);
+      const safe=all.filter(q=>matchesAccountMarket(q,accountCountry));
+      const excludedMarketRecordCount=all.length-safe.length;
+      const seenEstimateTypes = new Set();
+      const quotations = safe.map(q => { const copy = JSON.parse(JSON.stringify(q || {})); copy.countryCode=accountCountry;copy.currency=MARKET_META[accountCountry].currency;copy.currencySymbol=MARKET_META[accountCountry].symbol;copy.plannerState={...(copy.plannerState||{}),countryCode:accountCountry,projectCountry:{...(copy.plannerState?.projectCountry||{}),...MARKET_META[accountCountry],countryCode:accountCountry}}; const type = quotationType(copy.quotationType || copy.plannerState?.quotationType); if (copy.estimateNumber) copy.estimateNumber = canonicalEstimateNumber(copy.estimateNumber, plannerType, type); if (copy.plannerState && typeof copy.plannerState === 'object' && copy.plannerState.estimateNumber) copy.plannerState.estimateNumber = canonicalEstimateNumber(copy.plannerState.estimateNumber, plannerType, type); copy.quotationType = type; if (copy.plannerState && typeof copy.plannerState === 'object') copy.plannerState.quotationType = type; return copy; }).filter(q => { const key = String(q?.quotationId || '').trim(); if (!key || seenEstimateTypes.has(key)) return false; seenEstimateTypes.add(key); return true; });
+      return res.status(200).json({ role, id, plannerType, country:accountCountry, excludedMarketRecordCount, quotations });
+    }
     if (req.method === 'POST') {
       const action = String(source?.action || '').toLowerCase();
       if (action !== 'duplicate') return res.status(400).json({ message: 'Invalid quotation action.' });
@@ -94,7 +110,9 @@ export default async function handler(req, res) {
       if (!sourceQuotationId) return res.status(400).json({ message: 'Missing quotationId.' });
       const list = plannerList(current.record, plannerType);
       const sourceQuotation = list.find(q => q?.quotationId === sourceQuotationId);
-      if (!sourceQuotation) return res.status(404).json({ message: 'Cost estimate not found.' });
+      const duplicateAccountCountry=String(current.record.country||'').trim().toUpperCase();
+      if(!MARKET_META[duplicateAccountCountry])return res.status(409).json({message:'Account country is not verified. Set the registered country in Admin before duplicating Cost Estimates.'});
+      if (!sourceQuotation || !matchesAccountMarket(sourceQuotation,duplicateAccountCountry)) return res.status(404).json({ message: 'Cost estimate not found in this account market.' });
       const now = new Date().toISOString();
       const type = quotationType(sourceQuotation.quotationType);
       const baseNumber = nextBaseNumber(current.record, plannerType);
@@ -103,6 +121,9 @@ export default async function handler(req, res) {
       const estimateNumber = displayEstimateNumber(estimateBaseNumber, plannerType, type);
       const newQuotationId = `QT-${plannerType === 'renovation' ? 'REN' : 'BLD'}-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).slice(2,7).toUpperCase()}`;
       const duplicate = JSON.parse(JSON.stringify(sourceQuotation));
+      const duplicateCountry=duplicateAccountCountry,duplicateMarket=MARKET_META[duplicateCountry];
+      duplicate.countryCode=duplicateCountry;duplicate.currency=duplicateMarket.currency;duplicate.currencySymbol=duplicateMarket.symbol;
+      duplicate.plannerState={...(duplicate.plannerState||{}),countryCode:duplicateCountry,projectCountry:{...(duplicate.plannerState?.projectCountry||{}),...duplicateMarket,countryCode:duplicateCountry}};
       duplicate.quotationId = newQuotationId;
       duplicate.projectId = newProjectId;
       duplicate.quotationNumber = displayQuotationNumber(baseNumber);
@@ -143,12 +164,26 @@ export default async function handler(req, res) {
     }
     if (req.method === 'DELETE') { const quotationId = String(source?.quotationId || '').trim(); if (!quotationId) return res.status(400).json({ message: 'Missing quotationId.' }); const list = plannerList(current.record, plannerType); const existingIndex = list.findIndex(q => q?.quotationId === quotationId); if (existingIndex < 0) return res.status(404).json({ message: 'Cost estimate not found.' }); current.record.plannerRecords = current.record.plannerRecords || { build: [], renovation: [] }; current.record.plannerRecords[plannerType] = list.filter(q => q?.quotationId !== quotationId); current.record.updatedAt = new Date().toISOString(); const updated = await github(pathFor(role, id), { method: 'PUT', body: JSON.stringify({ message: `Delete ${plannerType} quotation ${quotationId}`, content: Buffer.from(JSON.stringify(current.record, null, 2) + '\n').toString('base64'), sha: current.sha }) }); if (!updated.response.ok) return res.status(502).json({ message: 'Unable to delete quotation.' }); return res.status(200).json({ success: true, quotationId }); }
     const quotation = source?.quotation; if (!quotation || typeof quotation !== 'object') return res.status(400).json({ message: 'Missing quotation record.' }); const quotationId = String(quotation.quotationId || '').trim(); if (!quotationId) return res.status(400).json({ message: 'Missing quotationId.' });
-    const incomingCountryCode = String(quotation?.plannerState?.projectCountry?.countryCode || quotation?.plannerState?.countryCode || quotation?.countryCode || 'MY').trim().toUpperCase();
+    const supportedCountries = new Set(['MY','SG','ID','TH','PH','VN','BN']);
+    const accountCountryCode = String(current.record.country || '').trim().toUpperCase();
+    if(!MARKET_META[accountCountryCode])return res.status(409).json({message:'Account country is not verified. Set the registered country in Admin before saving Cost Estimates.'});
+    const incomingCountries=quotationCountries(quotation);
+    const incomingCountryCode=incomingCountries[0]||accountCountryCode;
+    const incomingCurrencies=quotationCurrencies(quotation);
+    const incomingSymbols=quotationSymbols(quotation);
     const incomingState = String(quotation?.plannerState?.projectState || quotation?.project?.state || '').trim().toLowerCase();
-    // Malaysian estimates require a state-specific rate set. Other country markets use their account country/rate set and must not be blocked by a Malaysia-only state requirement.
-    if (incomingCountryCode === 'MY' && !incomingState) return res.status(400).json({ message: 'Project state / negeri is required for Malaysia.' });
-    if (incomingCountryCode !== 'MY' && !incomingCountryCode) return res.status(400).json({ message: 'Project country is required.' });
-    const now = new Date().toISOString(); const normalized = { ...quotation, quotationId, role, [idKey(role)]: id, plannerType, updatedAt: now, createdAt: quotation.createdAt || now };
+    const market=MARKET_META[accountCountryCode];
+    // Validate every country/currency snapshot, not only the first field: nested conflicts must never be relabelled.
+    if (!supportedCountries.has(accountCountryCode)) return res.status(409).json({ message: 'Account country is not supported. Update the account country before saving estimates.' });
+    if (incomingCountries.some(code=>!supportedCountries.has(code))) return res.status(400).json({ message: 'A supported project country is required.' });
+    if (incomingCountries.some(code=>code!==accountCountryCode)) return res.status(409).json({ message: 'Project country does not match the registered account country. Reopen the planner to reload the correct market rates before saving.' });
+    if (incomingCountries.length===0) return res.status(400).json({ message: 'Country market metadata is required before saving this Cost Estimate.' });
+    if (incomingCurrencies.length===0) return res.status(400).json({ message: 'Currency metadata is required before saving this Cost Estimate.' });
+    if (incomingCurrencies.some(code=>code!==market.currency)) return res.status(409).json({ message: 'Cost Estimate currency does not match the registered account country.' });
+    if (incomingSymbols.some(symbol=>symbol!==market.symbol)) return res.status(409).json({ message: 'Cost Estimate currency symbol does not match the registered account country.' });
+    // Malaysia alone uses state-specific rates; other markets use their configured country rate set.
+    if (accountCountryCode === 'MY' && !incomingState) return res.status(400).json({ message: 'Project state / negeri is required for Malaysia.' });
+    const now = new Date().toISOString(); const savedProjectCountry={...(quotation?.plannerState?.projectCountry||{}),...market,countryCode:accountCountryCode}; const normalized = { ...quotation, quotationId, role, [idKey(role)]: id, plannerType, countryCode:accountCountryCode,currency:market.currency,currencySymbol:market.symbol,plannerState:{...(quotation.plannerState||{}),countryCode:accountCountryCode,projectCountry:savedProjectCountry}, updatedAt: now, createdAt: quotation.createdAt || now };
     current.record.plannerRecords = current.record.plannerRecords || { build: [], renovation: [] }; current.record.plannerRecords.build = plannerList(current.record, 'build'); current.record.plannerRecords.renovation = plannerList(current.record, 'renovation');
     const list = current.record.plannerRecords[plannerType];
     const incomingType = quotationType(normalized.quotationType || normalized.plannerState?.quotationType);
