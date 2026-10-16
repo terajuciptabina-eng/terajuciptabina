@@ -70,3 +70,13 @@ test('Project Control quarantines a legacy source estimate without country/curre
  assert.equal(res.statusCode,409);
  assert.match(res.body.message,/country/i);
 });
+
+test('Project Control PUT rejects a currency symbol conflicting with the registered country',async t=>{
+ const estimate=sgEstimate();
+ const mocked=setup(t,{account:accountWith('SG',estimate)});
+ const res=makeRes();
+ await handler({method:'PUT',body:{id:'CTR-TEST',plannerType:'build',quotationId:'QT-SG-1',record:{contract:{contractNumber:'C-WRONG-SYMBOL',contractSum:1000,countryCode:'SG',currency:'SGD',currencySymbol:'RM',projectCountry:{countryCode:'SG',currency:'SGD',symbol:'S$'}}}}},res);
+ assert.equal(res.statusCode,409);
+ assert.match(res.body.message,/currency symbol/i);
+ assert.equal(mocked.writes,0);
+});
