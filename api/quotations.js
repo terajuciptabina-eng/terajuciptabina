@@ -18,7 +18,7 @@ export default async function handler(req, res) {
   function quotationSymbols(q){return [q?.currencySymbol,q?.plannerState?.projectCountry?.symbol,q?.projectCountry?.symbol].map(v=>String(v||'').trim()).filter(Boolean)}
   function quotationCountry(q){const values=quotationCountries(q);if(values.some(code=>!MARKET_META[code]))return 'UNSUPPORTED';if(values.some(code=>code!==values[0]))return 'CONFLICT';return values[0]||'MY'}
   function quotationCurrency(q){const values=quotationCurrencies(q);if(values.some(code=>code!==values[0]))return 'CONFLICT';return values[0]||'MYR'}
-  function matchesAccountMarket(q,accountCountry){const countries=quotationCountries(q),currencies=quotationCurrencies(q),symbols=quotationSymbols(q);return countries.every(code=>MARKET_META[code]&&code===accountCountry)&&currencies.every(code=>code===MARKET_META[accountCountry]?.currency)&&symbols.every(symbol=>symbol===MARKET_META[accountCountry]?.symbol)}
+  function matchesAccountMarket(q,accountCountry){const countries=quotationCountries(q),currencies=quotationCurrencies(q),symbols=quotationSymbols(q);const consistent=countries.every(code=>MARKET_META[code]&&code===accountCountry)&&currencies.every(code=>code===MARKET_META[accountCountry]?.currency)&&symbols.every(symbol=>symbol===MARKET_META[accountCountry]?.symbol);return consistent&&(accountCountry==='MY'||(countries.length>0&&currencies.length>0))}
   const folder = role => role === 'homeowner' ? 'homeowners' : 'contractors';
   const idKey = role => role === 'homeowner' ? 'homeownerId' : 'contractorId';
   const pathFor = (role, id) => `data/users/${folder(role)}/${encodeURIComponent(id)}.json`;
