@@ -26,6 +26,15 @@ export default async function handler(req, res) {
     try { data = text ? JSON.parse(text) : null; } catch { data = text; }
     return { response, data };
   }
+  const MALAYSIAN_STATES = new Set(['johor','kedah','kelantan','melaka','negeri-sembilan','pahang','perak','perlis','pulau-pinang','sabah','sarawak','selangor','terengganu','kuala-lumpur','putrajaya','labuan']);
+  async function registeredContractorCountry(id) {
+    const result = await githubFile(`data/users/contractors/${encodeURIComponent(id)}.json`);
+    if (!result.response.ok) return { ok:false, country:'' };
+    try {
+      const account = JSON.parse(Buffer.from(result.data?.content || '', 'base64').toString('utf8'));
+      return { ok:true, country:String(account?.country || '').trim().toUpperCase() };
+    } catch { return { ok:false, country:'' }; }
+  }
   async function atomicWriteFiles(files, message) {
     // Every approval/capture may run repeatedly. Refuse to publish malformed JSON.
     for (const file of files) {
@@ -99,6 +108,7 @@ export default async function handler(req, res) {
         for(const item of (Array.isArray(contractor.customItems)?contractor.customItems:[])){
           const state=clean(item?.state,80).toLowerCase();
           const planner=clean(item?.plannerType,30).toLowerCase();
+          if(String(item?.countryCode||'').trim().toUpperCase()!=='MY'||String(item?.currency||'').trim().toUpperCase()!=='MYR'||!MALAYSIAN_STATES.has(state))continue;
           const key=clean(item?.sourceGlobalId,160);
           const rate=Number(item?.rate), globalRate=Number(item?.globalRate);
           if(!state||!['build','renovation'].includes(planner)||!key||!Number.isFinite(rate)||!Number.isFinite(globalRate))continue;
@@ -136,6 +146,10 @@ export default async function handler(req, res) {
       const customItemId = clean(body.customItemId, 160);
       const contractor = database.contractors.find(x => String(x?.contractorId || '').toUpperCase() === contractorId);
       if (!contractor) return res.status(404).json({ message: 'Contractor record not found.' });
+      if (action === 'approve') {
+        const registered = await registeredContractorCountry(contractorId);
+        if (!registered.ok || registered.country !== 'MY') return res.status(409).json({ message: 'Only contractors with a verified Malaysia account can publish rates into the Malaysia State Rate Matrix.' });
+      }
       contractor.customItems = Array.isArray(contractor.customItems) ? contractor.customItems : [];
       contractor.marketHistory = Array.isArray(contractor.marketHistory) ? contractor.marketHistory : [];
       const item = contractor.customItems.find(x =>
@@ -144,6 +158,10 @@ export default async function handler(req, res) {
         String(x?.plannerType || '').toLowerCase() === plannerType
       );
       if (!item) return res.status(404).json({ message: 'Captured rate observation not found.' });
+      if (action === 'approve') {
+        if ((item.countryCode && String(item.countryCode).toUpperCase() !== 'MY') || (item.currency && String(item.currency).toUpperCase() !== 'MYR')) return res.status(409).json({ message: 'Captured rate market does not match the Malaysia State Rate Matrix.' });
+        if (!MALAYSIAN_STATES.has(state)) return res.status(400).json({ message: 'A valid Malaysia state is required to approve a contractor rate.' });
+      }
       const now = new Date().toISOString();
       const previousApprovalStatus = String(item.approvalStatus || 'pending');
       item.approvalStatus = action === 'approve' ? 'approved' : 'rejected';
@@ -231,7 +249,12 @@ export default async function handler(req, res) {
     const description = clean(body.description, 1000);
     const unit = clean(body.unit, 50) || 'unit';
     const rate = Number(body.rate);
+    const isOverride = !!body.sourceGlobalId;
+    const state = clean(body.state, 80).toLowerCase();
     if (!description || !Number.isFinite(rate) || rate < 0) return res.status(400).json({ message: 'Description and valid rate are required.' });
+    const registered = await registeredContractorCountry(contractorId);
+    if (!registered.ok || registered.country !== 'MY') return res.status(409).json({ message: 'Only contractors with a verified Malaysia account can submit rates to the Malaysia State Rate Matrix.' });
+    if (isOverride && !MALAYSIAN_STATES.has(state)) return res.status(400).json({ message: 'A valid Malaysia state is required for a rate override.' });
 
     let contractor = database.contractors.find(x => String(x?.contractorId || '').toUpperCase() === contractorId);
     if (!contractor) { contractor = { contractorId, customItems: [], marketHistory: [] }; database.contractors.push(contractor); }
@@ -240,17 +263,16 @@ export default async function handler(req, res) {
 
     const now = new Date().toISOString();
     const customItemId = clean(body.customItemId, 120) || `CI-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).slice(2,7).toUpperCase()}`;
-    const isOverride = !!body.sourceGlobalId;
     const overrideActive = body.overrideActive !== false;
     const globalRate = Number(body.globalRate);
     const item = {
       customItemId, sourceType: isOverride ? 'override' : 'custom', sourceGlobalId: isOverride ? clean(body.sourceGlobalId, 160) : null,
-      plannerType, description, unit, rate: Math.round(rate * 100) / 100,
+      countryCode: 'MY', currency: 'MYR', plannerType, description, unit, rate: Math.round(rate * 100) / 100,
       globalRate: Number.isFinite(globalRate) ? Math.round(globalRate * 100) / 100 : null,
       rateDelta: Number.isFinite(globalRate) ? Math.round((rate-globalRate)*100)/100 : null,
       rateDeltaPercent: Number.isFinite(globalRate) && globalRate ? Math.round(((rate-globalRate)/globalRate)*10000)/100 : null,
       overrideActive: isOverride ? overrideActive : true,
-      state: clean(body.state, 80).toLowerCase() || null,
+      state: state || null,
       rateSetId: clean(body.rateSetId, 120) || null,
       approvalStatus: 'pending', reviewedAt: null, reviewedBy: null, reviewNote: null,
       capturedAt: now, category: clean(body.category,80)||'custom',
