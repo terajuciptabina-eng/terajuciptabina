@@ -73,7 +73,8 @@
    for(const item of selected){
     const rateField=ctx.countryCode==='MY'?'Malaysia_MYR':ctx.currency;const rawValue=item[rateField];if(rawValue===null||rawValue===undefined||String(rawValue).trim()==='')throw new Error('Missing '+rateField+' rate for '+item.id);const value=Number(rawValue);if(!Number.isFinite(value)||value<0)throw new Error('Invalid '+rateField+' rate for '+item.id);
     if(plannerType==='build'){
-     const alias=canonicalBuildAlias(item.id);if(!alias)throw new Error('No BuildPlanner rate-key mapping for '+item.id);if(!Object.prototype.hasOwnProperty.call(baseRates,alias))throw new Error('Missing BuildPlanner baseline rate key '+alias+' for '+item.id);
+     const alias=canonicalBuildAlias(item.id);if(!alias)throw new Error('No BuildPlanner rate-key mapping for '+item.id);
+     // Country estimates may define valid rule keys absent from the Malaysian baseline map.
      (mappedBuildRates[alias]||(mappedBuildRates[alias]=[])).push(value);
     }else{
      const token=item.id.replace(/^renovation_rule_/,'').replace(/_\d+$/,'');const aliasKey=Object.keys(RENOVATION_RATE_KEYS).sort((a,b)=>b.length-a.length).find(key=>token===key||token.endsWith('_'+key));const alias=aliasKey?RENOVATION_RATE_KEYS[aliasKey]:'';if(!alias)throw new Error('No RenovationPlanner rate-key mapping for '+item.id);if(!Object.prototype.hasOwnProperty.call(baseRates,alias))throw new Error('Missing RenovationPlanner baseline rate key '+alias+' for '+item.id);RATES[alias]=value;
