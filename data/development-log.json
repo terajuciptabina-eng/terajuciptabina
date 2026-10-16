@@ -33,6 +33,17 @@
     "updatedAt": "2026-10-16T03:13:20.979Z"
   },
   {
+    "id": "DEV-20261016-07d9531",
+    "date": "2026-10-16",
+    "title": "Restore Malaysia defaults for legacy accounts",
+    "module": "Cost Estimate",
+    "status": "Completed",
+    "summary": "Restore Malaysia defaults for legacy accounts",
+    "details": "Automatic entry from commit 07d9531. Changed files: TerajuWorks/admin-database.html, TerajuWorks/admin-insights.html, api/admin.js, api/auth.js, api/project-control.js, api/quotations.js, tests/admin-insights-api.test.js, tests/legacy-country-fail-closed.test.js, tests/unverified-market-defaults.test.js.",
+    "commit": "07d9531fe8d284d8abea948ce9bd0c535ca62da1",
+    "updatedAt": "2026-10-16T03:37:45.044Z"
+  },
+  {
     "id": "DEV-20261015-fbf4158",
     "date": "2026-10-15",
     "title": "fix: dismiss signup popup when returning from WhatsApp",
