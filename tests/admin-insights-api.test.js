@@ -165,7 +165,11 @@ test('all changed country-market scripts parse and the rate dataset is complete'
     '../api/quotations.js',
     '../api/project-control.js',
     '../api/auth.js',
+    '../api/contractor-market.js',
+    '../api/contractor-rate-market.js',
     '../TerajuWorks/auth-github.js',
+    '../TerajuWorks/cost-per-sqft.js',
+    '../TerajuWorks/quotation-quantity-fix.js',
     '../TerajuWorks/country-context.js',
     '../TerajuWorks/state-rate-gate.js',
     '../TerajuWorks/state-rate-resolver.js',
@@ -179,6 +183,10 @@ test('all changed country-market scripts parse and the rate dataset is complete'
   const htmlPaths = [
     '../TerajuWorks/admin-insights.html',
     '../TerajuWorks/admin-database.html',
+    '../TerajuWorks/admin-rate-comparison.html',
+    '../TerajuWorks/buildplanner-v2.html',
+    '../TerajuWorks/renovationplanner-v2.html',
+    '../TerajuWorks/quotations.html',
     '../TerajuWorks/contract.html',
     '../TerajuWorks/work-program.html',
     '../TerajuWorks/progress.html',
@@ -203,6 +211,21 @@ test('all changed country-market scripts parse and the rate dataset is complete'
   assert.equal(rates.rates.length, 122);
   assert.equal(rates.plannerCounts.build, 82);
   assert.equal(rates.plannerCounts.renovation, 40);
+  const calculationRules = JSON.parse(await readFile(new URL('../data/calculation-rules.json', import.meta.url), 'utf8'));
+  const norm = value => String(value || '').toLowerCase().replace(/^rule_/, '').replace(/_\\d+$/, '').replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '');
+  const buildRulePaths = (calculationRules.rules || []).map(rule => rule?.path).filter(Boolean).map(norm);
+  const buildRateRows = rates.rates.filter(row => row.planner === 'build');
+  const unmatchedBuildRows = buildRateRows.filter(row => {
+    const token = norm(row.id);
+    return !buildRulePaths.some(path => token === path || token.endsWith('_' + path) || path.endsWith('_' + token));
+  });
+  assert.equal(unmatchedBuildRows.length, 0, 'all 82 BuildPlanner country rates must map to canonical calculation rules');
+  const quantityEngine = await readFile(new URL('../TerajuWorks/quotation-quantity-fix.js', import.meta.url), 'utf8');
+  assert.match(quantityEngine, /replace\(/);
+  assert.match(quantityEngine, /replace\(/);
+  assert.match(quantityEngine, /if\(market==='MY'&&!rateResponse\)/, 'only Malaysia may fetch the Malaysia default rate set');
+  assert.match(quantityEngine, /RATES\[rateKey\|\|\('rule_'\+norm\(matchingRule\)\)\]=value/, 'international rates must map to canonical BuildPlanner rules when no Malaysia rate keys are loaded');
+
   assert.doesNotMatch(rates.methodology, /\[object Object\]/, 'methodology must be human-readable, not object-coercion output');
   assert.match(rates.methodology, /not contractor-quoted or independently validated/i);
   for (const row of rates.rates) {
