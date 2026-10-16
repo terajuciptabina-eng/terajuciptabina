@@ -286,6 +286,17 @@
     "updatedAt": "2026-10-16T03:37:45.044Z"
   },
   {
+    "id": "DEV-20261016-0137568",
+    "date": "2026-10-16",
+    "title": "Remove All countries option from Admin Insights filter (#73)",
+    "module": "Admin / Rate Management",
+    "status": "Completed",
+    "summary": "Remove All countries option from Admin Insights filter (#73)",
+    "details": "Automatic entry from commit 0137568. Changed files: TerajuWorks/admin-insights.html.",
+    "commit": "01375684702ec70d11f37df88714bb685553de7d",
+    "updatedAt": "2026-10-16T05:30:21.549Z"
+  },
+  {
     "id": "DEV-20261016-005ba13",
     "date": "2026-10-16",
     "title": "Normalize unverified country to Malaysia for contractor account CTR-20261005-F8HV",
