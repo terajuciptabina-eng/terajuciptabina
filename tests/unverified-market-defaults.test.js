@@ -64,6 +64,9 @@ test('legacy estimates without country and currency metadata are quarantined fro
   assert.match(quotationsApi, /return countries\.length>0&&countries\.every\(code=>MARKET_META\[code\]&&code===accountCountry\)&&currencies\.length>0&&currencies\.every\(code=>code===MARKET_META\[accountCountry\]\?\.currency\)/);
   assert.match(quotationsPage, /const code=String\(a\?\.country\|\|a\?\.countryCode\|\|''\)\.toUpperCase\(\)/);
   assert.doesNotMatch(quotationsPage, /const code=String\(a\?\.country\|\|'MY'\)/);
+  assert.match(quotationsPage, /TERAJUWORKS · COST ESTIMATES/);
+  assert.doesNotMatch(quotationsPage, /TERAJU CIPTABINA RESOURCES · CONSTRUCTION COST ESTIMATION/);
+  assert.doesNotMatch(quotationsPage, /new Intl\.DateTimeFormat\('en-MY'/);
 });
 
 test('PDF generation does not leak Malaysian company address or hard-code RM in non-MY markets', () => {
