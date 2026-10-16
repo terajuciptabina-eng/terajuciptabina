@@ -224,6 +224,19 @@ test('all changed country-market scripts parse and the rate dataset is complete'
   const buildAliases = [...buildAliasText.matchAll(/([A-Za-z0-9_]+):'([^']+)'/g)].map(match => match[1]);
   const unmatchedBuildAliases = buildRateRows.filter(row => { const token = String(row.id).replace(/^rule_/, '').replace(/_\d+$/, ''); return !buildAliases.some(alias => token === alias || token.endsWith('_' + alias)); });
   assert.equal(unmatchedBuildAliases.length, 0, 'all BuildPlanner country-rate rows must map to rate aliases, including keys absent from the Malaysia baseline');
+  const renovationPlannerSource = await readFile(new URL('../TerajuWorks/renovationplanner-v2.html', import.meta.url), 'utf8');
+  const renovationAliasText = contextSource.match(/const RENOVATION_RATE_KEYS=\{([^}]+)\}/)?.[1] || '';
+  const renovationAliases = [...renovationAliasText.matchAll(/([A-Za-z0-9_]+):'([^']+)'/g)].map(match => ({ key: match[1], alias: match[2] }));
+  const renovationRateBlock = renovationPlannerSource.match(/const RATES\s*=\s*\{([\s\S]*?)\};/)?.[1] || '';
+  const renovationRateKeys = [...renovationRateBlock.matchAll(/([A-Za-z0-9_]+)\s*:/g)].map(match => match[1]);
+  const renovationRows = rates.rates.filter(row => row.planner === 'renovation');
+  const unmatchedRenovationRates = renovationRows.filter(row => {
+    const token = String(row.id).replace(/^renovation_rule_/, '').replace(/_\\d+$/, '');
+    const alias = renovationAliases.slice().sort((a, b) => b.key.length - a.key.length).find(item => token === item.key || token.endsWith('_' + item.key));
+    return !alias || !renovationRateKeys.includes(alias.alias);
+  });
+  assert.equal(unmatchedRenovationRates.length, 0, 'all 40 RenovationPlanner country rates must map to RenovationPlanner rate keys');
+
   assert.doesNotMatch(contextSource, /Missing BuildPlanner baseline rate key/, 'international estimates must be allowed to define a rule alias missing from the Malaysia baseline');
   const quantityEngine = await readFile(new URL('../TerajuWorks/quotation-quantity-fix.js', import.meta.url), 'utf8');
   assert.ok(quantityEngine.includes("replace(/_\\d+$/,'')"), 'country rate IDs must strip their trailing row index');
