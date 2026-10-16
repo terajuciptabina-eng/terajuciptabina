@@ -54,4 +54,7 @@ test('contractor market aggregates only explicit or account-verified MYR observa
  assert.match(rateMarket,/countryCodes\.some\(code=>code!=='MY'\) \|\| !currencies\.length \|\| currencies\.some\(code=>code!=='MYR'\)/);
  assert.match(adminComparison,/filter\(c=>c\.countryCode==='MY'&&c\.currency==='MYR'\)/);
  assert.match(adminComparison,/item\?\.currency&&String\(item\.currency\)\.toUpperCase\(\)!=='MYR'/);
+ assert.match(adminComparison,/International country columns are indicative estimates, not verified contractor quotations/);
+ assert.match(adminComparison,/Singapore · SGD · Estimate/);
+ assert.match(adminComparison,/Vietnam · VND · Estimate/);
 });
