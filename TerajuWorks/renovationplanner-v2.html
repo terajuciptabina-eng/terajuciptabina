@@ -1557,7 +1557,7 @@ function addManualItemPrompt(roomId) {
   if (!anchor) return;
   const wrap = document.createElement("div");
   wrap.id = `manual-add-${roomId}`; wrap.className = "no-print mt-3 border rounded-xl bg-gray-50 p-4";
-  wrap.innerHTML = `<div class="flex flex-wrap items-center justify-between gap-3 mb-3"><p class="font-semibold text-sm">Add Item</p><button type="button" onclick="addManualItemPrompt('${roomId}')" class="text-xs text-gray-500">Cancel</button></div><div class="grid md:grid-cols-[2fr_1fr_1fr_auto] gap-3 items-end"><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Standard Rate Item</span><select id="manual-select-${roomId}" class="w-full border rounded-lg px-3 py-2 bg-white" onchange="prepareManualItem('${roomId}')"><option value="">Select an item…</option>${standardItemOptions(roomId)}<option value="__new__">＋ Create New Standard Item</option></select></label><label id="manual-qty-wrap-${roomId}" class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Quantity</span><input id="manual-qty-${roomId}" type="number" min="0" step="1" value="1" class="w-full border rounded-lg px-3 py-2 bg-white"></label><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Rate (RM)</span><input id="manual-rate-${roomId}" type="number" min="0" step="0.01" value="0.00" class="w-full border rounded-lg px-3 py-2 bg-white"></label><button type="button" onclick="window.saveManualItem('${roomId}')" class="bg-black text-white px-4 py-2 rounded-lg text-sm font-semibold">Add</button></div><div id="manual-new-${roomId}" class="hidden mt-3"><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">New Description</span><input id="manual-desc-${roomId}" type="text" placeholder="e.g. Aluminium awning" class="w-full border rounded-lg px-3 py-2 bg-white"></label></div>`;
+  wrap.innerHTML = `<div class="flex flex-wrap items-center justify-between gap-3 mb-3"><p class="font-semibold text-sm">Add Item</p><button type="button" onclick="addManualItemPrompt('${roomId}')" class="text-xs text-gray-500">Cancel</button></div><div class="grid md:grid-cols-[2fr_1fr_1fr_auto] gap-3 items-end"><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Standard Rate Item</span><select id="manual-select-${roomId}" class="w-full border rounded-lg px-3 py-2 bg-white" onchange="prepareManualItem('${roomId}')"><option value="">Select an item…</option>${standardItemOptions(roomId)}<option value="__new__">＋ Create New Standard Item</option></select></label><label id="manual-qty-wrap-${roomId}" class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Quantity</span><input id="manual-qty-${roomId}" type="number" min="0" step="1" value="1" class="w-full border rounded-lg px-3 py-2 bg-white"></label><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">Rate (${window.TERAJU_GET_PROJECT_COUNTRY?.().symbol||''})</span><input id="manual-rate-${roomId}" type="number" min="0" step="0.01" value="0.00" class="w-full border rounded-lg px-3 py-2 bg-white"></label><button type="button" onclick="window.saveManualItem('${roomId}')" class="bg-black text-white px-4 py-2 rounded-lg text-sm font-semibold">Add</button></div><div id="manual-new-${roomId}" class="hidden mt-3"><label class="block"><span class="block text-xs font-medium text-gray-500 mb-1">New Description</span><input id="manual-desc-${roomId}" type="text" placeholder="e.g. Aluminium awning" class="w-full border rounded-lg px-3 py-2 bg-white"></label></div>`;
   anchor.appendChild(wrap);
 }
 function prepareManualItem(roomId) {
@@ -1730,7 +1730,7 @@ function addBuildHierarchyManualItemPrompt(targetKey, group, hierarchyPath) {
         '<input id="' + formId + '-qty" type="number" min="0" step="1" value="1" class="w-full border rounded-lg px-3 py-2 bg-white">' +
       '</label>' +
       '<label class="block">' +
-        '<span class="block text-xs font-medium text-gray-500 mb-1">Rate (RM)</span>' +
+        '<span class="block text-xs font-medium text-gray-500 mb-1">Rate (' + (window.TERAJU_GET_PROJECT_COUNTRY?.().symbol||'') + ')</span>' +
         '<input id="' + formId + '-rate" type="number" min="0" step="0.01" value="0.00" class="w-full border rounded-lg px-3 py-2 bg-white">' +
       '</label>' +
       '<button type="button" class="bg-black text-white px-4 py-2 rounded-lg text-sm font-semibold" data-build-save>Add</button>' +
@@ -2050,8 +2050,8 @@ function renderEstimate(items, roomGroups, roomSubtotals, total) {
             <th class="py-1 px-2">Description</th>
             <th class="py-1 px-2">Unit</th>
             <th class="py-1 px-2 text-right">Quantity</th>
-            <th class="py-1 px-2 text-right">Rate (RM)</th>
-            <th class="py-1 px-2 text-right">Amount (RM)</th>
+            <th class="py-1 px-2 text-right">Rate (${window.TERAJU_GET_PROJECT_COUNTRY?.().symbol||''})</th>
+            <th class="py-1 px-2 text-right">Amount (${window.TERAJU_GET_PROJECT_COUNTRY?.().symbol||''})</th>
             <th class="no-print py-1 px-2 text-center">Action</th>
           </tr>
         </thead>
@@ -2881,8 +2881,8 @@ function buildQuotationBody(data, revealDetails = false) {
     '<th class="py-2 px-2">Description</th>' +
     '<th class="py-2 px-2">Unit</th>' +
     '<th class="py-2 px-2 text-right">Quantity</th>' +
-    '<th class="py-2 px-2 text-right">Rate (RM)</th>' +
-    '<th class="py-2 px-2 text-right">Amount (RM)</th>' +
+    '<th class="py-2 px-2 text-right">Rate (' + (window.TERAJU_GET_PROJECT_COUNTRY?.().symbol||'') + ')</th>' +
+    '<th class="py-2 px-2 text-right">Amount (' + (window.TERAJU_GET_PROJECT_COUNTRY?.().symbol||'') + ')</th>' +
     '</tr></thead>';
 
   const tbody = document.createElement('tbody');
