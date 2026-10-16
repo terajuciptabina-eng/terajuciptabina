@@ -1,4 +1,4 @@
-name: Country market integrity tests # validates API loading, source syntax and country/currency data integrity (regex fix)
+name: Country market integrity tests # validates API loading, source syntax, strict country/currency metadata and estimated-rate disclosure
 on:
   pull_request:
     branches: [main]
