@@ -44,6 +44,17 @@
     "updatedAt": "2026-10-16T05:23:15.254Z"
   },
   {
+    "id": "DEV-20261016-b440279",
+    "date": "2026-10-16",
+    "title": "Normalize unverified country to Malaysia for homeowner account HME-20260910-H81S",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Normalize unverified country to Malaysia for homeowner account HME-20260910-H81S",
+    "details": "Automatic entry from commit b440279. Changed files: data/users/homeowners/HME-20260910-H81S.json.",
+    "commit": "b4402795aaf92ccf395a65b4dc21f4f0242fe921",
+    "updatedAt": "2026-10-16T05:23:26.914Z"
+  },
+  {
     "id": "DEV-20261016-9e98fb4",
     "date": "2026-10-16",
     "title": "Update build quotation Q001 (EST-BLD-001-S)",
