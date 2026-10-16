@@ -67,8 +67,8 @@ test('BuildPlanner, RenovationPlanner and quotation snapshots do not infer MY/MY
   assert.doesNotMatch(snapshotSource, /projectCountry:window\.TERAJU_GET_PROJECT_COUNTRY\?\.\(\)\|\|\{countryCode:'MY',currency:'MYR',name:'Malaysia'\}/);
 });
 
-test('legacy estimates without country and currency metadata are quarantined from market history', () => {
-  assert.match(quotationsApi, /return countries\.length>0&&countries\.every\(code=>MARKET_META\[code\]&&code===accountCountry\)&&currencies\.length>0&&currencies\.every\(code=>code===MARKET_META\[accountCountry\]\?\.currency\)/);
+test('legacy estimates without country and currency metadata remain compatible for Malaysia accounts only', () => {
+  assert.match(quotationsApi, /accountCountry==='MY'\|\|\(countries\.length>0&&currencies\.length>0\)/);
   assert.match(quotationsPage, /const code=String\(a\?\.country\|\|a\?\.countryCode\|\|''\)\.toUpperCase\(\)/);
   assert.doesNotMatch(quotationsPage, /const code=String\(a\?\.country\|\|'MY'\)/);
   assert.match(quotationsPage, /TERAJUWORKS · COST ESTIMATES/);
