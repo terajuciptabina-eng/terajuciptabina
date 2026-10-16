@@ -653,7 +653,67 @@
           "eventType": "override-update"
         }
       ]
+    },
+    {
+      "contractorId": "CTR-20261002-8VVH",
+      "customItems": [
+        {
+          "customItemId": "ITEM-project-preliminaries",
+          "sourceType": "override",
+          "sourceGlobalId": "master-PROJECT / PRELIMINARIES",
+          "countryCode": "MY",
+          "currency": "MYR",
+          "plannerType": "renovation",
+          "description": "Submission of Renovation Permit Application and Engineer's Drawings to the Local Authority",
+          "unit": "ls",
+          "rate": 16000,
+          "globalRate": 0,
+          "rateDelta": 16000,
+          "rateDeltaPercent": null,
+          "overrideActive": true,
+          "state": "perak",
+          "rateSetId": "perak",
+          "approvalStatus": "pending",
+          "reviewedAt": null,
+          "reviewedBy": null,
+          "reviewNote": null,
+          "capturedAt": "2026-10-16T14:55:22.497Z",
+          "category": "direct-rate-override",
+          "groupKey": "preliminaries",
+          "groupTitle": "Preliminaries",
+          "updatedAt": "2026-10-16T14:55:22.497Z"
+        }
+      ],
+      "marketHistory": [
+        {
+          "customItemId": "ITEM-project-preliminaries",
+          "sourceType": "override",
+          "sourceGlobalId": "master-PROJECT / PRELIMINARIES",
+          "countryCode": "MY",
+          "currency": "MYR",
+          "plannerType": "renovation",
+          "description": "Submission of Renovation Permit Application and Engineer's Drawings to the Local Authority",
+          "unit": "ls",
+          "rate": 16000,
+          "globalRate": 0,
+          "rateDelta": 16000,
+          "rateDeltaPercent": null,
+          "overrideActive": true,
+          "state": "perak",
+          "rateSetId": "perak",
+          "approvalStatus": "pending",
+          "reviewedAt": null,
+          "reviewedBy": null,
+          "reviewNote": null,
+          "capturedAt": "2026-10-16T14:55:22.497Z",
+          "category": "direct-rate-override",
+          "groupKey": "preliminaries",
+          "groupTitle": "Preliminaries",
+          "updatedAt": "2026-10-16T14:55:22.497Z",
+          "eventType": "override-update"
+        }
+      ]
     }
   ],
-  "updatedAt": "2026-10-11T10:34:55.258Z"
+  "updatedAt": "2026-10-16T14:55:22.497Z"
 }
