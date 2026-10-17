@@ -11,6 +11,17 @@
     "updatedAt": "2026-10-17T03:46:41.696Z"
   },
   {
+    "id": "DEV-20261017-e54f7fc",
+    "date": "2026-10-17",
+    "title": "Default legacy account country to Malaysia when saving estimates",
+    "module": "Cost Estimate",
+    "status": "Completed",
+    "summary": "Default legacy account country to Malaysia when saving estimates",
+    "details": "Automatic entry from commit e54f7fc. Changed files: api/quotations.js.",
+    "commit": "e54f7fc407594530809132f82eca2cab8f47be84",
+    "updatedAt": "2026-10-17T08:58:12.645Z"
+  },
+  {
     "id": "DEV-20261017-a10dada",
     "date": "2026-10-17",
     "title": "Fix editable Optional Works rates in RenovationPlanner V2",
