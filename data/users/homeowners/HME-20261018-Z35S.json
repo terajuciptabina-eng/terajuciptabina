@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "homeowner",
+  "country": "MY",
+  "homeownerId": "HME-20261018-Z35S",
+  "profile": {
+    "name": "Fateh Mursyid",
+    "email": "smafcz98@gmail.com",
+    "phone": "+60145466654"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-10-18T14:46:45.674Z",
+  "updatedAt": "2026-10-18T14:46:45.674Z"
+}
