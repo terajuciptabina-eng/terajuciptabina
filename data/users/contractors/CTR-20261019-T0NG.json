@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "contractor",
+  "country": "MY",
+  "contractorId": "CTR-20261019-T0NG",
+  "profile": {
+    "name": "Rahimah",
+    "email": "rahimahmhdshafer@gmail.com",
+    "phone": "+60149479783"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-10-19T11:40:13.993Z",
+  "updatedAt": "2026-10-19T11:40:13.993Z"
+}
