@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "homeowner",
+  "country": "MY",
+  "homeownerId": "HME-20261019-D8R1",
+  "profile": {
+    "name": "Nur ainaa syahirah",
+    "email": "ainaasyahirah82@gmail.com",
+    "phone": "+60109460727"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-10-19T03:13:25.887Z",
+  "updatedAt": "2026-10-19T03:13:25.887Z"
+}
