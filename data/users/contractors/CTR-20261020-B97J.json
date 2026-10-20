@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "contractor",
+  "country": "MY",
+  "contractorId": "CTR-20261020-B97J",
+  "profile": {
+    "name": "MEGAH TRIA RESOURCES",
+    "email": "megahtria@gmail.com",
+    "phone": "+60192432432"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-10-20T02:19:24.381Z",
+  "updatedAt": "2026-10-20T02:19:24.381Z"
+}
