@@ -69953,8 +69953,1247 @@
         "quotationNumber": "Q025",
         "estimateNumber": "EST-REN-024-D",
         "revision": {
-          "current": "R00",
-          "history": []
+          "current": "R01",
+          "history": [
+            {
+              "revision": "R00",
+              "createdAt": "2026-10-24T08:14:13.422Z",
+              "snapshot": {
+                "schemaVersion": 2,
+                "recordType": "quotation",
+                "quotationId": "QT-REN-MVM4GCRJ-17UQB",
+                "projectId": "PRJ-REN-MVJ3D28P-VAR5T",
+                "countryCode": "MY",
+                "currency": "MYR",
+                "currencySymbol": "RM",
+                "quotationNumber": "Q025",
+                "estimateNumber": "EST-REN-024-D",
+                "revision": {
+                  "current": "R00",
+                  "history": []
+                },
+                "plannerType": "renovation",
+                "role": "contractor",
+                "contractorId": "CTR-20260923-SAOE",
+                "state": "final",
+                "quotationType": "detail",
+                "client": {
+                  "name": "Puan Gye"
+                },
+                "project": {
+                  "location": "No 19, Jalan Kelasa 27/56, Seksyen 27, Alam Megah, Selangor",
+                  "state": "selangor",
+                  "builtUpArea": 195
+                },
+                "total": 68545,
+                "plannerState": {
+                  "projectCountry": {
+                    "name": "Malaysia",
+                    "currency": "MYR",
+                    "symbol": "RM",
+                    "locale": "en-MY",
+                    "countryCode": "MY",
+                    "projectId": "PRJ-REN-MVJ3D28P-VAR5T",
+                    "source": "saved-project"
+                  },
+                  "customerName": "Puan Gye",
+                  "projectLocation": "No 19, Jalan Kelasa 27/56, Seksyen 27, Alam Megah, Selangor",
+                  "projectState": "selangor",
+                  "builtUpArea": "195",
+                  "rooms": [
+                    {
+                      "id": "room-1",
+                      "type": "wetKitchen",
+                      "condition": "existing",
+                      "name": "Wet Kitchen",
+                      "area": "150"
+                    },
+                    {
+                      "id": "room-2",
+                      "type": "bathroom",
+                      "condition": "existing",
+                      "name": "Bathroom 1F",
+                      "area": "45"
+                    }
+                  ],
+                  "rates": {
+                    "ceiling": 12,
+                    "spc": 14,
+                    "floorTile": 22,
+                    "wallTile": 22,
+                    "facadeWall": 60,
+                    "downlight": 200,
+                    "wallLight": 250,
+                    "ceilingFan": 550,
+                    "exhaustFan": 200,
+                    "curtainBoxLED": 300,
+                    "barLamp": 500,
+                    "diningLamp": 600,
+                    "kitchenFrame": 1200,
+                    "kitchenMakingGood": 1000,
+                    "kitchenGlassDoor": 1200,
+                    "bathroomSanitary": 3000,
+                    "bathroomDoor": 1200,
+                    "gateMotor": 6400,
+                    "brickwallDivider": 2800,
+                    "frontFence": 5500,
+                    "preliminaries": 8500,
+                    "rule_preliminaries_building_plan_submission_0": 8500,
+                    "rule_preliminaries_site_mobilisation_project_management_1": 12000,
+                    "rule_main_building_footing_concrete_2": 550,
+                    "rule_main_building_footing_formwork_3": 55,
+                    "rule_main_building_footing_rebar_4": 8,
+                    "rule_main_building_ground_slab_concrete_5": 550,
+                    "rule_main_building_ground_slab_brc_6": 20.5,
+                    "rule_main_building_ground_beam_concrete_7": 350,
+                    "rule_main_building_ground_beam_formwork_8": 55,
+                    "rule_main_building_ground_beam_rebar_9": 8,
+                    "rule_main_building_roof_beam_concrete_10": 350,
+                    "rule_main_building_roof_beam_formwork_11": 55,
+                    "rule_main_building_roof_beam_rebar_12": 8,
+                    "rule_main_building_column_concrete_13": 550,
+                    "rule_main_building_column_formwork_14": 55,
+                    "rule_main_building_column_rebar_15": 8,
+                    "rule_main_building_flat_roof_concrete_16": 550,
+                    "rule_main_building_flat_roof_formwork_17": 55,
+                    "rule_main_building_flat_roof_brc_18": 20.5,
+                    "rule_main_building_roof_metal_roofing_sheet_19": 420,
+                    "rule_main_building_apron_concrete_20": 350,
+                    "rule_main_building_apron_formwork_21": 55,
+                    "rule_main_building_apron_brc_22": 20.5,
+                    "rule_main_building_drainage_23": 35,
+                    "rule_porch_footing_concrete_24": 550,
+                    "rule_porch_footing_formwork_25": 55,
+                    "rule_porch_footing_rebar_26": 8,
+                    "rule_porch_ground_slab_concrete_27": 550,
+                    "rule_porch_ground_slab_brc_28": 20.5,
+                    "rule_porch_ground_beam_concrete_29": 350,
+                    "rule_porch_ground_beam_formwork_30": 55,
+                    "rule_porch_ground_beam_rebar_31": 8,
+                    "rule_porch_roof_beam_concrete_32": 350,
+                    "rule_porch_roof_beam_formwork_33": 55,
+                    "rule_porch_roof_beam_rebar_34": 8,
+                    "rule_porch_column_concrete_35": 550,
+                    "rule_porch_column_formwork_36": 55,
+                    "rule_porch_column_rebar_37": 8,
+                    "rule_porch_flat_roof_concrete_38": 550,
+                    "rule_porch_flat_roof_formwork_39": 55,
+                    "rule_porch_flat_roof_brc_40": 20.5,
+                    "rule_porch_roof_metal_roofing_sheet_41": 450,
+                    "rule_main_building_brickwall_internal_wall_42": 75,
+                    "rule_main_building_brickwall_external_wall_43": 120,
+                    "rule_main_building_floor_tiles_internal_44": 95,
+                    "rule_main_building_floor_tiles_external_45": 150,
+                    "rule_main_building_painting_internal_46": 30,
+                    "rule_main_building_painting_external_47": 48,
+                    "rule_main_building_ceiling_internal_48": 165,
+                    "rule_main_building_ceiling_external_49": 165,
+                    "rule_bathroom_wall_tiles_50": 150,
+                    "rule_bathroom_floor_tiles_51": 150,
+                    "rule_bathroom_ceiling_52": 165,
+                    "rule_bathroom_piping_53": 1100,
+                    "rule_bathroom_wc_54": 800,
+                    "rule_bathroom_basin_55": 400,
+                    "rule_bathroom_shower_56": 250,
+                    "rule_bathroom_tap_57": 200,
+                    "rule_main_building_water_tank_58": 600,
+                    "rule_main_building_septic_tank_59": 2500,
+                    "rule_main_building_power_point_60": 150,
+                    "rule_main_building_switch_61": 200,
+                    "rule_main_building_lighting_62": 200,
+                    "rule_main_building_fan_63": 200,
+                    "rule_main_building_aircond_point_64": 300,
+                    "rule_porch_lighting_65": 200,
+                    "rule_porch_fan_66": 200,
+                    "rule_porch_power_point_67": 150,
+                    "rule_earthing_68": 2500,
+                    "rule_db_box_69": 2500,
+                    "rule_wiring_70": 25,
+                    "rule_doors_type_1_single_leaf_71": 1200,
+                    "rule_doors_type_2_sliding_72": 2500,
+                    "rule_doors_type_3_bathroom_73": 850,
+                    "rule_doors_type_4_double_leaf_main_door_74": 2400,
+                    "rule_windows_type_1_1200_1200_75": 1200,
+                    "rule_windows_type_2_1800_1200_76": 1400,
+                    "rule_windows_type_3_900_600_77": 950,
+                    "rule_boundary_fencing_78": 43000,
+                    "rule_gate_79": 6500,
+                    "rule_driveway_80": 5000,
+                    "rule_landscaping_81": 2000,
+                    "renovation_rule_balcony_floor_tiles_37": 25
+                  },
+                  "customRates": [
+                    [
+                      "room-2-sanitary",
+                      2500
+                    ],
+                    [
+                      "room-1-walltile",
+                      15
+                    ],
+                    [
+                      "room-1-downlight",
+                      250
+                    ],
+                    [
+                      "room-1-lamp",
+                      1000
+                    ],
+                    [
+                      "room-1-floor",
+                      25
+                    ],
+                    [
+                      "room-1-ceiling",
+                      15
+                    ],
+                    [
+                      "room-1-fan",
+                      650
+                    ],
+                    [
+                      "room-2-ceiling",
+                      15
+                    ],
+                    [
+                      "room-2-exhaust",
+                      300
+                    ],
+                    [
+                      "room-2-downlight",
+                      250
+                    ]
+                  ],
+                  "customQuantities": [
+                    [
+                      "manual-1792646982403-fy9gy2",
+                      15
+                    ],
+                    [
+                      "manual-1792647337400-30drwi",
+                      16
+                    ],
+                    [
+                      "manual-1792647394495-m23fuw",
+                      17
+                    ],
+                    [
+                      "manual-1792647521562-02mx4d",
+                      4
+                    ],
+                    [
+                      "manual-1792647447830-6yifhu",
+                      3
+                    ]
+                  ],
+                  "customDescriptions": [
+                    [
+                      "manual-1792646982403-fy9gy2",
+                      "Kitchen Cabinet - Base Cabinet 3' height x 2' width"
+                    ],
+                    [
+                      "manual-1792647447830-6yifhu",
+                      "Kitchen Cabinet - Tall Unit 9' height x 2' width"
+                    ],
+                    [
+                      "manual-1792647337400-30drwi",
+                      "Kitchen Cabinet - Quart Stone 3' height x 2' width"
+                    ],
+                    [
+                      "manual-1792647394495-m23fuw",
+                      "Kitchen Cabinet - Wall Cabinet 3' height x 1' width"
+                    ],
+                    [
+                      "manual-1792647521562-02mx4d",
+                      "Kitchen Cabinet - Fridge Cabinet 9' height x 2' width"
+                    ],
+                    [
+                      "manual-1792647963582-3b9wvt",
+                      "3D design and drawings, site preparation, waste management Roro, documentation and all neccessary works"
+                    ],
+                    [
+                      "manual-1792828164188-hvnpxk",
+                      "New Hood for Kitchen Applicant including installation"
+                    ],
+                    [
+                      "room-1-floor",
+                      "SPC Floor tiles to Wet Kitchen area."
+                    ],
+                    [
+                      "room-1-walltile",
+                      "Backsplash Wall tiles to Wet Kitchen area."
+                    ],
+                    [
+                      "room-1-lamp",
+                      "Kitchen wiring allowance."
+                    ],
+                    [
+                      "manual-1792646746667-hynqlz",
+                      "Supply & install Glass Sliding Door"
+                    ],
+                    [
+                      "manual-1792829114800-uvzk6z",
+                      "supply & install premium sink set rectangle shape"
+                    ],
+                    [
+                      "manual-1792829238753-hfur6g",
+                      "supply & install premium tap  with gold finish"
+                    ]
+                  ],
+                  "customRoomLabels": [
+                    [
+                      "room-1",
+                      "Wet Kitchen"
+                    ],
+                    [
+                      "room-2",
+                      "Bathroom 1F"
+                    ]
+                  ],
+                  "excludedItems": [
+                    "project-preliminaries",
+                    "room-2-sanitary"
+                  ],
+                  "manualItems": [
+                    [
+                      "room-1",
+                      [
+                        {
+                          "id": "manual-1792646746667-hynqlz",
+                          "roomId": "room-1",
+                          "roomType": "wetKitchen",
+                          "description": "Glass Sliding Door",
+                          "unit": "ls",
+                          "qty": 1,
+                          "rate": 2650,
+                          "amount": 2650
+                        },
+                        {
+                          "id": "manual-1792646982403-fy9gy2",
+                          "roomId": "room-1",
+                          "roomType": "wetKitchen",
+                          "description": "Base Cabinet",
+                          "unit": "ls",
+                          "qty": 1,
+                          "rate": 290,
+                          "amount": 290
+                        },
+                        {
+                          "id": "manual-1792647337400-30drwi",
+                          "roomId": "room-1",
+                          "roomType": "wetKitchen",
+                          "description": "Quart Stone",
+                          "unit": "ls",
+                          "qty": 1,
+                          "rate": 160,
+                          "amount": 160
+                        },
+                        {
+                          "id": "manual-1792647394495-m23fuw",
+                          "roomId": "room-1",
+                          "roomType": "wetKitchen",
+                          "description": "Kitchen Cabinet - Wall Cabinet",
+                          "unit": "ls",
+                          "qty": 1,
+                          "rate": 250,
+                          "amount": 250
+                        },
+                        {
+                          "id": "manual-1792647447830-6yifhu",
+                          "roomId": "room-1",
+                          "roomType": "wetKitchen",
+                          "description": "Tall Unit",
+                          "unit": "ls",
+                          "qty": 1,
+                          "rate": 380,
+                          "amount": 380
+                        },
+                        {
+                          "id": "manual-1792647521562-02mx4d",
+                          "roomId": "room-1",
+                          "roomType": "wetKitchen",
+                          "description": "Kitchen Cabinet - Fridge Cabinet",
+                          "unit": "ls",
+                          "qty": 1,
+                          "rate": 260,
+                          "amount": 260
+                        },
+                        {
+                          "id": "manual-1792647828573-e6qmhv",
+                          "roomId": "room-1",
+                          "roomType": "wetKitchen",
+                          "description": "Demolishing Existing Wall tiles, floor tiles, brickwall, ceiling",
+                          "unit": "ls",
+                          "qty": 1,
+                          "rate": 3950,
+                          "amount": 3950
+                        },
+                        {
+                          "id": "manual-1792828164188-hvnpxk",
+                          "roomId": "room-1",
+                          "roomType": "wetKitchen",
+                          "description": "New Hook for Kitchen Applicant",
+                          "unit": "ls",
+                          "qty": 1,
+                          "rate": 1800,
+                          "amount": 1800
+                        },
+                        {
+                          "id": "manual-1792828767629-aoeb4b",
+                          "roomId": "room-1",
+                          "roomType": "wetKitchen",
+                          "description": "New Cook top for Kitchen Applicant including installation",
+                          "unit": "ls",
+                          "qty": 1,
+                          "rate": 600,
+                          "amount": 600
+                        },
+                        {
+                          "id": "manual-1792828798778-v7t22m",
+                          "roomId": "room-1",
+                          "roomType": "wetKitchen",
+                          "description": "New microwave for Kitchen Applicant including installation",
+                          "unit": "ls",
+                          "qty": 1,
+                          "rate": 1500,
+                          "amount": 1500
+                        },
+                        {
+                          "id": "manual-1792828866223-7s1iyl",
+                          "roomId": "room-1",
+                          "roomType": "wetKitchen",
+                          "description": "New Sink & tap set  for Kitchen Applicant including installation",
+                          "unit": "ls",
+                          "qty": 1,
+                          "rate": 1500,
+                          "amount": 1500
+                        }
+                      ]
+                    ],
+                    [
+                      "__prelim__",
+                      [
+                        {
+                          "id": "manual-1792647963582-3b9wvt",
+                          "roomId": "__prelim__",
+                          "roomType": "other",
+                          "description": "Site preparation, waste management Roro, documentation and all neccessary works",
+                          "unit": "ls",
+                          "qty": 1,
+                          "rate": 7500,
+                          "amount": 7500
+                        }
+                      ]
+                    ],
+                    [
+                      "room-2",
+                      [
+                        {
+                          "id": "manual-1792649222622-qewytz",
+                          "roomId": "room-2",
+                          "roomType": "bathroom",
+                          "description": "Demolishing Existing Wall tiles, floor tiles, brickwall, ceiling",
+                          "unit": "ls",
+                          "qty": 1,
+                          "rate": 2500,
+                          "amount": 2500
+                        },
+                        {
+                          "id": "manual-1792829054850-b0zsiz",
+                          "roomId": "room-2",
+                          "roomType": "bathroom",
+                          "description": "supply & install premium WC",
+                          "unit": "ls",
+                          "qty": 1,
+                          "rate": 1200,
+                          "amount": 1200
+                        },
+                        {
+                          "id": "manual-1792829114800-uvzk6z",
+                          "roomId": "room-2",
+                          "roomType": "bathroom",
+                          "description": "supply & install premium sink rectangle shape",
+                          "unit": "ls",
+                          "qty": 1,
+                          "rate": 900,
+                          "amount": 900
+                        },
+                        {
+                          "id": "manual-1792829238753-hfur6g",
+                          "roomId": "room-2",
+                          "roomType": "bathroom",
+                          "description": "supply & install premium tap  with gold surface",
+                          "unit": "ls",
+                          "qty": 1,
+                          "rate": 250,
+                          "amount": 250
+                        },
+                        {
+                          "id": "manual-1792829328256-ugds78",
+                          "roomId": "room-2",
+                          "roomType": "bathroom",
+                          "description": "supply & install premium shower kit with gold finish",
+                          "unit": "ls",
+                          "qty": 1,
+                          "rate": 650,
+                          "amount": 650
+                        },
+                        {
+                          "id": "manual-1792829379005-ifcydg",
+                          "roomId": "room-2",
+                          "roomType": "bathroom",
+                          "description": "supply & install premium bath tub with white & goldish finish",
+                          "unit": "ls",
+                          "qty": 1,
+                          "rate": 5500,
+                          "amount": 5500
+                        },
+                        {
+                          "id": "manual-1792829453207-cxe7yv",
+                          "roomId": "room-2",
+                          "roomType": "bathroom",
+                          "description": "new decoration Shelves panel",
+                          "unit": "ls",
+                          "qty": 1,
+                          "rate": 250,
+                          "amount": 250
+                        },
+                        {
+                          "id": "manual-1792829546696-sm7xie",
+                          "roomId": "room-2",
+                          "roomType": "bathroom",
+                          "description": "New toilet window with white fraeme finish",
+                          "unit": "ls",
+                          "qty": 1,
+                          "rate": 1200,
+                          "amount": 1200
+                        }
+                      ]
+                    ]
+                  ],
+                  "standardRateItems": [
+                    {
+                      "id": "custom-1792646682450-o7fags",
+                      "description": "New Hook for Kitchen Applicant",
+                      "unit": "ls",
+                      "rate": 0,
+                      "roomType": "wetKitchen",
+                      "custom": true
+                    },
+                    {
+                      "id": "custom-1792646746667-8oekoq",
+                      "description": "Glass Sliding Door",
+                      "unit": "ls",
+                      "rate": 1500,
+                      "roomType": "wetKitchen",
+                      "custom": true
+                    },
+                    {
+                      "id": "custom-1792646982403-28iteh",
+                      "description": "Base Cabinet",
+                      "unit": "ls",
+                      "rate": 250,
+                      "roomType": "wetKitchen",
+                      "custom": true
+                    },
+                    {
+                      "id": "custom-1792647337400-w62sfb",
+                      "description": "Quart Stone",
+                      "unit": "ls",
+                      "rate": 180,
+                      "roomType": "wetKitchen",
+                      "custom": true
+                    },
+                    {
+                      "id": "custom-1792647394495-34nhr3",
+                      "description": "Kitchen Cabinet - Wall Cabinet",
+                      "unit": "ls",
+                      "rate": 250,
+                      "roomType": "wetKitchen",
+                      "custom": true
+                    },
+                    {
+                      "id": "custom-1792647447830-3j7zp2",
+                      "description": "Tall Unit",
+                      "unit": "ls",
+                      "rate": 400,
+                      "roomType": "wetKitchen",
+                      "custom": true
+                    },
+                    {
+                      "id": "custom-1792647521562-r5r23k",
+                      "description": "Kitchen Cabinet - Fridge Cabinet",
+                      "unit": "ls",
+                      "rate": 500,
+                      "roomType": "wetKitchen",
+                      "custom": true
+                    },
+                    {
+                      "id": "custom-1792647828573-tj6zcu",
+                      "description": "Demolishing Existing Wall tiles, floor tiles, brickwall, ceiling",
+                      "unit": "ls",
+                      "rate": 4000,
+                      "roomType": "wetKitchen",
+                      "custom": true
+                    },
+                    {
+                      "id": "custom-1792647963582-uot6fz",
+                      "description": "Site preparation, waste management Roro, documentation and all neccessary works",
+                      "unit": "ls",
+                      "rate": 5000,
+                      "roomType": "other",
+                      "custom": true
+                    },
+                    {
+                      "id": "custom-1792649222622-ifsmt4",
+                      "description": "Demolishing Existing Wall tiles, floor tiles, brickwall, ceiling",
+                      "unit": "ls",
+                      "rate": 2500,
+                      "roomType": "bathroom",
+                      "custom": true
+                    },
+                    {
+                      "id": "custom-1792828767629-9ubos0",
+                      "description": "New Cook top for Kitchen Applicant including installation",
+                      "unit": "ls",
+                      "rate": 600,
+                      "roomType": "wetKitchen",
+                      "custom": true
+                    },
+                    {
+                      "id": "custom-1792828798778-9t7duj",
+                      "description": "New microwave for Kitchen Applicant including installation",
+                      "unit": "ls",
+                      "rate": 1500,
+                      "roomType": "wetKitchen",
+                      "custom": true
+                    },
+                    {
+                      "id": "custom-1792828866223-sne4oj",
+                      "description": "New Sink & tap set  for Kitchen Applicant including installation",
+                      "unit": "ls",
+                      "rate": 1500,
+                      "roomType": "wetKitchen",
+                      "custom": true
+                    },
+                    {
+                      "id": "custom-1792829054850-ldolr2",
+                      "description": "supply & install premium WC",
+                      "unit": "ls",
+                      "rate": 1200,
+                      "roomType": "bathroom",
+                      "custom": true
+                    },
+                    {
+                      "id": "custom-1792829114800-2hy3dr",
+                      "description": "supply & install premium sink rectangle shape",
+                      "unit": "ls",
+                      "rate": 800,
+                      "roomType": "bathroom",
+                      "custom": true
+                    },
+                    {
+                      "id": "custom-1792829238753-bcyuy3",
+                      "description": "supply & install premium tap  with gold surface",
+                      "unit": "ls",
+                      "rate": 250,
+                      "roomType": "bathroom",
+                      "custom": true
+                    },
+                    {
+                      "id": "custom-1792829328256-gyupag",
+                      "description": "supply & install premium shower kit with gold finish",
+                      "unit": "ls",
+                      "rate": 550,
+                      "roomType": "bathroom",
+                      "custom": true
+                    },
+                    {
+                      "id": "custom-1792829379005-nxgraa",
+                      "description": "supply & install premium bath tub with white & goldish finish",
+                      "unit": "ls",
+                      "rate": 5500,
+                      "roomType": "bathroom",
+                      "custom": true
+                    },
+                    {
+                      "id": "custom-1792829453207-iav832",
+                      "description": "new decoration Shelves panel",
+                      "unit": "ls",
+                      "rate": 250,
+                      "roomType": "bathroom",
+                      "custom": true
+                    },
+                    {
+                      "id": "custom-1792829546696-updvzk",
+                      "description": "New toilet window with white fraeme finish",
+                      "unit": "ls",
+                      "rate": 1200,
+                      "roomType": "bathroom",
+                      "custom": true
+                    }
+                  ],
+                  "quotationType": "detail",
+                  "projectId": "PRJ-REN-MVJ3D28P-VAR5T",
+                  "constructionBudgetGenerated": true,
+                  "rateSetId": "selangor",
+                  "rateSetName": "Selangor",
+                  "countryCode": "MY",
+                  "currency": "MYR",
+                  "rateSnapshotAt": "2026-10-24T08:14:11.135Z"
+                },
+                "itemListVersion": 1,
+                "items": [
+                  {
+                    "id": "room-1-floor",
+                    "category": "",
+                    "description": "SPC Floor tiles to Wet Kitchen area.",
+                    "unit": "sqft",
+                    "qty": 150,
+                    "rate": 25,
+                    "amount": 3750,
+                    "header": "",
+                    "level3": "",
+                    "section": "",
+                    "groupTitle": "",
+                    "groupKey": "",
+                    "masterPath": "WET KITCHEN / Floor Tiles",
+                    "roomId": "room-1",
+                    "room": "Wet Kitchen"
+                  },
+                  {
+                    "id": "room-1-walltile",
+                    "category": "",
+                    "description": "Backsplash Wall tiles to Wet Kitchen area.",
+                    "unit": "sqft",
+                    "qty": 300,
+                    "rate": 15,
+                    "amount": 4500,
+                    "header": "",
+                    "level3": "",
+                    "section": "",
+                    "groupTitle": "",
+                    "groupKey": "",
+                    "masterPath": "WET KITCHEN / Wall Tiles",
+                    "roomId": "room-1",
+                    "room": "Wet Kitchen"
+                  },
+                  {
+                    "id": "room-1-ceiling",
+                    "category": "",
+                    "description": "Plaster ceiling to Wet Kitchen area.",
+                    "unit": "sqft",
+                    "qty": 150,
+                    "rate": 15,
+                    "amount": 2250,
+                    "header": "",
+                    "level3": "",
+                    "section": "",
+                    "groupTitle": "",
+                    "groupKey": "",
+                    "masterPath": "WET KITCHEN / Plaster Ceiling",
+                    "roomId": "room-1",
+                    "room": "Wet Kitchen"
+                  },
+                  {
+                    "id": "room-1-downlight",
+                    "category": "",
+                    "description": "Downlights to Wet Kitchen area.",
+                    "unit": "No.",
+                    "qty": 4,
+                    "rate": 250,
+                    "amount": 1000,
+                    "header": "",
+                    "level3": "",
+                    "section": "",
+                    "groupTitle": "",
+                    "groupKey": "",
+                    "masterPath": "WET KITCHEN / Downlight",
+                    "roomId": "room-1",
+                    "room": "Wet Kitchen"
+                  },
+                  {
+                    "id": "room-1-fan",
+                    "category": "",
+                    "description": "Ceiling fan to Wet Kitchen area.",
+                    "unit": "No.",
+                    "qty": 1,
+                    "rate": 650,
+                    "amount": 650,
+                    "header": "",
+                    "level3": "",
+                    "section": "",
+                    "groupTitle": "",
+                    "groupKey": "",
+                    "masterPath": "WET KITCHEN / Ceiling Fan",
+                    "roomId": "room-1",
+                    "room": "Wet Kitchen"
+                  },
+                  {
+                    "id": "room-1-lamp",
+                    "category": "",
+                    "description": "Kitchen wiring allowance.",
+                    "unit": "LS",
+                    "qty": 1,
+                    "rate": 1000,
+                    "amount": 1000,
+                    "header": "",
+                    "level3": "",
+                    "section": "",
+                    "groupTitle": "",
+                    "groupKey": "",
+                    "masterPath": "WET KITCHEN / Kitchen Lighting",
+                    "roomId": "room-1",
+                    "room": "Wet Kitchen"
+                  },
+                  {
+                    "id": "room-2-floor",
+                    "category": "",
+                    "description": "Floor tiles to Bathroom area.",
+                    "unit": "sqft",
+                    "qty": 45,
+                    "rate": 22,
+                    "amount": 990,
+                    "header": "",
+                    "level3": "",
+                    "section": "",
+                    "groupTitle": "",
+                    "groupKey": "",
+                    "masterPath": "BATHROOM / Floor Tiles",
+                    "roomId": "room-2",
+                    "room": "Bathroom 1F"
+                  },
+                  {
+                    "id": "room-2-walltile",
+                    "category": "",
+                    "description": "Wall tiles to Bathroom area.",
+                    "unit": "sqft",
+                    "qty": 270,
+                    "rate": 22,
+                    "amount": 5940,
+                    "header": "",
+                    "level3": "",
+                    "section": "",
+                    "groupTitle": "",
+                    "groupKey": "",
+                    "masterPath": "BATHROOM / Wall Tiles",
+                    "roomId": "room-2",
+                    "room": "Bathroom 1F"
+                  },
+                  {
+                    "id": "room-2-ceiling",
+                    "category": "",
+                    "description": "Plaster ceiling to Bathroom area.",
+                    "unit": "sqft",
+                    "qty": 45,
+                    "rate": 15,
+                    "amount": 675,
+                    "header": "",
+                    "level3": "",
+                    "section": "",
+                    "groupTitle": "",
+                    "groupKey": "",
+                    "masterPath": "BATHROOM / Plaster Ceiling",
+                    "roomId": "room-2",
+                    "room": "Bathroom 1F"
+                  },
+                  {
+                    "id": "room-2-door",
+                    "category": "",
+                    "description": "Toilet door allowance.",
+                    "unit": "No.",
+                    "qty": 1,
+                    "rate": 1200,
+                    "amount": 1200,
+                    "header": "",
+                    "level3": "",
+                    "section": "",
+                    "groupTitle": "",
+                    "groupKey": "",
+                    "masterPath": "BATHROOM / Toilet Door",
+                    "roomId": "room-2",
+                    "room": "Bathroom 1F"
+                  },
+                  {
+                    "id": "room-2-downlight",
+                    "category": "",
+                    "description": "Downlights to Bathroom area.",
+                    "unit": "No.",
+                    "qty": 4,
+                    "rate": 250,
+                    "amount": 1000,
+                    "header": "",
+                    "level3": "",
+                    "section": "",
+                    "groupTitle": "",
+                    "groupKey": "",
+                    "masterPath": "BATHROOM / Downlight",
+                    "roomId": "room-2",
+                    "room": "Bathroom 1F"
+                  },
+                  {
+                    "id": "room-2-exhaust",
+                    "category": "",
+                    "description": "Exhaust fan to Bathroom area.",
+                    "unit": "No.",
+                    "qty": 1,
+                    "rate": 300,
+                    "amount": 300,
+                    "header": "",
+                    "level3": "",
+                    "section": "",
+                    "groupTitle": "",
+                    "groupKey": "",
+                    "masterPath": "BATHROOM / Exhaust Fan",
+                    "roomId": "room-2",
+                    "room": "Bathroom 1F"
+                  },
+                  {
+                    "id": "manual-1792646746667-hynqlz",
+                    "category": "",
+                    "description": "Supply & install Glass Sliding Door",
+                    "unit": "ls",
+                    "qty": 1,
+                    "rate": 2650,
+                    "amount": 2650,
+                    "header": "",
+                    "level3": "",
+                    "section": "",
+                    "groupTitle": "",
+                    "groupKey": "",
+                    "masterPath": "",
+                    "roomId": "room-1",
+                    "room": "Wet Kitchen"
+                  },
+                  {
+                    "id": "manual-1792646982403-fy9gy2",
+                    "category": "",
+                    "description": "Kitchen Cabinet - Base Cabinet 3' height x 2' width",
+                    "unit": "ls",
+                    "qty": 15,
+                    "rate": 290,
+                    "amount": 4350,
+                    "header": "",
+                    "level3": "",
+                    "section": "",
+                    "groupTitle": "",
+                    "groupKey": "",
+                    "masterPath": "",
+                    "roomId": "room-1",
+                    "room": "Wet Kitchen"
+                  },
+                  {
+                    "id": "manual-1792647337400-30drwi",
+                    "category": "",
+                    "description": "Kitchen Cabinet - Quart Stone 3' height x 2' width",
+                    "unit": "ls",
+                    "qty": 16,
+                    "rate": 160,
+                    "amount": 2560,
+                    "header": "",
+                    "level3": "",
+                    "section": "",
+                    "groupTitle": "",
+                    "groupKey": "",
+                    "masterPath": "",
+                    "roomId": "room-1",
+                    "room": "Wet Kitchen"
+                  },
+                  {
+                    "id": "manual-1792647394495-m23fuw",
+                    "category": "",
+                    "description": "Kitchen Cabinet - Wall Cabinet 3' height x 1' width",
+                    "unit": "ls",
+                    "qty": 17,
+                    "rate": 250,
+                    "amount": 4250,
+                    "header": "",
+                    "level3": "",
+                    "section": "",
+                    "groupTitle": "",
+                    "groupKey": "",
+                    "masterPath": "",
+                    "roomId": "room-1",
+                    "room": "Wet Kitchen"
+                  },
+                  {
+                    "id": "manual-1792647447830-6yifhu",
+                    "category": "",
+                    "description": "Kitchen Cabinet - Tall Unit 9' height x 2' width",
+                    "unit": "ls",
+                    "qty": 3,
+                    "rate": 380,
+                    "amount": 1140,
+                    "header": "",
+                    "level3": "",
+                    "section": "",
+                    "groupTitle": "",
+                    "groupKey": "",
+                    "masterPath": "",
+                    "roomId": "room-1",
+                    "room": "Wet Kitchen"
+                  },
+                  {
+                    "id": "manual-1792647521562-02mx4d",
+                    "category": "",
+                    "description": "Kitchen Cabinet - Fridge Cabinet 9' height x 2' width",
+                    "unit": "ls",
+                    "qty": 4,
+                    "rate": 260,
+                    "amount": 1040,
+                    "header": "",
+                    "level3": "",
+                    "section": "",
+                    "groupTitle": "",
+                    "groupKey": "",
+                    "masterPath": "",
+                    "roomId": "room-1",
+                    "room": "Wet Kitchen"
+                  },
+                  {
+                    "id": "manual-1792647828573-e6qmhv",
+                    "category": "",
+                    "description": "Demolishing Existing Wall tiles, floor tiles, brickwall, ceiling",
+                    "unit": "ls",
+                    "qty": 1,
+                    "rate": 3950,
+                    "amount": 3950,
+                    "header": "",
+                    "level3": "",
+                    "section": "",
+                    "groupTitle": "",
+                    "groupKey": "",
+                    "masterPath": "",
+                    "roomId": "room-1",
+                    "room": "Wet Kitchen"
+                  },
+                  {
+                    "id": "manual-1792828164188-hvnpxk",
+                    "category": "",
+                    "description": "New Hood for Kitchen Applicant including installation",
+                    "unit": "ls",
+                    "qty": 1,
+                    "rate": 1800,
+                    "amount": 1800,
+                    "header": "",
+                    "level3": "",
+                    "section": "",
+                    "groupTitle": "",
+                    "groupKey": "",
+                    "masterPath": "",
+                    "roomId": "room-1",
+                    "room": "Wet Kitchen"
+                  },
+                  {
+                    "id": "manual-1792828767629-aoeb4b",
+                    "category": "",
+                    "description": "New Cook top for Kitchen Applicant including installation",
+                    "unit": "ls",
+                    "qty": 1,
+                    "rate": 600,
+                    "amount": 600,
+                    "header": "",
+                    "level3": "",
+                    "section": "",
+                    "groupTitle": "",
+                    "groupKey": "",
+                    "masterPath": "",
+                    "roomId": "room-1",
+                    "room": "Wet Kitchen"
+                  },
+                  {
+                    "id": "manual-1792828798778-v7t22m",
+                    "category": "",
+                    "description": "New microwave for Kitchen Applicant including installation",
+                    "unit": "ls",
+                    "qty": 1,
+                    "rate": 1500,
+                    "amount": 1500,
+                    "header": "",
+                    "level3": "",
+                    "section": "",
+                    "groupTitle": "",
+                    "groupKey": "",
+                    "masterPath": "",
+                    "roomId": "room-1",
+                    "room": "Wet Kitchen"
+                  },
+                  {
+                    "id": "manual-1792828866223-7s1iyl",
+                    "category": "",
+                    "description": "New Sink & tap set  for Kitchen Applicant including installation",
+                    "unit": "ls",
+                    "qty": 1,
+                    "rate": 1500,
+                    "amount": 1500,
+                    "header": "",
+                    "level3": "",
+                    "section": "",
+                    "groupTitle": "",
+                    "groupKey": "",
+                    "masterPath": "",
+                    "roomId": "room-1",
+                    "room": "Wet Kitchen"
+                  },
+                  {
+                    "id": "manual-1792649222622-qewytz",
+                    "category": "",
+                    "description": "Demolishing Existing Wall tiles, floor tiles, brickwall, ceiling",
+                    "unit": "ls",
+                    "qty": 1,
+                    "rate": 2500,
+                    "amount": 2500,
+                    "header": "",
+                    "level3": "",
+                    "section": "",
+                    "groupTitle": "",
+                    "groupKey": "",
+                    "masterPath": "",
+                    "roomId": "room-2",
+                    "room": "Bathroom 1F"
+                  },
+                  {
+                    "id": "manual-1792829054850-b0zsiz",
+                    "category": "",
+                    "description": "supply & install premium WC",
+                    "unit": "ls",
+                    "qty": 1,
+                    "rate": 1200,
+                    "amount": 1200,
+                    "header": "",
+                    "level3": "",
+                    "section": "",
+                    "groupTitle": "",
+                    "groupKey": "",
+                    "masterPath": "",
+                    "roomId": "room-2",
+                    "room": "Bathroom 1F"
+                  },
+                  {
+                    "id": "manual-1792829114800-uvzk6z",
+                    "category": "",
+                    "description": "supply & install premium sink set rectangle shape",
+                    "unit": "ls",
+                    "qty": 1,
+                    "rate": 900,
+                    "amount": 900,
+                    "header": "",
+                    "level3": "",
+                    "section": "",
+                    "groupTitle": "",
+                    "groupKey": "",
+                    "masterPath": "",
+                    "roomId": "room-2",
+                    "room": "Bathroom 1F"
+                  },
+                  {
+                    "id": "manual-1792829238753-hfur6g",
+                    "category": "",
+                    "description": "supply & install premium tap  with gold finish",
+                    "unit": "ls",
+                    "qty": 1,
+                    "rate": 250,
+                    "amount": 250,
+                    "header": "",
+                    "level3": "",
+                    "section": "",
+                    "groupTitle": "",
+                    "groupKey": "",
+                    "masterPath": "",
+                    "roomId": "room-2",
+                    "room": "Bathroom 1F"
+                  },
+                  {
+                    "id": "manual-1792829328256-ugds78",
+                    "category": "",
+                    "description": "supply & install premium shower kit with gold finish",
+                    "unit": "ls",
+                    "qty": 1,
+                    "rate": 650,
+                    "amount": 650,
+                    "header": "",
+                    "level3": "",
+                    "section": "",
+                    "groupTitle": "",
+                    "groupKey": "",
+                    "masterPath": "",
+                    "roomId": "room-2",
+                    "room": "Bathroom 1F"
+                  },
+                  {
+                    "id": "manual-1792829379005-ifcydg",
+                    "category": "",
+                    "description": "supply & install premium bath tub with white & goldish finish",
+                    "unit": "ls",
+                    "qty": 1,
+                    "rate": 5500,
+                    "amount": 5500,
+                    "header": "",
+                    "level3": "",
+                    "section": "",
+                    "groupTitle": "",
+                    "groupKey": "",
+                    "masterPath": "",
+                    "roomId": "room-2",
+                    "room": "Bathroom 1F"
+                  },
+                  {
+                    "id": "manual-1792829453207-cxe7yv",
+                    "category": "",
+                    "description": "new decoration Shelves panel",
+                    "unit": "ls",
+                    "qty": 1,
+                    "rate": 250,
+                    "amount": 250,
+                    "header": "",
+                    "level3": "",
+                    "section": "",
+                    "groupTitle": "",
+                    "groupKey": "",
+                    "masterPath": "",
+                    "roomId": "room-2",
+                    "room": "Bathroom 1F"
+                  },
+                  {
+                    "id": "manual-1792829546696-sm7xie",
+                    "category": "",
+                    "description": "New toilet window with white fraeme finish",
+                    "unit": "ls",
+                    "qty": 1,
+                    "rate": 1200,
+                    "amount": 1200,
+                    "header": "",
+                    "level3": "",
+                    "section": "",
+                    "groupTitle": "",
+                    "groupKey": "",
+                    "masterPath": "",
+                    "roomId": "room-2",
+                    "room": "Bathroom 1F"
+                  },
+                  {
+                    "id": "manual-1792647963582-3b9wvt",
+                    "category": "preliminaries",
+                    "description": "3D design and drawings, site preparation, waste management Roro, documentation and all neccessary works",
+                    "unit": "ls",
+                    "qty": 1,
+                    "rate": 7500,
+                    "amount": 7500,
+                    "header": "",
+                    "level3": "",
+                    "section": "",
+                    "groupTitle": "Preliminaries",
+                    "groupKey": "preliminaries",
+                    "masterPath": "PROJECT / PRELIMINARIES",
+                    "roomId": "__prelim__",
+                    "room": "Project / Preliminaries"
+                  }
+                ],
+                "createdAt": "2026-10-24T08:13:18.175Z",
+                "updatedAt": "2026-10-24T08:14:13.422Z"
+              }
+            }
+          ]
         },
         "plannerType": "renovation",
         "role": "contractor",
@@ -69969,7 +71208,7 @@
           "state": "selangor",
           "builtUpArea": 195
         },
-        "total": 68545,
+        "total": 69095,
         "plannerState": {
           "projectCountry": {
             "name": "Malaysia",
@@ -70222,6 +71461,10 @@
             [
               "manual-1792829238753-hfur6g",
               "supply & install premium tap  with gold finish"
+            ],
+            [
+              "manual-1792830067516-ze5mt5",
+              "supply & install premium Circle Mirror with gold finish & warm lighting"
             ]
           ],
           "customRoomLabels": [
@@ -70451,6 +71694,16 @@
                   "qty": 1,
                   "rate": 1200,
                   "amount": 1200
+                },
+                {
+                  "id": "manual-1792830067516-ze5mt5",
+                  "roomId": "room-2",
+                  "roomType": "bathroom",
+                  "description": "supply & install premium Circle Mirror with gold finish",
+                  "unit": "ls",
+                  "qty": 1,
+                  "rate": 550,
+                  "amount": 550
                 }
               ]
             ]
@@ -70615,6 +71868,14 @@
               "rate": 1200,
               "roomType": "bathroom",
               "custom": true
+            },
+            {
+              "id": "custom-1792830067516-dzpnk3",
+              "description": "supply & install premium Circle Mirror with gold finish",
+              "unit": "ls",
+              "rate": 450,
+              "roomType": "bathroom",
+              "custom": true
             }
           ],
           "quotationType": "detail",
@@ -70624,7 +71885,7 @@
           "rateSetName": "Selangor",
           "countryCode": "MY",
           "currency": "MYR",
-          "rateSnapshotAt": "2026-10-24T08:14:11.135Z"
+          "rateSnapshotAt": "2026-10-24T08:24:10.113Z"
         },
         "itemListVersion": 1,
         "items": [
@@ -71156,6 +72417,23 @@
             "room": "Bathroom 1F"
           },
           {
+            "id": "manual-1792830067516-ze5mt5",
+            "category": "",
+            "description": "supply & install premium Circle Mirror with gold finish & warm lighting",
+            "unit": "ls",
+            "qty": 1,
+            "rate": 550,
+            "amount": 550,
+            "header": "",
+            "level3": "",
+            "section": "",
+            "groupTitle": "",
+            "groupKey": "",
+            "masterPath": "",
+            "roomId": "room-2",
+            "room": "Bathroom 1F"
+          },
+          {
             "id": "manual-1792647963582-3b9wvt",
             "category": "preliminaries",
             "description": "3D design and drawings, site preparation, waste management Roro, documentation and all neccessary works",
@@ -71174,7 +72452,7 @@
           }
         ],
         "createdAt": "2026-10-24T08:13:18.175Z",
-        "updatedAt": "2026-10-24T08:14:13.422Z"
+        "updatedAt": "2026-10-24T08:24:11.808Z"
       },
       {
         "schemaVersion": 2,
@@ -114772,7 +116050,7 @@
     ]
   },
   "createdAt": "2026-09-23T08:33:53.459Z",
-  "updatedAt": "2026-10-24T08:21:54.181Z",
+  "updatedAt": "2026-10-24T08:24:11.808Z",
   "quotationRunningNumber": {
     "renovation": 25,
     "build": 21
