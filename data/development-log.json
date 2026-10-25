@@ -165,6 +165,17 @@
     "updatedAt": "2026-10-25T04:37:40.374Z"
   },
   {
+    "id": "DEV-20261025-2c4b0c8",
+    "date": "2026-10-25",
+    "title": "Fix Project Control large account reads",
+    "module": "Project Control",
+    "status": "Completed",
+    "summary": "Fix Project Control large account reads",
+    "details": "Automatic entry from commit 2c4b0c8. Changed files: api/project-control.js, tests/admin-insights-api.test.js, tests/project-control-country-isolation.test.js.",
+    "commit": "2c4b0c844ea5a37fee5fec9adc15843a218b9423",
+    "updatedAt": "2026-10-25T08:41:28.859Z"
+  },
+  {
     "id": "DEV-20261025-1b13d7c",
     "date": "2026-10-25",
     "title": "Save renovation quotation Q002 (EST-REN-002-D)",
