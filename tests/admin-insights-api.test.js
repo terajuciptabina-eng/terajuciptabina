@@ -245,7 +245,7 @@ test('all changed country-market scripts parse and the rate dataset is complete'
   assert.match(quantityEngine, /RATES\[rateKey\|\|\('rule_'\+norm\(matchingRule\)\)\]=value/, 'international rates must map to canonical BuildPlanner rules when no Malaysia rate keys are loaded');
 
   assert.doesNotMatch(rates.methodology, /\[object Object\]/, 'methodology must be human-readable, not object-coercion output');
-  assert.match(rates.methodology, /not contractor-quoted or independently validated/i);
+  assert.match(rates.methodology, /not represented as independently verified contractor quotations/i);
   for (const row of rates.rates) {
     for (const field of ['Malaysia_MYR', 'SGD', 'IDR', 'THB', 'PHP', 'VND', 'BND']) {
       assert.notEqual(row[field], null, row.id + ' must not omit ' + field);
