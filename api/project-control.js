@@ -58,7 +58,22 @@ export default async function handler(req, res) {
     const result=await github(path,{ref:dataBranch});
     if(result.response.status===404)return{status:404};
     if(!result.response.ok)return{status:502};
-    let account;try{account=JSON.parse(Buffer.from(result.data?.content||'','base64').toString('utf8'))}catch{return{status:502}}
+    // GitHub Contents API omits the Base64 body for files larger than 1 MB
+    // (encoding: "none"). Account records grow as Cost Estimates are saved, so
+    // Project Control must use the raw file endpoint in that case instead of
+    // treating a valid large account as an unreadable / unverifiable market.
+    let accountText='';
+    if(typeof result.data?.content==='string'&&result.data.content.length){
+      try{accountText=Buffer.from(result.data.content,'base64').toString('utf8')}catch{return{status:502,message:'Unable to decode contractor account record from GitHub storage.'}}
+    }else{
+      let raw;
+      try{raw=await fetch(`https://raw.githubusercontent.com/${actualRepo}/${dataBranch}/${path}`,{cache:'no-store'})}
+      catch{return{status:502,message:'Unable to read contractor account record from GitHub storage.'}}
+      if(!raw.ok)return{status:502,message:'Unable to read contractor account record from GitHub storage.'};
+      try{accountText=await raw.text()}catch{return{status:502,message:'Unable to read contractor account record from GitHub storage.'}}
+    }
+    let account;
+    try{account=JSON.parse(accountText)}catch{return{status:502,message:'Contractor account record is not valid JSON.'}}
     const accountCountry=String(account?.country||'MY').trim().toUpperCase();
     if(!CURRENCY_BY_COUNTRY[accountCountry])return{status:409,message:'Contractor account country is not verified. Set the registered country in Admin before using Project Control.'};
     const list=Array.isArray(account?.plannerRecords?.[type])?account.plannerRecords[type]:[];
