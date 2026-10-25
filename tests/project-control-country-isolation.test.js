@@ -7,14 +7,18 @@ const originalToken=process.env.GITHUB_TOKEN;
 const originalRepo=process.env.GITHUB_REPO;
 function response(status,data){return{ok:status>=200&&status<300,status,async text(){return JSON.stringify(data)}}}
 function makeRes(){return{statusCode:200,body:null,headers:{},setHeader(k,v){this.headers[k]=v;return this},status(n){this.statusCode=n;return this},json(v){this.body=v;return this},end(){return this}}}
-function setup(t,{account,existing=null,sourceEstimate=null}){
+function setup(t,{account,existing=null,sourceEstimate=null,largeAccount=false}){
  process.env.GITHUB_TOKEN='test-token';process.env.GITHUB_REPO='terajuciptabina-eng/terajuciptabina';
  let writes=0;
  globalThis.fetch=async(urlValue,options={})=>{
   const url=String(urlValue);
   if(url.includes('/contents/data/users/contractors/CTR-TEST.json')){
    if(!account)return response(404,{message:'Not found'});
+   if(largeAccount)return response(200,{sha:'account-sha',encoding:'none',content:''});
    return response(200,{sha:'account-sha',encoding:'base64',content:Buffer.from(JSON.stringify(account)).toString('base64')});
+  }
+  if(url.includes('raw.githubusercontent.com/terajuciptabina-eng/terajuciptabina/main/data/users/contractors/CTR-TEST.json')){
+   return{ok:true,status:200,async text(){return JSON.stringify(account)}};
   }
   if(url.includes('/contents/data/project-control/contractors/CTR-TEST/')){
    if(options.method==='PUT'){writes++;return response(201,{content:{sha:'saved-sha'}})}
@@ -79,4 +83,16 @@ test('Project Control PUT rejects a currency symbol conflicting with the registe
  assert.equal(res.statusCode,409);
  assert.match(res.body.message,/currency symbol/i);
  assert.equal(mocked.writes,0);
+});
+
+
+test('Project Control reads large contractor account records through raw GitHub content',async t=>{
+ const estimate=sgEstimate();
+ const mocked=setup(t,{account:accountWith('SG',estimate),largeAccount:true});
+ const res=makeRes();
+ await handler({method:'PUT',body:{id:'CTR-TEST',plannerType:'build',quotationId:'QT-SG-1',record:{contract:{contractNumber:'C-LARGE-ACCOUNT',contractSum:1000,countryCode:'SG',currency:'SGD',currencySymbol:'S$',projectCountry:{countryCode:'SG',currency:'SGD',symbol:'S$'}}}}},res);
+ assert.equal(res.statusCode,200);
+ assert.equal(mocked.writes,1);
+ assert.equal(res.body.record.countryCode,'SG');
+ assert.equal(res.body.record.currency,'SGD');
 });
