@@ -34,7 +34,7 @@ export default async function handler(req,res){
       if(req.method==='POST'){
         stats.totalVisitors=Math.max(0,Number(stats.totalVisitors)||0)+1;
         stats.daily[today]=Math.max(0,Number(stats.daily[today])||0)+1;
-        const payload={message:\`Record Arqenvo visitor \${today}\`,content:Buffer.from(JSON.stringify(stats,null,2)+'\n','utf8').toString('base64')};
+        const payload={message:'Record Arqenvo visitor '+today,content:Buffer.from(JSON.stringify(stats,null,2)+'\n','utf8').toString('base64')};
         if(read.ok&&file?.sha)payload.sha=file.sha;
         const saved=await fetch(`https://api.github.com/repos/${repoName}/contents/${path}`,{method:'PUT',headers:{...headers,'Content-Type':'application/json'},body:JSON.stringify(payload)});
         if(!saved.ok){const detail=await saved.text();console.error('visitor stats save failed',saved.status,detail);return res.status(502).json({ok:false,message:`GitHub save failed (${saved.status}); visitor count was not confirmed saved.`});}
