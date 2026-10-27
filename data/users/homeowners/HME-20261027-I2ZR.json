@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "homeowner",
+  "country": "MY",
+  "homeownerId": "HME-20261027-I2ZR",
+  "profile": {
+    "name": "hafizi",
+    "email": "hafizi2001@gmail.com",
+    "phone": "+601131496093"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-10-27T02:23:11.397Z",
+  "updatedAt": "2026-10-27T02:23:11.397Z"
+}
