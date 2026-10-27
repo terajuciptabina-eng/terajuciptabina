@@ -9,28 +9,39 @@ export default async function handler(req,res){
     if(req.method!=='GET'&&req.method!=='POST')return res.status(405).json({message:'Method not allowed.'});
     const token=process.env.GITHUB_TOKEN;
     const repoName=process.env.GITHUB_REPO||'terajuciptabina-eng/terajuciptabina';
-    if(!token)return res.status(500).json({message:'GitHub data source is not configured.'});
+    if(!token)return res.status(500).json({ok:false,message:'GitHub data source is not configured.'});
     const path='data/analytics/arqenvo-visitors.json';
     const headers={Authorization:`Bearer ${token}`,Accept:'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'};
     try{
-      const read=await fetch(`https://api.github.com/repos/${repoName}/contents/${path}`,{headers});
-      const raw=await read.text();let file=null;try{file=raw?JSON.parse(raw):null}catch{}
+      const read=await fetch(`https://api.github.com/repos/${repoName}/contents/${path}`,{headers,cache:'no-store'});
+      const raw=await read.text();
+      let file=null;try{file=raw?JSON.parse(raw):null}catch{}
+      if(!read.ok&&read.status!==404){
+        console.error('visitor stats read failed',read.status,raw);
+        return res.status(502).json({ok:false,message:`GitHub read failed (${read.status}). Check GITHUB_TOKEN permissions and GITHUB_REPO.`});
+      }
       let stats={totalVisitors:0,daily:{}};
-      if(read.ok&&file?.content){try{stats=JSON.parse(Buffer.from(file.content,'base64').toString('utf8'))}catch{}}
-      if(!stats||typeof stats!=='object')stats={totalVisitors:0,daily:{}};
-      if(!stats.daily||typeof stats.daily!=='object')stats.daily={};
-      const today=new Date().toISOString().slice(0,10);
+      if(read.ok&&file?.content){
+        const decoded=Buffer.from(file.content,'base64').toString('utf8').replace(/\\\\n\\s*$/,'').trim();
+        try{stats=JSON.parse(decoded)}catch(error){
+          console.error('visitor stats JSON invalid',error);
+          return res.status(500).json({ok:false,message:'Visitor stats JSON is invalid; refusing to display false zero counts.'});
+        }
+      }
+      if(!stats||typeof stats!=='object'||Array.isArray(stats))return res.status(500).json({ok:false,message:'Visitor stats file has an invalid format.'});
+      if(!stats.daily||typeof stats.daily!=='object'||Array.isArray(stats.daily))stats.daily={};
+      const today=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Kuala_Lumpur',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
       if(req.method==='POST'){
         stats.totalVisitors=Math.max(0,Number(stats.totalVisitors)||0)+1;
         stats.daily[today]=Math.max(0,Number(stats.daily[today])||0)+1;
         const payload={message:`Record Arqenvo visitor ${today}`,content:Buffer.from(JSON.stringify(stats,null,2)+'\\n','utf8').toString('base64')};
         if(read.ok&&file?.sha)payload.sha=file.sha;
         const saved=await fetch(`https://api.github.com/repos/${repoName}/contents/${path}`,{method:'PUT',headers:{...headers,'Content-Type':'application/json'},body:JSON.stringify(payload)});
-        if(!saved.ok){const detail=await saved.text();console.error('visitor stats save failed',detail);return res.status(502).json({message:'Unable to save visitor stats to GitHub.'});}
+        if(!saved.ok){const detail=await saved.text();console.error('visitor stats save failed',saved.status,detail);return res.status(502).json({ok:false,message:`GitHub save failed (${saved.status}); visitor count was not confirmed saved.`});}
       }
       const dailyVisitors=Number(stats.daily[today])||0;
-      return res.status(200).json({ok:true,totalVisitors:Math.max(0,Number(stats.totalVisitors)||0),todayVisitors:dailyVisitors,daily:stats.daily,generatedAt:new Date().toISOString()});
-    }catch(error){console.error('Arqenvo visitor insights error:',error);return res.status(500).json({message:'Unable to load visitor insights.'});}
+      return res.status(200).json({ok:true,totalVisitors:Math.max(0,Number(stats.totalVisitors)||0),todayVisitors:dailyVisitors,daily:stats.daily,generatedAt:new Date().toISOString(),timezone:'Asia/Kuala_Lumpur'});
+    }catch(error){console.error('Arqenvo visitor insights error:',error);return res.status(500).json({ok:false,message:'Unable to load visitor insights.'});}
   }
   if(String(req.query?.public||'')==='investor-insights'){
     const token=process.env.GITHUB_TOKEN;
