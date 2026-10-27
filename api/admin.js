@@ -19,7 +19,7 @@ export default async function handler(req,res){
       if(read.ok&&file?.content){try{stats=JSON.parse(Buffer.from(file.content,'base64').toString('utf8'))}catch{}}
       if(!stats||typeof stats!=='object')stats={totalVisitors:0,daily:{}};
       if(!stats.daily||typeof stats.daily!=='object')stats.daily={};
-      const today=new Date().toISOString().slice(0,10);
+      const today=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Kuala_Lumpur',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
       if(req.method==='POST'){
         stats.totalVisitors=Math.max(0,Number(stats.totalVisitors)||0)+1;
         stats.daily[today]=Math.max(0,Number(stats.daily[today])||0)+1;
