@@ -1,5 +1,16 @@
 [
   {
+    "id": "DEV-20261028-fcadc81",
+    "date": "2026-10-28",
+    "title": "Fix Arqenvo visitor stats JSON parsing at source",
+    "module": "Admin / Rate Management",
+    "status": "Completed",
+    "summary": "Fix Arqenvo visitor stats JSON parsing at source",
+    "details": "Automatic entry from commit fcadc81. Changed files: api/admin.js.",
+    "commit": "fcadc816d041b9a6488ece2c5ef0c38604b8efd8",
+    "updatedAt": "2026-10-27T20:35:35.408Z"
+  },
+  {
     "id": "DEV-20261028-f5af95c",
     "date": "2026-10-28",
     "title": "Record Arqenvo visitor 2026-10-27",
