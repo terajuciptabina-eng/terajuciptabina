@@ -66,6 +66,17 @@
     "updatedAt": "2026-10-27T20:43:33.760Z"
   },
   {
+    "id": "DEV-20261028-bdf3e18",
+    "date": "2026-10-28",
+    "title": "Add Arqenvo Visitor Insights link to admin control panel",
+    "module": "Admin / Rate Management",
+    "status": "Completed",
+    "summary": "Add Arqenvo Visitor Insights link to admin control panel",
+    "details": "Automatic entry from commit bdf3e18. Changed files: TerajuWorks/admin.html.",
+    "commit": "bdf3e18d6e6a1de1851d92894d66778391a6f32f",
+    "updatedAt": "2026-10-27T20:43:46.977Z"
+  },
+  {
     "id": "DEV-20261028-ae49bd8",
     "date": "2026-10-28",
     "title": "Record Arqenvo visitor 2026-10-27",
