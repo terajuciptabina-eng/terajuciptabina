@@ -32,10 +32,18 @@ export default async function handler(req,res){
       }
       if(!stats||typeof stats!=='object'||Array.isArray(stats))return res.status(500).json({ok:false,message:'Visitor stats file has an invalid format.'});
       if(!stats.daily||typeof stats.daily!=='object'||Array.isArray(stats.daily))stats.daily={};
+      if(!stats.locations||typeof stats.locations!=='object'||Array.isArray(stats.locations))stats.locations={};
       const today=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Kuala_Lumpur',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
       if(req.method==='POST'){
         stats.totalVisitors=Math.max(0,Number(stats.totalVisitors)||0)+1;
         stats.daily[today]=Math.max(0,Number(stats.daily[today])||0)+1;
+        // Vercel supplies coarse IP geolocation headers. Never persist the IP address.
+        const cleanLocation=value=>{try{return decodeURIComponent(String(value||'').replace(/\+/g,' ')).replace(/[<>\r\n]/g,'').trim().slice(0,80)}catch{return ''}};
+        const country=cleanLocation(req.headers['x-vercel-ip-country'])||'Unknown';
+        const region=cleanLocation(req.headers['x-vercel-ip-country-region']);
+        const city=cleanLocation(req.headers['x-vercel-ip-city']);
+        const locationLabel=[city,region,country].filter(Boolean).join(', ')||'Unknown';
+        stats.locations[locationLabel]=Math.max(0,Number(stats.locations[locationLabel])||0)+1;
         const payload={message:'Record Arqenvo visitor '+today,content:Buffer.from(JSON.stringify(stats,null,2),'utf8').toString('base64')};
         if(read.ok&&file?.sha)payload.sha=file.sha;
         const saved=await fetch(`https://api.github.com/repos/${repoName}/contents/${path}`,{method:'PUT',headers:{...headers,'Content-Type':'application/json'},body:JSON.stringify(payload)});
