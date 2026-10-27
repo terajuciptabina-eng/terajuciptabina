@@ -17,7 +17,7 @@
 <section class="card"><div class="label">Daily Visitors · Last 14 Days</div><div class="daily" id="chart" aria-label="Daily visitor chart"></div><div class="status" id="status">Loading visitor statistics…</div><div class="actions"><button class="primary" id="refresh">Refresh statistics</button><button id="open">Open Arqenvo website</button></div></section>
 </main>
 <script>
-const API='https://terajuciptabina.vercel.app/api/admin.js?public=arqenvo-visitor-insights';
+const API='https://terajuciptabina.vercel.app/api/admin?public=arqenvo-visitor-insights';
 const $=id=>document.getElementById(id);
 function dateKey(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
 function render(data){
