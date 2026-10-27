@@ -13,7 +13,8 @@ export default async function handler(req,res){
     const path='data/analytics/arqenvo-visitors.json';
     const headers={Authorization:`Bearer ${token}`,Accept:'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'};
     try{
-      const read=await fetch(`https://api.github.com/repos/${repoName}/contents/${path}`,{headers,cache:'no-store'});
+      const analyticsBranch='arqenvo-visitor-analytics';
+      const read=await fetch(`https://api.github.com/repos/${repoName}/contents/${path}?ref=${analyticsBranch}`,{headers,cache:'no-store'});
       const raw=await read.text();
       let file=null;try{file=raw?JSON.parse(raw):null}catch{}
       if(!read.ok&&read.status!==404){
@@ -44,7 +45,7 @@ export default async function handler(req,res){
         const city=cleanLocation(req.headers['x-vercel-ip-city']);
         const locationLabel=[city,region,country].filter(Boolean).join(', ')||'Unknown';
         stats.locations[locationLabel]=Math.max(0,Number(stats.locations[locationLabel])||0)+1;
-        const payload={message:'Record Arqenvo visitor '+today,content:Buffer.from(JSON.stringify(stats,null,2),'utf8').toString('base64')};
+        const payload={message:'Record Arqenvo visitor '+today,branch:analyticsBranch,content:Buffer.from(JSON.stringify(stats,null,2),'utf8').toString('base64')};
         if(read.ok&&file?.sha)payload.sha=file.sha;
         const saved=await fetch(`https://api.github.com/repos/${repoName}/contents/${path}`,{method:'PUT',headers:{...headers,'Content-Type':'application/json'},body:JSON.stringify(payload)});
         if(!saved.ok){const detail=await saved.text();console.error('visitor stats save failed',saved.status,detail);return res.status(502).json({ok:false,message:`GitHub save failed (${saved.status}); visitor count was not confirmed saved.`});}
