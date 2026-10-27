@@ -187,6 +187,17 @@
     "updatedAt": "2026-10-27T20:39:27.885Z"
   },
   {
+    "id": "DEV-20261028-36a1d64",
+    "date": "2026-10-28",
+    "title": "Expose Arqenvo visitor locations in analytics API response",
+    "module": "Admin / Rate Management",
+    "status": "Completed",
+    "summary": "Expose Arqenvo visitor locations in analytics API response",
+    "details": "Automatic entry from commit 36a1d64. Changed files: api/admin.js.",
+    "commit": "36a1d646221a31e10b4766ca412d96bda7536b79",
+    "updatedAt": "2026-10-27T20:51:41.928Z"
+  },
+  {
     "id": "DEV-20261028-2a6d83f",
     "date": "2026-10-28",
     "title": "Delete contractor CTR-20261024-CM9E from admin database",
