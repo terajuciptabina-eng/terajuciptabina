@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TERAJUWORKS · Arqenvo Visitor Insights</title>
+<style>
+:root{color-scheme:light;--ink:#172033;--muted:#667085;--line:#dfe4ea;--panel:#fff;--bg:#f3f5f7;--accent:#087e8b}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 Inter,system-ui,-apple-system,Arial,sans-serif}.wrap{max-width:1050px;margin:auto;padding:22px}.hero{background:#172033;color:white;border-radius:16px;padding:22px}.eyebrow{font-size:11px;letter-spacing:.16em;color:#9fe6dc;font-weight:800}.hero h1{margin:7px 0;font-size:clamp(24px,4vw,34px)}.hero p{color:#d0d5dd;margin:0}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:18px 0}.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px}.label{color:var(--muted);font-weight:650}.num{font-size:clamp(30px,5vw,42px);font-weight:850;letter-spacing:-.04em;margin:8px 0}.note{font-size:12px;color:var(--muted)}.daily{display:flex;align-items:end;gap:8px;min-height:180px;padding-top:20px}.bar{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:6px;height:150px;justify-content:end}.fill{width:min(100%,38px);min-height:2px;background:var(--accent);border-radius:5px 5px 0 0}.day{font-size:10px;color:var(--muted)}.status{margin-top:14px;color:var(--muted);font-size:12px}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}button{border:1px solid #cbd5df;background:#fff;border-radius:8px;padding:9px 13px;font:inherit;cursor:pointer}button.primary{background:var(--accent);color:white;border-color:var(--accent)}@media(max-width:560px){.wrap{padding:12px}.grid{grid-template-columns:1fr}.hero{padding:18px}}
+</style>
+</head>
+<body><main class="wrap">
+<header class="hero"><div class="eyebrow">TERAJUWORKS · ADMIN INSIGHTS</div><h1>Arqenvo Visitor Insights</h1><p>Visitor totals and daily traffic for the Arqenvo website.</p></header>
+<section class="grid">
+<div class="card"><div class="label">Total Visitors</div><div class="num" id="total">—</div><div class="note">Recorded visits since tracking starts</div></div>
+<div class="card"><div class="label">Visitors Today</div><div class="num" id="today">—</div><div class="note" id="date"></div></div>
+</section>
+<section class="card"><div class="label">Daily Visitors · Last 14 Days</div><div class="daily" id="chart" aria-label="Daily visitor chart"></div><div class="status" id="status">Loading visitor statistics…</div><div class="actions"><button class="primary" id="refresh">Refresh statistics</button><button id="open">Open Arqenvo website</button></div></section>
+</main>
+<script>
+const API='https://terajuciptabina.vercel.app/api/admin.js?public=arqenvo-visitor-insights';
+const $=id=>document.getElementById(id);
+function dateKey(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function render(data){
+ $('total').textContent=Number(data.totalVisitors||0).toLocaleString();
+ $('today').textContent=Number(data.todayVisitors||0).toLocaleString();
+ const now=new Date();$('date').textContent=now.toLocaleDateString(undefined,{weekday:'long',year:'numeric',month:'short',day:'numeric'});
+ const days=[];for(let i=13;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const key=dateKey(d);days.push({key,label:d.toLocaleDateString(undefined,{day:'numeric',month:'short'}),value:Number(data.daily?.[key]||0)})}
+ const max=Math.max(1,...days.map(x=>x.value));
+ $('chart').innerHTML=days.map(x=>'<div class="bar" title="'+x.key+': '+x.value+' visitors"><span>'+x.value+'</span><div class="fill" style="height:'+Math.max(2,x.value/max*105)+'px"></div><span class="day">'+x.label+'</span></div>').join('');
+ $('status').textContent='Last updated '+new Date(data.generatedAt||Date.now()).toLocaleString();
+}
+async function load(){ $('status').textContent='Loading visitor statistics…';try{const r=await fetch(API,{cache:'no-store'});const data=await r.json();if(!r.ok||!data.ok)throw new Error(data.message||'API not ready');render(data)}catch(e){$('status').textContent='Not connected yet: '+e.message+'. The backend PR must be merged and deployed before live stats appear.'}}
+$('refresh').addEventListener('click',load);
+$('open').addEventListener('click',()=>window.open('https://terajuciptabina-eng.github.io/Arqenvo/','_blank','noopener'));
+load();
+</script></body></html>
