@@ -51,7 +51,7 @@ export default async function handler(req,res){
         if(!saved.ok){const detail=await saved.text();console.error('visitor stats save failed',saved.status,detail);return res.status(502).json({ok:false,message:`GitHub save failed (${saved.status}); visitor count was not confirmed saved.`});}
       }
       const dailyVisitors=Number(stats.daily[today])||0;
-      return res.status(200).json({ok:true,totalVisitors:Math.max(0,Number(stats.totalVisitors)||0),todayVisitors:dailyVisitors,daily:stats.daily,generatedAt:new Date().toISOString(),timezone:'Asia/Kuala_Lumpur'});
+      return res.status(200).json({ok:true,totalVisitors:Math.max(0,Number(stats.totalVisitors)||0),todayVisitors:dailyVisitors,daily:stats.daily,locations:stats.locations,generatedAt:new Date().toISOString(),timezone:'Asia/Kuala_Lumpur'});
     }catch(error){console.error('Arqenvo visitor insights error:',error);return res.status(500).json({ok:false,message:'Unable to load visitor insights.'});}
   }
   if(String(req.query?.public||'')==='investor-insights'){
