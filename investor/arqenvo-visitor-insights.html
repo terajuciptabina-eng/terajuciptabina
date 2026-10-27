@@ -14,6 +14,7 @@
 <div class="card"><div class="label">Total Visitors</div><div class="num" id="total">—</div><div class="note">Recorded visits since tracking starts</div></div>
 <div class="card"><div class="label">Visitors Today</div><div class="num" id="today">—</div><div class="note" id="date"></div></div>
 </section>
+<section class="card" style="margin-bottom:18px"><div class="label">Visitor Locations · Approximate</div><div class="note" style="margin:5px 0 12px">Based on coarse location headers supplied by hosting. City may be unavailable or approximate; IP addresses are not stored.</div><div id="locations" class="note">No location data recorded yet.</div></section>
 <section class="card"><div class="label">Daily Visitors · Last 14 Days</div><div class="daily" id="chart" aria-label="Daily visitor chart"></div><div class="status" id="status">Loading visitor statistics…</div><div class="actions"><button class="primary" id="refresh">Refresh statistics</button><button id="open">Open Arqenvo website</button></div></section>
 </main>
 <script>
@@ -27,6 +28,8 @@ function render(data){
  const days=[];for(let i=13;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const key=dateKey(d);days.push({key,label:d.toLocaleDateString(undefined,{day:'numeric',month:'short'}),value:Number(data.daily?.[key]||0)})}
  const max=Math.max(1,...days.map(x=>x.value));
  $('chart').innerHTML=days.map(x=>'<div class="bar" title="'+x.key+': '+x.value+' visitors"><span>'+x.value+'</span><div class="fill" style="height:'+Math.max(2,x.value/max*105)+'px"></div><span class="day">'+x.label+'</span></div>').join('');
+ const locations=Object.entries(data.locations||{}).sort((a,b)=>Number(b[1])-Number(a[1]));
+ $('locations').innerHTML=locations.length?'<div style="display:grid;gap:8px">'+locations.map(([name,count])=>'<div style="display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line);padding:7px 0"><span>'+String(name).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))+'</span><strong>'+Number(count||0)+'</strong></div>').join('')+'</div>':'No location data recorded yet. New records will appear here.';
  $('status').textContent='Last updated '+new Date(data.generatedAt||Date.now()).toLocaleString();
 }
 async function load(){ $('status').textContent='Loading visitor statistics…';try{const r=await fetch(API,{cache:'no-store'});const data=await r.json();if(!r.ok||!data.ok)throw new Error(data.message||'API not ready');render(data)}catch(e){$('status').textContent='Not connected yet: '+e.message+'. The backend PR must be merged and deployed before live stats appear.'}}
