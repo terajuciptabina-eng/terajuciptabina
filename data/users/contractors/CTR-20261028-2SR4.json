@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "contractor",
+  "country": "MY",
+  "contractorId": "CTR-20261028-2SR4",
+  "profile": {
+    "name": "Hasbullah",
+    "email": "mhasbullah@live.com",
+    "phone": "+60105977899"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-10-28T04:36:36.327Z",
+  "updatedAt": "2026-10-28T04:36:36.327Z"
+}
