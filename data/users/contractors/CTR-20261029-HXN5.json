@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "contractor",
+  "country": "MY",
+  "contractorId": "CTR-20261029-HXN5",
+  "profile": {
+    "name": "REVOLUTION CONSTRUCTION & ENGINEERING",
+    "email": "rce.info2@gmail.com",
+    "phone": "+60123393421"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-10-29T04:56:08.619Z",
+  "updatedAt": "2026-10-29T04:56:08.619Z"
+}
