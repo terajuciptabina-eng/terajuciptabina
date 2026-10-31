@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "homeowner",
+  "country": "MY",
+  "homeownerId": "HME-20261031-4L0O",
+  "profile": {
+    "name": "Job",
+    "email": "jobinderjeet19@gmail.com",
+    "phone": "+60162125548"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-10-31T17:16:34.399Z",
+  "updatedAt": "2026-10-31T17:16:34.399Z"
+}
