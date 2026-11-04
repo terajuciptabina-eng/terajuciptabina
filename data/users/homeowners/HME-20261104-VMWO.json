@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "homeowner",
+  "country": "MY",
+  "homeownerId": "HME-20261104-VMWO",
+  "profile": {
+    "name": "Abu",
+    "email": "abubakaraziz97@gmail.com",
+    "phone": "+60108090645"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-11-04T22:54:20.691Z",
+  "updatedAt": "2026-11-04T22:54:20.691Z"
+}
