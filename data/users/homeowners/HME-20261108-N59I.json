@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "homeowner",
+  "country": "MY",
+  "homeownerId": "HME-20261108-N59I",
+  "profile": {
+    "name": "bahah",
+    "email": "aaaaa@gmail.com",
+    "phone": "+601121555231"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-11-08T12:12:37.461Z",
+  "updatedAt": "2026-11-08T12:12:37.462Z"
+}
