@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "recordType": "user-account",
+  "storage": "github-temporary",
+  "role": "homeowner",
+  "country": "MY",
+  "homeownerId": "HME-20261110-KLRC",
+  "profile": {
+    "name": "Haziq",
+    "email": "nurhaziqidris@gmail.com",
+    "phone": "+60142586690"
+  },
+  "auth": {
+    "mode": "temporary-id",
+    "passwordStored": false
+  },
+  "state": "active",
+  "plannerRecords": {
+    "build": [],
+    "renovation": []
+  },
+  "createdAt": "2026-11-10T04:19:43.873Z",
+  "updatedAt": "2026-11-10T04:19:43.873Z"
+}
