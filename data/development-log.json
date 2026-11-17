@@ -11,6 +11,17 @@
     "updatedAt": "2026-11-17T19:49:51.631Z"
   },
   {
+    "id": "DEV-20261118-599da2f",
+    "date": "2026-11-18",
+    "title": "Delete Archicad class registration ARC-20261026154215-IF6S",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Delete Archicad class registration ARC-20261026154215-IF6S",
+    "details": "Automatic entry from commit 599da2f. Changed files: data/class-registrations.json.",
+    "commit": "599da2f51e11fc82a696f5bc600f86327e9eb12e",
+    "updatedAt": "2026-11-17T19:49:58.848Z"
+  },
+  {
     "id": "DEV-20261118-2c5dbdc",
     "date": "2026-11-18",
     "title": "Delete Archicad class registration ARC-20261013091853-9NCW",
