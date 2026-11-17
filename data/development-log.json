@@ -1,5 +1,16 @@
 [
   {
+    "id": "DEV-20261118-2c5dbdc",
+    "date": "2026-11-18",
+    "title": "Delete Archicad class registration ARC-20261013091853-9NCW",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Delete Archicad class registration ARC-20261013091853-9NCW",
+    "details": "Automatic entry from commit 2c5dbdc. Changed files: data/class-registrations.json.",
+    "commit": "2c5dbdc7be30893c5cf4c639c60bfc0b991c953d",
+    "updatedAt": "2026-11-17T19:49:48.102Z"
+  },
+  {
     "id": "DEV-20261110-9493cc8",
     "date": "2026-11-10",
     "title": "Create temporary homeowner account HME-20261110-KLRC",
