@@ -1,5 +1,16 @@
 [
   {
+    "id": "DEV-20261118-a92eeb9",
+    "date": "2026-11-18",
+    "title": "Delete Archicad class registration ARC-20261013094250-8UGE",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Delete Archicad class registration ARC-20261013094250-8UGE",
+    "details": "Automatic entry from commit a92eeb9. Changed files: data/class-registrations.json.",
+    "commit": "a92eeb9a1f3684508268e9b9fb388e6e7c2ecaef",
+    "updatedAt": "2026-11-17T19:49:51.631Z"
+  },
+  {
     "id": "DEV-20261118-2c5dbdc",
     "date": "2026-11-18",
     "title": "Delete Archicad class registration ARC-20261013091853-9NCW",
