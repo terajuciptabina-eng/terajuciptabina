@@ -1,5 +1,16 @@
 [
   {
+    "id": "DEV-20261126-348972e",
+    "date": "2026-11-26",
+    "title": "Add Open Graph image metadata for link sharing",
+    "module": "General",
+    "status": "Completed",
+    "summary": "Add Open Graph image metadata for link sharing",
+    "details": "Automatic entry from commit 348972e. Changed files: index.html.",
+    "commit": "348972e4d771f389cd71d112cc9bc460b8929ee1",
+    "updatedAt": "2026-11-25T18:46:26.512Z"
+  },
+  {
     "id": "DEV-20261118-ee33316",
     "date": "2026-11-18",
     "title": "Delete Archicad class slot SLOT-20261013081401-7Z5Z",
